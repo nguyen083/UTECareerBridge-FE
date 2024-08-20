@@ -3,29 +3,31 @@ import { FaUser } from "react-icons/fa6";
 import { IoMdNotifications } from "react-icons/io";
 import './Header.scss';
 import React, { useState, useEffect, useRef } from 'react';
+import ModalFormLogin from "./ModalFormLogin";
 const Header = () => {
 
     const [isShowFormLogin, setShowFormLogin] = useState(false);
+    const [isShowModal, setShowModal] = useState(false);
     const formRef = useRef(null);
 
     const handleClickOutside = (event) => {
         if (formRef.current && !formRef.current.contains(event.target)) {
-          //console.log('Bạn đã nhấp bên ngoài form-login');
-          // Thực hiện đóng form khi nhấp bên ngoài
-          formRef.current.style.display = 'none';
-          setShowFormLogin(false);
-        } 
+            //console.log('Bạn đã nhấp bên ngoài form-login');
+            // Thực hiện đóng form khi nhấp bên ngoài
+            formRef.current.style.display = 'none';
+            setShowFormLogin(false);
+        }
         // else {
         //   console.log('Bạn đã nhấp bên trong form-login');
         // }
-      };
+    };
 
-      useEffect(() => {
+    useEffect(() => {
 
         // Gắn sự kiện khi component được mount
         document.addEventListener('mousedown', handleClickOutside);
-        
-      }, [isShowFormLogin]);
+
+    }, [isShowFormLogin]);
 
     const handleClickBtnLogin = () => {
         let div = document.getElementById('form-login');
@@ -131,7 +133,7 @@ const Header = () => {
                             </a>
                         </div>
                     </div>
-                    <a className="sc-cezyBN iczlp Header_Login">
+                    <a className="sc-cezyBN iczlp Header_Login" onClick={() => setShowModal(true)}>
                         <svg width="25" height="25" fill="#555555" className="" stroke="unset" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50">
                             <path d="M 25 2 C 15.257933 2 6.9235076 8.0691703 3.5761719 16.636719 A 1.0001 1.0001 0 1 0 5.4375 17.363281 C 8.4921642 9.5448298 16.088067 4 25 4 C 36.609534 4 46 13.390466 46 25 C 46 36.609534 36.609534 46 25 46 C 16.088067 46 8.4921642 40.455171 5.4375 32.636719 A 1.0001 1.0001 0 1 0 3.5761719 33.363281 C 6.9235076 41.930829 15.257933 48 25 48 C 37.690466 48 48 37.690466 48 25 C 48 12.309534 37.690466 2 25 2 z M 25.990234 15.990234 A 1.0001 1.0001 0 0 0 25.292969 17.707031 L 31.585938 24 L 3 24 A 1.0001 1.0001 0 1 0 3 26 L 31.585938 26 L 25.292969 32.292969 A 1.0001 1.0001 0 1 0 26.707031 33.707031 L 34.707031 25.707031 A 1.0001 1.0001 0 0 0 34.707031 24.292969 L 26.707031 16.292969 A 1.0001 1.0001 0 0 0 25.990234 15.990234 z"></path>
                         </svg>
@@ -146,6 +148,7 @@ const Header = () => {
                     </a>
                 </div>
             </div>
+            <ModalFormLogin backdrop="static" show={isShowModal} setShow={setShowModal}/>
         </>
     );
 }
