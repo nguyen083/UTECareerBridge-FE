@@ -4,6 +4,8 @@ import { IoMdNotifications } from "react-icons/io";
 import './Header.scss';
 import React, { useState, useEffect, useRef } from 'react';
 import ModalFormLogin from "./ModalFormLogin";
+
+
 const Header = () => {
 
     const [isShowFormLogin, setShowFormLogin] = useState(false);
@@ -23,7 +25,7 @@ const Header = () => {
     };
 
     const handleShowForm = () => {
-        setShowFormLogin(false);
+        handleClickBtnLogin();
         setShowModal(true);
     }
     useEffect(() => {
@@ -35,7 +37,7 @@ const Header = () => {
 
     const handleClickBtnLogin = () => {
         let div = document.getElementById('form-login');
-        if (isShowFormLogin == false) {
+        if (isShowFormLogin === false) {
             div.style.display = 'block';
             setShowFormLogin(true);
         } else {
@@ -60,7 +62,7 @@ const Header = () => {
                         <div style={{ width: "100vh" }} className="sc-hClZaO iepeKq">
                             <div id="vnwLayout__row" style={{ position: "relative", maxWidth: "inherit", justifyContent: "space-between", width: "100%", padding: "0 10px" }} className="sc-sSmyr fdGNbR">
                                 <div id="vnwLayout__col" className="sc-cegkxp fnXIET">
-                                    <div className="sc-eVjwod gujvVy">
+                                    <div className="sc-eVjwod gujvVy d-lg-flex d-none">
                                         <div className="sc-exgAzj hruxAH Header_Search" style={{ maxWidth: "calc(100% - 450px" }}>
                                         </div>
                                         <div className="sc-kIxHyQ eesaxc">
@@ -105,7 +107,7 @@ const Header = () => {
                                 <div onClick={() => handleClickBtnLogin()} className="sc-jPOJsI krqNeo">
                                     <button aria-label="profile-button" className="sc-cQZzPu kapIWZ Header_UMenu">
                                         <FaUser />
-                                        Đăng nhập
+                                        <span className="d-lg-flex d-none">Đăng nhập</span>
                                     </button>
                                 </div>
                             </div>
@@ -113,11 +115,11 @@ const Header = () => {
                     </div>
                 </div>
             </div>
-            <div ref={formRef} id="form-login" className="form-login" style={{ position: "fixed", top: "3.25rem", right: "5vh", zIndex: "150" }}>
+            <div ref={formRef} id="form-login" className="form-login" style={{ position: "fixed", top: "3.35rem", right: "5vh", zIndex: "150" }}>
                 {/* style="transition-property: opacity, transform, transform-origin; opacity: 1; transform: scaleY(1); transform-origin: center top; transition-duration: 250ms;" */}
                 <div className="sc-hgRRfv hKDGed" >
                     <div className="sc-emIrwa hmTqcE">
-                        <p className="sc-gRtvSG fCdZWY">Người tìm việc đăng nhập</p>
+                        <p className="sc-gRtvSG fCdZWY">Sinh viên đăng nhập</p>
                         <div className="sc-dUYLmH cThveb">
                             {/* <a href="https://www.vietnamworks.com/dang-nhap?type=facebook&amp;redirectURL=https%3A%2F%2Fwww.vietnamworks.com%2F%3Futm_source_navi%3Dheader%26utm_medium_navi%3Dvnwlogo%26utm_source_navi%3D%26utm_medium_navi%3DHeader&amp;t=1723887632579" className="sc-faUjhM vsUcT Header_LoginFB">
                                 <svg fill="currentColor" className="" stroke="unset" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20">
@@ -154,6 +156,7 @@ const Header = () => {
             </div>
             <ModalFormLogin backdrop="static" show={isShowModal} setShow={setShowModal}/>
         </>
+
     );
 }
 export default Header;

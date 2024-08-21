@@ -24,7 +24,7 @@ const ModalFormLogin = (props) => {
     }
 
     const handleShowPassword = () => {
-        if(isShowPassword == false){
+        if(isShowPassword === false){
             // hiện mật khẩu
             document.getElementById('eye-open').style.display = 'block';
             document.getElementById('eye-close').style.display = 'none';
@@ -120,7 +120,7 @@ const ModalFormLogin = (props) => {
                             </div>
                         </div>
                         <div className="d-flex justify-content-end">
-                            <a href="">Quên mật khẩu?</a>
+                            <a href="#">Quên mật khẩu?</a>
                         </div>
                     </div>
                 </Modal.Body>

@@ -3,10 +3,11 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Routes, Route, Navigate  } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './components/Student/HomePage.js';
 import HomePage from './components/Student/HomePage.js';
+import Test from './components/Student/Test.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -14,7 +15,9 @@ root.render(
     <Routes>
       <Route path="/" element={<App />}>
         <Route index element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<HomePage />} />
+        <Route path="/home" element={<HomePage />} >
+          <Route index element={<Test />} />
+        </Route>
       </Route>
     </Routes>
   </BrowserRouter>
