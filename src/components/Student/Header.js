@@ -59,17 +59,17 @@ const Header = () => {
                                 {/* <img width="40" src="https://vietnamworks.com/assets-page-container/images/vnw_empower_growth_mini_logo.png?ver=249" alt="VietnamWorks - Nền tảng tuyển dụng, việc làm, tra cứu lương &amp; tư vấn nghề nghiệp hàng đầu Việt Nam" loading="lazy" className="sc-gAjtsA dhbLpn" /> */}
                             </a>
                         </h1>
-                        <div style={{ width: "100vh" }} className="sc-hClZaO iepeKq">
+                        <div style={{ width: "100%" }} className="sc-hClZaO iepeKq">
                             <div id="vnwLayout__row" style={{ position: "relative", maxWidth: "inherit", justifyContent: "space-between", width: "100%", padding: "0 10px" }} className="sc-sSmyr fdGNbR">
                                 <div id="vnwLayout__col" className="sc-cegkxp fnXIET">
-                                    <div className="sc-eVjwod gujvVy d-lg-flex d-none">
+                                    <div className="sc-eVjwod gujvVy d-md-flex d-none">
                                         <div className="sc-exgAzj hruxAH Header_Search" style={{ maxWidth: "calc(100% - 450px" }}>
                                         </div>
                                         <div className="sc-kIxHyQ eesaxc">
-                                            <a href="https://www.vietnamworks.com/viec-lam?g=5&amp;utm_source_navi=header&amp;utm_medium_navi=intechlogo" title="VietnamWorks inTECH - việc làm IT trên VietnamWorks.com" className="sc-ggKVCX hTBdHF">
+                                            {/* <a href="https://www.vietnamworks.com/viec-lam?g=5&amp;utm_source_navi=header&amp;utm_medium_navi=intechlogo" title="VietnamWorks inTECH - việc làm IT trên VietnamWorks.com" className="sc-ggKVCX hTBdHF">
                                                 <img src="https://vietnamworks.com/assets-page-container/images/vnw_intech_logo_white.svg?ver=249" alt="VietnamWorks inTECH - việc làm IT trên VietnamWorks.com" loading="lazy" className="sc-bCSQDp cJtnJk" />
                                                 <img width="40" src="https://vietnamworks.com/assets-page-container/images/vnw_intech_logo_white.svg?ver=249" alt="VietnamWorks inTECH - việc làm IT trên VietnamWorks.com" loading="lazy" className="sc-gAjtsA dhbLmR" />
-                                            </a>
+                                            </a> */}
                                             <div className="sc-fzimyC gChyuM">
                                                 <div className="sc-ezWOmT kjwsGF Header_AllCate">
                                                     <div className="sc-flEoeP kCosHO">
@@ -107,7 +107,7 @@ const Header = () => {
                                 <div onClick={() => handleClickBtnLogin()} className="sc-jPOJsI krqNeo">
                                     <button aria-label="profile-button" className="sc-cQZzPu kapIWZ Header_UMenu">
                                         <FaUser />
-                                        <span className="d-lg-flex d-none">Đăng nhập</span>
+                                        <span className="d-md-flex d-none">Đăng nhập</span>
                                     </button>
                                 </div>
                             </div>
@@ -115,7 +115,7 @@ const Header = () => {
                     </div>
                 </div>
             </div>
-            <div ref={formRef} id="form-login" className="form-login" style={{ position: "fixed", top: "3.35rem", right: "5vh", zIndex: "150" }}>
+            <div ref={formRef} id="form-login" className="form-login" style={{ position: "fixed", top: "3.35rem", right: "2.5%", zIndex: "150" }}>
                 {/* style="transition-property: opacity, transform, transform-origin; opacity: 1; transform: scaleY(1); transform-origin: center top; transition-duration: 250ms;" */}
                 <div className="sc-hgRRfv hKDGed" >
                     <div className="sc-emIrwa hmTqcE">

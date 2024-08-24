@@ -8,6 +8,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './components/Student/HomePage.js';
 import HomePage from './components/Student/HomePage.js';
 import Test from './components/Student/Test.js';
+import JobPage from './components/Student/JobPage.js';
+import EmployerPage from './components/Student/EmployerPage.js';
+import FavoritePage from './components/Student/FavoritePage.js';
+import AccountPage from './components/Student/AccountPage.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,15 +19,16 @@ root.render(
     <Routes>
       <Route path="/" element={<App />}>
         <Route index element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<HomePage />} >
+        <Route path="/home" element={<HomePage />}>
           <Route index element={<Test />} />
         </Route>
+        <Route path='job' element={<JobPage />} />
+        <Route path='employer' element={<EmployerPage />} />
+        <Route path='favorite' element={<FavoritePage />} />
+        <Route path='account' element={<AccountPage />} />
       </Route>
     </Routes>
   </BrowserRouter>
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
 reportWebVitals();
