@@ -1,0 +1,7 @@
+.navigation {
+  position  : fixed !important;
+  left      : 50% !important;
+  transform: translate(-50%, -50%) !important;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 4px 40px 0px;
+  transition: bottom 0.2s ease-in-out;
+}

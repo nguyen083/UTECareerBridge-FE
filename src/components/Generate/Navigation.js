@@ -6,16 +6,19 @@ import DomainIcon from '@mui/icons-material/Domain';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import PersonIcon from '@mui/icons-material/Person';
 import { useNavigate } from 'react-router-dom';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import './Navigation.scss';
 const Navigation = () => {
+    const [scrollDirection, setScrollDirection] = useState(null);
+    const [show, setShow] = useState(true);
     const navigate = useNavigate();
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = useState(0);
 
     const handleClickNavigate = (newValue) => {
         console.log(`handleClickNavigate: ${value} => ${newValue}`);
         setValue(newValue);
         switch (newValue) {
-            case 0:  
+            case 0:
                 navigate('/home');
                 break;
             case 1:
@@ -33,10 +36,35 @@ const Navigation = () => {
             default:
                 navigate('/');
                 break;
-        }        
+        }
     }
+    useEffect(() => {
+        let lastScrollY = window.pageYOffset;
+
+        const handleScroll = () => {
+            const currentScrollY = window.pageYOffset;
+
+            if (currentScrollY > lastScrollY) {
+                setScrollDirection('down');
+                console.log('down');
+                setShow(false);
+            } else if (currentScrollY < lastScrollY) {
+                setScrollDirection('up');
+                console.log('up');
+                setShow(true);
+            }
+
+            lastScrollY = currentScrollY;
+        };
+
+        window.addEventListener('scroll', handleScroll);
+
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
     return (
-        <div className='position-absolute top-100 start-50 translate-middle d-block d-md-none ' style={{ zIndex: '1000', width: "100%"}}>
+        <div className={`navigation d-block d-md-none`} style={{ zIndex: '90', width: "100%", bottom: `${show? '-29px':'-100px'}`}}>
             <BottomNavigation showLabels value={value} onChange={(event, newValue) => { handleClickNavigate(newValue); }}>
                 <BottomNavigationAction icon={<HomeIcon />} />
                 <BottomNavigationAction icon={<WorkIcon />} />
