@@ -9,6 +9,7 @@ import ModalFormLogin from "./ModalFormLogin";
 const Header = () => {
 
     const [isShowFormLogin, setShowFormLogin] = useState(false);
+    const [isShowFormRegister, setShowFormRegister] = useState(false);
     const [isShowModal, setShowModal] = useState(false);
     const formRef = useRef(null);
 
