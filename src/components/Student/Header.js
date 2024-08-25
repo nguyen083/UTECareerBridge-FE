@@ -154,7 +154,9 @@ const Header = () => {
                     </a>
                 </div>
             </div>
-            <ModalFormLogin backdrop="static" show={isShowModal} setShow={setShowModal}/>
+            <ModalFormLogin 
+            show={isShowModal}
+            setShow={setShowModal}/>
         </>
 
     );
