@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
 import './Navigation.scss';
 const Navigation = () => {
-    const [scrollDirection, setScrollDirection] = useState(null);
     const [show, setShow] = useState(true);
     const navigate = useNavigate();
     const [value, setValue] = useState(0);
@@ -45,12 +44,8 @@ const Navigation = () => {
             const currentScrollY = window.pageYOffset;
 
             if (currentScrollY > lastScrollY) {
-                setScrollDirection('down');
-                console.log('down');
                 setShow(false);
             } else if (currentScrollY < lastScrollY) {
-                setScrollDirection('up');
-                console.log('up');
                 setShow(true);
             }
 

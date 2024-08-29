@@ -1,0 +1,16 @@
+/* Filename - App.js */
+.phone-number {
+	font-size      : 1rem;
+	text-align     : center;
+	margin         : auto;
+	justify-content: center;
+
+	.react-tel-input {
+		.form-control{
+			height: auto;
+			width: -webkit-fill-available;
+			font-size: 1rem;
+			border: 1px solid #dee2e6;
+		}
+	}
+}

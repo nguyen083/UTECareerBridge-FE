@@ -12,6 +12,7 @@ import JobPage from './components/Student/JobPage.js';
 import EmployerPage from './components/Student/EmployerPage.js';
 import FavoritePage from './components/Student/FavoritePage.js';
 import AccountPage from './components/Student/AccountPage.js';
+import RegisterPage from './components/Student/RegisterPage.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -26,6 +27,7 @@ root.render(
         <Route path='employer' element={<EmployerPage />} />
         <Route path='favorite' element={<FavoritePage />} />
         <Route path='account' element={<AccountPage />} />
+        <Route path='register' element={<RegisterPage />} />
       </Route>
     </Routes>
   </BrowserRouter>
