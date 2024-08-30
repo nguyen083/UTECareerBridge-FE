@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "./RegisterPage.scss";
 import PhoneInputGfg from "../Generate/PhoneInputGfg";
+import { postStudentRegister } from "../../services/apiService";
+import { toast } from "react-toastify";
 
 const RegisterPage = () => {
 
@@ -21,73 +23,89 @@ const RegisterPage = () => {
             retypePassword: true,
             messagePassword: "",
         }); // thông báo lỗi
-
-    const validate = () => {
-
-
+    const validate = async () => {
         validPhoneNumber();
         validEmail();
         validatePassword();
         validateRetypePassword();
+
+    }
+    const handleSubmit = async () => {
+        // Call API
+        let data = await postStudentRegister(firstName, lastName, phoneNumber, email, password, retypePassword);
+        if (data.status === "CREATED") {
+            toast.success(data.message);
+        } else {
+            toast.error(data.message);
+        }
     }
 
+    useEffect(() => {
+        console.log(message);
+        //handleSubmit();
+    }, [message]);
+
     const validPhoneNumber = async () => {
+        let data = await checkPhoneNumber();
+        setPhoneNumber(data.phone);
+        setMessage(message => ({ ...message, phoneNumber: data.phoneNumber }));
+    }
+    const checkPhoneNumber = async () => {
         let updatePhoneNumber = phoneNumber;
         updatePhoneNumber.startsWith('84') && (updatePhoneNumber = updatePhoneNumber.replace(/^84/, ''));
         !updatePhoneNumber.startsWith('0') && (updatePhoneNumber = '0' + updatePhoneNumber);
-        if (updatePhoneNumber.length !== 10) 
-            setMessage(message=>({ ...message, phoneNumber: false }));
-        else 
-            setMessage(message=>({ ...message, phoneNumber: true }));
-           
-        setPhoneNumber(updatePhoneNumber);
-
+        if (updatePhoneNumber.length !== 10) {
+            return { phone: updatePhoneNumber, phoneNumber: false }
+        }
+        else {
+            return { phone: updatePhoneNumber, phoneNumber: true }
+        }
     }
-    const validEmail = async () => {
+    const validEmail = () => {
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (!emailPattern.test(email))
-            setMessage(message=>({ ...message, email: false }));
-        else
-            setMessage(message=>({ ...message, email: true }));
-
+        if (!emailPattern.test(email)) {
+            setMessage(message => ({ ...message, email: false }));
+            return;
+        }
+        else {
+            setMessage(message => ({ ...message, email: true }));
+            return;
+        }
     }
 
     const validatePassword = () => {
         if (password.length < 8) {
-            setMessage(message=> ({ ...message, messagePassword: "Mật khẩu phải chứa ít nhất 8 ký tự",password:false }));
-            return;
+            setMessage(message => ({ ...message, messagePassword: "Mật khẩu phải chứa ít nhất 8 ký tự", password: false }));
         }
 
-        if (!/[A-Z]/.test(password)) {
-            setMessage(message=>({ ...message, messagePassword: "Mật khẩu phải chứa ít nhất 1 chữ in hoa." ,password:false }));
-            return;
+        else if (!/[A-Z]/.test(password)) {
+            setMessage(message => ({ ...message, messagePassword: "Mật khẩu phải chứa ít nhất 1 chữ in hoa.", password: false }));
         }
 
-        if (!/\d/.test(password)) {
-            setMessage(message=>({ ...message, messagePassword: "Mật khẩu phải chứa ít nhất 1 chữ số.",password:false  }));
-            return;
+        else if (!/\d/.test(password)) {
+            setMessage(message => ({ ...message, messagePassword: "Mật khẩu phải chứa ít nhất 1 chữ số.", password: false }));
         }
 
-        if (!/[!@#$%^&*()_+{}\[\]:;"'<>,.?/\\|`~]/.test(password)) {
-            setMessage(message=> ({ ...message, messagePassword: "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt." ,password:false }));
-            return;
+        else if (!/[!@#$%^&*()_+{}\[\]:;"'<>,.?/\\|`~]/.test(password)) {
+            setMessage(message => ({ ...message, messagePassword: "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt.", password: false }));
         }
-        setMessage(message=>({ ...message, messagePassword: "",password:true  }));
+        else setMessage(message => ({ ...message, messagePassword: "", password: true }));
     }
     const validateRetypePassword = () => {
-        if (password !== retypePassword&& message.password) {
-            setMessage(message=>({ ...message, retypePassword: false }));
+        if (password !== retypePassword && message.password) {
+            setMessage(message => ({ ...message, retypePassword: false }));
         }
         else {
-            setMessage(message=>({...message, retypePassword: true }));
+            setMessage(message => ({ ...message, retypePassword: true }));
         }
     }
 
     return (
         <div className="d-flex ">
-            <div className="col-md-4" style={{ height: "100vh" }}>
+            <div className="col-md-5" style={{ height: "100vh" }}>
+            <img className="position-fixed" src={"https://res.cloudinary.com/utejobhub/image/upload/v1724932543/demo/j5e70j4xexkxqmirgum2.jpg"}/>
             </div>
-            <div className="col-md-8 col-12 " style={{ padding: " 5rem 0 5rem 0" }}>
+            <div className="col-md-7 col-12 " style={{ padding: " 5rem 0 5rem 0" }}>
                 <div className="d-block mx-auto p-5 shadow" style={{ width: "70%", backgroundColor: "white" }}>
                     <div className="title d-block">
                         <span className="d-block text-center mb-4" style={{ height: "auto", fontSize: "2rem", fontFamily: "Segoe UI", color: "#555555" }}>Đăng Ký Tài Khoản</span>

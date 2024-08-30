@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import './ModalFormLogin.scss';
-import { sendRequest } from '../../services/apiService';
+import { postStudentLogin } from '../../services/apiService';
 import { PiEye, PiEyeClosed  } from "react-icons/pi";
 
 const ModalFormLogin = (props) => {
@@ -35,11 +35,9 @@ const ModalFormLogin = (props) => {
     }
     const handleLogin = async() => {
         //Validate dữ liệu
-        
-
 
         //Call API
-        let res = await sendRequest(email, password);
+        let res = await postStudentLogin(email, password);
         console.log(res.data);
         // clear states
         handleClose();
