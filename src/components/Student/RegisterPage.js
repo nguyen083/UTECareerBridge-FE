@@ -15,25 +15,37 @@ const RegisterPage = () => {
     const [check, setCheck] = useState(false);
     const [message, setMessage] = useState(
         {
-            // firstName: "",
-            // lastName: "",
-            phoneNumber: true,
-            email: true,
-            password: true,
-            retypePassword: true,
+            firstName: "",
+            lastName: "",
+            phoneNumber: "",
+            email: "",
+            password: "",
+            retypePassword: "",
             messagePassword: "",
         }); // thông báo lỗi
 
     const validate = async () => {
+        validFistName();
+        validLastName();
         validPhoneNumber();
         validEmail();
         validatePassword();
         validateRetypePassword();
-
+    }
+    const validFistName = () => {
+        if (firstName === '')
+            setMessage(message => ({ ...message, firstName: "Vui lòng nhập tên" }));
+        else
+            setMessage(message => ({ ...message, firstName: "" }));
+    }
+    const validLastName = () => {
+        if (lastName === '')
+            setMessage(message => ({ ...message, lastName: "Vui lòng nhập họ" }));
+        else
+            setMessage(message => ({ ...message, lastName: "" }));
     }
     const handleSubmit = async () => {
         // Call API
-        console.log("call handleSubmit");
         let data = await postStudentRegister(firstName, lastName, phoneNumber, email, password, retypePassword);
         if (data.status === "CREATED") {
             toast.success(data.message);
@@ -43,64 +55,76 @@ const RegisterPage = () => {
     }
 
     useEffect(() => {
-        console.log(message);
-        if(message.phoneNumber && message.email && message.password && message.retypePassword && firstName!=='' && lastName!=='' && phoneNumber!=='' && email!=='' && password=== retypePassword){
-            handleSubmit();      
+        if (!message.phoneNumber && !message.email && !message.password && !message.retypePassword && firstName && lastName && phoneNumber && email && password === retypePassword) {
+            handleSubmit();
         }
     }, [message]);
 
     const validPhoneNumber = async () => {
-        let data = await checkPhoneNumber();
-        setPhoneNumber(data.phone);
-        setMessage(message => ({ ...message, phoneNumber: data.phoneNumber }));
-    }
-    const checkPhoneNumber = async () => {
         let updatePhoneNumber = phoneNumber;
         updatePhoneNumber.startsWith('84') && (updatePhoneNumber = updatePhoneNumber.replace(/^84/, ''));
+        if(updatePhoneNumber.length === 0)
+        {
+            setMessage(message => ({ ...message, phoneNumber: "Vui lòng nhập số điện thoại" }));
+            return;
+        }
         !updatePhoneNumber.startsWith('0') && (updatePhoneNumber = '0' + updatePhoneNumber);
+        setPhoneNumber(updatePhoneNumber);       
         if (updatePhoneNumber.length !== 10) {
-            return { phone: updatePhoneNumber, phoneNumber: false }
+            setMessage(message => ({ ...message, phoneNumber: "Số điện thoại không hợp lệ" }));
         }
         else {
-            return { phone: updatePhoneNumber, phoneNumber: true }
+            setMessage(message => ({ ...message, phoneNumber: "" }));
         }
     }
+    
     const validEmail = () => {
+        if (email === '') {
+            setMessage(message => ({ ...message, email: "Vui lòng nhập email" }));
+            return;
+        }
         const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (!emailPattern.test(email)) {
-            setMessage(message => ({ ...message, email: false }));
+            setMessage(message => ({ ...message, email: "Email không hợp lệ" }));
             return;
         }
         else {
-            setMessage(message => ({ ...message, email: true }));
+            setMessage(message => ({ ...message, email: "" }));
             return;
         }
     }
 
     const validatePassword = () => {
-        if (password.length < 8) {
-            setMessage(message => ({ ...message, messagePassword: "Mật khẩu phải chứa ít nhất 8 ký tự", password: false }));
+        if (password === "") {
+            setMessage(message => ({ ...message, password: "Vui lòng nhập mật khẩu" }));
+        }
+        else if (password.length < 8) {
+            setMessage(message => ({ ...message, password: "Mật khẩu phải chứa ít nhất 8 ký tự" }));
         }
 
         else if (!/[A-Z]/.test(password)) {
-            setMessage(message => ({ ...message, messagePassword: "Mật khẩu phải chứa ít nhất 1 chữ in hoa.", password: false }));
+            setMessage(message => ({ ...message, password: "Mật khẩu phải chứa ít nhất 1 chữ in hoa." }));
         }
 
         else if (!/\d/.test(password)) {
-            setMessage(message => ({ ...message, messagePassword: "Mật khẩu phải chứa ít nhất 1 chữ số.", password: false }));
+            setMessage(message => ({ ...message, password: "Mật khẩu phải chứa ít nhất 1 chữ số." }));
         }
 
         else if (!/[!@#$%^&*()_+{}\[\]:;"'<>,.?/\\|`~]/.test(password)) {
-            setMessage(message => ({ ...message, messagePassword: "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt.", password: false }));
+            setMessage(message => ({ ...message, password: "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt."}));
         }
-        else setMessage(message => ({ ...message, messagePassword: "", password: true }));
+        else setMessage(message => ({ ...message, password: "" }));
     }
     const validateRetypePassword = () => {
+        if (retypePassword === "") {
+            setMessage(message => ({ ...message, retypePassword: "Vui lòng xác nhận lại mật khẩu" }));
+            return;
+        }
         if (password !== retypePassword && message.password) {
-            setMessage(message => ({ ...message, retypePassword: false }));
+            setMessage(message => ({ ...message, retypePassword: "Mật khẩu không khớp" }));
         }
         else {
-            setMessage(message => ({ ...message, retypePassword: true }));
+            setMessage(message => ({ ...message, retypePassword: "" }));
         }
     }
 
@@ -116,41 +140,47 @@ const RegisterPage = () => {
                     </div>
                     <div className="form-group row g-3">
                         <div className=" col-md-6">
-                            <label htmlFor="firstName" className="form-label" >Tên</label>
-                            <input type="text" className="form-control" id="firstName" value={firstName} onChange={(event) => setFirstName(event.target.value)} />
+                            <label htmlFor="firstName" className="form-label" >Tên <span style={{ color: "red" }}>*</span></label>
+                            <input type="text" className={`form-control ${message.firstName !== "" && 'is-invalid'}`} id="firstName" value={firstName} onChange={(event) => setFirstName(event.target.value)} aria-describedby="validationFistNameFeedback" />
+                            <div id="validationFistNameFeedback" className="invalid-feedback">
+                                {message.firstName}
+                            </div>
                         </div>
                         <div className="col-md-6">
-                            <label htmlFor="lastName" className="form-label" >Họ</label>
-                            <input className="form-control" id="lastName" value={lastName} onChange={(event) => setLastName(event.target.value)} />
+                            <label htmlFor="lastName" className="form-label" >Họ <span style={{ color: "red" }}>*</span></label>
+                            <input className={`form-control ${message.lastName !== "" && "is-invalid"}`} id="lastName" value={lastName} onChange={(event) => setLastName(event.target.value)} aria-describedby="validationLastNameFeedback" />
+                            <div id="validationLastNameFeedback" className="invalid-feedback">
+                                {message.lastName}
+                            </div>
                         </div>
                         <div className="col-md-12">
-                            <label htmlFor="phoneNumber" className="form-label" >Số điện thoại</label>
-                            <input className={` ${!message.phoneNumber && 'is-invalid'}`} hidden aria-describedby="validationPhoneNumberFeedback" />
+                            <label htmlFor="phoneNumber" className="form-label" >Số điện thoại <span style={{ color: "red" }}>*</span></label>
+                            <input className={` ${message.phoneNumber !== "" && 'is-invalid'}`} hidden aria-describedby="validationPhoneNumberFeedback" />
                             <PhoneInputGfg id="phoneNumber" phone={phoneNumber} setPhone={setPhoneNumber} />
 
                             <div id="validationPhoneNumberFeedback" className="invalid-feedback">
-                                Số điện thoại không hợp lệ
+                                {message.phoneNumber}
                             </div>
                         </div>
                         <div className="col-md-12">
-                            <label htmlFor="email" className="form-label" >Email</label>
-                            <input className={`form-control ${!message.email && 'is-invalid'}`} type="email" id="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Nhập email để xác thực" aria-describedby="validationEmailFeedback" />
+                            <label htmlFor="email" className="form-label" >Email <span style={{ color: "red" }}>*</span></label>
+                            <input className={`form-control ${message.email !== "" && 'is-invalid'}`} type="email" id="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Nhập email để xác thực" aria-describedby="validationEmailFeedback" />
                             <div id="validationEmailFeedback" className="invalid-feedback">
-                                Email không hợp lệ
+                                {message.email}
                             </div>
                         </div>
                         <div className="col-md-12">
-                            <label htmlFor="password" className="form-label" >Mật khẩu</label>
-                            <input className={`form-control ${!message.password && 'is-invalid'}`} type="password" id="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Nhập mật khẩu" aria-describedby="validationPasswordFeedback" />
+                            <label htmlFor="password" className="form-label" >Mật khẩu <span style={{ color: "red" }}>*</span></label>
+                            <input className={`form-control ${message.password !== "" && 'is-invalid'}`} type="password" id="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Nhập mật khẩu" aria-describedby="validationPasswordFeedback" />
                             <div id="validationPasswordFeedback" className="invalid-feedback">
-                                {message.messagePassword}
+                                {message.password}
                             </div>
                         </div>
                         <div className="col-md-12">
-                            <label htmlFor="retypePassword" className="form-label" >Xác nhận mật khẩu</label>
-                            <input className={`form-control ${!message.retypePassword && 'is-invalid'}`} type="password" id="retypePassword" value={retypePassword} onChange={(event) => setRetypePassword(event.target.value)} placeholder="Nhập lại mật khẩu" aria-describedby="validationRetypePasswordFeedback" />
+                            <label htmlFor="retypePassword" className="form-label" >Xác nhận mật khẩu <span style={{ color: "red" }}>*</span></label>
+                            <input className={`form-control ${message.retypePassword !== "" && 'is-invalid'}`} type="password" id="retypePassword" value={retypePassword} onChange={(event) => setRetypePassword(event.target.value)} placeholder="Nhập lại mật khẩu" aria-describedby="validationRetypePasswordFeedback" />
                             <div id="validationRetypePasswordFeedback" className="invalid-feedback">
-                                Mật khẩu xác nhận không khớp
+                                {message.retypePassword}
                             </div>
                         </div>
                         <div className="col-md-12 mb-5">
