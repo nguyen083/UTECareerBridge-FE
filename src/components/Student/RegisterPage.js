@@ -118,9 +118,8 @@ const RegisterPage = () => {
     const validateRetypePassword = () => {
         if (retypePassword === "") {
             setMessage(message => ({ ...message, retypePassword: "Vui lòng xác nhận lại mật khẩu" }));
-            return;
         }
-        if (password !== retypePassword && message.password) {
+        else if (password !== retypePassword) {
             setMessage(message => ({ ...message, retypePassword: "Mật khẩu không khớp" }));
         }
         else {
@@ -178,7 +177,7 @@ const RegisterPage = () => {
                         </div>
                         <div className="col-md-12">
                             <label htmlFor="retypePassword" className="form-label" >Xác nhận mật khẩu <span style={{ color: "red" }}>*</span></label>
-                            <input className={`form-control ${message.retypePassword !== "" && 'is-invalid'}`} type="password" id="retypePassword" value={retypePassword} onChange={(event) => setRetypePassword(event.target.value)} placeholder="Nhập lại mật khẩu" aria-describedby="validationRetypePasswordFeedback" />
+                            <input className={`form-control ${message.retypePassword !== "" && "is-invalid"}`} type="password" id="retypePassword" value={retypePassword} onChange={(event) => setRetypePassword(event.target.value)} placeholder="Nhập lại mật khẩu" aria-describedby="validationRetypePasswordFeedback" />
                             <div id="validationRetypePasswordFeedback" className="invalid-feedback">
                                 {message.retypePassword}
                             </div>
