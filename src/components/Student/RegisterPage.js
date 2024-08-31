@@ -23,6 +23,7 @@ const RegisterPage = () => {
             retypePassword: true,
             messagePassword: "",
         }); // thông báo lỗi
+
     const validate = async () => {
         validPhoneNumber();
         validEmail();
@@ -32,6 +33,7 @@ const RegisterPage = () => {
     }
     const handleSubmit = async () => {
         // Call API
+        console.log("call handleSubmit");
         let data = await postStudentRegister(firstName, lastName, phoneNumber, email, password, retypePassword);
         if (data.status === "CREATED") {
             toast.success(data.message);
@@ -42,7 +44,9 @@ const RegisterPage = () => {
 
     useEffect(() => {
         console.log(message);
-        //handleSubmit();
+        if(message.phoneNumber && message.email && message.password && message.retypePassword && firstName!=='' && lastName!=='' && phoneNumber!=='' && email!=='' && password=== retypePassword){
+            handleSubmit();      
+        }
     }, [message]);
 
     const validPhoneNumber = async () => {
@@ -103,7 +107,7 @@ const RegisterPage = () => {
     return (
         <div className="d-flex ">
             <div className="col-md-5" style={{ height: "100vh" }}>
-            <img className="position-fixed" src={"https://res.cloudinary.com/utejobhub/image/upload/v1724932543/demo/j5e70j4xexkxqmirgum2.jpg"}/>
+                <img className="position-fixed" src={"https://res.cloudinary.com/utejobhub/image/upload/v1724932543/demo/j5e70j4xexkxqmirgum2.jpg"} />
             </div>
             <div className="col-md-7 col-12 " style={{ padding: " 5rem 0 5rem 0" }}>
                 <div className="d-block mx-auto p-5 shadow" style={{ width: "70%", backgroundColor: "white" }}>
