@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./RegisterPage.scss";
 import PhoneInputGfg from "../Generate/PhoneInputGfg";
-import { postStudentRegister } from "../../services/apiService";
+import { studentRegister } from "../../services/apiService";
 import { toast } from "react-toastify";
 
 const RegisterPage = () => {
@@ -46,7 +46,7 @@ const RegisterPage = () => {
     }
     const handleSubmit = async () => {
         // Call API
-        let data = await postStudentRegister(firstName, lastName, phoneNumber, email, password, retypePassword);
+        let data = await studentRegister(firstName, lastName, phoneNumber, email, password, retypePassword);
         if (data.status === "CREATED") {
             toast.success(data.message);
         } else {
@@ -128,11 +128,10 @@ const RegisterPage = () => {
     }
 
     return (
-        <div className="d-flex ">
-            <div className="col-md-5" style={{ height: "100vh" }}>
-                <img className="position-fixed" src={"https://res.cloudinary.com/utejobhub/image/upload/v1724932543/demo/j5e70j4xexkxqmirgum2.jpg"} />
+        <div className="d-flex">
+            <div className="image col-lg-5 d-none d-lg-block">
             </div>
-            <div className="col-md-7 col-12 " style={{ padding: " 5rem 0 5rem 0" }}>
+            <div className="col-lg-7 col-12 " style={{ padding: " 5rem 0 5rem 0" }}>
                 <div className="d-block mx-auto p-5 shadow" style={{ width: "70%", backgroundColor: "white" }}>
                     <div className="title d-block">
                         <span className="d-block text-center mb-4" style={{ height: "auto", fontSize: "2rem", fontFamily: "Segoe UI", color: "#555555" }}>Đăng Ký Tài Khoản</span>
@@ -195,7 +194,7 @@ const RegisterPage = () => {
                             <button className={`btn btn-primary col-12 ${!check && 'disabled'}`} onClick={() => validate()}>Đăng ký</button>
                         </div>
                     </div>
-                    <div className="text-center mt-3 mb-3"><p className="fst-italic text-decoration-underline">or</p></div>
+                    <div className="text-center mt-3 mb-3"><p className="fst-italic text-decoration-underline">Hoặc</p></div>
                     <div className="google-btn">
                         <a href="/#" className="sc-faUjhM vsUcT Header_LoginGG">
                             <svg fill="currentColor" stroke="unset" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20">

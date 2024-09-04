@@ -1,7 +1,13 @@
-.form-group {
-
+.image{
+    background-image: url(https://res.cloudinary.com/utejobhub/image/upload/v1724932543/demo/j5e70j4xexkxqmirgum2.jpg);
+    background-position: 0 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100vh;
+    overflow: hidden;
+    position: sticky;
+    top: 0;
 }
-
 .google-btn {
     display        : flex;
     text-align     : center;

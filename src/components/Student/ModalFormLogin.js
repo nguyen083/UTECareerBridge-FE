@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import './ModalFormLogin.scss';
-import { postStudentLogin } from '../../services/apiService';
+import { studentLogin } from '../../services/apiService';
 import { PiEye, PiEyeClosed  } from "react-icons/pi";
 
 const ModalFormLogin = (props) => {
@@ -37,7 +37,7 @@ const ModalFormLogin = (props) => {
         //Validate dữ liệu
 
         //Call API
-        let res = await postStudentLogin(email, password);
+        let res = await studentLogin(email, password);
         console.log(res.data);
         // clear states
         handleClose();
