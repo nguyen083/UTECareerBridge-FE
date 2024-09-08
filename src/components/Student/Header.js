@@ -87,7 +87,7 @@ const Header = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <a href="https://employer.vietnamworks.com/?lang=1&amp;utm_source_navi=header&amp;utm_medium_navi=jsployersite" target="_blank" className="sc-gkPMqy etFDyw">
+                                            <a href="/login" className="sc-gkPMqy etFDyw">
                                                 <span>Nhà tuyển dụng</span>
                                             </a>
                                         </div>

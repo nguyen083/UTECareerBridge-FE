@@ -10,7 +10,7 @@ const App = () => {
       <div className="App">
         <Outlet/>
       </div>
-      <Navigation/>
+      {/* <Navigation/> */}
       <ToastContainer
                 position="top-right"
                 autoClose={3000}

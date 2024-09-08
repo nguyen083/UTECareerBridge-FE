@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import "./RegisterPage.scss";
 import PhoneInputGfg from "../Generate/PhoneInputGfg";
 import { studentRegister } from "../../services/apiService";
+import Form from 'react-bootstrap/Form';
+import { DatePicker } from 'antd';
 import { toast } from "react-toastify";
 
 const RegisterPage = () => {
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
+    const [gender, setGender] = useState('0');
+    const [dob, setDob] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -24,6 +28,13 @@ const RegisterPage = () => {
             messagePassword: "",
         }); // thông báo lỗi
 
+    const onChange = (date, dateString) => {
+        setDob(dateString);
+        //console.log(date, dateString);
+    };
+    const handleGenderChange = (event) => {
+        setGender(event.target.id);
+    };
     const validate = async () => {
         validFistName();
         validLastName();
@@ -46,7 +57,7 @@ const RegisterPage = () => {
     }
     const handleSubmit = async () => {
         // Call API
-        let data = await studentRegister(firstName, lastName, phoneNumber, email, password, retypePassword);
+        let data = await studentRegister(firstName, lastName, gender, dob, phoneNumber, email, password, retypePassword);
         if (data.status === "CREATED") {
             toast.success(data.message);
         } else {
@@ -63,13 +74,12 @@ const RegisterPage = () => {
     const validPhoneNumber = async () => {
         let updatePhoneNumber = phoneNumber;
         updatePhoneNumber.startsWith('84') && (updatePhoneNumber = updatePhoneNumber.replace(/^84/, ''));
-        if(updatePhoneNumber.length === 0)
-        {
+        if (updatePhoneNumber.length === 0) {
             setMessage(message => ({ ...message, phoneNumber: "Vui lòng nhập số điện thoại" }));
             return;
         }
         !updatePhoneNumber.startsWith('0') && (updatePhoneNumber = '0' + updatePhoneNumber);
-        setPhoneNumber(updatePhoneNumber);       
+        setPhoneNumber(updatePhoneNumber);
         if (updatePhoneNumber.length !== 10) {
             setMessage(message => ({ ...message, phoneNumber: "Số điện thoại không hợp lệ" }));
         }
@@ -77,7 +87,7 @@ const RegisterPage = () => {
             setMessage(message => ({ ...message, phoneNumber: "" }));
         }
     }
-    
+
     const validEmail = () => {
         if (email === '') {
             setMessage(message => ({ ...message, email: "Vui lòng nhập email" }));
@@ -111,7 +121,7 @@ const RegisterPage = () => {
         }
 
         else if (!/[!@#$%^&*()_+{}\[\]:;"'<>,.?/\\|`~]/.test(password)) {
-            setMessage(message => ({ ...message, password: "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt."}));
+            setMessage(message => ({ ...message, password: "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt." }));
         }
         else setMessage(message => ({ ...message, password: "" }));
     }
@@ -150,6 +160,22 @@ const RegisterPage = () => {
                             <div id="validationLastNameFeedback" className="invalid-feedback">
                                 {message.lastName}
                             </div>
+                        </div>
+                        <div className="col-6 d-flex">
+                            <label htmlFor="gender" className="form-label">
+                                Giới tính <span style={{ color: "red" }}>*</span>
+                            </label>
+                            <div className='row ps-3'>
+                                <Form.Check defaultChecked label="Nam" name="group1" type="radio" id="0" onChange={handleGenderChange} />
+                                <Form.Check label="Nữ" name="group1" type="radio" id="1" onChange={handleGenderChange} />
+                            </div>
+                        </div>
+
+                        <div className="col-6 ">
+                            <label htmlFor="dob" className="form-label">
+                                Ngày sinh <span style={{ color: "red" }}>*</span>
+                            </label>
+                            <DatePicker className='form-control' onChange={onChange} />
                         </div>
                         <div className="col-md-12">
                             <label htmlFor="phoneNumber" className="form-label" >Số điện thoại <span style={{ color: "red" }}>*</span></label>
