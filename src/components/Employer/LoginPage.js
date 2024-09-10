@@ -1,5 +1,5 @@
 import './LoginPage.scss';
-import {  useState } from 'react';
+import { useState } from 'react';
 import { PiEye, PiEyeClosed } from "react-icons/pi";
 import { toast } from 'react-toastify';
 
@@ -66,8 +66,8 @@ const LoginPage = () => {
 
                     </div>
                     <div className='d-flex justify-content-between mb-4'>
-                        <span>Bạn chưa đăng ký? <a href='/employerregister' target='_blank'>Đăng ký ngay</a></span>
-                        <a href='/home' target='_blank'>Quên mật khẩu?</a>
+                        <span>Bạn chưa đăng ký? <a href='/employer/register'>Đăng ký ngay</a></span>
+                        <a href='/employer/forgotPassword' target='_blank'>Quên mật khẩu?</a>
                     </div>
                     <div className='d-flex justify-content-end'>
                         <button className="btn btn-primary text-end px-3" onClick={() => handleSubmit()}>Đăng nhập</button>

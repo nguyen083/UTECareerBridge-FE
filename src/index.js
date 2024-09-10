@@ -9,12 +9,14 @@ import './components/Student/HomePage.js';
 import HomePage from './components/Student/HomePage.js';
 import Test from './components/Student/Test.js';
 import JobPage from './components/Student/JobPage.js';
-import EmployerPage from './components/Student/EmployerPage.js';
+import EmployerPage from './components/Employer/EmployerPage.js';
 import FavoritePage from './components/Student/FavoritePage.js';
 import AccountPage from './components/Student/AccountPage.js';
 import RegisterPage from './components/Student/RegisterPage.js';
 import LoginPage from './components/Employer/LoginPage.js';
 import EmployerRegister from './components/Employer/EmployerRegister.js';
+import ForgotPassword from './components/Employer/ForgotPassword.js';
+import ChangePassword from './components/Employer/ChangePassword.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -26,12 +28,18 @@ root.render(
           <Route index element={<Test />} />
         </Route>
         <Route path='job' element={<JobPage />} />
-        <Route path='employer' element={<EmployerPage />} />
+
+        <Route path='employer' element={<EmployerPage />}>
+          <Route path='register' element={<EmployerRegister />} />
+          <Route path='forgot-password' element={<ForgotPassword />} />
+          <Route path='change-password' element={<ChangePassword />} />
+        </Route>
+
         <Route path='login' element={<LoginPage />} />
         <Route path='favorite' element={<FavoritePage />} />
         <Route path='account' element={<AccountPage />} />
         <Route path='register' element={<RegisterPage />} />
-        <Route path='employerregister' element={<EmployerRegister />} />
+
       </Route>
     </Routes>
   </BrowserRouter>

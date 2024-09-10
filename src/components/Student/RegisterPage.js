@@ -30,7 +30,6 @@ const RegisterPage = () => {
 
     const onChange = (date, dateString) => {
         setDob(dateString);
-        //console.log(date, dateString);
     };
     const handleGenderChange = (event) => {
         setGender(event.target.id);
@@ -175,7 +174,7 @@ const RegisterPage = () => {
                             <label htmlFor="dob" className="form-label">
                                 Ngày sinh <span style={{ color: "red" }}>*</span>
                             </label>
-                            <DatePicker className='form-control' onChange={onChange} />
+                            <DatePicker className='form-control' onChange={onChange} format="DD/MM/YYYY" />
                         </div>
                         <div className="col-md-12">
                             <label htmlFor="phoneNumber" className="form-label" >Số điện thoại <span style={{ color: "red" }}>*</span></label>
@@ -220,7 +219,7 @@ const RegisterPage = () => {
                             <button className={`btn btn-primary col-12 ${!check && 'disabled'}`} onClick={() => validate()}>Đăng ký</button>
                         </div>
                     </div>
-                    <div className="text-center mt-3 mb-3"><p className="fst-italic text-decoration-underline">Hoặc</p></div>
+                    <div className="text-center mt-3 mb-3"><p className="fst-italic text-decoration-underline">hoặc</p></div>
                     <div className="google-btn">
                         <a href="/#" className="sc-faUjhM vsUcT Header_LoginGG">
                             <svg fill="currentColor" stroke="unset" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20">

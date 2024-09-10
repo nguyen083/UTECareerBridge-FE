@@ -3,7 +3,8 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import './ModalFormLogin.scss';
 import { studentLogin } from '../../services/apiService';
-import { PiEye, PiEyeClosed  } from "react-icons/pi";
+import { PiEye, PiEyeClosed } from "react-icons/pi";
+import { toast } from 'react-toastify';
 
 const ModalFormLogin = (props) => {
     const { show, setShow } = props;
@@ -19,26 +20,33 @@ const ModalFormLogin = (props) => {
     }
 
     const handleShowPassword = () => {
-        if(isShowPassword === false){
+        if (isShowPassword === false) {
             // hiện mật khẩu
             document.getElementById('inputPassword').type = 'text';
-            console.log('ẩn mật khẩu' + isShowPassword);            
+            console.log('ẩn mật khẩu' + isShowPassword);
             setIsShowPassword(true);
         }
-        else
-        {
+        else {
             // ẩn mật khẩu
             document.getElementById('inputPassword').type = 'password';
             console.log('hiện mật khẩu' + isShowPassword);
             setIsShowPassword(false);
         }
     }
-    const handleLogin = async() => {
+    const handleLogin = async () => {
         //Validate dữ liệu
-        
+
         //Call API
         let res = await studentLogin(email, password);
-        console.log(res.data);
+        if (res.status === 'OK') {
+            toast.success(res.message);
+            localStorage.setItem('accessToken', res.data.token);
+            document.cookie = res.data.refresh_token;
+        }else
+        {
+            toast.error(res.message);
+        }
+
         // clear states
         handleClose();
     };
@@ -50,20 +58,20 @@ const ModalFormLogin = (props) => {
                 </Modal.Header>
                 <Modal.Body>
                     <div className="modal-login">
-       
+
                         <p className="dBJbip">Đăng nhập bằng email</p>
                         <div>
                             <label htmlFor="Email" className="col-form-label" >Email/ Số điện thoại <span style={{ color: 'red' }}>*</span></label>
                             <div>
-                                <input type="text" className="form-control" id="Email" required value={email}  onChange={(event) => setEmail(event.target.value)}/>
+                                <input type="text" className="form-control" id="Email" required value={email} onChange={(event) => setEmail(event.target.value)} />
                             </div>
                         </div>
                         <div className='mb-3'>
                             <label htmlFor="inputPassword" className="col-form-label" >Mật khẩu <span style={{ color: 'red' }}>*</span></label>
                             <div className='position-relative'>
-                                <input type="password" className="form-control" id="inputPassword" required value={password} onChange={(event) => setPassword(event.target.value)}/>
+                                <input type="password" className="form-control" id="inputPassword" required value={password} onChange={(event) => setPassword(event.target.value)} />
                                 <div className="position-absolute top-50 end-0 translate-middle-y me-2">
-                                     {isShowPassword?<PiEye style={{width: "1.5rem", height: "1.5rem", viewBox: "0 0 1.5rem 1.5rem"}}  onClick={()=> handleShowPassword()}/>:<PiEyeClosed style={{width: "1.5rem", height: "1.5rem", viewBox: "0 0 1.5rem 1.5rem"}}  onClick={()=> handleShowPassword()}/>}
+                                    {isShowPassword ? <PiEye style={{ width: "1.5rem", height: "1.5rem", viewBox: "0 0 1.5rem 1.5rem" }} onClick={() => handleShowPassword()} /> : <PiEyeClosed style={{ width: "1.5rem", height: "1.5rem", viewBox: "0 0 1.5rem 1.5rem" }} onClick={() => handleShowPassword()} />}
                                 </div>
                             </div>
                         </div>
@@ -76,7 +84,7 @@ const ModalFormLogin = (props) => {
                     <Button variant="secondary" onClick={() => handleClose()}>
                         Hủy
                     </Button>
-                    <Button variant="primary" onClick={()=> handleLogin()}>
+                    <Button variant="primary" onClick={() => handleLogin()}>
                         Đăng nhập
                     </Button>
                 </Modal.Footer>

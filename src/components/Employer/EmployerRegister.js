@@ -1,12 +1,27 @@
-import React, { useState } from 'react';
-import { Button, Steps, theme } from 'antd';
-import InputGroup from 'react-bootstrap/InputGroup';
-import Form from 'react-bootstrap/Form';
+import React from 'react';
+import { useEffect, useState } from 'react';
+import { Button, Form, Input, Space, DatePicker, Steps, Radio } from 'antd';
 import './EmployerRegister.scss';
-import { PiEye, PiEyeClosed } from "react-icons/pi";
-import { DatePicker } from 'antd';
 
+const SubmitButton = ({ form, children, onClick }) => {
+  const [submittable, setSubmittable] = useState(false);
+  // Watch all values
+  const values = Form.useWatch([], form);
+  useEffect(() => {
+    form
+      .validateFields({
+        validateOnly: true,
+      })
+      .then(() => setSubmittable(true))
+      .catch(() => setSubmittable(false));
+  }, [form, values]);
 
+  return (
+    <Button className='p-3' type="primary" htmlType='submit' disabled={!submittable} onClick={onClick}>
+      {children}
+    </Button>
+  );
+};
 const steps = [
   {
     title: 'Liên lạc',
@@ -15,33 +30,22 @@ const steps = [
   {
     title: 'Công ty',
     content: '2',
-  },
-  {
-    title: 'Tuyển dụng',
-    content: '3',
-  },
+  }
 ];
 const EmployerRegister = () => {
-
-  const [isShowPassword, setIsShowPassword] = useState(false);
-  const [isShowRetypePassword, setIsShowRetypePassword] = useState(false);
-
-  const handleShowPassword = () => {
-    document.getElementById('password').type = isShowPassword ? 'password' : 'text';
-    setIsShowPassword(!isShowPassword);
-}
-const handleShowRetypePassword = () => {
-  document.getElementById('retypePassword').type = isShowRetypePassword ? 'password' : 'text';
-  setIsShowRetypePassword(!isShowRetypePassword);
-}
+  const [form1] = Form.useForm();
+  const [form2] = Form.useForm();
+  const gender = 0; // giới tính mặc định
+  const [DoB, setDoB] = useState('');
+  const [current, setCurrent] = useState(0);
+  const [form, setForm] = useState({});
 
   const onChange = (date, dateString) => {
-    console.log(date, dateString);
+    setDoB(dateString);
   };
-  // const { token } = theme.useToken();
-  const [current, setCurrent] = useState(0);
   const next = () => {
     setCurrent(current + 1);
+    setForm({ ...form, ...form2.getFieldsValue() , dob: DoB});
   };
   const prev = () => {
     setCurrent(current - 1);
@@ -50,153 +54,204 @@ const handleShowRetypePassword = () => {
     key: item.title,
     title: item.title,
   }));
+
+  const onFinish = (values) => {
+    console.log({ ...values, ...form });
+
+  };
   return (
-    <div className='d-flex'>
-      <div className='col-lg-4 sticky-top' style={{ height: "100vh", backgroundColor: "#ADADAD" }}>
+      <>
+        <div className=' form-register'>
+          <span className='title'>Đăng ký</span>
+          <Steps className='p-4' current={current} items={items} />
+          <Form form={form1} onFinish={onFinish}  name="validateOnlyform1" requiredMark={false} layout="vertical" autoComplete="off" initialValues={{ company_website: "" }}>
+            {steps[current].content === '1' && <div className='col-12 mt-3'>
 
-      </div>
-      <div className='col-lg-8 form-register'>
-        <span className='title'>Đăng ký</span>
-        <Steps className='p-4' current={current} items={items} />
+              <Form form={form2} name="validateOnlyform2" requiredMark={false} layout="vertical" autoComplete="off"
+                initialValues={{ gender: 0, dob: DoB }}
+              >
+                <div className="form-group row g-3">
+                  <Form.Item name="fist_name" className="col-6 mt-0" label={<span>Tên <span style={{ color: "red" }}> *</span></span>}
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Vui lòng nhập tên của bạn',
+                      },
+                    ]} validateTrigger={['onBlur']}>
+                    <Input className="form-control" />
+                  </Form.Item>
 
-        {steps[current].content === '1' && <div className='col-12 mt-3'>
-          <div className="form-group row g-3">
 
-            <div className="col-6 ">
-              <label htmlFor="fistName" className="form-label">
-                Tên <span style={{ color: "red" }}>*</span>
-              </label>
-              <input type="text" className="form-control" id="fistName" />
-            </div>
+                  <Form.Item name="last_name" className="col-6 mt-0" label={<span>Họ <span style={{ color: "red" }}> *</span></span>}
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Vui lòng nhập họ của bạn',
+                      },
+                    ]} validateTrigger={['onBlur']}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                  <Form.Item name="gender" layout='horizontal' className="col-6 mt-0" label="Giới tính" >
+                    <Radio.Group value={gender}>
+                      <Space direction="vertical">
+                        <Radio value={0}>Nam</Radio>
+                        <Radio value={1}>Nữ</Radio>
+                      </Space>
+                    </Radio.Group>
+                  </Form.Item>
+                  <Form.Item name="dob" className="col-6 mt-0" label={<span>Ngày sinh <span style={{ color: "red" }}> *</span></span>} rules={[
+                    {
+                      required: true,
+                      message: 'Vui lòng nhập ngày sinh của bạn',
+                    },
+                  ]} validateTrigger={['onBlur']}>
+                    <DatePicker onChange={onChange} className='form-control' format={"DD/MM/YYYY"} />
+                  </Form.Item>
+                  <Form.Item name="phone_number" className="col-12 mt-0" label={<span>Số điện thoại <span style={{ color: "red" }}> *</span></span>}
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Vui lòng nhập số điện thoại của bạn',
+                      },
+                      {
+                        pattern: new RegExp(/(84|0[3|5|7|8|9])+([0-9]{8})\b/),
+                        message: 'Số điện thoại không hợp lệ'
+                      }
+                    ]}
+                    validateTrigger={['onBlur']}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                  <Form.Item name="email" className="col-12 mt-0" label={<span>Email <span style={{ color: "red" }}> *</span></span>}
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Vui lòng nhập email của bạn',
+                      },
+                      {
+                        type: 'email',
+                        message: 'Email không hợp lệ',
+                      }
+                    ]}
+                    validateTrigger={['onBlur']}>
+                    <Input className="form-control" />
+                  </Form.Item>
+                  <Form.Item name="password" className="col-12 mt-0" label={<span>Mật khẩu <span style={{ color: "red" }}> *</span></span>}
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Vui lòng nhập mật khẩu của bạn',
+                      },
+                      {
+                        min: 8,
+                        message: 'Mật khẩu phải có ít nhất 8 ký tự'
+                      },
+                      {
+                        pattern: new RegExp(/^(?=.*[A-Z])/),
+                        message: 'Mật khẩu phải chứa ít nhất 1 chữ cái viết hoa'
+                      },
+                      {
+                        pattern: new RegExp(/^(?=.*[0-9])/),
+                        message: 'Mật khẩu phải chứa ít nhất 1 chữ số'
+                      },
+                      {
+                        pattern: new RegExp(/^(?=.*[!@#$%^&*(),.?":{}|<>])/),
+                        message: 'Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt'
+                      }
+                    ]} validateFirst
+                    validateTrigger={['onBlur']}>
+                    <Input.Password className="form-control d-flex" />
+                  </Form.Item>
+                  <Form.Item name="retype_password" className="col-12 mt-0" label={<span>Xác nhận mật khẩu <span style={{ color: "red" }}> *</span></span>}
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Vui lòng xác nhận lại mật khẩu của bạn',
+                      },
+                      ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          if (!value || getFieldValue('password') === value) {
+                            return Promise.resolve();
+                          }
+                          return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
+                        },
+                      }),
+                    ]} validateTrigger={['onBlur']}>
+                    <Input.Password className="form-control d-flex" />
+                  </Form.Item>
+                </div>
+                <div className='d-flex justify-content-end mt-3'>
+                  {current < steps.length - 1 && (
+                    <Form.Item>
+                      <Space>
+                        <SubmitButton form={form2} onClick={next}>Tiếp tục</SubmitButton>
+                      </Space>
+                    </Form.Item>
+                  )}
+                </div>
+              </Form>
 
-            <div className="col-6 ">
-              <label htmlFor="lastName" className="form-label">
-                Họ <span style={{ color: "red" }}>*</span>
-              </label>
-              <input type="text" className="form-control" id="lastName" />
-            </div>
-
-            <div className="col-6 d-flex">
-              <label htmlFor="gender" className="form-label">
-                Giới tính <span style={{ color: "red" }}>*</span>
-              </label>
-              <div className='row ps-3'>
-                <Form.Check defaultChecked label="Nam" name="group1" type="radio" id="male" />
-                <Form.Check label="Nữ" name="group1" type="radio" id="female" />
+            </div>}
+            {steps[current].content === '2' && <div className='col-12 mt-3'>
+              <div className="form-group row g-3">
+                <Form.Item name="company_name" className="col-12 mt-0" label={<span>Tên công ty <span style={{ color: "red" }}> *</span></span>}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Vui lòng nhập tên công ty',
+                    },
+                  ]} validateTrigger={['onBlur']}>
+                  <Input className="form-control" />
+                </Form.Item>
+                <Form.Item name="company_email" className="col-12 mt-0" label={<span>Email công ty <span style={{ color: "red" }}> *</span></span>}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Vui lòng nhập email công ty',
+                    },
+                    {
+                      type: 'email',
+                      message: 'Email không hợp lệ',
+                    }
+                  ]} validateTrigger={['onBlur']}>
+                  <Input className="form-control" />
+                </Form.Item>
+                <Form.Item name="company_address" className="col-12 mt-0" label={<span>Địa chỉ công ty <span style={{ color: "red" }}> *</span></span>}
+                  rules={[
+                    {
+                      required: true,
+                      message: 'Vui lòng nhập địa chỉ công ty',
+                    },
+                  ]} validateTrigger={['onBlur']}>
+                  <Input className="form-control" />
+                </Form.Item>
+                <Form.Item name="company_website" className="col-12 mt-0" label="Website công ty">
+                  <Input className="form-control" />
+                </Form.Item>
               </div>
+            </div>}
+
+            <div className='d-flex justify-content-end mt-4'>
+              {current > 0 && (
+                <Button className='mx-2' onClick={() => prev()}>
+                  Quay lại
+                </Button>
+              )}
+
+              {current === steps.length - 1 && (
+                <Form.Item>
+                  <Space>
+                    <SubmitButton type="primary" form={form1} onClick={()=>{}} >Gửi</SubmitButton>
+                  </Space>
+                </Form.Item>
+              )}
             </div>
-
-            <div className="col-6 ">
-              <label htmlFor="dob" className="form-label">
-                Ngày sinh <span style={{ color: "red" }}>*</span>
-              </label>
-              <DatePicker className='form-control' onChange={onChange} format={"DD/MM/YYYY"} />
-            </div>
-
-            <div className="col-12 ">
-              <label htmlFor="phoneNumber" className="form-label">
-                Điện thoại <span style={{ color: "red" }}>*</span>
-              </label>
-              <input type="tel" className="form-control" id="phoneNumber" />
-            </div>
-
-            <div className="col-12 ">
-              <label htmlFor="email" className="form-label">
-                Địa chỉ email <span style={{ color: "red" }}>*</span>
-              </label>
-              <input type="email" className="form-control" id="email" />
-            </div>
-
-            <div className="col-12 ">
-              <label htmlFor="password" className="form-label">
-                Mật khẩu <span style={{ color: "red" }}>*</span>
-              </label>
-              <InputGroup >
-                <Form.Control type='password' id='password' />
-                <InputGroup.Text onClick={()=> handleShowPassword()}>{isShowPassword?<PiEye />:<PiEyeClosed/>}</InputGroup.Text>
-              </InputGroup>
-            </div>
-
-            <div className="col-12 ">
-              <label htmlFor="retypePassword" className="form-label">
-                Nhập lại mật khẩu <span style={{ color: "red" }}>*</span>
-              </label>
-              <InputGroup >
-                <Form.Control type='password' id='retypePassword' />
-                <InputGroup.Text onClick={()=> handleShowRetypePassword()}>{isShowRetypePassword?<PiEye />:<PiEyeClosed/>}</InputGroup.Text>
-              </InputGroup>
-            </div>
-          </div>
-        </div>}
-        {steps[current].content === '2' && <div className='col-12 mt-3'>
-          <div className="form-group row g-3">
-
-            <div className="col-12 ">
-              <label htmlFor="companyName" className="form-label">
-                Tên công ty <span style={{ color: "red" }}>*</span>
-              </label>
-              <input type="text" className="form-control" id="companyName" />
-            </div>
-
-            <div className="col-12 ">
-              <label htmlFor="companyAddress" className="form-label">
-                Địa chỉ công ty <span style={{ color: "red" }}>*</span>
-              </label>
-              <input type="text" className="form-control" id="companyAddress" />
-            </div>
-
-            <div className="col-12 ">
-              <label htmlFor="companyPhone" className="form-label">
-                Điện thoại công ty <span style={{ color: "red" }}>*</span>
-              </label>
-              <input type="tel" className="form-control" id="companyPhone" />
-            </div>
-
-            <div className="col-12 ">
-              <label htmlFor="companyEmail" className="form-label">
-                Email công ty <span style={{ color: "red" }}>*</span>
-              </label>
-              <input type="email" className="form-control" id="companyEmail" />
-            </div>
-
-            <div className="col-12 ">
-              <label htmlFor="companyWebsite" className="form-label">
-                Website công ty
-              </label>
-              <input type="text" className="form-control" id="companyWebsite" />
-            </div>
-          </div>
-        </div>}
-
-        <div className='d-flex justify-content-end'
-          style={{
-            marginTop: 24,
-          }}
-        >
-          {current > 0 && (
-            <Button
-              style={{
-                margin: '0 8px',
-              }}
-              onClick={() => prev()}
-            >
-              Quay lại
-            </Button>
-          )}
-          {current < steps.length - 1 && (
-            <Button type="primary" onClick={() => next()}>
-              Tiếp tục
-            </Button>
-          )}
-          {current === steps.length - 1 && (
-            <Button type="primary" onClick={() => { }}>
-              Gửi
-            </Button>
-          )}
-
+          </Form>
         </div>
-      </div>
-    </div>
+        <div className='position-sticky bottom-0 p-2' style={{ background: "#C3C3C3", fontSize: "0.875rem" }}>
+          <span>Bạn đã có tài khoản <a href='/login' className='text-decoration-none'>Quay lại đăng nhập</a></span>
+        </div>
+      </>
+
   );
 };
 export default EmployerRegister;
