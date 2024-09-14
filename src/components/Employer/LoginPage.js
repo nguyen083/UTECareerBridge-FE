@@ -67,7 +67,7 @@ const LoginPage = () => {
                     </div>
                     <div className='d-flex justify-content-between mb-4'>
                         <span>Bạn chưa đăng ký? <a href='/employer/register'>Đăng ký ngay</a></span>
-                        <a href='/employer/forgotPassword' target='_blank'>Quên mật khẩu?</a>
+                        <a href='/employer/forgot-password' target='_blank'>Quên mật khẩu?</a>
                     </div>
                     <div className='d-flex justify-content-end'>
                         <button className="btn btn-primary text-end px-3" onClick={() => handleSubmit()}>Đăng nhập</button>

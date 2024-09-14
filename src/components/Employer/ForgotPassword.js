@@ -46,7 +46,7 @@ const ForgotPassword = () => {
                 </Form.Item>
                 <Form.Item>
                     <div className="capcha">
-
+                        
                     </div>
                 </Form.Item>
                 <Form.Item className="d-flex justify-content-end">

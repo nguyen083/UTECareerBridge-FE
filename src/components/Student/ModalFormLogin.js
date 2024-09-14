@@ -41,7 +41,7 @@ const ModalFormLogin = (props) => {
         if (res.status === 'OK') {
             toast.success(res.message);
             localStorage.setItem('accessToken', res.data.token);
-            document.cookie = res.data.refresh_token;
+            document.cookie = `refreshToken=${res.data.refresh_token}`;
         }else
         {
             toast.error(res.message);
