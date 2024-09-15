@@ -37,6 +37,7 @@ const refreshToken = async () => {
             {},
             {
                 withCredentials: true,
+                timeout: 5000,
             }
         );
         return response.data;
@@ -66,23 +67,23 @@ instance.interceptors.response.use(
             originalRequest._retry = true;
 
 
-            try {
+            // try {
                 const newTokens = await refreshToken();
                 localStorage.setItem('accessToken', newTokens.accessToken);
                 originalRequest.headers['Authorization'] = `Bearer ${newTokens.accessToken}`;
                 //processQueue(null, newTokens.accessToken);
                 return instance(originalRequest);
-            } catch (refreshError) {
-                processQueue(refreshError, null);
-                // Handle authentication failure (e.g., redirect to login)
-                console.error('Failed to refresh token. User may need to re-authenticate.');
-                // You might want to redirect to login page or clear tokens here
-                localStorage.removeItem('accessToken');
-                // window.location = '/login'; // Uncomment if you want to redirect to login page
-                return Promise.reject(refreshError);
-            } finally {
-                isRefreshing = false;
-            }
+            // } catch (refreshError) {
+            //     processQueue(refreshError, null);
+            //     // Handle authentication failure (e.g., redirect to login)
+            //     console.error('Failed to refresh token. User may need to re-authenticate.');
+            //     // You might want to redirect to login page or clear tokens here
+            //     localStorage.removeItem('accessToken');
+            //     // window.location = '/login'; // Uncomment if you want to redirect to login page
+            //     return Promise.reject(refreshError);
+            // } finally {
+            //     isRefreshing = false;
+            // }
         }
 
         return error && error.response && error.response.data

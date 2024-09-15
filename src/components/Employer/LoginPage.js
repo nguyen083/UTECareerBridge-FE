@@ -2,6 +2,7 @@ import './LoginPage.scss';
 import { useState } from 'react';
 import { PiEye, PiEyeClosed } from "react-icons/pi";
 import { toast } from 'react-toastify';
+import { employerLogin } from '../../services/apiService';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
@@ -26,7 +27,7 @@ const LoginPage = () => {
             setIsShowPassword(false);
         }
     }
-    const handleSubmit = () => {
+    const handleSubmit = async() => {
         //Validate email
         if (email === '') {
             toast.error('Vui lòng nhập email');
@@ -43,7 +44,16 @@ const LoginPage = () => {
             toast.error('Vui lòng nhập mật khẩu');
             return;
         }
-        //Call API        
+        //Call API
+        const data = await employerLogin(email, password);        
+        if (data.status === 'OK') {
+            toast.success(data.data.message);
+            localStorage.setItem('accessToken', data.data.token);
+            window.location.href = '/get-infor';
+            document.cookie = `refreshToken=${data.data.refreshToken}`;
+        } else {
+            toast.error(data.data.message);
+        }
     }
     return (
         <div className="login-page d-flex">

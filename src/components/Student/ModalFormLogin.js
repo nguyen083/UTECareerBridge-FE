@@ -1,54 +1,29 @@
-import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
+import { Button, Checkbox, Form, Input } from 'antd';
 import Modal from 'react-bootstrap/Modal';
 import './ModalFormLogin.scss';
 import { studentLogin } from '../../services/apiService';
-import { PiEye, PiEyeClosed } from "react-icons/pi";
 import { toast } from 'react-toastify';
 
 const ModalFormLogin = (props) => {
     const { show, setShow } = props;
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [isShowPassword, setIsShowPassword] = useState(false);
 
-    const handleClose = () => {
-        setEmail("");
-        setPassword("");
-        setShow(false);
-        setIsShowPassword(false);
-    }
 
-    const handleShowPassword = () => {
-        if (isShowPassword === false) {
-            // hiện mật khẩu
-            document.getElementById('inputPassword').type = 'text';
-            console.log('ẩn mật khẩu' + isShowPassword);
-            setIsShowPassword(true);
-        }
-        else {
-            // ẩn mật khẩu
-            document.getElementById('inputPassword').type = 'password';
-            console.log('hiện mật khẩu' + isShowPassword);
-            setIsShowPassword(false);
-        }
-    }
+
     const handleLogin = async () => {
         //Validate dữ liệu
 
         //Call API
-        let res = await studentLogin(email, password);
-        if (res.status === 'OK') {
-            toast.success(res.message);
-            localStorage.setItem('accessToken', res.data.token);
-            document.cookie = `refreshToken=${res.data.refresh_token}`;
-        }else
-        {
-            toast.error(res.message);
-        }
+        // let res = await studentLogin(email, password);
+        // if (res.status === 'OK') {
+        //     toast.success(res.message);
+        //     localStorage.setItem('accessToken', res.data.token);
+        //     document.cookie = `refreshToken=${res.data.refresh_token}`;
+        // } else {
+        //     toast.error(res.message);
+        // }
 
-        // clear states
-        handleClose();
+        // // clear states
+        // handleClose();
     };
     return (
         <form>
@@ -56,16 +31,23 @@ const ModalFormLogin = (props) => {
                 <Modal.Header >
                     <Modal.Title style={{ fontSize: "18px", fontWeight: "600", color: "rgb(51, 51, 51)", lineHeight: "22px" }}>Đăng nhập</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    <div className="modal-login">
+                <Form
+                    onFinish={handleLogin}
+                    autoComplete="on">
+                    {/* <Modal.Body className="modal-login">
 
-                        <p className="dBJbip">Đăng nhập bằng email</p>
-                        <div>
-                            <label htmlFor="Email" className="col-form-label" >Email/ Số điện thoại <span style={{ color: 'red' }}>*</span></label>
-                            <div>
-                                <input type="text" className="form-control" id="Email" required value={email} onChange={(event) => setEmail(event.target.value)} />
-                            </div>
-                        </div>
+
+                        <p className="title">Đăng nhập bằng email</p>
+                        <Form.Item name="usename" className="col-6 mt-0" label={<span>Tên <span style={{ color: "red" }}> *</span></span>}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng nhập tên của bạn',
+                                },
+                            ]} validateTrigger={['onBlur']}>
+                            <Input className="form-control" />
+                        </Form.Item>
+
                         <div className='mb-3'>
                             <label htmlFor="inputPassword" className="col-form-label" >Mật khẩu <span style={{ color: 'red' }}>*</span></label>
                             <div className='position-relative'>
@@ -78,16 +60,16 @@ const ModalFormLogin = (props) => {
                         <div className="d-flex justify-content-end">
                             <a href="#">Quên mật khẩu?</a>
                         </div>
-                    </div>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button variant="secondary" onClick={() => handleClose()}>
-                        Hủy
-                    </Button>
-                    <Button variant="primary" onClick={() => handleLogin()}>
-                        Đăng nhập
-                    </Button>
-                </Modal.Footer>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button variant="secondary" onClick={() => handleClose()}>
+                            Hủy
+                        </Button>
+                        <Button variant="primary" onClick={() => handleLogin()}>
+                            Đăng nhập
+                        </Button>
+                    </Modal.Footer> */}
+                </Form>
             </Modal>
         </form>
     );
