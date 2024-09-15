@@ -6,8 +6,8 @@ const config = {
   }
 };
 
-const studentLogin = async (email, password) => {
-  return axios.post('users/login', { email, password });
+const studentLogin = async (values) => {
+  return axios.post('users/login', values);
 };
 const employerLogin = async (email, password) => {
   return axios.post('employers/login', { email, password });

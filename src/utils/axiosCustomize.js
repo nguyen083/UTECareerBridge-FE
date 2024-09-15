@@ -5,20 +5,20 @@ const instance = axios.create({
     withCredentials: true, // Always send credentials
 });
 
-let isRefreshing = false;
-let failedQueue = [];
+// let isRefreshing = false;
+// let failedQueue = [];
 
-const processQueue = (error, token = null) => {
-    failedQueue.forEach(prom => {
-        if (error) {
-            prom.reject(error);
-        } else {
-            prom.resolve(token);
-        }
-    });
+// const processQueue = (error, token = null) => {
+//     failedQueue.forEach(prom => {
+//         if (error) {
+//             prom.reject(error);
+//         } else {
+//             prom.resolve(token);
+//         }
+//     });
 
-    failedQueue = [];
-};
+//     failedQueue = [];
+// };
 
 instance.interceptors.request.use(function (config) {
     const token = localStorage.getItem('accessToken');

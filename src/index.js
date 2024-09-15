@@ -31,6 +31,9 @@ root.render(
 
         <Route path='employer' element={<EmployerPage />}>
           <Route path='register' element={<EmployerRegister />} />
+        </Route>
+
+        <Route path='user' element={<EmployerPage />}>
           <Route path='forgot-password' element={<ForgotPassword />} />
           <Route path='change-password' element={<ChangePassword />} />
         </Route>

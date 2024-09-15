@@ -36,7 +36,6 @@ const ChangePassword = () => {
                     layout="vertical"
                     autoComplete="off">
                     <Form.Item
-                        className="form-label"
                         label={<span>Mật khẩu mới <span style={{ color: "red" }}> *</span></span>}
                         required
                         name="password"
@@ -67,7 +66,6 @@ const ChangePassword = () => {
 
 
                     <Form.Item
-                        className="form-label"
                         label={<span>Nhập lại mật khẩu <span style={{ color: "red" }}> *</span></span>}
                         required
                         name="repassword"

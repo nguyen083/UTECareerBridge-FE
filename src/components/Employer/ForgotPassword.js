@@ -28,7 +28,6 @@ const ForgotPassword = () => {
                 onFinish={onSubmit}
                 autoComplete="off">
                 <Form.Item
-                    className="form-label"
                     label={<span>Địa chỉ email <span style={{ color: "red" }}> *</span></span>}
                     required
                     name="email"

@@ -1,4 +1,5 @@
-import { Button, Checkbox, Form, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
+import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import './ModalFormLogin.scss';
 import { studentLogin } from '../../services/apiService';
@@ -6,24 +7,46 @@ import { toast } from 'react-toastify';
 
 const ModalFormLogin = (props) => {
     const { show, setShow } = props;
+    const [form] = Form.useForm();
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    const phoneRegex = /^[0-9]{10,11}$/;
+    var inputType = '';
 
+    const handleInputChange = (e) => {
+        const value = e.target.value;
+        if (emailRegex.test(value)) {
+            inputType = 'email';
+        } else if (phoneRegex.test(value)) {
+            inputType = 'phone_number';
+        } else {
+            inputType = '';
+        }
+    };
 
-
-    const handleLogin = async () => {
+    const handleClose = () => {
+        form.resetFields();
+        setShow(false);
+    };
+    const handleLogin = async (values) => {
         //Validate dữ liệu
-
+        const { username, ...rest } = values;
+        const updatedValues = {
+            ...rest,
+            [inputType]: username,
+        };
+        console.log(updatedValues);
         //Call API
-        // let res = await studentLogin(email, password);
-        // if (res.status === 'OK') {
-        //     toast.success(res.message);
-        //     localStorage.setItem('accessToken', res.data.token);
-        //     document.cookie = `refreshToken=${res.data.refresh_token}`;
-        // } else {
-        //     toast.error(res.message);
-        // }
+        let res = await studentLogin(updatedValues);
+        if (res.status === 'OK') {
+            toast.success(res.message);
+            localStorage.setItem('accessToken', res.data.token);
+            document.cookie = `refreshToken=${res.data.refresh_token}`;
+        } else {
+            toast.error(res.message);
+        }
 
-        // // clear states
-        // handleClose();
+        // clear states
+        handleClose();
     };
     return (
         <form>
@@ -32,43 +55,65 @@ const ModalFormLogin = (props) => {
                     <Modal.Title style={{ fontSize: "18px", fontWeight: "600", color: "rgb(51, 51, 51)", lineHeight: "22px" }}>Đăng nhập</Modal.Title>
                 </Modal.Header>
                 <Form
+                    form={form}
                     onFinish={handleLogin}
-                    autoComplete="on">
-                    {/* <Modal.Body className="modal-login">
+                    autoComplete="on"
+                    layout='vertical'>
+                    <Modal.Body className="modal-login p-5">
 
 
                         <p className="title">Đăng nhập bằng email</p>
-                        <Form.Item name="usename" className="col-6 mt-0" label={<span>Tên <span style={{ color: "red" }}> *</span></span>}
+                        <Form.Item name="username" label={<span>Email/ Số điện thoại <span style={{ color: "red" }}> *</span></span>}
                             rules={[
                                 {
                                     required: true,
-                                    message: 'Vui lòng nhập tên của bạn',
+                                    message: 'Vui lòng nhập email hoặc số điện thoại của bạn',
                                 },
-                            ]} validateTrigger={['onBlur']}>
-                            <Input className="form-control" />
+                                ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                        if (!value) {
+                                            return Promise.reject('Vui lòng nhập email hoặc số điện thoại của bạn');
+                                        }
+                                        if (emailRegex.test(value)) {
+                                            return Promise.resolve();
+                                        }
+                                        if (phoneRegex.test(value)) {
+                                            return Promise.resolve();
+                                        }
+                                        return Promise.reject('Vui lòng nhập đúng định dạng email hoặc số điện thoại');
+                                    },
+                                }),
+
+                            ]} validateTrigger={['onBlur']} validateFirst>
+                            <Input className="form-control" onChange={handleInputChange} />
+                        </Form.Item>
+                        <Form.Item
+                            className='mb-3'
+                            label={<span>Mật khẩu <span style={{ color: "red" }}> *</span></span>}
+                            required
+                            name="password"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng nhập mật khẩu của bạn',
+                                },
+                            ]} validateTrigger={['onBlur', 'onChange']}>
+                            <Input.Password className="form-control d-flex" />
                         </Form.Item>
 
-                        <div className='mb-3'>
-                            <label htmlFor="inputPassword" className="col-form-label" >Mật khẩu <span style={{ color: 'red' }}>*</span></label>
-                            <div className='position-relative'>
-                                <input type="password" className="form-control" id="inputPassword" required value={password} onChange={(event) => setPassword(event.target.value)} />
-                                <div className="position-absolute top-50 end-0 translate-middle-y me-2">
-                                    {isShowPassword ? <PiEye style={{ width: "1.5rem", height: "1.5rem", viewBox: "0 0 1.5rem 1.5rem" }} onClick={() => handleShowPassword()} /> : <PiEyeClosed style={{ width: "1.5rem", height: "1.5rem", viewBox: "0 0 1.5rem 1.5rem" }} onClick={() => handleShowPassword()} />}
-                                </div>
-                            </div>
-                        </div>
+
                         <div className="d-flex justify-content-end">
-                            <a href="#">Quên mật khẩu?</a>
+                            <a href="/user/forgot-password">Quên mật khẩu?</a>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={() => handleClose()}>
+                        <Button variant="secondary" onClick={handleClose}>
                             Hủy
                         </Button>
-                        <Button variant="primary" onClick={() => handleLogin()}>
+                        <Button type="primary" htmlType='submit'>
                             Đăng nhập
                         </Button>
-                    </Modal.Footer> */}
+                    </Modal.Footer>
                 </Form>
             </Modal>
         </form>
