@@ -55,13 +55,12 @@ const ModalFormLogin = (props) => {
                     <Modal.Title style={{ fontSize: "18px", fontWeight: "600", color: "rgb(51, 51, 51)", lineHeight: "22px" }}>Đăng nhập</Modal.Title>
                 </Modal.Header>
                 <Form
+                    requiredMark={false}
                     form={form}
                     onFinish={handleLogin}
                     autoComplete="on"
                     layout='vertical'>
                     <Modal.Body className="modal-login p-5">
-
-
                         <p className="title">Đăng nhập bằng email</p>
                         <Form.Item name="username" label={<span>Email/ Số điện thoại <span style={{ color: "red" }}> *</span></span>}
                             rules={[
@@ -107,10 +106,10 @@ const ModalFormLogin = (props) => {
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
+                        <Button className='size ' variant="secondary" onClick={handleClose}>
                             Hủy
                         </Button>
-                        <Button type="primary" htmlType='submit'>
+                        <Button  className='size' type="primary" htmlType='submit'>
                             Đăng nhập
                         </Button>
                     </Modal.Footer>

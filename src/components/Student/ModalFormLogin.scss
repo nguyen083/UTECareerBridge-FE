@@ -1,7 +1,9 @@
-@import "../../components/styles/variables.scss"; 
+@import "../../components/styles/variables.scss";
+
+
 .modal-login {
-    padding: 1.25rem;
-    
+    padding  : 1.25rem;
+    font-size: 1rem;
     .title {
         margin     : 0 0 1rem;
         font-size  : 1.5rem;
@@ -11,32 +13,8 @@
         color      : rgb(51, 51, 51);
         text-align : center;
     }
-
-    .QQmSy {
-        margin-bottom: 1rem;
-
-        .omkNu {
-            margin     : 0 0 0.3125rem;
-            font-weight: 500;
-            display    : inline-block;
-            color      : rgb(51, 51, 51);
-            font-size  : 0.875rem;
-            line-height: 1.125rem;
-        }
-
-        .eFlKnE {
-            box-sizing: border-box;
-
-            .SWIgc {
-                position: relative;
-
-                .hapBhV {
-                    padding-right   : 0.625rem;
-                    background-color: rgb(255, 255, 255);
-                    border          : 1px solid rgb(217, 217, 217);
-                    color           : rgb(51, 51, 51);
-                }
-            }
-        }
-    }
+}
+.size{
+    font-size: 1rem !important;
+    padding: 1rem 0.75rem !important;
 }

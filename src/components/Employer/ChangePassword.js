@@ -17,7 +17,7 @@ const ChangePassword = () => {
         // Nhận Response từ API nếu thành công thì hiển thị thông báo và đổi trạng thái submit thành true
         setSubmit(true);
     };
-    //CallAPI();
+    CallAPI();
     return (
         <div className="form-change-password">
             <div className="title">

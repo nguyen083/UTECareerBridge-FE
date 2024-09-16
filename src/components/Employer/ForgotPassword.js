@@ -2,7 +2,7 @@ import { useState } from "react";
 import "./ForgotPassword.scss";
 import { Button, Form, Input } from 'antd';
 const ForgotPassword = () => {
-    const [email, setEmail] = useState("");
+
     const [isSend, setIsSend] = useState(false);
     const [form] = Form.useForm();
     const onSubmit = (values) => {
