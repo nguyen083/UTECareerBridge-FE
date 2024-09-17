@@ -22,4 +22,14 @@ const studentRegister = async (first_name, last_name, gender, dob, phone_number,
 const getInfor = async () => {
   return axios.get('employers/company-general-info', config);
 }
-export { studentLogin, studentRegister, getInfor, employerLogin}
+const userChangePassword = async (token, password) => {
+  return axios.post(`auth/reset-password?token=${token}&password=${password}`);
+}
+const userForgotPassword = async (values) => {
+  const formData = new FormData();
+  formData.append('email', values.email);
+  return axios.post('auth/forgot-password', formData);
+}
+
+
+export { studentLogin, studentRegister, getInfor, employerLogin, userForgotPassword, userChangePassword }

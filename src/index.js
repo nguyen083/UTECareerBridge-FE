@@ -17,6 +17,7 @@ import LoginPage from './components/Employer/LoginPage.js';
 import EmployerRegister from './components/Employer/EmployerRegister.js';
 import ForgotPassword from './components/Employer/ForgotPassword.js';
 import ChangePassword from './components/Employer/ChangePassword.js';
+import BackgroundAndForm from './components/Generate/BackgroundAndForm.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -30,13 +31,19 @@ root.render(
         <Route path='job' element={<JobPage />} />
 
         <Route path='employer' element={<EmployerPage />}>
-          <Route path='register' element={<EmployerRegister />} />
+          <Route path='register' element={<BackgroundAndForm />}>
+            <Route index element={<EmployerRegister />} />
+          </Route>
         </Route>
 
-        <Route path='user' element={<EmployerPage />}>
-          <Route path='forgot-password' element={<ForgotPassword />} />
-          <Route path='change-password' element={<ChangePassword />} />
+        {/* <Route path='user' element={<EmployerPage />}> */}
+        <Route path='forgot-password' element={<BackgroundAndForm />}>
+          <Route index element={<ForgotPassword />} />
         </Route>
+        <Route path='reset-password' element={<BackgroundAndForm />} >
+          <Route index element={<ChangePassword />} />
+        </Route>
+        {/* </Route> */}
 
         <Route path='login' element={<LoginPage />} />
         <Route path='favorite' element={<FavoritePage />} />

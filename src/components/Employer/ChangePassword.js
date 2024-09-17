@@ -1,23 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Form, Input, Space } from 'antd';
+import { useLocation } from 'react-router-dom';
 import "./ChangePassword.scss";
-import { FaLongArrowAltLeft } from "react-icons/fa";
+import { userChangePassword } from "../../services/apiService";
+import { toast } from "react-toastify";
 
 
 const ChangePassword = () => {
+
     const [email, setEmail] = useState("");
     const [submit, setSubmit] = useState(false);
     const [form] = Form.useForm();
-    const CallAPI = () => {
-        // Gọi API để lấy thông tin của người dùng abc@gmail
-    };
-    const onFinish = (values) => {
-        console.log(values);
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const token = queryParams.get('token');
+    const [message, setMessage] = useState("");
+
+    useEffect(() => {
+        setEmail(queryParams.get('email'));
+    }, []);
+
+    const onFinish = async (values) => {
+        const res = await userChangePassword(token, values.password);
         // Gọi API để cập nhật mật khẩu mới cho người dùng abc@gmail
-        // Nhận Response từ API nếu thành công thì hiển thị thông báo và đổi trạng thái submit thành true
-        setSubmit(true);
+        if (res.status === 'OK') {
+            setMessage(res.message);
+            toast.success("Đặt lại mật khẩu thành công");
+            setSubmit(true);
+        }
+        else {
+            toast.error("Đặt lại mật khẩu thất bại. Vui long thử lại sau");
+        }
+
     };
-    CallAPI();
     return (
         <div className="form-change-password">
             <div className="title">
@@ -87,14 +102,14 @@ const ChangePassword = () => {
                     </Form.Item>
 
                     <Form.Item>
-                        <Space>
-                            <Button type="primary" htmlType="submit">Tiếp tục</Button>
+                        <Space className="d-flex justify-content-end mt-3">
+                            <Button className="font-size" type="primary" htmlType="submit">Tiếp tục</Button>
                         </Space>
                     </Form.Item>
                 </Form>
             </div>
-            <div className={`btn-back ${!submit && "d-none"}`}>
-                     <a href="/login" className="text-decoration-none"><FaLongArrowAltLeft /> Quay lại trang đăng nhập để tiếp tục  </a>
+            <div className={`message ${!submit && "d-none"}`}>
+                {message}
             </div>
         </div>
     );

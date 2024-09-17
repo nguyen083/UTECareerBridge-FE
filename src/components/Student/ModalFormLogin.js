@@ -102,7 +102,7 @@ const ModalFormLogin = (props) => {
 
 
                         <div className="d-flex justify-content-end">
-                            <a href="/user/forgot-password">Quên mật khẩu?</a>
+                            <a href="/forgot-password" target='_blank'>Quên mật khẩu?</a>
                         </div>
                     </Modal.Body>
                     <Modal.Footer>
