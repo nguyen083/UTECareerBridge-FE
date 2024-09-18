@@ -1,225 +1,154 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import "./RegisterPage.scss";
-import PhoneInputGfg from "../Generate/PhoneInputGfg";
+import React, { useState } from 'react';
+import { Form, Input, Space, Button, DatePicker, Checkbox, Radio } from 'antd';
+// import PhoneInputGfg from "../Generate/PhoneInputGfg";
 import { studentRegister } from "../../services/apiService";
-import Form from 'react-bootstrap/Form';
-import { DatePicker } from 'antd';
+// import Form from 'react-bootstrap/Form';
+// import { DatePicker } from 'antd';
 import { toast } from "react-toastify";
 
 const RegisterPage = () => {
+    const [form] = Form.useForm();
+    const gender = 0; // giới tính mặc định
+    const [isChecked, setIsChecked] = useState(false);
 
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [gender, setGender] = useState('0');
-    const [dob, setDob] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [retypePassword, setRetypePassword] = useState('');
-    const [check, setCheck] = useState(false);
-    const [message, setMessage] = useState(
-        {
-            firstName: "",
-            lastName: "",
-            phoneNumber: "",
-            email: "",
-            password: "",
-            retypePassword: "",
-            messagePassword: "",
-        }); // thông báo lỗi
 
-    const onChange = (date, dateString) => {
-        setDob(dateString);
+    const handleCheckboxChange = (e) => {
+        setIsChecked(e.target.checked);
     };
-    const handleGenderChange = (event) => {
-        setGender(event.target.id);
-    };
-    const validate = async () => {
-        validFistName();
-        validLastName();
-        validPhoneNumber();
-        validEmail();
-        validatePassword();
-        validateRetypePassword();
-    }
-    const validFistName = () => {
-        if (firstName === '')
-            setMessage(message => ({ ...message, firstName: "Vui lòng nhập tên" }));
-        else
-            setMessage(message => ({ ...message, firstName: "" }));
-    }
-    const validLastName = () => {
-        if (lastName === '')
-            setMessage(message => ({ ...message, lastName: "Vui lòng nhập họ" }));
-        else
-            setMessage(message => ({ ...message, lastName: "" }));
-    }
-    const handleSubmit = async () => {
+    const handleLogin = async (values) => {
         // Call API
-        let data = await studentRegister(firstName, lastName, gender, dob, phoneNumber, email, password, retypePassword);
-        if (data.status === "CREATED") {
-            toast.success(data.message);
-        } else {
-            toast.error(data.message);
-        }
-    }
-
-    useEffect(() => {
-        if (!message.phoneNumber && !message.email && !message.password && !message.retypePassword && firstName && lastName && phoneNumber && email && password === retypePassword) {
-            handleSubmit();
-        }
-    }, [message]);
-
-    const validPhoneNumber = async () => {
-        let updatePhoneNumber = phoneNumber;
-        updatePhoneNumber.startsWith('84') && (updatePhoneNumber = updatePhoneNumber.replace(/^84/, ''));
-        if (updatePhoneNumber.length === 0) {
-            setMessage(message => ({ ...message, phoneNumber: "Vui lòng nhập số điện thoại" }));
-            return;
-        }
-        !updatePhoneNumber.startsWith('0') && (updatePhoneNumber = '0' + updatePhoneNumber);
-        setPhoneNumber(updatePhoneNumber);
-        if (updatePhoneNumber.length !== 10) {
-            setMessage(message => ({ ...message, phoneNumber: "Số điện thoại không hợp lệ" }));
-        }
-        else {
-            setMessage(message => ({ ...message, phoneNumber: "" }));
-        }
-    }
-
-    const validEmail = () => {
-        if (email === '') {
-            setMessage(message => ({ ...message, email: "Vui lòng nhập email" }));
-            return;
-        }
-        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-        if (!emailPattern.test(email)) {
-            setMessage(message => ({ ...message, email: "Email không hợp lệ" }));
-            return;
-        }
-        else {
-            setMessage(message => ({ ...message, email: "" }));
-            return;
-        }
-    }
-
-    const validatePassword = () => {
-        if (password === "") {
-            setMessage(message => ({ ...message, password: "Vui lòng nhập mật khẩu" }));
-        }
-        else if (password.length < 8) {
-            setMessage(message => ({ ...message, password: "Mật khẩu phải chứa ít nhất 8 ký tự" }));
-        }
-
-        else if (!/[A-Z]/.test(password)) {
-            setMessage(message => ({ ...message, password: "Mật khẩu phải chứa ít nhất 1 chữ in hoa." }));
-        }
-
-        else if (!/\d/.test(password)) {
-            setMessage(message => ({ ...message, password: "Mật khẩu phải chứa ít nhất 1 chữ số." }));
-        }
-
-        else if (!/[!@#$%^&*()_+{}\[\]:;"'<>,.?/\\|`~]/.test(password)) {
-            setMessage(message => ({ ...message, password: "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt." }));
-        }
-        else setMessage(message => ({ ...message, password: "" }));
-    }
-    const validateRetypePassword = () => {
-        if (retypePassword === "") {
-            setMessage(message => ({ ...message, retypePassword: "Vui lòng xác nhận lại mật khẩu" }));
-        }
-        else if (password !== retypePassword) {
-            setMessage(message => ({ ...message, retypePassword: "Mật khẩu không khớp" }));
-        }
-        else {
-            setMessage(message => ({ ...message, retypePassword: "" }));
-        }
+        let res = await studentRegister(values);
+        // if (res.status === "CREATED") {
+        //     toast.success(res.message);
+        // } else {
+        //     toast.error(res.message);
+        // }
     }
 
     return (
         <div className="d-flex">
             <div className="image col-lg-5 d-none d-lg-block">
             </div>
-            <div className="col-lg-7 col-12 " style={{ padding: " 5rem 0 5rem 0" }}>
-                <div className="d-block mx-auto p-5 shadow" style={{ width: "70%", backgroundColor: "white" }}>
+            <div className="col-lg-7 col-12 parent-register-form">
+                <div className="d-block mx-auto p-md-5 p-2 shadow register-form">
                     <div className="title d-block">
                         <span className="d-block text-center mb-4" style={{ height: "auto", fontSize: "2rem", fontFamily: "Segoe UI", color: "#555555" }}>Đăng Ký Tài Khoản</span>
                     </div>
                     <div className="form-group row g-3">
-                        <div className=" col-md-6">
-                            <label htmlFor="firstName" className="form-label" >Tên <span style={{ color: "red" }}>*</span></label>
-                            <input type="text" className={`form-control ${message.firstName !== "" && 'is-invalid'}`} id="firstName" value={firstName} onChange={(event) => setFirstName(event.target.value)} aria-describedby="validationFistNameFeedback" />
-                            <div id="validationFistNameFeedback" className="invalid-feedback">
-                                {message.firstName}
-                            </div>
-                        </div>
-                        <div className="col-md-6">
-                            <label htmlFor="lastName" className="form-label" >Họ <span style={{ color: "red" }}>*</span></label>
-                            <input className={`form-control ${message.lastName !== "" && "is-invalid"}`} id="lastName" value={lastName} onChange={(event) => setLastName(event.target.value)} aria-describedby="validationLastNameFeedback" />
-                            <div id="validationLastNameFeedback" className="invalid-feedback">
-                                {message.lastName}
-                            </div>
-                        </div>
-                        <div className="col-6 d-flex">
-                            <label htmlFor="gender" className="form-label">
-                                Giới tính <span style={{ color: "red" }}>*</span>
-                            </label>
-                            <div className='row ps-3'>
-                                <Form.Check defaultChecked label="Nam" name="group1" type="radio" id="0" onChange={handleGenderChange} />
-                                <Form.Check label="Nữ" name="group1" type="radio" id="1" onChange={handleGenderChange} />
-                            </div>
-                        </div>
+                        <Form form={form} name="validateOnlyform2" requiredMark={false} layout="vertical" autoComplete="off" onFinish={handleLogin}>
+                            <div className="form-group row g-3">
+                                <Form.Item name="fist_name" className=" col-12 col-md-6 mt-0" label={<span>Tên <span style={{ color: "red" }}> *</span></span>}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Vui lòng nhập tên của bạn',
+                                        },
+                                    ]} validateTrigger={['onBlur']}>
+                                    <Input className="form-control" />
+                                </Form.Item>
 
-                        <div className="col-6 ">
-                            <label htmlFor="dob" className="form-label">
-                                Ngày sinh <span style={{ color: "red" }}>*</span>
-                            </label>
-                            <DatePicker className='form-control' onChange={onChange} format="DD/MM/YYYY" />
-                        </div>
-                        <div className="col-md-12">
-                            <label htmlFor="phoneNumber" className="form-label" >Số điện thoại <span style={{ color: "red" }}>*</span></label>
-                            <input className={` ${message.phoneNumber !== "" && 'is-invalid'}`} hidden aria-describedby="validationPhoneNumberFeedback" />
-                            <PhoneInputGfg id="phoneNumber" phone={phoneNumber} setPhone={setPhoneNumber} />
 
-                            <div id="validationPhoneNumberFeedback" className="invalid-feedback">
-                                {message.phoneNumber}
+                                <Form.Item name="last_name" className="col-12 col-md-6 mt-0" label={<span>Họ <span style={{ color: "red" }}> *</span></span>}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Vui lòng nhập họ của bạn',
+                                        },
+                                    ]} validateTrigger={['onBlur']}>
+                                    <Input className="form-control" />
+                                </Form.Item>
+                                <Form.Item name="phone_number" className="col-12 mt-0" label={<span>Số điện thoại <span style={{ color: "red" }}> *</span></span>}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Vui lòng nhập số điện thoại của bạn',
+                                        },
+                                        {
+                                            pattern: new RegExp(/(84|0[3|5|7|8|9])+([0-9]{8})\b/),
+                                            message: 'Số điện thoại không hợp lệ'
+                                        }
+                                    ]}
+                                    validateTrigger={['onBlur']}>
+                                    <Input className="form-control" />
+                                </Form.Item>
+                                <Form.Item name="email" className="col-12 mt-0" label={<span>Email <span style={{ color: "red" }}> *</span></span>}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Vui lòng nhập email của bạn',
+                                        },
+                                        {
+                                            type: 'email',
+                                            message: 'Email không hợp lệ',
+                                        }
+                                    ]}
+                                    validateTrigger={['onBlur']}>
+                                    <Input className="form-control" />
+                                </Form.Item>
+                                <Form.Item name="password" className="col-12 mt-0" label={<span>Mật khẩu <span style={{ color: "red" }}> *</span></span>}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Vui lòng nhập mật khẩu của bạn',
+                                        },
+                                        {
+                                            min: 8,
+                                            message: 'Mật khẩu phải có ít nhất 8 ký tự'
+                                        },
+                                        {
+                                            pattern: new RegExp(/^(?=.*[A-Z])/),
+                                            message: 'Mật khẩu phải chứa ít nhất 1 chữ cái viết hoa'
+                                        },
+                                        {
+                                            pattern: new RegExp(/^(?=.*[0-9])/),
+                                            message: 'Mật khẩu phải chứa ít nhất 1 chữ số'
+                                        },
+                                        {
+                                            pattern: new RegExp(/^(?=.*[!@#$%^&*(),.?":{}|<>])/),
+                                            message: 'Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt'
+                                        }
+                                    ]} validateFirst
+                                    validateTrigger={['onBlur']}>
+                                    <Input.Password className="form-control d-flex" />
+                                </Form.Item>
+                                <Form.Item name="retype_password" className="col-12 mt-0" label={<span>Xác nhận mật khẩu <span style={{ color: "red" }}> *</span></span>}
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: 'Vui lòng xác nhận lại mật khẩu của bạn',
+                                        },
+                                        ({ getFieldValue }) => ({
+                                            validator(_, value) {
+                                                if (!value || getFieldValue('password') === value) {
+                                                    return Promise.resolve();
+                                                }
+                                                return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
+                                            },
+                                        }),
+                                    ]} validateTrigger={['onBlur']}>
+                                    <Input.Password className="form-control d-flex" />
+                                </Form.Item>
                             </div>
-                        </div>
-                        <div className="col-md-12">
-                            <label htmlFor="email" className="form-label" >Email <span style={{ color: "red" }}>*</span></label>
-                            <input className={`form-control ${message.email !== "" && 'is-invalid'}`} type="email" id="email" value={email} onChange={(event) => setEmail(event.target.value)} placeholder="Nhập email để xác thực" aria-describedby="validationEmailFeedback" />
-                            <div id="validationEmailFeedback" className="invalid-feedback">
-                                {message.email}
-                            </div>
-                        </div>
-                        <div className="col-md-12">
-                            <label htmlFor="password" className="form-label" >Mật khẩu <span style={{ color: "red" }}>*</span></label>
-                            <input className={`form-control ${message.password !== "" && 'is-invalid'}`} type="password" id="password" value={password} onChange={(event) => setPassword(event.target.value)} placeholder="Nhập mật khẩu" aria-describedby="validationPasswordFeedback" />
-                            <div id="validationPasswordFeedback" className="invalid-feedback">
-                                {message.password}
-                            </div>
-                        </div>
-                        <div className="col-md-12">
-                            <label htmlFor="retypePassword" className="form-label" >Xác nhận mật khẩu <span style={{ color: "red" }}>*</span></label>
-                            <input className={`form-control ${message.retypePassword !== "" && "is-invalid"}`} type="password" id="retypePassword" value={retypePassword} onChange={(event) => setRetypePassword(event.target.value)} placeholder="Nhập lại mật khẩu" aria-describedby="validationRetypePasswordFeedback" />
-                            <div id="validationRetypePasswordFeedback" className="invalid-feedback">
-                                {message.retypePassword}
-                            </div>
-                        </div>
-                        <div className="col-md-12 mb-5">
-                            <div className="form-check">
-                                <input className="form-check-input border-dark" type="checkbox" value={check}
-                                    onChange={() => setCheck(!check)} id="Checkbox" />
-                                <label className="form-check-label" htmlFor="invalidCheck3">
-                                    Bạn đã đọc và đồng ý với các <a href="/#">điều khoản và điều kiện</a> của chúng tôi
-                                </label>
-                            </div>
-                        </div>
-                        <div className="col-sm-12">
-                            <button className={`btn btn-primary col-12 ${!check && 'disabled'}`} onClick={() => validate()}>Đăng ký</button>
-                        </div>
+                            <Form.Item
+                                className="col-12 mt-2 mb-5"
+                                valuePropName="checked"
+                                wrapperCol={{
+                                    offset: 1,
+                                }}
+
+                            >
+                                <Checkbox onChange={handleCheckboxChange} style={{ fontSize: "1rem" }}>Bạn đã đọc và đồng ý với các <a href="/#">điều khoản và điều kiện</a> của chúng tôi
+                                </Checkbox>
+                            </Form.Item>
+
+                            <Form.Item className="mb-3">
+                                <Button className="btn btn-primary py-3 d-flex" disabled={!isChecked} style={{ width: "100%", fontSize: "1rem"}} type="primary" htmlType="submit">Đăng ký</Button>
+                            </Form.Item>
+                        </Form>
                     </div>
-                    <div className="text-center mt-3 mb-3"><p className="fst-italic text-decoration-underline">hoặc</p></div>
+                    <div className="text-center mt-3 mb-3"><p className="fst-italic text-decoration-underline">Hoặc</p></div>
                     <div className="google-btn">
                         <a href="/#" className="sc-faUjhM vsUcT Header_LoginGG">
                             <svg fill="currentColor" stroke="unset" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20" height="20">

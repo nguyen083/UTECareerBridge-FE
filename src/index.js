@@ -18,6 +18,7 @@ import EmployerRegister from './components/Employer/EmployerRegister.js';
 import ForgotPassword from './components/Employer/ForgotPassword.js';
 import ChangePassword from './components/Employer/ChangePassword.js';
 import BackgroundAndForm from './components/Generate/BackgroundAndForm.js';
+import EmployerLayout from './components/Employer/EmployerLayout.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -34,6 +35,7 @@ root.render(
           <Route path='register' element={<BackgroundAndForm />}>
             <Route index element={<EmployerRegister />} />
           </Route>
+          <Route index element={<EmployerLayout />} />
         </Route>
 
         {/* <Route path='user' element={<EmployerPage />}> */}

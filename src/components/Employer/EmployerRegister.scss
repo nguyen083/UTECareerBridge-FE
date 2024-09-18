@@ -1,9 +1,19 @@
-.form-register{
+.form-register {
     padding: 6rem 11rem;
 
-    .title{
-        font-size: 1.625rem;
-        font-weight: 500;
+    @media (max-width: 992px) {
+        padding: 1rem;
+    }
+
+    .title {
+        font-size    : 1.625rem;
+        font-weight  : 500;
         margin-bottom: 2rem;
     }
+}
+
+.bottom-footer {
+    background: #C3C3C3;
+    font-size : 0.875rem;
+    width     : -webkit-fill-available
 }
