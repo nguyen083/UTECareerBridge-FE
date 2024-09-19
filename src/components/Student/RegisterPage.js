@@ -12,14 +12,20 @@ const RegisterPage = () => {
     const [form] = Form.useForm();
     const gender = 0; // giới tính mặc định
     const [isChecked, setIsChecked] = useState(false);
+    const [DoB, setDoB] = useState('');
 
+
+
+    const onChange = (date, dateString) => {
+        setDoB(dateString);
+    };
 
     const handleCheckboxChange = (e) => {
         setIsChecked(e.target.checked);
     };
     const handleLogin = async (values) => {
         // Call API
-        let res = await studentRegister(values);
+        let res = await studentRegister({...values, dob: DoB});
         // if (res.status === "CREATED") {
         //     toast.success(res.message);
         // } else {
@@ -34,10 +40,10 @@ const RegisterPage = () => {
             <div className="col-lg-7 col-12 parent-register-form">
                 <div className="d-block mx-auto p-md-5 p-2 shadow register-form">
                     <div className="title d-block">
-                        <span className="d-block text-center mb-4" style={{ height: "auto", fontSize: "2rem", fontFamily: "Segoe UI", color: "#555555" }}>Đăng Ký Tài Khoản</span>
+                        <span className=" title d-block text-center mb-4">Đăng Ký Tài Khoản</span>
                     </div>
                     <div className="form-group row g-3">
-                        <Form form={form} name="validateOnlyform2" requiredMark={false} layout="vertical" autoComplete="off" onFinish={handleLogin}>
+                        <Form form={form} name="validateOnlyform2" requiredMark={false} layout="vertical" autoComplete="off" onFinish={handleLogin} initialValues={{gender: gender}}>
                             <div className="form-group row g-3">
                                 <Form.Item name="fist_name" className=" col-12 col-md-6 mt-0" label={<span>Tên <span style={{ color: "red" }}> *</span></span>}
                                     rules={[
@@ -45,19 +51,41 @@ const RegisterPage = () => {
                                             required: true,
                                             message: 'Vui lòng nhập tên của bạn',
                                         },
+                                        {
+                                            pattern: new RegExp(/^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]*$/),
+                                            message: 'Tên không hợp lệ'
+                                        }
                                     ]} validateTrigger={['onBlur']}>
                                     <Input className="form-control" />
                                 </Form.Item>
-
-
                                 <Form.Item name="last_name" className="col-12 col-md-6 mt-0" label={<span>Họ <span style={{ color: "red" }}> *</span></span>}
                                     rules={[
                                         {
                                             required: true,
                                             message: 'Vui lòng nhập họ của bạn',
                                         },
+                                        {
+                                            pattern: new RegExp(/^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]*$/),
+                                            message: 'Họ không hợp lệ'
+                                        }
                                     ]} validateTrigger={['onBlur']}>
                                     <Input className="form-control" />
+                                </Form.Item>
+                                <Form.Item name="gender" layout='horizontal' className="col-12 col-md-6 mt-0 mb-0" label="Giới tính" >
+                                    <Radio.Group value={gender} className='mb-0'>
+                                        <Space direction="vertical">
+                                            <Radio value={0}>Nam</Radio>
+                                            <Radio value={1}>Nữ</Radio>
+                                        </Space>
+                                    </Radio.Group>
+                                </Form.Item>
+                                <Form.Item name="dob" className="col-12 col-md-6 mt-0" label={<span>Ngày sinh <span style={{ color: "red" }}> *</span></span>} rules={[
+                                    {
+                                        required: true,
+                                        message: 'Vui lòng nhập ngày sinh của bạn',
+                                    },
+                                ]} validateTrigger={['onChange']}>
+                                    <DatePicker onChange={onChange} className='form-control' format={"DD/MM/YYYY"} />
                                 </Form.Item>
                                 <Form.Item name="phone_number" className="col-12 mt-0" label={<span>Số điện thoại <span style={{ color: "red" }}> *</span></span>}
                                     rules={[
@@ -132,19 +160,19 @@ const RegisterPage = () => {
                                 </Form.Item>
                             </div>
                             <Form.Item
-                                className="col-12 mt-2 mb-5"
+                                className="col-12 mt-1 mb-5"
                                 valuePropName="checked"
                                 wrapperCol={{
                                     offset: 1,
                                 }}
 
                             >
-                                <Checkbox onChange={handleCheckboxChange} style={{ fontSize: "1rem" }}>Bạn đã đọc và đồng ý với các <a href="/#">điều khoản và điều kiện</a> của chúng tôi
+                                <Checkbox onChange={handleCheckboxChange}>Bạn đã đọc và đồng ý với các <a href="/#">điều khoản và điều kiện</a> của chúng tôi
                                 </Checkbox>
                             </Form.Item>
 
                             <Form.Item className="mb-3">
-                                <Button className="btn btn-primary py-3 d-flex" disabled={!isChecked} style={{ width: "100%", fontSize: "1rem"}} type="primary" htmlType="submit">Đăng ký</Button>
+                                <Button className="btn btn-primary py-3 d-flex" disabled={!isChecked} style={{ width: "100%", fontSize: "1rem" }} type="primary" htmlType="submit">Đăng ký</Button>
                             </Form.Item>
                         </Form>
                     </div>

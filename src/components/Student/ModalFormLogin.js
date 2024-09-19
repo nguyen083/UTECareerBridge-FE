@@ -3,6 +3,7 @@ import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import './ModalFormLogin.scss';
 import { studentLogin } from '../../services/apiService';
+import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 
 const ModalFormLogin = (props) => {
@@ -49,8 +50,8 @@ const ModalFormLogin = (props) => {
         handleClose();
     };
     return (
-        <form>
-            <Modal show={show} onHide={() => setShow(false)} size='lg' backdrop="static" centered>
+        <form >
+            <Modal style={{backgroundColor: "gray"}} show={show} onHide={() => setShow(false)} size='lg' backdrop="static" centered>
                 <Modal.Header >
                     <Modal.Title style={{ fontSize: "18px", fontWeight: "600", color: "rgb(51, 51, 51)", lineHeight: "22px" }}>Đăng nhập</Modal.Title>
                 </Modal.Header>
@@ -60,7 +61,7 @@ const ModalFormLogin = (props) => {
                     onFinish={handleLogin}
                     autoComplete="on"
                     layout='vertical'>
-                    <Modal.Body className="modal-login p-5">
+                    <Modal.Body className="modal-login">
                         <p className="title">Đăng nhập bằng email</p>
                         <Form.Item name="username" label={<span>Email/ Số điện thoại <span style={{ color: "red" }}> *</span></span>}
                             rules={[
@@ -84,7 +85,7 @@ const ModalFormLogin = (props) => {
                                 }),
 
                             ]} validateTrigger={['onBlur']} validateFirst>
-                            <Input className="form-control" onChange={handleInputChange} />
+                            <Input className="form-control d-flex" onChange={handleInputChange} prefix={<UserOutlined />} />
                         </Form.Item>
                         <Form.Item
                             className='mb-3'
@@ -97,19 +98,21 @@ const ModalFormLogin = (props) => {
                                     message: 'Vui lòng nhập mật khẩu của bạn',
                                 },
                             ]} validateTrigger={['onBlur', 'onChange']}>
-                            <Input.Password className="form-control d-flex" />
+                            <Input.Password className="form-control d-flex" prefix={<UnlockOutlined />} />
                         </Form.Item>
 
+                        <Form.Item>
+                            <div className="d-flex justify-content-end">
+                                <a href="/forgot-password" target='_blank'>Quên mật khẩu?</a>
+                            </div>
+                        </Form.Item>
 
-                        <div className="d-flex justify-content-end">
-                            <a href="/forgot-password" target='_blank'>Quên mật khẩu?</a>
-                        </div>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button className='size ' variant="secondary" onClick={handleClose}>
+                        <Button className='size' variant="secondary" onClick={handleClose}>
                             Hủy
                         </Button>
-                        <Button  className='size' type="primary" htmlType='submit'>
+                        <Button className='size' type="primary" htmlType='submit'>
                             Đăng nhập
                         </Button>
                     </Modal.Footer>

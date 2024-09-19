@@ -50,9 +50,12 @@ const EmployerLayout = () => {
     return (
 
         <Layout hasSider>
-            <Sider className='sider' theme='light'>
-                <div className="demo-logo-vertical" style={{ height: "100px", backgroundColor: "gray" }} />
-                <Menu style={{ fontSize: "1rem" }} mode="inline" defaultSelectedKeys={['1']} items={itemSider} />
+            <Sider className='sider' theme='dark'>
+                <div className="demo-logo-vertical" >
+                    <img src="https://res.cloudinary.com/utejobhub/image/upload/v1723888103/rg2do6iommv6wp840ixr.png" alt="logo" 
+                     style={{ width: "80%", height: "80%", objectFit: "contain" }}/>
+                </div>
+                <Menu theme='dark' style={{ fontSize: "1rem" }} mode="inline" defaultSelectedKeys={['1']} items={itemSider} background />
             </Sider>
             <Layout>
                 <Header

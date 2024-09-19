@@ -22,6 +22,7 @@ const EmployerRegister = () => {
   const [DoB, setDoB] = useState('');
   const [current, setCurrent] = useState(0);
   const [form, setForm] = useState({});
+  const regChar = new RegExp(/^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]*$/);
 
   const onChange = (date, dateString) => {
     setDoB(dateString);
@@ -45,8 +46,8 @@ const EmployerRegister = () => {
   return (
     <>
       <div className=' form-register'>
-        <span className='title'>Đăng ký</span>
-        <Steps className='p-md-4' current={current} items={items} />
+        <span className='title'>Đăng Ký</span>
+        <Steps className='p-md-5' current={current} items={items} />
         <Form form={form1} onFinish={onFinish} name="validateOnlyform1" requiredMark={false} layout="vertical" autoComplete="off" initialValues={{ company_website: "" }}>
           {steps[current].content === '1' && <div className='col-12 mt-3'>
 
@@ -59,6 +60,10 @@ const EmployerRegister = () => {
                       required: true,
                       message: 'Vui lòng nhập tên của bạn',
                     },
+                    {
+                      pattern: regChar,
+                      message: 'Tên không hợp lệ',
+                    }
                   ]} validateTrigger={['onBlur']}>
                   <Input className="form-control" />
                 </Form.Item>
@@ -70,6 +75,10 @@ const EmployerRegister = () => {
                       required: true,
                       message: 'Vui lòng nhập họ của bạn',
                     },
+                    {
+                      pattern: regChar,
+                      message: 'Họ không hợp lệ',
+                    }
                   ]} validateTrigger={['onBlur']}>
                   <Input className="form-control" />
                 </Form.Item>

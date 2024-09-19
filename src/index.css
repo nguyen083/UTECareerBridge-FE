@@ -14,3 +14,21 @@ code {
 .font-size{
   font-size: 1rem;
 }
+.title {
+  font-size    : 2rem;
+  font-family: "Segoe UI";
+  color: #555555;
+}
+html{
+  font-family: "Segoe UI";
+
+  @media (max-width: 320px) {
+    font-size: 11px;  
+    
+  }
+}
+.size{
+  font-size: 1rem !important;
+  padding: 1rem 0.75rem !important;
+  align-content: center;
+}

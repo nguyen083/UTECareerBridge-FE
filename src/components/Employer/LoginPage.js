@@ -2,7 +2,8 @@ import './LoginPage.scss';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { employerLogin } from '../../services/apiService';
-import { Button, Checkbox, Form, Input } from 'antd';
+import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
+import { Button, Form, Input } from 'antd';
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -47,7 +48,7 @@ const LoginPage = () => {
             <div className="image col-lg-5 d-none d-lg-block"></div>
             <div className="col-12 p-sm-5 p-0 col-lg-7">
                 <div className="login-form mt-4 p-5 shadow">
-                    <span className="fw-bold title">Đăng nhập</span>
+                    <span className="d-flex justify-content-center title">Đăng Nhập</span>
                     <div className="col-md-12 form-group mt-5 mb-4">
                         <Form
                             requiredMark={false}
@@ -77,7 +78,7 @@ const LoginPage = () => {
                                     }),
 
                                 ]} validateTrigger={['onBlur']} validateFirst>
-                                <Input className="form-control" onChange={handleInputChange} />
+                                <Input className="form-control d-flex" size='large' onChange={handleInputChange} prefix={<UserOutlined />} />
                             </Form.Item>
                             <Form.Item
                                 className='mb-4'
@@ -90,14 +91,14 @@ const LoginPage = () => {
                                         message: 'Vui lòng nhập mật khẩu của bạn',
                                     },
                                 ]} validateTrigger={['onBlur', 'onChange']}>
-                                <Input.Password className="form-control d-flex" />
+                                <Input.Password className="form-control d-flex" prefix={<UnlockOutlined />}/>
                             </Form.Item>
 
 
                             <Form.Item>
                             <div className='d-flex justify-content-between mb-4'>
-                                <span>Bạn chưa đăng ký? <a href='/employer/register'>Đăng ký ngay</a></span>
-                                <a href='forgot-password' target='_blank'>Quên mật khẩu?</a>
+                                <span className='col-6'>Bạn chưa đăng ký? <a href='/employer/register'>Đăng ký ngay</a></span>
+                                <a className='col-6 d-flex justify-content-end' href='forgot-password' target='_blank'>Quên mật khẩu?</a>
                             </div>
                             </Form.Item>
                             <div className='d-flex justify-content-end'>

@@ -1,15 +1,13 @@
 .form-register {
-    padding: 6rem 11rem;
+    padding: 6rem 10rem;
 
+    @media (max-width: 1024px) {
+        padding: 6rem 8rem;
+    }
     @media (max-width: 992px) {
-        padding: 1rem;
+        padding: 3rem;
     }
 
-    .title {
-        font-size    : 1.625rem;
-        font-weight  : 500;
-        margin-bottom: 2rem;
-    }
 }
 
 .bottom-footer {
