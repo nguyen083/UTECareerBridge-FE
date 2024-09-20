@@ -94,7 +94,7 @@ const RegisterPage = () => {
                                             message: 'Vui lòng nhập số điện thoại của bạn',
                                         },
                                         {
-                                            pattern: new RegExp(/(84|0[3|5|7|8|9])+([0-9]{8})\b/),
+                                            pattern: new RegExp(/^(0[3|5|7|8|9])[0-9]{8}$/),
                                             message: 'Số điện thoại không hợp lệ'
                                         }
                                     ]}

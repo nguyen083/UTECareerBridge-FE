@@ -30,6 +30,8 @@ const userForgotPassword = async (values) => {
   formData.append('email', values.email);
   return axios.post('auth/forgot-password', formData);
 }
+const logOut = async () => {
+  return axios.post('auth/logout', {},config);
+}
 
-
-export { studentLogin, studentRegister, getInfor, employerLogin, userForgotPassword, userChangePassword }
+export { studentLogin, studentRegister, getInfor, employerLogin, userForgotPassword, userChangePassword, logOut }
