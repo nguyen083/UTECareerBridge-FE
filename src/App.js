@@ -8,26 +8,39 @@ import "react-toastify/dist/ReactToastify.css";
 const App = () => {
   return (
     <ConfigProvider
-    theme={{
-      token: {
-        fontFamily: 'Segoe UI',
-      },
-    }}>
+      theme={{
+        token: {
+          fontFamily: "'Inter', sans-serif",
+        },
+        components: {
+          Form: {
+            labelFontSize: '1rem',
+          },
+          Button: {
+            contentFontSize: '1rem',
+            contentFontSizeLG: '1rem',
+          },
+          Input: {
+            inputFontSize: '1rem',
+            inputFontSizeLG: '1rem',
+          }
+        }
+      }}>
       <div className="App">
-        <Outlet/>
+        <Outlet />
       </div>
       {/* <Navigation/> */}
       <ToastContainer
-                position="top-right"
-                autoClose={3000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-            />
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </ConfigProvider>
   );
 }

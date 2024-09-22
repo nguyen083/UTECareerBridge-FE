@@ -1,7 +1,7 @@
 import './LoginPage.scss';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { employerLogin } from '../../services/apiService';
+import { employerLogin, getToken, setToken } from '../../services/apiService';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { Button, Form, Input } from 'antd';
 
@@ -23,8 +23,6 @@ const LoginPage = () => {
         }
     };
 
-
-
     const handleLogin = async (values) => {
         //Validate email
         const { username, ...rest } = values;
@@ -36,8 +34,8 @@ const LoginPage = () => {
         const res = await employerLogin(updatedValues);
         if (res.status === 'OK') {
             toast.success(res.message);
-            localStorage.setItem('accessToken', res.data.token);
-            document.cookie = `refreshToken=${res.data.refreshToken}`;
+            setToken(res.data.token, res.data.refreshToken);
+            getToken();
             navigate('/employer');
         } else {
             toast.error(res.message);
@@ -91,15 +89,15 @@ const LoginPage = () => {
                                         message: 'Vui lòng nhập mật khẩu của bạn',
                                     },
                                 ]} validateTrigger={['onBlur', 'onChange']}>
-                                <Input.Password className="form-control d-flex" prefix={<UnlockOutlined />}/>
+                                <Input.Password className="form-control d-flex" prefix={<UnlockOutlined />} />
                             </Form.Item>
 
 
                             <Form.Item>
-                            <div className='d-flex justify-content-between mb-4'>
-                                <span className='col-6'>Bạn chưa đăng ký? <a href='/employer/register'>Đăng ký ngay</a></span>
-                                <a className='col-6 d-flex justify-content-end' href='forgot-password' target='_blank'>Quên mật khẩu?</a>
-                            </div>
+                                <div className='d-flex justify-content-between mb-4'>
+                                    <span className='col-6'>Bạn chưa đăng ký? <a href='/employer/register'>Đăng ký ngay</a></span>
+                                    <a className='col-6 d-flex justify-content-end' href='forgot-password' target='_blank'>Quên mật khẩu?</a>
+                                </div>
                             </Form.Item>
                             <div className='d-flex justify-content-end'>
                                 <Button className='size' type="primary" htmlType='submit'>

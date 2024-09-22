@@ -2,7 +2,7 @@ import { Button, Form, Input } from 'antd';
 import React from 'react';
 import Modal from 'react-bootstrap/Modal';
 import './ModalFormLogin.scss';
-import { studentLogin } from '../../services/apiService';
+import { getToken, setToken, studentLogin } from '../../services/apiService';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { toast } from 'react-toastify';
 
@@ -40,8 +40,8 @@ const ModalFormLogin = (props) => {
         let res = await studentLogin(updatedValues);
         if (res.status === 'OK') {
             toast.success(res.message);
-            localStorage.setItem('accessToken', res.data.token);
-            document.cookie = `refreshToken=${res.data.refresh_token}`;
+            setToken(res.data.token, res.data.refresh_token); //Đổi lại thành refreshToken
+            getToken();
         } else {
             toast.error(res.message);
         }
@@ -51,7 +51,7 @@ const ModalFormLogin = (props) => {
     };
     return (
         <form >
-            <Modal style={{backgroundColor: "gray"}} show={show} onHide={() => setShow(false)} size='lg' backdrop="static" centered>
+            <Modal style={{ backgroundColor: "gray" }} show={show} onHide={() => setShow(false)} size='lg' backdrop="static" centered>
                 <Modal.Header >
                     <Modal.Title style={{ fontSize: "18px", fontWeight: "600", color: "rgb(51, 51, 51)", lineHeight: "22px" }}>Đăng nhập</Modal.Title>
                 </Modal.Header>

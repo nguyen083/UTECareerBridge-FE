@@ -1,10 +1,23 @@
 import axios from "../utils/axiosCustomize.js";
 
-const config = {
-  headers: {
-    Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-  }
+let config = {};
+const setToken = (accessToken, refreshToken) => {
+  localStorage.setItem('accessToken', accessToken);
+  document.cookie = `refreshToken=${refreshToken}`;
+}
+const getToken = () => {
+  config = {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+    }
+  };
 };
+
+const removeToken = () => {
+  localStorage.removeItem('accessToken');
+  document.cookie = 'refreshToken=';
+}
+
 
 const studentLogin = async (values) => {
   return axios.post('users/login', values);
@@ -22,8 +35,8 @@ const studentRegister = async (values) => {
 const getInfor = async () => {
   return axios.get('employers/company-general-info', config);
 }
-const userChangePassword = async (token, password) => {
-  return axios.post('auth/reset-password', {token, password});
+const userResetPassword = async (token, password) => {
+  return axios.post('auth/reset-password', { token, password });
 }
 const userForgotPassword = async (values) => {
   const formData = new FormData();
@@ -31,7 +44,7 @@ const userForgotPassword = async (values) => {
   return axios.post('auth/forgot-password', formData);
 }
 const logOut = async () => {
-  return axios.post('auth/logout', {},config);
+  return axios.post('auth/logout', {}, config);
 }
 
-export { studentLogin, studentRegister, getInfor, employerLogin, userForgotPassword, userChangePassword, logOut }
+export { getToken, setToken, removeToken, studentLogin, studentRegister, getInfor, employerLogin, userForgotPassword, userResetPassword, logOut }

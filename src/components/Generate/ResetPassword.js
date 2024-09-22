@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Input, Space } from 'antd';
 import { useLocation } from 'react-router-dom';
-import "./ChangePassword.scss";
-import { userChangePassword } from "../../services/apiService";
+import "./ResetPassword.scss";
+import { userResetPassword } from "../../services/apiService";
 import { toast } from "react-toastify";
 
 
-const ChangePassword = () => {
+const ResetPassword = () => {
 
     const [email, setEmail] = useState("");
     const [submit, setSubmit] = useState(false);
     const [form] = Form.useForm();
     const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const token = queryParams.get('token');
     const [message, setMessage] = useState("");
-
+    let token = "";
     useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        token = queryParams.get('token');
         setEmail(queryParams.get('email'));
     }, []);
 
     const onFinish = async (values) => {
-        const res = await userChangePassword(token, values.password);
+        const res = await userResetPassword(token, values.password);
         // Gọi API để cập nhật mật khẩu mới cho người dùng abc@gmail
         if (res.status === 'OK') {
             setMessage(res.message);
@@ -115,4 +115,4 @@ const ChangePassword = () => {
         </div>
     );
 };
-export default ChangePassword;
+export default ResetPassword;

@@ -1,5 +1,5 @@
 import React from 'react';
-import {  useState } from 'react';
+import { useState } from 'react';
 import { Button, Form, Input, Space, DatePicker, Steps, Radio } from 'antd';
 import './EmployerRegister.scss';
 import SubmitButton from '../Generate/SubmitButton';
@@ -239,7 +239,7 @@ const EmployerRegister = () => {
         </Form>
       </div>
       <div className='bottom-footer position-fixed bottom-0 p-2' >
-        <span>Bạn đã có tài khoản <a href='/login' className='text-decoration-none'>Quay lại đăng nhập</a></span>
+        <span>Bạn đã có tài khoản? <a href='/login' className='text-decoration-none'>Đăng nhập</a></span>
       </div>
     </>
 

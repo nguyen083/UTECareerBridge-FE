@@ -17,8 +17,8 @@ import {
     UserOutlined,
     BellOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, Avatar, Modal,  } from 'antd';
-import { getInfor, logOut } from '../../services/apiService';
+import { Layout, Menu, Avatar, } from 'antd';
+import { getInfor, getToken, logOut, removeToken } from '../../services/apiService';
 import { toast } from 'react-toastify';
 const { Header, Content, Footer, Sider } = Layout;
 const itemSider = [
@@ -46,7 +46,7 @@ const itemHeader = [
 const navigationMap = {
     '1': '/employer',
     '2.1': '/employer/profile',
-    '2.2': '#',
+    '2.2': '/employer/change-password',
     '3': '/employer/company',
     '4': '#',
     '5': '#',
@@ -57,15 +57,17 @@ const navigationMap = {
     '10': '#',
     '11': '#',
     '12': 'logout' // Đặt một giá trị đặc biệt cho logout
-  };
+};
 
 const EmployerLayout = () => {
     const [name, setName] = useState('');
     const [avatar, setAvatar] = useState(null);
+    const [current, setCurrent] = useState('1');
     const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
+            getToken();
             let res = await getInfor();
             if (res.status === 'OK') {
                 setName(res.data.firstName + ' ' + res.data.last_name);
@@ -76,29 +78,31 @@ const EmployerLayout = () => {
         };
         fetchData();
     }, []);
-    const logout = async () => {
-        const res = await logOut();
-        if (res.status === 'OK') {
-            localStorage.removeItem('accessToken');
-            // Xóa cookie refreshToken
-            document.cookie = 'refreshToken=';
-            navigate('/login');
-            toast.success(res.message);
-        } else {
-            toast.error(res.message);
+    useEffect(() => {
+        const logout = async () => {
+            getToken();
+            const res = await logOut();
+            if (res.status === 'OK') {
+                removeToken();
+                navigate('/login');
+                toast.success(res.message);
+            } else {
+                toast.error(res.message);
+            }
         }
-    }
-    const navigateSideBar = async (e) => {
+        const navigateSideBar = async (e) => {
+            const path = navigationMap[e];
+            if (path) {
+                if (path === 'logout') {
+                    await logout();
+                } else {
+                    navigate(path);
+                }
+            }
+        };
+        navigateSideBar(current);
+    }, [current]);
 
-        const path = navigationMap[e.key];
-        if (path) {
-          if (path === 'logout') {
-            await logout();
-          } else {
-            navigate(path);
-          }
-        }
-    };
     return (
 
         <Layout hasSider>
@@ -107,7 +111,7 @@ const EmployerLayout = () => {
                     <img src="https://res.cloudinary.com/utejobhub/image/upload/v1723888103/rg2do6iommv6wp840ixr.png" alt="logo"
                         style={{ width: "80%", height: "80%", objectFit: "contain" }} />
                 </div>
-                <Menu onClick={navigateSideBar} theme='light' style={{ fontSize: "1rem" }} mode="inline" defaultSelectedKeys={['1']} items={itemSider} background />
+                <Menu onClick={(e) => setCurrent(e.key)} selectedKeys={[current]} theme='light' style={{ fontSize: "1rem" }} mode="inline" items={itemSider} background />
             </Sider>
             <Layout>
                 <Header
@@ -126,7 +130,7 @@ const EmployerLayout = () => {
                             minWidth: 0
                         }} />
                     <div className="d-flex gap-2 " style={{ height: "100%", alignItems: "center" }}>
-                        <Avatar className='avatar' icon={<UserOutlined />} src={avatar && <img src={avatar} />} />
+                        <Avatar className='avatar' icon={<UserOutlined />} src={avatar && <img src={avatar} alt='' />} />
                         <span className={`username d-none d-md-inline`}>{name}</span>
                     </div>
                 </Header>

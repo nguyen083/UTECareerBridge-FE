@@ -1,0 +1,14 @@
+.disable-input {
+    &:disabled {
+        background: #f0f0f0;
+        /* Màu nền khi bị disable */
+        cursor    : not-allowed;
+        /* Con trỏ chuột khi bị disable */
+        color     : #000000;
+        /* Màu chữ khi bị disable */
+        border    : 1px solid #d0d0d0;
+        /* Đường viền khi bị disable */
+        opacity   : 0.6;
+        /* Độ mờ khi bị disable */
+    }
+}

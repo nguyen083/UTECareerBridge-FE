@@ -2,13 +2,16 @@ import { useState } from "react";
 import "./ForgotPassword.scss";
 import { Button, Form, Input } from 'antd';
 import { userForgotPassword } from "../../services/apiService";
+import IconLoading from "./IconLoading";
 const ForgotPassword = () => {
 
     const [isSend, setIsSend] = useState(false);
     const [message, setMessage] = useState("");
+    const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
     const onSubmit = async (values) => {
         console.log('Success:', values);
+        setLoading(true);
         const res = await userForgotPassword(values);
         console.log(res);
         if (res.status === 'OK') {
@@ -60,7 +63,7 @@ const ForgotPassword = () => {
                         </div>
                     </Form.Item>
                     <Form.Item className="d-flex justify-content-end">
-                        <Button className="p-3 font-size" type="primary" htmlType="submit">Xác nhận</Button>
+                        <Button className="p-3 font-size" type="primary" htmlType="submit" disabled={loading}><IconLoading time={7} loading={loading} setLoading={setLoading} /> Xác nhận</Button>
                     </Form.Item>
                 </Form>
             </div>

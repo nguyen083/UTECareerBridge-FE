@@ -15,12 +15,13 @@ import DashBoard from './components/Employer/DashBoard/DashBoard.js';
 import RegisterPage from './components/Student/RegisterPage.js';
 import LoginPage from './components/Employer/LoginPage.js';
 import EmployerRegister from './components/Employer/EmployerRegister.js';
-import ForgotPassword from './components/Employer/ForgotPassword.js';
-import ChangePassword from './components/Employer/ChangePassword.js';
+import ForgotPassword from './components/Generate/ForgotPassword.js';
+import ResetPassword from './components/Generate/ResetPassword.js';
 import BackgroundAndForm from './components/Generate/BackgroundAndForm.js';
 import EmployerLayout from './components/Employer/EmployerLayout.js';
 import EmployerProfile from './components/Employer/Profile/EmployerProfile.js';
 import EmployerCompany from './components/Employer/Company/EmployerCompany.js';
+import EmployerChangePassword from './components/Employer/ChangePassword/EmployerChangePassword.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -41,6 +42,7 @@ root.render(
             <Route index element={<Navigate to="/employer/dashboard" replace />} />
             <Route path='dashboard' element={<DashBoard />} />
             <Route path='profile' element={<EmployerProfile />} />
+            <Route path='change-password' element={<EmployerChangePassword />} />
             <Route path='company' element={<EmployerCompany />} />
           </Route>
         </Route>
@@ -50,7 +52,7 @@ root.render(
           <Route index element={<ForgotPassword />} />
         </Route>
         <Route path='reset-password' element={<BackgroundAndForm />} >
-          <Route index element={<ChangePassword />} />
+          <Route index element={<ResetPassword />} />
         </Route>
         {/* </Route> */}
 
