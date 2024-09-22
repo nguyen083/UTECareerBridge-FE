@@ -16,8 +16,13 @@ code {
 }
 .title {
   font-size    : 2rem;
-  font-family: "Segoe UI";
   color: #555555;
+}
+.title1{
+  font-size    : 1.5rem;
+  font-weight: 500;
+  color: #474747;
+  line-height: 1rem;
 }
 html{
   font-family: "Segoe UI";

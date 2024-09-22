@@ -7,12 +7,13 @@
     bottom            : 0;
     scrollbar-width   : thin;
     scrollbar-color   : unset;
-    .demo-logo-vertical{
+
+    .demo-logo-vertical {
         background-color: rgba(255, 255, 255, 0.919);
-        height: 6.25rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        height          : 6.25rem;
+        display         : flex;
+        justify-content : center;
+        align-items     : center;
     }
 }
 
@@ -25,18 +26,32 @@
     display         : flex;
     align-items     : center;
     background-color: white;
+
     @media screen and (max-width: 1024px) {
         padding-left: 0;
     }
+
     .menu-header {
         padding: 0;
 
-
     }
-    .username{
-        font-weight: 500;
+
+    .username {
+        font-weight         : 500;
         // @media (max-width: 768px) {
         //     // display: none;
         // }
+    }
+}
+
+.content-employer {
+    gap           : 1rem;
+    display       : flex;
+    flex-direction: column;
+    margin        : 1.5rem 2.5rem 0;
+    overflow      : initial;
+    @media (max-width: 426px) {
+        margin: 1.5rem 1rem 0;
+        
     }
 }

@@ -11,7 +11,7 @@ import Test from './components/Student/Test.js';
 import JobPage from './components/Student/JobPage.js';
 import EmployerPage from './components/Employer/EmployerPage.js';
 import FavoritePage from './components/Student/FavoritePage.js';
-import AccountPage from './components/Student/AccountPage.js';
+import DashBoard from './components/Employer/DashBoard/DashBoard.js';
 import RegisterPage from './components/Student/RegisterPage.js';
 import LoginPage from './components/Employer/LoginPage.js';
 import EmployerRegister from './components/Employer/EmployerRegister.js';
@@ -19,6 +19,8 @@ import ForgotPassword from './components/Employer/ForgotPassword.js';
 import ChangePassword from './components/Employer/ChangePassword.js';
 import BackgroundAndForm from './components/Generate/BackgroundAndForm.js';
 import EmployerLayout from './components/Employer/EmployerLayout.js';
+import EmployerProfile from './components/Employer/Profile/EmployerProfile.js';
+import EmployerCompany from './components/Employer/Company/EmployerCompany.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -35,7 +37,12 @@ root.render(
           <Route path='register' element={<BackgroundAndForm />}>
             <Route index element={<EmployerRegister />} />
           </Route>
-          <Route index element={<EmployerLayout />} />
+          <Route element={<EmployerLayout />} >
+            <Route index element={<Navigate to="/employer/dashboard" replace />} />
+            <Route path='dashboard' element={<DashBoard />} />
+            <Route path='profile' element={<EmployerProfile />} />
+            <Route path='company' element={<EmployerCompany />} />
+          </Route>
         </Route>
 
         {/* <Route path='user' element={<EmployerPage />}> */}
@@ -49,7 +56,6 @@ root.render(
 
         <Route path='login' element={<LoginPage />} />
         <Route path='favorite' element={<FavoritePage />} />
-        <Route path='account' element={<AccountPage />} />
         <Route path='register' element={<RegisterPage />} />
 
       </Route>

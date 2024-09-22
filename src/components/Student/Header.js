@@ -13,6 +13,9 @@ const Header = () => {
     const formRef = useRef(null);
     const navigate = useNavigate(null);
 
+    const NagigateLogin = () => {
+        localStorage.getItem('accessToken') ? navigate('/employer') : navigate('/login');
+    }
     const handleClickOutside = (event) => {
         if (formRef.current && !formRef.current.contains(event.target)) {
             //console.log('Bạn đã nhấp bên ngoài form-login');
@@ -87,7 +90,7 @@ const Header = () => {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <a href="/login" className="sc-gkPMqy etFDyw">
+                                            <a onClick={NagigateLogin} className="sc-gkPMqy etFDyw">
                                                 <span>Nhà tuyển dụng</span>
                                             </a>
                                         </div>

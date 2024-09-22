@@ -6,7 +6,8 @@ import { IoIosPeople } from "react-icons/io";
 import { MdOutlineMessage } from "react-icons/md";
 import { BsTicketPerforated } from "react-icons/bs";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { Outlet,useNavigate } from 'react-router-dom';
+import { MdManageAccounts } from "react-icons/md";
+import { Outlet, useNavigate } from 'react-router-dom';
 import {
     BarChartOutlined,
     LogoutOutlined,
@@ -16,13 +17,13 @@ import {
     UserOutlined,
     BellOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, Avatar, Modal } from 'antd';
+import { Layout, Menu, Avatar, Modal,  } from 'antd';
 import { getInfor, logOut } from '../../services/apiService';
 import { toast } from 'react-toastify';
 const { Header, Content, Footer, Sider } = Layout;
 const itemSider = [
     { key: '1', icon: <BarChartOutlined />, label: 'Dashboard' },
-    { key: '2', icon: <UserOutlined />, label: 'Tài khoản', children: [{ key: '2.1', label: 'Thông tin cá nhân' }] },
+    { key: '2', icon: <UserOutlined />, label: 'Tài khoản', children: [{ key: '2.1', label: 'Thông tin cá nhân', icon: <MdManageAccounts /> }, { key: '2.2', label: 'Đổi mật khẩu', icon: <RiLockPasswordLine /> }] },
     { key: '3', icon: <IoBusinessOutline />, label: 'Công ty' },
     { key: '4', icon: <UploadOutlined />, label: 'Đăng tuyển' },
     { key: '5', icon: <TeamOutlined />, label: 'Ứng viên' },
@@ -42,12 +43,27 @@ const itemHeader = [
     { key: '5', label: 'Điều khoản' },
     { key: '6', label: 'Về chúng tôi' },
 ];
-
+const navigationMap = {
+    '1': '/employer',
+    '2.1': '/employer/profile',
+    '2.2': '#',
+    '3': '/employer/company',
+    '4': '#',
+    '5': '#',
+    '6': '#',
+    '7': '#',
+    '8': '#',
+    '9': '#',
+    '10': '#',
+    '11': '#',
+    '12': 'logout' // Đặt một giá trị đặc biệt cho logout
+  };
 
 const EmployerLayout = () => {
     const [name, setName] = useState('');
-    const[avatar, setAvatar] = useState(null);
+    const [avatar, setAvatar] = useState(null);
     const navigate = useNavigate();
+
     useEffect(() => {
         const fetchData = async () => {
             let res = await getInfor();
@@ -60,72 +76,71 @@ const EmployerLayout = () => {
         };
         fetchData();
     }, []);
-    const logout = async() => {
+    const logout = async () => {
         const res = await logOut();
-        if(res.status === 'OK') {
+        if (res.status === 'OK') {
             localStorage.removeItem('accessToken');
-            document.cookie.removeItem('refreshToken');
+            // Xóa cookie refreshToken
+            document.cookie = 'refreshToken=';
             navigate('/login');
+            toast.success(res.message);
         } else {
             toast.error(res.message);
         }
     }
-    const navigateSideBar = async(e) => {
-       
-        switch (e.key) {
-            case '12':
-                await logout();
-                break;
-            default:
-                break;
+    const navigateSideBar = async (e) => {
+
+        const path = navigationMap[e.key];
+        if (path) {
+          if (path === 'logout') {
+            await logout();
+          } else {
+            navigate(path);
+          }
         }
-      };
+    };
     return (
 
-            <Layout hasSider>
-                <Sider breakpoint='lg' width={250} className='sider' theme='light' /*collapsible*/ >
-                    <div className="demo-logo-vertical" >
-                        <img src="https://res.cloudinary.com/utejobhub/image/upload/v1723888103/rg2do6iommv6wp840ixr.png" alt="logo"
-                            style={{ width: "80%", height: "80%", objectFit: "contain" }} />
+        <Layout hasSider>
+            <Sider breakpoint='lg' width={250} className='sider' theme='light' /*collapsible*/ >
+                <div className="demo-logo-vertical" >
+                    <img src="https://res.cloudinary.com/utejobhub/image/upload/v1723888103/rg2do6iommv6wp840ixr.png" alt="logo"
+                        style={{ width: "80%", height: "80%", objectFit: "contain" }} />
+                </div>
+                <Menu onClick={navigateSideBar} theme='light' style={{ fontSize: "1rem" }} mode="inline" defaultSelectedKeys={['1']} items={itemSider} background />
+            </Sider>
+            <Layout>
+                <Header
+
+                    className='header-employer'>
+                    <Menu
+                        className="menu-header"
+                        theme='light'
+                        mode="horizontal"
+                        defaultSelectedKeys={['2']}
+                        items={itemHeader}
+
+                        style={{
+                            fontSize: '1rem',
+                            flex: 1,
+                            minWidth: 0
+                        }} />
+                    <div className="d-flex gap-2 " style={{ height: "100%", alignItems: "center" }}>
+                        <Avatar className='avatar' icon={<UserOutlined />} src={avatar && <img src={avatar} />} />
+                        <span className={`username d-none d-md-inline`}>{name}</span>
                     </div>
-                    <Menu onClick={navigateSideBar} theme='light' style={{ fontSize: "1rem" }} mode="inline" defaultSelectedKeys={['1']} items={itemSider} background />
-                </Sider>
-                <Layout>
-                    <Header
-
-                        className='header-employer'>
-                        <Menu
-                            className="menu-header"
-                            theme='light'
-                            mode="horizontal"
-                            defaultSelectedKeys={['2']}
-                            items={itemHeader}
-
-                            style={{
-                                fontSize: '1rem',
-                                flex: 1,
-                                minWidth: 0
-                            }} />
-                        <div className="d-flex gap-2 " style={{ height: "100%", alignItems: "center" }}>
-                            <Avatar size={45} icon={<UserOutlined />} src={avatar&& <img src={avatar} />} />
-                            <span className={`username d-none d-md-inline`}>{name}</span>
-                        </div>
-                    </Header>
-                    <Content
-                        style={{
-                            margin: '24px 16px 0',
-                            overflow: 'initial',
-                        }}>
-                        <Outlet />
-                    </Content>
-                    <Footer
-                        style={{
-                            textAlign: 'center',
-                        }}>
-                        Ant Design ©{new Date().getFullYear()} Created by Ant UED
-                    </Footer>
-                </Layout>
+                </Header>
+                <Content className='content-employer'>
+                    <Outlet />
+                </Content>
+                <Footer
+                    style={{
+                        textAlign: 'center',
+                    }}>
+                    Ant Design ©{new Date().getFullYear()} Created by Ant UED
+                </Footer>
             </Layout>
+        </Layout>
 
     );
 };
