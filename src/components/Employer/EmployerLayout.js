@@ -3,10 +3,12 @@ import './EmployerLayout.scss';
 import { IoBusinessOutline } from "react-icons/io5";
 import { LiaBriefcaseSolid } from "react-icons/lia";
 import { IoIosPeople } from "react-icons/io";
+import { FaRegNewspaper } from "react-icons/fa";
 import { MdOutlineMessage } from "react-icons/md";
 import { BsTicketPerforated } from "react-icons/bs";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdManageAccounts } from "react-icons/md";
+import { TiBusinessCard } from "react-icons/ti";
 import { Outlet, useNavigate } from 'react-router-dom';
 import {
     BarChartOutlined,
@@ -24,7 +26,7 @@ const { Header, Content, Footer, Sider } = Layout;
 const itemSider = [
     { key: '1', icon: <BarChartOutlined />, label: 'Dashboard' },
     { key: '2', icon: <UserOutlined />, label: 'Tài khoản', children: [{ key: '2.1', label: 'Thông tin cá nhân', icon: <MdManageAccounts /> }, { key: '2.2', label: 'Đổi mật khẩu', icon: <RiLockPasswordLine /> }] },
-    { key: '3', icon: <IoBusinessOutline />, label: 'Công ty' },
+    { key: '3', icon: <IoBusinessOutline />, label: 'Công ty', children: [{ key: '3.1', label: 'Thông tin công ty', icon: <TiBusinessCard /> }, { key: '3.2', label: 'Giấy chứng nhận', icon: <FaRegNewspaper /> }] },
     { key: '4', icon: <UploadOutlined />, label: 'Đăng tuyển' },
     { key: '5', icon: <TeamOutlined />, label: 'Ứng viên' },
     { key: '6', icon: <LiaBriefcaseSolid />, label: 'Việc làm' },
@@ -47,7 +49,8 @@ const navigationMap = {
     '1': '/employer',
     '2.1': '/employer/profile',
     '2.2': '/employer/change-password',
-    '3': '/employer/company',
+    '3.1': '/employer/company',
+    '3.2': '/employer/business-certificate',
     '4': '#',
     '5': '#',
     '6': '#',

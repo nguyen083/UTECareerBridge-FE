@@ -11,19 +11,31 @@ const App = () => {
       theme={{
         token: {
           fontFamily: "'Inter', sans-serif",
+          inputFontSize: '1rem',
+          //inputFontSizeLG: '1rem',
         },
         components: {
           Form: {
             labelFontSize: '1rem',
+            itemMarginBottom: '1.5rem',
+            labelColonMarginInlineEnd: '0.5rem',
+            labelHeight: '0.5rem',
+            labelColonMarginInlineStart: '0.125rem',
+            verticalLabelPadding: '0 0 0rem'
           },
           Button: {
             contentFontSize: '1rem',
             contentFontSizeLG: '1rem',
+            paddingBlock: '0.25rem',
+            paddingBlockLG: '0.5rem',
           },
           Input: {
             inputFontSize: '1rem',
             inputFontSizeLG: '1rem',
-          }
+          },
+          Menu: {
+            iconMarginInlineEnd: '0.625rem'
+          },
         }
       }}>
       <div className="App">

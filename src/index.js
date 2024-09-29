@@ -22,6 +22,7 @@ import EmployerLayout from './components/Employer/EmployerLayout.js';
 import EmployerProfile from './components/Employer/Profile/EmployerProfile.js';
 import EmployerCompany from './components/Employer/Company/EmployerCompany.js';
 import EmployerChangePassword from './components/Employer/ChangePassword/EmployerChangePassword.js';
+import BusinessCertificate from './components/Employer/Company/BusinessCertificate.js';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -44,6 +45,7 @@ root.render(
             <Route path='profile' element={<EmployerProfile />} />
             <Route path='change-password' element={<EmployerChangePassword />} />
             <Route path='company' element={<EmployerCompany />} />
+            <Route path='business-certificate' element={<BusinessCertificate />} />
           </Route>
         </Route>
 

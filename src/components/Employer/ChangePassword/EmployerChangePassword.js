@@ -18,11 +18,13 @@ const EmployerChangePassword = () => {
             <BoxContainer>
                 <Form onFinish={onFinish} layout="horizontal" initialValues={infor} size="large" requiredMark={false} autoComplete="false"
                     labelCol={{
-                        span: 4,
+                        md:{ span: 4},
+                        span: 24
                     }}
-                    wrapperCol={
-                        { span: 10 }
-                    }>
+                    wrapperCol={{
+                        md: { span: 10 },
+                        span: 24
+                    }}>
                     <Form.Item label="Email đăng nhập" name="email">
                         <Input disabled />
                     </Form.Item>

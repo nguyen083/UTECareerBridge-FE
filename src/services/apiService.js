@@ -43,8 +43,27 @@ const userForgotPassword = async (values) => {
   formData.append('email', values.email);
   return axios.post('auth/forgot-password', formData);
 }
+const getAllIndustry = async () => {
+  return axios.get('industries/get-all-industries');
+}
+const getAllBenefit = async () => {
+  return axios.get('benefits/get-all-benefits');
+}
 const logOut = async () => {
   return axios.post('auth/logout', {}, config);
 }
 
-export { getToken, setToken, removeToken, studentLogin, studentRegister, getInfor, employerLogin, userForgotPassword, userResetPassword, logOut }
+export {
+  getToken,
+  setToken,
+  removeToken,
+  studentLogin,
+  studentRegister,
+  getInfor,
+  employerLogin,
+  userForgotPassword,
+  userResetPassword,
+  logOut,
+  getAllIndustry,
+  getAllBenefit
+}
