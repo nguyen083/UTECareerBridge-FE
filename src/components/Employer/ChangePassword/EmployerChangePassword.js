@@ -18,7 +18,7 @@ const EmployerChangePassword = () => {
             <BoxContainer>
                 <Form onFinish={onFinish} layout="horizontal" initialValues={infor} size="large" requiredMark={false} autoComplete="false"
                     labelCol={{
-                        md:{ span: 4},
+                        md: { span: 4 },
                         span: 24
                     }}
                     wrapperCol={{
@@ -28,7 +28,7 @@ const EmployerChangePassword = () => {
                     <Form.Item label="Email đăng nhập" name="email">
                         <Input disabled />
                     </Form.Item>
-                    <Form.Item label="Mật khẩu hiện tại" name="old_password"
+                    <Form.Item label="Mật khẩu hiện tại" name="oldPassword"
                         rules={
                             [{
                                 required: true,
@@ -37,7 +37,7 @@ const EmployerChangePassword = () => {
                         } validateTrigger={['onBlur']}>
                         <Input.Password />
                     </Form.Item>
-                    <Form.Item label="Mật khẩu mới" name="new_password"
+                    <Form.Item label="Mật khẩu mới" name="newPassword"
                         rules={
                             [{
                                 required: true,
@@ -62,7 +62,7 @@ const EmployerChangePassword = () => {
                         } validateFirst validateTrigger={['onBlur']}>
                         <Input.Password />
                     </Form.Item>
-                    <Form.Item label="Nhập lại mật khẩu mới" name="retype_password"
+                    <Form.Item label="Nhập lại mật khẩu mới" name="retypePassword"
                         rules={
                             [{
                                 required: true,

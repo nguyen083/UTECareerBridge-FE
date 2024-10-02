@@ -3,32 +3,69 @@ import BoxContainer from '../../Generate/BoxContainer';
 import './EmployerCompany.scss';
 import { useEffect, useState } from 'react';
 import { IoMdTrash } from "react-icons/io";
-import { getAllBenefit, getAllIndustry } from '../../../services/apiService';
+import { getAllBenefit, getAllIndustry, updateEmployerCompanyProfile } from '../../../services/apiService';
 import { PlusCircleFilled } from '@ant-design/icons';
 import CustomizeQuill from '../../Generate/CustomizeQuill';
 import PicturesWall from '../../Generate/Upload';
-
+import { useSelector, useDispatch } from 'react-redux';
+import { setInfor } from '../../../redux/action/employerSlice';
+import { toast } from 'react-toastify';
+import IconLoading from "../../Generate/IconLoading";
 
 const EmployerCompany = () => {
 
     const [form] = Form.useForm();
     const [industries, setIndustries] = useState([]);
     const [benefits, setBenefits] = useState([]);
-    const [countBenefit, setCountBenefit] = useState(1);
+    const dispatch = useDispatch();
     const { TextArea } = Input;
+    const [loading, setLoading] = useState(false);
+    const [benefitDetails, setBenefitDetails] = useState([]);
+    const defaultLogo = useSelector(state => state.employer.companyLogo);
+    const defaultBackground = useSelector(state => state.employer.backgroundImage);
     const infor = {
-        companyName: "",
-        companyAddress: "",
-        industryId: 0,
-        companySize: "",
-        companyDescription: "",
+        ...useSelector(state => state.employer),
+        companyLogo: new File([], ""),
+        backgroundImage: new File([], ""),
     };
     const handleReset = () => {
         form.resetFields();
     }
     const handleSubmit = (values) => {
-        console.log(values);
+        updateEmployerCompanyProfile(values).then(res => {
+            if (res.status === 'OK') {
+                toast.success(res.message);
+                // cập nhật lại redux
+                dispatch(setInfor(res.data));
+                //delay 0.5 sau đó reset form
+                setTimeout(() => {
+                    handleReset();
+                }, 500);
+            }
+            else {
+                toast.error(res.message);
+            }
+        });
     }
+    const addBenefit = () => {
+        if (benefitDetails.length < 3) {
+            setBenefitDetails([...benefitDetails, { benefitId: null, description: "" }]);
+        }
+    };
+
+    const removeBenefit = (index) => {
+        if (benefitDetails.length > 0) {
+            const newBenefitDetails = benefitDetails.filter((_, i) => i !== index);
+            setBenefitDetails(newBenefitDetails);
+        }
+    };
+
+    const handleBenefitChange = (index, field, value) => {
+        const newBenefitDetails = [...benefitDetails];
+        newBenefitDetails[index][field] = value;
+        setBenefitDetails(newBenefitDetails);
+    };
+
     useEffect(() => {
         getAllIndustry().then(res => {
             setIndustries(res.data);
@@ -70,7 +107,7 @@ const EmployerCompany = () => {
                             ]} validateTrigger={['onChange', 'onBlur']}>
                             <Input allowClear placeholder='Ví dụ: 130 Sương Nguyệt Anh, Phường Bến Thành, Quận 1' />
                         </Form.Item>
-                        <Form.Item name="companySize" className='col-6 col-md-5 mt-0' label="Quy mô công ty">
+                        <Form.Item name="companySize" className='col-12 col-md-5 mt-0' label="Quy mô công ty">
                             <Select>
                                 <Select.Option value="">Vui lòng chọn</Select.Option>
                                 <Select.Option value="Ít hơn 10"></Select.Option>
@@ -85,7 +122,21 @@ const EmployerCompany = () => {
                                 <Select.Option value="Hơn 50.000">Hơn 50.000</Select.Option>
                             </Select>
                         </Form.Item>
-                        <Form.Item name="industryId" className="col-12 mt-0" label={<span>Lĩnh vực công ty <span style={{ color: "red" }}> *</span></span>}
+                        <Form.Item name="companyEmail" className="col-12 col-md-7 mt-0" label={<span>Email <span style={{ color: "red" }}> *</span></span>}
+                            rules={[
+                                {
+                                    required: true,
+                                    message: 'Vui lòng nhập email của bạn',
+                                },
+                                {
+                                    type: 'email',
+                                    message: 'Email không hợp lệ',
+                                }
+                            ]}
+                            validateTrigger={['onBlur']}>
+                            <Input allowClear />
+                        </Form.Item>
+                        <Form.Item name="industryId" className="col-12 col-md-5 mt-0" label={<span>Lĩnh vực công ty <span style={{ color: "red" }}> *</span></span>}
                             rules={[
                                 {
                                     required: true,
@@ -101,6 +152,7 @@ const EmployerCompany = () => {
                                 }),
                             ]} validateTrigger={['onChange', 'onBlur']}>
                             <Select>
+                                <Select.Option value={0}>Vui lòng chọn</Select.Option>
                                 {industries.map(industry => (
                                     <Select.Option value={industry.industryId}>
                                         {industry.industryName}
@@ -108,33 +160,46 @@ const EmployerCompany = () => {
                                 ))}
                             </Select>
                         </Form.Item>
-                        <Form.Item className="col-12 mt-0" label="Phúc lợi công ty">
-                            <Flex gap="middle">
-                                <Form.Item name="benefitDetails[0].benefitId" className="col-3">
-                                    <Select>
-                                        {benefits.map(benefit => (
-                                            <Select.Option value={benefit.benefitId}>
-                                                {/* {benefit.benefitIcon} */}
-                                                {benefit.benefitName}
-                                            </Select.Option>
-                                        ))}
-                                    </Select>
-                                </Form.Item>
-                                <Form.Item name="benefitDetails[0].description" className="col-8">
-                                    <TextArea rows={3} allowClear />
-                                </Form.Item>
-                                <Button disabled={countBenefit === 1} onClick={() => setCountBenefit(countBenefit - 1)}><IoMdTrash /></Button>
-                            </Flex>
-                            <Button onClick={() => { }} icon={<PlusCircleFilled style={{ color: "#4096FF" }} />} type='text'>Thêm phúc lợi</Button>
+                        <Form.Item className="col-12 mt-0" label={<span>Phúc lợi công ty <span style={{ color: "red" }}> *</span></span>}>
+                            {benefitDetails.map((benefit, index) => (
+                                <Flex key={index} gap="middle">
+                                    <Form.Item name={`benefitDetails[${index}].benefitId`} className="col-3">
+                                        <Select
+                                            value={benefit.benefitId}
+                                            onChange={(value) => handleBenefitChange(index, 'benefitId', value)}
+                                        >
+                                            {benefits.map(benefit => (
+                                                <Select.Option key={benefit.benefitId} value={benefit.benefitId}>
+                                                    {benefit.benefitName}
+                                                </Select.Option>
+                                            ))}
+                                        </Select>
+                                    </Form.Item>
+                                    <Form.Item name={`benefitDetails[${index}].description`} className="col-8">
+                                        <TextArea
+                                            rows={3}
+                                            allowClear
+                                            value={benefit.description}
+                                            onChange={(e) => handleBenefitChange(index, 'description', e.target.value)}
+                                        />
+                                    </Form.Item>
+                                    <Button disabled={benefitDetails.length === 1} onClick={() => removeBenefit(index)}>
+                                        <IoMdTrash />
+                                    </Button>
+                                </Flex>
+                            ))}
+                            <Button hidden={benefitDetails.length === 3} className='mt-3' onClick={addBenefit} icon={<PlusCircleFilled style={{ color: "#4096FF" }} />} type='text'>
+                                Thêm phúc lợi
+                            </Button>
                         </Form.Item>
                         <Form.Item name="companyDescription" className="col-12 mt-0 " label="Mô tả công ty">
                             <CustomizeQuill />
                         </Form.Item>
-                        <Form.Item name="companyLogo" className='col-12 mt-5' label="Logo công ty">
-                            <PicturesWall listType={"text"} />
+                        <Form.Item name="companyLogo" className='col-12 mt-0' label="Logo công ty">
+                            <PicturesWall listType={"text"} defaultImage={defaultLogo} />
                         </Form.Item>
                         <Form.Item name="backgroundImage" className='col-12 mt-0' label="Hình Ảnh Công Ty">
-                            <PicturesWall listType={"text"} />
+                            <PicturesWall listType={"text"} defaultImage={defaultBackground} />
                         </Form.Item>
                         <Form.Item name="companyWebsite" className='col-12 mt-0' label="Website công ty">
                             <Input allowClear placeholder='Địa chỉ website công ty' />
@@ -145,7 +210,7 @@ const EmployerCompany = () => {
                     </div>
                     <Flex gap={"1rem"} align='center' justify='end'>
                         <Button type='default' onClick={handleReset}>Hủy</Button>
-                        <Button type='primary' htmlType='submit'>Lưu</Button>
+                        <Button type='primary' htmlType='submit' disabled={loading}><IconLoading loading={loading} setLoading={setLoading} />Lưu</Button>
                     </Flex>
                 </Form>
             </BoxContainer>

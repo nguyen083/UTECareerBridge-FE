@@ -19,7 +19,7 @@ const modules = {
             { indent: "-1" },
             { indent: "+1" },
         ],
-        ["link", "image", "video"],
+        ["link"],
         ["clean"],
     ],
     clipboard: {
@@ -56,7 +56,7 @@ export default function CustomizeQuill(props) {
     return (
         <>
             <ReactQuill
-                style={{ height: "150px" }}
+                // style={{ height: "150px" }}
                 theme="snow"
                 modules={modules}
                 formats={formats}

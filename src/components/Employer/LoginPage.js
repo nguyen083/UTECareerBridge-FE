@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { employerLogin, getToken, setToken } from '../../services/apiService';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
-import { Button, Form, Input } from 'antd';
+import { Button, Flex, Form, Input } from 'antd';
+
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ const LoginPage = () => {
         if (emailRegex.test(value)) {
             inputType = 'email';
         } else if (phoneRegex.test(value)) {
-            inputType = 'phone_number';
+            inputType = 'phoneNumber';
         } else {
             inputType = '';
         }
@@ -49,6 +50,7 @@ const LoginPage = () => {
                     <span className="d-flex justify-content-center title">Đăng Nhập</span>
                     <div className="col-md-12 form-group mt-5 mb-4">
                         <Form
+                            size='large'
                             requiredMark={false}
                             form={form}
                             onFinish={handleLogin}
@@ -76,7 +78,7 @@ const LoginPage = () => {
                                     }),
 
                                 ]} validateTrigger={['onBlur']} validateFirst>
-                                <Input className="form-control d-flex" size='large' onChange={handleInputChange} prefix={<UserOutlined />} />
+                                <Input onChange={handleInputChange} prefix={<UserOutlined />} />
                             </Form.Item>
                             <Form.Item
                                 className='mb-4'
@@ -89,21 +91,21 @@ const LoginPage = () => {
                                         message: 'Vui lòng nhập mật khẩu của bạn',
                                     },
                                 ]} validateTrigger={['onBlur', 'onChange']}>
-                                <Input.Password className="form-control d-flex" prefix={<UnlockOutlined />} />
+                                <Input.Password prefix={<UnlockOutlined />} />
                             </Form.Item>
 
 
                             <Form.Item>
-                                <div className='d-flex justify-content-between mb-4'>
+                                <Flex justify='space-between' className=' mb-4'>
                                     <span className='col-6'>Bạn chưa đăng ký? <a href='/employer/register'>Đăng ký ngay</a></span>
                                     <a className='col-6 d-flex justify-content-end' href='forgot-password' target='_blank'>Quên mật khẩu?</a>
-                                </div>
+                                </Flex>
                             </Form.Item>
-                            <div className='d-flex justify-content-end'>
+                            <Flex vertical align='end' justify='center'>
                                 <Button className='size' type="primary" htmlType='submit'>
                                     Đăng nhập
                                 </Button>
-                            </div>
+                            </Flex>
                         </Form>
                     </div>
                 </div>

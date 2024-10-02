@@ -10,6 +10,8 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import { MdManageAccounts } from "react-icons/md";
 import { TiBusinessCard } from "react-icons/ti";
 import { Outlet, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { setInfor, setNull } from '../../redux/action/employerSlice';
 import {
     BarChartOutlined,
     LogoutOutlined,
@@ -19,10 +21,20 @@ import {
     UserOutlined,
     BellOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, Avatar, } from 'antd';
+import { Layout, Menu, Avatar, Flex, } from 'antd';
 import { getInfor, getToken, logOut, removeToken } from '../../services/apiService';
 import { toast } from 'react-toastify';
 const { Header, Content, Footer, Sider } = Layout;
+const siderStyle = {
+    overflow: 'auto',
+    height: '100vh',
+    position: 'sticky',
+    insetInlineStart: 0,
+    top: 0,
+    bottom: 0,
+    scrollbarWidth: 'thin',
+    scrollbarColor: 'unset',
+};
 const itemSider = [
     { key: '1', icon: <BarChartOutlined />, label: 'Dashboard' },
     { key: '2', icon: <UserOutlined />, label: 'Tài khoản', children: [{ key: '2.1', label: 'Thông tin cá nhân', icon: <MdManageAccounts /> }, { key: '2.2', label: 'Đổi mật khẩu', icon: <RiLockPasswordLine /> }] },
@@ -63,8 +75,10 @@ const navigationMap = {
 };
 
 const EmployerLayout = () => {
-    const [name, setName] = useState('');
-    const [avatar, setAvatar] = useState(null);
+    const dispatch = useDispatch();
+    const [defaultImage, setDefaultImage] = useState(null);
+    const name = useSelector(state => state.employer.firstName) + ' ' + useSelector(state => state.employer.lastName);
+    const avatar = useSelector(state => state.employer.companyLogo);
     const [current, setCurrent] = useState('1');
     const navigate = useNavigate();
 
@@ -72,20 +86,25 @@ const EmployerLayout = () => {
         const fetchData = async () => {
             getToken();
             let res = await getInfor();
-            if (res.status === 'OK') {
-                setName(res.data.firstName + ' ' + res.data.last_name);
-                setAvatar(res.data.background_image);
-            } else {
+            //Lưu thông tin người dùng vào redux
+            dispatch(setInfor(res.data));
+            if (res.status !== 'OK') {
                 toast.error('Có lỗi xảy ra');
             }
         };
-        fetchData();
+        if (localStorage.getItem('accessToken') === null) {
+            window.location.href = '/login';
+        }
+        else
+            fetchData();
     }, []);
     useEffect(() => {
         const logout = async () => {
             getToken();
+
             const res = await logOut();
             if (res.status === 'OK') {
+                dispatch(setNull());
                 removeToken();
                 navigate('/login');
                 toast.success(res.message);
@@ -105,20 +124,23 @@ const EmployerLayout = () => {
         };
         navigateSideBar(current);
     }, [current]);
-
+    useEffect(() => {
+        setDefaultImage("https://res.cloudinary.com/utejobhub/image/upload/v1723888103/rg2do6iommv6wp840ixr.png")
+    }, [])
+    if (localStorage.getItem('accessToken') === null) {
+        return null;
+    }
     return (
-
         <Layout hasSider>
-            <Sider breakpoint='lg' width={250} className='sider' theme='light' /*collapsible*/ >
+            <Sider breakpoint='lg' width={250} style={siderStyle} theme='light' /*collapsible*/ >
                 <div className="demo-logo-vertical" >
-                    <img src="https://res.cloudinary.com/utejobhub/image/upload/v1723888103/rg2do6iommv6wp840ixr.png" alt="logo"
+                    <img src={defaultImage} alt="logo"
                         style={{ width: "80%", height: "80%", objectFit: "contain" }} />
                 </div>
                 <Menu onClick={(e) => setCurrent(e.key)} selectedKeys={[current]} theme='light' style={{ fontSize: "1rem" }} mode="inline" items={itemSider} background />
             </Sider>
-            <Layout>
+            <Layout className='site-layout'>
                 <Header
-
                     className='header-employer'>
                     <Menu
                         className="menu-header"
@@ -133,12 +155,14 @@ const EmployerLayout = () => {
                             minWidth: 0
                         }} />
                     <div className="d-flex gap-2 " style={{ height: "100%", alignItems: "center" }}>
-                        <Avatar className='avatar' icon={<UserOutlined />} src={avatar && <img src={avatar} alt='' />} />
+                        <Avatar size={'large'} className='avatar' icon={<UserOutlined />} src={avatar && <img src={avatar} alt='' />} />
                         <span className={`username d-none d-md-inline`}>{name}</span>
                     </div>
                 </Header>
                 <Content className='content-employer'>
-                    <Outlet />
+                    <Flex gap={"1rem"} vertical>
+                        <Outlet />
+                    </Flex>
                 </Content>
                 <Footer
                     style={{
@@ -147,8 +171,7 @@ const EmployerLayout = () => {
                     Ant Design ©{new Date().getFullYear()} Created by Ant UED
                 </Footer>
             </Layout>
-        </Layout>
-
+        </Layout >
     );
 };
 export default EmployerLayout;

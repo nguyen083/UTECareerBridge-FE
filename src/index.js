@@ -23,48 +23,59 @@ import EmployerProfile from './components/Employer/Profile/EmployerProfile.js';
 import EmployerCompany from './components/Employer/Company/EmployerCompany.js';
 import EmployerChangePassword from './components/Employer/ChangePassword/EmployerChangePassword.js';
 import BusinessCertificate from './components/Employer/Company/BusinessCertificate.js';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { store, persistor } from './redux/store';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App />}>
-        <Route index element={<Navigate to="/home" replace />} />
-        <Route path="/home" element={<HomePage />}>
-          <Route index element={<Test />} />
-        </Route>
-        <Route path='job' element={<JobPage />} />
+  <Provider store={store}>
+    <PersistGate loading={null} persistor={persistor}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<App />}>
+            {/* <Route path="test" element={<Test />}>
+          <Route index element={<EmployerCompany />} />
+        </Route> */}
+            <Route index element={<Navigate to="/home" replace />} />
+            <Route path="/home" element={<HomePage />}>
 
-        <Route path='employer' element={<EmployerPage />}>
-          <Route path='register' element={<BackgroundAndForm />}>
-            <Route index element={<EmployerRegister />} />
+            </Route>
+            <Route path='job' element={<JobPage />} />
+
+            <Route path='employer' element={<EmployerPage />}>
+              <Route path='register' element={<BackgroundAndForm />}>
+                <Route index element={<EmployerRegister />} />
+              </Route>
+              <Route element={<EmployerLayout />} >
+                <Route index element={<Navigate to="/employer/dashboard" replace />} />
+                <Route path='dashboard' element={<DashBoard />} />
+                <Route path='profile' element={<EmployerProfile />} />
+                <Route path='change-password' element={<EmployerChangePassword />} />
+                <Route path='company' element={<EmployerCompany />} />
+                <Route path='business-certificate' element={<BusinessCertificate />} />
+              </Route>
+            </Route>
+
+            {/* <Route path='user' element={<EmployerPage />}> */}
+            <Route path='forgot-password' element={<BackgroundAndForm />}>
+              <Route index element={<ForgotPassword />} />
+            </Route>
+            <Route path='reset-password' element={<BackgroundAndForm />} >
+              <Route index element={<ResetPassword />} />
+            </Route>
+            {/* </Route> */}
+
+            <Route path='login' element={<LoginPage />} />
+            <Route path='favorite' element={<FavoritePage />} />
+            <Route path='register' element={<RegisterPage />} />
+
           </Route>
-          <Route element={<EmployerLayout />} >
-            <Route index element={<Navigate to="/employer/dashboard" replace />} />
-            <Route path='dashboard' element={<DashBoard />} />
-            <Route path='profile' element={<EmployerProfile />} />
-            <Route path='change-password' element={<EmployerChangePassword />} />
-            <Route path='company' element={<EmployerCompany />} />
-            <Route path='business-certificate' element={<BusinessCertificate />} />
-          </Route>
-        </Route>
-
-        {/* <Route path='user' element={<EmployerPage />}> */}
-        <Route path='forgot-password' element={<BackgroundAndForm />}>
-          <Route index element={<ForgotPassword />} />
-        </Route>
-        <Route path='reset-password' element={<BackgroundAndForm />} >
-          <Route index element={<ResetPassword />} />
-        </Route>
-        {/* </Route> */}
-
-        <Route path='login' element={<LoginPage />} />
-        <Route path='favorite' element={<FavoritePage />} />
-        <Route path='register' element={<RegisterPage />} />
-
-      </Route>
-    </Routes>
-  </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </PersistGate>
+  </Provider>
 );
 
 reportWebVitals();

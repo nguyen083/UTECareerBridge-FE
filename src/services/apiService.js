@@ -5,6 +5,15 @@ const setToken = (accessToken, refreshToken) => {
   localStorage.setItem('accessToken', accessToken);
   document.cookie = `refreshToken=${refreshToken}`;
 }
+const objectToFormData = (obj) => {
+  const formData = new FormData();
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      formData.append(key, obj[key]);
+    }
+  }
+  return formData;
+};
 const getToken = () => {
   config = {
     headers: {
@@ -53,6 +62,19 @@ const logOut = async () => {
   return axios.post('auth/logout', {}, config);
 }
 
+const updateEmployerProfile = async (values) => {
+  return axios.post('employers/update-profile', values, config);
+}
+const updateEmployerCompanyProfile = async (values) => {
+  const formData = objectToFormData(values);
+  return axios.post('employers/update-company-profile', formData, config);
+}
+
+const updateBusinessCertificate = (values) => {
+  const formData = objectToFormData(values);
+  return axios.post('employers/legal-info', formData, config);
+}
+
 export {
   getToken,
   setToken,
@@ -65,5 +87,8 @@ export {
   userResetPassword,
   logOut,
   getAllIndustry,
-  getAllBenefit
+  getAllBenefit,
+  updateEmployerProfile,
+  updateBusinessCertificate,
+  updateEmployerCompanyProfile
 }
