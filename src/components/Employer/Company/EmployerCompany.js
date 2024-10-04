@@ -23,17 +23,21 @@ const EmployerCompany = () => {
     const [benefitDetails, setBenefitDetails] = useState([]);
     const defaultLogo = useSelector(state => state.employer.companyLogo);
     const defaultBackground = useSelector(state => state.employer.backgroundImage);
+
     const infor = {
         ...useSelector(state => state.employer),
         companyLogo: new File([], ""),
         backgroundImage: new File([], ""),
+        ...useSelector(state => state.employer.benefitDetails),
     };
     const handleReset = () => {
         form.resetFields();
     }
     const handleSubmit = (values) => {
+        setLoading(true);
         updateEmployerCompanyProfile(values).then(res => {
             if (res.status === 'OK') {
+                setLoading(false);
                 toast.success(res.message);
                 // cập nhật lại redux
                 dispatch(setInfor(res.data));
@@ -43,6 +47,7 @@ const EmployerCompany = () => {
                 }, 500);
             }
             else {
+                setLoading(false);
                 toast.error(res.message);
             }
         });
@@ -67,6 +72,8 @@ const EmployerCompany = () => {
     };
 
     useEffect(() => {
+        setBenefitDetails([...infor.benefitArray]);
+        console.log("infor: ", infor);
         getAllIndustry().then(res => {
             setIndustries(res.data);
         }).catch(err => {
@@ -161,13 +168,12 @@ const EmployerCompany = () => {
                             </Select>
                         </Form.Item>
                         <Form.Item className="col-12 mt-0" label={<span>Phúc lợi công ty <span style={{ color: "red" }}> *</span></span>}>
-                            {benefitDetails.map((benefit, index) => (
+                            {benefitDetails.map((item, index) => (
                                 <Flex key={index} gap="middle">
                                     <Form.Item name={`benefitDetails[${index}].benefitId`} className="col-3">
                                         <Select
-                                            value={benefit.benefitId}
-                                            onChange={(value) => handleBenefitChange(index, 'benefitId', value)}
-                                        >
+
+                                            onChange={(value) => handleBenefitChange(index, 'benefitId', value)}>
                                             {benefits.map(benefit => (
                                                 <Select.Option key={benefit.benefitId} value={benefit.benefitId}>
                                                     {benefit.benefitName}
@@ -179,11 +185,10 @@ const EmployerCompany = () => {
                                         <TextArea
                                             rows={3}
                                             allowClear
-                                            value={benefit.description}
                                             onChange={(e) => handleBenefitChange(index, 'description', e.target.value)}
                                         />
                                     </Form.Item>
-                                    <Button disabled={benefitDetails.length === 1} onClick={() => removeBenefit(index)}>
+                                    <Button danger disabled={benefitDetails.length === 1} onClick={() => removeBenefit(index)}>
                                         <IoMdTrash />
                                     </Button>
                                 </Flex>

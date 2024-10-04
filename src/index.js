@@ -26,6 +26,10 @@ import BusinessCertificate from './components/Employer/Company/BusinessCertifica
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './redux/store';
+import Page404 from './components/User/Page404';
+import Page403 from './components/User/Page403';
+import Page500 from './components/User/Page500';
+import EmployerPostJob from './components/Employer/Post/EmployerPostJob.js';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -35,6 +39,7 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />}>
+            <Route path='*' element={<Page404 />} />
             {/* <Route path="test" element={<Test />}>
           <Route index element={<EmployerCompany />} />
         </Route> */}
@@ -55,17 +60,20 @@ root.render(
                 <Route path='change-password' element={<EmployerChangePassword />} />
                 <Route path='company' element={<EmployerCompany />} />
                 <Route path='business-certificate' element={<BusinessCertificate />} />
+                <Route path='post-job' element={<EmployerPostJob />} />
               </Route>
             </Route>
 
-            {/* <Route path='user' element={<EmployerPage />}> */}
             <Route path='forgot-password' element={<BackgroundAndForm />}>
               <Route index element={<ForgotPassword />} />
             </Route>
             <Route path='reset-password' element={<BackgroundAndForm />} >
               <Route index element={<ResetPassword />} />
             </Route>
-            {/* </Route> */}
+            <Route path='user' element={<EmployerPage />}>
+              <Route path='403' element={<Page403 />} />
+              <Route path='500' element={<Page500 />} />
+            </Route>
 
             <Route path='login' element={<LoginPage />} />
             <Route path='favorite' element={<FavoritePage />} />

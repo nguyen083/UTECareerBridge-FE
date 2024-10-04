@@ -63,7 +63,7 @@ const navigationMap = {
     '2.2': '/employer/change-password',
     '3.1': '/employer/company',
     '3.2': '/employer/business-certificate',
-    '4': '#',
+    '4': '/employer/post-job',
     '5': '#',
     '6': '#',
     '7': '#',

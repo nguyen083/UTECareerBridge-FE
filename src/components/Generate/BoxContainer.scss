@@ -1,9 +1,9 @@
 .box-container {
-    padding     : 1.875rem 1.5rem;
-    background  : #ffffff;
+    padding      : 1.875rem 1.5rem;
+    background   : #ffffff;
     border-radius: 0.625rem;
+
     @media screen and (max-width: 426px) {
         padding: 1rem;
-        
     }
 }

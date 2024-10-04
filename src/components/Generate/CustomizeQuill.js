@@ -1,18 +1,18 @@
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from 'react-quill';
-import { useEffect, useState } from "react";
-import parse from 'html-react-parser';
 
 const modules = {
     toolbar: [
-        [{ header: "1" }, { header: "2" }, { font: [] }],
-        [{ size: [] }],
+        [{ header: [1, 2, 3, 4, 5, 6, false] }],
         ["bold", "italic", "underline", "strike", "blockquote"],
+        [{ size: [] }],
         [
             {
-                color: ["red", "blue", "yellow"],
+                color: ["black", "red", "blue", "yellow"],
             },
         ],
+        [{ font: [] }],
+        [{ align: [false, "right", "center", "justify"] }],
         [
             { list: "ordered" },
             { list: "bullet" },
@@ -20,7 +20,7 @@ const modules = {
             { indent: "+1" },
         ],
         ["link"],
-        ["clean"],
+        [{ background: [false, "red", "#785412"] }]
     ],
     clipboard: {
         // toggle to add extra line breaks when pasting HTML:
@@ -38,11 +38,11 @@ const formats = [
     "strike",
     "blockquote",
     "list",
+    "background",
     "bullet",
     "indent",
     "link",
-    "image",
-    "video",
+    "align",
     "color",
 ];
 
@@ -56,7 +56,7 @@ export default function CustomizeQuill(props) {
     return (
         <>
             <ReactQuill
-                // style={{ height: "150px" }}
+                // style={{ borderRadius: "10px", border: "1px solid #d9d9d9" }}
                 theme="snow"
                 modules={modules}
                 formats={formats}

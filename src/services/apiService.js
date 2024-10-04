@@ -70,11 +70,22 @@ const updateEmployerCompanyProfile = async (values) => {
   return axios.post('employers/update-company-profile', formData, config);
 }
 
-const updateBusinessCertificate = (values) => {
+const updateBusinessCertificate = async (values) => {
   const formData = objectToFormData(values);
   return axios.post('employers/legal-info', formData, config);
 }
-
+const getAllJobCategories = async () => {
+  return axios.get('job-categories/get-all-job-categories');
+};
+const getAllJobLevels = async () => {
+  return axios.get('job-levels/get-all-job-levels');
+}
+const getAllSkills = async () => {
+  return axios.get('skills/get-all-skills');
+};
+const postJob = async (values) => {
+  return axios.post('jobs/job-posting/new-job', values, config);
+};
 export {
   getToken,
   setToken,
@@ -90,5 +101,9 @@ export {
   getAllBenefit,
   updateEmployerProfile,
   updateBusinessCertificate,
-  updateEmployerCompanyProfile
+  updateEmployerCompanyProfile,
+  getAllJobCategories,
+  getAllJobLevels,
+  getAllSkills,
+  postJob
 }

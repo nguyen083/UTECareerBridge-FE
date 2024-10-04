@@ -48,7 +48,7 @@ const EmployerRegister = () => {
       <div className=' form-register'>
         <span className='title'>Đăng Ký</span>
         <Steps className='p-md-5' current={current} items={items} />
-        <Form form={form1} onFinish={onFinish} name="validateOnlyform1" requiredMark={false} layout="vertical" autoComplete="off" initialValues={{ company_website: "" }}>
+        <Form form={form1} onFinish={onFinish} name="validateOnlyform1" requiredMark={false} layout="vertical" autoComplete="off">
           {steps[current].content === '1' && <div className='col-12 mt-3'>
 
             <Form size='large' form={form2} name="validateOnlyform2" requiredMark={false} layout="vertical" autoComplete="off"
@@ -65,7 +65,7 @@ const EmployerRegister = () => {
                       message: 'Tên không hợp lệ',
                     }
                   ]} validateTrigger={['onBlur']}>
-                  <Input  />
+                  <Input />
                 </Form.Item>
 
 
@@ -80,7 +80,7 @@ const EmployerRegister = () => {
                       message: 'Họ không hợp lệ',
                     }
                   ]} validateTrigger={['onBlur']}>
-                  <Input  />
+                  <Input />
                 </Form.Item>
                 <Form.Item name="gender" layout='horizontal' className="col-12 col-md-6 mt-0 mb-0" label="Giới tính" >
                   <Radio.Group value={gender} className='mb-0'>
@@ -110,7 +110,7 @@ const EmployerRegister = () => {
                     }
                   ]}
                   validateTrigger={['onBlur']}>
-                  <Input  />
+                  <Input />
                 </Form.Item>
                 <Form.Item name="email" className="col-12 mt-0" label={<span>Email <span style={{ color: "red" }}> *</span></span>}
                   rules={[
@@ -124,7 +124,7 @@ const EmployerRegister = () => {
                     }
                   ]}
                   validateTrigger={['onBlur']}>
-                  <Input  />
+                  <Input />
                 </Form.Item>
                 <Form.Item name="password" className="col-12 mt-0" label={<span>Mật khẩu <span style={{ color: "red" }}> *</span></span>}
                   rules={[
@@ -191,7 +191,7 @@ const EmployerRegister = () => {
                     message: 'Vui lòng nhập tên công ty',
                   },
                 ]} validateTrigger={['onBlur']}>
-                <Input  />
+                <Input />
               </Form.Item>
               <Form.Item name="company_email" className="col-12 mt-0" label={<span>Email công ty <span style={{ color: "red" }}> *</span></span>}
                 rules={[
@@ -204,7 +204,7 @@ const EmployerRegister = () => {
                     message: 'Email không hợp lệ',
                   }
                 ]} validateTrigger={['onBlur']}>
-                <Input  />
+                <Input />
               </Form.Item>
               <Form.Item name="company_address" className="col-12 mt-0" label={<span>Địa chỉ công ty <span style={{ color: "red" }}> *</span></span>}
                 rules={[
@@ -213,10 +213,10 @@ const EmployerRegister = () => {
                     message: 'Vui lòng nhập địa chỉ công ty',
                   },
                 ]} validateTrigger={['onBlur']}>
-                <Input  />
+                <Input />
               </Form.Item>
               <Form.Item name="company_website" className="col-12 mt-0" label="Website công ty">
-                <Input  />
+                <Input />
               </Form.Item>
             </div>
           </div>}
