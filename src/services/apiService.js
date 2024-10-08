@@ -86,6 +86,22 @@ const getAllSkills = async () => {
 const postJob = async (values) => {
   return axios.post('jobs/job-posting/new-job', values, config);
 };
+const getAllJobs = async (values) => {
+  const formData = objectToFormData(values);
+  return axios.get('jobs/employers/all-jobs', formData, config);
+};
+const getJobsByStatus = async (values) => {
+  const params = new URLSearchParams(values).toString();
+  return axios.get(`jobs/get-jobs-by-status?${params}`, config);
+};
+const putHideJob = async (id, status) => {
+  const formData = objectToFormData({ jobStatus: status });
+  return axios.put(`jobs/employer/job-posting/hide/${id}`, formData, config);
+}
+const deleteJob = async (id) => {
+  return axios.delete(`jobs/employer/job-posting/delete/${id}`, config);
+}
+
 export {
   getToken,
   setToken,
@@ -105,5 +121,9 @@ export {
   getAllJobCategories,
   getAllJobLevels,
   getAllSkills,
-  postJob
+  postJob,
+  getAllJobs,
+  getJobsByStatus,
+  putHideJob,
+  deleteJob
 }

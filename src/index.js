@@ -30,6 +30,7 @@ import Page404 from './components/User/Page404';
 import Page403 from './components/User/Page403';
 import Page500 from './components/User/Page500';
 import EmployerPostJob from './components/Employer/Post/EmployerPostJob.js';
+import ManageListJobs from './components/Employer/ListJob/ManageListJobs.js';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -61,6 +62,7 @@ root.render(
                 <Route path='company' element={<EmployerCompany />} />
                 <Route path='business-certificate' element={<BusinessCertificate />} />
                 <Route path='post-job' element={<EmployerPostJob />} />
+                <Route path='manage-list-jobs' element={<ManageListJobs />} />
               </Route>
             </Route>
 

@@ -65,7 +65,7 @@ const navigationMap = {
     '3.2': '/employer/business-certificate',
     '4': '/employer/post-job',
     '5': '#',
-    '6': '#',
+    '6': 'manage-list-jobs',
     '7': '#',
     '8': '#',
     '9': '#',
