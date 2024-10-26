@@ -16,7 +16,7 @@ const EmployerProfile = () => {
     dayjs.extend(customParseFormat);
     const dispatch = useDispatch();
     let infor = { ...useSelector(state => state.employer), dob: dayjs(useSelector(state => state.employer.dob), "DD/MM/YYYY") };
-
+    console.log(infor.dob);
     const handleReset = () => {
         setEnableEdit(true);
         form.resetFields();

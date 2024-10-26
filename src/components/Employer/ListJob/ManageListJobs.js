@@ -18,7 +18,7 @@ const ManageListJobs = () => {
                 <div className="title1">Danh sách bài đăng</div>
             </BoxContainer>
             <BoxContainer>
-                <Tabs activeKey={activeKey} onChange={handleTabChange}>
+                <Tabs size='large' activeKey={activeKey} onChange={handleTabChange}>
                     <TabPane
                         tab="Đang hiển thị"
                         key="ACTIVE"

@@ -31,6 +31,8 @@ import Page403 from './components/User/Page403';
 import Page500 from './components/User/Page500';
 import EmployerPostJob from './components/Employer/Post/EmployerPostJob.js';
 import ManageListJobs from './components/Employer/ListJob/ManageListJobs.js';
+import UpdateJob from './components/Employer/ListJob/UpdateJob.js';
+import ViewJob from './components/User/ViewJob.js';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -55,7 +57,7 @@ root.render(
                 <Route index element={<EmployerRegister />} />
               </Route>
               <Route element={<EmployerLayout />} >
-                <Route index element={<Navigate to="/employer/dashboard" replace />} />
+                <Route index element={<Navigate to="/employer/view" replace />} />
                 <Route path='dashboard' element={<DashBoard />} />
                 <Route path='profile' element={<EmployerProfile />} />
                 <Route path='change-password' element={<EmployerChangePassword />} />
@@ -63,6 +65,8 @@ root.render(
                 <Route path='business-certificate' element={<BusinessCertificate />} />
                 <Route path='post-job' element={<EmployerPostJob />} />
                 <Route path='manage-list-jobs' element={<ManageListJobs />} />
+                <Route path='job/edit/:id' element={<UpdateJob />} />
+                <Route path='view' element={<ViewJob />} />
               </Route>
             </Route>
 

@@ -27,19 +27,19 @@ const EmployerPostJob = () => {
     const form1 = (
         <BoxContaier>
             <div className="form-group row g-3">
-                <Form.Item className='col-12 mt-0' name="job_title" label={<span>Tiêu đề <span style={{ color: "red" }}> *</span></span>}
+                <Form.Item className='col-12 mt-0' name="jobTitle" label={<span>Tiêu đề <span style={{ color: "red" }}> *</span></span>}
                     rules={[
                         { required: true, message: 'Vui lòng nhập tiêu đề' },
                     ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
                     <Input />
                 </Form.Item>
-                <Form.Item className='col-12 col-md-7 mt-0' name="job_location" label={<span>Địa điểm làm việc <span style={{ color: "red" }}> *</span></span>}
+                <Form.Item className='col-12 col-md-7 mt-0' name="jobLocation" label={<span>Địa điểm làm việc <span style={{ color: "red" }}> *</span></span>}
                     rules={[
                         { required: true, message: 'Vui lòng nhập địa điểm làm việc' },
                     ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="category_id" className="col-12 col-md-5 mt-0" label={<span>Lĩnh vực <span style={{ color: "red" }}> *</span></span>}
+                <Form.Item name="jobCategoryId" className="col-12 col-md-5 mt-0" label={<span>Lĩnh vực <span style={{ color: "red" }}> *</span></span>}
                     rules={[
                         {
                             required: true,
@@ -64,7 +64,7 @@ const EmployerPostJob = () => {
                     </Select>
                 </Form.Item>
                 <Flex gap="large" className="col-7 mt-0">
-                    <Form.Item name="job_min_salary" label={<span>Lương tối thiểu <span style={{ color: "red" }}> *</span></span>}
+                    <Form.Item name="jobMinSalary" label={<span>Lương tối thiểu <span style={{ color: "red" }}> *</span></span>}
                         rules={[
                             { required: true, message: 'Vui lòng nhập lương tối thiểu' },
                         ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
@@ -72,12 +72,12 @@ const EmployerPostJob = () => {
                             formatter={value => format(value)}
                             parser={value => value.replace(/\s/g, '')} />
                     </Form.Item>
-                    <Form.Item name="job_max_salary" label={<span>Lương tối đa <span style={{ color: "red" }}> *</span></span>}
+                    <Form.Item name="jobMaxSalary" label={<span>Lương tối đa <span style={{ color: "red" }}> *</span></span>}
                         rules={[
                             { required: true, message: 'Vui lòng nhập lương tối đa' },
                             ({ getFieldValue }) => ({
                                 validator(_, value) {
-                                    if (!value || getFieldValue('job_min_salary') <= value) {
+                                    if (!value || getFieldValue('jobMinSalary') <= value) {
                                         return Promise.resolve();
                                     }
                                     return Promise.reject(new Error('Lương tối đa phải lớn hơn lương tối thiểu'));
@@ -89,7 +89,7 @@ const EmployerPostJob = () => {
                             parser={value => value.replace(/\s/g, '')} />
                     </Form.Item>
                 </Flex>
-                <Form.Item name="job_deadline" className="col-12 col-md-5 mt-0" label={<span>Ngày hết hạn <span style={{ color: "red" }}> *</span></span>} rules={[
+                <Form.Item name="jobDeadline" className="col-12 col-md-5 mt-0" label={<span>Ngày hết hạn <span style={{ color: "red" }}> *</span></span>} rules={[
                     {
                         required: true,
                         message: 'Vui lòng nhập thời gian hết hạn nộp hồ sơ',
@@ -111,7 +111,7 @@ const EmployerPostJob = () => {
                         formatter={value => format(value)}
                         parser={value => value.replace(/\s/g, '')} />
                 </Form.Item>
-                <Form.Item className='col-12 col-md-6 mt-0' name="level_id" label={<span>Cấp bậc <span style={{ color: "red" }}> *</span></span>}
+                <Form.Item className='col-12 col-md-6 mt-0' name="jobLevelId" label={<span>Cấp bậc <span style={{ color: "red" }}> *</span></span>}
                     rules={
                         [({ getFieldValue }) => ({
                             validator(_, value) {
@@ -142,10 +142,10 @@ const EmployerPostJob = () => {
                         filterOption={(input, option) => option.label.toLowerCase().includes(input.toLowerCase())}
                     />
                 </Form.Item>
-                <Form.Item name="job_requirements" className="col-12 mt-0 " label="Yêu cầu tuyển dụng">
+                <Form.Item name="jobRequirements" className="col-12 mt-0 " label="Yêu cầu tuyển dụng">
                     <CustomizeQuill />
                 </Form.Item>
-                <Form.Item name="job_description" className="col-12 mt-0 " label="Mô tả công việc">
+                <Form.Item name="jobDescription" className="col-12 mt-0 " label="Mô tả công việc">
                     <CustomizeQuill />
                 </Form.Item>
             </div>
@@ -194,7 +194,7 @@ const EmployerPostJob = () => {
 
     const onFinish = (values) => {
         dayjs.extend(customParseFormat);
-        values.job_deadline = dayjs(values.job_deadline, 'YYYY-MM-DD').format('DD/MM/YYYY');
+        values.jobDeadline = dayjs(values.jobDeadline, 'YYYY-MM-DD').format('DD/MM/YYYY');
         console.log(values);
         postJob(values).then((res) => {
             if (res.status === 'OK') {

@@ -101,6 +101,12 @@ const putHideJob = async (id, status) => {
 const deleteJob = async (id) => {
   return axios.delete(`jobs/employer/job-posting/delete/${id}`, config);
 }
+const putJob = async (id, values) => {
+  return axios.put(`jobs/employer/job-posting/${id}`, values, config);
+}
+const getJobById = async (id) => {
+  return axios.get(`jobs/${id}`);
+}
 
 export {
   getToken,
@@ -125,5 +131,7 @@ export {
   getAllJobs,
   getJobsByStatus,
   putHideJob,
-  deleteJob
+  deleteJob,
+  putJob,
+  getJobById
 }

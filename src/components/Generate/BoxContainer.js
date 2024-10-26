@@ -1,10 +1,8 @@
-import { theme } from 'antd';
 import './BoxContainer.scss';
-const BoxContainer = ({ children }) => {
+const BoxContainer = ({ padding = "1.875rem 1.5rem", background = "#ffffff", borderRadius = "0.625rem", children }) => {
 
-    const { token: { colorBgContainer } } = theme.useToken();
     return (
-        <div className='box-container'>
+        <div className='box-container' style={{ padding, background, borderRadius }}>
             {children}
         </div>
     );

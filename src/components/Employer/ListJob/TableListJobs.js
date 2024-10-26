@@ -3,6 +3,7 @@ import { SearchOutlined, EditOutlined, DeleteOutlined, EyeOutlined, InboxOutline
 import { Button, Input, Modal, Space, Table, Tooltip } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { deleteJob, getJobsByStatus, putHideJob } from '../../../services/apiService'; // API mới để phân trang
+import { useNavigate } from 'react-router-dom';
 
 const TableListJobs = (props) => {
     const [data, setData] = useState([]);
@@ -15,6 +16,7 @@ const TableListJobs = (props) => {
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef(null);
+    const navigate = useNavigate();
 
     const handleSearch = (selectedKeys, confirm, dataIndex) => {
         confirm();
@@ -84,7 +86,7 @@ const TableListJobs = (props) => {
 
     };
     const handleEdit = (id) => {
-
+        navigate(`/employer/job/edit/${id}`);
     }
     const handleDelete = (id) => {
         Modal.confirm({
@@ -309,8 +311,8 @@ const TableListJobs = (props) => {
                         <Button shape="circle" onClick={() => handleView(record.key)} icon={<EyeOutlined />} />
                     </Tooltip>
                     <div hidden={props.status === 'REJECTED'}>
-                        <Tooltip color='blue' title="Chỉnh sửa">
-                            <Button shape="circle" icon={<EditOutlined />} />
+                        <Tooltip color='cyan' title="Chỉnh sửa">
+                            <Button shape="circle" onClick={() => handleEdit(record.key)} icon={<EditOutlined />} />
                         </Tooltip>
                     </div>
                     <Tooltip color='red' title="Xóa">

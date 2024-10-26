@@ -35,7 +35,7 @@ const App = () => {
           },
           Menu: {
             iconMarginInlineEnd: '0.625rem'
-          },
+          }
         }
       }}>
       <div className="App">
