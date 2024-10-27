@@ -112,6 +112,7 @@ const getSimilarJob = async (id) => {
 }
 
 const getAllUsers = async (values) => {
+  getToken();
   const params = new URLSearchParams(values).toString();
   return axios.get(`users/get-all-users?${params}`, config);
 };

@@ -13,7 +13,8 @@ import {
     GlobalOutlined,
     QuestionCircleOutlined,
     MessageOutlined,
-    SearchOutlined
+    SearchOutlined,
+    MenuOutlined
 } from '@ant-design/icons';
 import { Layout, Menu, Avatar, Flex, Badge, Space } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
@@ -35,14 +36,14 @@ const siderStyle = {
 };
 
 const itemSider = [
-    { 
-        key: '1', 
-        icon: <DashboardOutlined />, 
+    {
+        key: '1',
+        icon: <DashboardOutlined />,
         label: 'Tổng quan',
     },
-    { 
-        key: '2', 
-        icon: <TeamOutlined />, 
+    {
+        key: '2',
+        icon: <TeamOutlined />,
         label: 'Quản lý người dùng',
         children: [
             { key: '2.1', label: 'Nhà tuyển dụng' },
@@ -50,9 +51,9 @@ const itemSider = [
             { key: '2.3', label: 'Quản trị viên' }
         ]
     },
-    { 
-        key: '3', 
-        icon: <FileTextOutlined />, 
+    {
+        key: '3',
+        icon: <FileTextOutlined />,
         label: 'Quản lý bài đăng',
         children: [
             { key: '3.1', label: 'Tin tuyển dụng' },
@@ -60,9 +61,9 @@ const itemSider = [
             { key: '3.3', label: 'Duyệt bài đăng' }
         ]
     },
-    { 
-        key: '4', 
-        icon: <DollarOutlined />, 
+    {
+        key: '4',
+        icon: <DollarOutlined />,
         label: 'Quản lý giao dịch',
         children: [
             { key: '4.1', label: 'Gói dịch vụ' },
@@ -70,18 +71,18 @@ const itemSider = [
             { key: '4.3', label: 'Báo cáo doanh thu' }
         ]
     },
-    { 
-        key: '5', 
-        icon: <BarChartOutlined />, 
+    {
+        key: '5',
+        icon: <BarChartOutlined />,
         label: 'Thống kê & Báo cáo',
         children: [
             { key: '5.1', label: 'Thống kê tổng quan' },
             { key: '5.2', label: 'Báo cáo chi tiết' }
         ]
     },
-    { 
-        key: '6', 
-        icon: <GlobalOutlined />, 
+    {
+        key: '6',
+        icon: <GlobalOutlined />,
         label: 'Quản lý nội dung',
         children: [
             { key: '6.1', label: 'Tin tức & Sự kiện' },
@@ -89,18 +90,18 @@ const itemSider = [
             { key: '6.3', label: 'Trang tĩnh' }
         ]
     },
-    { 
-        key: '7', 
-        icon: <QuestionCircleOutlined />, 
+    {
+        key: '7',
+        icon: <QuestionCircleOutlined />,
         label: 'Hỗ trợ',
         children: [
             { key: '7.1', label: 'Ticket hỗ trợ' },
             { key: '7.2', label: 'FAQ' }
         ]
     },
-    { 
-        key: '8', 
-        icon: <SettingOutlined />, 
+    {
+        key: '8',
+        icon: <SettingOutlined />,
         label: 'Cài đặt hệ thống',
         children: [
             { key: '8.1', label: 'Cấu hình chung' },
@@ -140,12 +141,13 @@ const AdminLayout = () => {
     const [defaultImage, setDefaultImage] = useState(null);
     const navigate = useNavigate();
     const [current, setCurrent] = useState('1');
-    
+    const [collapsed, setCollapsed] = useState(false);
+
     const adminInfo = useSelector(state => state.admin);
     const name = `${adminInfo?.firstName || ''} ${adminInfo?.lastName || ''}`;
     const avatar = adminInfo?.avatar;
     const notifications = useSelector(state => state.notifications?.unread || 0);
-    const messages= useSelector(state => state.messages?.unread || 0);
+    const messages = useSelector(state => state.messages?.unread || 0);
     // useEffect(() => {
     //     const fetchData = async () => {
     //         getToken();
@@ -190,7 +192,7 @@ const AdminLayout = () => {
         handleNavigation(current);
     }, [current]);
 
-   useEffect(() => {
+    useEffect(() => {
         setDefaultImage("https://res.cloudinary.com/utejobhub/image/upload/v1723888103/rg2do6iommv6wp840ixr.png")
     }, [])
     if (!localStorage.getItem('accessToken')) {
@@ -199,20 +201,20 @@ const AdminLayout = () => {
 
     return (
         <Layout hasSider>
-            <Sider 
-                breakpoint="lg" 
-                width={260} 
-                style={siderStyle} 
+            <Sider trigger={null} collapsible collapsed={collapsed}
+                breakpoint="lg"
+                width={260}
+                style={siderStyle}
                 theme="light"
             >
                 <div className="admin-logo">
-                    <img 
-                        src={defaultImage} 
+                    <img
+                        src={defaultImage}
                         alt="Admin Logo"
                         className="admin-logo-img"
                     />
                 </div>
-                <Menu 
+                <Menu
                     onClick={(e) => setCurrent(e.key)}
                     selectedKeys={[current]}
                     theme="light"
@@ -223,27 +225,30 @@ const AdminLayout = () => {
             </Sider>
             <Layout className="site-layout">
                 <Header className="admin-header">
-                    <div className='search-container'>
-                        <div>
-                            <SearchOutlined className='search-icon'/>
+                    <Flex>
+                        <MenuOutlined className='font-size' onClick={() => setCollapsed(!collapsed)} />
+                        <div className='search-container'>
+                            <div>
+                                <SearchOutlined className='search-icon' />
+                            </div>
+                            <div className='search-bar'>
+                                <input type="text" placeholder="Tìm kiếm" className="search-input" />
+                            </div>
+
                         </div>
-                        <div className='search-bar'>
-                            <input type="text" placeholder="Tìm kiếm" className="search-input"/>
-                        </div>
-                       
-                    </div>
+                    </Flex>
                     <Space size={24}>
                         <Badge count={messages} overflowCount={10}>
-                            <MessageOutlined className="message-icon"/>
+                            <MessageOutlined className="message-icon" />
                         </Badge>
                         <Badge count={notifications} overflowCount={99}>
                             <BellOutlined className="notification-icon" />
                         </Badge>
                         <Space>
-                            <Avatar 
-                                size="large" 
-                                icon={<UserOutlined />} 
-                                src={avatar} 
+                            <Avatar
+                                size="large"
+                                icon={<UserOutlined />}
+                                src={avatar}
                                 className="admin-avatar"
                             />
                             <span className="admin-name">{name}</span>

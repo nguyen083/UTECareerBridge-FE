@@ -16,10 +16,10 @@ import {
 } from '@ant-design/icons';
 import { getAllUsers } from '../../../services/apiService';
 
-const TableListUser = ({ 
-  userType, 
-  additionalColumns = [], 
-  onEdit,  
+const TableListUser = ({
+  userType,
+  additionalColumns = [],
+  onEdit,
   onDelete
 }) => {
   const [users, setUsers] = useState([]);
@@ -114,6 +114,7 @@ const TableListUser = ({
   const columns = [...baseColumns.slice(0, 2), ...additionalColumns, ...baseColumns.slice(2)];
 
   const fetchUsers = async (params = {}) => {
+    console.log('Fetching users with params:', pagination);
     try {
       setLoading(true);
 
@@ -147,16 +148,16 @@ const TableListUser = ({
   };
 
   // Initial fetch
-//   useEffect(() => {
-//     fetchUsers();
-//   }, []);
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
 
   // Handle table change
   const handleTableChange = (newPagination, filters, sorter) => {
     const newSorting = sorter.order === 'ascend' ? 'asc' : 'desc';
     setSorting(newSorting);
-    
+
     fetchUsers({
       page: newPagination.current,
       pageSize: newPagination.pageSize,
@@ -171,7 +172,7 @@ const TableListUser = ({
   const handleSearch = (value) => {
     setSearchText(value);
     setPagination({ ...pagination, current: 1 }); // Reset to first page
-    
+
     fetchUsers({
       keyword: value,
       page: 1
