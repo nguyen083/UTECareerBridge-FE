@@ -32,7 +32,7 @@ const ManageListJobs = () => {
                         key="PENDING"
                     />
                     <TabPane
-                        tab="Đã từ chối"
+                        tab="Bị từ chối"
                         key="REJECTED"
                     />
                 </Tabs>

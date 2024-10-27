@@ -7,7 +7,6 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './components/Student/HomePage.js';
 import HomePage from './components/Student/HomePage.js';
-import Test from './components/Student/Test.js';
 import JobPage from './components/Student/JobPage.js';
 import EmployerPage from './components/Employer/EmployerPage.js';
 import FavoritePage from './components/Student/FavoritePage.js';
@@ -33,6 +32,7 @@ import EmployerPostJob from './components/Employer/Post/EmployerPostJob.js';
 import ManageListJobs from './components/Employer/ListJob/ManageListJobs.js';
 import UpdateJob from './components/Employer/ListJob/UpdateJob.js';
 import ViewJob from './components/User/ViewJob.js';
+import InforCompany from './components/User/InforCompany.js';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -42,7 +42,7 @@ root.render(
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />}>
-            <Route path='*' element={<Page404 />} />
+
             {/* <Route path="test" element={<Test />}>
           <Route index element={<EmployerCompany />} />
         </Route> */}
@@ -57,8 +57,10 @@ root.render(
                 <Route index element={<EmployerRegister />} />
               </Route>
               <Route element={<EmployerLayout />} >
-                <Route index element={<Navigate to="/employer/view" replace />} />
+                <Route path='view/:id' element={<ViewJob />} />
+                <Route index element={<Navigate to="/employer/infor-company/5" replace />} />
                 <Route path='dashboard' element={<DashBoard />} />
+                <Route path='infor-company/:id' element={<InforCompany />} />
                 <Route path='profile' element={<EmployerProfile />} />
                 <Route path='change-password' element={<EmployerChangePassword />} />
                 <Route path='company' element={<EmployerCompany />} />
@@ -66,7 +68,6 @@ root.render(
                 <Route path='post-job' element={<EmployerPostJob />} />
                 <Route path='manage-list-jobs' element={<ManageListJobs />} />
                 <Route path='job/edit/:id' element={<UpdateJob />} />
-                <Route path='view' element={<ViewJob />} />
               </Route>
             </Route>
 
@@ -84,7 +85,7 @@ root.render(
             <Route path='login' element={<LoginPage />} />
             <Route path='favorite' element={<FavoritePage />} />
             <Route path='register' element={<RegisterPage />} />
-
+            <Route path='*' element={<Page404 />} />
           </Route>
         </Routes>
       </BrowserRouter>

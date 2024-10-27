@@ -107,6 +107,9 @@ const putJob = async (id, values) => {
 const getJobById = async (id) => {
   return axios.get(`jobs/${id}`);
 }
+const getSimilarJob = async (id) => {
+  return axios.get(`jobs/similar-jobs/${id}`);
+}
 
 export {
   getToken,
@@ -133,5 +136,6 @@ export {
   putHideJob,
   deleteJob,
   putJob,
-  getJobById
+  getJobById,
+  getSimilarJob
 }

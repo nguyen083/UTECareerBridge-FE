@@ -72,3 +72,18 @@ html{
 .ant-carousel .slick-dots li.slick-active button {
   background-color: rgb(131, 131, 131);
 }
+.hover-effect {
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.hover-effect:hover {
+  color: #1890ff;
+}
+.custom-anchor .ant-anchor-link {
+  margin-right: 16px;
+}
+
+.custom-anchor .ant-anchor-link-title {
+  text-decoration: none;
+}
