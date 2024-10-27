@@ -33,6 +33,9 @@ import ManageListJobs from './components/Employer/ListJob/ManageListJobs.js';
 import UpdateJob from './components/Employer/ListJob/UpdateJob.js';
 import ViewJob from './components/User/ViewJob.js';
 import InforCompany from './components/User/InforCompany.js';
+import AdminPage from './components/Admin/adminPage.jsx';
+import AdminLayout from './components/Admin/adminLayout.jsx';
+import UserManagement from './components/Admin/ManageUser/ManageStudent.jsx';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -70,6 +73,12 @@ root.render(
                 <Route path='job/edit/:id' element={<UpdateJob />} />
               </Route>
             </Route>
+
+              <Route path='admin' element={<AdminLayout />} >
+              <Route index element={<Navigate to="/admin/dashboard" replace />} />
+              <Route path='dashboard' element={<DashBoard />} />
+              <Route path='manage-user' element={<UserManagement />} />
+              </Route>
 
             <Route path='forgot-password' element={<BackgroundAndForm />}>
               <Route index element={<ForgotPassword />} />

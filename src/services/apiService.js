@@ -111,6 +111,10 @@ const getSimilarJob = async (id) => {
   return axios.get(`jobs/similar-jobs/${id}`);
 }
 
+const getAllUsers = async (values) => {
+  const params = new URLSearchParams(values).toString();
+  return axios.get(`users/get-all-users?${params}`, config);
+};
 export {
   getToken,
   setToken,
@@ -138,4 +142,6 @@ export {
   putJob,
   getJobById,
   getSimilarJob
+  deleteJob,
+  getAllUsers
 }

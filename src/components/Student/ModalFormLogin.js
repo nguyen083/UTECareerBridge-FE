@@ -1,14 +1,16 @@
 import { Button, Form, Input } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 import Modal from 'react-bootstrap/Modal';
 import './ModalFormLogin.scss';
 import { getToken, setToken, studentLogin } from '../../services/apiService';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 const ModalFormLogin = (props) => {
     const { show, setShow } = props;
     const [form] = Form.useForm();
+    const navigate = useNavigate();
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const phoneRegex = /^[0-9]{10,11}$/;
     var inputType = '';
@@ -38,10 +40,20 @@ const ModalFormLogin = (props) => {
         console.log(updatedValues);
         //Call API
         let res = await studentLogin(updatedValues);
+        
         if (res.status === 'OK') {
+            // Check if the logged in user's role matches the selected role
+            const userRoleFromAPI = res.data.roles.roleName; // Assuming API returns user role
             toast.success(res.message);
-            setToken(res.data.token, res.data.refresh_token); //Đổi lại thành refreshToken
+            setToken(res.data.token, res.data.refresh_token);
             getToken();
+
+            // Route based on role from API response
+            if (userRoleFromAPI === 'student') {
+                navigate('');
+            } else if (userRoleFromAPI === 'admin') {
+                navigate('/admin');
+            }
         } else {
             toast.error(res.message);
         }
