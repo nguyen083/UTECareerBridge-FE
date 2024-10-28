@@ -87,3 +87,6 @@ html{
 .custom-anchor .ant-anchor-link-title {
   text-decoration: none;
 }
+.ant-input-search-button{
+  height: 39px !important;
+}

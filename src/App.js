@@ -24,14 +24,10 @@ const App = () => {
             verticalLabelPadding: '0 0 0rem'
           },
           Button: {
-            contentFontSize: '1rem',
-            contentFontSizeLG: '1rem',
-            paddingBlock: '0.25rem',
-            paddingBlockLG: '0.5rem',
-          },
-          Input: {
-            inputFontSize: '1rem',
-            inputFontSizeLG: '1rem',
+            // contentFontSize: '1rem',
+            // contentFontSizeLG: '1rem',
+            // paddingBlock: '0.25rem',
+            // paddingBlockLG: '0.5rem',
           },
           Menu: {
             iconMarginInlineEnd: '0.625rem'
@@ -53,7 +49,7 @@ const App = () => {
         draggable
         pauseOnHover
       />
-    </ConfigProvider>
+    </ConfigProvider >
   );
 }
 

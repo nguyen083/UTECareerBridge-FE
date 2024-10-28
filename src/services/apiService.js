@@ -142,7 +142,6 @@ export {
   deleteJob,
   putJob,
   getJobById,
-  getSimilarJob
-  deleteJob,
+  getSimilarJob,
   getAllUsers
 }

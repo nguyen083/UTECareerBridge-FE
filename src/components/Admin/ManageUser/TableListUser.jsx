@@ -15,7 +15,7 @@ import {
   InboxOutlined
 } from '@ant-design/icons';
 import { getAllUsers } from '../../../services/apiService';
-
+const { Search } = Input;
 const TableListUser = ({
   userType,
   additionalColumns = [],
@@ -188,7 +188,8 @@ const TableListUser = ({
     <div>
       <div style={{ marginBottom: 16 }}>
         <Space style={{ marginBottom: 16 }}>
-          <Input.Search
+          <Search
+            size='large'
             placeholder="Tìm kiếm người dùng..."
             allowClear
             onSearch={handleSearch}
