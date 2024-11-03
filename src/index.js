@@ -49,9 +49,9 @@ root.render(
             {/* <Route path="test" element={<Test />}>
           <Route index element={<EmployerCompany />} />
         </Route> */}
-            <Route index element={<Navigate to="/home" replace />} />
+            <Route index element={<Navigate to="/company/11" replace />} />
+            <Route path="/company/:id" element={<InforCompany />} />s
             <Route path="/home" element={<HomePage />}>
-
             </Route>
             <Route path='job' element={<JobPage />} />
 

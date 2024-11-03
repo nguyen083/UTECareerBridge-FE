@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './TableListUser.scss';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Table,
   Button,
@@ -9,28 +10,38 @@ import {
   message,
   Tag,
   Tooltip,
+  Modal,
+  Dropdown, 
 } from 'antd';
 import {
   EditOutlined,
   DeleteOutlined,
   ReloadOutlined,
   InboxOutlined,
+  DownOutlined,
   SearchOutlined,
   PrinterOutlined,
-  EyeOutlined
+  EyeOutlined,
+  FileExcelOutlined,
+  FilePdfOutlined
 } from '@ant-design/icons';
-import { getAllUsers } from '../../../services/apiService';
+import { getAllUsers, getCompanyById, exportUserToPdf } from '../../../services/apiService';
 const { Search } = Input;
+
 const TableListUser = ({
   userType,
   additionalColumns = [],
   onEdit,
   onDelete
 }) => {
+  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
   const [sorting, setSorting] = useState('');
+  const [sortField, setSortField] = useState('');
+  const [isPrintModalVisible, setIsPrintModalVisible] = useState(false);
+  const [exportLoading, setExportLoading] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
@@ -122,9 +133,11 @@ const TableListUser = ({
             }}
           />
          {userType === 'employer' && (
+            <Link to={`/company/${record.key}`} target='_blank'>
             <Button
-              icon={<EyeOutlined />}
+            icon={<EyeOutlined />}
             />
+          </Link>
           )}
             <Button
               type="primary"
@@ -138,7 +151,17 @@ const TableListUser = ({
   ];
 
   const columns = [...baseColumns.slice(0, 2), ...additionalColumns, ...baseColumns.slice(2)];
+  const handleMenuClick = ({ key }) => {
+    let newSortField = key;
+    setSortField(key);
+    setSorting(newSortField);
 
+    fetchUsers({
+      page: pagination.current - 1,
+      pageSize: pagination.pageSize,
+      sorting: `${newSortField}`
+    });
+  };
   const fetchUsers = async (params = {}) => {
     console.log('Fetching users with params:', pagination);
     try {
@@ -148,7 +171,7 @@ const TableListUser = ({
         role: userType, 
         page: params.page || pagination.current - 1, 
         size: params.pageSize || pagination.pageSize,
-        sort: params.sorting || sorting,
+        sorting: params.sorting || (sortField && sorting ? `${sortField},${sorting}` : ''),
         keyword: params.keyword || searchText,
         ...params.additionalParams,
       };
@@ -198,7 +221,7 @@ const TableListUser = ({
       }
     });
   };
-
+  
   // Handle search
   const handleSearch = (value) => {
     setSearchText(value);
@@ -214,26 +237,144 @@ const TableListUser = ({
   const handleRefresh = () => {
     fetchUsers();
   };
+  const PrintModal = () => (
+    <Modal
+      title="Chọn định dạng xuất"
+      open={isPrintModalVisible}
+      onCancel={() => setIsPrintModalVisible(false)}
+      footer={null}
+      centered
+    >
+      <div className="flex flex-col gap-4 p-4">
+        <Button
+          icon={<FileExcelOutlined />}
+          onClick={() => handleExport('excel')}
+          loading={exportLoading}
+          block
+          size="large"
+          className="mb-3"
+        >
+          Xuất Excel
+        </Button>
+        <Button
+          icon={<FilePdfOutlined />}
+          onClick={() => handleExport('pdf')}
+          loading={exportLoading}
+          block
+          size="large"
+          type="primary"
+        >
+          Xuất PDF
+        </Button>
+      </div>
+    </Modal>
+  );
+  const handleExport = async (type) => {
+    try {
+      setExportLoading(true);
+      
+      const queryParams = {
+        role: userType,
+        page: pagination.current - 1,
+        size: pagination.pageSize,
+        sorting: sortField && sorting ? `${sortField},${sorting}` : 'createdAt',
+        keyword: searchText || ''
+      };
 
+      if (type === 'pdf') {
+        const response = await exportUserToPdf(queryParams);
+        // if (response.data.type !== 'application/pdf') {
+        //   throw new Error('Invalid PDF response');
+        // }
+  
+        // Tạo Blob với type cụ thể
+        const blob = response instanceof Blob ? response : new Blob([response], { type: 'application/pdf' });
+        console.log('Blob:', blob);
+        // Kiểm tra kích thước blob
+        if (blob.size === 0) {
+          throw new Error('Empty PDF file');
+        }
+  
+        // Tạo URL và download
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `users-${new Date().getTime()}.pdf`);
+        
+        // Mở PDF trong tab mới trước khi download (tùy chọn)
+        window.open(url, '_blank');
+        
+        // Download file
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Clean up
+        setTimeout(() => {
+          window.URL.revokeObjectURL(url);
+        }, 100);
+  
+        message.success('Xuất PDF thành công!');
+      }
+    } catch (error) {
+      console.error(`Error exporting ${type}:`, error);
+      message.error(`Lỗi khi xuất ${type === 'excel' ? 'Excel' : 'PDF'}. Vui lòng thử lại sau.`);
+    } finally {
+      setExportLoading(false);
+      setIsPrintModalVisible(false);
+    }
+  };
+  const items = [
+    {
+      label: 'Người dùng mới nhất',
+      key: 'newest',
+    },
+    {
+      label: 'Người dùng cũ nhất',
+      key: 'lastest',
+    },
+    {
+      label: 'Người dùng theo tên A-Z',
+      key: 'ascName'
+    },
+    {
+      label: 'Người dùng theo tên Z-A',
+      key: 'descName',
+    },
+  ];
   return (
     <div>
       <div style={{ marginBottom: 16 }}>
         <Space style={{ marginBottom: 16 }}>
           <Search
-            size='large'
+            size="large"
             placeholder="Tìm kiếm người dùng..."
             allowClear
             onSearch={handleSearch}
-            style={{ width: '400px' }}
-            className='search-input'
+            style={{ width: "400px" }}
+            className="search-input"
           />
+          <Dropdown
+            menu={{
+              items, onClick: handleMenuClick,
+            }}
+            trigger={["click"]}
+          >
+            <Button size='large'>
+              Sắp xếp <DownOutlined />
+            </Button>
+          </Dropdown>
           <Button
             icon={<ReloadOutlined />}
+            size="large"
             onClick={handleRefresh}
           >
             Làm mới
           </Button>
-          <Button>
+          <Button 
+            size="large"
+            onClick={() => setIsPrintModalVisible(true)}
+          >
             <PrinterOutlined />
           </Button>
         </Space>
@@ -247,19 +388,22 @@ const TableListUser = ({
         pagination={{
           ...pagination,
           showSizeChanger: true,
-          showTotal: (total) => `Tổng ${total} người dùng`
+          showTotal: (total) => `Tổng ${total} người dùng`,
         }}
         onChange={handleTableChange}
         scroll={{ x: 1000 }}
         locale={{
           emptyText: (
-            <div className='p-5'>
-              <InboxOutlined style={{ fontSize: '50px', marginBottom: '8px' }} />
+            <div className="p-5">
+              <InboxOutlined
+                style={{ fontSize: "50px", marginBottom: "8px" }}
+              />
               <div>Không có dữ liệu</div>
             </div>
           ),
         }}
       />
+      <PrintModal />
     </div>
   );
 };

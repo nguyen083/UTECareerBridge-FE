@@ -126,6 +126,16 @@ const getAllNotificationById = async (id) => {
 const getUserByUserId = async (id) => {
   return axios.get(`users/get-user/${id}`, config);
 }
+const exportUserToPdf= async (queryParams) => {
+  getToken();
+  return axios.get('export/users/pdf', {
+    params: queryParams,
+    responseType: 'blob', 
+    headers: {
+      'Accept': 'application/pdf'
+    }
+  }, config);
+};
 export {
   getToken,
   setToken,
@@ -154,9 +164,8 @@ export {
   getJobById,
   getSimilarJob,
   getAllUsers,
-  getCompanyById
-  getSimilarJob,
-  getAllUsers,
+  getCompanyById,
   getAllNotificationById,
   getUserByUserId,
+  exportUserToPdf
 }
