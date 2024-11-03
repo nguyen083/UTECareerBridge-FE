@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './TableListUser.scss';
 import {
   Table,
   Button,
@@ -7,12 +8,16 @@ import {
   Popconfirm,
   message,
   Tag,
+  Tooltip,
 } from 'antd';
 import {
   EditOutlined,
   DeleteOutlined,
   ReloadOutlined,
-  InboxOutlined
+  InboxOutlined,
+  SearchOutlined,
+  PrinterOutlined,
+  EyeOutlined
 } from '@ant-design/icons';
 import { getAllUsers } from '../../../services/apiService';
 const { Search } = Input;
@@ -41,71 +46,92 @@ const TableListUser = ({
 
   const baseColumns = [
     {
+      title: 'No.',
+      dataIndex: 'index',
+      key: 'index',
+      width: '5%',
+      align: 'right'
+  },
+    {
       title: 'Họ',
       dataIndex: 'lastName',
       key: 'lastName',
+      width: '10%',
+      align: 'center'
     },
     {
       title: 'Tên',
       dataIndex: 'firstName',
       key: 'firstName',
+      width: '10%',
       sorter: true,
+      align: 'center',
       sortDirections: ['ascend', 'descend']
     },
     {
       title: 'Email',
       dataIndex: 'email',
       key: 'email',
+      align: 'center',
+      width: '20%'
     },
     {
       title: 'Số điện thoại',
       dataIndex: 'phone',
       key: 'phone',
+      align: 'center'
     },
     {
       title: 'Địa chỉ',
       dataIndex: 'address',
       key: 'address',
+      align: 'center',
+      width: '20%'
     },
     {
       title: 'Ngày sinh',
       dataIndex: 'dob',
       key: 'dob',
+      align: 'center'
     },
     {
       title: 'Trạng thái',
-      dataIndex: 'status',
-      key: 'status',
-      render: (status) => (
-        <Tag color={statusColors[status]}>
-          {status}
-        </Tag>
-      )
+      dataIndex: 'active',
+      key: 'active',
+      align: 'center',
+      render: (active) => {
+        const displayStatus = active ? 'Hoạt động' : 'Bị khóa'; 
+        const statusKey = active ? 'ACTIVE' : 'BLOCKED'; 
+        return (
+          <Tag color={statusColors[statusKey]}>
+            {displayStatus}
+          </Tag>
+        );
+      }
     },
     {
-      title: 'Actions',
       key: 'actions',
       fixed: 'right',
       width: 150,
       render: (_, record) => (
         <Space size="middle">
           <Button
-            type="primary"
             icon={<EditOutlined />}
-            onClick={() => onEdit(record)}
+            onClick={() => {
+              onEdit(record);
+            }}
           />
-          <Popconfirm
-            title={`Bạn có chắc chắn muốn xóa người dùng này?`}
-            onConfirm={() => onDelete(record.id)}
-            okText="Đồng ý"
-            cancelText="Hủy"
-          >
+         {userType === 'employer' && (
+            <Button
+              icon={<EyeOutlined />}
+            />
+          )}
             <Button
               type="primary"
               danger
+              onClick={() => onDelete(record.key)}
               icon={<DeleteOutlined />}
             />
-          </Popconfirm>
         </Space>
       ),
     },
@@ -119,8 +145,8 @@ const TableListUser = ({
       setLoading(true);
 
       const queryParams = {
-        role: userType, // Filter by user type
-        page: params.page || pagination.current - 1, // API expects 0-based index
+        role: userType, 
+        page: params.page || pagination.current - 1, 
         size: params.pageSize || pagination.pageSize,
         sort: params.sorting || sorting,
         keyword: params.keyword || searchText,
@@ -130,7 +156,12 @@ const TableListUser = ({
       const response = await getAllUsers(queryParams);
 
       if (response.status === 'OK') {
-        setUsers(response.data.userResponses);
+        const dataWithIndex = response.data.userResponses.map((user, idx) => ({
+          ...user,
+          key: user.userId,
+          index: (queryParams.page * queryParams.size) + idx + 1
+        }));
+        setUsers(dataWithIndex);       
         setPagination({
           ...pagination,
           total: response.data.totalElements,
@@ -150,7 +181,7 @@ const TableListUser = ({
   // Initial fetch
   useEffect(() => {
     fetchUsers();
-  }, []);
+  }, [pagination.current, pagination.pageSize, userType]);
 
 
   // Handle table change
@@ -175,7 +206,7 @@ const TableListUser = ({
 
     fetchUsers({
       keyword: value,
-      page: 1
+      page: 0
     });
   };
 
@@ -193,13 +224,17 @@ const TableListUser = ({
             placeholder="Tìm kiếm người dùng..."
             allowClear
             onSearch={handleSearch}
-            style={{ width: 300 }}
+            style={{ width: '400px' }}
+            className='search-input'
           />
           <Button
             icon={<ReloadOutlined />}
             onClick={handleRefresh}
           >
             Làm mới
+          </Button>
+          <Button>
+            <PrinterOutlined />
           </Button>
         </Space>
       </div>

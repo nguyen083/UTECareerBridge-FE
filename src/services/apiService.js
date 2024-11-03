@@ -117,8 +117,14 @@ const getAllUsers = async (values) => {
   const params = new URLSearchParams(values).toString();
   return axios.get(`users/get-all-users?${params}`, config);
 };
-const getCompanyById = async (id) => {
+const getCompanyById= async (id) => {
   return axios.get(`employers/get-company?id=${id}`);
+}
+const getAllNotificationById = async (id) => {
+  return axios.get(`notifications/user/${id}`, config);
+}
+const getUserByUserId = async (id) => {
+  return axios.get(`users/get-user/${id}`, config);
 }
 export {
   getToken,
@@ -149,4 +155,8 @@ export {
   getSimilarJob,
   getAllUsers,
   getCompanyById
+  getSimilarJob,
+  getAllUsers,
+  getAllNotificationById,
+  getUserByUserId,
 }

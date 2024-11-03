@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './adminLayout.scss';
+import NotificationPopover from './NotificationPopover';
 import {
     DashboardOutlined,
     UserOutlined,
@@ -46,8 +47,8 @@ const itemSider = [
         icon: <TeamOutlined />,
         label: 'Quản lý người dùng',
         children: [
-            { key: '2.1', label: 'Nhà tuyển dụng' },
-            { key: '2.2', label: 'Ứng viên' },
+            { key: '2.1', label: 'Ứng viên' },
+            { key: '2.2', label: 'Nhà tuyển dụng' },
             { key: '2.3', label: 'Quản trị viên' }
         ]
     },
@@ -114,8 +115,8 @@ const itemSider = [
 
 const navigationMap = {
     '1': '/admin/dashboard',
-    '2.1': '/admin/manage-user',
-    '2.2': '/admin/candidates',
+    '2.1': '/admin/manage-students',
+    '2.2': '/admin/manage-employers',
     '2.3': '/admin/administrators',
     '3.1': '/admin/job-posts',
     '3.2': '/admin/applications',
@@ -241,9 +242,10 @@ const AdminLayout = () => {
                         <Badge count={messages} overflowCount={10}>
                             <MessageOutlined className="message-icon" />
                         </Badge>
-                        <Badge count={notifications} overflowCount={99}>
+                        {/* <Badge count={notifications} overflowCount={99}>
                             <BellOutlined className="notification-icon" />
-                        </Badge>
+                        </Badge> */}
+                        <NotificationPopover />
                         <Space>
                             <Avatar
                                 size="large"
