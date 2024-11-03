@@ -33,7 +33,6 @@ import ManageListJobs from './components/Employer/ListJob/ManageListJobs.js';
 import UpdateJob from './components/Employer/ListJob/UpdateJob.js';
 import ViewJob from './components/User/ViewJob.js';
 import InforCompany from './components/User/InforCompany.js';
-import AdminPage from './components/Admin/adminPage.jsx';
 import AdminLayout from './components/Admin/adminLayout.jsx';
 import UserManagement from './components/Admin/ManageUser/ManageStudent.jsx';
 
@@ -60,8 +59,7 @@ root.render(
                 <Route index element={<EmployerRegister />} />
               </Route>
               <Route element={<EmployerLayout />} >
-                <Route path='view/:id' element={<ViewJob />} />
-                <Route index element={<Navigate to="/employer/infor-company/5" replace />} />
+                <Route index element={<Navigate to="/employer/infor-company/11" replace />} />
                 <Route path='dashboard' element={<DashBoard />} />
                 <Route path='infor-company/:id' element={<InforCompany />} />
                 <Route path='profile' element={<EmployerProfile />} />
@@ -70,15 +68,16 @@ root.render(
                 <Route path='business-certificate' element={<BusinessCertificate />} />
                 <Route path='post-job' element={<EmployerPostJob />} />
                 <Route path='manage-list-jobs' element={<ManageListJobs />} />
+                <Route path='job/view/:id' element={<ViewJob />} />
                 <Route path='job/edit/:id' element={<UpdateJob />} />
               </Route>
             </Route>
 
-              <Route path='admin' element={<AdminLayout />} >
+            <Route path='admin' element={<AdminLayout />} >
               <Route index element={<Navigate to="/admin/dashboard" replace />} />
               <Route path='dashboard' element={<DashBoard />} />
               <Route path='manage-user' element={<UserManagement />} />
-              </Route>
+            </Route>
 
             <Route path='forgot-password' element={<BackgroundAndForm />}>
               <Route index element={<ForgotPassword />} />

@@ -5,21 +5,6 @@ const instance = axios.create({
     withCredentials: true, // Always send credentials
 });
 
-// let isRefreshing = false;
-// let failedQueue = [];
-
-// const processQueue = (error, token = null) => {
-//     failedQueue.forEach(prom => {
-//         if (error) {
-//             prom.reject(error);
-//         } else {
-//             prom.resolve(token);
-//         }
-//     });
-
-//     failedQueue = [];
-// };
-
 instance.interceptors.request.use(function (config) {
     return config;
 }, function (error) {
@@ -48,42 +33,35 @@ instance.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
 
-        if (error.response.status === 401 && !originalRequest._retry) {
-            // if (isRefreshing) {
-            //     return new Promise((resolve, reject) => {
-            //         failedQueue.push({ resolve, reject });
-            //     }).then(token => {
-            //         originalRequest.headers['Authorization'] = 'Bearer ' + token;
-            //         return instance(originalRequest);
-            //     }).catch(err => {
-            //         return Promise.reject(err);
-            //     });
-            // }
-            // isRefreshing = true;
-            originalRequest._retry = true;
-
-
-            // try {
-            const newTokens = await refreshToken();
-            localStorage.setItem('accessToken', newTokens.accessToken);
-            originalRequest.headers['Authorization'] = `Bearer ${newTokens.accessToken}`;
-            //processQueue(null, newTokens.accessToken);
-            return instance(originalRequest);
-            // } catch (refreshError) {
-            //     processQueue(refreshError, null);
-            //     // Handle authentication failure (e.g., redirect to login)
-            //     console.error('Failed to refresh token. User may need to re-authenticate.');
-            //     // You might want to redirect to login page or clear tokens here
-            //     localStorage.removeItem('accessToken');
-            //     // window.location = '/login'; // Uncomment if you want to redirect to login page
-            //     return Promise.reject(refreshError);
-            // } finally {
-            //     isRefreshing = false;
-            // }
+        // Handle 403 Forbidden
+        if (error.response?.status === 403) {
+            // Redirect to forbidden/unauthorized page
+            window.location = '/forbidden'; // or '/unauthorized', depending on your route setup
+            return Promise.reject(error);
         }
 
-        return error && error.response && error.response.data
-            ? error.response.data : Promise.reject(error);
+        // Handle 401 Unauthorized
+        if (error.response?.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+
+            try {
+                const newTokens = await refreshToken();
+                localStorage.setItem('accessToken', newTokens.accessToken);
+                originalRequest.headers['Authorization'] = `Bearer ${newTokens.accessToken}`;
+                return instance(originalRequest);
+            } catch (refreshError) {
+                // Handle authentication failure
+                console.error('Failed to refresh token. User may need to re-authenticate.');
+                localStorage.removeItem('accessToken');
+                window.location = '/login';
+                return Promise.reject(refreshError);
+            }
+        }
+
+        return error?.response?.data
+            ? error.response.data
+            : Promise.reject(error);
     }
 );
+
 export default instance;

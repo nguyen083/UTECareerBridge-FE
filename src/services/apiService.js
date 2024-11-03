@@ -1,5 +1,6 @@
 import axios from "../utils/axiosCustomize.js";
 
+
 let config = {};
 const setToken = (accessToken, refreshToken) => {
   localStorage.setItem('accessToken', accessToken);
@@ -116,6 +117,9 @@ const getAllUsers = async (values) => {
   const params = new URLSearchParams(values).toString();
   return axios.get(`users/get-all-users?${params}`, config);
 };
+const getCompanyById = async (id) => {
+  return axios.get(`employers/get-company?id=${id}`);
+}
 export {
   getToken,
   setToken,
@@ -143,5 +147,6 @@ export {
   putJob,
   getJobById,
   getSimilarJob,
-  getAllUsers
+  getAllUsers,
+  getCompanyById
 }

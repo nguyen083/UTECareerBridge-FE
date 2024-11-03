@@ -4,13 +4,13 @@ import * as Icons from "react-icons/fa";
 
 const { Title, Text } = Typography;
 
-const BenefitCard = ({ benefitName, description, benefitIcon }) => {
+const BenefitCard = ({ benefitName, description, benefitIcon, size = 'small' }) => {
     // Kiểm tra xem icon có tồn tại trong thư viện Icons không
     const IconComponent = Icons[benefitIcon] ? React.createElement(Icons[benefitIcon]) : null;
 
     return (
         <Card
-            size='small'
+            size={size}
             style={{ borderRadius: 8, backgroundColor: '#f0f5ff' }}
         >
             <div style={{ display: 'flex', alignItems: 'center' }}>

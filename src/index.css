@@ -14,6 +14,9 @@ code {
 .font-size{
   font-size: 1rem;
 }
+.font-size-small{
+  font-size: 0.875rem;
+}
 .username{
   font-size: 1.25rem;
   font-weight: 450;
@@ -87,6 +90,3 @@ html{
 .custom-anchor .ant-anchor-link-title {
   text-decoration: none;
 }
-/* .ant-input-search-button{
-  height: 39px !important;
-} */

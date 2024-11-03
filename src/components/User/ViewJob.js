@@ -30,6 +30,7 @@ const ViewJob = () => {
                 const job = res.data;
                 const company = job.employerResponse;
                 setCompany({
+                    id: company.id,
                     companyName: company.companyName,
                     companyLogo: company.companyLogo,
                     companyAddress: company.companyAddress,
@@ -57,8 +58,8 @@ const ViewJob = () => {
             setLoading(false);
         });
         getSimilarJob(id).then((res) => {
-            if (res.status === 'OK') {
-                setSimilarJobs(res.data.jobResponses);
+            if (res.status === 'OK' && res.data !== null) {
+                setSimilarJobs(res.data?.jobResponses);
             }
         });
     }, [id]);
@@ -178,13 +179,13 @@ const ViewJob = () => {
                                     </Flex>
                                 </Flex>
                             </BoxContainer>
-                            <BoxContainer padding='1rem'>
+                            {similarJobs && <BoxContainer padding='1rem'>
                                 <Flex vertical gap={"0.5rem"}>
                                     <div className='title2'>
                                         Việc làm bạn sẽ thích
                                     </div>
                                     {similarJobs.map((job) => <JobCardLarge job={job} />)}                                </Flex>
-                            </BoxContainer>
+                            </BoxContainer>}
                         </Flex>
                     </Col>
 
@@ -213,10 +214,10 @@ const ViewJob = () => {
                                         src={company.companyLogo ? company.companyLogo : 'https://images.vietnamworks.com/img/company-default-logo.svg'} // URL ảnh logo
                                         height={80}
                                         width={80}
-                                        style={{ border: '6px solid white', borderRadius: "10px", textAlign: "center" }} // Để logo nổi lên giữa
+                                        style={{ border: '6px solid white', borderRadius: "10px", textAlign: "center", objectFit: 'cover' }} // Để logo nổi lên giữa
                                     />
                                     <Space className='mt-2' direction="vertical" style={{ width: '100%' }}>
-                                        <Text onClick={() => handleToCompany(id)} strong className='font-size hover-effect'>
+                                        <Text onClick={() => handleToCompany(company.id)} strong className='font-size hover-effect'>
                                             {company.companyName}
                                         </Text>
 
@@ -275,18 +276,18 @@ const ViewJob = () => {
                                     ))}
                                 </Carousel>
                             </Card>}
-                            <Card actions={[<Link onClick={() => { }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-center'>Việc làm tương tự</div>}
+                            {similarJobs && <Card actions={[<Link onClick={() => { }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-center'>Việc làm tương tự</div>}
                                 style={{ width: "100%" }} size='small'>
                                 <Flex gap={"0.5rem"} vertical>
                                     {similarJobs.map((job) => <JobCardSmall job={job} />)}
                                 </Flex>
-                            </Card>
-                            <Card actions={[<Link type='secondary' onClick={() => { }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-center'>Việc làm cùng công ty</div>}
+                            </Card>}
+                            {similarJobs && <Card actions={[<Link type='secondary' onClick={() => { }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-center'>Việc làm cùng công ty</div>}
                                 style={{ width: "100%", marginBottom: 16 }} size='small'>
                                 <Flex gap={"0.5rem"} vertical>
                                     {similarJobs.map((job) => <JobCardSmall job={job} />)}
                                 </Flex>
-                            </Card>
+                            </Card>}
                         </Row>
                     </Col>
                 </Row>

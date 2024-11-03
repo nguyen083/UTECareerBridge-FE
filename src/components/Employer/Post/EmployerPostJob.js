@@ -106,6 +106,14 @@ const EmployerPostJob = () => {
                 <Form.Item className='col-12 col-md-6 mt-0' name="amount" label={<span>Số lượng tuyển dụng <span style={{ color: "red" }}> *</span></span>}
                     rules={[
                         { required: true, message: 'Vui lòng nhập số lượng tuyển dụng' },
+                        ({ getFieldValue }) => ({
+                            validator(_, value) {
+                                if (value <= 0) {
+                                    return Promise.reject(new Error('Số lượng tuyển dụng phải lớn hơn 0'));
+                                }
+                                return Promise.resolve();
+                            },
+                        })
                     ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
                     <InputNumber style={{ width: 200 }}
                         formatter={value => format(value)}

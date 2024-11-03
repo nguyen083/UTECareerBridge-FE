@@ -7,7 +7,7 @@ const { Text, Title, Paragraph } = Typography;
 const JobCardSmall = ({ job }) => {
     const navigate = useNavigate();
     const handleClick = (key) => {
-        navigate('/employer/view/' + key);
+        navigate('/employer/job/view/' + key);
 
     };
     useEffect(() => {
@@ -15,9 +15,9 @@ const JobCardSmall = ({ job }) => {
     }, []);
     return (
         <Card
-            onClick={() => handleClick(job.jobId)}
             hoverable
             style={{
+                cursor: 'default',
                 width: "100%",
                 borderRadius: 10,
                 overflow: 'hidden',
@@ -32,7 +32,9 @@ const JobCardSmall = ({ job }) => {
                 />
                 <div>
                     <Title level={5}
+                        onClick={() => handleClick(job.jobId)}
                         style={{
+                            cursor: 'pointer',
                             margin: 0,
                             whiteSpace: 'nowrap',        // Keeps the text on a single line
                             overflow: 'hidden',           // Hides any overflow
@@ -72,7 +74,7 @@ const JobCardSmall = ({ job }) => {
 const JobCardLarge = ({ job }) => {
     const navigate = useNavigate();
     const handleClick = (key) => {
-        navigate('/employer/view/' + key);
+        navigate('/employer/job/view/' + key);
 
     };
     useEffect(() => {

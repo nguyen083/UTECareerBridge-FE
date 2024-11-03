@@ -101,13 +101,13 @@ const EmployerLayout = () => {
     useEffect(() => {
         const logout = async () => {
             getToken();
-
             const res = await logOut();
             if (res.status === 'OK') {
                 dispatch(setNull());
                 removeToken();
                 navigate('/login');
                 toast.success(res.message);
+                dispatch(setNull());
             } else {
                 toast.error(res.message);
             }

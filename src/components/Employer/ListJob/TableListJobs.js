@@ -83,7 +83,7 @@ const TableListJobs = (props) => {
         });
     };
     const handleView = (id) => {
-
+        navigate(`/employer/job/view/${id}`);
     };
     const handleEdit = (id) => {
         navigate(`/employer/job/edit/${id}`);
