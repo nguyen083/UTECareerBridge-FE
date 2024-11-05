@@ -22,6 +22,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInfor, getToken, logOut, removeToken } from '../../services/apiService';
 import { toast } from 'react-toastify';
+import { setloading } from '../../redux/action/webSlice';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -172,6 +173,7 @@ const AdminLayout = () => {
             const path = navigationMap[key];
             if (path === 'logout') {
                 try {
+                    dispatch(setloading({ loading: true }));
                     getToken();
                     const res = await logOut();
                     if (res.status === 'OK') {
@@ -182,6 +184,7 @@ const AdminLayout = () => {
                     } else {
                         toast.error('Đăng xuất thất bại');
                     }
+                    dispatch(setloading({ loading: false }));
                 } catch (error) {
                     toast.error('Có lỗi xảy ra');
                 }

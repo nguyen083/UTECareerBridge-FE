@@ -49,7 +49,7 @@ root.render(
             {/* <Route path="test" element={<Test />}>
           <Route index element={<EmployerCompany />} />
         </Route> */}
-            <Route index element={<Navigate to="/company/11" replace />} />
+            <Route index element={<Navigate to="/home" replace />} />
             <Route path="/company/:id" element={<InforCompany />} />s
             <Route path="/home" element={<HomePage />}>
             </Route>
@@ -79,7 +79,7 @@ root.render(
               <Route path='dashboard' element={<DashBoard />} />
               <Route path='manage-students' element={<UserManagement />} />
               <Route path='manage-employers' element={<ManageListEmployer />} />
-              </Route>
+            </Route>
 
             <Route path='forgot-password' element={<BackgroundAndForm />}>
               <Route index element={<ForgotPassword />} />

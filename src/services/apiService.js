@@ -117,7 +117,13 @@ const getAllUsers = async (values) => {
   const params = new URLSearchParams(values).toString();
   return axios.get(`users/get-all-users?${params}`, config);
 };
-const getCompanyById= async (id) => {
+
+const updateUser = async (id, values) => {
+  getToken();
+  return axios.put(`users/update-user/${id}`, values, config);
+}
+
+const getCompanyById = async (id) => {
   return axios.get(`employers/get-company?id=${id}`);
 }
 const getAllNotificationById = async (id) => {
@@ -126,11 +132,11 @@ const getAllNotificationById = async (id) => {
 const getUserByUserId = async (id) => {
   return axios.get(`users/get-user/${id}`, config);
 }
-const exportUserToPdf= async (queryParams) => {
+const exportUserToPdf = async (queryParams) => {
   getToken();
   return axios.get('export/users/pdf', {
     params: queryParams,
-    responseType: 'blob', 
+    responseType: 'blob',
     headers: {
       'Accept': 'application/pdf'
     }
@@ -167,5 +173,6 @@ export {
   getCompanyById,
   getAllNotificationById,
   getUserByUserId,
-  exportUserToPdf
+  exportUserToPdf,
+  updateUser
 }

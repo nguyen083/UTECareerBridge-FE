@@ -1,14 +1,16 @@
-import { Button, Form, Input } from 'antd';
-import React, { useState } from 'react';
-import Modal from 'react-bootstrap/Modal';
+import { Button, Flex, Form, Input, Modal } from 'antd';
+import React from 'react';
 import './ModalFormLogin.scss';
 import { getToken, setToken, studentLogin } from '../../services/apiService';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { useDispatch } from 'react-redux';
+import { setloading } from '../../redux/action/webSlice';
 
 const ModalFormLogin = (props) => {
     const { show, setShow } = props;
+    const dispatch = useDispatch();
     const [form] = Form.useForm();
     const navigate = useNavigate();
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -30,25 +32,25 @@ const ModalFormLogin = (props) => {
         form.resetFields();
         setShow(false);
     };
+
     const handleLogin = async (values) => {
-        //Validate dữ liệu
+
+        dispatch(setloading({ loading: true }));
         const { username, ...rest } = values;
         const updatedValues = {
             ...rest,
             [inputType]: username,
         };
         console.log(updatedValues);
-        //Call API
+        handleClose();
         let res = await studentLogin(updatedValues);
-        
+
         if (res.status === 'OK') {
-            // Check if the logged in user's role matches the selected role
-            const userRoleFromAPI = res.data.roles.roleName; // Assuming API returns user role
+            const userRoleFromAPI = res.data.roles.roleName;
             toast.success(res.message);
             setToken(res.data.token, res.data.refresh_token);
             getToken();
 
-            // Route based on role from API response
             if (userRoleFromAPI === 'student') {
                 navigate('');
             } else if (userRoleFromAPI === 'admin') {
@@ -57,80 +59,98 @@ const ModalFormLogin = (props) => {
         } else {
             toast.error(res.message);
         }
+        dispatch(setloading({ loading: false }));
 
-        // clear states
-        handleClose();
     };
+
     return (
-        <form >
-            <Modal style={{ backgroundColor: "gray" }} show={show} onHide={() => setShow(false)} size='lg' backdrop="static" centered>
-                <Modal.Header >
-                    <Modal.Title style={{ fontSize: "18px", fontWeight: "600", color: "rgb(51, 51, 51)", lineHeight: "22px" }}>Đăng nhập</Modal.Title>
-                </Modal.Header>
-                <Form
-                    requiredMark={false}
-                    form={form}
-                    onFinish={handleLogin}
-                    autoComplete="on"
-                    layout='vertical'>
-                    <Modal.Body className="modal-login">
-                        <p className="title">Đăng nhập bằng email</p>
-                        <Form.Item name="username" label={<span>Email/ Số điện thoại <span style={{ color: "red" }}> *</span></span>}
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập email hoặc số điện thoại của bạn',
-                                },
-                                ({ getFieldValue }) => ({
-                                    validator(_, value) {
-                                        if (!value) {
-                                            return Promise.reject('Vui lòng nhập email hoặc số điện thoại của bạn');
-                                        }
-                                        if (emailRegex.test(value)) {
-                                            return Promise.resolve();
-                                        }
-                                        if (phoneRegex.test(value)) {
-                                            return Promise.resolve();
-                                        }
-                                        return Promise.reject('Vui lòng nhập đúng định dạng email hoặc số điện thoại');
-                                    },
-                                }),
+        <Modal
+            width={'50%'}
+            title="Đăng nhập"
+            visible={show}
+            onCancel={handleClose}
+            footer={
+                <Flex gap={"0.5rem"} justify='end'>
+                    <Button size='large' onClick={handleClose}>
+                        Hủy
+                    </Button>
+                    <Button size='large' type="primary" onClick={form.submit}>
+                        Đăng nhập
+                    </Button>
+                </Flex>
+            }
+            centered
+            maskClosable={false}
+        >
+            <Form
+                requiredMark={false}
+                form={form}
+                onFinish={handleLogin}
+                autoComplete="on"
+                layout="vertical"
+            >
 
-                            ]} validateTrigger={['onBlur']} validateFirst>
-                            <Input className="form-control d-flex" onChange={handleInputChange} prefix={<UserOutlined />} />
-                        </Form.Item>
-                        <Form.Item
-                            className='mb-3'
-                            label={<span>Mật khẩu <span style={{ color: "red" }}> *</span></span>}
-                            required
-                            name="password"
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập mật khẩu của bạn',
-                                },
-                            ]} validateTrigger={['onBlur', 'onChange']}>
-                            <Input.Password className="form-control d-flex" prefix={<UnlockOutlined />} />
-                        </Form.Item>
+                <p className="title mx-auto">Đăng nhập bằng email hoặc số điện thoại</p>
+                <Form.Item
+                    name="username"
+                    label={<span>Email/ Số điện thoại <span style={{ color: "red" }}> *</span></span>}
+                    rules={[
+                        {
+                            required: true,
+                            message: 'Vui lòng nhập email hoặc số điện thoại của bạn',
+                        },
+                        ({ getFieldValue }) => ({
+                            validator(_, value) {
+                                if (!value) {
+                                    return Promise.reject('Vui lòng nhập email hoặc số điện thoại của bạn');
+                                }
+                                if (emailRegex.test(value)) {
+                                    return Promise.resolve();
+                                }
+                                if (phoneRegex.test(value)) {
+                                    return Promise.resolve();
+                                }
+                                return Promise.reject('Vui lòng nhập đúng định dạng email hoặc số điện thoại');
+                            },
+                        }),
+                    ]}
+                    validateTrigger={['onBlur']}
+                    validateFirst
+                >
+                    <Input
+                        className="form-control d-flex"
+                        onChange={handleInputChange}
+                        prefix={<UserOutlined className='me-2' />}
+                    />
+                </Form.Item>
 
-                        <Form.Item>
-                            <div className="d-flex justify-content-end">
-                                <a href="/forgot-password" target='_blank'>Quên mật khẩu?</a>
-                            </div>
-                        </Form.Item>
+                <Form.Item
+                    className='mb-3'
+                    label={<span>Mật khẩu <span style={{ color: "red" }}> *</span></span>}
+                    name="password"
+                    rules={[{ required: true, message: 'Vui lòng nhập mật khẩu của bạn' }]}
+                    validateTrigger={['onBlur', 'onChange']}
+                >
+                    <Input.Password
+                        className="form-control d-flex"
+                        prefix={<UnlockOutlined className='me-2' />}
+                    />
+                </Form.Item>
 
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button className='size' variant="secondary" onClick={handleClose}>
-                            Hủy
-                        </Button>
-                        <Button className='size' type="primary" htmlType='submit'>
-                            Đăng nhập
-                        </Button>
-                    </Modal.Footer>
-                </Form>
-            </Modal>
-        </form>
+                <Form.Item>
+                    <div className="d-flex justify-content-end">
+                        <Link to="/forgot-password" target='_blank'>Quên mật khẩu?</Link>
+                    </div>
+                </Form.Item>
+                <Form.Item>
+                    <Input type="submit" hidden />
+                </Form.Item>
+
+
+
+            </Form>
+        </Modal>
+
     );
 }
 

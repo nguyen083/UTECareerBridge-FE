@@ -3,21 +3,23 @@ import { Tabs, Modal, Form, Input, DatePicker, message, Select, Space, Button } 
 import { UserOutlined, LockOutlined, StopOutlined } from '@ant-design/icons';
 import TableListUser from './TableListUser';
 import BoxContainer from '../../Generate/BoxContainer';
-import {getUserByUserId, getToken} from '../../../services/apiService';
+import { getUserByUserId, getToken, updateUser } from '../../../services/apiService';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { toast } from 'react-toastify';
 const { TabPane } = Tabs;
 const { Option } = Select;
 const ManageListUser = () => {
     const [activeStatus, setActiveStatus] = useState('active');
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [res, setRes] = useState(null);
     const [loading, setLoading] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [form] = Form.useForm();
     // Handle additional columns based on status
     const getAdditionalColumns = (status) => {
         const columns = [];
-        
+
         if (status === 'pending') {
             columns.push({
                 title: 'Ngày đăng ký',
@@ -25,7 +27,7 @@ const ManageListUser = () => {
                 key: 'registrationDate',
             });
         }
-        
+
         if (status === 'blocked') {
             columns.push({
                 title: 'Lý do khóa',
@@ -52,6 +54,7 @@ const ManageListUser = () => {
 
     const handleEdit = async (record) => {
         try {
+            console.log('Record:', record);
             getToken();
             setLoading(true);
             const response = await getUserByUserId(record.key);
@@ -65,7 +68,7 @@ const ManageListUser = () => {
                     phone: response.data.phone,
                     address: response.data.address,
                     dob: dayjs(response.data.dob, 'dd/MM/yyyy'),
-                    active: response.data.active ? 'active' : 'inactive'
+                    active: response.data.active
                 });
                 setIsModalVisible(true);
             }
@@ -103,25 +106,32 @@ const ManageListUser = () => {
             }
         });
     };
-    
+
     const handleModalCancel = () => {
         form.resetFields();
         setIsModalVisible(false);
         setSelectedUser(null);
     };
 
-    const handleModalOk = async () => {
+    const handleModalOk = async (values) => {
         try {
-            const values = await form.validateFields();
             setLoading(true);
-            
-            // Here you would typically make an API call to update the user
-            console.log('Updated values:', values);
-            
-            message.success('Cập nhật thông tin thành công');
+            // định dạng dob thành string
+            dayjs.extend(customParseFormat);
+            values.dob = dayjs(values.dob, 'YYYY-MM-DD').format('DD/MM/YYYY');
+            console.log('Form values:', values);
+            updateUser(selectedUser.userId, values).then((res) => {
+                if (res.status === 'OK') {
+                    setRes(res.data);
+                    toast.success(res.message);
+                }
+                else
+                    toast.error(res.message);
+            });
+            // toast.success('Cập nhật thông tin người dùng thành công');
             handleModalCancel();
         } catch (error) {
-            message.error('Vui lòng kiểm tra lại thông tin');
+            toast.error('Vui lòng kiểm tra lại thông tin');
         } finally {
             setLoading(false);
         }
@@ -134,9 +144,10 @@ const ManageListUser = () => {
             </BoxContainer>
             <BoxContainer>
                 <TableListUser
+                    fetch={res}
                     userType="student"
                     onEdit={handleEdit}
-                    onDelete={()=>handleDelete(1)}
+                    onDelete={handleDelete}
                 />
             </BoxContainer>
             <Modal
@@ -151,7 +162,7 @@ const ManageListUser = () => {
                         key="submit"
                         type="primary"
                         loading={loading}
-                        onClick={handleModalOk}
+                        onClick={form.submit}
                     >
                         Lưu thay đổi
                     </Button>
@@ -160,10 +171,8 @@ const ManageListUser = () => {
             >
                 <Form
                     form={form}
+                    onFinish={handleModalOk}
                     layout="vertical"
-                    initialValues={{
-                        active: 'active'
-                    }}
                 >
                     <div style={{ display: 'flex', gap: '20px' }}>
                         <Form.Item
@@ -228,8 +237,8 @@ const ManageListUser = () => {
                         rules={[{ required: true, message: 'Vui lòng chọn trạng thái' }]}
                     >
                         <Select>
-                            <Option value="active">Hoạt động</Option>
-                            <Option value="inactive">Khóa</Option>
+                            <Option value={true}>Hoạt động</Option>
+                            <Option value={false}>Khóa</Option>
                         </Select>
                     </Form.Item>
                 </Form>

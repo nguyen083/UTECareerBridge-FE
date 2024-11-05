@@ -134,6 +134,7 @@ const InforCompany = () => {
                         </Flex>
                         <Anchor
                             targetOffset={60}
+                            style={{ backgroundColor: 'white', paddingTop: '1.25rem' }}
                             className="custom-anchor"
                             direction="horizontal"
                             items={[

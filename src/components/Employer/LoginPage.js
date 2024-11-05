@@ -1,8 +1,9 @@
 import './LoginPage.scss';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { employerLogin, getToken, setToken } from '../../services/apiService';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
+import { IoIosArrowRoundBack } from "react-icons/io";
 import { Button, Flex, Form, Input } from 'antd';
 
 
@@ -96,12 +97,15 @@ const LoginPage = () => {
 
 
                             <Form.Item>
-                                <Flex justify='space-between' className=' mb-4'>
+                                <Flex justify='space-between' className=' mb-2'>
                                     <span className='col-6'>Bạn chưa đăng ký? <a href='/employer/register'>Đăng ký ngay</a></span>
                                     <a className='col-6 d-flex justify-content-end' href='forgot-password' target='_blank'>Quên mật khẩu?</a>
                                 </Flex>
                             </Form.Item>
-                            <Flex vertical align='end' justify='center'>
+                            <Flex align='center' justify='space-between'>
+                                <Link to='/home' className='text-decoration-none align-middle'>
+                                    <IoIosArrowRoundBack className='fs-4' />Quay lại trang chủ
+                                </Link>
                                 <Button className='size' type="primary" htmlType='submit'>
                                     Đăng nhập
                                 </Button>

@@ -11,7 +11,7 @@ import {
   Tag,
   Tooltip,
   Modal,
-  Dropdown, 
+  Dropdown,
 } from 'antd';
 import {
   EditOutlined,
@@ -29,6 +29,7 @@ import { getAllUsers, getCompanyById, exportUserToPdf } from '../../../services/
 const { Search } = Input;
 
 const TableListUser = ({
+  fetch,
   userType,
   additionalColumns = [],
   onEdit,
@@ -62,7 +63,7 @@ const TableListUser = ({
       key: 'index',
       width: '5%',
       align: 'right'
-  },
+    },
     {
       title: 'Họ',
       dataIndex: 'lastName',
@@ -111,8 +112,8 @@ const TableListUser = ({
       key: 'active',
       align: 'center',
       render: (active) => {
-        const displayStatus = active ? 'Hoạt động' : 'Bị khóa'; 
-        const statusKey = active ? 'ACTIVE' : 'BLOCKED'; 
+        const displayStatus = active ? 'Hoạt động' : 'Bị khóa';
+        const statusKey = active ? 'ACTIVE' : 'BLOCKED';
         return (
           <Tag color={statusColors[statusKey]}>
             {displayStatus}
@@ -130,21 +131,22 @@ const TableListUser = ({
             icon={<EditOutlined />}
             onClick={() => {
               onEdit(record);
-            }}
+            }
+            }
           />
-         {userType === 'employer' && (
+          {userType === 'employer' && (
             <Link to={`/company/${record.key}`} target='_blank'>
-            <Button
-            icon={<EyeOutlined />}
-            />
-          </Link>
+              <Button
+                icon={<EyeOutlined />}
+              />
+            </Link>
           )}
-            <Button
-              type="primary"
-              danger
-              onClick={() => onDelete(record.key)}
-              icon={<DeleteOutlined />}
-            />
+          <Button
+            type="primary"
+            danger
+            onClick={() => onDelete(record.key)}
+            icon={<DeleteOutlined />}
+          />
         </Space>
       ),
     },
@@ -168,8 +170,8 @@ const TableListUser = ({
       setLoading(true);
 
       const queryParams = {
-        role: userType, 
-        page: params.page || pagination.current - 1, 
+        role: userType,
+        page: params.page || pagination.current - 1,
         size: params.pageSize || pagination.pageSize,
         sorting: params.sorting || (sortField && sorting ? `${sortField},${sorting}` : ''),
         keyword: params.keyword || searchText,
@@ -184,7 +186,7 @@ const TableListUser = ({
           key: user.userId,
           index: (queryParams.page * queryParams.size) + idx + 1
         }));
-        setUsers(dataWithIndex);       
+        setUsers(dataWithIndex);
         setPagination({
           ...pagination,
           total: response.data.totalElements,
@@ -201,6 +203,9 @@ const TableListUser = ({
     }
   };
 
+  useEffect(() => {
+    fetchUsers();
+  }, [fetch]);
   // Initial fetch
   useEffect(() => {
     fetchUsers();
@@ -221,7 +226,7 @@ const TableListUser = ({
       }
     });
   };
-  
+
   // Handle search
   const handleSearch = (value) => {
     setSearchText(value);
@@ -272,7 +277,7 @@ const TableListUser = ({
   const handleExport = async (type) => {
     try {
       setExportLoading(true);
-      
+
       const queryParams = {
         role: userType,
         page: pagination.current - 1,
@@ -286,7 +291,7 @@ const TableListUser = ({
         // if (response.data.type !== 'application/pdf') {
         //   throw new Error('Invalid PDF response');
         // }
-  
+
         // Tạo Blob với type cụ thể
         const blob = response instanceof Blob ? response : new Blob([response], { type: 'application/pdf' });
         console.log('Blob:', blob);
@@ -294,26 +299,26 @@ const TableListUser = ({
         if (blob.size === 0) {
           throw new Error('Empty PDF file');
         }
-  
+
         // Tạo URL và download
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement('a');
         link.href = url;
         link.setAttribute('download', `users-${new Date().getTime()}.pdf`);
-        
+
         // Mở PDF trong tab mới trước khi download (tùy chọn)
         window.open(url, '_blank');
-        
+
         // Download file
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
-        
+
         // Clean up
         setTimeout(() => {
           window.URL.revokeObjectURL(url);
         }, 100);
-  
+
         message.success('Xuất PDF thành công!');
       }
     } catch (error) {
@@ -371,7 +376,7 @@ const TableListUser = ({
           >
             Làm mới
           </Button>
-          <Button 
+          <Button
             size="large"
             onClick={() => setIsPrintModalVisible(true)}
           >

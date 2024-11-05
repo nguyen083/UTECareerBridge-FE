@@ -1,9 +1,10 @@
 import './App.scss';
 import { Outlet } from "react-router-dom";
-import { ConfigProvider } from 'antd';
+import { ConfigProvider, Spin } from 'antd';
 import Navigation from './components/Generate/Navigation.js';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
+import { useSelector } from 'react-redux';
 
 const App = () => {
   return (
@@ -34,9 +35,9 @@ const App = () => {
           }
         }
       }}>
-      <div className="App">
+      <Spin className='mh-100' size='large' spinning={useSelector(state => state.web.loading)}>
         <Outlet />
-      </div>
+      </Spin>
       {/* <Navigation/> */}
       <ToastContainer
         position="top-right"
