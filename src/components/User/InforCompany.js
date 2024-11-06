@@ -174,7 +174,7 @@ const InforCompany = () => {
                                 <BoxContainer padding="1rem">
                                     <Text className="title1">Vị trí đang tuyển dụng</Text>
                                 </BoxContainer>
-                                {/* <JobList /> */}
+                                <JobList />
                             </div>
                         </Flex>
                     </Flex>

@@ -5,6 +5,8 @@ import { employerLogin, getToken, setToken } from '../../services/apiService';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { Button, Flex, Form, Input } from 'antd';
+import { useDispatch } from 'react-redux';
+import { loading, setloading, stop } from '../../redux/action/webSlice';
 
 
 const LoginPage = () => {
@@ -12,6 +14,7 @@ const LoginPage = () => {
     const [form] = Form.useForm();
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const phoneRegex = /^[0-9]{10,11}$/;
+    const dispatch = useDispatch();
     var inputType = '';
 
     const handleInputChange = (e) => {
@@ -26,6 +29,7 @@ const LoginPage = () => {
     };
 
     const handleLogin = async (values) => {
+        dispatch(loading());
         //Validate email
         const { username, ...rest } = values;
         const updatedValues = {
@@ -38,10 +42,13 @@ const LoginPage = () => {
             toast.success(res.message);
             setToken(res.data.token, res.data.refreshToken);
             getToken();
+            dispatch(stop());
             navigate('/employer');
         } else {
             toast.error(res.message);
+            dispatch(stop());
         }
+
     }
     return (
         <div className="login-page d-flex">
@@ -98,8 +105,8 @@ const LoginPage = () => {
 
                             <Form.Item>
                                 <Flex justify='space-between' className=' mb-2'>
-                                    <span className='col-6'>Bạn chưa đăng ký? <a href='/employer/register'>Đăng ký ngay</a></span>
-                                    <a className='col-6 d-flex justify-content-end' href='forgot-password' target='_blank'>Quên mật khẩu?</a>
+                                    <span className='col-6'>Bạn chưa đăng ký? <Link to='/employer/register'>Đăng ký ngay</Link></span>
+                                    <Link className='col-6 d-flex justify-content-end' to='/forgot-password' target='_blank'>Quên mật khẩu?</Link>
                                 </Flex>
                             </Form.Item>
                             <Flex align='center' justify='space-between'>

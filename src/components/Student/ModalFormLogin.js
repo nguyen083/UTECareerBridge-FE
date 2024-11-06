@@ -6,7 +6,7 @@ import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import { setloading } from '../../redux/action/webSlice';
+import { loading, setloading, stop } from '../../redux/action/webSlice';
 
 const ModalFormLogin = (props) => {
     const { show, setShow } = props;
@@ -35,7 +35,7 @@ const ModalFormLogin = (props) => {
 
     const handleLogin = async (values) => {
 
-        dispatch(setloading({ loading: true }));
+        dispatch(loading());
         const { username, ...rest } = values;
         const updatedValues = {
             ...rest,
@@ -59,7 +59,7 @@ const ModalFormLogin = (props) => {
         } else {
             toast.error(res.message);
         }
-        dispatch(setloading({ loading: false }));
+        dispatch(stop());
 
     };
 

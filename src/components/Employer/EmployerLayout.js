@@ -24,6 +24,7 @@ import {
 import { Layout, Menu, Avatar, Flex, } from 'antd';
 import { getInfor, getToken, logOut, removeToken } from '../../services/apiService';
 import { toast } from 'react-toastify';
+import { current, loading, stop } from '../../redux/action/webSlice';
 const { Header, Content, Footer, Sider } = Layout;
 const siderStyle = {
     overflow: 'auto',
@@ -79,7 +80,7 @@ const EmployerLayout = () => {
     const [defaultImage, setDefaultImage] = useState(null);
     const name = useSelector(state => state.employer.firstName) + ' ' + useSelector(state => state.employer.lastName);
     const avatar = useSelector(state => state.employer.companyLogo);
-    const [current, setCurrent] = useState('1');
+    const [index, setIndex] = useState(useSelector(state => state.web.loading));
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -101,15 +102,17 @@ const EmployerLayout = () => {
     useEffect(() => {
         const logout = async () => {
             getToken();
+            dispatch(loading());
             const res = await logOut();
             if (res.status === 'OK') {
-                dispatch(setNull());
                 removeToken();
-                navigate('/login');
+                dispatch(stop());
                 toast.success(res.message);
                 dispatch(setNull());
+                navigate('login');
             } else {
                 toast.error(res.message);
+                dispatch(stop());
             }
         }
         const navigateSideBar = async (e) => {
@@ -122,8 +125,8 @@ const EmployerLayout = () => {
                 }
             }
         };
-        navigateSideBar(current);
-    }, [current]);
+        navigateSideBar(index);
+    }, [index]);
     useEffect(() => {
         setDefaultImage("https://res.cloudinary.com/utejobhub/image/upload/v1723888103/rg2do6iommv6wp840ixr.png")
     }, [])
@@ -137,7 +140,10 @@ const EmployerLayout = () => {
                     <img src={defaultImage} alt="logo"
                         style={{ width: "80%", height: "80%", objectFit: "contain" }} />
                 </div>
-                <Menu onClick={(e) => setCurrent(e.key)} selectedKeys={[current]} theme='light' style={{ fontSize: "1rem" }} mode="inline" items={itemSider} background />
+                <Menu onClick={(e) => {
+                    dispatch(current(e.key))
+                    setIndex(e.key)
+                }} selectedKeys={[index]} theme='light' style={{ fontSize: "1rem" }} mode="inline" items={itemSider} background />
             </Sider>
             <Layout className='site-layout'>
                 <Header
