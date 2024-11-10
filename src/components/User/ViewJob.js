@@ -9,11 +9,13 @@ import BenefitComponent from '../Generate/BenefitComponent';
 import BackgroundIcon from '../Generate/BackgroundIcon';
 import { JobCardLarge, JobCardSmall } from '../Generate/JobCard';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ModalApply } from '../Generate/ModalApply';
 
 
 const { Text, Link } = Typography;
 const ViewJob = () => {
     const ref = useRef();
+    const [apply, setApply] = useState(false);
     const [company, setCompany] = useState({});
     const [job, setJob] = useState({});
     const [isSaved, setIsSaved] = useState(false);
@@ -59,6 +61,7 @@ const ViewJob = () => {
         });
         getSimilarJob(id).then((res) => {
             if (res.status === 'OK' && res.data !== null) {
+                console.log("công việc");
                 setSimilarJobs(res.data?.jobResponses);
             }
         });
@@ -141,7 +144,8 @@ const ViewJob = () => {
                                         </Flex>
                                         <Row gutter={8}>
                                             <Col xs={24} md={18}>
-                                                <Button type='primary' style={{ width: "100%" }} size='large'>Nộp đơn</Button>
+                                                <Button type='primary' style={{ width: "100%" }} size='large' onClick={() => setApply(!apply)}>Nộp đơn</Button>
+                                                <ModalApply show={apply} setShow={setApply} company={company} job={job} />
                                             </Col>
                                             <Col xs={24} md={6}>
                                                 <Button onClick={handleSave} type={isSaved ? 'primary' : 'default'} ghost={isSaved} style={{ width: "100%" }} size='large'>{isSaved ? <HeartFilled /> : <HeartOutlined />} {isSaved ? "Đã lưu" : "Lưu công việc"}</Button>
@@ -276,13 +280,13 @@ const ViewJob = () => {
                                     ))}
                                 </Carousel>
                             </Card>}
-                            {similarJobs && <Card actions={[<Link onClick={() => { }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-center'>Việc làm tương tự</div>}
+                            {similarJobs && similarJobs.length > 0 && <Card actions={[<Link onClick={() => { }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-center'>Việc làm tương tự</div>}
                                 style={{ width: "100%" }} size='small'>
                                 <Flex gap={"0.5rem"} vertical>
                                     {similarJobs.map((job) => <JobCardSmall job={job} />)}
                                 </Flex>
                             </Card>}
-                            {similarJobs && <Card actions={[<Link type='secondary' onClick={() => { }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-center'>Việc làm cùng công ty</div>}
+                            {similarJobs && similarJobs.length > 0 && <Card actions={[<Link type='secondary' onClick={() => { }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-center'>Việc làm cùng công ty</div>}
                                 style={{ width: "100%", marginBottom: 16 }} size='small'>
                                 <Flex gap={"0.5rem"} vertical>
                                     {similarJobs.map((job) => <JobCardSmall job={job} />)}

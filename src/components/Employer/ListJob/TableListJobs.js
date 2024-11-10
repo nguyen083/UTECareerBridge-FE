@@ -32,7 +32,6 @@ const TableListJobs = (props) => {
 
     // Hàm gọi API để lấy dữ liệu theo trang và limit
     const fetchData = async (currentPage, pageSize) => {
-        console.log('fetchData', currentPage, pageSize, props.status);
         setLoading(true);
         const params = {
             jobStatus: props.status, // Truyền status từ props

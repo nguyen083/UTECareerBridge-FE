@@ -10,9 +10,6 @@ const JobCardSmall = ({ job }) => {
         navigate('/employer/job/view/' + key);
 
     };
-    useEffect(() => {
-        console.log(job);
-    }, []);
     return (
         <Card
             hoverable

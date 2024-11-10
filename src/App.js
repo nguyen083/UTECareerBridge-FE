@@ -35,7 +35,7 @@ const App = () => {
           }
         }
       }}>
-      <Spin className='mh-100' size='large' spinning={useSelector(state => state.web.loading)}>
+      <Spin style={{ maxHeight: "100vh", height: "100%" }} size='large' spinning={useSelector(state => state.web.loading)}>
         <Outlet />
       </Spin>
       {/* <Navigation/> */}

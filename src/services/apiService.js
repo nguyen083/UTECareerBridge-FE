@@ -92,6 +92,7 @@ const getAllJobs = async (values) => {
   return axios.get('jobs/employers/all-jobs', formData, config);
 };
 const getJobsByStatus = async (values) => {
+  getToken();
   const params = new URLSearchParams(values).toString();
   return axios.get(`jobs/get-jobs-by-status?${params}`, config);
 };
@@ -142,6 +143,19 @@ const exportUserToPdf = async (queryParams) => {
     }
   }, config);
 };
+const getAllJobEmployer = (id, filter) => {
+  const params = new URLSearchParams(filter).toString();
+  return axios.get(`jobs/employers/${id}/all-jobs?${params}`);
+}
+const getAllCV = async () => {
+  getToken();
+  return axios.get(`students/resumes`, config);
+}
+const applyJob = async (values) => {
+  getToken();
+  const formData = objectToFormData(values);
+  return axios.post('students/jobs/apply', formData, config);
+}
 export {
   getToken,
   setToken,
@@ -174,5 +188,8 @@ export {
   getAllNotificationById,
   getUserByUserId,
   exportUserToPdf,
-  updateUser
+  updateUser,
+  getAllJobEmployer,
+  getAllCV,
+  applyJob
 }
