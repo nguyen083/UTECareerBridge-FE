@@ -20,6 +20,7 @@ import {
     UploadOutlined,
     UserOutlined,
     BellOutlined,
+    MenuOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu, Avatar, Flex, } from 'antd';
 import { getInfor, getToken, logOut, removeToken } from '../../services/apiService';
@@ -82,6 +83,8 @@ const EmployerLayout = () => {
     const avatar = useSelector(state => state.employer.companyLogo);
     const [index, setIndex] = useState(useSelector(state => state.web.loading));
     const navigate = useNavigate();
+    const [collapsed, setCollapsed] = useState(false);
+
 
     useEffect(() => {
         const fetchData = async () => {
@@ -94,7 +97,7 @@ const EmployerLayout = () => {
             }
         };
         if (localStorage.getItem('accessToken') === null) {
-            window.location.href = '/login';
+            window.location.href = '/employer/login';
         }
         else
             fetchData();
@@ -135,7 +138,9 @@ const EmployerLayout = () => {
     }
     return (
         <Layout hasSider>
-            <Sider breakpoint='lg' width={250} style={siderStyle} theme='light' /*collapsible*/ >
+            <Sider onBreakpoint={(broken) => {
+                setCollapsed(broken);
+            }} trigger={null} collapsible collapsed={collapsed} breakpoint='lg' width={250} style={siderStyle} theme='light' /*collapsible*/ >
                 <div className="demo-logo-vertical" >
                     <img src={defaultImage} alt="logo"
                         style={{ width: "80%", height: "80%", objectFit: "contain" }} />
@@ -148,22 +153,27 @@ const EmployerLayout = () => {
             <Layout className='site-layout'>
                 <Header
                     className='header-employer'>
-                    <Menu
-                        className="menu-header"
-                        theme='light'
-                        mode="horizontal"
-                        defaultSelectedKeys={['2']}
-                        items={itemHeader}
+                    <Flex align='center' justify='space-between'>
+                        <MenuOutlined className='font-size' onClick={() => setCollapsed(!collapsed)} />
+                        <div>
+                            <Menu
+                                className="menu-header"
+                                theme='light'
+                                mode="horizontal"
+                                defaultSelectedKeys={['2']}
+                                items={itemHeader}
 
-                        style={{
-                            fontSize: '1rem',
-                            flex: 1,
-                            minWidth: 0
-                        }} />
-                    <div className="d-flex gap-2 " style={{ height: "100%", alignItems: "center" }}>
-                        <Avatar size={'large'} className='avatar' icon={<UserOutlined />} src={avatar && <img src={avatar} alt='' />} />
-                        <span className={`username d-none d-md-inline`}>{name}</span>
-                    </div>
+                                style={{
+                                    fontSize: '1rem',
+                                    flex: 1,
+                                    minWidth: 0
+                                }} />
+                        </div>
+                        <div className="d-flex gap-2 " style={{ height: "100%", alignItems: "center" }}>
+                            <Avatar size={'large'} className='avatar' icon={<UserOutlined />} src={avatar && <img src={avatar} alt='' />} />
+                            <span className={`username d-none d-md-inline`}>{name}</span>
+                        </div>
+                    </Flex>
                 </Header>
                 <Content className='content-employer'>
                     <Flex gap={"1rem"} vertical>

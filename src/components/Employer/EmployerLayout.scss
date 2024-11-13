@@ -8,13 +8,11 @@
 
     .site-layout {
         .header-employer {
-            padding-left    : 10rem;
-            position        : sticky;
-            top             : 0;
-            z-index         : 1000;
-            width           : 100%;
-            display         : flex;
-            align-items     : center;
+            position: sticky;
+            top     : 0;
+            z-index : 1000;
+            width   : 100%;
+
             background-color: white;
 
             @media screen and (max-width: 1024px) {
@@ -22,7 +20,7 @@
             }
 
             .menu-header {
-                padding: 0;
+                padding-left: 20;
             }
 
             .username {

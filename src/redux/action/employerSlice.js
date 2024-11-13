@@ -21,7 +21,6 @@ const initialState = {
     businessCertificate: null,
     industryId: null,
     id: null,
-    benefitDetails: {},
     benefitArray: [],
 };
 
@@ -49,11 +48,6 @@ export const employerSlice = createSlice({
             state.businessCertificate = action.payload.businessCertificate;
             state.industryId = action.payload.industry.industryId;
             state.id = action.payload.id;
-            state.benefitDetails = action.payload.benefitDetails.reduce((acc, benefit, index) => {
-                acc[`benefitDetails[${index}].benefitId`] = benefit.benefitId;
-                acc[`benefitDetails[${index}].description`] = benefit.description;
-                return acc;
-            }, {});
             state.benefitArray = action.payload.benefitDetails.map((benefit) => {
                 return {
                     benefitId: benefit.benefitId,
@@ -84,7 +78,6 @@ export const employerSlice = createSlice({
             state.businessCertificate = null;
             state.industryId = null;
             state.id = null;
-            state.benefitDetails = {};
             state.benefitArray = [];
         },
     },

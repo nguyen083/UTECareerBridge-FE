@@ -11,6 +11,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { setInfor } from '../../../redux/action/employerSlice';
 import { toast } from 'react-toastify';
 import IconLoading from "../../Generate/IconLoading";
+import React from 'react';
 
 const EmployerCompany = () => {
 
@@ -20,7 +21,7 @@ const EmployerCompany = () => {
     const dispatch = useDispatch();
     const { TextArea } = Input;
     const [loading, setLoading] = useState(false);
-    const [benefitDetails, setBenefitDetails] = useState([]);
+    const [benefitDetails, setBenefitDetails] = useState(null);
     const defaultLogo = useSelector(state => state.employer.companyLogo);
     const defaultBackground = useSelector(state => state.employer.backgroundImage);
 
@@ -28,52 +29,49 @@ const EmployerCompany = () => {
         ...useSelector(state => state.employer),
         companyLogo: new File([], ""),
         backgroundImage: new File([], ""),
-        ...useSelector(state => state.employer.benefitDetails),
     };
     const handleReset = () => {
         form.resetFields();
     }
     const handleSubmit = (values) => {
-        setLoading(true);
-        updateEmployerCompanyProfile(values).then(res => {
-            if (res.status === 'OK') {
-                setLoading(false);
-                toast.success(res.message);
-                // cập nhật lại redux
-                dispatch(setInfor(res.data));
-                //delay 0.5 sau đó reset form
-                setTimeout(() => {
-                    handleReset();
-                }, 500);
-            }
-            else {
-                setLoading(false);
-                toast.error(res.message);
-            }
+
+        //map lại benefitDetails
+        const keyValueObject = {};
+        values.benefitArray.forEach((item, index) => {
+            keyValueObject[`benefitDetails[${index}].benefitId`] = item.benefitId;
+            keyValueObject[`benefitDetails[${index}].description`] = item.description;
         });
+        const { benefitArray, ...rest } = values;
+        values = { ...rest, ...keyValueObject };
+        console.log(values);
+        // setLoading(true);
+        // try {
+        //     updateEmployerCompanyProfile(values).then(res => {
+        //         if (res.status === 'OK') {
+        //             toast.success(res.message);
+        //             // cập nhật lại redux
+        //             dispatch(setInfor(res.data));
+        //             //delay 0.5 sau đó reset form
+        //             setTimeout(() => {
+        //                 handleReset();
+        //             }, 500);
+        //         }
+        //         else {
+        //             toast.error(res.message);
+        //         }
+        //     });
+        // } catch (err) {
+        //     console.log(err);
+        // }
+        // finally {
+        //     setLoading(false);
+        // }
+        // console.log(values);
+
     }
-    const addBenefit = () => {
-        if (benefitDetails.length < 3) {
-            setBenefitDetails([...benefitDetails, { benefitId: null, description: "" }]);
-        }
-    };
-
-    const removeBenefit = (index) => {
-        if (benefitDetails.length > 0) {
-            const newBenefitDetails = benefitDetails.filter((_, i) => i !== index);
-            setBenefitDetails(newBenefitDetails);
-        }
-    };
-
-    const handleBenefitChange = (index, field, value) => {
-        const newBenefitDetails = [...benefitDetails];
-        newBenefitDetails[index][field] = value;
-        setBenefitDetails(newBenefitDetails);
-    };
 
     useEffect(() => {
-        setBenefitDetails([...infor.benefitArray]);
-        console.log("infor: ", infor);
+        setBenefitDetails(infor.benefitArray)
         getAllIndustry().then(res => {
             setIndustries(res.data);
         }).catch(err => {
@@ -85,6 +83,9 @@ const EmployerCompany = () => {
             console.log(err);
         })
     }, [])
+    useEffect(() => {
+        console.log("benefitDetails", benefitDetails);
+    }, [benefitDetails])
     return (
         <>
             <BoxContainer>
@@ -167,36 +168,38 @@ const EmployerCompany = () => {
                                 ))}
                             </Select>
                         </Form.Item>
-                        <Form.Item className="col-12 mt-0" label={<span>Phúc lợi công ty <span style={{ color: "red" }}> *</span></span>}>
-                            {benefitDetails.map((item, index) => (
-                                <Flex key={index} gap="middle">
-                                    <Form.Item name={`benefitDetails[${index}].benefitId`} className="col-3">
-                                        <Select
-
-                                            onChange={(value) => handleBenefitChange(index, 'benefitId', value)}>
-                                            {benefits.map(benefit => (
-                                                <Select.Option key={benefit.benefitId} value={benefit.benefitId}>
-                                                    {benefit.benefitName}
-                                                </Select.Option>
-                                            ))}
-                                        </Select>
-                                    </Form.Item>
-                                    <Form.Item name={`benefitDetails[${index}].description`} className="col-8">
-                                        <TextArea
-                                            rows={3}
-                                            allowClear
-                                            onChange={(e) => handleBenefitChange(index, 'description', e.target.value)}
-                                        />
-                                    </Form.Item>
-                                    <Button danger disabled={benefitDetails.length === 1} onClick={() => removeBenefit(index)}>
-                                        <IoMdTrash />
+                        <Form.List name="benefitArray" className="col-12 mt-0" label={<span>Phúc lợi công ty <span style={{ color: "red" }}> *</span></span>}>
+                            {(fields, { add, remove }) => (
+                                <div>
+                                    {fields.map((field) => (
+                                        <Flex gap="middle">
+                                            <Form.Item name={[field.name, 'benefitId']} className="col-3">
+                                                <Select>
+                                                    {benefits.map(benefit => (
+                                                        <Select.Option value={benefit.benefitId}>
+                                                            {benefit.benefitName}
+                                                        </Select.Option>
+                                                    ))}
+                                                </Select>
+                                            </Form.Item>
+                                            <Form.Item name={[field.name, 'description']} className="col-8">
+                                                <TextArea
+                                                    rows={3}
+                                                    allowClear
+                                                    placeholder='Nhập mô tả phúc lợi'
+                                                />
+                                            </Form.Item>
+                                            <Button danger disabled={fields.length === 1} onClick={() => { remove(field.name); }}>
+                                                <IoMdTrash />
+                                            </Button>
+                                        </Flex>
+                                    ))}
+                                    <Button hidden={fields.length === 3} className='mt-3' onClick={() => add()} icon={<PlusCircleFilled style={{ color: "#4096FF" }} />} type='text'>
+                                        Thêm phúc lợi
                                     </Button>
-                                </Flex>
-                            ))}
-                            <Button hidden={benefitDetails.length === 3} className='mt-3' onClick={addBenefit} icon={<PlusCircleFilled style={{ color: "#4096FF" }} />} type='text'>
-                                Thêm phúc lợi
-                            </Button>
-                        </Form.Item>
+                                </div>
+                            )}
+                        </Form.List>
                         <Form.Item name="companyDescription" className="col-12 mt-0 " label="Mô tả công ty">
                             <CustomizeQuill />
                         </Form.Item>

@@ -41,7 +41,7 @@ export const ModalApply = ({ show, setShow, company, job }) => {
                                     <Text className="font-size" type="secondary"><LineEllipsis line={2}>{company.companyName}</LineEllipsis></Text>
                                 </Flex>
                             </BoxContainer>
-                            <BoxContainer padding="0.5rem" >
+                            <BoxContainer padding="0.5rem">
                                 <Flex vertical>
                                     <Title level={5}>{job.jobTitle}</Title>
                                     <Flex align="center" gap={3}><FaRegMoneyBillAlt size={16} /> <div className='salary'>{new Intl.NumberFormat('en-US', { useGrouping: true }).format(job.jobMinSalary)} - {new Intl.NumberFormat('en-US', { useGrouping: true }).format(job.jobMaxSalary)} VNĐ/tháng</div><Text type="warning"> </Text></Flex>

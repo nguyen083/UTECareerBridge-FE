@@ -183,7 +183,7 @@ const ViewJob = () => {
                                     </Flex>
                                 </Flex>
                             </BoxContainer>
-                            {similarJobs && <BoxContainer padding='1rem'>
+                            {similarJobs?.length > 0 && <BoxContainer padding='1rem'>
                                 <Flex vertical gap={"0.5rem"}>
                                     <div className='title2'>
                                         Việc làm bạn sẽ thích
