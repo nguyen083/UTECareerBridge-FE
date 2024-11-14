@@ -13,6 +13,7 @@ import FavoritePage from './components/Student/FavoritePage.js';
 import DashBoard from './components/Employer/DashBoard/DashBoard.js';
 import RegisterPage from './components/Student/RegisterPage.js';
 import LoginPage from './components/Employer/LoginPage.js';
+import StudentLogin from './components/Student/LoginPage.js';
 import EmployerRegister from './components/Employer/EmployerRegister.js';
 import ForgotPassword from './components/Generate/ForgotPassword.js';
 import ResetPassword from './components/Generate/ResetPassword.js';
@@ -91,7 +92,7 @@ root.render(
               <Route path='403' element={<Page403 />} />
               <Route path='500' element={<Page500 />} />
             </Route>
-
+            <Route path='login' element={<StudentLogin />} />
             <Route path='/employer/login' element={<LoginPage />} />
             <Route path='favorite' element={<FavoritePage />} />
             <Route path='register' element={<RegisterPage />} />

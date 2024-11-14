@@ -48,11 +48,12 @@ const Header = () => {
     const handleClickBtnLogin = () => {
         let div = document.getElementById('form-login');
         if (isShowFormLogin === false) {
-            div.style.display = 'block';
-            setShowFormLogin(true);
+            // div.style.display = 'block';
+            // setShowFormLogin(true);
+            navigate('/login');
         } else {
             div.style.display = 'none';
-            setShowFormLogin(false);
+            // setShowFormLogin(false);
         }
 
     }
