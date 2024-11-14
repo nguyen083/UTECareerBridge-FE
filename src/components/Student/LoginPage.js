@@ -78,8 +78,9 @@ const LoginPage = () => {
                         width={200}
                     />
                     <Card
+
                         title={<Title level={3} className='my-auto text-center' style={{ color: "#1E4F94" }}>Đăng nhập</Title>}
-                        style={{ backgroundColor: "#E1EDFC" }}>
+                        style={{ backgroundColor: "#E1EDFC", width: '75%' }}>
                         <Flex >
                             <Form
                                 form={form}
@@ -109,6 +110,7 @@ const LoginPage = () => {
                                             return Promise.reject('Vui lòng nhập đúng định dạng email hoặc số điện thoại');
                                         },
                                     })]}
+                                    validateFirst
                                 >
                                     <Input style={{ color: "#1E4F94" }} placeholder="Nhập email/SĐT" />
                                 </Form.Item>
@@ -117,6 +119,7 @@ const LoginPage = () => {
                                     name="password"
                                     label={<div style={{ color: "#1E4F94" }}>Mật khẩu</div>}
                                     rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
+                                    validateFirst
                                 >
                                     <Input.Password placeholder="Nhập mật khẩu" style={{ color: "#1E4F94" }} />
                                 </Form.Item>
@@ -128,7 +131,7 @@ const LoginPage = () => {
                                 <Divider className='mb-0' />
                                 <Form.Item>
                                     <Flex justify='space-between' gap={20}>
-                                        <Link className='text-decoration-none' style={{ color: "#1E4F94" }} to="/home" target='_blank'>Trở về trang chủ</Link>
+                                        <Link className='text-decoration-none' style={{ color: "#1E4F94" }} to="/home">Trở về trang chủ</Link>
                                         <Link className='text-decoration-none' style={{ color: "#1E4F94" }} to="/forgot-password" target='_blank'>Quên mật khẩu?</Link>
                                     </Flex>
                                 </Form.Item>

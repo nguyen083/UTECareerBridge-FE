@@ -1,8 +1,38 @@
+@import "../styles/variables.scss";
 
-.footer {
-    width: 100%;
-    max-height: 100%;
-    background-color: #ff0000;
-    color: #fff;
-    padding: 10px;
+.layout-student {
+    .header-student {
+        position: sticky;
+        top     : 0;
+        z-index : 1000;
+        width   : 100%;
+
+        background-color: $box-color;
+
+        @media screen and (max-width: 1024px) {
+            padding-left: 0;
+        }
+
+        .btn-header {
+            color       : $text-color;
+            border-color: $text-color;
+        }
+
+        .btn-bell {
+            background-color: $text-color;
+            color           : white;
+            border          : 0px;
+            height          : 40px;
+            width           : 40px;
+        }
+
+        .btn-login {
+            gap            : 0.5rem;
+            justify-content: space-between;
+        }
+    }
+
+    .content-student {
+        padding: 1rem 3rem 0;
+    }
 }
