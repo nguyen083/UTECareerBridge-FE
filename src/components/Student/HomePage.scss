@@ -7,7 +7,7 @@
         z-index : 1000;
         width   : 100%;
 
-        background-color: $box-color;
+        background-color: $card-color !important;
 
         @media screen and (max-width: 1024px) {
             padding-left: 0;
@@ -24,6 +24,11 @@
             border          : 0px;
             height          : 40px;
             width           : 40px;
+
+            &:hover {
+                background-color: $text-color-hover !important;
+                color           : white !important;
+            }
         }
 
         .btn-login {

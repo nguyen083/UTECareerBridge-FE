@@ -1,10 +1,47 @@
-.login-form{
-    width: 100%;
-    font-size: 1rem!important;
-    .title{
-        font-size: 1.5rem;
-        font-weight: 600;
-        margin-bottom: 2rem;
+@import "../styles/variables.scss";
+
+.login-page {
+    background-color: $background-color !important;
+
+    .image {
+        // Add styles for the image section here if needed
     }
+
+    .login-form {
+        border-radius   : 10px;
+        background-color: $card-color !important;
+        width           : 100%;
+        font-size       : 1rem !important;
+
+        .title {
+            color        : $text-color !important;
+            font-size    : 1.5rem;
+            font-weight  : 600;
+            margin-bottom: 2rem;
+        }
+
+        .input-field {
+            color: $text-color !important;
+        }
+
+        .lable-text {
+            color: $text-color !important;
+        }
+
+        .btn-login {
+            background-color: $text-color !important;
+        }
+    }
+
+    a {
+        color          : $text-color !important;
+        text-decoration: none;
+
+        &:hover {
+            color          : $text-color-hover !important;
+            text-decoration: underline;
+        }
+    }
+
 
 }

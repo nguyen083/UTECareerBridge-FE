@@ -6,8 +6,7 @@ import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { Button, Flex, Form, Input } from 'antd';
 import { useDispatch } from 'react-redux';
-import { loading, setloading, stop } from '../../redux/action/webSlice';
-
+import { loading, stop } from '../../redux/action/webSlice';
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -30,13 +29,11 @@ const LoginPage = () => {
 
     const handleLogin = async (values) => {
         dispatch(loading());
-        //Validate email
         const { username, ...rest } = values;
         const updatedValues = {
             ...rest,
             [inputType]: username,
         };
-        //Call API
         const res = await employerLogin(updatedValues);
         if (res.status === 'OK') {
             toast.success(res.message);
@@ -48,8 +45,8 @@ const LoginPage = () => {
             toast.error(res.message);
             dispatch(stop());
         }
-
     }
+
     return (
         <div className="login-page d-flex">
             <div className="image col-lg-5 d-none d-lg-block"></div>
@@ -63,45 +60,43 @@ const LoginPage = () => {
                             form={form}
                             onFinish={handleLogin}
                             autoComplete="on"
-                            layout='vertical'>
-                            <Form.Item name="username" label={<span>Email/ Số điện thoại <span style={{ color: "red" }}> *</span></span>}
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Vui lòng nhập email hoặc số điện thoại của bạn',
+                            layout='vertical'
+                            validateTrigger={['onBlur']}>
+                            <Form.Item
+                                name="username"
+                                label={<span className='lable-text'>Email/ SĐT</span>}
+                                rules={[{
+                                    required: true,
+                                    message: 'Vui lòng nhập email hoặc số điện thoại của bạn',
+                                },
+                                ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                        if (!value) {
+                                            return Promise.reject('Vui lòng nhập email hoặc số điện thoại của bạn');
+                                        }
+                                        if (emailRegex.test(value)) {
+                                            return Promise.resolve();
+                                        }
+                                        if (phoneRegex.test(value)) {
+                                            return Promise.resolve();
+                                        }
+                                        return Promise.reject('Vui lòng nhập đúng định dạng email hoặc số điện thoại');
                                     },
-                                    ({ getFieldValue }) => ({
-                                        validator(_, value) {
-                                            if (!value) {
-                                                return Promise.reject('Vui lòng nhập email hoặc số điện thoại của bạn');
-                                            }
-                                            if (emailRegex.test(value)) {
-                                                return Promise.resolve();
-                                            }
-                                            if (phoneRegex.test(value)) {
-                                                return Promise.resolve();
-                                            }
-                                            return Promise.reject('Vui lòng nhập đúng định dạng email hoặc số điện thoại');
-                                        },
-                                    }),
-
-                                ]} validateTrigger={['onBlur']} validateFirst>
-                                <Input onChange={handleInputChange} prefix={<UserOutlined />} />
+                                })
+                                ]} validateFirst >
+                                <Input onChange={handleInputChange} prefix={<UserOutlined />} className='input-field' />
                             </Form.Item>
                             <Form.Item
                                 className='mb-4'
-                                label={<span>Mật khẩu <span style={{ color: "red" }}> *</span></span>}
+                                label={<span className='lable-text'>Mật khẩu</span>}
                                 required
                                 name="password"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Vui lòng nhập mật khẩu của bạn',
-                                    },
-                                ]} validateTrigger={['onBlur', 'onChange']}>
-                                <Input.Password prefix={<UnlockOutlined />} />
+                                rules={[{
+                                    required: true,
+                                    message: 'Vui lòng nhập mật khẩu của bạn',
+                                }]}>
+                                <Input.Password prefix={<UnlockOutlined />} className='input-field' />
                             </Form.Item>
-
 
                             <Form.Item>
                                 <Flex justify='space-between' className=' mb-2'>
@@ -110,10 +105,10 @@ const LoginPage = () => {
                                 </Flex>
                             </Form.Item>
                             <Flex align='center' justify='space-between'>
-                                <Link to='/home' className='text-decoration-none align-middle'>
+                                <Link to='/home' className='align-middle'>
                                     <IoIosArrowRoundBack className='fs-4' />Quay lại trang chủ
                                 </Link>
-                                <Button className='size' type="primary" htmlType='submit'>
+                                <Button style={{ backgroundColor: "#1E4F94" }} size='large' className='w-25' type="primary" htmlType='submit'>
                                     Đăng nhập
                                 </Button>
                             </Flex>
@@ -122,7 +117,6 @@ const LoginPage = () => {
                 </div>
             </div>
         </div>
-
     );
 }
 export default LoginPage;

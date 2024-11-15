@@ -43,29 +43,24 @@ const EmployerCompany = () => {
         });
         const { benefitArray, ...rest } = values;
         values = { ...rest, ...keyValueObject };
-        console.log(values);
-        // setLoading(true);
-        // try {
-        //     updateEmployerCompanyProfile(values).then(res => {
-        //         if (res.status === 'OK') {
-        //             toast.success(res.message);
-        //             // cập nhật lại redux
-        //             dispatch(setInfor(res.data));
-        //             //delay 0.5 sau đó reset form
-        //             setTimeout(() => {
-        //                 handleReset();
-        //             }, 500);
-        //         }
-        //         else {
-        //             toast.error(res.message);
-        //         }
-        //     });
-        // } catch (err) {
-        //     console.log(err);
-        // }
-        // finally {
-        //     setLoading(false);
-        // }
+        setLoading(true);
+        try {
+            updateEmployerCompanyProfile(values).then(res => {
+                if (res.status === 'OK') {
+                    toast.success(res.message);
+                    // cập nhật lại redux
+                    dispatch(setInfor(res.data));
+                }
+                else {
+                    toast.error(res.message);
+                }
+            });
+        } catch (err) {
+            console.log(err);
+        }
+        finally {
+            setLoading(false);
+        }
         // console.log(values);
 
     }
@@ -168,38 +163,40 @@ const EmployerCompany = () => {
                                 ))}
                             </Select>
                         </Form.Item>
-                        <Form.List name="benefitArray" className="col-12 mt-0" label={<span>Phúc lợi công ty <span style={{ color: "red" }}> *</span></span>}>
-                            {(fields, { add, remove }) => (
-                                <div>
-                                    {fields.map((field) => (
-                                        <Flex gap="middle">
-                                            <Form.Item name={[field.name, 'benefitId']} className="col-3">
-                                                <Select>
-                                                    {benefits.map(benefit => (
-                                                        <Select.Option value={benefit.benefitId}>
-                                                            {benefit.benefitName}
-                                                        </Select.Option>
-                                                    ))}
-                                                </Select>
-                                            </Form.Item>
-                                            <Form.Item name={[field.name, 'description']} className="col-8">
-                                                <TextArea
-                                                    rows={3}
-                                                    allowClear
-                                                    placeholder='Nhập mô tả phúc lợi'
-                                                />
-                                            </Form.Item>
-                                            <Button danger disabled={fields.length === 1} onClick={() => { remove(field.name); }}>
-                                                <IoMdTrash />
-                                            </Button>
-                                        </Flex>
-                                    ))}
-                                    <Button hidden={fields.length === 3} className='mt-3' onClick={() => add()} icon={<PlusCircleFilled style={{ color: "#4096FF" }} />} type='text'>
-                                        Thêm phúc lợi
-                                    </Button>
-                                </div>
-                            )}
-                        </Form.List>
+                        <Form.Item className="col-12 mt-0" label={<span>Phúc lợi công ty <span style={{ color: "red" }}> *</span></span>}>
+                            <Form.List name="benefitArray" >
+                                {(fields, { add, remove }) => (
+                                    <div>
+                                        {fields.map((field) => (
+                                            <Flex gap="middle">
+                                                <Form.Item name={[field.name, 'benefitId']} className="col-3">
+                                                    <Select>
+                                                        {benefits.map(benefit => (
+                                                            <Select.Option value={benefit.benefitId}>
+                                                                {benefit.benefitName}
+                                                            </Select.Option>
+                                                        ))}
+                                                    </Select>
+                                                </Form.Item>
+                                                <Form.Item name={[field.name, 'description']} className="col-8">
+                                                    <TextArea
+                                                        rows={3}
+                                                        allowClear
+                                                        placeholder='Nhập mô tả phúc lợi'
+                                                    />
+                                                </Form.Item>
+                                                <Button danger disabled={fields.length === 1} onClick={() => { remove(field.name); }}>
+                                                    <IoMdTrash />
+                                                </Button>
+                                            </Flex>
+                                        ))}
+                                        <Button hidden={fields.length === 3} className='mt-3' onClick={() => add()} icon={<PlusCircleFilled style={{ color: "#4096FF" }} />} type='text'>
+                                            Thêm phúc lợi
+                                        </Button>
+                                    </div>
+                                )}
+                            </Form.List>
+                        </Form.Item>
                         <Form.Item name="companyDescription" className="col-12 mt-0 " label="Mô tả công ty">
                             <CustomizeQuill />
                         </Form.Item>

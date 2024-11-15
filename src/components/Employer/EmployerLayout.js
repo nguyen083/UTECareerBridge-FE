@@ -81,7 +81,7 @@ const EmployerLayout = () => {
     const [defaultImage, setDefaultImage] = useState(null);
     const name = useSelector(state => state.employer.firstName) + ' ' + useSelector(state => state.employer.lastName);
     const avatar = useSelector(state => state.employer.companyLogo);
-    const [index, setIndex] = useState(useSelector(state => state.web.current));
+    const [index, setIndex] = useState();
     const navigate = useNavigate();
     const [collapsed, setCollapsed] = useState(false);
 
