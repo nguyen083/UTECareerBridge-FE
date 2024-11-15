@@ -74,7 +74,7 @@ const navigationMap = {
     '8': '#',
     '9': '#',
     '10': '#',
-    '11': '#',
+    '11': '/employer/buy-service',
     '12': 'logout' // Đặt một giá trị đặc biệt cho logout
 };
 
@@ -151,7 +151,7 @@ const EmployerLayout = () => {
                     dispatch(current(e.key))
                     setIndex(e.key)
                 }} selectedKeys={[index]} theme='light' style={{ fontSize: "1rem" }} mode="inline" items={itemSider} background />
-            </Sider>
+                </Sider>
             <Layout className='site-layout'>
                 <Header
                     className='header-employer'>

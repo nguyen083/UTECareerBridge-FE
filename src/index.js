@@ -37,7 +37,9 @@ import InforCompany from './components/User/InforCompany.js';
 import AdminLayout from './components/Admin/adminLayout.jsx';
 import UserManagement from './components/Admin/ManageUser/ManageStudent.jsx';
 import ManageListEmployer from './components/Admin/ManageUser/ManageEmployer.jsx';
-
+import AdminDashboard from './components/Admin/Dashboard/dashboard.jsx';
+import ServiceMarketplace from './components/Employer/Package/packageDashboard.jsx';
+import ShoppingCart from './components/Employer/Package/orderPage.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -70,6 +72,8 @@ root.render(
               <Route path='company' element={<EmployerCompany />} />
               <Route path='business-certificate' element={<BusinessCertificate />} />
               <Route path='post-job' element={<EmployerPostJob />} />
+              <Route path='buy-service' element={<ServiceMarketplace />} />
+              <Route path='cart' element={<ShoppingCart />} />
               <Route path='manage-list-jobs' element={<ManageListJobs />} />
               <Route path='job/view/:id' element={<ViewJob />} />
               <Route path='job/edit/:id' element={<UpdateJob />} />
@@ -77,7 +81,7 @@ root.render(
 
             <Route path='admin' element={<AdminLayout />} >
               <Route index element={<Navigate to="/admin/dashboard" replace />} />
-              <Route path='dashboard' element={<DashBoard />} />
+              <Route path='dashboard' element={<AdminDashboard />} />
               <Route path='manage-students' element={<UserManagement />} />
               <Route path='manage-employers' element={<ManageListEmployer />} />
             </Route>

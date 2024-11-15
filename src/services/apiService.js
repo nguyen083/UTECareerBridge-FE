@@ -39,9 +39,6 @@ const studentRegister = async (values) => {
   console.log(values);
   return axios.post('users/register', values);
 };
-// const employerRegister = async (form) => {
-//   return axios.post('employers/register', form);
-// }
 const getInfor = async () => {
   return axios.get('employers/company-general-info', config);
 }
@@ -156,6 +153,37 @@ const applyJob = async (values) => {
   const formData = objectToFormData(values);
   return axios.post('students/jobs/apply', formData, config);
 }
+const getStatisticsByJobCategory= async (values) => {
+  const params = new URLSearchParams(values).toString();
+  return axios.get(`admin/statistics/category-job?${params}`, config);
+}
+const getRevenueByMonth = async (values) => {
+  const params = new URLSearchParams(values).toString();
+  return axios.get(`admin/statistics/revenue-by-month?${params}`, config);
+}
+const getStatisticUser=async()=>{
+  return axios.get('admin/statistics-user',config);
+}
+const getStatisticPackage=async()=>{
+  return axios.get('admin/statistics-package',config);
+}
+const getAllPackages=async()=>{
+  return axios.get('packages/get-all',config);
+}
+const addPackageToCart = async (values) => {
+  const { packageId, quantity } = values;
+  return axios.post(`carts/add-to-cart?packageId=${packageId}&quantity=${quantity}`, {}, config);
+};
+const getCartByEmployer = async () => {
+  return axios.get('carts/get-cart', config);
+}
+const removePackageFromCart = async (packageId) => {
+  return axios.post(`carts/remove?packageId=${packageId}`, config);
+}
+const getAllCoupon = async (values) => {
+  const queryString = new URLSearchParams(values).toString();
+  return axios.get(`coupons/get-all?${queryString}`);
+}
 export {
   getToken,
   setToken,
@@ -191,5 +219,14 @@ export {
   updateUser,
   getAllJobEmployer,
   getAllCV,
-  applyJob
+  applyJob,
+  getStatisticsByJobCategory,
+  getRevenueByMonth,
+  getStatisticUser,
+  getStatisticPackage,
+  getAllPackages,
+  addPackageToCart,
+  getCartByEmployer,
+  removePackageFromCart,
+  getAllCoupon
 }
