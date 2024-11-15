@@ -1,17 +1,17 @@
 import React from 'react';
 import "./Footer.scss"
-import { Row, Col, Typography, Divider, Space } from 'antd';
+import { Row, Col, Typography, Divider, Space, Flex } from 'antd';
 import { FacebookOutlined, LinkedinOutlined, YoutubeOutlined, InstagramOutlined, AppleOutlined, AndroidOutlined } from '@ant-design/icons';
 
 const { Title, Text, Link } = Typography;
 
 const FooterComponent = () => {
     return (
-        <footer style={{ backgroundColor: '#001744', color: '#fff', padding: '40px 40px' }}>
+        <footer style={{ backgroundColor: '#E1EDFC', color: '#fff', padding: '40px 40px' }}>
             <Row gutter={[32, 16]}>
                 {/* Cột VietnamWorks */}
                 <Col xs={24} sm={12} md={6}>
-                    <Title level={5} style={{ color: '#fff' }}>VietnamWorks</Title>
+                    <Title level={5} style={{ color: '#1E4F94' }}>VietnamWorks</Title>
                     <Space direction="vertical">
                         <Link href="#" className='link-footer'>Về VietnamWorks</Link>
                         <Link href="#" className='link-footer'>Về VietnamWorks inTECH</Link>
@@ -26,7 +26,7 @@ const FooterComponent = () => {
 
                 {/* Cột Dành cho Nhà tuyển dụng */}
                 <Col xs={24} sm={12} md={6}>
-                    <Title level={5} style={{ color: '#fff' }}>Dành cho Nhà tuyển dụng</Title>
+                    <Title level={5} style={{ color: '#1E4F94' }}>Dành cho Nhà tuyển dụng</Title>
                     <Space direction="vertical">
                         <Link href="#" className='link-footer'>Đăng tuyển dụng</Link>
                         <Link href="#" className='link-footer'>Tìm kiếm hồ sơ</Link>
@@ -37,7 +37,7 @@ const FooterComponent = () => {
 
                 {/* Cột Việc làm theo khu vực */}
                 <Col xs={24} sm={12} md={6}>
-                    <Title level={5} style={{ color: '#fff' }}>Việc làm theo khu vực</Title>
+                    <Title level={5} style={{ color: '#1E4F94' }}>Việc làm theo khu vực</Title>
                     <Space direction="vertical">
                         <Link href="#" className='link-footer'>Hồ Chí Minh</Link>
                         <Link href="#" className='link-footer'>Hà Nội</Link>
@@ -50,7 +50,7 @@ const FooterComponent = () => {
 
                 {/* Cột Việc làm theo ngành nghề */}
                 <Col xs={24} sm={12} md={6}>
-                    <Title level={5} style={{ color: '#fff' }}>Việc làm theo ngành nghề</Title>
+                    <Title level={5} style={{ color: '#1E4F94' }}>Việc làm theo ngành nghề</Title>
                     <Space direction="vertical">
                         <Link href="#" className='link-footer'>Kế toán</Link>
                         <Link href="#" className='link-footer'>Ngân hàng</Link>
@@ -65,28 +65,14 @@ const FooterComponent = () => {
             <Divider style={{ backgroundColor: '#ccc' }} />
 
             {/* Phần ứng dụng và mạng xã hội */}
-            <Row gutter={[32, 16]} justify="space-between">
-                <Col xs={24} sm={12} md={6}>
-                    <Title level={5} style={{ color: '#fff' }}>Ứng dụng di động</Title>
-                    <Space>
-                        <AppleOutlined style={{ fontSize: '24px', color: '#ccc' }} />
-                        <AndroidOutlined style={{ fontSize: '24px', color: '#ccc' }} />
-                    </Space>
-                </Col>
-                <Col xs={24} sm={12} md={6}>
-                    <Title level={5} style={{ color: '#fff' }}>Theo dõi VietnamWorks trên</Title>
-                    <Space>
-                        <FacebookOutlined style={{ fontSize: '24px', color: '#ccc' }} />
-                        <LinkedinOutlined style={{ fontSize: '24px', color: '#ccc' }} />
-                        <YoutubeOutlined style={{ fontSize: '24px', color: '#ccc' }} />
-                        <InstagramOutlined style={{ fontSize: '24px', color: '#ccc' }} />
-                    </Space>
-                </Col>
-            </Row>
 
-            <Text style={{ color: '#ccc', marginTop: '20px', display: 'block' }}>
-                Copyright © Công Ty Cổ Phần Navigos Group Việt Nam
-            </Text>
+            <Flex justify='center'>
+                <Space size='small'>
+                    <Text style={{ color: '#1E4F94' }}>
+                        Copyright ©2024 UTE CAREERBRIDGE
+                    </Text>
+                </Space>
+            </Flex>
         </footer>
     );
 };

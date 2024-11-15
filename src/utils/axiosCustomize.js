@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
 
 const instance = axios.create({
     baseURL: 'http://localhost:8080/api/v1/',
@@ -42,6 +43,8 @@ instance.interceptors.response.use(
         if (error.response?.status === 500) {
             // Redirect to not found page
             window.location = '/user/500';
+            const dispatch = useDispatch();
+            // dispatch(loading())
             return Promise.reject(error);
         }
         // Handle 401 Unauthorized

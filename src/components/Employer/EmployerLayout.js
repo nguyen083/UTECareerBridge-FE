@@ -12,6 +12,8 @@ import { TiBusinessCard } from "react-icons/ti";
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setInfor, setNull } from '../../redux/action/employerSlice';
+import FooterComponent from '../Generate/Footer.js';
+
 import {
     BarChartOutlined,
     LogoutOutlined,
@@ -180,11 +182,8 @@ const EmployerLayout = () => {
                         <Outlet />
                     </Flex>
                 </Content>
-                <Footer
-                    style={{
-                        textAlign: 'center',
-                    }}>
-                    Ant Design ©{new Date().getFullYear()} Created by Ant UED
+                <Footer className='p-0'>
+                    <FooterComponent />
                 </Footer>
             </Layout>
         </Layout >

@@ -4,7 +4,7 @@ import { Layout, theme, Image, Dropdown, Button, Flex, Badge } from 'antd';
 import { BellOutlined, MenuOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa6';
-import FooterComponent from './Footer';
+import FooterComponent from '../Generate/Footer.js';
 import CustomDropdown from '../Generate/CustomDropdown.js';
 const { Header, Content, Footer } = Layout;
 
@@ -38,7 +38,7 @@ const HomePage = () => {
                             overlay={<CustomDropdown />}
                             trigger={['click']}
                         >
-                            <Button className='rounded-pill btn-header' size='large'><MenuOutlined /> Tất cả danh mục</Button>
+                            <Button className='rounded-pill btn-header' size='large'><MenuOutlined /> <div>Tất cả danh mục</div></Button>
                         </Dropdown>
                         <Button onClick={nagigateLogin} className='rounded-pill btn-header' size='large'>Nhà tuyển dụng</Button>
                         <Flex gap={"0.5rem"}>
