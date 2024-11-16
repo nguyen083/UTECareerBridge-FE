@@ -1,6 +1,6 @@
 // public/firebase-messaging-sw.js
-importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.jsx');
+importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.jsx');
 
 firebase.initializeApp({
   apiKey: "AIzaSyAZ2Bzcm7A0meyN0qx6wfEgu0NqZBj7na4",
@@ -47,7 +47,7 @@ messaging.onBackgroundMessage((payload) => {
 });
 
 // Handle push events
-self.addEventListener('push', function(event) {
+self.addEventListener('push', function (event) {
   console.log('[firebase-messaging-sw.js] Push received:', event);
 
   if (!event.data) {
@@ -59,7 +59,7 @@ self.addEventListener('push', function(event) {
     // Safely handle the push data
     let payload;
     const rawData = event.data.text();
-    
+
     try {
       // Try to parse as JSON first
       payload = JSON.parse(rawData);
@@ -77,14 +77,14 @@ self.addEventListener('push', function(event) {
     console.log('[firebase-messaging-sw.js] Processed push data:', payload);
 
     // Extract notification data with careful null checks
-    const title = payload?.notification?.title || 
-                 payload?.data?.title || 
-                 'Thông báo mới';
-    
+    const title = payload?.notification?.title ||
+      payload?.data?.title ||
+      'Thông báo mới';
+
     const options = {
-      body: payload?.notification?.body || 
-            payload?.data?.body || 
-            '',
+      body: payload?.notification?.body ||
+        payload?.data?.body ||
+        '',
       icon: '/logo192.png',
       badge: '/logo192.png',
       tag: 'notification-' + Date.now(),
@@ -112,7 +112,7 @@ self.addEventListener('push', function(event) {
         self.clients.matchAll({
           type: 'window',
           includeUncontrolled: true
-        }).then(function(clientList) {
+        }).then(function (clientList) {
           return Promise.all(clientList.map(client => {
             return client.postMessage({
               type: 'PUSH_RECEIVED',
@@ -140,20 +140,20 @@ self.addEventListener('push', function(event) {
 });
 
 // Handle notification clicks
-self.addEventListener('notificationclick', function(event) {
+self.addEventListener('notificationclick', function (event) {
   console.log('[firebase-messaging-sw.js] Notification click:', event);
 
   event.notification.close();
 
-  const urlToOpen = event.notification.data?.url || 
-                    event.notification.data?.jobUrl || 
-                    '/';
+  const urlToOpen = event.notification.data?.url ||
+    event.notification.data?.jobUrl ||
+    '/';
 
   event.waitUntil(
     self.clients.matchAll({
       type: 'window',
       includeUncontrolled: true
-    }).then(function(clientList) {
+    }).then(function (clientList) {
       // Try to focus existing window
       for (let client of clientList) {
         if (client.url === urlToOpen && 'focus' in client) {
@@ -171,13 +171,13 @@ self.addEventListener('notificationclick', function(event) {
 });
 
 // Handle service worker installation
-self.addEventListener('install', function(event) {
+self.addEventListener('install', function (event) {
   console.log('[firebase-messaging-sw.js] Service Worker installed');
   self.skipWaiting();
 });
 
 // Handle service worker activation
-self.addEventListener('activate', function(event) {
+self.addEventListener('activate', function (event) {
   console.log('[firebase-messaging-sw.js] Service Worker activated');
   event.waitUntil(self.clients.claim());
 });

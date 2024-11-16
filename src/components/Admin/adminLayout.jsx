@@ -22,7 +22,7 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { getInfor, getToken, logOut, removeToken } from '../../services/apiService';
 import { toast } from 'react-toastify';
-import { loading, setloading, stop } from '../../redux/action/webSlice';
+import { loading, stop } from '../../redux/action/webSlice';
 
 const { Header, Content, Footer, Sider } = Layout;
 

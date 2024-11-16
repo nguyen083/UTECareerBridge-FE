@@ -4,8 +4,8 @@ import { Layout, theme, Image, Dropdown, Button, Flex, Badge } from 'antd';
 import { BellOutlined, MenuOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa6';
-import FooterComponent from '../Generate/Footer.js';
-import CustomDropdown from '../Generate/CustomDropdown.js';
+import FooterComponent from '../Generate/Footer.jsx';
+import CustomDropdown from '../Generate/CustomDropdown.jsx';
 const { Header, Content, Footer } = Layout;
 
 

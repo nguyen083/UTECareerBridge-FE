@@ -11,8 +11,8 @@ import { MdManageAccounts } from "react-icons/md";
 import { TiBusinessCard } from "react-icons/ti";
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setInfor, setNull } from '../../redux/action/employerSlice';
-import FooterComponent from '../Generate/Footer.js';
+import { setInfor, setNull } from '../../redux/action/employerSlice.jsx';
+import FooterComponent from '../Generate/Footer.jsx';
 
 import {
     BarChartOutlined,
@@ -25,9 +25,9 @@ import {
     MenuOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu, Avatar, Flex, } from 'antd';
-import { getInfor, getToken, logOut, removeToken } from '../../services/apiService';
+import { getInfor, getToken, logOut, removeToken } from '../../services/apiService.jsx';
 import { toast } from 'react-toastify';
-import { current, loading, stop } from '../../redux/action/webSlice';
+import { current, loading, stop } from '../../redux/action/webSlice.jsx';
 const { Header, Content, Footer, Sider } = Layout;
 const siderStyle = {
     overflow: 'auto',
@@ -151,7 +151,7 @@ const EmployerLayout = () => {
                     dispatch(current(e.key))
                     setIndex(e.key)
                 }} selectedKeys={[index]} theme='light' style={{ fontSize: "1rem" }} mode="inline" items={itemSider} background />
-                </Sider>
+            </Sider>
             <Layout className='site-layout'>
                 <Header
                     className='header-employer'>

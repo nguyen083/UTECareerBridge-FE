@@ -16,7 +16,7 @@ export const messaging = getMessaging(app);
 export const registerServiceWorker = async () => {
   if ('serviceWorker' in navigator) {
     try {
-      const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.js', {
+      const registration = await navigator.serviceWorker.register('/firebase-messaging-sw.jsx', {
         scope: '/',
         updateViaCache: 'none'
       });

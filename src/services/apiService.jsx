@@ -1,4 +1,4 @@
-import axios from "../utils/axiosCustomize.js";
+import axios from "../utils/axiosCustomize.jsx";
 
 
 let config = {};
@@ -153,7 +153,7 @@ const applyJob = async (values) => {
   const formData = objectToFormData(values);
   return axios.post('students/jobs/apply', formData, config);
 }
-const getStatisticsByJobCategory= async (values) => {
+const getStatisticsByJobCategory = async (values) => {
   const params = new URLSearchParams(values).toString();
   return axios.get(`admin/statistics/category-job?${params}`, config);
 }
@@ -161,14 +161,14 @@ const getRevenueByMonth = async (values) => {
   const params = new URLSearchParams(values).toString();
   return axios.get(`admin/statistics/revenue-by-month?${params}`, config);
 }
-const getStatisticUser=async()=>{
-  return axios.get('admin/statistics-user',config);
+const getStatisticUser = async () => {
+  return axios.get('admin/statistics-user', config);
 }
-const getStatisticPackage=async()=>{
-  return axios.get('admin/statistics-package',config);
+const getStatisticPackage = async () => {
+  return axios.get('admin/statistics-package', config);
 }
-const getAllPackages=async()=>{
-  return axios.get('packages/get-all',config);
+const getAllPackages = async () => {
+  return axios.get('packages/get-all', config);
 }
 const addPackageToCart = async (values) => {
   const { packageId, quantity } = values;
