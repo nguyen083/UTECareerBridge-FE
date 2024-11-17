@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './adminLayout.scss';
 import NotificationPopover from './NotificationPopover';
+import Notification from '../Generate/Notification.jsx';
 import {
     DashboardOutlined,
     UserOutlined,
@@ -23,6 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getInfor, getToken, logOut, removeToken } from '../../services/apiService';
 import { toast } from 'react-toastify';
 import { loading, stop } from '../../redux/action/webSlice';
+import { setNull } from '../../redux/action/userSlice.jsx';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -150,23 +152,22 @@ const AdminLayout = () => {
     const avatar = adminInfo?.avatar;
     const notifications = useSelector(state => state.notifications?.unread || 0);
     const messages = useSelector(state => state.messages?.unread || 0);
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         getToken();
-    //         let res = await getInfor();
-    //         //Lưu thông tin người dùng vào redux
-    //         dispatch(setInfor(res.data));
-    //         if (res.status !== 'OK') {
-    //             toast.error('Có lỗi xảy ra');
-    //         }
-    //     };
+    useEffect(() => {
+        // const fetchData = async () => {
+        //     let res = await getInfor();
+        //     //Lưu thông tin người dùng vào redux
+        //     dispatch(setInfor(res.data));
+        //     if (res.status !== 'OK') {
+        //         toast.error('Có lỗi xảy ra');
+        //     }
+        // };
 
-    //     if (!localStorage.getItem('accessToken')) {
-    //         navigate('/admin/login');
-    //     } else {
-    //         fetchData();
-    //     }
-    // }, []);
+        // if (!localStorage.getItem('accessToken')) {
+        //     navigate('/admin/login');
+        // } else {
+        //     fetchData();
+        // }
+    }, []);
 
     useEffect(() => {
         const handleNavigation = async (key) => {
@@ -174,19 +175,19 @@ const AdminLayout = () => {
             if (path === 'logout') {
                 try {
                     dispatch(loading());
-                    getToken();
                     const res = await logOut();
                     if (res.status === 'OK') {
-                        //dispatch(setNull());
+                        dispatch(setNull());
                         removeToken();
                         navigate('/admin/login');
                         toast.success('Đăng xuất thành công');
                     } else {
                         toast.error('Đăng xuất thất bại');
                     }
-                    dispatch(stop());
                 } catch (error) {
                     toast.error('Có lỗi xảy ra');
+                } finally {
+                    dispatch(stop());
                 }
             } else if (path) {
                 navigate(path);
@@ -245,10 +246,9 @@ const AdminLayout = () => {
                         <Badge count={messages} overflowCount={10}>
                             <MessageOutlined className="message-icon" />
                         </Badge>
-                        {/* <Badge count={notifications} overflowCount={99}>
-                            <BellOutlined className="notification-icon" />
-                        </Badge> */}
-                        <NotificationPopover />
+                        {/* <NotificationPopover /> */}
+                        <Notification userId={1} />
+
                         <Space>
                             <Avatar
                                 size="large"

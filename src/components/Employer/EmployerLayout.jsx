@@ -23,11 +23,13 @@ import {
     UserOutlined,
     BellOutlined,
     MenuOutlined,
+    ShoppingCartOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, Avatar, Flex, } from 'antd';
+import { Layout, Menu, Avatar, Flex, Badge, Button, Tooltip, } from 'antd';
 import { getInfor, getToken, logOut, removeToken } from '../../services/apiService.jsx';
 import { toast } from 'react-toastify';
 import { current, loading, stop } from '../../redux/action/webSlice.jsx';
+import COLOR from '../styles/_variables.jsx';
 const { Header, Content, Footer, Sider } = Layout;
 const siderStyle = {
     overflow: 'auto',
@@ -171,10 +173,24 @@ const EmployerLayout = () => {
                                     minWidth: 0
                                 }} />
                         </div>
-                        <div className="d-flex gap-2 " style={{ height: "100%", alignItems: "center" }}>
+                        <Flex gap={20} align='center'>
+                            <Tooltip title='Giỏ hàng' placement='bottom' color={COLOR.bgTooltipColor}>
+                                <Badge count={0}>
+                                    <Button className='btn-header rounded-circle btn-bell' size='large' type="text">
+                                        <ShoppingCartOutlined />
+                                    </Button>
+                                </Badge>
+                            </Tooltip>
+                            <Tooltip title='Thông báo' placement='bottom' color={COLOR.bgTooltipColor}>
+                                <Badge count={0}>
+                                    <Button className='btn-header rounded-circle btn-bell' size='large' type="text">
+                                        <BellOutlined />
+                                    </Button>
+                                </Badge>
+                            </Tooltip>
                             <Avatar size={'large'} className='avatar' icon={<UserOutlined />} src={avatar && <img src={avatar} alt='' />} />
-                            <span className={`username d-none d-md-inline`}>{name}</span>
-                        </div>
+                            {/* <span className={`username d-none d-lg-inline`}>{name}</span> */}
+                        </Flex>
                     </Flex>
                 </Header>
                 <Content className='content-employer'>

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, List, Typography, Divider, Pagination } from 'antd';
+import { Modal, Button, List, Typography, Divider, Pagination, Tag } from 'antd';
 import { getAllCoupon, getToken } from '../../../services/apiService';
 import './voucherModal.scss';
 const { Text } = Typography;
 
-const VoucherModal = ({ visible, onClose, onSelectVoucher  }) => {
+const VoucherModal = ({ visible, onClose, onSelectVoucher }) => {
   const [coupons, setCoupons] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -26,23 +26,23 @@ const VoucherModal = ({ visible, onClose, onSelectVoucher  }) => {
       const response = await getAllCoupon({ page, limit });
       if (response && response.data) {
         const transformedCoupons = response.data.couponList.map((coupon) => ({
-            ...coupon,
-            key: coupon.couponId,
-            id: coupon.couponId,
-            code: coupon.couponCode,
-            discount: coupon.discount,
-            amount: coupon.amount,
-            description: coupon.description,
-            expiredAt: coupon.expiredAt,
-            maxUsage: coupon.maxUsage,
-            active: coupon.active
-            }));
+          ...coupon,
+          key: coupon.couponId,
+          id: coupon.couponId,
+          code: coupon.couponCode,
+          discount: coupon.discount,
+          amount: coupon.amount,
+          description: coupon.description,
+          expiredAt: coupon.expiredAt,
+          maxUsage: coupon.maxUsage,
+          active: coupon.active
+        }));
         setCoupons(transformedCoupons);
       } else {
-        setCoupons([]); 
+        setCoupons([]);
       }
     } catch (error) {
-        console.error("Error fetching coupons:", error);
+      console.error("Error fetching coupons:", error);
       setError("Error fetching coupons");
     } finally {
       setLoading(false);
@@ -87,9 +87,14 @@ const VoucherModal = ({ visible, onClose, onSelectVoucher  }) => {
                     Dùng ngay
                   </Button>,
                 ]}
-                className="coupon-list-item"
+                className="coupon-list-item border rounded border-warning my-3"
               >
                 <List.Item.Meta
+                  className='d-flex align-items-stretch'
+                  avatar={
+                    <div className="voucher-left rounded-start">
+                      <div className="voucher-label">Voucher</div>
+                    </div>}
                   title={
                     <>
                       <Text strong>{coupon.discount}% giảm</Text>
@@ -102,11 +107,11 @@ const VoucherModal = ({ visible, onClose, onSelectVoucher  }) => {
                     </>
                   }
                   description={
-                    <>
-                      <p>Còn lại: {coupon.expiredAt}</p>
-                      <p>Mã: {coupon.code}</p>
+                    <div className='ps-1'>
+                      <p>Mã: <Tag color="orange">{coupon.code}</Tag></p>
                       <p>{coupon.description}</p>
-                    </>
+                      <p>Còn lại: {coupon.expiredAt}</p>
+                    </div>
                   }
                 />
               </List.Item>

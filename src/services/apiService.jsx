@@ -25,6 +25,7 @@ const getToken = () => {
 
 const removeToken = () => {
   localStorage.removeItem('accessToken');
+  config = {};
   document.cookie = 'refreshToken=';
 }
 
@@ -40,6 +41,7 @@ const studentRegister = async (values) => {
   return axios.post('users/register', values);
 };
 const getInfor = async () => {
+  getToken();
   return axios.get('employers/company-general-info', config);
 }
 const userResetPassword = async (token, password) => {
@@ -57,18 +59,22 @@ const getAllBenefit = async () => {
   return axios.get('benefits/get-all-benefits');
 }
 const logOut = async () => {
+  getToken();
   return axios.post('auth/logout', {}, config);
 }
 
 const updateEmployerProfile = async (values) => {
+  getToken();
   return axios.post('employers/update-profile', values, config);
 }
 const updateEmployerCompanyProfile = async (values) => {
+  getToken();
   const formData = objectToFormData(values);
   return axios.post('employers/update-company-profile', formData, config);
 }
 
 const updateBusinessCertificate = async (values) => {
+  getToken();
   const formData = objectToFormData(values);
   return axios.post('employers/legal-info', formData, config);
 }
@@ -82,9 +88,11 @@ const getAllSkills = async () => {
   return axios.get('skills/get-all-skills');
 };
 const postJob = async (values) => {
+  getToken();
   return axios.post('jobs/job-posting/new-job', values, config);
 };
 const getAllJobs = async (values) => {
+  getToken();
   const formData = objectToFormData(values);
   return axios.get('jobs/employers/all-jobs', formData, config);
 };
@@ -94,13 +102,16 @@ const getJobsByStatus = async (values) => {
   return axios.get(`jobs/get-jobs-by-status?${params}`, config);
 };
 const putHideJob = async (id, status) => {
+  getToken();
   const formData = objectToFormData({ jobStatus: status });
   return axios.put(`jobs/employer/job-posting/hide/${id}`, formData, config);
 }
 const deleteJob = async (id) => {
+  getToken();
   return axios.delete(`jobs/employer/job-posting/delete/${id}`, config);
 }
 const putJob = async (id, values) => {
+  getToken();
   return axios.put(`jobs/employer/job-posting/${id}`, values, config);
 }
 const getJobById = async (id) => {
@@ -125,9 +136,11 @@ const getCompanyById = async (id) => {
   return axios.get(`employers/get-company?id=${id}`);
 }
 const getAllNotificationById = async (id) => {
+  getToken();
   return axios.get(`notifications/user/${id}`, config);
 }
 const getUserByUserId = async (id) => {
+  getToken();
   return axios.get(`users/get-user/${id}`, config);
 }
 const exportUserToPdf = async (queryParams) => {
@@ -154,30 +167,37 @@ const applyJob = async (values) => {
   return axios.post('students/jobs/apply', formData, config);
 }
 const getStatisticsByJobCategory = async (values) => {
+  getToken();
   const params = new URLSearchParams(values).toString();
   return axios.get(`admin/statistics/category-job?${params}`, config);
 }
 const getRevenueByMonth = async (values) => {
+  getToken();
   const params = new URLSearchParams(values).toString();
   return axios.get(`admin/statistics/revenue-by-month?${params}`, config);
 }
 const getStatisticUser = async () => {
+  getToken();
   return axios.get('admin/statistics-user', config);
 }
 const getStatisticPackage = async () => {
+  getToken();
   return axios.get('admin/statistics-package', config);
 }
 const getAllPackages = async () => {
   return axios.get('packages/get-all', config);
 }
 const addPackageToCart = async (values) => {
+  getToken();
   const { packageId, quantity } = values;
   return axios.post(`carts/add-to-cart?packageId=${packageId}&quantity=${quantity}`, {}, config);
 };
 const getCartByEmployer = async () => {
+  getToken();
   return axios.get('carts/get-cart', config);
 }
 const removePackageFromCart = async (packageId) => {
+  getToken();
   return axios.post(`carts/remove?packageId=${packageId}`, config);
 }
 const getAllCoupon = async (values) => {
@@ -228,5 +248,5 @@ export {
   addPackageToCart,
   getCartByEmployer,
   removePackageFromCart,
-  getAllCoupon
+  getAllCoupon,
 }

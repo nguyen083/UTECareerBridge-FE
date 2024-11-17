@@ -1,0 +1,35 @@
+@import '../styles/variables.scss';
+
+.customize-popover {
+    .ant-popover-inner {
+        padding: 0;
+
+        .dropdown-content {
+            padding      : 20px;
+            width        : 50vw;
+            background   : $background-color;
+            border-radius: 8px;
+            box-shadow   : 0 4px 8px rgba(0, 0, 0, 0.1);
+
+            h5 {
+                color        : $text-color !important;
+                margin-bottom: 12px;
+                font-weight  : bold;
+                color        : #1d1d1d;
+            }
+
+            button {
+                width          : 100% !important;
+                justify-content: start !important;
+                align-items    : center;
+                color          : $text-color;
+
+                &:hover {
+                    color           : $text-color-hover;
+                    background-color: $card-color;
+                }
+            }
+        }
+
+    }
+}

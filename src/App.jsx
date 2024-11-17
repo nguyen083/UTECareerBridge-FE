@@ -1,7 +1,6 @@
 import './App.scss';
 import { Outlet } from "react-router-dom";
 import { ConfigProvider, Spin } from 'antd';
-import Navigation from './components/Generate/Navigation.jsx';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from 'react-redux';

@@ -5,6 +5,7 @@ import BoxContainer from '../../Generate/BoxContainer';
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
 import { getCartByEmployer, getAllCoupon } from '../../../services/apiService';
 import VoucherModal from './voucherModal';
+import VoucherCard from '../../Generate/VoucherCard';
 const { Title, Text } = Typography;
 
 const OrderPage = () => {
@@ -12,7 +13,7 @@ const OrderPage = () => {
   const [selectedVoucher, setSelectedVoucher] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const getItemsInCart = async () => {  
+  const getItemsInCart = async () => {
     try {
       const response = await getCartByEmployer();
       const formattedItems = response.data.map(item => ({
@@ -129,46 +130,48 @@ const OrderPage = () => {
   ];
 
   return (
-    <BoxContainer>
-      <div className="order-page">
-        <div className="order-summary">
-          <Title level={3}>Chi tiết dịch vụ</Title>
-          <Table  columns={columns}
-          dataSource={cartItems}
-          rowKey="cartItemId"
-          pagination={false}
-           />
-          <Divider />
+    <>
+      <BoxContainer>
+        <div className="order-page">
+          <div className="order-summary">
+            <Title level={3}>Chi tiết dịch vụ</Title>
+            <Table columns={columns}
+              dataSource={cartItems}
+              rowKey="cartItemId"
+              pagination={false}
+            />
+            <Divider />
+          </div>
+          <div className="order-info">
+            <Title level={3}>Thông tin đơn hàng</Title>
+            <div className="info-item">
+              <Text className="label">Tổng giá trị đơn hàng</Text>
+              <Text className="value">{getTotalPrice().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
+            </div>
+            <div className="info-item">
+              <Text className="label">VAT (8%)</Text>
+              <Text className="value">{getTaxAmount().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
+            </div>
+            <Divider />
+            <div className="voucher">
+              <Button type="primary" onClick={() => setIsModalVisible(true)}>Chọn mã ưu đãi</Button>
+              {selectedVoucher && <Text className="selected-voucher">{selectedVoucher}</Text>}
+            </div>
+            <div className="info-item">
+              <Text className="label">Tổng thanh toán (Đã bao gồm VAT)</Text>
+              <Text className="value">{getTotalWithTax().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
+            </div>
+            <div className="actions">
+              <Button className="btn-checkout" type="primary">Tạo đơn hàng</Button>
+            </div>
+          </div>
         </div>
-        <div className="order-info">
-          <Title level={3}>Thông tin đơn hàng</Title>
-          <div className="info-item">
-            <Text className="label">Tổng giá trị đơn hàng</Text>
-            <Text className="value">{getTotalPrice().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
-          </div>
-          <div className="info-item">
-            <Text className="label">VAT (8%)</Text>
-            <Text className="value">{getTaxAmount().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
-          </div>
-          <Divider />
-          <div className="voucher">
-            <Button type="primary" onClick={() => setIsModalVisible(true)}>Chọn mã ưu đãi</Button>
-            {selectedVoucher && <Text className="selected-voucher">{selectedVoucher}</Text>}
-          </div>
-          <div className="info-item">
-            <Text className="label">Tổng thanh toán (Đã bao gồm VAT)</Text>
-            <Text className="value">{getTotalWithTax().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
-          </div>
-          <div className="actions">
-            <Button className="btn-checkout" type="primary">Tạo đơn hàng</Button>
-          </div>
-        </div>
-      </div>
-      <VoucherModal
-        visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
-      />
-    </BoxContainer>
+        <VoucherModal
+          visible={isModalVisible}
+          onClose={() => setIsModalVisible(false)}
+        />
+      </BoxContainer>
+    </>
   );
 };
 

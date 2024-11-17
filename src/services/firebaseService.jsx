@@ -1,6 +1,6 @@
 // services/firebaseService.js
 import { getToken, deleteToken, onMessage } from 'firebase/messaging';
-import { messaging, registerServiceWorker } from '../utils/firebase_config.jsx';
+import { messaging, registerServiceWorker } from '../utils/firebase_config.js';
 import axios from "../utils/axiosCustomize.jsx";
 
 // Utility function to handle configuration

@@ -26,6 +26,24 @@
                 background-color: $card-color;
             }
 
+            .btn-header {
+                color       : $text-color;
+                border-color: $text-color;
+            }
+
+            .btn-bell {
+                background-color: $text-color;
+                color           : white;
+                border          : 0px;
+                height          : 40px;
+                width           : 40px;
+
+                &:hover {
+                    background-color: $text-color-hover !important;
+                    color           : white !important;
+                }
+            }
+
             .username {
                 font-weight         : 500;
                 // @media (max-width: 768px) {
