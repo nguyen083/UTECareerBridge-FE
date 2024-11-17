@@ -108,7 +108,6 @@ const EmployerLayout = () => {
     }, []);
     useEffect(() => {
         const logout = async () => {
-            getToken();
             dispatch(loading());
             const res = await logOut();
             if (res.status === 'OK') {

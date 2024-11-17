@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { loading, stop } from '../../redux/action/webSlice';
 import './LoginPage.scss'; // Import file SCSS
 import { IoIosArrowRoundBack } from 'react-icons/io';
+import { setInfor } from '../../redux/action/userSlice';
 
 const { Title } = Typography;
 
@@ -28,32 +29,38 @@ const LoginPage = () => {
     };
 
     const handleLogin = async (values) => {
-        dispatch(loading());
+
         const { username, ...rest } = values;
         const updatedValues = {
             ...rest,
             ...checkUserName(username)
         };
         console.log(updatedValues);
+        try {
+            dispatch(loading());
+            let res = await studentLogin(updatedValues);
+            if (res.status === 'OK') {
+                form.resetFields();
+                const userRoleFromAPI = res.data.roles.roleName;
+                toast.success(res.message);
+                await setToken(res.data.token, res.data.refresh_token);
+                await getToken();
 
-        let res = await studentLogin(updatedValues);
-
-        if (res.status === 'OK') {
-            form.resetFields();
-            const userRoleFromAPI = res.data.roles.roleName;
-            toast.success(res.message);
-            await setToken(res.data.token, res.data.refresh_token);
-            await getToken();
-
-            if (userRoleFromAPI === 'student') {
-                navigate('');
-            } else if (userRoleFromAPI === 'admin') {
-                navigate('/admin');
+                if (userRoleFromAPI === 'student') {
+                    dispatch(setInfor({ userId: res.data.id }));
+                    navigate('/home');
+                } else if (userRoleFromAPI === 'admin') {
+                    navigate('/admin');
+                }
+            } else {
+                toast.error(res.message);
             }
-        } else {
-            toast.error(res.message);
+        } catch (err) {
+            toast.error('Đã có lỗi xảy ra, vui lòng thử lại sau');
         }
-        dispatch(stop());
+        finally {
+            dispatch(stop());
+        }
     };
 
     return (

@@ -17,6 +17,13 @@
         .btn-header {
             color       : $text-color;
             border-color: $text-color;
+
+
+
+            &:hover {
+                color       : $text-color-hover !important;
+                border-color: $text-color-hover !important;
+            }
         }
 
         .btn-bell {

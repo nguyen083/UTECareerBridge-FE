@@ -1,64 +1,6 @@
+// Style cho header thông báo
 @import '../styles/variables.scss';
 
-// Style cho danh sách thông báo
-.notification-list {
-    max-height        : 70vh;
-    overflow          : auto;
-    scrollbar-width   : none; // Firefox
-    -ms-overflow-style: none; // IE/Edge
-
-    &::-webkit-scrollbar {
-        display: none; // Ẩn scrollbar cho Chrome, Safari
-    }
-
-    .ant-list-item {
-        width: 300px;
-    }
-
-    .fs-6 {
-        font-size: 16px;
-    }
-
-    .ant-divider {
-        margin: 0 !important;
-    }
-
-    .ant-typography {
-        font-size: 11px;
-    }
-}
-
-// Style cho các nút và tiêu đề
-.btn-header {
-    color       : $text-color;
-    border-color: $text-color;
-}
-
-.btn-bell {
-    background-color: $text-color;
-    color           : white;
-    border          : 0px;
-    height          : 40px;
-    width           : 40px;
-
-    &:hover {
-        background-color: $text-color-hover !important;
-        color           : white !important;
-    }
-}
-
-// Style cho header thông báo
 .notification-title-header {
     color: $text-color !important;
-}
-
-// Style cho nút đăng nhập
-.login-button {
-    width     : fit-content;
-    background: $text-color;
-}
-
-// Style cho text đăng nhập
-.notification-login-text {
-    font-size: 14px !important;
 }

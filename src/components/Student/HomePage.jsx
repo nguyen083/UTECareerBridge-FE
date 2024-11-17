@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './HomePage.scss';
 import '../Generate/CustomizePopover.scss';
-import { Layout, theme, Image, Button, Flex, Popover, Row, Col, Typography, Avatar } from 'antd';
-import { MenuOutlined, UserOutlined } from '@ant-design/icons';
+import { Layout, theme, Image, Button, Flex, Popover, Row, Col, Typography } from 'antd';
+import { MenuOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa6';
 import FooterComponent from '../Generate/Footer.jsx';
 import Notification from '../Generate/Notification.jsx';
 import { useSelector } from 'react-redux';
+import PopoverAvatar from './PopoverAvatar.jsx';
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 const PopoverCategory = (
@@ -59,9 +60,20 @@ const PopoverCategory = (
 
 const HomePage = () => {
     const navigate = useNavigate();
+    const infor = useSelector(state => state?.user);
     const {
         token: { colorBgContainer, borderRadiusLG },
     } = theme.useToken();
+
+    useEffect(() => {
+        console.log(infor);
+        // if (localStorage.getItem('accessToken')) {
+        //     //gọi API lấy thông tin người dùng dựa vào token
+        //     //đưa vào redux
+
+        // }
+
+    }, [infor]);
 
     const nagigateLogin = () => {
         localStorage.getItem('accessToken') ? navigate('/employer') : navigate('/employer/login');
@@ -87,30 +99,17 @@ const HomePage = () => {
                             content={PopoverCategory}
                             trigger={['click']}
                         >
-                            <Button className='rounded-pill btn-header' size='large'><MenuOutlined /> <div>Tất cả danh mục</div></Button>
+                            <Button className='rounded-pill btn-header' size='large'><Flex gap={4}><MenuOutlined /> <div className='d-none d-md-block'>Tất cả danh mục</div></Flex></Button>
                         </Popover>
                         <Button onClick={nagigateLogin} className='rounded-pill btn-header' size='large'>Nhà tuyển dụng</Button>
                         <Flex gap={"0.5rem"}>
-                            {/* <Popover
-                                placement='bottom'
-                                content={<div></div>}
-                                trigger={['click']}>
-                                <Tooltip title='Thông báo' placement='bottom' color={COLOR.bgTooltipColor}>
-                                    <Badge count={0}>
-                                        <Button className='btn-header rounded-circle btn-bell' size='large' type="text">
-                                            <BellOutlined />
-                                        </Button>
-                                    </Badge>
-                                </Tooltip>
-                            </Popover> */}
                             <Notification userId={useSelector(state => state.user.userId)} />
                             {!localStorage.getItem('accessToken')
                                 ? <Button
                                     onClick={() => navigate('/login')}
                                     className='rounded-pill btn-header btn-login' size='large'>
-                                    <FaUser />Đăng nhập</Button> :
-                                <Avatar size={'large'} className='avatar' icon={<UserOutlined />} />}
-                            {/* src={avatar && <img src={avatar} alt='' />}  */}
+                                    <Flex gap={4} align='center'> <FaUser /><div className='d-none d-md-block'> Đăng nhập</div></Flex></Button> :
+                                <PopoverAvatar />}
                         </Flex>
                     </Flex>
                 </Flex>

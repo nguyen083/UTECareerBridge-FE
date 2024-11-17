@@ -20,14 +20,14 @@ export const userSlice = createSlice({
     reducers: {
         setInfor: (state, action) => {
             state.userId = action.payload.userId;
-            state.firstName = action.payload.firstName;
-            state.lastName = action.payload.lastName;
-            state.email = action.payload.email;
-            state.phone = action.payload.phone;
-            state.dob = action.payload.dob;
-            state.address = action.payload.address;
-            state.role = action.payload.role;
-            state.active = action.payload.active
+            state.firstName = action.payload?.firstName;
+            state.lastName = action.payload?.lastName;
+            state.email = action.payload?.email;
+            state.phone = action.payload?.phone;
+            state.dob = action.payload?.dob;
+            state.address = action.payload?.address;
+            state.role = action.payload?.role;
+            state.active = action.payload?.active
         },
         setNull: (state, action) => {
             state.userId = null;

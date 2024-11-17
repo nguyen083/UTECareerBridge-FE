@@ -3,6 +3,7 @@ import { Badge, Button, Divider, Flex, List, Popover, Tag, Tooltip, Typography }
 import React, { useEffect, useState } from "react";
 import COLOR from "../styles/_variables";
 import "./Notification.scss"; // Import file SCSS
+import '../Generate/CustomizePopover.scss'; // Import file SCSS
 import { getAllNotificationById } from "../../services/apiService";
 import { useNavigate } from "react-router-dom";
 
@@ -16,7 +17,7 @@ const ListNotification = ({ notification, userId }) => {
                         <Typography.Text className="notification-login-text" type="secondary">
                             Đăng nhập để xem thông báo
                         </Typography.Text>
-                        <Button className="login-button" type="primary" onClick={() => navigate("/login")}>
+                        <Button className="login-button-notification" type="primary" onClick={() => navigate("/login")}>
                             Đăng nhập
                         </Button>
                     </Flex>
@@ -86,6 +87,7 @@ const Notification = ({ userId = null }) => {
 
     return (
         <Popover
+            overlayClassName="notification-popover"
             arrow={false}
             placement="bottom"
             title={
