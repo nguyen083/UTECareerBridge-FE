@@ -44,7 +44,6 @@ instance.interceptors.response.use(
             // Redirect to not found page
             window.location = '/user/500';
             const dispatch = useDispatch();
-            // dispatch(loading())
             return Promise.reject(error);
         }
         // Handle 401 Unauthorized

@@ -29,7 +29,7 @@ const navigationMap = {
     '7': 'logout' // Đặt một giá trị đặc biệt cho logout
 };
 const CustomizePopover = ({ setIndex }) => {
-
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     return (
@@ -43,7 +43,7 @@ const CustomizePopover = ({ setIndex }) => {
                         email
                     </Typography.Text>
                 </Flex>
-                <Button className="update-infor-btn"> Cập nhật hồ sơ</Button>
+                <Button className="update-infor-btn" onClick={() => navigate("/profile")}> Cập nhật hồ sơ</Button>
             </Flex>
             <Divider className="my-1" />
             <Menu

@@ -44,10 +44,9 @@ const LoginPage = () => {
                 const userRoleFromAPI = res.data.roles.roleName;
                 toast.success(res.message);
                 await setToken(res.data.token, res.data.refresh_token);
-                await getToken();
 
                 if (userRoleFromAPI === 'student') {
-                    dispatch(setInfor({ userId: res.data.id }));
+                    dispatch(setInfor({ ...res.data }));
                     navigate('/home');
                 } else if (userRoleFromAPI === 'admin') {
                     navigate('/admin');

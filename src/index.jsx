@@ -5,8 +5,8 @@ import App from './App.jsx';
 import reportWebVitals from './reportWebVitals.jsx';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './components/Student/HomePage.jsx';
-import HomePage from './components/Student/HomePage.jsx';
+import './components/Student/StudentLayout.jsx';
+import StudentLayout from './components/Student/StudentLayout.jsx';
 import JobPage from './components/Student/JobPage.jsx';
 import EmployerPage from './components/Employer/EmployerPage.jsx';
 import FavoritePage from './components/Student/FavoritePage.jsx';
@@ -40,6 +40,7 @@ import ManageListEmployer from './components/Admin/ManageUser/ManageEmployer.jsx
 import AdminDashboard from './components/Admin/Dashboard/dashboard.jsx';
 import ServiceMarketplace from './components/Employer/Package/packageDashboard.jsx';
 import ShoppingCart from './components/Employer/Package/orderPage.jsx';
+import ProfilePage from './components/Student/ProfilePage.jsx';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -47,15 +48,12 @@ root.render(
     <PersistGate loading={null} persistor={persistor}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<App />}>
-
-            {/* <Route path="test" element={<Test />}>
-          <Route index element={<EmployerCompany />} />
-        </Route> */}
-            <Route index element={<Navigate to="/home" replace />} />
-            <Route path="company/:id" element={<InforCompany />} />
-            <Route path="home" element={<HomePage />}>
+          <Route element={<App />}>
+            <Route path="home" element={<StudentLayout />}>
+              <Route path='profile' element={<ProfilePage />} />
             </Route>
+            <Route path="company/:id" element={<InforCompany />} />
+
             <Route path='job' element={<JobPage />} />
 
             <Route path='employer/register' element={<BackgroundAndForm />}>

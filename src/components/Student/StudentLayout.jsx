@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import './HomePage.scss';
+import './StudentLayout.scss';
 import '../Generate/CustomizePopover.scss';
 import { Layout, theme, Image, Button, Flex, Popover, Row, Col, Typography } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa6';
 import FooterComponent from '../Generate/Footer.jsx';
 import Notification from '../Generate/Notification.jsx';
@@ -58,7 +58,7 @@ const PopoverCategory = (
     </div>
 )
 
-const HomePage = () => {
+const StudentLayout = () => {
     const navigate = useNavigate();
     const infor = useSelector(state => state?.user);
     const {
@@ -121,11 +121,11 @@ const HomePage = () => {
                     style={{
                         background: colorBgContainer,
                         minHeight: "100vh",
-                        padding: 24,
-                        borderRadius: borderRadiusLG,
+                        // padding: 24,
+                        borderRadius: "#ffffff",
                     }}
                 >
-                    Contentt
+                    <Outlet />
                 </div>
             </Content>
             <Footer className='p-0'>
@@ -134,4 +134,4 @@ const HomePage = () => {
         </Layout>
     );
 };
-export default HomePage;
+export default StudentLayout;

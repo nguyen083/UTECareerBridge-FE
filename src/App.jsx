@@ -10,11 +10,14 @@ const App = () => {
     <ConfigProvider
       theme={{
         token: {
+          colorPrimary: "#1E4F94",
+          colorPrimaryHover: "#4478c0",
           fontFamily: "'Inter', sans-serif",
           inputFontSize: '1rem',
           //inputFontSizeLG: '1rem',
         },
         components: {
+
           Form: {
             labelFontSize: '1rem',
             itemMarginBottom: '1.5rem',
