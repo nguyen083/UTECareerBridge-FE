@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Upload } from 'antd';
-import { InboxOutlined } from '@ant-design/icons';
+import { Upload, Avatar } from 'antd';
+import { InboxOutlined, UserOutlined } from '@ant-design/icons';
 const { Dragger } = Upload;
 
 
@@ -46,4 +46,53 @@ const PicturesWall = (props) => {
     );
 };
 
-export default PicturesWall;
+const AvatarUploader = (props) => {
+    const [defaultImage, setDefaultImage] = useState(props.defaultImage || null);
+    const [fileList, setFileList] = useState([]);
+
+    const handleUpload = ({ file, fileList }) => {
+        setDefaultImage(null); // Xóa ảnh mặc định khi chọn ảnh mới
+        setFileList(fileList); // Cập nhật danh sách file
+        props.onChange && props.onChange(file); // Truyền file đã chọn ra ngoài qua props (nếu cần)
+    };
+
+    const onRemove = () => {
+        setFileList([]); // Xóa danh sách file
+        setDefaultImage(props.defaultImage || null); // Đặt lại ảnh mặc định
+    };
+
+    const onDrop = (e) => {
+        console.log('File dropped:', e.dataTransfer.files[0]);
+    };
+
+    return (
+        <div style={{ textAlign: 'center' }}>
+
+            <Upload
+                onChange={handleUpload}
+                onDrop={onDrop}
+                onRemove={onRemove}
+                beforeUpload={() => false} // Ngăn không cho upload tự động
+                maxCount={1} // Giới hạn chỉ upload 1 file
+                listType="picture" // Định dạng danh sách file là ảnh
+                fileList={fileList}
+                showUploadList={false} // Không hiển thị danh sách file tải lên
+                style={{ border: '1px dashed #d9d9d9', padding: 16 }}
+            >
+                <Avatar
+                    size={128}
+                    src={
+                        defaultImage
+                            ? defaultImage
+                            : fileList.length > 0 && URL.createObjectURL(fileList[0].originFileObj)
+                    }
+                    icon={!defaultImage && fileList.length === 0 ? <UserOutlined /> : null}
+                    style={{ marginBottom: 16 }}
+                />
+            </Upload>
+        </div>
+    );
+};
+
+
+export { PicturesWall, AvatarUploader };

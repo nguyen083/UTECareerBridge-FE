@@ -7,8 +7,10 @@ import { Outlet, useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa6';
 import FooterComponent from '../Generate/Footer.jsx';
 import Notification from '../Generate/Notification.jsx';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import PopoverAvatar from './PopoverAvatar.jsx';
+import { setInforStudent } from '../../redux/action/studentSlice.jsx';
+import { getInforStudent } from '../../services/apiService.jsx';
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 const PopoverCategory = (
@@ -61,19 +63,24 @@ const PopoverCategory = (
 const StudentLayout = () => {
     const navigate = useNavigate();
     const infor = useSelector(state => state?.user);
-    const {
-        token: { colorBgContainer, borderRadiusLG },
-    } = theme.useToken();
+    const dispatch = useDispatch();
+    // const {
+    //     token: { colorBgContainer, borderRadiusLG },
+    // } = theme.useToken();
 
     useEffect(() => {
-        console.log(infor);
-        // if (localStorage.getItem('accessToken')) {
-        //     //gọi API lấy thông tin người dùng dựa vào token
-        //     //đưa vào redux
+        if (infor.role === 'student') {
+            getInforStudent().then(res => {
+                console.log(res);
+                if (res.status === 'OK') {
+                    dispatch(setInforStudent(res.data));
+                }
+            }).catch(err => {
+                console.log(err);
+            })
+        }
 
-        // }
-
-    }, [infor]);
+    }, []);
 
     const nagigateLogin = () => {
         localStorage.getItem('accessToken') ? navigate('/employer') : navigate('/employer/login');
@@ -119,10 +126,7 @@ const StudentLayout = () => {
             >
                 <div
                     style={{
-                        background: colorBgContainer,
-                        minHeight: "100vh",
-                        // padding: 24,
-                        borderRadius: "#ffffff",
+
                     }}
                 >
                     <Outlet />

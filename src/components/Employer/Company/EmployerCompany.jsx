@@ -6,7 +6,7 @@ import { IoMdTrash } from "react-icons/io";
 import { getAllBenefit, getAllIndustry, updateEmployerCompanyProfile } from '../../../services/apiService';
 import { PlusCircleFilled } from '@ant-design/icons';
 import CustomizeQuill from '../../Generate/CustomizeQuill';
-import PicturesWall from '../../Generate/Upload';
+import { PicturesWall } from '../../Generate/Upload';
 import { useSelector, useDispatch } from 'react-redux';
 import { setInfor } from '../../../redux/action/employerSlice';
 import { toast } from 'react-toastify';

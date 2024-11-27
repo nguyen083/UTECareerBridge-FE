@@ -1,6 +1,6 @@
 import { Button, Flex, Form, Image, Modal } from "antd";
 import BoxContainer from "../../Generate/BoxContainer";
-import PicturesWall from "../../Generate/Upload";
+import { PicturesWall } from "../../Generate/Upload";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import IconLoading from "../../Generate/IconLoading";

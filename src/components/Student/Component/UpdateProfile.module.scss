@@ -1,0 +1,46 @@
+@import "../../styles/variables.scss";
+
+.icon {
+    cursor   : pointer;
+    color    : $text-color-hover;
+    font-size: 16px;
+
+    &:hover {
+        color: $text-color;
+    }
+}
+
+.modalForm {
+    max-width    : 800px;
+    margin       : auto;
+    padding      : 20px;
+    border       : 1px solid #f0f0f0;
+    border-radius: 8px;
+}
+
+.avatarUploader {
+    width          : 100%;
+    display        : flex;
+    justify-content: center;
+    padding-left   : auto;
+    padding-right  : auto;
+}
+
+.radioGroup {
+    margin-bottom: 0;
+}
+
+.selectStyle {
+    width: 100%;
+}
+
+.w100 {
+    width: 100%;
+}
+
+.flexWrapper {
+    display          : flex;
+    flex-direction   : column;
+    // overflow-y    : auto;
+    // max-height    : 500px;
+}

@@ -204,6 +204,14 @@ const getAllCoupon = async (values) => {
   const queryString = new URLSearchParams(values).toString();
   return axios.get(`coupons/get-all?${queryString}`);
 }
+const updateInforStudent = async (values) => {
+  getToken();
+  return axios.put('students/update-infor', values, config);
+}
+const getInforStudent = async () => {
+  getToken();
+  return axios.get('students/infor', config);
+}
 export {
   getToken,
   setToken,
@@ -249,4 +257,6 @@ export {
   getCartByEmployer,
   removePackageFromCart,
   getAllCoupon,
+  updateInforStudent,
+  getInforStudent,
 }

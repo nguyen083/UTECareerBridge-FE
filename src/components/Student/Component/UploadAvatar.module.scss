@@ -1,0 +1,61 @@
+.container {
+    display        : flex;
+    flex-direction : column;
+    align-items    : center;
+    justify-content: center;
+    position       : relative;
+
+    .uploading {
+        filter    : blur(4px);
+        opacity   : 0.5;
+        transition: all 0.3s ease;
+    }
+
+    .div {
+        .avatar-upload {
+            border  : 2px solid #d8d8d8;
+            position: relative;
+            /* Để icon có thể đặt tuyệt đối */
+
+            &:hover {
+                opacity: 0.3;
+                cursor : pointer;
+            }
+        }
+
+        .upload-icon {
+            position  : absolute;
+            /* Đặt icon ở vị trí tuyệt đối */
+            top       : 50%;
+            /* Canh giữa theo chiều dọc */
+            left      : 50%;
+            /* Canh giữa theo chiều ngang */
+            transform : translate(-50%, -50%);
+            /* Di chuyển đúng vào giữa */
+            font-size : 32px;
+            /* Kích thước icon */
+            opacity   : 0;
+            z-index   : 1;
+            /* Ẩn icon khi không hover */
+            transition: opacity 0.3s ease;
+
+            /* Thêm hiệu ứng mờ dần */
+
+        }
+
+        &:hover {
+            .upload-icon {
+                opacity: 0.7;
+            }
+        }
+    }
+
+
+    .progress-container {
+        position : absolute;
+        top      : 50%;
+        left     : 50%;
+        transform: translate(-50%, -50%);
+        width    : 80%;
+    }
+}

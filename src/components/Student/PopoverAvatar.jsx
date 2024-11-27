@@ -28,22 +28,22 @@ const navigationMap = {
     '6': 'quản lý tài khoản',
     '7': 'logout' // Đặt một giá trị đặc biệt cho logout
 };
-const CustomizePopover = ({ setIndex }) => {
+const CustomizePopover = ({ setIndex, setOpen }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-
+    const infor = useSelector(state => state.student);
     return (
         <>
             <Flex justify="space-between" align="center">
                 <Flex vertical>
                     <Typography.Text>
-                        Tên
+                        {infor.lastName} {infor.firstName}
                     </Typography.Text>
                     <Typography.Text className="text-small" type="secondary">
-                        email
+                        {infor.email}
                     </Typography.Text>
                 </Flex>
-                <Button className="update-infor-btn" onClick={() => navigate("/profile")}> Cập nhật hồ sơ</Button>
+                <Button className="update-infor-btn" onClick={() => { navigate("/profile"); setOpen(false) }}> Cập nhật hồ sơ</Button>
             </Flex>
             <Divider className="my-1" />
             <Menu
@@ -52,6 +52,7 @@ const CustomizePopover = ({ setIndex }) => {
                 onClick={(e) => {
                     dispatch(current(e.key))
                     setIndex(e.key)
+                    setOpen(false)
                 }} items={menuItems} />
         </>
     )
@@ -59,13 +60,10 @@ const CustomizePopover = ({ setIndex }) => {
 const PopoverAvatar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const avatar = useSelector(state => state.student.profileImage);
     const [open, setOpen] = useState(false);
     const [index, setIndex] = useState(null);
 
-
-    useEffect(() => {
-
-    }, [open]);
     useEffect(() => {
         const logout = async () => {
             dispatch(loading());
@@ -101,10 +99,10 @@ const PopoverAvatar = () => {
             popupVisible
             arrow={false}
             placement="bottom"
-            content={<CustomizePopover setIndex={setIndex} />}
+            content={<CustomizePopover setIndex={setIndex} setOpen={(value) => setOpen(value)} />}
             trigger={['click']}
         >
-            <Avatar size={'large'} icon={<UserOutlined />} />
+            <Avatar size={'large'} icon={<UserOutlined />} src={avatar} />
             {/* src={avatar && <img src={avatar} />} */}
         </Popover>
     );

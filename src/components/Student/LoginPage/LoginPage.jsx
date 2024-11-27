@@ -2,12 +2,12 @@ import React from 'react';
 import { Form, Input, Button, Typography, Row, Col, Flex, Image, Divider, Card } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getToken, setToken, studentLogin } from '../../services/apiService';
+import { getToken, setToken, studentLogin } from '../../../services/apiService';
 import { toast } from 'react-toastify';
-import { loading, stop } from '../../redux/action/webSlice';
+import { loading, stop } from '../../../redux/action/webSlice';
 import './LoginPage.scss'; // Import file SCSS
 import { IoIosArrowRoundBack } from 'react-icons/io';
-import { setInfor } from '../../redux/action/userSlice';
+import { setInfor } from '../../../redux/action/userSlice';
 
 const { Title } = Typography;
 
@@ -46,7 +46,7 @@ const LoginPage = () => {
                 await setToken(res.data.token, res.data.refresh_token);
 
                 if (userRoleFromAPI === 'student') {
-                    dispatch(setInfor({ ...res.data }));
+                    dispatch(setInfor({ userId: res.data.id, role: userRoleFromAPI }));
                     navigate('/home');
                 } else if (userRoleFromAPI === 'admin') {
                     navigate('/admin');

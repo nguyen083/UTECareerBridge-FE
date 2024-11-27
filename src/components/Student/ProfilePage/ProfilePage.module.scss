@@ -1,0 +1,116 @@
+.row {
+    .box_shadow {
+        box-shadow: 5px 5px 5px #ebebeb;
+    }
+
+    .col_l {}
+
+    .col_c {
+        .title {
+            font-size  : 24px;
+            font-weight: 600;
+        }
+
+        .list-infor {
+            background-color: white;
+            padding         : 10px;
+            border          : 1px solid #f0f0f0;
+            border-radius   : 8px;
+
+
+
+
+            .infor_card {
+                max-width    : 600;
+                margin       : 'auto';
+                border       : '1px solid #f0f0f0';
+                border-radius: '8px';
+
+                .experience {
+                    margin-bottom: 16px;
+                    font-size    : 16px;
+                    font-weight  : bold;
+                    color        : #333333;
+                }
+
+                .infor {}
+
+                .icon {
+                    font-weight: 500;
+                    color      : #333333;
+                }
+            }
+        }
+
+        .div {
+            background   : white;
+            padding-left : 16px;
+            padding-right: 16px;
+            border-radius: 10px;
+
+            .tabs {
+
+                padding: auto !important;
+
+                .tab_content {
+                    padding: 0 20px 20px 20px;
+
+                    .text {
+                        font-size  : 1.5em;
+                        font-weight: 300;
+                    }
+                }
+
+
+
+                .ant-upload-drag-icon {
+                    font-size: 24px;
+                    /* Tùy chỉnh kích thước icon */
+                }
+
+                p {
+                    color: #8c8c8c;
+                    /* Tùy chỉnh màu chữ */
+
+                }
+
+
+                .list-item {
+                    .ant-list-item-meta {
+                        .ant-list-item-meta-title {
+                            font-weight: bold;
+                        }
+
+                        .ant-list-item-meta-description {
+                            p {
+                                color: #8c8c8c;
+                                /* Màu mô tả */
+                            }
+
+                            a {
+                                color          : blue;
+                                text-decoration: underline;
+                            }
+                        }
+                    }
+
+                    .ant-dropdown {
+                        .ant-btn {
+                            padding: 5px;
+                        }
+
+                        .anticon {
+                            font-size: 20px;
+                        }
+                    }
+                }
+            }
+
+        }
+
+
+
+    }
+
+    .col_r {}
+}
