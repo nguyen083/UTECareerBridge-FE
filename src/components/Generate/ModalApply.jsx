@@ -3,10 +3,11 @@ import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { FaMapLocationDot } from "react-icons/fa6";
 import FileGroup from "./FileGroup";
 import { useParams } from "react-router-dom";
-import { Modal, Button, Row, Col, Typography, Flex, Divider, Image, Card } from "antd";
+import { Modal, Button, Row, Col, Typography, Flex, Divider, Image, Card, message } from "antd";
 import { useState } from "react";
 import LineEllipsis from "./LineEllipsis";
 import { applyJob } from "../../services/apiService";
+import styles from "./ModalApply.module.scss";
 const { Title, Text } = Typography;
 export const ModalApply = ({ show, setShow, company, job }) => {
     const { id } = useParams();
@@ -14,9 +15,18 @@ export const ModalApply = ({ show, setShow, company, job }) => {
         resumeId: 0,
         jobId: id,
     });
+
     const handleApply = () => {
-        applyJob(formData);
-        setShow(false);
+
+        applyJob(formData).then((res) => {
+            if (res.status === 'OK') {
+                message.success(res.message);
+                setShow(false);
+            }
+            else
+                message.error(res.message);
+        });
+
     }
     return (
         <Modal title={<><Title level={4}>Ứng tuyển công việc</Title> <Divider className="m-0" /></>}
@@ -31,9 +41,9 @@ export const ModalApply = ({ show, setShow, company, job }) => {
 
             <Row gutter={[8, 8]}>
                 <Col span={9} color="#F8F9FA">
-                    <BoxContainer background="#F8F9FA" borderRadius="0" padding="1rem">
+                    <BoxContainer className={styles.box_shadow} background="#F8F9FA" borderRadius="0" padding="1rem">
                         <Flex vertical gap={8}>
-                            <BoxContainer padding="0.5rem">
+                            <BoxContainer className={styles.box_shadow} padding="0.5rem">
                                 <Flex gap={3} align="center">
                                     <Image width={120}
                                         preview={false}
@@ -41,7 +51,7 @@ export const ModalApply = ({ show, setShow, company, job }) => {
                                     <Text className="font-size" type="secondary"><LineEllipsis line={2}>{company.companyName}</LineEllipsis></Text>
                                 </Flex>
                             </BoxContainer>
-                            <BoxContainer padding="0.5rem">
+                            <BoxContainer className={styles.box_shadow} padding="0.5rem">
                                 <Flex vertical>
                                     <Title level={5}>{job.jobTitle}</Title>
                                     <Flex align="center" gap={3}><FaRegMoneyBillAlt size={16} /> <div className='salary'>{new Intl.NumberFormat('en-US', { useGrouping: true }).format(job.jobMinSalary)} - {new Intl.NumberFormat('en-US', { useGrouping: true }).format(job.jobMaxSalary)} VNĐ/tháng</div><Text type="warning"> </Text></Flex>
@@ -52,7 +62,7 @@ export const ModalApply = ({ show, setShow, company, job }) => {
                     </BoxContainer>
                 </Col>
                 <Col span={15}>
-                    <Card size="default" title={"Chọn đơn ứng tuyển"}>
+                    <Card className={styles.box_shadow} size="default" title={"Chọn đơn ứng tuyển"}>
                         <Flex vertical>
                             <FileGroup formData={formData} setFormData={setFormData} />
                         </Flex>

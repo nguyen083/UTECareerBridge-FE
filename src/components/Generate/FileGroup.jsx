@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Radio, Typography, Flex, Dropdown } from 'antd';
 import { PaperClipOutlined, MoreOutlined } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
 import { getAllCV } from '../../services/apiService';
 
-const { Text } = Typography;
+const { Text, Link } = Typography;
 const items = [
     {
         label: "1st menu item",
@@ -63,7 +62,7 @@ const FileGroup = (props) => {
                             </Dropdown>
                         </Flex>
                     </Card>) : <Flex align='center' justify='center'>
-                    <Text>Không có CV nào, Vui lòng <Link to="#">cập nhật CV của bạn</Link> </Text>
+                    <Text>Không có CV nào, Vui lòng <Link href="http://localhost:3000/profile" target='_blank'>cập nhật CV của bạn</Link> </Text>
                 </Flex>}
             </Flex>
         </Radio.Group>

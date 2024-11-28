@@ -21,7 +21,7 @@ const menuItems = [
 ];
 const navigationMap = {
     '1': 'tổng quan',
-    '2': 'hồ sơ của tôi',
+    '2': '/profile',
     '3': 'công ty của tôi',
     '4': 'việc làm của tôi',
     '5': 'thông báo việc làm',

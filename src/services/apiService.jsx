@@ -212,7 +212,29 @@ const getInforStudent = async () => {
   getToken();
   return axios.get('students/infor', config);
 }
+const uploadCV = async (values) => {
+  getToken();
+  return axios.post('students/upload/resumes', values, config);
+}
+const getSkillStudent = async () => {
+  getToken();
+  return axios.get('students/skills', config);
+}
+const addSkillStudent = async (values) => {
+  getToken();
+  const formData = objectToFormData(values);
+  return axios.post('students/skills/add', formData, config);
+}
+const deleteSkillStudent = async (id) => {
+  getToken();
+  return axios.delete(`students/skills/delete?skillId=${id}`, config);
+}
+const deleteCV = async (id) => {
+  getToken();
+  return axios.delete(`students/resume?resumeId=${id}`, config);
+}
 export {
+  uploadCV,
   getToken,
   setToken,
   removeToken,
@@ -259,4 +281,8 @@ export {
   getAllCoupon,
   updateInforStudent,
   getInforStudent,
+  getSkillStudent,
+  addSkillStudent,
+  deleteSkillStudent,
+  deleteCV
 }

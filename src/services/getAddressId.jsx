@@ -14,9 +14,24 @@ export const apiService = {
     getWardNameById(id) {
         return axiosInstance.get(`/commune/getdetail/${id}`)
     },
-    getAllFolk() {
-        return axiosInstance.get(`/ethnic/getalllist/`)
+    getInforAddress(address, provinceId, districtId, wardId) {
+        return axiosInstance.get(`/province/getdetail/${provinceId}`)
+            .then((resProvince) => {
+                const provinceName = resProvince.data.name;
+                return axiosInstance.get(`/district/getdetail/${districtId}`)
+                    .then((resDistrict) => {
+                        const districtName = resDistrict.data.name;
+                        return axiosInstance.get(`/commune/getdetail/${wardId}`)
+                            .then((resWard) => {
+                                const wardName = resWard.data.name;
+                                return address + ", " + wardName + ', ' + districtName + ', ' + provinceName;
+                            })
+                    })
+            })
     },
+    // getAllFolk() {
+    //     return axiosInstance.get(`/ethnic/getalllist/`)
+    // },
     getAllProvince() {
         return axiosInstance.get(`/province/getalllist/193`)
     },

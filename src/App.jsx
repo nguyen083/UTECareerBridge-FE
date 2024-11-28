@@ -82,6 +82,8 @@ const App = () => {
             <Route index element={<Navigate to={"/home"} replace />} />
             <Route path='/home' element={<HomePage />} />
             <Route path='/profile' element={<ProfilePage />} />
+            <Route path='/job/:id' element={<ViewJob />} />
+
           </Route>
           <Route path="company/:id" element={<InforCompany />} />
 

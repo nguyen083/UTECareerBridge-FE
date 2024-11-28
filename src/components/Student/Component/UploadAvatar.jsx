@@ -33,19 +33,17 @@ const UploadAvatar = ({ src, setSrc }) => {
         <div >
             <input type="file" id='input-upload' hidden={true} onChange={handleImageChange} />
             <div className={styles["container"]}>
-                {urlImage && (
-                    <div className={`${styles.div} ${uploading ? 'uploading' : ''}`} >
-                        <Avatar
-                            className={styles["avatar-upload"]}
-                            icon={<UserOutlined />}
-                            onClick={() => document.getElementById('input-upload').click()}
-                            src={urlImage}
-                            alt="Uploaded"
-                            size={200}
-                        ></Avatar>
-                        <UploadOutlined className={styles["upload-icon"]} />
-                    </div>
-                )}
+                <div className={`${styles.div} ${uploading ? 'uploading' : ''}`} >
+                    <Avatar
+                        className={styles["avatar-upload"]}
+                        icon={<UserOutlined />}
+                        onClick={() => document.getElementById('input-upload').click()}
+                        src={urlImage}
+                        alt="Uploaded"
+                        size={200}
+                    ></Avatar>
+                    <UploadOutlined className={styles["upload-icon"]} />
+                </div>
                 {uploading && (
                     <div className={styles["progress-container"]}>
                         <Progress percent={uploadProgress} status="active" size="small" percentPosition={{ align: "center", type: "outer" }} />
