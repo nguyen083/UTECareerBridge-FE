@@ -58,7 +58,7 @@ export const employerSlice = createSlice({
         setBusinessCertificate: (state, action) => {
             state.businessCertificate = action.payload.data;
         },
-        setNull: (state, action) => {
+        setInitEmployer: (state, action) => {
             state.phoneNumber = null;
             state.firstName = null;
             state.lastName = null
@@ -84,7 +84,7 @@ export const employerSlice = createSlice({
 });
 
 // Export các action để sử dụng trong component
-export const { setInfor, setNull, setBusinessCertificate } = employerSlice.actions;
+export const { setInfor, setInitEmployer, setBusinessCertificate } = employerSlice.actions;
 
 // Export reducer để sử dụng trong store
 export default employerSlice.reducer;

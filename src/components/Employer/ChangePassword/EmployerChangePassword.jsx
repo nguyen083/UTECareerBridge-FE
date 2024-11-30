@@ -1,9 +1,11 @@
 import { Button, Form, Input } from "antd";
 import BoxContainer from "../../Generate/BoxContainer";
+import { useSelector } from "react-redux";
 
 const EmployerChangePassword = () => {
+    const email = useSelector(state => state.employer.companyEmail);
     const infor = {
-        email: "abc@gmail.com"
+        email: email
     }
     const onFinish = (values) => {
         console.log(values);

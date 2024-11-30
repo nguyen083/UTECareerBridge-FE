@@ -1,4 +1,8 @@
-@import '../styles/variables.scss';
+@import '../../../components/styles/variables.scss';
+
+.popover-avatar {
+    cursor: pointer;
+}
 
 .ant-popover-inner {
     min-width: 300px;

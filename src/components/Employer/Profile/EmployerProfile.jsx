@@ -82,7 +82,7 @@ const EmployerProfile = () => {
                         </Form.Item>
                         <Form.Item name="gender" layout='horizontal' className="col-12 col-md-6 mt-0 mb-0" label="Giới tính" >
                             <Radio.Group className='mb-0'>
-                                <Space direction="vertical">
+                                <Space direction="horizontal">
                                     <Radio value={0}>Nam</Radio>
                                     <Radio value={1}>Nữ</Radio>
                                 </Space>
@@ -112,8 +112,8 @@ const EmployerProfile = () => {
                         </Form.Item>
                     </div>
                     <Flex gap={"1rem"} align='center' justify='end' hidden={enableEdit}>
-                        <Button type='default' onClick={handleReset}>Hủy</Button>
-                        <Button type='primary' htmlType='submit'>Lưu</Button>
+                        <Button size='middle' type='default' onClick={handleReset}>Hủy</Button>
+                        <Button size='middle' type='primary' htmlType='submit'>Lưu</Button>
                     </Flex>
                 </Form>
             </BoxContainer>

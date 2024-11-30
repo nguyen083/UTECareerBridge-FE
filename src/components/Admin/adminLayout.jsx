@@ -24,7 +24,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getInfor, getToken, logOut, removeToken } from '../../services/apiService';
 import { toast } from 'react-toastify';
 import { loading, stop } from '../../redux/action/webSlice';
-import { setNull } from '../../redux/action/userSlice.jsx';
+import { setInitUser } from '../../redux/action/userSlice.jsx';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -177,7 +177,7 @@ const AdminLayout = () => {
                     dispatch(loading());
                     const res = await logOut();
                     if (res.status === 'OK') {
-                        dispatch(setNull());
+                        dispatch(setInitUser());
                         removeToken();
                         navigate('/admin/login');
                         toast.success('Đăng xuất thành công');

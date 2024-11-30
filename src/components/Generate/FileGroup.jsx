@@ -5,17 +5,17 @@ import { getAllCV } from '../../services/apiService';
 
 const { Text, Link } = Typography;
 const items = [
-    {
-        label: "1st menu item",
-        key: '0',
-    },
-    {
-        type: 'divider',
-    },
-    {
-        label: '2rd menu item',
-        key: '1',
-    },
+    // {
+    //     label: "1st menu item",
+    //     key: '0',
+    // },
+    // {
+    //     type: 'divider',
+    // },
+    // {
+    //     label: '2rd menu item',
+    //     key: '1',
+    // },
 ];
 const FileGroup = (props) => {
     const { formData, setFormData } = props;

@@ -4,10 +4,12 @@ import { toast } from 'react-toastify';
 import { employerLogin, getToken, setToken } from '../../services/apiService';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { Button, Flex, Form, Input } from 'antd';
+import { Button, Flex, Form, Input, Typography } from 'antd';
 import { useDispatch } from 'react-redux';
 import { loading, stop } from '../../redux/action/webSlice';
+import { setInfor } from '../../redux/action/userSlice';
 
+const { Text } = Typography;
 const LoginPage = () => {
     const navigate = useNavigate();
     const [form] = Form.useForm();
@@ -40,7 +42,9 @@ const LoginPage = () => {
             setToken(res.data.token, res.data.refreshToken);
             getToken();
             dispatch(stop());
+            dispatch(setInfor({ userId: res.data.id, role: res.data.roles.roleName, email: res.data.username }));
             navigate('/employer');
+
         } else {
             toast.error(res.message);
             dispatch(stop());
@@ -64,7 +68,7 @@ const LoginPage = () => {
                             validateTrigger={['onBlur']}>
                             <Form.Item
                                 name="username"
-                                label={<span className='lable-text'>Email/ SĐT</span>}
+                                label="Email/ SĐT"
                                 rules={[{
                                     required: true,
                                     message: 'Vui lòng nhập email hoặc số điện thoại của bạn',
@@ -84,10 +88,9 @@ const LoginPage = () => {
                                     },
                                 })
                                 ]} validateFirst >
-                                <Input onChange={handleInputChange} prefix={<UserOutlined />} className='input-field' />
+                                <Input onChange={handleInputChange} prefix={<UserOutlined />} />
                             </Form.Item>
                             <Form.Item
-                                className='mb-4'
                                 label={<span className='lable-text'>Mật khẩu</span>}
                                 required
                                 name="password"
@@ -99,13 +102,13 @@ const LoginPage = () => {
                             </Form.Item>
 
                             <Form.Item>
-                                <Flex justify='space-between' className=' mb-2'>
-                                    <span className='col-6'>Bạn chưa đăng ký? <Link to='/employer/register'>Đăng ký ngay</Link></span>
-                                    <Link className='col-6 d-flex justify-content-end' to='/forgot-password' target='_blank'>Quên mật khẩu?</Link>
+                                <Flex justify='space-between'>
+                                    <Text>Bạn chưa đăng ký? <Link to='/employer/register'>Đăng ký ngay</Link></Text>
+                                    <Link to='/forgot-password' target='_blank'>Quên mật khẩu?</Link>
                                 </Flex>
                             </Form.Item>
                             <Flex align='center' justify='space-between'>
-                                <Link to='/home' className='align-middle'>
+                                <Link to='/home'>
                                     <IoIosArrowRoundBack className='fs-4' />Quay lại trang chủ
                                 </Link>
                                 <Button style={{ backgroundColor: "#1E4F94" }} size='large' className='w-25' type="primary" htmlType='submit'>

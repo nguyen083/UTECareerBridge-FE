@@ -1,8 +1,8 @@
-import { Col, List, Row, Avatar, Typography, Tabs, Upload, Space, Flex, Dropdown, Button, Card, Modal, Form, Input, message, Select, Rate } from "antd";
+import { Col, List, Row, Avatar, Typography, Tabs, Upload, Space, Flex, Dropdown, Button, Card, Modal, Form, Input, message, Select, Rate, Switch, Checkbox, Radio } from "antd";
 import styles from "./ProfilePage.module.scss";
 import React, { useEffect, useState } from 'react';
 import { BiSolidSchool } from "react-icons/bi";
-import { MailOutlined, PhoneOutlined, HomeOutlined, UserOutlined, InboxOutlined, PaperClipOutlined, EllipsisOutlined, EditOutlined, DeleteOutlined, PlusOutlined, MinusCircleOutlined, LikeOutlined, ShareAltOutlined } from '@ant-design/icons';
+import { MailOutlined, PhoneOutlined, HomeOutlined, UserOutlined, InboxOutlined, PaperClipOutlined, EllipsisOutlined, EditOutlined, DeleteOutlined, PlusOutlined, MinusCircleOutlined, LikeOutlined, ShareAltOutlined, MoreOutlined } from '@ant-design/icons';
 import BoxContainer from "../../Generate/BoxContainer";
 import { JobCardSmall } from "../../Generate/JobCard";
 import { getAllCV, getSimilarJob, getAllJobLevels, uploadCV, getSkillStudent, getAllSkills, addSkillStudent, deleteSkillStudent, deleteCV } from "../../../services/apiService";
@@ -20,19 +20,28 @@ const { Option } = Select;
 const { Meta } = Card;
 
 const ProfilePage = () => {
+    // state để quản lý các danh sách
     const [listResume, setListResume] = useState([]); // danh sách hồ sơ đã tải lên
     const [willLoveJob, setWillLoveJob] = useState([]);
-    const [visible, setVisible] = useState(false);
     const [studentSkill, setStudentSkill] = useState([]);
-    const [address, setAddress] = useState("");
     const [listSkill, setListSkill] = useState([]);
-    const [url, setUrl] = useState("");
-    const [form] = Form.useForm();
-    const [formSkill] = Form.useForm();
-    const [openModalSkill, setOpenModalSkill] = useState(false);
     const [levelOptions, setLevelOptions] = useState([]);
+    // state để quản lý các modal
+    const [visible, setVisible] = useState(false);
+    const [openModalSkill, setOpenModalSkill] = useState(false);
+    const [modalResume, setModalResume] = useState(false);
+    // state để quản lý các thông tin cá nhân
     const infor = useSelector((state) => state.student);
     const dispatch = useDispatch();
+    // state để quản lý các form
+    const [form] = Form.useForm();
+    const [formSkill] = Form.useForm();
+    const [formResume] = Form.useForm();
+    // state để quản lý các giá trị
+    const [address, setAddress] = useState("");
+    const [url, setUrl] = useState("");
+    const [resumeIdActive, setResumeIdActive] = useState(0);
+    const [isFindJob, setIsFindJob] = useState(true); // thuộc tính kiểm tra xem người dùng có đang bật tìm việc không
     const items = [
         {
             label: <Text type="danger"><DeleteOutlined /> &ensp;Xóa</Text>,
@@ -40,6 +49,15 @@ const ProfilePage = () => {
             onClick: (e) => handleDelete(e), // Truyền item vào đây
         },
     ];
+    // hàm lấy hồ sơ active
+    const getResumeActive = () => {
+        listResume.length !== 0 && listResume.forEach((item) => {
+            if (item.acvite === true) {
+                setResumeIdActive(item.id);
+            }
+        });
+    };
+    // hàm lấy danh sách hồ sơ đã tải lên
     const fetchCV = () => {
         getAllCV().then((res) => {
             console.log(res);
@@ -50,11 +68,13 @@ const ProfilePage = () => {
                     title: item.resumeTitle || "",
                     lastUpdated: item.updatedAt || 0,
                     link: item.resumeFile || "",
+                    acvite: item.isActive
                 }
             }));
 
         });
     }
+    // hàm lấy danh sách kỹ năng của sinh viên
     const fetchStudentSkill = () => {
         const skillMap = listSkill.reduce((map, skill) => {
             map[skill.skillId] = skill.skillName;
@@ -70,23 +90,31 @@ const ProfilePage = () => {
             }));
         });
     }
-    useEffect(() => {
-        fetchStudentSkill();
-    }, [listSkill]);
+    // hàm lấy danh sách kỹ năng
     const fetchSkill = () => {
         getAllSkills().then((res) => {
             setListSkill(res.data.filter((item) => item.active === true).map((item) => { return { skillName: item.skillName, skillId: item.skillId } }));
         });
     }
-
+    // lấy danh sách kỹ năng của sinh viên
+    useEffect(() => {
+        fetchStudentSkill();
+    }, [listSkill]);
+    // lấy hồ sơ active
+    useEffect(() => {
+        getResumeActive();
+    }, [listResume]);
+    // lấy địa chỉ của sinh viên
     useEffect(() => {
         apiService.getInforAddress(infor.address, infor.provinceId, infor.districtId, infor.wardId).then((res) => { console.log(res), setAddress(res) });
 
     }, [infor]);
-    useEffect(() => { visible === false && setUrl("") }, [visible]);
+    // hàm reset url khi modal đóng
     useEffect(() => {
-
-        // lấy danh sách Resume đã tải lên
+        visible === false && setUrl("")
+    }, [visible]);
+    // lấy danh sách Resume đã tải lên
+    useEffect(() => {
         fetchCV();
         fetchSkill();
 
@@ -110,6 +138,25 @@ const ProfilePage = () => {
         });
 
     }, []); // lấy danh sách hồ sơ đã tải lên từ server
+
+
+    const data = [
+        {
+            title: 'John Doe',
+            description: 'Lorem ipsum dolor sit amet.',
+            avatar: 'https://joeschmoe.io/api/v1/random',
+        },
+        {
+            title: 'Jane Smith',
+            description: 'Consectetur adipiscing elit.',
+            avatar: 'https://joeschmoe.io/api/v1/random',
+        },
+        {
+            title: 'Alice Johnson',
+            description: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+            avatar: 'https://joeschmoe.io/api/v1/random',
+        },
+    ];
 
     // lấy thông tin cá nhân trong redux
     const handleDelete = async (item) => {
@@ -146,7 +193,9 @@ const ProfilePage = () => {
         };
 
     }
-
+    const handleChangeResume = (e) => {
+        setResumeIdActive(e.target.value);
+    }
     const handleSubmit = (values) => {
         console.log({ ...values, resumeFile: url });
         uploadCV({ ...values, resumeFile: url }).then((res) => {
@@ -195,6 +244,17 @@ const ProfilePage = () => {
             fetchStudentSkill();
         });
     }
+    const handleFindJob = () => {
+        //gọi API cập nhật hồ sơ active
+        switchFindjob();
+        setModalResume(false);
+    }
+    // hàm bật tìm kiếm hồ sơ
+    const switchFindjob = () => {
+        //gọi API bật tìm kiếm hồ sơ
+        //nếu thành công thì cập nhật lại trạng thái isFindJob
+        setIsFindJob(true);
+    }
     return (<>
         <Row gutter={8} className={styles["row"]}>
             <Col span={6} className={styles["col_l"]}>
@@ -209,7 +269,11 @@ const ProfilePage = () => {
                                 description={"Sinh viên năm thứ " + infor.year}
                             />
                             <div className={styles.div}>
-
+                                <Flex gap={16} justify="space-between" align="center">
+                                    <Text strong >Cho phép tìm kiếm hồ sơ</Text>
+                                    <Switch checked={isFindJob} onChange={() => { switchFindjob }} />
+                                </Flex>
+                                <Button onClick={() => setModalResume(true)} type="link">Thiết lập hồ sơ</Button>
                             </div>
                         </Card>
                     </Col>
@@ -218,74 +282,72 @@ const ProfilePage = () => {
 
             <Col span={12} className={styles["col_c"]}>
                 <Flex vertical gap={16}>
-
-                    <BoxContainer background="#F1F2F4" padding="1rem" width={"100%"}>
-                        <List className={styles["list-infor"]}
-                            itemLayout="horizontal"
-                            size="small"
-                        >
-                            <List.Item>
-                                <List.Item.Meta
-                                    avatar={<Avatar size={150} icon={<UserOutlined />} src={infor.profileImage} />}
-                                    title={
-                                        <Flex justify="space-between">
-                                            <Text className={styles["title"]}>{infor.lastName} {infor.firstName}
-                                            </Text>
-                                            <UpdateProfile />
-                                        </Flex>}
-                                    description={
-                                        <div className={styles["infor_card"]} >
-                                            {/* <div className={styles["experience"]} >
+                    <List className={styles["list-infor"]}
+                        itemLayout="horizontal"
+                        size="small"
+                    >
+                        <List.Item>
+                            <List.Item.Meta
+                                avatar={<Avatar size={150} icon={<UserOutlined />} src={infor.profileImage} />}
+                                title={
+                                    <Flex justify="space-between">
+                                        <Text className={styles["title"]}>{infor.lastName} {infor.firstName}
+                                        </Text>
+                                        <UpdateProfile />
+                                    </Flex>}
+                                description={
+                                    <div className={styles["infor_card"]} >
+                                        {/* <div className={styles["experience"]} >
                                                 aaaaaa
                                             </div> */}
-                                            <Row gutter={[16, 16]} align="middle">
-                                                <Col span={24}>
-                                                    <Row align="middle">
-                                                        <Col span={2}>
-                                                            <BiSolidSchool className={styles["icon"]} />
-                                                        </Col>
-                                                        <Col span={22} className={styles["infor"]}>{infor.universityEmail}</Col>
-                                                    </Row>
-                                                </Col>
+                                        <Row gutter={[16, 16]} align="middle">
+                                            <Col span={24}>
+                                                <Row align="middle">
+                                                    <Col span={2}>
+                                                        <BiSolidSchool className={styles["icon"]} />
+                                                    </Col>
+                                                    <Col span={22} className={styles["infor"]}>{infor.universityEmail}</Col>
+                                                </Row>
+                                            </Col>
 
-                                            </Row>
-                                            <Row gutter={[16, 16]} align="middle">
-                                                <Col span={24}>
-                                                    <Row align="middle">
-                                                        <Col span={2}>
-                                                            <MailOutlined className={styles["icon"]} />
-                                                        </Col>
-                                                        <Col span={22} className={styles["infor"]}>{infor.email}</Col>
-                                                    </Row>
-                                                </Col>
-                                            </Row>
-                                            <Row gutter={[16, 16]} align="middle">
-                                                <Col span={24}>
-                                                    <Row align="middle">
-                                                        <Col span={2}>
-                                                            <PhoneOutlined className={styles["icon"]} />
-                                                        </Col>
-                                                        <Col span={22} className={styles["infor"]}>{infor.phoneNumber}</Col>
-                                                    </Row>
-                                                </Col>
-                                            </Row>
-                                            <Row gutter={[16, 16]} align="middle">
-                                                <Col span={24}>
-                                                    <Row align="middle">
-                                                        <Col span={2}>
-                                                            <HomeOutlined className={styles["icon"]} />
-                                                        </Col>
-                                                        <Col span={22} className={styles["infor"]}>{address}</Col>
-                                                    </Row>
-                                                </Col>
-                                            </Row>
-                                        </div>
-                                    }
-                                />
-                            </List.Item>
+                                        </Row>
+                                        <Row gutter={[16, 16]} align="middle">
+                                            <Col span={24}>
+                                                <Row align="middle">
+                                                    <Col span={2}>
+                                                        <MailOutlined className={styles["icon"]} />
+                                                    </Col>
+                                                    <Col span={22} className={styles["infor"]}>{infor.email}</Col>
+                                                </Row>
+                                            </Col>
+                                        </Row>
+                                        <Row gutter={[16, 16]} align="middle">
+                                            <Col span={24}>
+                                                <Row align="middle">
+                                                    <Col span={2}>
+                                                        <PhoneOutlined className={styles["icon"]} />
+                                                    </Col>
+                                                    <Col span={22} className={styles["infor"]}>{infor.phoneNumber}</Col>
+                                                </Row>
+                                            </Col>
+                                        </Row>
+                                        <Row gutter={[16, 16]} align="middle">
+                                            <Col span={24}>
+                                                <Row align="middle">
+                                                    <Col span={2}>
+                                                        <HomeOutlined className={styles["icon"]} />
+                                                    </Col>
+                                                    <Col span={22} className={styles["infor"]}>{address}</Col>
+                                                </Row>
+                                            </Col>
+                                        </Row>
+                                    </div>
+                                }
+                            />
+                        </List.Item>
 
-                        </List>
-                    </BoxContainer>
+                    </List>
+
                     <div className={`${styles.div} ${styles.box_shadow}`}>
                         <Tabs defaultActiveKey="2" size="large" className={styles["tabs"]}>
                             {/* <Tabs.TabPane tab="Hồ sơ Vietnamworks" key="1">
@@ -309,40 +371,46 @@ const ProfilePage = () => {
                                             <p>Chọn hoặc kéo thả hồ sơ từ máy của bạn</p>
                                             <p>Hỗ trợ định dạng .doc, .docx, .pdf có kích thước dưới 5120KB</p>
                                         </Dragger>}
-                                    {listResume.length !== 0 && <List size="small"
-                                        itemLayout="horizontal"
-                                        dataSource={listResume}
-                                        renderItem={(item) => (<Card size="small">
-                                            <List.Item
+                                    {listResume.length !== 0 &&
+                                        <List
+                                            split={false}
+                                            size="small"
+                                            itemLayout="horizontal"
+                                            dataSource={listResume}
+                                            renderItem={(item) => (
+                                                <List.Item className={styles.list_CV}>
+                                                    <Card className="w-100" size="small">
+                                                        <List.Item
+                                                            key={item.id}
+                                                            actions={[<Dropdown
+                                                                menu={{
+                                                                    items: items.map((i) => ({
+                                                                        ...i,
+                                                                        onClick: () => i.onClick(item), // Truyền item vào trong hành động
+                                                                    })),
+                                                                }}
+                                                                trigger={['click']}
+                                                            >
+                                                                <Button type="text" style={{ padding: "5 5 " }}>
+                                                                    <EllipsisOutlined style={{ fontSize: 20, padding: 0 }} /></Button>
+                                                            </Dropdown>]}>
+                                                            <List.Item.Meta
 
-                                                actions={[<Dropdown
-                                                    menu={{
-                                                        items: items.map((i) => ({
-                                                            ...i,
-                                                            onClick: () => i.onClick(item), // Truyền item vào trong hành động
-                                                        })),
-                                                    }}
-                                                    trigger={['click']}
-                                                >
-                                                    <Button type="text" style={{ padding: "5 5 " }}>
-                                                        <EllipsisOutlined style={{ fontSize: 20, padding: 0 }} /></Button>
-                                                </Dropdown>]}>
-                                                <List.Item.Meta
-
-                                                    avatar={<PaperClipOutlined style={{ fontSize: '17px', marginTop: '5px' }} />}
-                                                    title={<Typography.Link className="text-decoration-none" href={item.link} target="_blank" ><Text strong ellipsis={{ row: 1 }}>{item.title}</Text></Typography.Link>}
-                                                    description={
-                                                        <>
-                                                            <Text type="secondary">Cập nhật lần cuối: {item.lastUpdated}</Text>
-                                                            <br />
-                                                            <Link to={item.link} className="text-decoration-none" target="_blank">Xem link như  nhà tuyển dụng</Link>
-                                                        </>
-                                                    }
-                                                />
-                                            </List.Item>
-                                        </Card>
-                                        )}
-                                    />}
+                                                                avatar={<PaperClipOutlined style={{ fontSize: '17px', marginTop: '5px' }} />}
+                                                                title={<Typography.Link className="text-decoration-none" href={item.link} target="_blank" ><Text strong ellipsis={{ row: 1 }}>{item.title}</Text></Typography.Link>}
+                                                                description={
+                                                                    <>
+                                                                        <Text type="secondary">Cập nhật lần cuối: {item.lastUpdated}</Text>
+                                                                        <br />
+                                                                        <Link to={`/cv/${item.id}`} className="text-decoration-none" target="_blank">Xem link như  nhà tuyển dụng</Link>
+                                                                    </>
+                                                                }
+                                                            />
+                                                        </List.Item>
+                                                    </Card>
+                                                </List.Item>
+                                            )}
+                                        />}
                                 </div>
                             </Tabs.TabPane>
                         </Tabs>
@@ -473,9 +541,10 @@ const ProfilePage = () => {
             </Form>
             <Space direction="vertical" className={styles.space_list} size="large">
                 <List size="small"
+                    split={false}
                     dataSource={studentSkill}
                     renderItem={(item, index) => (
-                        <List.Item>
+                        <List.Item className={styles.list_item}>
                             <div className="w-100">
                                 <Row >
                                     <Col span={8} className="align-content-center">
@@ -494,6 +563,52 @@ const ProfilePage = () => {
                 />
             </Space>
         </Modal>
+        <Modal
+            title="Thiết lập hồ sơ"
+            visible={modalResume}
+            onCancel={() => setModalResume(false)}
+            onOk={handleFindJob}
+            cancelText="Hủy"
+            okText="Hoàn tất"
+        >
+            <Form initialValues={{ resumeId: resumeIdActive }}>
+                <Form.Item name="resumeId">
+                    <Radio.Group onChange={handleChangeResume} className="w-100">
+                        <List
+                            size="small"
+                            className={styles.ant_list}
+                            itemLayout="horizontal"
+                            split={false}
+                            dataSource={listResume}
+                            renderItem={item =>
+                                <List.Item>
+                                    <Card
+                                        size='small'
+                                        bordered
+                                        style={{
+                                            borderRadius: '10px',
+                                            width: '100%',
+                                        }}
+                                    >
+                                        <Flex justify='space-between'>
+                                            <Radio value={item.id} />
+                                            <div style={{ flexGrow: 1 }}>
+                                                <Typography.Link href={item.link} target="_blank">
+                                                    {item.title}
+                                                </Typography.Link>
+                                                <br />
+                                                <Text type="secondary" italic className="f-12">
+                                                    <PaperClipOutlined /> Tệp đính kèm • Cập nhật lúc: {item.lastUpdated.split(" ", 1)}
+                                                </Text>
+                                            </div>
+                                        </Flex>
+                                    </Card>
+                                </List.Item>}
+                        /></Radio.Group>
+                </Form.Item>
+            </Form>
+        </Modal >
+
     </>
     );
 }

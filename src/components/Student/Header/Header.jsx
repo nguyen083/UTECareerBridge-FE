@@ -5,16 +5,21 @@ import './Header.scss';
 import React, { useState, useEffect, useRef } from 'react';
 import ModalFormLogin from "./ModalFormLogin";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const Header = () => {
 
     const [isShowFormLogin, setShowFormLogin] = useState(false);
     const [isShowModalLogin, setShowModalLogin] = useState(false);
     const formRef = useRef(null);
+    const role = useSelector(state => state.user.role);
     const navigate = useNavigate(null);
 
     const NagigateLogin = () => {
-        localStorage.getItem('accessToken') ? navigate('/employer') : navigate('/employer/login');
+        if (localStorage.getItem('accessToken') && role === 'employer')
+            navigate('/employer')
+        else
+            navigate('/employer/login');
     }
     const handleClickOutside = (event) => {
         if (formRef.current && !formRef.current.contains(event.target)) {
@@ -77,10 +82,6 @@ const Header = () => {
                                         <div className="sc-exgAzj hruxAH Header_Search" style={{ maxWidth: "calc(100% - 450px" }}>
                                         </div>
                                         <div className="sc-kIxHyQ eesaxc">
-                                            {/* <a href="https://www.vietnamworks.com/viec-lam?g=5&amp;utm_source_navi=header&amp;utm_medium_navi=intechlogo" title="VietnamWorks inTECH - việc làm IT trên VietnamWorks.com" className="sc-ggKVCX hTBdHF">
-                                                <img src="https://vietnamworks.com/assets-page-container/images/vnw_intech_logo_white.svg?ver=249" alt="VietnamWorks inTECH - việc làm IT trên VietnamWorks.com" loading="lazy" className="sc-bCSQDp cJtnJk" />
-                                                <img width="40" src="https://vietnamworks.com/assets-page-container/images/vnw_intech_logo_white.svg?ver=249" alt="VietnamWorks inTECH - việc làm IT trên VietnamWorks.com" loading="lazy" className="sc-gAjtsA dhbLmR" />
-                                            </a> */}
                                             <div className="sc-fzimyC gChyuM">
                                                 <div className="sc-ezWOmT kjwsGF Header_AllCate">
                                                     <div className="sc-flEoeP kCosHO">

@@ -233,6 +233,10 @@ const deleteCV = async (id) => {
   getToken();
   return axios.delete(`students/resume?resumeId=${id}`, config);
 }
+const getCVById = async (id) => {
+  getToken();
+  return axios.get(`${id}`, config);
+}
 export {
   uploadCV,
   getToken,
@@ -284,5 +288,6 @@ export {
   getSkillStudent,
   addSkillStudent,
   deleteSkillStudent,
-  deleteCV
+  deleteCV,
+  getCVById
 }

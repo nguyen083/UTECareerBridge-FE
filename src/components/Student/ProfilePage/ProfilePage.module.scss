@@ -7,7 +7,9 @@
 
     .col_l {
         .card {
+            cursor    : default;
             background: $card-color;
+            box-shadow: 5px 5px 5px #ebebeb;
 
             .div {
                 background   : $background-color;
@@ -30,7 +32,7 @@
             padding         : 10px;
             border          : 1px solid #f0f0f0;
             border-radius   : 8px;
-
+            box-shadow      : 5px 5px 5px #ebebeb;
 
 
 
@@ -143,4 +145,29 @@
     max-height: 100vh;
     margin-top: 2rem;
     width     : 100%;
+}
+
+.ant_list {
+    .ant-list-items {
+        // gap           : rem;
+        display       : flex;
+        flex-direction: column;
+        padding       : 0 !important;
+    }
+}
+
+.list_item {
+    .ant-col {
+        display        : flex;
+        flex-direction : column;
+        justify-content: center;
+    }
+}
+
+.list_CV {
+    margin-top    : 0.5rem;
+    display       : flex;
+    flex-direction: column;
+    gap           : 0.5rem;
+    padding       : 0 !important;
 }

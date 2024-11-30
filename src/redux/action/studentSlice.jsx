@@ -15,7 +15,7 @@ const initialState = {
     universityEmail: null,
     year: null,
     profileImage: null,
-    categoryId: null
+    categoryId: null,
 };
 
 export const studentSlice = createSlice({
@@ -39,14 +39,27 @@ export const studentSlice = createSlice({
             state.categoryId = action.payload.categoryId;
         },
 
-        setNull: (state) => {
-            state = { ...initialState };
+        setInitStudent: (state) => {
+            state.firstName = null;
+            state.lastName = null;
+            state.email = null;
+            state.phoneNumber = null;
+            state.gender = null;
+            state.dob = null;
+            state.provinceId = null;
+            state.districtId = null;
+            state.wardId = null;
+            state.address = null;
+            state.universityEmail = null;
+            state.year = null;
+            state.profileImage = null;
+            state.categoryId = null
         },
     },
 });
 
 // Export các action để sử dụng trong component
-export const { setInforStudent, setNull } = studentSlice.actions;
+export const { setInforStudent, setInitStudent } = studentSlice.actions;
 
 // Export reducer để sử dụng trong store
 export default studentSlice.reducer;

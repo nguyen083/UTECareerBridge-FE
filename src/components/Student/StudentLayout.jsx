@@ -8,7 +8,7 @@ import { FaUser } from 'react-icons/fa6';
 import FooterComponent from '../Generate/Footer.jsx';
 import Notification from '../Generate/Notification.jsx';
 import { useDispatch, useSelector } from 'react-redux';
-import PopoverAvatar from './PopoverAvatar.jsx';
+import PopoverAvatar from './Header/PopoverAvatar.jsx';
 import { setInforStudent } from '../../redux/action/studentSlice.jsx';
 import { getInforStudent } from '../../services/apiService.jsx';
 const { Header, Content, Footer } = Layout;

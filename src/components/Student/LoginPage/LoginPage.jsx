@@ -2,16 +2,17 @@ import React from 'react';
 import { Form, Input, Button, Typography, Row, Col, Flex, Image, Divider, Card } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getToken, setToken, studentLogin } from '../../../services/apiService';
+import { setToken, studentLogin } from '../../../services/apiService';
 import { toast } from 'react-toastify';
 import { loading, stop } from '../../../redux/action/webSlice';
 import './LoginPage.scss'; // Import file SCSS
 import { IoIosArrowRoundBack } from 'react-icons/io';
-import { setInfor } from '../../../redux/action/userSlice';
+import { useRedux } from '../../../utils/useRedux';
 
-const { Title } = Typography;
+const { Title, Text } = Typography;
 
 const LoginPage = () => {
+    const { login } = useRedux();
     const dispatch = useDispatch();
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const phoneRegex = /^[0-9]{10,11}$/;
@@ -41,14 +42,12 @@ const LoginPage = () => {
             let res = await studentLogin(updatedValues);
             if (res.status === 'OK') {
                 form.resetFields();
-                const userRoleFromAPI = res.data.roles.roleName;
                 toast.success(res.message);
-                await setToken(res.data.token, res.data.refresh_token);
-
-                if (userRoleFromAPI === 'student') {
-                    dispatch(setInfor({ userId: res.data.id, role: userRoleFromAPI }));
+                await setToken(res.data.token, res.data.refresh_token); // set token
+                login(res); // set user info to redux
+                if (res.data.roles.roleName === 'student') {
                     navigate('/home');
-                } else if (userRoleFromAPI === 'admin') {
+                } else if (res.data.roles.roleName === 'admin') {
                     navigate('/admin');
                 }
             } else {
@@ -118,11 +117,12 @@ const LoginPage = () => {
                                 >
                                     <Input.Password placeholder="Nhập mật khẩu" className="input-field" />
                                 </Form.Item>
-                                <Form.Item>
-                                    <Button className='mt-3 w-100 login-button' type="primary" htmlType="submit">
+                                <Form.Item className='mb-1'>
+                                    <Button className='w-100 login-button' type="primary" htmlType="submit">
                                         Đăng nhập
                                     </Button>
                                 </Form.Item>
+                                <Text className='text-center'>Bạn chưa có tài khoản? <Button className='p-0 f-14' type='link' onClick={() => navigate('/register')}>Đăng ký ngay</Button></Text>
                                 <Divider className='mb-0' />
                                 <Form.Item>
                                     <Flex justify='space-between' gap={20}>

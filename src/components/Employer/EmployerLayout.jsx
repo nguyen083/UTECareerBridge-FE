@@ -11,7 +11,7 @@ import { MdManageAccounts } from "react-icons/md";
 import { TiBusinessCard } from "react-icons/ti";
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setInfor, setNull } from '../../redux/action/employerSlice.jsx';
+import { setInfor, setInitEmployer } from '../../redux/action/employerSlice.jsx';
 import FooterComponent from '../Generate/Footer.jsx';
 
 import {
@@ -85,6 +85,7 @@ const EmployerLayout = () => {
     const [defaultImage, setDefaultImage] = useState(null);
     const name = useSelector(state => state.employer.firstName) + ' ' + useSelector(state => state.employer.lastName);
     const avatar = useSelector(state => state.employer.companyLogo);
+    const user = useSelector(state => state.user);
     const [index, setIndex] = useState();
     const navigate = useNavigate();
     const [collapsed, setCollapsed] = useState(false);
@@ -103,8 +104,13 @@ const EmployerLayout = () => {
         if (localStorage.getItem('accessToken') === null) {
             window.location.href = '/employer/login';
         }
-        else
-            fetchData();
+        else {
+            if (user.role === 'employer') {
+                fetchData();
+            }
+            else
+                window.location.href = '/employer/login';
+        }
     }, []);
     useEffect(() => {
         const logout = async () => {
@@ -114,7 +120,7 @@ const EmployerLayout = () => {
                 removeToken();
                 dispatch(stop());
                 toast.success(res.message);
-                dispatch(setNull());
+                dispatch(setInitEmployer());
                 navigate('login');
             } else {
                 toast.error(res.message);

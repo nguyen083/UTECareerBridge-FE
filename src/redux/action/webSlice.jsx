@@ -20,12 +20,15 @@ export const webSlice = createSlice({
         current: (state, action) => {
             state.current = action.payload;
         },
-
+        setInitWeb: (state) => {
+            state.loading = false;
+            state.current = '1';
+        }
     },
 });
 
 // Export các action để sử dụng trong component
-export const { loading, stop, current } = webSlice.actions;
+export const { loading, stop, current, setInitWeb } = webSlice.actions;
 
 // Export reducer để sử dụng trong store
 export default webSlice.reducer;

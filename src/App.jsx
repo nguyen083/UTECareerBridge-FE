@@ -38,22 +38,27 @@ import EmployerCompany from './components/Employer/Company/EmployerCompany.jsx';
 import EmployerChangePassword from './components/Employer/ChangePassword/EmployerChangePassword.jsx';
 import BusinessCertificate from './components/Employer/Company/BusinessCertificate.jsx';
 import BoxContainer from './components/Generate/BoxContainer.jsx';
-
+import COLOR from './components/styles/_variables.jsx';
+import viVN from 'antd/lib/locale/vi_VN'; // Locale của Ant Design
+import ViewCV from './components/Student/CV/ViewCV.jsx';
 const App = () => {
   return (
-    <ConfigProvider
+    <ConfigProvider locale={viVN}
       theme={{
         token: {
-          colorPrimary: "#1E4F94",
-          colorPrimaryHover: "#4478c0",
+          colorPrimary: COLOR.textColor,
+          colorPrimaryHover: COLOR.textColorHover,
           fontFamily: "'Inter', sans-serif",
           inputFontSize: '1rem',
           //inputFontSizeLG: '1rem',
         },
         components: {
+
           Input: {
             activeShadow: "0 0 0 2px rgba(68, 120, 192, 0.2)",
-            colorTextDisabled: "#AAA8A9"
+            colorTextDisabled: "#AAA8A9",
+            colorText: COLOR.textColor,
+
           },
           Select: {
           },
@@ -63,13 +68,17 @@ const App = () => {
             labelColonMarginInlineEnd: '0.5rem',
             labelHeight: '0.5rem',
             labelColonMarginInlineStart: '0.125rem',
-            verticalLabelPadding: '0 0 0rem'
+            verticalLabelPadding: '0 0 0rem',
+            labelColor: COLOR.textColor,
+
           },
           Button: {
             // contentFontSize: '1rem',
             // contentFontSizeLG: '1rem',
             // paddingBlock: '0.25rem',
             // paddingBlockLG: '0.5rem',
+            colorLink: "#1E4F94",
+            colorLinkHover: "#4478c0"
           },
           Menu: {
             iconMarginInlineEnd: '0.625rem'
@@ -83,7 +92,7 @@ const App = () => {
             <Route path='/home' element={<HomePage />} />
             <Route path='/profile' element={<ProfilePage />} />
             <Route path='/job/:id' element={<ViewJob />} />
-
+            <Route path='/cv/:id' element={<ViewCV />} />
           </Route>
           <Route path="company/:id" element={<InforCompany />} />
 

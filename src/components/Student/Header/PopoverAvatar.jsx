@@ -1,15 +1,15 @@
-import { BellOutlined, DashboardFilled, DashboardOutlined, LogoutOutlined, SolutionOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
+import { BellOutlined, DashboardOutlined, LogoutOutlined, SolutionOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Divider, Flex, Menu, Popover, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import './PopoverAvatar.scss';
 import { LiaBriefcaseSolid } from "react-icons/lia";
 import { MdOutlineMessage } from "react-icons/md";
-import { current, loading, stop } from "../../redux/action/webSlice";
+import { current, loading, stop } from "../../../redux/action/webSlice.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { logOut, removeToken } from "../../services/apiService";
-import { setNull } from "../../redux/action/userSlice";
+import { logOut, removeToken } from "../../../services/apiService.jsx";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useRedux } from "../../../utils/useRedux.jsx";
 const menuItems = [
     { key: '1', icon: <DashboardOutlined />, label: 'Tổng Quan' },
     { key: '2', icon: <SolutionOutlined />, label: 'Hồ Sơ Của Tôi' },
@@ -17,7 +17,7 @@ const menuItems = [
     { key: '4', icon: <TeamOutlined />, label: 'Việc Làm Của Tôi' },
     { key: '5', icon: <MdOutlineMessage />, label: 'Thông Báo Việc Làm' },
     { key: '6', icon: <BellOutlined />, label: 'Quản Lý Tài Khoản' },
-    { key: '7', icon: <LogoutOutlined />, label: 'Thoát' },
+    { key: '7', icon: <LogoutOutlined />, label: 'Đăng xuất' },
 ];
 const navigationMap = {
     '1': 'tổng quan',
@@ -61,6 +61,7 @@ const PopoverAvatar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const avatar = useSelector(state => state.student.profileImage);
+    const { clearRedux } = useRedux();
     const [open, setOpen] = useState(false);
     const [index, setIndex] = useState(null);
 
@@ -71,9 +72,10 @@ const PopoverAvatar = () => {
             if (res.status === 'OK') {
                 removeToken();
                 dispatch(stop());
+                clearRedux();
                 toast.success(res.message);
-                dispatch(setNull());
                 navigate('/home');
+                return true;
             } else {
                 toast.error(res.message);
                 dispatch(stop());
@@ -94,6 +96,7 @@ const PopoverAvatar = () => {
     }, [index]);
     return (
         <Popover
+            className="popover-avatar"
             open={open}
             onOpenChange={(e) => setOpen(e)}
             popupVisible
@@ -102,8 +105,7 @@ const PopoverAvatar = () => {
             content={<CustomizePopover setIndex={setIndex} setOpen={(value) => setOpen(value)} />}
             trigger={['click']}
         >
-            <Avatar size={'large'} icon={<UserOutlined />} src={avatar} />
-            {/* src={avatar && <img src={avatar} />} */}
+            <Avatar size='large' icon={<UserOutlined />} src={avatar} />
         </Popover>
     );
 

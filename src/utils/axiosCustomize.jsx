@@ -1,5 +1,4 @@
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
 
 const instance = axios.create({
     baseURL: 'http://localhost:8080/api/v1/',
