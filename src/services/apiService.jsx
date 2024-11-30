@@ -235,7 +235,15 @@ const deleteCV = async (id) => {
 }
 const getCVById = async (id) => {
   getToken();
-  return axios.get(`${id}`, config);
+  return axios.get(`students/resumes/${id}`, config);
+}
+const updateFindjob = async (values) => {
+  getToken();
+  return axios.put(`students/is-finding-job?isFindingJob=${values}`, {}, config);
+}
+const updateResumeActive = async (id) => {
+  getToken();
+  return axios.put(`students/resume/${id}`, {}, config);
 }
 export {
   uploadCV,
@@ -289,5 +297,7 @@ export {
   addSkillStudent,
   deleteSkillStudent,
   deleteCV,
-  getCVById
+  getCVById,
+  updateFindjob,
+  updateResumeActive
 }

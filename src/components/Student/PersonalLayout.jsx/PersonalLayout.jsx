@@ -1,11 +1,11 @@
-import { Col, List, Row, Avatar, Typography, Tabs, Upload, Space, Flex, Dropdown, Button, Card, Modal, Form, Input, message, Select, Rate, Switch, Checkbox, Radio } from "antd";
-import styles from "./ProfilePage.module.scss";
+import { Col, List, Row, Avatar, Typography, Tabs, Upload, Space, Flex, Dropdown, Button, Card, Modal, Form, Input, message, Select, Rate, Switch, Checkbox, Radio, Menu } from "antd";
+import styles from "./PersonalLayout.module.scss";
 import React, { useEffect, useState } from 'react';
 import { BiSolidSchool } from "react-icons/bi";
-import { MailOutlined, PhoneOutlined, HomeOutlined, UserOutlined, InboxOutlined, PaperClipOutlined, EllipsisOutlined, EditOutlined, DeleteOutlined, PlusOutlined, MinusCircleOutlined, LikeOutlined, ShareAltOutlined, MoreOutlined } from '@ant-design/icons';
+import { MailOutlined, PhoneOutlined, HomeOutlined, UserOutlined, InboxOutlined, PaperClipOutlined, EllipsisOutlined, EditOutlined, DeleteOutlined, PlusOutlined, MinusCircleOutlined, LikeOutlined, ShareAltOutlined, MoreOutlined, DashboardOutlined, SettingOutlined } from '@ant-design/icons';
 import BoxContainer from "../../Generate/BoxContainer";
 import { JobCardSmall } from "../../Generate/JobCard";
-import { getAllCV, getSimilarJob, getAllJobLevels, uploadCV, getSkillStudent, getAllSkills, addSkillStudent, deleteSkillStudent, deleteCV } from "../../../services/apiService";
+import { getAllCV, getSimilarJob, getAllJobLevels, uploadCV, getSkillStudent, getAllSkills, addSkillStudent, deleteSkillStudent, deleteCV, updateFindjob, updateResumeActive } from "../../../services/apiService";
 import UpdateProfile from "../Component/UpdateProfile";
 import { Link } from "react-router-dom";
 
@@ -13,13 +13,14 @@ import { deleteImageFromCloudinaryByLink, uploadToCloudinary } from "../../../se
 import { useDispatch, useSelector } from "react-redux";
 import { apiService } from "../../../services/getAddressId";
 import { loading, stop } from "../../../redux/action/webSlice";
+import { setFindJob } from "../../../redux/action/studentSlice";
 // import { renameFile } from "../../../services/cloudinary";
 const { Text } = Typography;
 const { Dragger } = Upload;
 const { Option } = Select;
 const { Meta } = Card;
 
-const ProfilePage = () => {
+const PersonalLayout = () => {
     // state để quản lý các danh sách
     const [listResume, setListResume] = useState([]); // danh sách hồ sơ đã tải lên
     const [willLoveJob, setWillLoveJob] = useState([]);
@@ -32,6 +33,7 @@ const ProfilePage = () => {
     const [modalResume, setModalResume] = useState(false);
     // state để quản lý các thông tin cá nhân
     const infor = useSelector((state) => state.student);
+
     const dispatch = useDispatch();
     // state để quản lý các form
     const [form] = Form.useForm();
@@ -41,13 +43,39 @@ const ProfilePage = () => {
     const [address, setAddress] = useState("");
     const [url, setUrl] = useState("");
     const [resumeIdActive, setResumeIdActive] = useState(0);
-    const [isFindJob, setIsFindJob] = useState(true); // thuộc tính kiểm tra xem người dùng có đang bật tìm việc không
     const items = [
         {
             label: <Text type="danger"><DeleteOutlined /> &ensp;Xóa</Text>,
             key: '1',
             onClick: (e) => handleDelete(e), // Truyền item vào đây
         },
+    ];
+    const menuItems = [
+        {
+            key: "1",
+            label: <div className="f-16">Tổng quan</div>,
+            icon: <DashboardOutlined />,
+        },
+        {
+            key: "2",
+            label: <div className="f-16">Hồ sơ của tôi</div>,
+            icon: <PaperClipOutlined />,
+        },
+        {
+            key: "3",
+            label: <div className="f-16">Công ty của tôi</div>,
+            icon: <UserOutlined />,
+        },
+        {
+            key: "4",
+            label: <div className="f-16">Việc làm của tôi</div>,
+            icon: <UserOutlined />,
+        },
+        {
+            key: "5",
+            label: <div className="f-16">Quản lý tài khoản</div>,
+            icon: <SettingOutlined />,
+        }
     ];
     // hàm lấy hồ sơ active
     const getResumeActive = () => {
@@ -194,7 +222,8 @@ const ProfilePage = () => {
 
     }
     const handleChangeResume = (e) => {
-        setResumeIdActive(e.target.value);
+        // setResumeIdActive(e.target.value);
+        console.log(e.target.value);
     }
     const handleSubmit = (values) => {
         console.log({ ...values, resumeFile: url });
@@ -246,17 +275,33 @@ const ProfilePage = () => {
     }
     const handleFindJob = () => {
         //gọi API cập nhật hồ sơ active
-        switchFindjob();
-        setModalResume(false);
+        updateResumeActive(formResume.getFieldValue('resumeId')).then((res) => {
+            if (res.status === 'OK') {
+                message.success(res.message);
+                fetchCV();
+                switchFindjob(true);
+                setModalResume(false);
+                setResumeIdActive(formResume.getFieldValue('resumeId'));
+            } else {
+                message.error(res.message);
+            }
+        });
     }
     // hàm bật tìm kiếm hồ sơ
-    const switchFindjob = () => {
+    const switchFindjob = (status = null) => {
         //gọi API bật tìm kiếm hồ sơ
-        //nếu thành công thì cập nhật lại trạng thái isFindJob
-        setIsFindJob(true);
+        const check = status === null ? !infor.findingJob : status;
+        updateFindjob(check).then((res) => {
+            if (res.status === 'OK') {
+                // message.success(res.message);
+                dispatch(setFindJob(check));
+            } else {
+                message.error(res.message);
+            }
+        });
     }
     return (<>
-        <Row gutter={8} className={styles["row"]}>
+        <Row gutter={[8, 8]} className={styles["row"]}>
             <Col span={6} className={styles["col_l"]}>
                 <Row justify="center" >
                     <Col span={24}>
@@ -271,11 +316,24 @@ const ProfilePage = () => {
                             <div className={styles.div}>
                                 <Flex gap={16} justify="space-between" align="center">
                                     <Text strong >Cho phép tìm kiếm hồ sơ</Text>
-                                    <Switch checked={isFindJob} onChange={() => { switchFindjob }} />
+                                    <Switch checked={infor.findingJob} onChange={() => switchFindjob()} />
                                 </Flex>
                                 <Button onClick={() => setModalResume(true)} type="link">Thiết lập hồ sơ</Button>
                             </div>
                         </Card>
+                    </Col>
+                </Row>
+                <Row >
+                    <Col span={24}>
+                        <BoxContainer className={styles.box_shadow} padding="1rem" width={"100%"}>
+                            <Menu
+                                className={styles.menu}
+                                defaultSelectedKeys={['1']}
+                                defaultOpenKeys={['sub1']}
+                                mode="inline"
+                                items={menuItems}
+                            />
+                        </BoxContainer>
                     </Col>
                 </Row>
             </Col>
@@ -297,9 +355,7 @@ const ProfilePage = () => {
                                     </Flex>}
                                 description={
                                     <div className={styles["infor_card"]} >
-                                        {/* <div className={styles["experience"]} >
-                                                aaaaaa
-                                            </div> */}
+
                                         <Row gutter={[16, 16]} align="middle">
                                             <Col span={24}>
                                                 <Row align="middle">
@@ -350,9 +406,7 @@ const ProfilePage = () => {
 
                     <div className={`${styles.div} ${styles.box_shadow}`}>
                         <Tabs defaultActiveKey="2" size="large" className={styles["tabs"]}>
-                            {/* <Tabs.TabPane tab="Hồ sơ Vietnamworks" key="1">
-                                <div className={styles["tab_content"]}>Nội dung cho Hồ sơ Vietnamworks (tùy chỉnh thêm nếu cần).</div>
-                            </Tabs.TabPane> */}
+
                             <Tabs.TabPane tab="Hồ sơ đính kèm" key="2">
                                 <div className={styles["tab_content"]}>
                                     <Text className={styles["text"]}>Hồ sơ đã tải lên</Text>
@@ -402,7 +456,7 @@ const ProfilePage = () => {
                                                                     <>
                                                                         <Text type="secondary">Cập nhật lần cuối: {item.lastUpdated}</Text>
                                                                         <br />
-                                                                        <Link to={`/cv/${item.id}`} className="text-decoration-none" target="_blank">Xem link như  nhà tuyển dụng</Link>
+                                                                        <Link to={`/resume/view/${item.id}`} className="text-decoration-none" target="_blank">Xem link như  nhà tuyển dụng</Link>
                                                                     </>
                                                                 }
                                                             />
@@ -566,14 +620,14 @@ const ProfilePage = () => {
         <Modal
             title="Thiết lập hồ sơ"
             visible={modalResume}
-            onCancel={() => setModalResume(false)}
+            onCancel={() => { setModalResume(false); formResume.resetFields(); }}
             onOk={handleFindJob}
             cancelText="Hủy"
             okText="Hoàn tất"
         >
-            <Form initialValues={{ resumeId: resumeIdActive }}>
+            <Form initialValues={{ resumeId: resumeIdActive }} form={formResume} >
                 <Form.Item name="resumeId">
-                    <Radio.Group onChange={handleChangeResume} className="w-100">
+                    <Radio.Group className="w-100">
                         <List
                             size="small"
                             className={styles.ant_list}
@@ -612,4 +666,4 @@ const ProfilePage = () => {
     </>
     );
 }
-export default ProfilePage;
+export default PersonalLayout;

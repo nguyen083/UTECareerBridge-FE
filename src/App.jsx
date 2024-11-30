@@ -19,7 +19,7 @@ import ManageListEmployer from './components/Admin/ManageUser/ManageEmployer.jsx
 import AdminDashboard from './components/Admin/Dashboard/dashboard.jsx';
 import ServiceMarketplace from './components/Employer/Package/packageDashboard.jsx';
 import ShoppingCart from './components/Employer/Package/orderPage.jsx';
-import ProfilePage from './components/Student/ProfilePage/ProfilePage.jsx';
+import ProfilePage from './components/Student/PersonalLayout.jsx/PersonalLayout.jsx';
 import StudentLayout from './components/Student/StudentLayout.jsx';
 import JobPage from './components/Student/JobPage.jsx';
 import EmployerPage from './components/Employer/EmployerPage.jsx';
@@ -81,7 +81,12 @@ const App = () => {
             colorLinkHover: "#4478c0"
           },
           Menu: {
-            iconMarginInlineEnd: '0.625rem'
+            iconMarginInlineEnd: '0.625rem',
+            itemActiveBg: COLOR.backgroundColor,
+            iconSize: '1.25rem',
+            itemSelectedBg: COLOR.cardColor,
+            itemSelectedColor: COLOR.textColor,
+
           }
         }
       }}>
@@ -92,7 +97,7 @@ const App = () => {
             <Route path='/home' element={<HomePage />} />
             <Route path='/profile' element={<ProfilePage />} />
             <Route path='/job/:id' element={<ViewJob />} />
-            <Route path='/cv/:id' element={<ViewCV />} />
+            <Route path='/resume/view/:id' element={<ViewCV />} />
           </Route>
           <Route path="company/:id" element={<InforCompany />} />
 

@@ -16,6 +16,7 @@ const initialState = {
     year: null,
     profileImage: null,
     categoryId: null,
+    findingJob: null,
 };
 
 export const studentSlice = createSlice({
@@ -37,8 +38,11 @@ export const studentSlice = createSlice({
             state.year = action.payload.year;
             state.profileImage = action.payload.profileImage;
             state.categoryId = action.payload.categoryId;
+            state.findingJob = action.payload.findingJob;
         },
-
+        setFindJob: (state, action) => {
+            state.findingJob = action.payload;
+        },
         setInitStudent: (state) => {
             state.firstName = null;
             state.lastName = null;
@@ -53,13 +57,14 @@ export const studentSlice = createSlice({
             state.universityEmail = null;
             state.year = null;
             state.profileImage = null;
-            state.categoryId = null
+            state.categoryId = null;
+            state.findingJob = null;
         },
     },
 });
 
 // Export các action để sử dụng trong component
-export const { setInforStudent, setInitStudent } = studentSlice.actions;
+export const { setInforStudent, setInitStudent, setFindJob } = studentSlice.actions;
 
 // Export reducer để sử dụng trong store
 export default studentSlice.reducer;
