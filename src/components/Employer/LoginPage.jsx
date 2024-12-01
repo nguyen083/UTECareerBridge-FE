@@ -36,17 +36,22 @@ const LoginPage = () => {
             ...rest,
             [inputType]: username,
         };
-        const res = await employerLogin(updatedValues);
-        if (res.status === 'OK') {
-            toast.success(res.message);
-            setToken(res.data.token, res.data.refreshToken);
-            getToken();
-            dispatch(stop());
-            dispatch(setInfor({ userId: res.data.id, role: res.data.roles.roleName, email: res.data.username }));
-            navigate('/employer');
+        try {
+            const res = await employerLogin(updatedValues);
+            if (res.status === 'OK') {
+                toast.success(res.message);
+                setToken(res.data.token, res.data.refreshToken);
+                getToken();
+                dispatch(setInfor({ userId: res.data.id, role: res.data.roles.roleName, email: res.data.username }));
+                navigate('/employer');
 
-        } else {
-            toast.error(res.message);
+            } else {
+                toast.error(res.message);
+            }
+
+        } catch (error) {
+            console.log(error);
+        } finally {
             dispatch(stop());
         }
     }

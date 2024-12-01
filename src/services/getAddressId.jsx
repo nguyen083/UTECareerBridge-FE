@@ -14,20 +14,22 @@ export const apiService = {
     getWardNameById(id) {
         return axiosInstance.get(`/commune/getdetail/${id}`)
     },
-    getInforAddress(address, provinceId, districtId, wardId) {
-        return axiosInstance.get(`/province/getdetail/${provinceId}`)
-            .then((resProvince) => {
-                const provinceName = resProvince.data.name;
-                return axiosInstance.get(`/district/getdetail/${districtId}`)
-                    .then((resDistrict) => {
-                        const districtName = resDistrict.data.name;
-                        return axiosInstance.get(`/commune/getdetail/${wardId}`)
-                            .then((resWard) => {
-                                const wardName = resWard.data.name;
-                                return address + ", " + wardName + ', ' + districtName + ', ' + provinceName;
-                            })
-                    })
-            })
+    async getInforAddress(address, provinceId, districtId, wardId) {
+        try {
+            const resProvince = await axiosInstance.get(`/province/getdetail/${provinceId}`);
+            const provinceName = resProvince.data.name;
+
+            const resDistrict = await axiosInstance.get(`/district/getdetail/${districtId}`);
+            const districtName = resDistrict.data.name;
+
+            const resWard = await axiosInstance.get(`/commune/getdetail/${wardId}`);
+            const wardName = resWard.data.name;
+
+            return `${address}, ${wardName}, ${districtName}, ${provinceName}`;
+        } catch (error) {
+            console.error("Error fetching address information:", error);
+            throw error;
+        }
     },
     // getAllFolk() {
     //     return axiosInstance.get(`/ethnic/getalllist/`)

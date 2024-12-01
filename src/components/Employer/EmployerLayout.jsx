@@ -11,7 +11,8 @@ import { MdManageAccounts } from "react-icons/md";
 import { TiBusinessCard } from "react-icons/ti";
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setInfor, setInitEmployer } from '../../redux/action/employerSlice.jsx';
+import { setInfor } from '../../redux/action/employerSlice.jsx';
+import { useRedux } from '../../utils/useRedux.jsx';
 import FooterComponent from '../Generate/Footer.jsx';
 
 import {
@@ -81,12 +82,13 @@ const navigationMap = {
 };
 
 const EmployerLayout = () => {
+    const { clearRedux } = useRedux();
     const dispatch = useDispatch();
     const [defaultImage, setDefaultImage] = useState(null);
-    const name = useSelector(state => state.employer.firstName) + ' ' + useSelector(state => state.employer.lastName);
+    // const name = useSelector(state => state.employer.firstName) + ' ' + useSelector(state => state.employer.lastName);
     const avatar = useSelector(state => state.employer.companyLogo);
     const user = useSelector(state => state.user);
-    const [index, setIndex] = useState();
+    const [index, setIndex] = useState(useSelector(state => state.web.current));
     const navigate = useNavigate();
     const [collapsed, setCollapsed] = useState(false);
 
@@ -115,15 +117,20 @@ const EmployerLayout = () => {
     useEffect(() => {
         const logout = async () => {
             dispatch(loading());
-            const res = await logOut();
-            if (res.status === 'OK') {
-                removeToken();
-                dispatch(stop());
-                toast.success(res.message);
-                dispatch(setInitEmployer());
-                navigate('login');
-            } else {
-                toast.error(res.message);
+            try {
+                const res = await logOut();
+                if (res.status === 'OK') {
+                    removeToken();
+                    toast.success(res.message);
+                    navigate('login');
+                    clearRedux();
+
+                } else {
+                    toast.error(res.message);
+                }
+            } catch (error) {
+                console.log(error);
+            } finally {
                 dispatch(stop());
             }
         }

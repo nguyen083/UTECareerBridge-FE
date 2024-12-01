@@ -220,24 +220,26 @@ const EmployerPostJob = () => {
             <BoxContaier>
                 <div className='title1'>Đăng bài tuyển dụng</div>
             </BoxContaier>
-            <Form
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-                onReset={onReset}
-                requiredMark={false}
-                form={form}
-                size='large'
-                autoComplete="off"
-                layout='vertical'>
-                <Flex vertical gap="middle">
-                    <Collapse collapsible='false' expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse1} bordered={false} />
-                    <Collapse expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse2} bordered={false} />
-                    <Flex gap="middle" justify="end">
-                        <Button type="primary" htmlType="submit">Đăng bài</Button>
-                        <Button type="default" htmlType='reset'>Hủy</Button>
+            <BoxContaier>
+                <Form
+                    onFinish={onFinish}
+                    onFinishFailed={onFinishFailed}
+                    onReset={onReset}
+                    requiredMark={false}
+                    form={form}
+                    size='large'
+                    autoComplete="off"
+                    layout='vertical'>
+                    <Flex vertical gap="middle">
+                        <Collapse collapsible='false' expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse1} bordered={false} />
+                        <Collapse expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse2} bordered={false} />
+                        <Flex gap="middle" justify="end">
+                            <Button type="primary" htmlType="submit">Đăng bài</Button>
+                            <Button type="default" htmlType='reset'>Hủy</Button>
+                        </Flex>
                     </Flex>
-                </Flex>
-            </Form>
+                </Form>
+            </BoxContaier>
         </>
     );
 };

@@ -21,7 +21,6 @@ import ServiceMarketplace from './components/Employer/Package/packageDashboard.j
 import ShoppingCart from './components/Employer/Package/orderPage.jsx';
 import ProfilePage from './components/Student/PersonalLayout.jsx/PersonalLayout.jsx';
 import StudentLayout from './components/Student/StudentLayout.jsx';
-import JobPage from './components/Student/JobPage.jsx';
 import EmployerPage from './components/Employer/EmployerPage.jsx';
 import FavoritePage from './components/Student/FavoritePage.jsx';
 import DashBoard from './components/Employer/DashBoard/DashBoard.jsx';
@@ -41,6 +40,9 @@ import BoxContainer from './components/Generate/BoxContainer.jsx';
 import COLOR from './components/styles/_variables.jsx';
 import viVN from 'antd/lib/locale/vi_VN'; // Locale của Ant Design
 import ViewCV from './components/Student/CV/ViewCV.jsx';
+import PostApproval from './components/Admin/ManageCompany/Post/PostApproval.jsx';
+import CompanyApproval from './components/Admin/ManageCompany/Company/CompanyApproval.jsx';
+import ViewLayout from './components/Generate/ViewLayout.jsx';
 import EventPage from './components/Student/Event/EventPage.jsx';
 import EventDetail from './components/Student/Event/EventPageDetail.jsx';
 import JobSearchPage from './components/Student/Search/JobSearchPage.jsx';
@@ -107,9 +109,11 @@ const App = () => {
             <Route path='/search' element={<JobSearchPage />} />
 
           </Route>
-          <Route path="company/:id" element={<InforCompany />} />
+          <Route element={<ViewLayout />} >
+            <Route path="view/company/:id" element={<InforCompany />} />
+            <Route path='view/job/:id' element={<ViewJob />} />
+          </Route>
 
-          <Route path='job' element={<JobPage />} />
 
           <Route path='employer/register' element={<BackgroundAndForm />}>
             <Route index element={<EmployerRegister />} />
@@ -138,6 +142,8 @@ const App = () => {
             <Route path='dashboard' element={<AdminDashboard />} />
             <Route path='manage-students' element={<UserManagement />} />
             <Route path='manage-employers' element={<ManageListEmployer />} />
+            <Route path='company-approval' element={<CompanyApproval />} />
+            <Route path='post-approval' element={<PostApproval />} />
           </Route>
 
           <Route path='forgot-password' element={<BackgroundAndForm />}>

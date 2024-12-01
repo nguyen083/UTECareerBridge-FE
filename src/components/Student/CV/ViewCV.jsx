@@ -18,54 +18,52 @@ const ViewCV = () => {
         {
             key: 1,
             label: <Text className='f-16' strong>Họ và tên</Text>,
-            children: <Text className='f-16'>{cv.lastName} {cv.firstName}</Text>
+            children: <Text className='f-16'>{cv?.lastName} {cv?.firstName}</Text>
         },
         {
             key: 2,
             label: <Text className='f-16' strong>Giới tính</Text>,
-            children: <Text className='f-16'>{cv.gender ? 'Nữ' : "Nam"}</Text>
+            children: <Text className='f-16'>{cv?.gender ? 'Nữ' : "Nam"}</Text>
         },
         {
             key: 3,
             label: <Text className='f-16' strong>Ngày sinh</Text>,
-            children: <Text className='f-16'>{cv.dob}</Text>
+            children: <Text className='f-16'>{cv?.dob}</Text>
         },
         {
             key: 3,
             label: <Text className='f-16' strong>Email</Text>,
-            children: <Text className='f-16'>{cv.email}</Text>
+            children: <Text className='f-16'>{cv?.email}</Text>
         },
         {
             key: 4,
             label: <Text className='f-16' strong>Email trường đại học</Text>,
-            children: <Text className='f-16'>{cv.universityEmail}</Text>
+            children: <Text className='f-16'>{cv?.universityEmail}</Text>
         },
         {
             key: 4,
             label: <Text className='f-16' strong>Số điện thoại</Text>,
-            children: <Text className='f-16'>{cv.phoneNumber}</Text>
+            children: <Text className='f-16'>{cv?.phoneNumber}</Text>
         },
         {
             key: 5,
             label: <Text className='f-16' strong>Địa chỉ</Text>,
-            children: <Text className='f-16'>
-                {address}
-            </Text>
+            children: <Text className='f-16'>{address}</Text>
         },
         {
             key: 6,
             label: <Text className='f-16' strong>Năm học</Text>,
-            children: <Text className='f-16'>{cv.year}</Text>
+            children: <Text className='f-16'>{cv?.year}</Text>
         },
         {
             key: 7,
             label: <Text className='f-16' strong>Chuyên nghành/ Lĩnh vực</Text>,
-            children: <Text className='f-16'>{cv.categoryName}</Text>
+            children: <Text className='f-16'>{cv?.categoryName}</Text>
         },
         {
             key: 8,
             label: <Text className='f-16' strong>Cấp bậc</Text>,
-            children: <Text className='f-16'>{cv.levelName}</Text>
+            children: <Text className='f-16'>{cv?.levelName}</Text>
         },
         {
             key: 9,
@@ -75,17 +73,24 @@ const ViewCV = () => {
 
 
     ];
-    useEffect(() => {
+    const fetchData = async () => {
         getCVById(id).then((res) => {
             if (res.status === 'OK') {
                 setCv(res.data);
+                apiService.getInforAddress(res.data.address, res.data.provinceId, res.data.districtId, res.data.wardId).then((res) => {
+                    setAddress(res);
+                })
             }
         })
+    }
+    useEffect(() => {
+        fetchData();
     }, [id]);
     useEffect(() => {
-        apiService.getInforAddress(cv.address, cv.provinceId, cv.districtId, cv.wardId).then((res) => {
-            setAddress(res);
-        })
+        const add = async () => {
+
+        }
+        add();
     }, [cv]);
 
     return (
@@ -102,7 +107,7 @@ const ViewCV = () => {
                         title={
                             <Flex justify="space-between">
                                 <Text className={styles["title"]}>
-                                    {cv.lastName} {cv.firstName}
+                                    {cv?.lastName} {cv?.firstName}
                                 </Text>
                             </Flex>}
                         description={
@@ -113,7 +118,7 @@ const ViewCV = () => {
                                             <Col span={1}>
                                                 <BiSolidSchool className={styles["icon"]} />
                                             </Col>
-                                            <Col span={23} className="f-16"> Sinh viên năm  thứ {cv.year}</Col>
+                                            <Col span={23} className="f-16"> Sinh viên năm  thứ {cv?.year}</Col>
                                         </Row>
                                     </Col>
 
@@ -124,7 +129,7 @@ const ViewCV = () => {
                                             <Col span={1}>
                                                 <MailOutlined className={styles["icon"]} />
                                             </Col>
-                                            <Col span={23} className="f-16">{cv.email}</Col>
+                                            <Col span={23} className="f-16">{cv?.email}</Col>
                                         </Row>
                                     </Col>
                                 </Row>
@@ -134,7 +139,7 @@ const ViewCV = () => {
                                             <Col span={1}>
                                                 <PhoneOutlined className={styles["icon"]} />
                                             </Col>
-                                            <Col span={23} className={styles["infor"]}>{cv.phoneNumber}</Col>
+                                            <Col span={23} className={styles["infor"]}>{cv?.phoneNumber}</Col>
                                         </Row>
                                     </Col>
                                 </Row>

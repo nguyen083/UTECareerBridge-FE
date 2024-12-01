@@ -5,17 +5,17 @@ import { defaultLayoutPlugin } from '@react-pdf-viewer/default-layout'
 import '@react-pdf-viewer/core/lib/styles/index.css'
 import '@react-pdf-viewer/default-layout/lib/styles/index.css'
 
-const PDFViewer = ({ fileUrl }) => {
+const PDFViewer = ({ fileUrl = null }) => {
     const newPlugin = defaultLayoutPlugin();
 
     return (
         <div className={styles.pdf_container}>
             <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.4.120/build/pdf.worker.min.js">
-                <Viewer
+                {fileUrl && <Viewer
                     defaultScale={1.2}
                     fileUrl={fileUrl}
                     plugins={[newPlugin]}
-                />
+                />}
             </Worker>
         </div>
 

@@ -245,6 +245,32 @@ const updateResumeActive = async (id) => {
   getToken();
   return axios.put(`students/resume/${id}`, {}, config);
 }
+const getAllCompany = async (values) => {
+  getToken();
+  const params = new URLSearchParams(values).toString();
+  return axios.get(`employers/get-all-employers?${params}`, config);
+}
+const approveCompany = async (id) => {
+  getToken();
+  return axios.put(`employers/admin/${id}/legal-info/approve`, {}, config);
+}
+const rejectCompany = async (id, values) => {
+  getToken();
+  return axios.put(`employers/admin/${id}/legal-info/reject`, values, config);
+}
+const getAllPostByAdmin = async (values) => {
+  getToken();
+  const params = new URLSearchParams(values).toString();
+  return axios.get(`jobs/admin/all-jobs?${params}`, config);
+}
+const approvePost = async (id) => {
+  getToken();
+  return axios.put(`jobs/admin/job-approval/approve/${id}`, {}, config);
+}
+const rejectPost = async (id, values) => {
+  getToken();
+  return axios.put(`jobs/admin/job-approval/reject/${id}`, values, config);
+}
 export {
   uploadCV,
   getToken,
@@ -299,5 +325,11 @@ export {
   deleteCV,
   getCVById,
   updateFindjob,
-  updateResumeActive
+  updateResumeActive,
+  getAllCompany,
+  approveCompany,
+  rejectCompany,
+  getAllPostByAdmin,
+  approvePost,
+  rejectPost
 }

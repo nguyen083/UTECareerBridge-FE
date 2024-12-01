@@ -21,10 +21,10 @@ import {
 import { Layout, Menu, Avatar, Flex, Badge, Space } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { getInfor, getToken, logOut, removeToken } from '../../services/apiService';
+import { logOut, removeToken } from '../../services/apiService';
 import { toast } from 'react-toastify';
-import { loading, stop } from '../../redux/action/webSlice';
-import { setInitUser } from '../../redux/action/userSlice.jsx';
+import { current, loading, stop } from '../../redux/action/webSlice';
+import { useRedux } from '../../utils/useRedux.jsx';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -52,17 +52,15 @@ const itemSider = [
         children: [
             { key: '2.1', label: 'Ứng viên' },
             { key: '2.2', label: 'Nhà tuyển dụng' },
-            { key: '2.3', label: 'Quản trị viên' }
         ]
     },
     {
         key: '3',
         icon: <FileTextOutlined />,
-        label: 'Quản lý bài đăng',
+        label: 'Quản lý công ty',
         children: [
-            { key: '3.1', label: 'Tin tuyển dụng' },
-            { key: '3.2', label: 'Tin ứng tuyển' },
-            { key: '3.3', label: 'Duyệt bài đăng' }
+            { key: '3.1', label: 'Duyệt công ty' },
+            { key: '3.2', label: 'Duyệt bài đăng' },
         ]
     },
     {
@@ -120,10 +118,8 @@ const navigationMap = {
     '1': '/admin/dashboard',
     '2.1': '/admin/manage-students',
     '2.2': '/admin/manage-employers',
-    '2.3': '/admin/administrators',
-    '3.1': '/admin/job-posts',
-    '3.2': '/admin/applications',
-    '3.3': '/admin/post-approval',
+    '3.1': '/admin/company-approval',
+    '3.2': '/admin/post-approval',
     '4.1': '/admin/service-packages',
     '4.2': '/admin/transactions',
     '4.3': '/admin/revenue',
@@ -141,10 +137,11 @@ const navigationMap = {
 };
 
 const AdminLayout = () => {
+    const { clearRedux } = useRedux();
     const dispatch = useDispatch();
     const [defaultImage, setDefaultImage] = useState(null);
     const navigate = useNavigate();
-    const [current, setCurrent] = useState('1');
+    const [index, setIndex] = useState(useSelector(state => state.web.current));
     const [collapsed, setCollapsed] = useState(false);
 
     const adminInfo = useSelector(state => state.admin);
@@ -177,15 +174,15 @@ const AdminLayout = () => {
                     dispatch(loading());
                     const res = await logOut();
                     if (res.status === 'OK') {
-                        dispatch(setInitUser());
+                        clearRedux();
                         removeToken();
-                        navigate('/admin/login');
-                        toast.success('Đăng xuất thành công');
+                        navigate('/');
+                        toast.success(res.message);
                     } else {
-                        toast.error('Đăng xuất thất bại');
+                        toast.error(res.message);
                     }
                 } catch (error) {
-                    toast.error('Có lỗi xảy ra');
+                    toast.error(error.message);
                 } finally {
                     dispatch(stop());
                 }
@@ -194,8 +191,8 @@ const AdminLayout = () => {
             }
         };
 
-        handleNavigation(current);
-    }, [current]);
+        handleNavigation(index);
+    }, [index]);
 
     useEffect(() => {
         setDefaultImage("https://res.cloudinary.com/utejobhub/image/upload/v1723888103/rg2do6iommv6wp840ixr.png")
@@ -220,8 +217,11 @@ const AdminLayout = () => {
                     />
                 </div>
                 <Menu
-                    onClick={(e) => setCurrent(e.key)}
-                    selectedKeys={[current]}
+                    onClick={(e) => {
+                        dispatch(current(e.key))
+                        setIndex(e.key)
+                    }}
+                    selectedKeys={[index]}
                     theme="light"
                     mode="inline"
                     items={itemSider}
