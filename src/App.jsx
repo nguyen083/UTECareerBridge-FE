@@ -41,6 +41,9 @@ import BoxContainer from './components/Generate/BoxContainer.jsx';
 import COLOR from './components/styles/_variables.jsx';
 import viVN from 'antd/lib/locale/vi_VN'; // Locale của Ant Design
 import ViewCV from './components/Student/CV/ViewCV.jsx';
+import EventPage from './components/Student/Event/EventPage.jsx';
+import EventDetail from './components/Student/Event/EventPageDetail.jsx';
+import JobSearchPage from './components/Student/Search/JobSearchPage.jsx';
 const App = () => {
   return (
     <ConfigProvider locale={viVN}
@@ -98,6 +101,11 @@ const App = () => {
             <Route path='/profile' element={<ProfilePage />} />
             <Route path='/job/:id' element={<ViewJob />} />
             <Route path='/resume/view/:id' element={<ViewCV />} />
+            <Route path='/event' element={<EventPage />}>
+            </Route>
+            <Route path='/event-detail' element={<EventDetail />} />
+            <Route path='/search' element={<JobSearchPage />} />
+
           </Route>
           <Route path="company/:id" element={<InforCompany />} />
 
