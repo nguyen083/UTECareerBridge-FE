@@ -168,24 +168,6 @@ const PersonalLayout = () => {
     }, []); // lấy danh sách hồ sơ đã tải lên từ server
 
 
-    const data = [
-        {
-            title: 'John Doe',
-            description: 'Lorem ipsum dolor sit amet.',
-            avatar: 'https://joeschmoe.io/api/v1/random',
-        },
-        {
-            title: 'Jane Smith',
-            description: 'Consectetur adipiscing elit.',
-            avatar: 'https://joeschmoe.io/api/v1/random',
-        },
-        {
-            title: 'Alice Johnson',
-            description: 'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-            avatar: 'https://joeschmoe.io/api/v1/random',
-        },
-    ];
-
     // lấy thông tin cá nhân trong redux
     const handleDelete = async (item) => {
         console.log(item);
@@ -315,7 +297,7 @@ const PersonalLayout = () => {
                             />
                             <div className={styles.div}>
                                 <Flex gap={16} justify="space-between" align="center">
-                                    <Text strong >Cho phép tìm kiếm hồ sơ</Text>
+                                    <Text className="f-16" strong >Cho phép tìm kiếm hồ sơ</Text>
                                     <Switch checked={infor.findingJob} onChange={() => switchFindjob()} />
                                 </Flex>
                                 <Button onClick={() => setModalResume(true)} type="link">Thiết lập hồ sơ</Button>

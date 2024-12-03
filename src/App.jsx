@@ -43,6 +43,10 @@ import ViewCV from './components/Student/CV/ViewCV.jsx';
 import PostApproval from './components/Admin/ManageCompany/Post/PostApproval.jsx';
 import CompanyApproval from './components/Admin/ManageCompany/Company/CompanyApproval.jsx';
 import ViewLayout from './components/Generate/ViewLayout.jsx';
+import Applicant from './components/Employer/Applicant/Applicant.jsx';
+import ListJob from './components/Employer/Applicant/ListJob.jsx';
+import ListApplicant from './components/Employer/Applicant/ListApplicant.jsx';
+import ViewDetailApplicant from './components/Employer/Applicant/ViewDetailApplicant.jsx';
 import EventPage from './components/Student/Event/EventPage.jsx';
 import EventDetail from './components/Student/Event/EventPageDetail.jsx';
 import JobSearchPage from './components/Student/Search/JobSearchPage.jsx';
@@ -83,7 +87,12 @@ const App = () => {
             // paddingBlock: '0.25rem',
             // paddingBlockLG: '0.5rem',
             colorLink: "#1E4F94",
-            colorLinkHover: "#4478c0"
+            colorLinkHover: "#4478c0",
+            defaultActiveBorderColor: COLOR.textColorHover,
+            defaultActiveColor: COLOR.textColorHover,
+            defaultBorderColor: COLOR.textColor,
+            defaultColor: COLOR.textColor,
+            defaultHoverBg: COLOR.cardColor,
           },
           Menu: {
             iconMarginInlineEnd: '0.625rem',
@@ -91,7 +100,12 @@ const App = () => {
             iconSize: '1.25rem',
             itemSelectedBg: COLOR.cardColor,
             itemSelectedColor: COLOR.textColor,
-
+          },
+          Alert: {
+            colorText: COLOR.textColor,
+            colorTextHeading: COLOR.textColor,
+            fontSize: '1rem',
+            fontSizeIcon: '1.25rem',
           }
         }
       }}>
@@ -102,6 +116,7 @@ const App = () => {
             <Route path='/home' element={<HomePage />} />
             <Route path='/profile' element={<ProfilePage />} />
             <Route path='/job/:id' element={<ViewJob />} />
+            <Route path="/company/:id" element={<InforCompany />} />
             <Route path='/resume/view/:id' element={<ViewCV />} />
             <Route path='/event' element={<EventPage />}>
             </Route>
@@ -127,6 +142,12 @@ const App = () => {
             <Route path='profile' element={<EmployerProfile />} />
             <Route path='change-password' element={<EmployerChangePassword />} />
             <Route path='company' element={<EmployerCompany />} />
+            <Route path='applicant' element={<Applicant />} >
+              <Route index element={<Navigate to="list-job" replace />} />
+              <Route path='list-job' element={<ListJob />} />
+              <Route path='list-applicant-job/:id' element={<ListApplicant />} />
+            </Route>
+            <Route path='applicant-job/:id' element={<ViewDetailApplicant />} />
             <Route path='business-certificate' element={<BusinessCertificate />} />
             <Route path='post-job' element={<EmployerPostJob />} />
             <Route path='buy-service' element={<ServiceMarketplace />} />

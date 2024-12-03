@@ -2,18 +2,19 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Row, Col, Card, Button, Space, Image, Typography, Flex, Carousel, Divider, Descriptions, Spin } from 'antd';
 import { EnvironmentOutlined, TeamOutlined, ClockCircleOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { FaCalendarAlt, FaInbox, FaUserTie, FaCubes, FaReact, FaUsers, } from "react-icons/fa";
-import { getJobById, getSimilarJob } from '../../services/apiService';
+import { getAllCompany, getJobById, getSimilarJob } from '../../services/apiService';
 import BoxContainer from '../Generate/BoxContainer';
 import HtmlContent from '../Generate/HtmlContent';
 import BenefitComponent from '../Generate/BenefitComponent';
 import BackgroundIcon from '../Generate/BackgroundIcon';
 import { JobCardLarge, JobCardSmall } from '../Generate/JobCard';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { ModalApply } from '../Generate/ModalApply';
 
 
 const { Text, Link } = Typography;
 const ViewJob = () => {
+    const location = useLocation();
     const ref = useRef();
     const [apply, setApply] = useState(false);
     const [company, setCompany] = useState({});
@@ -24,10 +25,12 @@ const ViewJob = () => {
     const { id } = useParams();
     const [similarJobs, setSimilarJobs] = useState([]);
     const navigate = useNavigate();
+    const [carouselItems, setCarouselItems] = useState([]);
     useEffect(() => {
         setLoading(true);
+        const status = location.state?.status;
         // Gọi API để lấy thông tin công ty
-        getJobById(id).then((res) => {
+        getJobById(id, status).then((res) => {
             if (res.status === 'OK') {
                 const job = res.data;
                 const company = job.employerResponse;
@@ -38,6 +41,7 @@ const ViewJob = () => {
                     companyAddress: company.companyAddress,
                     companySize: company.companySize,
                     backgroundImage: company.backgroundImage,
+                    industryId: company.industry.industryId,
                 });
                 setJob({
                     jobTitle: job.jobTitle,
@@ -61,11 +65,26 @@ const ViewJob = () => {
         });
         getSimilarJob(id).then((res) => {
             if (res.status === 'OK' && res.data !== null) {
-                console.log("công việc");
                 setSimilarJobs(res.data?.jobResponses);
             }
         });
     }, [id]);
+
+    useEffect(() => {
+        getAllCompany({ industryId: company.industryId }).then((res) => {
+            if (res.status === 'OK' && res.data) {
+                // console.log("company same industry: ", res.data);
+                setCarouselItems(res.data?.employerResponses.filter((item) => item.id !== company.id).map((item) => ({
+                    id: item.id,
+                    imgSrc: item.companyLogo,
+                    title: item.companyName,
+                    description: item.companyDescription,
+                })));
+            } else {
+                setCarouselItems([]);
+            }
+        });
+    }, [company])
 
     useEffect(() => {
         setItems([
@@ -107,20 +126,20 @@ const ViewJob = () => {
         setIsSaved(!isSaved);
     };
     const handleToCompany = (id) => {
-        navigate('/employer/infor-company/' + id);
+        navigate('/company/' + id);
     }
-    const carouselItems = [
-        {
-            title: "Tham gia thực hiện nhiệm vụ",
-            description: "Yêu cầu ứng viên tham gia khảo sát/thử việc hoặc làm nhiệm vụ bằng cách cài đặt các ứng dụng điện thoại.",
-            imgSrc: "https://res.cloudinary.com/utejobhub/image/upload/v1726556316/demo/zeklxmv28quelifvcefo.jpg",
-        },
-        {
-            title: "Tham gia thực hiện nhiệm vụ",
-            description: "Yêu cầu ứng viên tham gia khảo sát/thử việc hoặc làm nhiệm vụ bằng cách cài đặt các ứng dụng điện thoại.",
-            imgSrc: "https://res.cloudinary.com/utejobhub/image/upload/v1726556316/demo/zeklxmv28quelifvcefo.jpg",
-        },
-    ];
+    // const carouselItems = [
+    //     {
+    //         title: "Tham gia thực hiện nhiệm vụ",
+    //         description: "Yêu cầu ứng viên tham gia khảo sát/thử việc hoặc làm nhiệm vụ bằng cách cài đặt các ứng dụng điện thoại.",
+    //         imgSrc: "https://res.cloudinary.com/utejobhub/image/upload/v1726556316/demo/zeklxmv28quelifvcefo.jpg",
+    //     },
+    //     {
+    //         title: "Tham gia thực hiện nhiệm vụ",
+    //         description: "Yêu cầu ứng viên tham gia khảo sát/thử việc hoặc làm nhiệm vụ bằng cách cài đặt các ứng dụng điện thoại.",
+    //         imgSrc: "https://res.cloudinary.com/utejobhub/image/upload/v1726556316/demo/zeklxmv28quelifvcefo.jpg",
+    //     },
+    // ];
     return (
         <>
             <Flex align='center' justify='center' style={{ height: '100vh', width: "100%" }} hidden={!loading}>
@@ -188,7 +207,8 @@ const ViewJob = () => {
                                     <div className='title2'>
                                         Việc làm bạn sẽ thích
                                     </div>
-                                    {similarJobs.map((job) => <JobCardLarge job={job} />)}                                </Flex>
+                                    {similarJobs.map((job) => <JobCardLarge job={job} />)}
+                                </Flex>
                             </BoxContainer>}
                         </Flex>
                     </Col>
@@ -246,7 +266,7 @@ const ViewJob = () => {
                                     </Space>
                                 </Flex>
                             </Card>
-                            {carouselItems && <Card
+                            {carouselItems.length > 0 && <Card
                                 title={<div className='title2 p-3'>Công ty cùng lĩnh vực</div>}
                                 style={{ textAlign: "center", width: "100%" }}
                             >
@@ -262,20 +282,23 @@ const ViewJob = () => {
                                 >
                                     {carouselItems.map((item, index) => (
                                         <div key={index} >
-                                            <div className="carousel-content">
-                                                <Image
-                                                    className='mx-auto'
-                                                    src={item.imgSrc}
-                                                    alt={item.title}
-                                                    preview={false}
-                                                    style={{ maxWidth: "80%", height: "auto", marginBottom: 0, borderRadius: "5px" }}
-                                                />
-                                                <Text strong className='font-size'>
+                                            <Flex justify='space-between' align='center' vertical gap={8} >
+                                                <Flex align='center' justify='center' style={{ minHeight: 300, maxHeight: 300, width: "100%" }}>
+                                                    <Image
+                                                        className='mx-auto'
+                                                        src={item.imgSrc}
+                                                        alt={item.title}
+                                                        preview={false}
+                                                        width={"80%"}
+                                                    />
+                                                </Flex>
+                                                <Text strong className='f-16' ellipsis={{ rows: 2, tooltip: item.title }}>
                                                     {item.title}
                                                 </Text>
-                                                <p>{item.description}</p>
-                                                <Button className='mb-4' onClick={() => { }}>Xem chi tiết</Button>
-                                            </div>
+                                                <br />
+                                                {/* <Text ellipsis={{ rows: 3 }}>{item.description}</Text> */}
+                                                <Button className='mb-4' onClick={() => navigate('/company/' + item.id)}>Xem chi tiết</Button>
+                                            </Flex>
                                         </div>
                                     ))}
                                 </Carousel>
@@ -294,8 +317,8 @@ const ViewJob = () => {
                             </Card>}
                         </Row>
                     </Col>
-                </Row>
-            </div>
+                </Row >
+            </div >
         </>
     );
 }

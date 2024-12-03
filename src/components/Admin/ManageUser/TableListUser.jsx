@@ -294,7 +294,6 @@ const TableListUser = ({
 
         // Tạo Blob với type cụ thể
         const blob = response instanceof Blob ? response : new Blob([response], { type: 'application/pdf' });
-        console.log('Blob:', blob);
         // Kiểm tra kích thước blob
         if (blob.size === 0) {
           throw new Error('Empty PDF file');

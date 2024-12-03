@@ -71,7 +71,6 @@ const StudentLayout = () => {
     useEffect(() => {
         if (infor.role === 'student') {
             getInforStudent().then(res => {
-                console.log(res);
                 if (res.status === 'OK') {
                     dispatch(setInforStudent(res.data));
                 }
@@ -124,13 +123,7 @@ const StudentLayout = () => {
             <Content
                 className='content-student'
             >
-                <div
-                    style={{
-
-                    }}
-                >
-                    <Outlet />
-                </div>
+                <Outlet />
             </Content>
             <Footer className='p-0'>
                 <FooterComponent />

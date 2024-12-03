@@ -1,15 +1,20 @@
 import React, { useEffect } from 'react';
 import { Card, Divider, Flex, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const { Text, Title, Paragraph } = Typography;
 
 const JobCardSmall = ({ job }) => {
     const navigate = useNavigate();
+    const user = useSelector(state => state.user);
     const handleClick = (key) => {
-        navigate('/employer/job/view/' + key);
-
-    };
+        if (user.role === "employer") {
+            navigate('/employer/job/view/' + key);
+        } else {
+            navigate('/job/' + key);
+        }
+    }
     return (
         <Card
             hoverable
@@ -68,15 +73,18 @@ const JobCardSmall = ({ job }) => {
         </Card>
     );
 };
-const JobCardLarge = ({ job }) => {
+const JobCardLarge = ({ job, disable = false }) => {
     const navigate = useNavigate();
     const handleClick = (key) => {
-        navigate('/employer/job/view/' + key);
+        if (disable) return;
+        else if (user.role === "employer") {
+            navigate('/employer/job/view/' + key);
+        } else {
+            navigate('/job/view/' + key);
+        }
 
     };
-    useEffect(() => {
-        console.log(job);
-    }, []);
+
     return (
         <Card
             onClick={() => handleClick(job.jobId)}
@@ -140,7 +148,19 @@ const JobCardLarge = ({ job }) => {
     );
 };
 
+const JobCardLargeApplicant = ({ job }) => {
+    const navigate = useNavigate();
+    const handleClick = (key) => {
+        navigate('/employer/applicant/list-applicant-job/' + key);
+    };
+    return <div style={{ cursor: 'pointer' }} onClick={() => handleClick(job.jobId)}>
+        <div>
+            <JobCardLarge job={job} disable={true} />
+        </div>
+    </div>
+}
 export {
     JobCardSmall,
     JobCardLarge,
+    JobCardLargeApplicant
 };

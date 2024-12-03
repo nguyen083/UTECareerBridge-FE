@@ -45,7 +45,9 @@ const UpdateProfile = () => {
             }));
         });
     }, []);
-
+    useEffect(() => {
+        console.log(categories);
+    }, [categories]);
     useEffect(() => {
         apiService.getDistrictByProvinceId(currentProvinceId).then((res) => {
             setCurrentListDistrict(res.data.map((item) => {
@@ -253,12 +255,11 @@ const UpdateProfile = () => {
                                         <Select
                                             placeholder="Thuộc chuyên môn"
                                             showSearch
-                                            optionFilterProp="label"
-                                            filterSort={(optionA, optionB) =>
-                                                (optionA?.label ?? '').toLowerCase().localeCompare((optionB?.label ?? '').toLowerCase())
-                                            }
-                                            options={categories}
-                                        />
+                                        >
+                                            {categories.map((item) => {
+                                                return <Select.Option key={item.value} value={item.value}>{item.label}</Select.Option>;
+                                            })}
+                                        </Select>
                                     </Form.Item>
                                 </Form.Item>
                             </Col>

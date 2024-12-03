@@ -37,7 +37,6 @@ const employerLogin = async (values) => {
   return axios.post('employers/login', values);
 };
 const studentRegister = async (values) => {
-  console.log(values);
   return axios.post('users/register', values);
 };
 const getInfor = async () => {
@@ -114,8 +113,9 @@ const putJob = async (id, values) => {
   getToken();
   return axios.put(`jobs/employer/job-posting/${id}`, values, config);
 }
-const getJobById = async (id) => {
-  return axios.get(`jobs/${id}`);
+const getJobById = async (id, status = 'ACTIVE') => {
+  status = status ?? 'ACTIVE';
+  return axios.get(`jobs/${id}?status=${status}`);
 }
 const getSimilarJob = async (id) => {
   return axios.get(`jobs/similar-jobs/${id}`);
@@ -271,6 +271,23 @@ const rejectPost = async (id, values) => {
   getToken();
   return axios.put(`jobs/admin/job-approval/reject/${id}`, values, config);
 }
+const getApplyJobByJobId = async (id, status) => {
+  getToken();
+  const params = new URLSearchParams({ status }).toString();
+  return axios.get(`employers/student-application/${id}?${params}`, config);
+}
+const getApplyJobByStudent = async () => {
+  getToken();
+  return axios.get(`students/jobs`, config);
+}
+const convertStatus = async (id, status) => {
+  getToken();
+  return axios.put(`employers/application/${id}`, { status }, config);
+}
+const getCVByEmployer = async (id) => {
+  getToken();
+  return axios.get(`employers/student-application/detail/${id}`, config);
+}
 export {
   uploadCV,
   getToken,
@@ -331,5 +348,9 @@ export {
   rejectCompany,
   getAllPostByAdmin,
   approvePost,
-  rejectPost
+  rejectPost,
+  getApplyJobByJobId,
+  getApplyJobByStudent,
+  convertStatus,
+  getCVByEmployer
 }

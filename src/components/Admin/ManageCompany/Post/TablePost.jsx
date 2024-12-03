@@ -224,9 +224,9 @@ const TablePost = ({ status }) => {
             render: (_, record) => (
                 <Space size="small">
                     <Tooltip color='blue' title="Xem">
-                        <Link to={`/view/job/${record.key}`} target="_blank">
-                            <Button className="btn btn-outline-primary" icon={<EyeOutlined />} />
-                        </Link>
+                        <Button className="btn btn-outline-primary" onClick={() => {
+                            navigate(`/view/job/${record.key}`, { state: { status: status } });
+                        }} icon={<EyeOutlined />} />
                     </Tooltip>
                     <Tooltip color='cyan' title="Duyệt">
                         <Button hidden={status !== 'PENDING'}
@@ -261,7 +261,7 @@ const TablePost = ({ status }) => {
                         />
                     </Tooltip>
 
-                </Space>
+                </Space >
             ),
         },
     ];
@@ -272,7 +272,6 @@ const TablePost = ({ status }) => {
         setIsModalVisible(false);
     };
     const handleModalSubmit = (values) => {
-        console.log(values);
         rejectPost(selectedPost.key, values).then(res => {
             if (res.status === "OK") {
                 message.success(res.message);

@@ -71,8 +71,8 @@ const navigationMap = {
     '3.1': '/employer/company',
     '3.2': '/employer/business-certificate',
     '4': '/employer/post-job',
-    '5': '#',
-    '6': 'manage-list-jobs',
+    '5': '/employer/applicant/list-job',
+    '6': '/employer/manage-list-jobs',
     '7': '#',
     '8': '#',
     '9': '#',
@@ -95,7 +95,6 @@ const EmployerLayout = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            getToken();
             let res = await getInfor();
             //Lưu thông tin người dùng vào redux
             dispatch(setInfor(res.data));

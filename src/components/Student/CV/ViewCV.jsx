@@ -6,11 +6,12 @@ import { BiSolidSchool } from 'react-icons/bi';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import PDFViewer from '../../Generate/PDFViewer';
-import { getCVById } from '../../../services/apiService';
+import { getCVByEmployer, getCVById } from '../../../services/apiService';
 import { apiService } from '../../../services/getAddressId';
+import { useSelector } from 'react-redux';
 const { Text, Title } = Typography;
 const ViewCV = () => {
-
+    const user = useSelector(state => state.user);
     const { id } = useParams();
     const [cv, setCv] = useState({});
     const [address, setAddress] = useState("");
@@ -74,24 +75,35 @@ const ViewCV = () => {
 
     ];
     const fetchData = async () => {
-        getCVById(id).then((res) => {
-            if (res.status === 'OK') {
-                setCv(res.data);
-                apiService.getInforAddress(res.data.address, res.data.provinceId, res.data.districtId, res.data.wardId).then((res) => {
-                    setAddress(res);
-                })
-            }
-        })
+        if (user.role === 'student') {
+            getCVById(id).then((res) => {
+                if (res.status === 'OK') {
+                    setCv(res.data);
+                    apiService.getInforAddress(res.data.address, res.data.provinceId, res.data.districtId, res.data.wardId).then((res) => {
+                        setAddress(res);
+                    })
+                }
+            })
+        } else {
+            getCVByEmployer(id).then((res) => {
+                if (res.status === 'OK') {
+                    setCv(res.data);
+                    apiService.getInforAddress(res.data.address, res.data.provinceId, res.data.districtId, res.data.wardId).then((res) => {
+                        setAddress(res);
+                    })
+                }
+            })
+        }
     }
     useEffect(() => {
         fetchData();
     }, [id]);
-    useEffect(() => {
-        const add = async () => {
+    // useEffect(() => {
+    //     const add = async () => {
 
-        }
-        add();
-    }, [cv]);
+    //     }
+    //     add();
+    // }, [cv]);
 
     return (
         <div className={styles.view_cv}>
