@@ -1,0 +1,103 @@
+.job-category {
+  padding: 1rem 0;
+
+  h2 {
+    max-width: 1180px;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  &__carousel-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  &__control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+
+    &--left {
+      left: -50px;
+    }
+
+    &--right {
+      right: -50px;
+    }
+  }
+
+  &__carousel {
+    width: 100%;
+
+    // Increase spacing between carousel items
+    .slick-slide {
+      padding: 0 15px; // Increase horizontal padding between items
+    }
+  }
+
+  &__item {
+    padding: 1rem;
+    margin: 0;
+    transition: all 0.3s ease;
+
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transform: translateY(-5px);
+    }
+  }
+
+  &__icon {
+    font-size: 2.5rem;
+    color: #1890ff;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__name {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    text-align: center;
+  }
+
+  &__jobs {
+    color: #666;
+    text-align: center;
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 1200px) {
+  .job-category {
+    &__control {
+      &--left {
+        left: -30px;
+      }
+
+      &--right {
+        right: -30px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .job-category {
+    &__control {
+      display: none;
+    }
+
+    &__carousel {
+      :global(.ant-carousel) {
+        overflow: visible;
+      }
+    }
+  }
+}

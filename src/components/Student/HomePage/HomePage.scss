@@ -1,0 +1,35 @@
+.homepage {
+  width: 100%;
+  .banner {
+    width: 100%;
+    height: 500px;
+  }
+  
+  h2 {
+    max-width: 1180px;
+    margin: 0 auto;
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+  }
+  &__header {
+    text-align: center;
+    padding: 20px;
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+    }
+
+    .homepage__search {
+      max-width: 800px;
+      margin: 0 auto;
+
+      .ant-input-search-button {
+        background-color: #1890ff;
+        color: white;
+      }
+    }
+  }
+}
