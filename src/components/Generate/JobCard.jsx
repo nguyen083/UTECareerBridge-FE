@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { Card, Divider, Flex, Typography } from 'antd';
+import { Card, Divider, Flex, Tag, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import Lable from '../../constant/Lable';
 
 const { Text, Title, Paragraph } = Typography;
 
@@ -73,12 +74,13 @@ const JobCardSmall = ({ job }) => {
 };
 const JobCardLarge = ({ job, disable = false }) => {
     const navigate = useNavigate();
+    const user = useSelector(state => state.user);
     const handleClick = (key) => {
         if (disable) return;
         else if (user.role === "employer") {
             navigate('/employer/job/view/' + key);
         } else {
-            navigate('/job/view/' + key);
+            navigate('/job/' + key);
         }
 
     };
@@ -110,7 +112,7 @@ const JobCardLarge = ({ job, disable = false }) => {
                     //     maxWidth: 500                 // Optional: set max width to control where it cuts off
                     // }}
                     >
-                        {job.jobTitle}
+                        {job.jobTitle} {Lable(job.packageId)}
                     </Title>
                     < Paragraph
                         type='secondary'

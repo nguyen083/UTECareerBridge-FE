@@ -5,6 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
     loading: false,
     current: '1',
+    keyword: '',
 };
 
 export const webSlice = createSlice({
@@ -23,12 +24,16 @@ export const webSlice = createSlice({
         setInitWeb: (state) => {
             state.loading = false;
             state.current = '1';
+            state.keyword = '';
+        },
+        setKeyword: (state, action) => {
+            state.keyword = action.payload;
         }
     },
 });
 
 // Export các action để sử dụng trong component
-export const { loading, stop, current, setInitWeb } = webSlice.actions;
+export const { loading, stop, current, setInitWeb, setKeyword } = webSlice.actions;
 
 // Export reducer để sử dụng trong store
 export default webSlice.reducer;

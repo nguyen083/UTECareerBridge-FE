@@ -79,6 +79,9 @@ const App = () => {
 
           },
           Select: {
+            // selectorBg: COLOR.backgroundColor,
+            optionSelectedBg: COLOR.cardColor,
+            optionSelectedColor: COLOR.textColor,
           },
           Form: {
             labelFontSize: '1rem',
@@ -126,14 +129,12 @@ const App = () => {
           <Route element={<StudentLayout />}>
             <Route index element={<Navigate to={"/home"} replace />} />
             <Route path='/home' element={<HomePage />} />
-            <Route path='/profile' element={<ProfilePage />} />
-            <Route path='/job/:id' element={<ViewJob />} />
-            <Route path="/company/:id" element={<InforCompany />} />
-            <Route path='/resume/view/:id' element={<ViewCV />} />
             <Route path='/event' element={<EventPage />}>
             </Route>
             <Route path='/event-detail' element={<EventDetail />} />
-            <Route path='/search' element={<JobSearchPage />} />
+            <Route element={<ViewLayout width='90%' />}>
+              <Route path='/search' element={<JobSearchPage />} />
+            </Route>
 
             <Route element={<PersonalLayout />} >
               <Route path='/profile' element={<ProfilePage />} />

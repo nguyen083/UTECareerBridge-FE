@@ -288,6 +288,11 @@ const getCVByEmployer = async (id) => {
   getToken();
   return axios.get(`employers/student-application/detail/${id}`, config);
 }
+const searchJob = async (values) => {
+  const params = new URLSearchParams(values).toString();
+  console.log("params: ", params);
+  return axios.get(`jobs/search?${params}`);
+}
 export {
   uploadCV,
   getToken,
@@ -352,5 +357,6 @@ export {
   getApplyJobByJobId,
   getApplyJobByStudent,
   convertStatus,
-  getCVByEmployer
+  getCVByEmployer,
+  searchJob
 }
