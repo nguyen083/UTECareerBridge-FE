@@ -1,9 +1,9 @@
 import BoxContainer from "./BoxContainer";
 import { Outlet } from "react-router-dom";
-const ViewLayout = () => {
+const ViewLayout = ({ width = "90%" }) => {
     return (
         <BoxContainer width={"100%"} className="mx-auto" background='#F5F5F5' >
-            <div className="w-75 mx-auto">
+            <div className="mx-auto" style={{ width }}>
                 <Outlet />
             </div>
         </BoxContainer>

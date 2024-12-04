@@ -88,6 +88,12 @@ const InforCompany = () => {
             }
         });
     }, []);
+    const handleFollow = () => {
+        console.log('follow');
+    }
+    const handleUnfollow = () => {
+        console.log('unfollow');
+    }
     return (
         <>
             <Flex align='center' justify='center' style={{ height: '100vh', width: "100%" }} hidden={!loading}>
@@ -105,7 +111,7 @@ const InforCompany = () => {
                         </div>
                     }
                 >
-                    <Flex gap={"1rem"} vertical>
+                    <Flex gap={"1rem"} vertical style={{ padding: "0 1rem 1rem 1rem" }}>
                         <Flex align="center" style={{ marginTop: -50 }} gap={"1rem"}>
                             <Image
                                 preview={false}
@@ -127,9 +133,10 @@ const InforCompany = () => {
                                     </Title>
                                     <Text>3 lượt theo dõi</Text>
                                 </div>
-                                <Button size="large" type="primary">
+                                <Button onClick={handleFollow} size="large" type="primary">
                                     Theo dõi
                                 </Button>
+                                <Button onClick={handleUnfollow} size="large" type="primary">Đang theo dõi</Button>
                             </Flex>
                         </Flex>
                         <Anchor

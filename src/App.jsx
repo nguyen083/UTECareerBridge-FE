@@ -19,7 +19,7 @@ import ManageListEmployer from './components/Admin/ManageUser/ManageEmployer.jsx
 import AdminDashboard from './components/Admin/Dashboard/dashboard.jsx';
 import ServiceMarketplace from './components/Employer/Package/packageDashboard.jsx';
 import ShoppingCart from './components/Employer/Package/orderPage.jsx';
-import ProfilePage from './components/Student/PersonalLayout.jsx/PersonalLayout.jsx';
+import ProfilePage from './components/Student/PersonalLayout/ProfilePage/ProfilePage.jsx';
 import StudentLayout from './components/Student/StudentLayout.jsx';
 import EmployerPage from './components/Employer/EmployerPage.jsx';
 import FavoritePage from './components/Student/FavoritePage.jsx';
@@ -47,6 +47,9 @@ import Applicant from './components/Employer/Applicant/Applicant.jsx';
 import ListJob from './components/Employer/Applicant/ListJob.jsx';
 import ListApplicant from './components/Employer/Applicant/ListApplicant.jsx';
 import ViewDetailApplicant from './components/Employer/Applicant/ViewDetailApplicant.jsx';
+import MyCompanyPage from './components/Student/PersonalLayout/MyCompanyPage/MyCompanyPage.jsx';
+import PersonalLayout from './components/Student/PersonalLayout/PersonalLayout.jsx';
+import MyJobPage from './components/Student/PersonalLayout/MyJobPage/MyJobPage.jsx';
 import EventPage from './components/Student/Event/EventPage.jsx';
 import EventDetail from './components/Student/Event/EventPageDetail.jsx';
 import JobSearchPage from './components/Student/Search/JobSearchPage.jsx';
@@ -62,7 +65,13 @@ const App = () => {
           //inputFontSizeLG: '1rem',
         },
         components: {
+          Descriptions: {
+            fontSize: '1rem',
+          },
+          Typography: {
+            fontSize: '1rem',
 
+          },
           Input: {
             activeShadow: "0 0 0 2px rgba(68, 120, 192, 0.2)",
             colorTextDisabled: "#AAA8A9",
@@ -106,6 +115,9 @@ const App = () => {
             colorTextHeading: COLOR.textColor,
             fontSize: '1rem',
             fontSizeIcon: '1.25rem',
+          },
+          Table: {
+            cellFontSize: "1rem",
           }
         }
       }}>
@@ -123,6 +135,18 @@ const App = () => {
             <Route path='/event-detail' element={<EventDetail />} />
             <Route path='/search' element={<JobSearchPage />} />
 
+            <Route element={<PersonalLayout />} >
+              <Route path='/profile' element={<ProfilePage />} />
+
+              <Route path='/my-company' element={<MyCompanyPage />} />
+              <Route path='/my-job' element={<MyJobPage />} />
+              {/* <Route path='/account-management' element={<AccountManagement />} /> */}
+            </Route>
+            <Route element={<ViewLayout width='90%' />}>
+              <Route path='/job/:id' element={<ViewJob />} />
+              <Route path="/company/:id" element={<InforCompany />} />
+              <Route path='/resume/view/:id' element={<ViewCV />} />
+            </Route>
           </Route>
           <Route element={<ViewLayout />} >
             <Route path="view/company/:id" element={<InforCompany />} />

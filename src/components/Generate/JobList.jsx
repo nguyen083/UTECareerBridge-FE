@@ -4,9 +4,11 @@ import { EnvironmentOutlined, DollarOutlined, InboxOutlined } from '@ant-design/
 import { Like } from './Like';
 import { getAllJobEmployer, getJobsByStatus } from '../../services/apiService';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const { Title, Paragraph, Text } = Typography;
 const JobList = () => {
+  const user = useSelector(state => state.user);
   const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
@@ -77,9 +79,12 @@ const JobList = () => {
     });
   };
   const handleClick = (key) => {
-    navigate('/employer/job/view/' + key);
-  };
-
+    if (user.role === 'student') {
+      navigate('/job/' + key);
+    } else {
+      navigate('/employer/job/view/' + key);
+    }
+  }
   const handlePageSizeChange = (current, size) => {
     setPagination({
       ...pagination,
@@ -137,24 +142,24 @@ const JobList = () => {
                         whiteSpace: 'nowrap',        // Keeps the text on a single line
                         overflow: 'hidden',           // Hides any overflow
                         textOverflow: 'ellipsis',     // Adds ellipsis for overflowed text
-                        maxWidth: 140                 // Optional: set max width to control where it cuts off
+                        maxWidth: "80%"                 // Optional: set max width to control where it cuts off
                       }}>
                       {item.title}
                     </Title>
                     <Like liked={item.saved} handleClick={() => alert('Liked')} />
                   </Flex>
                   < Paragraph
+                    style={{ margin: 0 }}
                     type='secondary'
-                    style={{
-                      margin: 0,
-                      whiteSpace: 'nowrap',        // Keeps the text on a single line
-                      overflow: 'hidden',           // Hides any overflow
-                      textOverflow: 'ellipsis',     // Adds ellipsis for overflowed text
-                      maxWidth: 140                 // Optional: set max width to control where it cuts off
-                    }}>
-                    {item.company}</Paragraph>
+                    ellipsis={{
+                      rows: 1,
+                      tooltip: true
+                    }}
+                  >
+                    {item.company}
+                  </Paragraph>
                   <div style={{ color: '#ff4d4f', fontSize: 14, margin: '8px 0' }}>
-                    <DollarOutlined style={{ color: "#1677ff" }} />{item.jobMinSalary} - {item.jobMaxSalary} <Text style={{ fontSize: 12 }}>VNĐ/tháng</Text>
+                    <DollarOutlined style={{ color: "#1677ff" }} /> {new Intl.NumberFormat('vi-VN').format(item.jobMinSalary)} - {new Intl.NumberFormat('vi-VN').format(item.jobMaxSalary)}  <Text style={{ fontSize: 12 }}>VNĐ/tháng</Text>
                   </div>
 
                   < Paragraph
@@ -164,7 +169,7 @@ const JobList = () => {
                       whiteSpace: 'nowrap',        // Keeps the text on a single line
                       overflow: 'hidden',           // Hides any overflow
                       textOverflow: 'ellipsis',     // Adds ellipsis for overflowed text
-                      maxWidth: 140                 // Optional: set max width to control where it cuts off
+                      maxWidth: "80%"                  // Optional: set max width to control where it cuts off
                     }}>
                     {item.jobLocation}</Paragraph>
                 </div>

@@ -32,7 +32,7 @@ const JobCardSmall = ({ job }) => {
                     src={job.employerResponse.companyLogo} // Replace with the actual logo URL
                     style={{ width: 80, height: 80, borderRadius: 4, marginRight: 12 }}
                 />
-                <div>
+                <div className='w-75'>
                     <Title level={5}
                         onClick={() => handleClick(job.jobId)}
                         style={{
@@ -41,7 +41,6 @@ const JobCardSmall = ({ job }) => {
                             whiteSpace: 'nowrap',        // Keeps the text on a single line
                             overflow: 'hidden',           // Hides any overflow
                             textOverflow: 'ellipsis',     // Adds ellipsis for overflowed text
-                            maxWidth: 140                 // Optional: set max width to control where it cuts off
                         }}>
                         {job.jobTitle}
                     </Title>
@@ -52,7 +51,6 @@ const JobCardSmall = ({ job }) => {
                             whiteSpace: 'nowrap',        // Keeps the text on a single line
                             overflow: 'hidden',           // Hides any overflow
                             textOverflow: 'ellipsis',     // Adds ellipsis for overflowed text
-                            maxWidth: 140                 // Optional: set max width to control where it cuts off
                         }}>
                         {job.employerResponse.companyName}</Paragraph>
                     <div style={{ color: '#ff4d4f', fontSize: 14, margin: '8px 0' }}>
@@ -65,7 +63,7 @@ const JobCardSmall = ({ job }) => {
                             whiteSpace: 'nowrap',        // Keeps the text on a single line
                             overflow: 'hidden',           // Hides any overflow
                             textOverflow: 'ellipsis',     // Adds ellipsis for overflowed text
-                            maxWidth: 140                 // Optional: set max width to control where it cuts off
+                            // Optional: set max width to control where it cuts off
                         }}>
                         {job.jobLocation}</Paragraph>
                 </div>

@@ -1,0 +1,29 @@
+.title {
+    font-size  : 24px;
+    font-weight: 600;
+}
+
+.list-infor {
+    background-color: white;
+    padding         : 10px;
+    border          : 1px solid #f0f0f0;
+    border-radius   : 8px;
+    box-shadow      : 5px 5px 5px #ebebeb;
+
+
+
+    .infor_card {
+        max-width    : 600;
+        margin       : 'auto';
+        border       : '1px solid #f0f0f0';
+        border-radius: '8px';
+
+
+        .infor {}
+
+        .icon {
+            font-weight: 500;
+            color      : #333333;
+        }
+    }
+}

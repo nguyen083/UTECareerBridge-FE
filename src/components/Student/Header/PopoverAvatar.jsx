@@ -20,12 +20,11 @@ const menuItems = [
     { key: '7', icon: <LogoutOutlined />, label: 'Đăng xuất' },
 ];
 const navigationMap = {
-    '1': 'tổng quan',
+    '1': '/dashboard',
     '2': '/profile',
-    '3': 'công ty của tôi',
-    '4': 'việc làm của tôi',
-    '5': 'thông báo việc làm',
-    '6': 'quản lý tài khoản',
+    '3': '/my-company',
+    '4': '/my-job',
+    '6': '/account-management',
     '7': 'logout' // Đặt một giá trị đặc biệt cho logout
 };
 const CustomizePopover = ({ setIndex, setOpen }) => {
