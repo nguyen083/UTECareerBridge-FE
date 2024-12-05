@@ -9,7 +9,7 @@ import { BsTicketPerforated } from "react-icons/bs";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdManageAccounts } from "react-icons/md";
 import { TiBusinessCard } from "react-icons/ti";
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setInfor } from '../../redux/action/employerSlice.jsx';
 import { useRedux } from '../../utils/useRedux.jsx';
@@ -27,7 +27,7 @@ import {
     ShoppingCartOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu, Avatar, Flex, Badge, Button, Tooltip, } from 'antd';
-import { getInfor, getToken, logOut, removeToken } from '../../services/apiService.jsx';
+import { getInfor, logOut, removeToken } from '../../services/apiService.jsx';
 import { toast } from 'react-toastify';
 import { current, loading, stop } from '../../redux/action/webSlice.jsx';
 import COLOR from '../styles/_variables.jsx';
@@ -43,18 +43,18 @@ const siderStyle = {
     scrollbarColor: 'unset',
 };
 const itemSider = [
-    { key: '1', icon: <BarChartOutlined />, label: 'Dashboard' },
-    { key: '2', icon: <UserOutlined />, label: 'Tài khoản', children: [{ key: '2.1', label: 'Thông tin cá nhân', icon: <MdManageAccounts /> }, { key: '2.2', label: 'Đổi mật khẩu', icon: <RiLockPasswordLine /> }] },
-    { key: '3', icon: <IoBusinessOutline />, label: 'Công ty', children: [{ key: '3.1', label: 'Thông tin công ty', icon: <TiBusinessCard /> }, { key: '3.2', label: 'Giấy chứng nhận', icon: <FaRegNewspaper /> }] },
-    { key: '4', icon: <UploadOutlined />, label: 'Đăng tuyển' },
-    { key: '5', icon: <TeamOutlined />, label: 'Ứng viên' },
-    { key: '6', icon: <LiaBriefcaseSolid />, label: 'Việc làm' },
-    { key: '7', icon: <SolutionOutlined />, label: 'Hồ sơ' },
-    { key: '8', icon: <IoIosPeople />, label: 'Phỏng vấn' },
-    { key: '9', icon: <MdOutlineMessage />, label: 'Tin nhắn' },
-    { key: '10', icon: <BellOutlined />, label: 'Thông báo' },
-    { key: '11', icon: <BsTicketPerforated />, label: 'Gói dịch vụ' },
-    { key: '12', icon: <LogoutOutlined />, label: 'Đăng xuất' },
+    { key: '/employer/dashboard', icon: <BarChartOutlined />, label: 'Dashboard' },
+    { key: '2', icon: <UserOutlined />, label: 'Tài khoản', children: [{ key: '/employer/profile', label: 'Thông tin cá nhân', icon: <MdManageAccounts /> }, { key: '/employer/change-password', label: 'Đổi mật khẩu', icon: <RiLockPasswordLine /> }] },
+    { key: '3', icon: <IoBusinessOutline />, label: 'Công ty', children: [{ key: '/employer/company', label: 'Thông tin công ty', icon: <TiBusinessCard /> }, { key: '/employer/business-certificate', label: 'Giấy chứng nhận', icon: <FaRegNewspaper /> }] },
+    { key: '/employer/post-job', icon: <UploadOutlined />, label: 'Đăng tuyển' },
+    { key: '/employer/applicant', icon: <TeamOutlined />, label: 'Ứng viên' },
+    { key: '/employer/manage-list-jobs', icon: <LiaBriefcaseSolid />, label: 'Việc làm' },
+    { key: '/employer/job/view/:id', icon: <SolutionOutlined />, label: 'Hồ sơ' },
+    { key: '/employer/interview', icon: <IoIosPeople />, label: 'Phỏng vấn' },
+    { key: '/employer/message', icon: <MdOutlineMessage />, label: 'Tin nhắn' },
+    { key: '/employer/notification', icon: <BellOutlined />, label: 'Thông báo' },
+    { key: '/employer/buy-service', icon: <BsTicketPerforated />, label: 'Gói dịch vụ' },
+    { key: 'logout', icon: <LogoutOutlined />, label: 'Đăng xuất' },
 ];
 const itemHeader = [
     { key: '1', label: 'Việc làm' },
@@ -64,31 +64,16 @@ const itemHeader = [
     { key: '5', label: 'Điều khoản' },
     { key: '6', label: 'Về chúng tôi' },
 ];
-const navigationMap = {
-    '1': '/employer',
-    '2.1': '/employer/profile',
-    '2.2': '/employer/change-password',
-    '3.1': '/employer/company',
-    '3.2': '/employer/business-certificate',
-    '4': '/employer/post-job',
-    '5': '/employer/applicant/list-job',
-    '6': '/employer/manage-list-jobs',
-    '7': '#',
-    '8': '#',
-    '9': '#',
-    '10': '#',
-    '11': '/employer/buy-service',
-    '12': 'logout' // Đặt một giá trị đặc biệt cho logout
-};
+
 
 const EmployerLayout = () => {
     const { clearRedux } = useRedux();
     const dispatch = useDispatch();
+    const location = useLocation();
     const [defaultImage, setDefaultImage] = useState(null);
     // const name = useSelector(state => state.employer.firstName) + ' ' + useSelector(state => state.employer.lastName);
     const avatar = useSelector(state => state.employer.companyLogo);
     const user = useSelector(state => state.user);
-    const [index, setIndex] = useState(useSelector(state => state.web.current));
     const navigate = useNavigate();
     const [collapsed, setCollapsed] = useState(false);
 
@@ -113,44 +98,39 @@ const EmployerLayout = () => {
                 window.location.href = '/employer/login';
         }
     }, []);
-    useEffect(() => {
-        const logout = async () => {
-            dispatch(loading());
-            try {
-                const res = await logOut();
-                if (res.status === 'OK') {
-                    removeToken();
-                    toast.success(res.message);
-                    navigate('login');
-                    clearRedux();
+    const logout = async () => {
+        dispatch(loading());
+        try {
+            const res = await logOut();
+            if (res.status === 'OK') {
+                removeToken();
+                toast.success(res.message);
+                navigate('login');
+                clearRedux();
 
-                } else {
-                    toast.error(res.message);
-                }
-            } catch (error) {
-                console.log(error);
-            } finally {
-                dispatch(stop());
+            } else {
+                toast.error(res.message);
             }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            dispatch(stop());
         }
-        const navigateSideBar = async (e) => {
-            const path = navigationMap[e];
-            if (path) {
-                if (path === 'logout') {
-                    await logout();
-                } else {
-                    navigate(path);
-                }
-            }
-        };
-        navigateSideBar(index);
-    }, [index]);
+    }
+
     useEffect(() => {
         setDefaultImage("https://res.cloudinary.com/utejobhub/image/upload/v1723888103/rg2do6iommv6wp840ixr.png")
     }, [])
     if (localStorage.getItem('accessToken') === null) {
         return null;
     }
+    const handleMenu = (key) => {
+        if (key.key === 'logout') {
+            logout();
+        } else {
+            navigate(key.key);
+        }
+    };
     return (
         <Layout hasSider>
             <Sider onBreakpoint={(broken) => {
@@ -160,10 +140,9 @@ const EmployerLayout = () => {
                     <img src={defaultImage} alt="logo"
                         style={{ width: "80%", height: "80%", objectFit: "contain" }} />
                 </div>
-                <Menu onClick={(e) => {
-                    dispatch(current(e.key))
-                    setIndex(e.key)
-                }} selectedKeys={[index]} theme='light' style={{ fontSize: "1rem" }} mode="inline" items={itemSider} background />
+                <Menu
+                    onSelect={(key) => handleMenu(key)}
+                    selectedKeys={[location.pathname]} theme='light' style={{ fontSize: "1rem" }} mode="inline" items={itemSider} background />
             </Sider>
             <Layout className='site-layout'>
                 <Header
@@ -187,7 +166,7 @@ const EmployerLayout = () => {
                         <Flex gap={20} align='center'>
                             <Tooltip title='Giỏ hàng' placement='bottom' color={COLOR.bgTooltipColor}>
                                 <Badge count={0}>
-                                    <Button className='btn-header rounded-circle btn-bell' size='large' type="text">
+                                    <Button onClick={() => navigate('/employer/cart')} className='btn-header rounded-circle btn-bell' size='large' type="text">
                                         <ShoppingCartOutlined />
                                     </Button>
                                 </Badge>

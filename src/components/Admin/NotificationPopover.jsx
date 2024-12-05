@@ -3,8 +3,8 @@ import { Badge, Popover, List, Typography, Button, Space, Tag, Spin, notificatio
 import { BellOutlined, CheckCircleOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { initializeNotifications, setupMessageListener, markAllNotificationsAsRead, markNotificationAsRead } from '../../services/firebaseService';
-import { getAllNotificationById, getToken } from '../../services/apiService';
-import { setNotificationCount } from '../../redux/action/notificationSlice'; 
+import { getAllNotificationById } from '../../services/apiService';
+import { setNotificationCount } from '../../redux/action/notificationSlice';
 
 const { Text, Paragraph } = Typography;
 
@@ -13,7 +13,7 @@ const NotificationPopover = () => {
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
-  
+
   const dispatch = useDispatch();
   const userId = useSelector(state => state.auth?.user?.id) || 1;
   const notificationCount = useSelector(state => state.notification?.unread || 0);
@@ -26,7 +26,6 @@ const NotificationPopover = () => {
       if (!userId) return;
 
       try {
-        getToken();
         const response = await getAllNotificationById(userId);
         const unreadCount = response.filter(n => !n.isRead).length;
         dispatch(setNotificationCount(unreadCount));
@@ -50,7 +49,7 @@ const NotificationPopover = () => {
 
   const handleNewMessage = useCallback((payload) => {
     playNotificationSound();
-    
+
     const newNotification = {
       id: Date.now(),
       title: payload.notification.title,
@@ -59,12 +58,12 @@ const NotificationPopover = () => {
       isRead: false,
       url: payload.data?.url
     };
-    
-    setNotifications(prev => [newNotification, ...prev]);
-    
-    dispatch(setNotificationCount(notificationCount + 1)); 
 
-    
+    setNotifications(prev => [newNotification, ...prev]);
+
+    dispatch(setNotificationCount(notificationCount + 1));
+
+
     notification.info({
       message: payload.notification.title,
       description: payload.notification.body,
@@ -113,11 +112,10 @@ const NotificationPopover = () => {
       if (!open || !userId) return;
 
       try {
-        getToken();
         setLoading(true);
         const response = await getAllNotificationById(userId);
         setNotifications(response);
-        
+
         const unreadCount = response.filter(n => !n.isRead).length;
         dispatch(setNotificationCount(unreadCount));
 
@@ -138,15 +136,15 @@ const NotificationPopover = () => {
   const handleReadNotification = async (notificationId) => {
     try {
       await markNotificationAsRead(notificationId);
-      
-      setNotifications(prev => 
-        prev.map(notif => 
+
+      setNotifications(prev =>
+        prev.map(notif =>
           notif.id === notificationId ? { ...notif, isRead: true } : notif
         )
       );
 
       const newUnreadCount = notifications.filter(n => !n.isRead && n.id !== notificationId).length;
-      dispatch(setNotificationCount(newUnreadCount)); 
+      dispatch(setNotificationCount(newUnreadCount));
 
     } catch (error) {
       console.error('Error marking notification as read:', error);
@@ -175,8 +173,8 @@ const NotificationPopover = () => {
     <div className="w-80 max-w-sm">
       <div className="flex justify-between items-center mb-4 px-4 pt-2">
         <Text strong>Thông báo</Text>
-        <Button 
-          type="link" 
+        <Button
+          type="link"
           onClick={handleMarkAllRead}
           disabled={!notifications.some(n => !n.isRead)}
           className="text-sm"

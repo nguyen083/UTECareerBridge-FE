@@ -1,7 +1,7 @@
 import { Button, Flex, Form, Input, Modal } from 'antd';
 import React from 'react';
 import './ModalFormLogin.scss';
-import { getToken, setToken, studentLogin } from '../../services/apiService';
+import { setToken, studentLogin } from '../../services/apiService';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -49,7 +49,6 @@ const ModalFormLogin = (props) => {
             const userRoleFromAPI = res.data.roles.roleName;
             toast.success(res.message);
             setToken(res.data.token, res.data.refresh_token);
-            getToken();
 
             if (userRoleFromAPI === 'student') {
                 navigate('');

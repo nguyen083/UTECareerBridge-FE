@@ -209,6 +209,7 @@ const PersonalLayout = () => {
             cancelText="Hủy"
             okText="Hoàn tất"
         >
+
             <Form initialValues={{ resumeId: resumeIdActive }} form={formResume} >
                 <Form.Item name="resumeId">
                     <Radio.Group className="w-100">

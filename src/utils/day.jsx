@@ -7,22 +7,23 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);
 
 // Hàm tính khoảng cách từ ngày nhập đến hôm nay
-const tinhKhoangCach = (dateInput) => {
-    const today = dayjs(); // Ngày hiện tại
-    const inputDate = dayjs(dateInput, 'DD/MM/YYYY'); // Ngày nhập vào với định dạng dd/mm/yyyy
 
-    const daysDifference = today.diff(inputDate, 'day'); // Tính khoảng cách theo ngày
-
-    return daysDifference;
-};
 
 const checkThoiHan = ({ dateInput }) => {
+    const tinhKhoangCach = (dateInput) => {
+        const today = dayjs(); // Ngày hiện tại
+        const inputDate = dayjs(dateInput, 'DD/MM/YYYY'); // Ngày nhập vào với định dạng dd/mm/yyyy
+
+        const daysDifference = today.diff(inputDate, 'day'); // Tính khoảng cách theo ngày
+
+        return daysDifference;
+    };
     const daysDifference = tinhKhoangCach(dateInput);
-    if (daysDifference < 0) {
+    if (daysDifference >= 0) {
         return <Tag icon={<CloseCircleOutlined />} color="error"> Hết hạn</Tag>
     }
     return <Tag icon={<ClockCircleOutlined />} color="success">Còn hiệu lực</Tag>
 }
 
 
-export { tinhKhoangCach, checkThoiHan };
+export { checkThoiHan };

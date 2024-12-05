@@ -127,6 +127,9 @@ const App = () => {
             fontSizeSM: 14,
             fontSizeIcon: 14
             // fontSize: 12,
+          },
+          Divider: {
+            colorSplit: COLOR.dividerColor,
           }
         }
       }}>
@@ -136,8 +139,8 @@ const App = () => {
             <Route index element={<Navigate to={"/home"} replace />} />
             <Route path='/home' element={<HomePage />} />
             <Route path='/event' element={<EventPage />}>
-            </Route>
-            <Route path='/event-detail' element={<EventDetail />} />
+
+            </Route><Route path='/event-detail' element={<EventDetail />} />
             <Route element={<ViewLayout width='90%' />}>
               <Route path='/search' element={<JobSearchPage />} />
             </Route>
@@ -149,7 +152,7 @@ const App = () => {
               <Route path='/my-job' element={<MyJobPage />} />
               <Route path='/account-management' element={<AccountManagement />} />
             </Route>
-            <Route element={<ViewLayout width='90%' />}>
+            <Route element={<ViewLayout width='100%' />}>
               <Route path='/job/:id' element={<ViewJob />} />
               <Route path="/company/:id" element={<InforCompany />} />
               <Route path='/resume/view/:id' element={<ViewCV />} />

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, Typography, Table, Modal } from 'antd';
+import { Button, Divider, Typography, Table, Modal, message } from 'antd';
 import './orderPage.scss';
 import BoxContainer from '../../Generate/BoxContainer';
 import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { getCartByEmployer, getAllCoupon } from '../../../services/apiService';
+import { getCartByEmployer, getAllCoupon, removePackageFromCart } from '../../../services/apiService';
 import VoucherModal from './voucherModal';
 import VoucherCard from '../../Generate/VoucherCard';
 const { Title, Text } = Typography;
@@ -42,7 +42,14 @@ const OrderPage = () => {
   };
 
   const handleDeleteItem = (itemId) => {
-    setCartItems(cartItems.filter(item => item.cartItemId !== itemId));
+    removePackageFromCart(itemId).then((res) => {
+      if (res.status === 'OK') {
+        getItemsInCart();
+        message.success(res.message);
+        // setCartItems(cartItems.filter(item => item.cartItemId !== itemId));
+
+      }
+    });
   };
 
 

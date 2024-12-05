@@ -1,10 +1,11 @@
 import BoxContainer from "../../../Generate/BoxContainer";
 import React, { useEffect, useState } from 'react';
 import { Table, Flex, Typography, Tabs } from 'antd';
-import { getApplyJobByStudent } from '../../../../services/apiService';
+import { getApplyJobByStudent, getJobSaved } from '../../../../services/apiService';
 import Status from "../../../../constant/status";
 import { checkThoiHan } from "../../../../utils/day";
 import { Link } from "react-router-dom";
+import { EyeOutlined } from "@ant-design/icons";
 const { Text } = Typography;
 
 
@@ -58,7 +59,7 @@ const AppliedJob = () => {
             title: 'CV',
             dataIndex: 'resumeFile',
             key: 'resumeFile',
-            render: (text) => <a href={text} target="_blank" rel="noopener noreferrer">xem</a>, // Tạo liên kết tải file
+            render: (text) => <a href={text} target="_blank" rel="noopener noreferrer"><EyeOutlined shape="round" /></a>, // Tạo liên kết tải file
             align: 'center',
             width: "9%"
         },
@@ -96,20 +97,26 @@ const SavedJob = () => {
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
-    const [totalApplicants, setTotalApplicants] = useState(0);
+    const [totalElements, setTotalElements] = useState(0);
 
     const fetchData = () => {
         setLoading(true);
-        getApplyJobByStudent().then((response) => {
-            setData(response.data.content);
-            setTotalApplicants(response.data.totalElements);
-        })
-            .catch((error) => {
-                console.error('Error fetching data:', error);
+        getJobSaved().then((response) => {
+            setData(response.data.content.map(item =>
+            ({
+                companyId: item.employerId,
+                companyName: item.employerResponse.companyName,
+                jobId: item.jobId,
+                jobTitle: item.jobTitle,
+                jobDeadline: item.jobDeadline
             })
-            .finally(() => {
-                setLoading(false);
-            });
+            ));
+            setTotalElements(response.data.totalElements);
+        }).catch((error) => {
+            console.error('Error fetching data:', error);
+        }).finally(() => {
+            setLoading(false);
+        });
     }
     useEffect(() => {
         fetchData();
@@ -123,7 +130,7 @@ const SavedJob = () => {
                 {text}
             </Text></Link>,
             ellipsis: true,
-            width: "44%"
+            width: "39%"
         },
         {
             title: 'Công việc',
@@ -140,7 +147,7 @@ const SavedJob = () => {
             title: 'Trạng thái',
             dataIndex: 'jobDeadline',
             key: 'jobDeadline',
-            render: (date) => <checkThoiHan dateInput={date} />,
+            render: (text) => checkThoiHan({ dateInput: text }),
             align: 'center',
             width: "13%"
         },
@@ -149,7 +156,21 @@ const SavedJob = () => {
         setCurrentPage(page);
         setPageSize(pageSize);
     };
-    return
+    return <Table
+        dataSource={data}
+        columns={columns}
+        rowKey="applicationId"
+        loading={loading}
+        pagination={{
+            align: "end",
+            current: currentPage,
+            pageSize: pageSize,
+            total: totalElements,
+            onChange: handlePageChange,
+            showSizeChanger: true,
+        }} // Tắt phân trang mặc định của Table
+    />
+
 }
 
 const MyJobPage = () => {

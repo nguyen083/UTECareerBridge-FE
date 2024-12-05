@@ -1,58 +1,77 @@
-.filter{
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 10px;
-    background-color: #f9f9f9;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+@import "../../styles/variables";
+
+.filter {
+  border          : 1px solid #e0e0e0;
+  border-radius   : 5px;
+  padding         : 10px;
+  margin-bottom   : 10px;
+  background-color: #f9f9f9;
+  display         : flex;
+  justify-content : space-between;
+  align-items     : center;
 }
+
 .sorting {
-    display: flex;
+  display      : flex;
+  align-items  : center;
+  margin-bottom: 24px;
+
+  .title {
+    font-weight : 600;
+    font-size   : 1.1rem;
+    margin-right: 16px;
+  }
+
+  .sort-item {
+    display    : flex;
     align-items: center;
-    margin-bottom: 24px;
-  
-    .title {
-      font-weight: 600;
-      font-size: 1.1rem;
-      margin-right: 16px;
+
+    .div-radio {
+      border-radius: 5px;
+      border       : 1px solid #e0e0e0;
+
+      .radio {
+        border-radius: 5px;
+        border       : 0
+      }
+
+      .ant-radio-button-wrapper-checked {
+        background-color: $card-color;
+      }
     }
-  
-    .sort-item {
-      display: flex;
-      align-items: center;
-  
-      .all,
-      .salary,
-      .created,
-      .oldest {
-        padding: 8px 16px;
-        border: 1px solid #e0e0e0;
-        border-radius: 8px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-  
-        &:hover {
-          background-color: #f0f4f9;
-        }
-  
-        &.active {
-          background-color: #0142b9;
-          color: white;
-        }
+
+
+
+    .all,
+    .salary,
+    .created,
+    .oldest {
+      padding      : 8px 16px;
+      border       : 1px solid #e0e0e0;
+      border-radius: 8px;
+      cursor       : pointer;
+      transition   : background-color 0.3s;
+
+      &:hover {
+        background-color: #f0f4f9;
       }
-  
-      .all {
-        margin-right: 12px;
+
+      &.active {
+        background-color: #0142b9;
+        color           : white;
       }
-  
-      .salary {
-        margin-right: 12px;
-      }
-  
-      .created {
-        margin-right: 12px;
-      }
+    }
+
+    .all {
+      margin-right: 12px;
+    }
+
+    .salary {
+      margin-right: 12px;
+    }
+
+    .created {
+      margin-right: 12px;
     }
   }
+}

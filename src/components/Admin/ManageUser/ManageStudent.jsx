@@ -3,7 +3,7 @@ import { Tabs, Modal, Form, Input, DatePicker, message, Select, Space, Button } 
 import { UserOutlined, LockOutlined, StopOutlined } from '@ant-design/icons';
 import TableListUser from './TableListUser';
 import BoxContainer from '../../Generate/BoxContainer';
-import { getUserByUserId, getToken, updateUser } from '../../../services/apiService';
+import { getUserByUserId, updateUser } from '../../../services/apiService';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { toast } from 'react-toastify';
@@ -55,7 +55,6 @@ const ManageListUser = () => {
     const handleEdit = async (record) => {
         try {
             console.log('Record:', record);
-            getToken();
             setLoading(true);
             const response = await getUserByUserId(record.key);
             console.log('User details:', response.data);

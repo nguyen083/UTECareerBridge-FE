@@ -1,7 +1,7 @@
 import './LoginPage.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { employerLogin, getToken, setToken } from '../../services/apiService';
+import { employerLogin, setToken } from '../../services/apiService';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { Button, Flex, Form, Input, Typography } from 'antd';
@@ -41,7 +41,6 @@ const LoginPage = () => {
             if (res.status === 'OK') {
                 toast.success(res.message);
                 setToken(res.data.token, res.data.refreshToken);
-                getToken();
                 dispatch(setInfor({ userId: res.data.id, role: res.data.roles.roleName, email: res.data.username }));
                 navigate('/employer');
 

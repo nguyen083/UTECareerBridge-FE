@@ -54,41 +54,41 @@ const FeaturedJobs = () => {
   return (
     <section className="featured-jobs">
       <div className="carousel-customize">
-      <Carousel
-        responsive={responsive}
-        showDots={true}
-        infinite={false}
-        autoPlay={isMobile}
-        autoPlaySpeed={3000}
-        keyBoardControl
-        containerClass="carousel-container"
-        dotListClass="custom-dot-list-style"
-        itemClass="carousel-item-spacing"
-      >
-        {Array.from({ length: Math.ceil(jobs.length / 9) }, (_, i) => (
-          <div key={i} className="carousel-grid">
-            {jobs.slice(i * 9, i * 9 + 9).map((job, index) => (
-              <Card
-                key={index}
-                bordered={false}
-                className="featured-jobs__item"
-                hoverable
-              >
-                <div className="card-body">
-                  <div className="card-logo">
-                    <img src={job.logo} alt={job.company} />
+        <Carousel
+          responsive={responsive}
+          showDots={true}
+          infinite={false}
+          autoPlay={isMobile}
+          autoPlaySpeed={3000}
+          keyBoardControl
+          containerClass="carousel-container"
+          dotListClass="custom-dot-list-style"
+          itemClass="carousel-item-spacing"
+        >
+          {Array.from({ length: Math.ceil(jobs.length / 9) }, (_, i) => (
+            <div key={i} className="carousel-grid">
+              {jobs.slice(i * 9, i * 9 + 9).map((job, index) => (
+                <Card
+                  key={index}
+                  bordered={false}
+                  className="featured-jobs__item border-item"
+                  hoverable
+                >
+                  <div className="card-body">
+                    <div className="card-logo">
+                      <img src={job.logo} alt={job.company} />
+                    </div>
+                    <div className="card-details">
+                      <p>{job.title}</p>
+                      <p>{job.company}</p>
+                      <p>{job.location}</p>
+                    </div>
                   </div>
-                  <div className="card-details">
-                    <p>{job.title}</p>
-                    <p>{job.company}</p>
-                    <p>{job.location}</p>
-                  </div>
-                </div>
-              </Card>
-            ))}
-          </div>
-        ))}
-      </Carousel>
+                </Card>
+              ))}
+            </div>
+          ))}
+        </Carousel>
       </div>
     </section>
   );

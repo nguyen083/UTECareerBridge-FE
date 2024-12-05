@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, List, Typography, Divider, Pagination, Tag } from 'antd';
-import { getAllCoupon, getToken } from '../../../services/apiService';
+import { getAllCoupon } from '../../../services/apiService';
 import './voucherModal.scss';
 const { Text } = Typography;
 
@@ -19,7 +19,6 @@ const VoucherModal = ({ visible, onClose, onSelectVoucher }) => {
   }, [visible, currentPage]);
 
   const fetchCoupons = async (page = 0, limit = 10) => {
-    getToken();
     setLoading(true);
     setError(null);
     try {

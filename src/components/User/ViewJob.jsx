@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Row, Col, Card, Button, Space, Image, Typography, Flex, Carousel, Divider, Descriptions, Spin } from 'antd';
+import { Row, Col, Card, Button, Space, Image, Typography, Flex, Carousel, Divider, Descriptions, Spin, message } from 'antd';
 import { EnvironmentOutlined, TeamOutlined, ClockCircleOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { FaCalendarAlt, FaInbox, FaUserTie, FaCubes, FaReact, FaUsers, } from "react-icons/fa";
-import { getAllCompany, getJobById, getSimilarJob } from '../../services/apiService';
+import { checkSaveJob, getAllCompany, getJobById, getSimilarJob, saveJob, unSaveJob } from '../../services/apiService';
 import BoxContainer from '../Generate/BoxContainer';
 import HtmlContent from '../Generate/HtmlContent';
 import BenefitComponent from '../Generate/BenefitComponent';
@@ -16,6 +16,7 @@ import { useSelector } from 'react-redux';
 const { Text, Link } = Typography;
 const ViewJob = () => {
     const infor = useSelector(state => state.student);
+    const user = useSelector(state => state.user);
     const location = useLocation();
     const ref = useRef();
     const [apply, setApply] = useState(false);
@@ -78,6 +79,16 @@ const ViewJob = () => {
                 }
             });
         }
+
+        if (user.role === 'student') {
+            checkSaveJob(id).then((res) => {
+                if (res.status === 'OK' && res.data !== null) {
+                    setIsSaved(res.data);
+                }
+            });
+        }
+
+
     }, [id]);
     useEffect(() => {
         willLoveJob.length > 0 && console.log("willLoveJob", willLoveJob);
@@ -135,8 +146,28 @@ const ViewJob = () => {
     }, [job]);
 
     const handleSave = () => {
-        setIsSaved(!isSaved);
-    };
+        if (localStorage.getItem('accessToken')) {
+            if (user.role === 'student') {
+                if (isSaved) {
+                    unSaveJob(id).then((res) => {
+                        if (res.status === 'OK') {
+                            message.success(res.message);
+                            setIsSaved(false);
+                        }
+                    });
+                } else {
+                    saveJob(id).then((res) => {
+                        if (res.status === 'OK') {
+                            message.success(res.message);
+                            setIsSaved(true);
+                        }
+                    });
+                }
+            };
+        } else {
+            navigate('/login');
+        }
+    }
     const handleToCompany = (id) => {
         navigate('/company/' + id);
     }

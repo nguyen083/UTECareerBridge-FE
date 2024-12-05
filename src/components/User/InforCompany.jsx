@@ -1,12 +1,14 @@
 import BoxContainer from "../Generate/BoxContainer";
 import React, { useEffect, useState } from 'react';
-import { Flex, Card, Button, Typography, Image, Anchor, Descriptions, Spin } from 'antd';
+import { Flex, Card, Button, Typography, Image, Anchor, Descriptions, Spin, message } from 'antd';
 import HtmlContent from "../Generate/HtmlContent";
 import { useParams } from "react-router-dom";
-import { getCompanyById } from "../../services/apiService";
+import { checkFollowCompany, followCompany, getCompanyById, unfollowCompany } from "../../services/apiService";
 import YouTubeVideo from "../Generate/YouTubeVideo";
 import BenefitCard from "../Generate/BenefitComponent";
 import JobList from "../Generate/JobList";
+import { CheckCircleOutlined, CheckOutlined } from "@ant-design/icons";
+import { useSelector } from "react-redux";
 
 const { Title, Text, Link } = Typography;
 
@@ -15,8 +17,10 @@ const isEmpty = (array) => {
 };
 
 const InforCompany = () => {
+    const user = useSelector(state => state.user);
     const [company, setCompany] = useState({});
     const [loading, setLoading] = useState(true);
+    const [isFollow, setIsFollow] = useState(false);
     const { id } = useParams();
     const items = [
         {
@@ -60,39 +64,79 @@ const InforCompany = () => {
         },
 
     ];
-    useEffect(() => {
-        getCompanyById(id).then(res => {
-            if (res.status = 'OK') {
-                const company = res.data;
-                setCompany(
-                    {
-                        companyName: company.companyName,
-                        companyLogo: company.companyLogo,
-                        backgroundImage: company.backgroundImage,
-                        videoIntroduction: company.videoIntroduction,
-                        companySize: company.companySize,
-                        industry: company.industry.industryName,
-                        benefitDetails: company.benefitDetails,
-                        companyWebsite: company.companyWebsite,
-                        companyDescription: company.companyDescription,
-                        companyAddress: company.companyAddress,
-                        phoneNumber: company.phoneNumber,
-                        gender: company.gender,
-                        companyEmail: company.companyEmail,
-                        firstName: company.firstName,
-                        lastName: company.lastName,
-                    }
-                )
-                console.log(company);
-                setLoading(false);
+    const fetchData = () => {
+        try {
+            getCompanyById(id).then(res => {
+                if (res.status = 'OK') {
+                    const company = res.data;
+                    setCompany(
+                        {
+                            companyName: company.companyName,
+                            companyLogo: company.companyLogo,
+                            backgroundImage: company.backgroundImage,
+                            videoIntroduction: company.videoIntroduction,
+                            companySize: company.companySize,
+                            industry: company.industry.industryName,
+                            benefitDetails: company.benefitDetails,
+                            companyWebsite: company.companyWebsite,
+                            companyDescription: company.companyDescription,
+                            companyAddress: company.companyAddress,
+                            phoneNumber: company.phoneNumber,
+                            gender: company.gender,
+                            companyEmail: company.companyEmail,
+                            firstName: company.firstName,
+                            lastName: company.lastName,
+                        }
+                    )
+                }
+            });
+        } catch (error) {
+            message.error(error.message);
+        } finally {
+            setLoading(false);
+        }
+        if (localStorage.getItem('accessToken')) {
+            if (user.role === 'student') {
+                checkFollowCompany(id).then(res => {
+                    setIsFollow(res.data);
+                });
             }
-        });
-    }, []);
+        }
+    }
+    useEffect(() => {
+        fetchData();
+    }, [id]);
     const handleFollow = () => {
-        console.log('follow');
+        try {
+            if (localStorage.getItem('accessToken')) {
+                if (user.role === 'student') {
+                    followCompany(id).then(res => {
+                        if (res.status = 'OK') {
+                            message.success(res.message);
+                            fetchData();
+                            setIsFollow(true);
+                        }
+                    });
+                }
+            } else {
+                navigate('/login');
+            }
+        } catch (error) {
+            message.error(error.message);
+        }
     }
     const handleUnfollow = () => {
-        console.log('unfollow');
+        try {
+            unfollowCompany(id).then(res => {
+                if (res.status = 'OK') {
+                    message.success(res.message);
+                    fetchData();
+                    setIsFollow(false);
+                }
+            });
+        } catch (error) {
+            message.error(error.message);
+        }
     }
     return (
         <>
@@ -133,10 +177,10 @@ const InforCompany = () => {
                                     </Title>
                                     <Text>3 lượt theo dõi</Text>
                                 </div>
-                                <Button onClick={handleFollow} size="large" type="primary">
+                                <Button className="p-4" onClick={handleFollow} size="large" type="primary" hidden={isFollow}>
                                     Theo dõi
                                 </Button>
-                                <Button onClick={handleUnfollow} size="large" type="primary">Đang theo dõi</Button>
+                                <Button className="p-4" onClick={handleUnfollow} size="large" type="default" hidden={!isFollow}> <CheckOutlined /> Đang theo dõi</Button>
                             </Flex>
                         </Flex>
                         <Anchor

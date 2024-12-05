@@ -1,76 +1,81 @@
+@import "../../../components/styles/_variables.scss";
+
 .featured-jobs {
   margin-bottom: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+  max-width    : 1200px;
+  margin       : 0 auto;
 
   h2 {
-    max-width: 1180px;
-    margin: 0 auto;
-    font-size: 1.5rem;
-    font-weight: 600;
+    max-width    : 1180px;
+    margin       : 0 auto;
+    font-size    : 1.5rem;
+    font-weight  : 600;
     margin-bottom: 10px;
-    color: #333;
+    color        : #333;
   }
 
   .carousel-container {
-    position: relative;
-    display: flex;
+    position   : relative;
+    display    : flex;
     align-items: center;
-    border: 1 px solid red;
-    max-width: 1200px;
-    margin: 0 auto;
+    border     : 1 px solid red;
+    max-width  : 1200px;
+    margin     : 0 auto;
   }
 
   .carousel-grid {
-    display: grid;
+    display              : grid;
     grid-template-columns: repeat(3, 1fr); // 3 cột
-    grid-template-rows: repeat(3, auto);  // 3 hàng
-    gap: 15px; 
+    grid-template-rows   : repeat(3, auto); // 3 hàng
+    gap                  : 15px;
   }
 
   .featured-jobs__item {
-    height: 160px;
-    margin: 0;
+    height    : 160px;
+    margin    : 0;
     transition: all 0.3s ease;
+
     @media (max-width: 768px) {
       height: 200px;
     }
 
     .card-body {
-      display: flex;
-      flex: 1;
-      flex-direction: row;
+      display        : flex;
+      flex           : 1;
+      flex-direction : row;
       justify-content: space-between;
-      cursor: pointer;
-      align-items: center;
-      transition: all 0.3s ease;
+      cursor         : pointer;
+      align-items    : center;
+      transition     : all 0.3s ease;
+
       .card-logo {
         flex: 0 0 60px;
+
         img {
-          width: 78px;
+          width : 78px;
           height: 78px;
         }
       }
 
       .card-details {
         padding-left: 10px;
-        flex: 1;
+        flex        : 1;
 
         p {
-          white-space: nowrap;
-          overflow: hidden;
+          white-space  : nowrap;
+          overflow     : hidden;
           text-overflow: ellipsis;
-          max-width: 100%;
+          max-width    : 100%;
         }
       }
     }
   }
 
   .custom-dot-list-style {
-    display: flex;
+    display        : flex;
     justify-content: center;
-    align-items: center;
-    margin-top: 20px;
+    align-items    : center;
+    margin-top     : 20px;
 
     @media (max-width: 464px) {
       display: none;

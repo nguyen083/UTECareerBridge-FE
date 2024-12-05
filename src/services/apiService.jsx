@@ -1,7 +1,7 @@
 import axios from "../utils/axiosCustomize.jsx";
 
 
-let config = {};
+
 const setToken = (accessToken, refreshToken) => {
   localStorage.setItem('accessToken', accessToken);
   document.cookie = `refreshToken=${refreshToken}`;
@@ -15,17 +15,10 @@ const objectToFormData = (obj) => {
   }
   return formData;
 };
-const getToken = () => {
-  config = {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-    }
-  };
-};
+
 
 const removeToken = () => {
   localStorage.removeItem('accessToken');
-  config = {};
   document.cookie = 'refreshToken=';
 }
 
@@ -40,8 +33,8 @@ const studentRegister = async (values) => {
   return axios.post('users/register', values);
 };
 const getInfor = async () => {
-  getToken();
-  return axios.get('employers/company-general-info', config);
+
+  return axios.get('employers/company-general-info');
 }
 const userResetPassword = async (token, password) => {
   return axios.post('auth/reset-password', { token, password });
@@ -58,24 +51,24 @@ const getAllBenefit = async () => {
   return axios.get('benefits/get-all-benefits');
 }
 const logOut = async () => {
-  getToken();
-  return axios.post('auth/logout', {}, config);
+
+  return axios.post('auth/logout', {});
 }
 
 const updateEmployerProfile = async (values) => {
-  getToken();
-  return axios.post('employers/update-profile', values, config);
+
+  return axios.post('employers/update-profile', values);
 }
 const updateEmployerCompanyProfile = async (values) => {
-  getToken();
+
   const formData = objectToFormData(values);
-  return axios.post('employers/update-company-profile', formData, config);
+  return axios.post('employers/update-company-profile', formData);
 }
 
 const updateBusinessCertificate = async (values) => {
-  getToken();
+
   const formData = objectToFormData(values);
-  return axios.post('employers/legal-info', formData, config);
+  return axios.post('employers/legal-info', formData);
 }
 const getAllJobCategories = async () => {
   return axios.get('job-categories/get-all-job-categories');
@@ -87,31 +80,31 @@ const getAllSkills = async () => {
   return axios.get('skills/get-all-skills');
 };
 const postJob = async (values) => {
-  getToken();
-  return axios.post('jobs/job-posting/new-job', values, config);
+
+  return axios.post('jobs/job-posting/new-job', values);
 };
 const getAllJobs = async (values) => {
-  getToken();
+
   const formData = objectToFormData(values);
-  return axios.get('jobs/employers/all-jobs', formData, config);
+  return axios.get('jobs/employers/all-jobs', formData);
 };
 const getJobsByStatus = async (values) => {
-  getToken();
+
   const params = new URLSearchParams(values).toString();
-  return axios.get(`jobs/get-jobs-by-status?${params}`, config);
+  return axios.get(`jobs/get-jobs-by-status?${params}`);
 };
 const putHideJob = async (id, status) => {
-  getToken();
+
   const formData = objectToFormData({ jobStatus: status });
-  return axios.put(`jobs/employer/job-posting/hide/${id}`, formData, config);
+  return axios.put(`jobs/employer/job-posting/hide/${id}`, formData);
 }
 const deleteJob = async (id) => {
-  getToken();
-  return axios.delete(`jobs/employer/job-posting/delete/${id}`, config);
+
+  return axios.delete(`jobs/employer/job-posting/delete/${id}`);
 }
 const putJob = async (id, values) => {
-  getToken();
-  return axios.put(`jobs/employer/job-posting/${id}`, values, config);
+
+  return axios.put(`jobs/employer/job-posting/${id}`, values);
 }
 const getJobById = async (id, status = 'ACTIVE') => {
   status = status ?? 'ACTIVE';
@@ -122,180 +115,204 @@ const getSimilarJob = async (id) => {
 }
 
 const getAllUsers = async (values) => {
-  getToken();
+
   const params = new URLSearchParams(values).toString();
-  return axios.get(`users/get-all-users?${params}`, config);
+  return axios.get(`users/get-all-users?${params}`);
 };
 
 const updateUser = async (id, values) => {
-  getToken();
-  return axios.put(`users/update-user/${id}`, values, config);
+
+  return axios.put(`users/update-user/${id}`, values);
 }
 
 const getCompanyById = async (id) => {
   return axios.get(`employers/get-company?id=${id}`);
 }
 const getAllNotificationById = async (id) => {
-  getToken();
-  return axios.get(`notifications/user/${id}`, config);
+
+  return axios.get(`notifications/user/${id}`);
 }
 const getUserByUserId = async (id) => {
-  getToken();
-  return axios.get(`users/get-user/${id}`, config);
+
+  return axios.get(`users/get-user/${id}`);
 }
 const exportUserToPdf = async (queryParams) => {
-  getToken();
+
   return axios.get('export/users/pdf', {
     params: queryParams,
     responseType: 'blob',
     headers: {
       'Accept': 'application/pdf'
     }
-  }, config);
+  });
 };
 const getAllJobEmployer = (id, filter) => {
   const params = new URLSearchParams(filter).toString();
   return axios.get(`jobs/employers/${id}/all-jobs?${params}`);
 }
 const getAllCV = async () => {
-  getToken();
-  return axios.get(`students/resumes`, config);
+
+  return axios.get(`students/resumes`);
 }
 const applyJob = async (values) => {
-  getToken();
+
   const formData = objectToFormData(values);
-  return axios.post('students/jobs/apply', formData, config);
+  return axios.post('students/jobs/apply', formData);
 }
 const getStatisticsByJobCategory = async (values) => {
-  getToken();
+
   const params = new URLSearchParams(values).toString();
-  return axios.get(`admin/statistics/category-job?${params}`, config);
+  return axios.get(`admin/statistics/category-job?${params}`);
 }
 const getRevenueByMonth = async (values) => {
-  getToken();
+
   const params = new URLSearchParams(values).toString();
-  return axios.get(`admin/statistics/revenue-by-month?${params}`, config);
+  return axios.get(`admin/statistics/revenue-by-month?${params}`);
 }
 const getStatisticUser = async () => {
-  getToken();
-  return axios.get('admin/statistics-user', config);
+
+  return axios.get('admin/statistics-user');
 }
 const getStatisticPackage = async () => {
-  getToken();
-  return axios.get('admin/statistics-package', config);
+
+  return axios.get('admin/statistics-package');
 }
 const getAllPackages = async () => {
-  return axios.get('packages/get-all', config);
+  return axios.get('packages/get-all');
 }
 const addPackageToCart = async (values) => {
-  getToken();
+
   const { packageId, quantity } = values;
-  return axios.post(`carts/add-to-cart?packageId=${packageId}&quantity=${quantity}`, {}, config);
+  return axios.post(`carts/add-to-cart?packageId=${packageId}&quantity=${quantity}`, {});
 };
 const getCartByEmployer = async () => {
-  getToken();
-  return axios.get('carts/get-cart', config);
+
+  return axios.get('carts/get-cart');
 }
 const removePackageFromCart = async (packageId) => {
-  getToken();
-  return axios.post(`carts/remove?packageId=${packageId}`, config);
+
+  return axios.post(`carts/remove?packageId=${packageId}`);
 }
 const getAllCoupon = async (values) => {
   const queryString = new URLSearchParams(values).toString();
   return axios.get(`coupons/get-all?${queryString}`);
 }
 const updateInforStudent = async (values) => {
-  getToken();
-  return axios.put('students/update-infor', values, config);
+
+  return axios.put('students/update-infor', values);
 }
 const getInforStudent = async () => {
-  getToken();
-  return axios.get('students/infor', config);
+
+  return axios.get('students/infor');
 }
 const uploadCV = async (values) => {
-  getToken();
-  return axios.post('students/upload/resumes', values, config);
+
+  return axios.post('students/upload/resumes', values);
 }
 const getSkillStudent = async () => {
-  getToken();
-  return axios.get('students/skills', config);
+
+  return axios.get('students/skills');
 }
 const addSkillStudent = async (values) => {
-  getToken();
+
   const formData = objectToFormData(values);
-  return axios.post('students/skills/add', formData, config);
+  return axios.post('students/skills/add', formData);
 }
 const deleteSkillStudent = async (id) => {
-  getToken();
-  return axios.delete(`students/skills/delete?skillId=${id}`, config);
+
+  return axios.delete(`students/skills/delete?skillId=${id}`);
 }
 const deleteCV = async (id) => {
-  getToken();
-  return axios.delete(`students/resume?resumeId=${id}`, config);
+
+  return axios.delete(`students/resume?resumeId=${id}`);
 }
 const getCVById = async (id) => {
-  getToken();
-  return axios.get(`students/resumes/${id}`, config);
+
+  return axios.get(`students/resumes/${id}`);
 }
 const updateFindjob = async (values) => {
-  getToken();
-  return axios.put(`students/is-finding-job?isFindingJob=${values}`, {}, config);
+
+  return axios.put(`students/is-finding-job?isFindingJob=${values}`, {});
 }
 const updateResumeActive = async (id) => {
-  getToken();
-  return axios.put(`students/resume/${id}`, {}, config);
+
+  return axios.put(`students/resume/${id}`, {});
 }
 const getAllCompany = async (values) => {
-  getToken();
+
   const params = new URLSearchParams(values).toString();
-  return axios.get(`employers/get-all-employers?${params}`, config);
+  return axios.get(`employers/get-all-employers?${params}`);
 }
 const approveCompany = async (id) => {
-  getToken();
-  return axios.put(`employers/admin/${id}/legal-info/approve`, {}, config);
+
+  return axios.put(`employers/admin/${id}/legal-info/approve`, {});
 }
 const rejectCompany = async (id, values) => {
-  getToken();
-  return axios.put(`employers/admin/${id}/legal-info/reject`, values, config);
+
+  return axios.put(`employers/admin/${id}/legal-info/reject`, values);
 }
 const getAllPostByAdmin = async (values) => {
-  getToken();
+
   const params = new URLSearchParams(values).toString();
-  return axios.get(`jobs/admin/all-jobs?${params}`, config);
+  return axios.get(`jobs/admin/all-jobs?${params}`);
 }
 const approvePost = async (id) => {
-  getToken();
-  return axios.put(`jobs/admin/job-approval/approve/${id}`, {}, config);
+
+  return axios.put(`jobs/admin/job-approval/approve/${id}`, {});
 }
 const rejectPost = async (id, values) => {
-  getToken();
-  return axios.put(`jobs/admin/job-approval/reject/${id}`, values, config);
+
+  return axios.put(`jobs/admin/job-approval/reject/${id}`, values);
 }
 const getApplyJobByJobId = async (id, status) => {
-  getToken();
+
   const params = new URLSearchParams({ status }).toString();
-  return axios.get(`employers/student-application/${id}?${params}`, config);
+  return axios.get(`employers/student-application/${id}?${params}`);
 }
 const getApplyJobByStudent = async () => {
-  getToken();
-  return axios.get(`students/jobs`, config);
+
+  return axios.get(`students/jobs`);
 }
 const convertStatus = async (id, status) => {
-  getToken();
-  return axios.put(`employers/application/${id}`, { status }, config);
+
+  return axios.put(`employers/application/${id}`, { status });
 }
 const getCVByEmployer = async (id) => {
-  getToken();
-  return axios.get(`employers/student-application/detail/${id}`, config);
+
+  return axios.get(`employers/student-application/detail/${id}`);
 }
 const searchJob = async (values) => {
   const params = new URLSearchParams(values).toString();
   console.log("params: ", params);
   return axios.get(`jobs/search?${params}`);
 }
+const followCompany = async (id) => {
+
+  return axios.post(`students/follow/${id}`, {});
+}
+const unfollowCompany = async (id) => {
+  return axios.delete(`students/unfollow/${id}`, {});
+}
+const getFollowCompany = async () => {
+  return axios.get(`students/get-all-followed-employers`);
+}
+const checkSaveJob = async (id) => {
+  return axios.get(`students/jobs/check?jobId=${id}`);
+}
+const saveJob = async (id) => {
+  return axios.post(`students/jobs/saved/${id}`, {});
+}
+const unSaveJob = async (id) => {
+  return axios.delete(`students/jobs/unsaved/${id}`, {});
+}
+const getJobSaved = async () => {
+  return axios.get(`students/jobs/saved`);
+}
+const checkFollowCompany = async (id) => {
+  return axios.get(`students/follow/company?companyId=${id}`);
+}
 export {
   uploadCV,
-  getToken,
   setToken,
   removeToken,
   studentLogin,
@@ -358,5 +375,13 @@ export {
   getApplyJobByStudent,
   convertStatus,
   getCVByEmployer,
-  searchJob
+  searchJob,
+  followCompany,
+  unfollowCompany,
+  getFollowCompany,
+  checkSaveJob,
+  saveJob,
+  unSaveJob,
+  getJobSaved,
+  checkFollowCompany
 }

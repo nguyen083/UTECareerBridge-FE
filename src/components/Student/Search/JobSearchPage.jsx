@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Row, Col, Card, Tag, Carousel, Select, List, Pagination } from 'antd';
+import { Layout, Row, Col, Card, Tag, Carousel, Select, List, Pagination, Radio, Flex } from 'antd';
 import FilterPanel from './FilterPanel';
 import BoxContainer from '../../Generate/BoxContainer';
 import './JobPage.scss';
@@ -95,7 +95,17 @@ const JobSearchPage = () => {
                   Sắp xếp theo
                 </div>
                 <div className='sort-item'>
-                  <Select value={sorting}
+                  <Radio.Group size='large' value={sorting} onChange={(e) => setSorting(e.target.value)}>
+                    <Flex gap={10} >
+
+                      <div className='div-radio'><Radio.Button className='radio' value="">Tất cả</Radio.Button></div>
+                      <div className='div-radio'><Radio.Button className='radio' value="newest">Ngày đăng (mới nhất)</Radio.Button></div>
+                      <div className='div-radio'><Radio.Button className='radio' value="oldest">Ngày đăng (cũ nhất)</Radio.Button></div>
+                      <div className='div-radio'><Radio.Button className='radio' value="salary_desc">Lương (cao-thấp)</Radio.Button></div>
+                      <div className='div-radio'><Radio.Button className='radio' value="salary_asc">Lương (thấp-cao)</Radio.Button></div>
+                    </Flex>
+                  </Radio.Group>
+                  {/* <Select value={sorting}
                     size='large'
                     style={{ width: "200px" }}
                     onChange={(value) => setSorting(value)}
@@ -105,7 +115,7 @@ const JobSearchPage = () => {
                     <Option value="oldest">Ngày đăng (cũ nhất)</Option>
                     <Option value="salary_desc">Lương (cao-thấp)</Option>
                     <Option value="salary_asc">Lương (thấp-cao)</Option>
-                  </Select>
+                  </Select> */}
                 </div>
               </div>
               <List

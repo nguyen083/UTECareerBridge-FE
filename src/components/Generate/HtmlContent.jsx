@@ -10,7 +10,7 @@ const HtmlContent = ({ htmlString, className = 'font-size' }) => {
         <Paragraph
             ellipsis={{
                 expandable: true,
-                rows: 5,
+                rows: 20,
                 symbol: "Xem thêm",
                 onExpand: () => setExpanded(true),
                 expanded: expanded

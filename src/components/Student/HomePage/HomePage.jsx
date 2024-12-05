@@ -1,5 +1,5 @@
 import { SearchOutlined } from "@ant-design/icons";
-import { Input } from "antd";
+import { Input, Card, Typography, Flex } from "antd";
 import React from "react";
 import Banner from "./Banner";
 import FeaturedJobs from "./FeaturedJobs";
@@ -7,6 +7,10 @@ import "./HomePage.scss";
 import JobCategory from "./JobCategory";
 import TopCompany from "./TopCompany";
 import OrtherCard from "./OtherCard";
+import BoxContainer from "../../Generate/BoxContainer";
+import COLOR from "../../styles/_variables";
+import { Alert } from 'antd';
+import Marquee from 'react-fast-marquee';
 const { Search } = Input;
 
 const HomePage = () => {
@@ -15,38 +19,51 @@ const HomePage = () => {
   };
 
   return (
-    <div className="homepage">
-      <header className="homepage__header">
-        <h1>Tìm kiếm việc làm mơ ước</h1>
-        <Search
-          placeholder="Nhập vị trí hoặc kỹ năng"
-          onSearch={onSearch}
-          enterButton="Tìm kiếm"
+    <BoxContainer padding="0 0 1rem 0" width={"90%"} className="mx-auto box_shadow" borderRadius="0px" background={COLOR.backgroundColor}>
+      <Flex gap={16} vertical className="homepage">
+        <div className="gradient-background">
+          <Alert
+            className="rounded-0"
+            type="info"
+            closable
+            // banner
+            message={
+              <Marquee pauseOnHover gradient={false} className="fs-5 fw-bold">
+                Khởi đầu sự nghiệp, tìm việc dễ dàng - Cơ hội nghề nghiệp dành cho sinh viên ngay hôm nay!
+              </Marquee>
+            }
+          />
+          <header className="homepage__header">
+          </header>
+
+          <div className="banner">
+            <Banner />
+          </div>
+          <div className="top-company">
+            <TopCompany />
+          </div>
+        </div>
+        <JobCategory />
+
+        <Card
+
           size="large"
-          className="homepage__search"
-          prefix={<SearchOutlined style={{ color: "rgb(195, 195, 195)" }} />}
-        />
-      </header>
-      
-      <div className="banner">
-        <Banner />
-      </div>
-      <div className="top-company">
-        <TopCompany/>
-      </div>
-      <JobCategory />
-      <div>
-        <h2>Việc làm nổi bật</h2>
-        <FeaturedJobs />
-      </div>
-      <div>
-        <h2>Việc làm nổi bật trong lĩnh vực IT</h2>
-        <FeaturedJobs />
-      </div>
-      <div className="other-items">
-        <OrtherCard/>
-      </div>
-    </div>
+          title={<Typography.Title level={3} className="mb-0">Việc làm nổi bật</Typography.Title>}
+          className="mx-auto customize-card" style={{ width: "80%" }}>
+          <FeaturedJobs />
+        </Card>
+
+        <Card
+          size="large"
+          title={<Typography.Title level={3} className="mb-0">Việc làm đang tuyển gấp</Typography.Title>}
+          className="mx-auto customize-card" style={{ width: "80%" }}>
+          <FeaturedJobs />
+        </Card>
+        <div className="other-items">
+          <OrtherCard />
+        </div>
+      </Flex>
+    </BoxContainer>
   );
 };
 
