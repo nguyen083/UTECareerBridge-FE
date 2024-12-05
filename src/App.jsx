@@ -53,6 +53,7 @@ import MyJobPage from './components/Student/PersonalLayout/MyJobPage/MyJobPage.j
 import EventPage from './components/Student/Event/EventPage.jsx';
 import EventDetail from './components/Student/Event/EventPageDetail.jsx';
 import JobSearchPage from './components/Student/Search/JobSearchPage.jsx';
+import AccountManagement from './components/Student/PersonalLayout/AccountManagement/AccountManagement.jsx';
 const App = () => {
   return (
     <ConfigProvider locale={viVN}
@@ -75,7 +76,7 @@ const App = () => {
           Input: {
             activeShadow: "0 0 0 2px rgba(68, 120, 192, 0.2)",
             colorTextDisabled: "#AAA8A9",
-            colorText: COLOR.textColor,
+            // colorText: COLOR.textColor,
 
           },
           Select: {
@@ -121,6 +122,11 @@ const App = () => {
           },
           Table: {
             cellFontSize: "1rem",
+          },
+          Tag: {
+            fontSizeSM: 14,
+            fontSizeIcon: 14
+            // fontSize: 12,
           }
         }
       }}>
@@ -141,7 +147,7 @@ const App = () => {
 
               <Route path='/my-company' element={<MyCompanyPage />} />
               <Route path='/my-job' element={<MyJobPage />} />
-              {/* <Route path='/account-management' element={<AccountManagement />} /> */}
+              <Route path='/account-management' element={<AccountManagement />} />
             </Route>
             <Route element={<ViewLayout width='90%' />}>
               <Route path='/job/:id' element={<ViewJob />} />

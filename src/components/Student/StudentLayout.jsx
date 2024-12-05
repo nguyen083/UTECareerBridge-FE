@@ -74,6 +74,8 @@ const StudentLayout = () => {
             >
                 <Flex align='center' justify='space-between' className='w-100'>
                     <Image
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => navigate('/')}
                         src="https://res.cloudinary.com/utejobhub/image/upload/v1723888103/rg2do6iommv6wp840ixr.png"
                         alt="Website Logo"
                         preview={false}

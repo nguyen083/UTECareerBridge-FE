@@ -1,7 +1,10 @@
 import { Col, List, Row, Typography, Flex, Card, Modal, Form, message, Switch, Radio, Menu, Button } from "antd";
 import styles from "./PersonalLayout.module.scss";
 import React, { useEffect, useState } from 'react';
-import { UserOutlined, PaperClipOutlined, DashboardOutlined, SettingOutlined } from '@ant-design/icons';
+import { PaperClipOutlined, DashboardOutlined, SettingOutlined, SolutionOutlined } from '@ant-design/icons';
+import { IoBriefcaseOutline } from "react-icons/io5";
+import { IoIosBusiness } from "react-icons/io";
+
 import BoxContainer from "../../Generate/BoxContainer";
 import { JobCardSmall } from "../../Generate/JobCard";
 import { getAllCV, getSimilarJob, updateFindjob, updateResumeActive } from "../../../services/apiService";
@@ -44,17 +47,17 @@ const PersonalLayout = () => {
         {
             key: "/profile",
             label: <div className="f-16">Hồ sơ của tôi</div>,
-            icon: <PaperClipOutlined />,
+            icon: <SolutionOutlined />,
         },
         {
             key: "/my-company",
             label: <div className="f-16">Công ty của tôi</div>,
-            icon: <UserOutlined />,
+            icon: <IoIosBusiness />,
         },
         {
             key: "/my-job",
             label: <div className="f-16">Việc làm của tôi</div>,
-            icon: <UserOutlined />,
+            icon: <IoBriefcaseOutline />
         },
         {
             key: "/account-management",

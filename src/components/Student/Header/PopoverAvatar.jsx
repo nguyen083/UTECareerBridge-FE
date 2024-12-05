@@ -1,22 +1,21 @@
-import { BellOutlined, DashboardOutlined, LogoutOutlined, SolutionOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
+import { DashboardOutlined, LogoutOutlined, SettingOutlined, SolutionOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Divider, Flex, Menu, Popover, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import './PopoverAvatar.scss';
-import { LiaBriefcaseSolid } from "react-icons/lia";
-import { MdOutlineMessage } from "react-icons/md";
 import { current, loading, stop } from "../../../redux/action/webSlice.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut, removeToken } from "../../../services/apiService.jsx";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useRedux } from "../../../utils/useRedux.jsx";
+import { IoIosBusiness } from "react-icons/io";
+import { IoBriefcaseOutline } from "react-icons/io5";
 const menuItems = [
     { key: '1', icon: <DashboardOutlined />, label: 'Tổng Quan' },
     { key: '2', icon: <SolutionOutlined />, label: 'Hồ Sơ Của Tôi' },
-    { key: '3', icon: <LiaBriefcaseSolid />, label: 'Công Ty Của Tôi' },
-    { key: '4', icon: <TeamOutlined />, label: 'Việc Làm Của Tôi' },
-    { key: '5', icon: <MdOutlineMessage />, label: 'Thông Báo Việc Làm' },
-    { key: '6', icon: <BellOutlined />, label: 'Quản Lý Tài Khoản' },
+    { key: '3', icon: <IoIosBusiness />, label: 'Công Ty Của Tôi' },
+    { key: '4', icon: <IoBriefcaseOutline />, label: 'Việc Làm Của Tôi' },
+    { key: '6', icon: <SettingOutlined />, label: 'Quản Lý Tài Khoản' },
     { key: '7', icon: <LogoutOutlined />, label: 'Đăng xuất' },
 ];
 const navigationMap = {
