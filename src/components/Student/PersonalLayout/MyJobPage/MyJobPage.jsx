@@ -4,7 +4,7 @@ import { Table, Flex, Typography, Tabs } from 'antd';
 import { getApplyJobByStudent, getJobSaved } from '../../../../services/apiService';
 import Status from "../../../../constant/status";
 import { checkThoiHan } from "../../../../utils/day";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { EyeOutlined } from "@ant-design/icons";
 const { Text } = Typography;
 
@@ -88,7 +88,7 @@ const AppliedJob = () => {
             total: totalApplicants,
             onChange: handlePageChange,
             showSizeChanger: true,
-        }} // Tắt phân trang mặc định của Table
+        }}
     />
 }
 
@@ -174,7 +174,25 @@ const SavedJob = () => {
 }
 
 const MyJobPage = () => {
+    const location = useLocation();
+    const navigate = useNavigate();
 
+    // Lấy hash từ URL, nếu có
+    const activeTab = location.hash.replace('#', '') || 'job-applied'; // Nếu không có hash thì mặc định là Tab job-applied
+
+    // Chuyển hướng khi người dùng thay đổi tab
+    const handleTabChange = (key) => {
+        navigate(`#${key}`);
+    };
+
+    useEffect(() => {
+        // Khi hash thay đổi, tự động chọn đúng tab
+        const tabFromHash = location.hash.replace('#', '');
+        if (tabFromHash) {
+            // Cập nhật state tab khi URL thay đổi
+            // Cần phải trigger lại trạng thái hoặc hành động để tab hiển thị đúng
+        }
+    }, [location.hash]); // Chạy lại khi hash thay đổi
     return (<>
         <Flex vertical gap={8}>
             <BoxContainer width="100%">
@@ -182,11 +200,11 @@ const MyJobPage = () => {
             </BoxContainer>
             <BoxContainer width="100%">
 
-                <Tabs defaultActiveKey="1" size="large">
-                    <Tabs.TabPane tab="Đã ứng tuyển" key="1">
+                <Tabs onChange={handleTabChange} activeKey={activeTab} size="large">
+                    <Tabs.TabPane tab="Đã ứng tuyển" key="job-applied">
                         <AppliedJob />
                     </Tabs.TabPane>
-                    <Tabs.TabPane tab="Đã lưu" key="2">
+                    <Tabs.TabPane tab="Đã lưu" key="job-saved">
                         <SavedJob />
                     </Tabs.TabPane>
                 </Tabs>

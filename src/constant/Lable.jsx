@@ -8,7 +8,7 @@ const Lable = (type) => {
         case 4:
             return <Tag icon={<FireOutlined />} color='volcano'> Hot</Tag>
         case 6:
-            return <Tag icon={<AiFillThunderbolt />} color='red'> Tuyển gấp</Tag >
+            return <Tag icon={<AiFillThunderbolt />} color='red'> Gấp</Tag >
         default: return null;
     }
 }

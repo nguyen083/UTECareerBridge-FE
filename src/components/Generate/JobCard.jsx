@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Card, Divider, Flex, List, Tag, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Lable from '../../constant/Lable';
 import { HeartOutlined } from '@ant-design/icons';
-
+import './JobCard.scss';
 const { Text, Title, Paragraph } = Typography;
 
 // const JobCardSmall = ({ job }) => {
@@ -86,22 +86,20 @@ const JobCardSmall = ({ job }) => {
     return (
         <List.Item className='d-flex align-items-start border border-1 rounded-3 p-3 justify-content-between' style={{ maxWidth: '100%', overflow: 'hidden' }}>
             <List.Item.Meta
-                className='d-flex align-items-center w-75'
+                className='d-flex align-items-center w-100 meta-description'
                 avatar={<img
                     src={job.employerResponse.companyLogo} // Replace with the actual logo URL
                     style={{ width: 80, height: 80, borderRadius: 4, marginRight: 12 }}
                 />}
-                description={<>
-                    <div className='w-75'>
-                        <Title level={5}
-                            onClick={() => handleClick(job.jobId)}
-                            ellipsis={{ row: 1, tooltip: true }}
-                        >
-                            {job.jobTitle}
-                        </Title>
-                    </div>
-                    < Text className='f-14 w-75'
-                        ellipsis={{ row: 1, tooltip: true }}>
+                description={<div>
+                    <Title level={5}
+                        onClick={() => handleClick(job.jobId)}
+                        className="limit-text w-100"
+                        ellipsis={{ tooltip: true, rows: 2 }}
+                    >
+                        {job.jobTitle}
+                    </Title>
+                    < Text className='f-14 limit-text'>
                         {job.employerResponse.companyName}</Text>
 
 
@@ -109,16 +107,10 @@ const JobCardSmall = ({ job }) => {
                         {job.jobMinSalary.toLocaleString()} - {job.jobMaxSalary.toLocaleString()} <Text style={{ fontSize: 12 }}>VNĐ/tháng</Text>
                     </div>
                     < Paragraph
-                        type='secondary'
-                        style={{
-                            margin: 0,
-                            whiteSpace: 'nowrap',        // Keeps the text on a single line
-                            overflow: 'hidden',           // Hides any overflow
-                            textOverflow: 'ellipsis',     // Adds ellipsis for overflowed text
-                            // Optional: set max width to control where it cuts off
-                        }}>
+                        type='secondary limit-text mb-0'
+                    >
                         {job.jobLocation}</Paragraph>
-                </>}
+                </div>}
             />
             <HeartOutlined />
         </List.Item>

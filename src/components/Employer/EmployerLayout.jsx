@@ -49,7 +49,7 @@ const itemSider = [
     { key: '/employer/post-job', icon: <UploadOutlined />, label: 'Đăng tuyển' },
     { key: '/employer/applicant', icon: <TeamOutlined />, label: 'Ứng viên' },
     { key: '/employer/manage-list-jobs', icon: <LiaBriefcaseSolid />, label: 'Việc làm' },
-    { key: '/employer/job/view/:id', icon: <SolutionOutlined />, label: 'Hồ sơ' },
+    { key: '/employer/list-resumes', icon: <SolutionOutlined />, label: 'Hồ sơ' },
     { key: '/employer/interview', icon: <IoIosPeople />, label: 'Phỏng vấn' },
     { key: '/employer/message', icon: <MdOutlineMessage />, label: 'Tin nhắn' },
     { key: '/employer/notification', icon: <BellOutlined />, label: 'Thông báo' },

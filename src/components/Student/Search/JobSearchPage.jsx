@@ -6,10 +6,14 @@ import './JobPage.scss';
 import { useSelector } from 'react-redux';
 import { searchJob } from '../../../services/apiService';
 import { JobCardLarge } from '../../Generate/JobCard';
+import CarouselTopCompnay from './CarouselTopCompnay';
+import { useLocation } from 'react-router-dom';
 const { Content } = Layout;
 const { Option } = Select;
 const JobSearchPage = () => {
   const keyword = useSelector(state => state.web.keyword);
+  const location = useLocation();
+
   const [pageSize, setPageSize] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalElements, setTotalElements] = useState(0);
@@ -73,6 +77,7 @@ const JobSearchPage = () => {
   };
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     handleSearch();
   }, [keyword, filters, sorting, pageSize, currentPage]);
 
@@ -88,7 +93,7 @@ const JobSearchPage = () => {
           <Col span={18}>
             <BoxContainer>
               <div>
-                <FilterPanel onValuesChange={setFilters} />
+                <FilterPanel onValuesChange={setFilters} filters={location.state?.filters} />
               </div>
               <div className='sorting'>
                 <div className='title'>
@@ -141,46 +146,7 @@ const JobSearchPage = () => {
           </Col>
 
           <Col span={6}>
-            <Card
-              title="Công ty nổi bật trong lĩnh vực"
-              style={{
-                borderRadius: '12px',
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.05)'
-              }}
-            >
-              <Carousel autoplay>
-                {featuredCompanies.map((company) => (
-                  <div
-                    key={company.id}
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      padding: '12px',
-                      backgroundColor: '#f0f4f9',
-                      borderRadius: '8px'
-                    }}
-                  >
-                    <img
-                      src={company.logo}
-                      alt={company.name}
-                      style={{
-                        width: '60px',
-                        height: '60px',
-                        marginRight: '16px',
-                        objectFit: 'contain',
-                        borderRadius: '8px'
-                      }}
-                    />
-                    <div>
-                      <h5 style={{ margin: 0 }}>{company.name}</h5>
-                      <div style={{ color: '#4D8CFF' }}>
-                        {company.jobCount} Open Positions
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </Carousel>
-            </Card>
+            <CarouselTopCompnay />
           </Col>
         </Row>
       </Content>

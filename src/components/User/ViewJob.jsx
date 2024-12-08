@@ -31,6 +31,7 @@ const ViewJob = () => {
     const navigate = useNavigate();
     const [carouselItems, setCarouselItems] = useState([]);
     useEffect(() => {
+        window.scrollTo(0, 0);
         setLoading(true);
         const status = location.state?.status;
         // Gọi API để lấy thông tin công ty

@@ -116,3 +116,26 @@ html{
 .box_shadow {
   box-shadow: 5px 5px 5px #ebebeb;
 }
+/* index.css hoặc global.css */
+.ql-size-small {
+  font-size: 14px !important;
+}
+
+.ql-size-medium {
+  font-size: 20px !important;
+}
+
+.ql-size-large {
+  font-size: 18px !important;
+}
+
+.ql-size-huge {
+  font-size: 28px !important;
+}
+.ql-editor{
+  font-size: 16px !important;
+  font-family: 'Inter', sans-serif;
+}
+.slick-arrow {
+  color: #1890ff !important;
+}

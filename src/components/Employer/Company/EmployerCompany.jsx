@@ -12,6 +12,7 @@ import { setInfor } from '../../../redux/action/employerSlice';
 import { toast } from 'react-toastify';
 import IconLoading from "../../Generate/IconLoading";
 import React from 'react';
+import ImgCrop from 'antd-img-crop';
 
 const EmployerCompany = () => {
 
@@ -201,7 +202,20 @@ const EmployerCompany = () => {
                             <CustomizeQuill />
                         </Form.Item>
                         <Form.Item name="companyLogo" className='col-12 mt-0' label="Logo công ty">
+                            {/* <ImgCrop
+                                rotate
+                                quality={1}
+                                showReset
+                                modalTitle='Cắt ảnh'
+                                modalOk='Xác nhận'
+                                modalCancel='Hủy bỏ'
+                                resetText='Đặt lại'
+                                aspectSlider
+                                aspect={1 / 1}
+                                modalWidth={600} 
+                            >*/}
                             <PicturesWall listType={"text"} defaultImage={defaultLogo} />
+                            {/* </ImgCrop> */}
                         </Form.Item>
                         <Form.Item name="backgroundImage" className='col-12 mt-0' label="Hình Ảnh Công Ty">
                             <PicturesWall listType={"text"} defaultImage={defaultBackground} />

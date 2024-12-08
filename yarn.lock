@@ -1961,7 +1961,7 @@ ansi-styles@^5.0.0:
 
 antd-img-crop@^4.23.0:
   version "4.23.0"
-  resolved "https://registry.npmjs.org/antd-img-crop/-/antd-img-crop-4.23.0.tgz"
+  resolved "https://registry.yarnpkg.com/antd-img-crop/-/antd-img-crop-4.23.0.tgz#8d5981c5934f2f1aa0d0795a433be4b6bd1d74a8"
   integrity sha512-JtQoUmR3GqXoG+hsYXRxCBC60AgUKbbvArbnd8/5UmmuyVcQzBnumfoQTdC9wczWQuxRIpkPwsdOge6CCeepqg==
   dependencies:
     react-easy-crop "^5.0.8"

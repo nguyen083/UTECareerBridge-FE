@@ -54,6 +54,7 @@ import EventPage from './components/Student/Event/EventPage.jsx';
 import EventDetail from './components/Student/Event/EventPageDetail.jsx';
 import JobSearchPage from './components/Student/Search/JobSearchPage.jsx';
 import AccountManagement from './components/Student/PersonalLayout/AccountManagement/AccountManagement.jsx';
+import ListResumes from './components/Employer/ListResumes/ListResumes.jsx';
 const App = () => {
   return (
     <ConfigProvider locale={viVN}
@@ -130,6 +131,13 @@ const App = () => {
           },
           Divider: {
             colorSplit: COLOR.dividerColor,
+          },
+          Carousel: {
+            dotWidth: 7,
+            dotHeight: 7,
+            dotActiveWidth: 7,
+            arrowOffset: 16,
+            arrowSize: 32,
           }
         }
       }}>
@@ -152,7 +160,7 @@ const App = () => {
               <Route path='/my-job' element={<MyJobPage />} />
               <Route path='/account-management' element={<AccountManagement />} />
             </Route>
-            <Route element={<ViewLayout width='100%' />}>
+            <Route element={<ViewLayout width='90%' />}>
               <Route path='/job/:id' element={<ViewJob />} />
               <Route path="/company/:id" element={<InforCompany />} />
               <Route path='/resume/view/:id' element={<ViewCV />} />
@@ -176,6 +184,8 @@ const App = () => {
             <Route path='profile' element={<EmployerProfile />} />
             <Route path='change-password' element={<EmployerChangePassword />} />
             <Route path='company' element={<EmployerCompany />} />
+            <Route path='list-resumes' element={<ListResumes />} />
+            <Route path='detail-resume' element={<ViewCV />} />
             <Route path='applicant' element={<Applicant />} >
               <Route index element={<Navigate to="list-job" replace />} />
               <Route path='list-job' element={<ListJob />} />

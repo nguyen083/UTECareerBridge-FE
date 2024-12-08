@@ -1,40 +1,16 @@
-import { Card } from "antd";
+import { Card, Typography } from "antd";
 import React from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { useMediaQuery } from "react-responsive";
 import "./FeaturedJobs.scss";
-
-const FeaturedJobs = () => {
-  const jobs = [
-    {
-      title: "Lập trình viên Frontend",
-      company: "FPT Software",
-      location: "Hà Nội",
-      logo: "https://res.cloudinary.com/utejobhub/image/upload/v1726158727/company/FPT_Software_logo.png",
-    },
-    {
-      title: "Chuyên viên Marketing",
-      company: "VNG Corporation",
-      location: "TP. HCM",
-      logo: "https://res.cloudinary.com/utejobhub/image/upload/v1726158727/company/FPT_Software_logo.png",
-    },
-    {
-      title: "Kế toán tổng hợp",
-      company: "Vietcombank",
-      location: "Hải Phòng",
-      logo: "https://res.cloudinary.com/utejobhub/image/upload/v1726158727/company/FPT_Software_logo.png",
-    },
-    // Add more jobs
-    ...Array.from({ length: 30 }, (_, i) => ({
-      title: `Job ${i + 1}`,
-      company: `Company ${i + 1}`,
-      location: `Location ${i + 1}`,
-      logo: "https://res.cloudinary.com/utejobhub/image/upload/v1726158727/company/FPT_Software_logo.png",
-    })),
-  ];
+import Lable from "../../../constant/Lable";
+import { useNavigate } from "react-router-dom";
+const { Text } = Typography;
+const FeaturedJobs = ({ jobs }) => {
 
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
+  const navigate = useNavigate();
 
   const responsive = {
     desktop: {
@@ -51,6 +27,9 @@ const FeaturedJobs = () => {
     },
   };
 
+  const handleJobClick = (jobId) => {
+    navigate(`/job/${jobId}`);
+  };
   return (
     <section className="featured-jobs">
       <div className="carousel-customize">
@@ -67,30 +46,34 @@ const FeaturedJobs = () => {
         >
           {Array.from({ length: Math.ceil(jobs.length / 9) }, (_, i) => (
             <div key={i} className="carousel-grid">
-              {jobs.slice(i * 9, i * 9 + 9).map((job, index) => (
-                <Card
-                  key={index}
-                  bordered={false}
-                  className="featured-jobs__item border-item"
-                  hoverable
-                >
-                  <div className="card-body">
-                    <div className="card-logo">
-                      <img src={job.logo} alt={job.company} />
+              {jobs.length > 0 && jobs.slice(i * 9, i * 9 + 9).map((job, index) => (
+                <div key={index}>
+                  <Card
+                    bordered={false}
+                    className="featured-jobs__item border-item d-flex align-items-stretch"
+                    hoverable
+                    onClick={() => handleJobClick(job.jobId)}
+                  >
+                    <div className="card-body">
+                      <div className="card-logo">
+                        <img src={job?.employerResponse?.companyLogo} alt={job?.employerResponse?.companyName} />
+                      </div>
+                      <div className="card-details">
+                        <Text className="fw-bold f-16 job-title mb-1">{job.jobTitle} {Lable(job.packageId)}</Text>
+                        <Text className="f-14 company-name">{job.employerResponse?.companyName}</Text>
+                        <div style={{ color: '#ff4d4f', fontSize: 14, margin: '8px 0' }}>
+                          {job.jobMinSalary.toLocaleString()} - {job.jobMaxSalary.toLocaleString()} <Text style={{ fontSize: 12 }}>VNĐ/tháng</Text>
+                        </div>
+                      </div>
                     </div>
-                    <div className="card-details">
-                      <p>{job.title}</p>
-                      <p>{job.company}</p>
-                      <p>{job.location}</p>
-                    </div>
-                  </div>
-                </Card>
+                  </Card>
+                </div>
               ))}
             </div>
           ))}
         </Carousel>
-      </div>
-    </section>
+      </div >
+    </section >
   );
 };
 

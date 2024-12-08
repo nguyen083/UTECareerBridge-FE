@@ -28,6 +28,7 @@
     grid-template-columns: repeat(3, 1fr); // 3 cột
     grid-template-rows   : repeat(3, auto); // 3 hàng
     gap                  : 15px;
+    padding              : 15px;
   }
 
   .featured-jobs__item {
@@ -37,6 +38,12 @@
 
     @media (max-width: 768px) {
       height: 200px;
+    }
+
+    .ant-card-body {
+      margin-top   : auto;
+      margin-bottom: auto;
+
     }
 
     .card-body {
@@ -61,12 +68,29 @@
         padding-left: 10px;
         flex        : 1;
 
-        p {
-          white-space  : nowrap;
-          overflow     : hidden;
-          text-overflow: ellipsis;
-          max-width    : 100%;
+        .company-name {
+          line-height       : normal;
+          display           : -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow          : hidden;
         }
+
+        .job-title {
+          // margin-bottom     : 0px;
+          line-height       : normal;
+          display           : -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow          : hidden;
+        }
+
+        // p {
+        //   white-space  : nowrap;
+        //   overflow     : hidden;
+        //   text-overflow: ellipsis;
+        //   max-width    : 100%;
+        // }
       }
     }
   }
@@ -80,5 +104,17 @@
     @media (max-width: 464px) {
       display: none;
     }
+  }
+}
+
+.card-item {
+  &:hover {
+    background-color: $background-color;
+    cursor          : pointer;
+    transition      : all 0.3s ease;
+    box-shadow      : 0 12px 24px rgba(0, 0, 0, 0.2);
+    /* Bóng đổ mạnh hơn khi hover */
+    transform       : translateY(-1px);
+    /* Nâng container lên khi hover */
   }
 }

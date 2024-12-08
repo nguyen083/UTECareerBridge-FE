@@ -15,7 +15,7 @@ const menuItems = [
     { key: '2', icon: <SolutionOutlined />, label: 'Hồ Sơ Của Tôi' },
     { key: '3', icon: <IoIosBusiness />, label: 'Công Ty Của Tôi' },
     { key: '4', icon: <IoBriefcaseOutline />, label: 'Việc Làm Của Tôi' },
-    { key: '6', icon: <SettingOutlined />, label: 'Quản Lý Tài Khoản' },
+    { key: '6', icon: <SettingOutlined />, label: 'Đổi mật khẩu' },
     { key: '7', icon: <LogoutOutlined />, label: 'Đăng xuất' },
 ];
 const navigationMap = {

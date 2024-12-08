@@ -61,7 +61,7 @@ const PersonalLayout = () => {
         },
         {
             key: "/account-management",
-            label: <div className="f-16">Quản lý tài khoản</div>,
+            label: <div className="f-16">Đổi mật khẩu</div>,
             icon: <SettingOutlined />,
         }
     ];

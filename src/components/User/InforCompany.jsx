@@ -1,6 +1,6 @@
 import BoxContainer from "../Generate/BoxContainer";
 import React, { useEffect, useState } from 'react';
-import { Flex, Card, Button, Typography, Image, Anchor, Descriptions, Spin, message } from 'antd';
+import { Flex, Card, Button, Typography, Image, Anchor, Descriptions, Spin, message, Avatar } from 'antd';
 import HtmlContent from "../Generate/HtmlContent";
 import { useParams } from "react-router-dom";
 import { checkFollowCompany, followCompany, getCompanyById, unfollowCompany } from "../../services/apiService";
@@ -9,6 +9,7 @@ import BenefitCard from "../Generate/BenefitComponent";
 import JobList from "../Generate/JobList";
 import { CheckCircleOutlined, CheckOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
+import COLOR from "../../components/styles/_variables.jsx";
 
 const { Title, Text, Link } = Typography;
 
@@ -59,8 +60,8 @@ const InforCompany = () => {
             children: <Link href={company.companyWebsite} target="_blank">{company.companyWebsite}</Link>,
         },
         {
-            key: '8',
-            children: <HtmlContent className="font-size-small" htmlString={company.companyDescription} />,
+            key: '7',
+            children: <Flex vertical gap={"0.5rem"}> {company?.companyDescription && <Title level={4}>Mô tả chi tiết</Title>}<HtmlContent htmlString={company?.companyDescription} /></Flex>,
         },
 
     ];
@@ -86,6 +87,7 @@ const InforCompany = () => {
                             companyEmail: company.companyEmail,
                             firstName: company.firstName,
                             lastName: company.lastName,
+                            countFollower: company.countFollower || 0,
                         }
                     )
                 }
@@ -104,6 +106,7 @@ const InforCompany = () => {
         }
     }
     useEffect(() => {
+        window.scrollTo(0, 0);
         fetchData();
     }, [id]);
     const handleFollow = () => {
@@ -140,7 +143,7 @@ const InforCompany = () => {
     }
     return (
         <>
-            <Flex align='center' justify='center' style={{ height: '100vh', width: "100%" }} hidden={!loading}>
+            <Flex align='center' justify='center' style={{ height: '100vh', width: "100%", }} hidden={!loading}>
                 <Spin spinning={loading} size='large' />
             </Flex>
             <BoxContainer padding="1rem" hidden={loading}>
@@ -156,14 +159,13 @@ const InforCompany = () => {
                     }
                 >
                     <Flex gap={"1rem"} vertical style={{ padding: "0 1rem 1rem 1rem" }}>
-                        <Flex align="center" style={{ marginTop: -50 }} gap={"1rem"}>
-                            <Image
+                        <Flex align="end" style={{ marginTop: -60 }} gap={"1rem"} >
+                            <Avatar
                                 preview={false}
+                                size={136}
                                 src={company.companyLogo ? company.companyLogo : 'https://images.vietnamworks.com/img/company-default-logo.svg'} // URL ảnh logo
-                                height={136}
-                                width={136}
                                 style={{
-                                    border: '3px solid white',
+                                    border: '1px solid gray',
                                     borderRadius: "10px",
                                     objectFit: 'cover',
                                     display: 'block',
@@ -175,7 +177,7 @@ const InforCompany = () => {
                                     <Title level={4}>
                                         {company.companyName}
                                     </Title>
-                                    <Text>3 lượt theo dõi</Text>
+                                    <Text>{company.countFollower} lượt theo dõi</Text>
                                 </div>
                                 <Button className="p-4" onClick={handleFollow} size="large" type="primary" hidden={isFollow}>
                                     Theo dõi

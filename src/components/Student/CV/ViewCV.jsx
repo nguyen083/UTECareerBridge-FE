@@ -3,7 +3,7 @@ import BoxContainer from '../../Generate/BoxContainer';
 import styles from './ViewCV.module.scss';
 import { MailOutlined, PhoneOutlined, UserOutlined } from '@ant-design/icons';
 import { BiSolidSchool } from 'react-icons/bi';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import PDFViewer from '../../Generate/PDFViewer';
 import { getCVByEmployer, getCVById } from '../../../services/apiService';
@@ -13,6 +13,7 @@ const { Text, Title } = Typography;
 const ViewCV = () => {
     const user = useSelector(state => state.user);
     const { id } = useParams();
+    const location = useLocation();
     const [cv, setCv] = useState({});
     const [address, setAddress] = useState("");
     const items = [
@@ -85,14 +86,21 @@ const ViewCV = () => {
                 }
             })
         } else {
-            getCVByEmployer(id).then((res) => {
-                if (res.status === 'OK') {
-                    setCv(res.data);
-                    apiService.getInforAddress(res.data.address, res.data.provinceId, res.data.districtId, res.data.wardId).then((res) => {
-                        setAddress(res);
-                    })
-                }
-            })
+            if (location.state?.datasource) {
+                apiService.getInforAddress(location.state.datasource.address, location.state.datasource.provinceId, location.state.datasource.districtId, location.state.datasource.wardId).then((res) => {
+                    setAddress(res);
+                })
+                setCv(location.state.datasource);
+            } else {
+                getCVByEmployer(id).then((res) => {
+                    if (res.status === 'OK') {
+                        setCv(res.data);
+                        apiService.getInforAddress(res.data.address, res.data.provinceId, res.data.districtId, res.data.wardId).then((res) => {
+                            setAddress(res);
+                        })
+                    }
+                })
+            }
         }
     }
     useEffect(() => {

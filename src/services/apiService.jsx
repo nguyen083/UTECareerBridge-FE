@@ -311,6 +311,21 @@ const getJobSaved = async () => {
 const checkFollowCompany = async (id) => {
   return axios.get(`students/follow/company?companyId=${id}`);
 }
+const getAllApplicantByCategoryId = async (id) => {
+  return axios.get(`students/students-finding-job/${id}`);
+}
+const getAds = async () => {
+  return axios.get('employers/top-company');
+}
+const getJobUrgent = async () => {
+  return axios.get('jobs/recruitment-urgent');
+}
+const changePassword = async (values) => {
+  return axios.post('users/update-password', values);
+}
+const getJobsNewest = async () => {
+  return axios.get(`jobs/search?keyword=&page=0&limit=30&sorting=newest`);
+}
 export {
   uploadCV,
   setToken,
@@ -383,5 +398,10 @@ export {
   saveJob,
   unSaveJob,
   getJobSaved,
-  checkFollowCompany
+  checkFollowCompany,
+  getAllApplicantByCategoryId,
+  getAds,
+  getJobUrgent,
+  changePassword,
+  getJobsNewest
 }

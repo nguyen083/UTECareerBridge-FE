@@ -1,9 +1,10 @@
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from 'react-quill';
+import './CustomizeQuill.scss';
 
 const modules = {
     toolbar: [
-        [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
         ["bold", "italic", "underline", "strike", "blockquote"],
         [{ size: [] }],
         [
@@ -11,7 +12,7 @@ const modules = {
                 color: ["black", "red", "blue", "yellow"],
             },
         ],
-        [{ font: [] }],
+        // [{ font: [] }],
         [{ align: [false, "right", "center", "justify"] }],
         [
             { list: "ordered" },
@@ -29,8 +30,8 @@ const modules = {
 };
 
 const formats = [
-    "header",
-    "font",
+    // "header",
+    // "font",
     "size",
     "bold",
     "italic",

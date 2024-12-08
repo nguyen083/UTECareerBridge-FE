@@ -1,14 +1,28 @@
 import { Button, Form, Input } from "antd";
 import BoxContainer from "../../Generate/BoxContainer";
 import { useSelector } from "react-redux";
+import { changePassword } from "../../../services/apiService";
 
 const EmployerChangePassword = () => {
     const email = useSelector(state => state.employer.companyEmail);
+    const [loading, setLoading] = useState(false);
     const infor = {
         email: email
     }
     const onFinish = (values) => {
-        console.log(values);
+        setLoading(true);
+        changePassword(values).then(res => {
+            if (res.status === 'OK') {
+                message.success(res.message);
+            } else {
+                message.error(res.message);
+            }
+        }).catch(err => {
+            message.error(err);
+        }).finally(() => {
+            setLoading(false);
+        });
+
     };
     return (
         <>
@@ -64,7 +78,7 @@ const EmployerChangePassword = () => {
                         } validateFirst validateTrigger={['onBlur']}>
                         <Input.Password />
                     </Form.Item>
-                    <Form.Item label="Nhập lại mật khẩu mới" name="retypePassword"
+                    <Form.Item label="Nhập lại mật khẩu mới" name="confirmPassword"
                         rules={
                             [{
                                 required: true,
@@ -72,7 +86,7 @@ const EmployerChangePassword = () => {
                             },
                             ({ getFieldValue }) => ({
                                 validator(_, value) {
-                                    if (!value || getFieldValue('new_password') === value) {
+                                    if (!value || getFieldValue('new_password') !== value) {
                                         return Promise.resolve();
                                     }
                                     return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));

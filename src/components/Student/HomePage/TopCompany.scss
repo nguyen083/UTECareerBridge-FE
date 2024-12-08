@@ -1,57 +1,93 @@
 .top-company {
     padding: 10px;
-    width: 1200px;
-    margin: 0 auto;
-    h2{
-        margin: 0 auto;
-        font-size: 1.5rem;
-        font-weight: 600;
+    width  : 1200px;
+    margin : 0 auto;
+
+    h2 {
+        margin       : 0 auto;
+        font-size    : 1.5rem;
+        font-weight  : 600;
         margin-bottom: 10px;
-        color: #333;    }
+        color        : #333;
+    }
+
     .top-company__row {
-        display: flex;
+        display        : flex;
         justify-content: space-between;
-        margin-bottom: 10px; // Reduced from 20px
-        gap: 10px; // Add gap between flex items
-        
+        margin-bottom  : 10px; // Reduced from 20px
+        gap            : 10px; // Add gap between flex items
+
         .top-company__item {
-            flex: 1; // Distribute items evenly
-            display: flex;
-            flex-direction: column;
-            border-radius: 8px;
-            justify-content: center;
-            align-items: center;
+            flex            : 1; // Distribute items evenly
+            display         : flex;
+            flex-direction  : column;
+            border-radius   : 8px;
+            justify-content : center;
+            align-items     : center;
             background-color: #FFFFFF;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            
+            box-shadow      : 0 4px 8px rgba(0, 0, 0, 0.1);
+
             &:hover {
                 box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
             }
-            
+
             .top-company__logo {
                 margin-top: 20px;
-                width: 60%;
-                cursor: pointer;
-                height: 60%;
+                width     : 60%;
+                cursor    : pointer;
+                height    : 60%;
                 object-fit: cover;
             }
-            
+
             .top-company__name {
-                font-size: 1.2rem;
+                font-size  : 1.2rem;
                 font-weight: 600;
-                cursor: pointer;
-                margin: 10px 0;
+                cursor     : pointer;
+                margin     : 10px 0;
             }
-            .tag-name{
+
+            .tag-name {
                 background-color: #48bbff;
-                margin-bottom: 20px;
-                border: 1px solid rgba(0, 90, 255, .3);
-                text-transform: uppercase;
-                color: #fff;
-                border-radius: 4px;
-                font-weight: 400;
-                font-size: 14px;
+                margin-bottom   : 20px;
+                border          : 1px solid rgba(0, 90, 255, .3);
+                text-transform  : uppercase;
+                color           : #fff;
+                border-radius   : 4px;
+                font-weight     : 400;
+                font-size       : 14px;
             }
         }
+    }
+}
+
+.card-company {
+    display       : flex;
+    flex-direction: column;
+
+    .ant-card-body {
+        height: 100%;
+
+        .ant-card-meta {
+            margin: 0;
+            height: 100%;
+
+            .ant-card-meta-detail {
+                height         : 100%;
+                display        : flex !important;
+                flex-direction : column !important;
+                justify-content: space-between !important;
+
+                .company-name {
+                    display   : block;
+                    /* Đảm bảo nó là một khối để có thể xuống dòng */
+                    text-align: center;
+                    /* Căn giữa văn bản */
+                    text-wrap : balance;
+                    /* Đảm bảo văn bản sẽ xuống dòng nếu quá dài */
+                }
+            }
+        }
+
+
     }
 }

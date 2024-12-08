@@ -1,0 +1,23 @@
+@import '../../../components/styles/variables.scss';
+
+.list-applicant {
+    padding: 0.5rem;
+
+    .ant-list-items {
+        display       : flex;
+        flex-direction: column;
+        gap           : 0.5rem;
+
+        .ant-list-item {
+            &:hover {
+                background-color: $background-color;
+                cursor          : pointer;
+                transition      : all 0.3s ease;
+                box-shadow      : 0 12px 24px rgba(0, 0, 0, 0.2);
+                /* Bóng đổ mạnh hơn khi hover */
+                transform       : translateY(-1px);
+                /* Nâng container lên khi hover */
+            }
+        }
+    }
+}
