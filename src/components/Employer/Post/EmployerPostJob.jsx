@@ -1,11 +1,10 @@
-import { Button, Collapse, DatePicker, Flex, Form, Input, InputNumber, Select } from 'antd';
+import { Button, Collapse, DatePicker, Descriptions, Flex, Form, Input, InputNumber, message, Select, Tooltip } from 'antd';
 import BoxContaier from '../../Generate/BoxContainer';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import CustomizeQuill from '../../Generate/CustomizeQuill';
 import { useEffect, useState } from 'react';
-import { getAllJobCategories, getAllJobLevels, getAllSkills, postJob } from '../../../services/apiService';
-import { toast } from 'react-toastify';
+import { getAllJobCategories, getAllJobLevels, getAllSkills, getJobPackage, postJob } from '../../../services/apiService';
 
 const format = (value) => {
     if (!value) return '';
@@ -24,22 +23,31 @@ const EmployerPostJob = () => {
     const [categories, setCategories] = useState([]);
     const [skills, setSkills] = useState([]);
     const [levels, setLevels] = useState([]);
+    const [packages, setPackages] = useState([]);
+    const [selectedPackage, setSelectedPackage] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const handlePackageChanged = (pkgId) => {
+        const selectedPkg = packages.find(pkg => pkg.packageResponse.packageId === pkgId);
+        setSelectedPackage(selectedPkg);
+    };
+
     const form1 = (
         <BoxContaier>
             <div className="form-group row g-3">
-                <Form.Item className='col-12 mt-0' name="jobTitle" label={<span>Tiêu đề <span style={{ color: "red" }}> *</span></span>}
+                <Form.Item className='col-12 mt-0' name="jobTitle" label="Tiêu đề"
                     rules={[
                         { required: true, message: 'Vui lòng nhập tiêu đề' },
                     ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
                     <Input />
                 </Form.Item>
-                <Form.Item className='col-12 col-md-7 mt-0' name="jobLocation" label={<span>Địa điểm làm việc <span style={{ color: "red" }}> *</span></span>}
+                <Form.Item className='col-12 col-md-7 mt-0' name="jobLocation" label="Địa điểm làm việc"
                     rules={[
                         { required: true, message: 'Vui lòng nhập địa điểm làm việc' },
                     ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
                     <Input />
                 </Form.Item>
-                <Form.Item name="jobCategoryId" className="col-12 col-md-5 mt-0" label={<span>Lĩnh vực <span style={{ color: "red" }}> *</span></span>}
+                <Form.Item name="jobCategoryId" className="col-12 col-md-5 mt-0" label="Lĩnh vực"
                     rules={[
                         {
                             required: true,
@@ -54,8 +62,7 @@ const EmployerPostJob = () => {
                             },
                         }),
                     ]} validateTrigger={['onChange', 'onBlur']}>
-                    <Select defaultValue={0}>
-                        <Select.Option value={0}>Vui lòng chọn</Select.Option>
+                    <Select placeholder="Vui lòng chọn lĩnh vực">
                         {categories.map(category => (
                             <Select.Option key={category.value} value={category.value}>
                                 {category.label}
@@ -64,7 +71,7 @@ const EmployerPostJob = () => {
                     </Select>
                 </Form.Item>
                 <Flex gap="large" className="col-7 mt-0">
-                    <Form.Item name="jobMinSalary" label={<span>Lương tối thiểu <span style={{ color: "red" }}> *</span></span>}
+                    <Form.Item name="jobMinSalary" label="Lương tối thiểu"
                         rules={[
                             { required: true, message: 'Vui lòng nhập lương tối thiểu' },
                         ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
@@ -72,7 +79,7 @@ const EmployerPostJob = () => {
                             formatter={value => format(value)}
                             parser={value => value.replace(/\s/g, '')} />
                     </Form.Item>
-                    <Form.Item name="jobMaxSalary" label={<span>Lương tối đa <span style={{ color: "red" }}> *</span></span>}
+                    <Form.Item name="jobMaxSalary" label="Lương tối đa"
                         rules={[
                             { required: true, message: 'Vui lòng nhập lương tối đa' },
                             ({ getFieldValue }) => ({
@@ -89,7 +96,7 @@ const EmployerPostJob = () => {
                             parser={value => value.replace(/\s/g, '')} />
                     </Form.Item>
                 </Flex>
-                <Form.Item name="jobDeadline" className="col-12 col-md-5 mt-0" label={<span>Ngày hết hạn <span style={{ color: "red" }}> *</span></span>} rules={[
+                <Form.Item name="jobDeadline" className="col-12 col-md-5 mt-0" label="Ngày hết hạn" rules={[
                     {
                         required: true,
                         message: 'Vui lòng nhập thời gian hết hạn nộp hồ sơ',
@@ -98,12 +105,12 @@ const EmployerPostJob = () => {
                     <DatePicker className='form-control' format={"DD/MM/YYYY"} placeholder='Vui lòng chọn ngày' />
                 </Form.Item>
             </div>
-        </BoxContaier>
+        </BoxContaier >
     );
     const form2 = (
         <BoxContaier>
             <div className="form-group row g-3">
-                <Form.Item className='col-12 col-md-6 mt-0' name="amount" label={<span>Số lượng tuyển dụng <span style={{ color: "red" }}> *</span></span>}
+                <Form.Item className='col-12 col-md-6 mt-0' name="amount" label="Số lượng tuyển dụng"
                     rules={[
                         { required: true, message: 'Vui lòng nhập số lượng tuyển dụng' },
                         ({ getFieldValue }) => ({
@@ -119,19 +126,11 @@ const EmployerPostJob = () => {
                         formatter={value => format(value)}
                         parser={value => value.replace(/\s/g, '')} />
                 </Form.Item>
-                <Form.Item className='col-12 col-md-6 mt-0' name="jobLevelId" label={<span>Cấp bậc <span style={{ color: "red" }}> *</span></span>}
+                <Form.Item className='col-12 col-md-6 mt-0' name="jobLevelId" label="Cấp bậc" placeholder="Vui lòng chọn cấp bậc"
                     rules={
-                        [({ getFieldValue }) => ({
-                            validator(_, value) {
-                                if (value === 0) {
-                                    return Promise.reject(new Error('Vui lòng chọn cấp bậc cần tuyển dụng'));
-                                }
-                                return Promise.resolve();
-                            },
-                        }),]
+                        [{ required: true, message: 'Vui lòng chọn cấp bậc' }]
                     }>
-                    <Select defaultValue={0}>
-                        <Select.Option value={0}>Vui lòng chọn</Select.Option>
+                    <Select placeholder="Vui lòng chọn cấp bậc">
                         {levels.map(level => (<Select.Option key={level.value} value={level.value}>{level.label}</Select.Option>))}
                     </Select>
                 </Form.Item>
@@ -159,6 +158,45 @@ const EmployerPostJob = () => {
             </div>
         </BoxContaier>
     );
+    const form3 = (
+        <BoxContaier>
+            <div className="form-group row g-3">
+                <Form.Item className='col-12 mt-0' name="packageId" label="Gói dịch vụ"
+                    rules={[
+                        { required: true, message: 'Vui lòng chọn gói dịch vụ trước khi đăng tuyển' },
+                    ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
+                    <Select placeholder="Vui lòng chọn gói dịch vụ" onChange={handlePackageChanged} allowClear>
+                        {packages.map(pkg => (
+                            <Select.Option key={pkg.packageResponse.packageId} value={pkg.packageResponse.packageId} >
+                                {pkg.packageResponse.packageName} ({pkg.packageResponse.amount})
+                            </Select.Option>
+                        ))}
+                    </Select>
+                </Form.Item>
+                {selectedPackage && <Descriptions className='px-5 ' title="Chi tiết gói dịch vụ" layout="vertical" column={2}>
+                    <Descriptions.Item label="Tên gói dịch vụ">
+                        <span>{selectedPackage?.packageResponse.packageName}</span>
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Đặc điểm">
+                        <span>{selectedPackage?.packageResponse.featureName}</span>
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Mô tả">
+                        <span>{selectedPackage?.packageResponse.description}</span>
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Số lượng còn lại">
+                        <span>{selectedPackage?.amount}</span>
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Thời gian đăng tuyển">
+                        <span>{selectedPackage?.packageResponse.duration} tháng</span>
+                    </Descriptions.Item>
+                    <Descriptions.Item label="Ngày hết hạn">
+                        <span>{selectedPackage?.expiredAt}</span>
+                    </Descriptions.Item>
+
+                </Descriptions>}
+            </div>
+        </BoxContaier>
+    );
     const itemsCollapse1 = [
         {
             key: '1',
@@ -170,9 +208,18 @@ const EmployerPostJob = () => {
             key: '1',
             label: <span className='title2'>Yêu cầu tuyển dụng</span>,
             children: form2,
-        }];
+        },
+    ];
+    const itemsCollapse3 = [
+        {
+            key: '1',
+            label: <span className='title2'>Chọn gói dịch vụ</span>,
+            children: form3,
+        }
+    ];
 
     useEffect(() => {
+        window.scrollTo(0, 0);
         getAllJobCategories().then((res) => {
             const filteredOptions = res.data
                 .filter(item => item.active === true) // Lọc các mục có thuộc tính active là true
@@ -197,24 +244,35 @@ const EmployerPostJob = () => {
                 });
             setSkills(filteredOptions);
         });
+        getJobPackage().then((res) => {
+            if (res.status === 'OK') {
+                setPackages(res.data);
+            }
+        });
     }, []);
     const [form] = Form.useForm();
 
     const onFinish = (values) => {
+        setLoading(true);
         dayjs.extend(customParseFormat);
         values.jobDeadline = dayjs(values.jobDeadline, 'YYYY-MM-DD').format('DD/MM/YYYY');
         console.log(values);
         postJob(values).then((res) => {
             if (res.status === 'OK') {
-                toast.success(res.message);
+                message.success(res.message);
             }
             else {
-                toast.error(res.message);
+                message.error(res.message);
             }
+        }).catch((err) => {
+            message.error(err.message);
+        }).finally(() => {
+            setLoading(false);
         });
     }
     const onFinishFailed = (errorInfo) => { };
     const onReset = () => { };
+
     return (
         <>
             <BoxContaier>
@@ -225,16 +283,16 @@ const EmployerPostJob = () => {
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                     onReset={onReset}
-                    requiredMark={false}
                     form={form}
                     size='large'
                     autoComplete="off"
                     layout='vertical'>
                     <Flex vertical gap="middle">
-                        <Collapse collapsible='false' expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse1} bordered={false} />
-                        <Collapse expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse2} bordered={false} />
+                        <Collapse className='box_shadow' collapsible='false' expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse1} bordered={false} />
+                        <Collapse className='box_shadow' collapsible='false' expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse2} bordered={false} />
+                        <Collapse className='box_shadow' collapsible='false' expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse3} bordered={false} />
                         <Flex gap="middle" justify="end">
-                            <Button type="primary" htmlType="submit">Đăng bài</Button>
+                            <Button loading={loading} type="primary" htmlType="submit">Đăng bài</Button>
                             <Button type="default" htmlType='reset'>Hủy</Button>
                         </Flex>
                     </Flex>

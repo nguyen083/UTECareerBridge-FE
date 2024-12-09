@@ -347,6 +347,9 @@ const getDetailOrder = async (id) => {
 const getOrderById = async (id) => {
   return axios.get(`orders/get-order/${id}`);
 }
+const getJobPackage = async () => {
+  return axios.get('employers/manage-package/get-all-non-expired');
+}
 export {
   uploadCV,
   setToken,
@@ -430,5 +433,6 @@ export {
   createPayment,
   getOrderList,
   getDetailOrder,
-  getOrderById
+  getOrderById,
+  getJobPackage,
 }

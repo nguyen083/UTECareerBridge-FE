@@ -139,6 +139,10 @@ const App = () => {
             dotActiveWidth: 7,
             arrowOffset: 16,
             arrowSize: 32,
+          },
+          Collapse: {
+            headerBg: COLOR.cardColor,
+            headerPadding: '0px 50px',
           }
         }
       }}>

@@ -201,8 +201,8 @@ const EmployerCompany = () => {
                         <Form.Item name="companyDescription" className="col-12 mt-0 " label="Mô tả công ty">
                             <CustomizeQuill />
                         </Form.Item>
-                        <Form.Item name="companyLogo" className='col-12 mt-0' label="Logo công ty">
-                            {/* <ImgCrop
+                        <Form.Item name="companyLogo" className='col-12 mt-0' label="Logo công ty" tooltip="Kéo thả hoặc nhấp chọn để tải ảnh lên">
+                            <ImgCrop
                                 rotate
                                 quality={1}
                                 showReset
@@ -212,10 +212,10 @@ const EmployerCompany = () => {
                                 resetText='Đặt lại'
                                 aspectSlider
                                 aspect={1 / 1}
-                                modalWidth={600} 
-                            >*/}
-                            <PicturesWall listType={"text"} defaultImage={defaultLogo} />
-                            {/* </ImgCrop> */}
+                                modalWidth={600}
+                            >
+                                <PicturesWall listType={"text"} defaultImage={defaultLogo} />
+                            </ImgCrop>
                         </Form.Item>
                         <Form.Item name="backgroundImage" className='col-12 mt-0' label="Hình Ảnh Công Ty">
                             <PicturesWall listType={"text"} defaultImage={defaultBackground} />

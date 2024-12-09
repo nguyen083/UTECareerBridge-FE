@@ -25,6 +25,7 @@ const PicturesWall = (props) => {
         <Dragger
             onChange={handleUpload} onDrop={onDrop} onRemove={onRemove}
             beforeUpload={() => false} maxCount={1}
+            showUploadList={false}
             listType={props.listType} fileList={fileList}>
             {(fileList.length === 0 && defaultImage === null) ? (
                 <>

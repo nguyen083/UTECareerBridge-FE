@@ -40,7 +40,6 @@ const ListJob = () => {
             />
 
             <List
-                bordered
                 split={false}
                 loading={loading}
                 dataSource={data}
