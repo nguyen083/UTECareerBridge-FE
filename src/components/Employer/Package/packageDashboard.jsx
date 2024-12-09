@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Divider, Layout, Row, Col, Typography, Alert, Pagination } from 'antd';
+import { Button, Card, Divider, Layout, Row, Col, Typography, Alert, Pagination, message } from 'antd';
 import BoxContainer from '../../Generate/BoxContainer';
 import './packageDashboard.scss';
 import { getAllPackages, addPackageToCart } from '../../../services/apiService';
-import { toast } from 'react-toastify';
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
 const ServiceMarketplace = () => {
@@ -13,27 +12,27 @@ const ServiceMarketplace = () => {
   const [cart, setCart] = useState([]);
   const handleAddToCart = async (service) => {
     if (cart.some((item) => item.packageId === service.packageId)) {
-        toast.warning("Sản phẩm này đã có trong giỏ hàng.");
-        return;
+      message.warning("Sản phẩm này đã có trong giỏ hàng.");
+      return;
+    }
+    try {
+      const values = {
+        packageId: service.packageId,
+        quantity: 1
+      };
+
+      const response = await addPackageToCart(values);
+
+      if (response.status === 'OK') {
+        setCart((prevCart) => [...prevCart, { ...service, quantity: 1 }]);
+        message.success(response.message);
+      } else {
+        message.error("Không thể thêm sản phẩm vào giỏ hàng.");
       }
-      try {
-        const values = {
-          packageId: service.packageId,
-          quantity: 1 
-        };
-    
-        const response = await addPackageToCart(values);
-    
-        if (response.status === 'OK' ) { 
-          setCart((prevCart) => [...prevCart, { ...service, quantity: 1 }]);
-          toast.success(response.message);
-        } else {
-            toast.error("Không thể thêm sản phẩm vào giỏ hàng.");
-        }
-      } catch (error) {
-        console.error("Error adding to cart:", error);
-        toast.error("Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.");
-      }
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      message.error("Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.");
+    }
   };
 
   const handleCheckout = (service) => {
@@ -41,7 +40,7 @@ const ServiceMarketplace = () => {
   };
   const fetchPackages = async () => {
     try {
-      const response= await getAllPackages();
+      const response = await getAllPackages();
       setServices(response.data);
     } catch (error) {
       console.log(error);
@@ -99,7 +98,7 @@ const ServiceMarketplace = () => {
                       <span style={{ color: 'red' }}> *</span>
                     </Text>
                     <Divider />
-                    <Text  className="description-text">{service.description}</Text>
+                    <Text className="description-text">{service.description}</Text>
                   </Card>
                 </Col>
               ))}

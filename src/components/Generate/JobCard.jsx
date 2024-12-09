@@ -103,9 +103,9 @@ const JobCardSmall = ({ job }) => {
                         {job.employerResponse.companyName}</Text>
 
 
-                    <div style={{ color: '#ff4d4f', fontSize: 14, margin: '8px 0' }}>
-                        {job.jobMinSalary.toLocaleString()} - {job.jobMaxSalary.toLocaleString()} <Text style={{ fontSize: 12 }}>VNĐ/tháng</Text>
-                    </div>
+                    <Flex align='center' gap={3} style={{ color: '#ff4d4f', fontSize: 14, margin: '8px 0' }}>
+                        {job?.jobMinSalary?.toLocaleString('vi-VN')} - {job?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} <div style={{ fontSize: 14 }}>/tháng</div>
+                    </Flex>
                     < Paragraph
                         type='secondary limit-text mb-0'
                     >
@@ -170,9 +170,9 @@ const JobCardLarge = ({ job, disable = false }) => {
                     >
                         {job.employerResponse.companyName}</Paragraph>
                     <Flex align='center' >
-                        <div style={{ color: '#ff4d4f', fontSize: 14 }}>
-                            {job.jobMinSalary.toLocaleString()} - {job.jobMaxSalary.toLocaleString()} <Text style={{ fontSize: 12 }}>VNĐ/tháng</Text>
-                        </div>
+                        <Flex align='center' gap={3} style={{ color: '#ff4d4f', fontSize: 14 }}>
+                            {job?.jobMinSalary?.toLocaleString('vi-VN')} - {job?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} <div style={{ fontSize: 14 }}>/tháng</div>
+                        </Flex>
                         <Divider type='vertical' />
                         < div
                             type='secondary'

@@ -1,4 +1,4 @@
-import { Card, Typography } from "antd";
+import { Card, Typography, Flex } from "antd";
 import React from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
@@ -61,9 +61,9 @@ const FeaturedJobs = ({ jobs }) => {
                       <div className="card-details">
                         <Text className="fw-bold f-16 job-title mb-1">{job.jobTitle} {Lable(job.packageId)}</Text>
                         <Text className="f-14 company-name">{job.employerResponse?.companyName}</Text>
-                        <div style={{ color: '#ff4d4f', fontSize: 14, margin: '8px 0' }}>
-                          {job.jobMinSalary.toLocaleString()} - {job.jobMaxSalary.toLocaleString()} <Text style={{ fontSize: 12 }}>VNĐ/tháng</Text>
-                        </div>
+                        <Flex align='center' gap={3} style={{ color: '#ff4d4f', fontSize: 14, margin: '8px 0' }}>
+                          {job.jobMinSalary.toLocaleString('vi-VN')} - {job.jobMaxSalary.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}  <div style={{ fontSize: 14 }}>/tháng</div>
+                        </Flex>
                       </div>
                     </div>
                   </Card>

@@ -326,6 +326,27 @@ const changePassword = async (values) => {
 const getJobsNewest = async () => {
   return axios.get(`jobs/search?keyword=&page=0&limit=30&sorting=newest`);
 }
+const updateQuantityPackage = async (values) => {
+  const formData = objectToFormData(values);
+  return axios.post(`carts/add-to-cart`, formData);
+}
+const createOrder = async (couponCode) => {
+  const formData = objectToFormData({ couponCode });
+  return axios.post(`orders/create-order`, formData);
+}
+const createPayment = async (orderId) => {
+  const formData = objectToFormData({ orderId });
+  return axios.post(`orders/create-payment`, formData);
+}
+const getOrderList = async (page, pageSize) => {
+  return axios.get(`orders/get-orders?page=${page}&limit=${pageSize}`);
+}
+const getDetailOrder = async (id) => {
+  return axios.get(`orders/get-order-details/${id}`);
+}
+const getOrderById = async (id) => {
+  return axios.get(`orders/get-order/${id}`);
+}
 export {
   uploadCV,
   setToken,
@@ -403,5 +424,11 @@ export {
   getAds,
   getJobUrgent,
   changePassword,
-  getJobsNewest
+  getJobsNewest,
+  updateQuantityPackage,
+  createOrder,
+  createPayment,
+  getOrderList,
+  getDetailOrder,
+  getOrderById
 }

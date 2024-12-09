@@ -54,8 +54,8 @@ export const ModalApply = ({ show, setShow, company, job }) => {
                             <BoxContainer className={styles.box_shadow} padding="0.5rem">
                                 <Flex vertical>
                                     <Title level={5}>{job.jobTitle}</Title>
-                                    <Flex align="center" gap={3}><FaRegMoneyBillAlt size={16} /> <div className='salary'>{new Intl.NumberFormat('en-US', { useGrouping: true }).format(job.jobMinSalary)} - {new Intl.NumberFormat('en-US', { useGrouping: true }).format(job.jobMaxSalary)} VNĐ/tháng</div><Text type="warning"> </Text></Flex>
-                                    <Flex align="center" gap={3}><FaMapLocationDot size={16} /> <Text>{job.jobLocation}</Text></Flex>
+                                    <Flex align="center" gap={3}><FaRegMoneyBillAlt size={16} /> <div className='salary'>{job?.jobMinSalary?.toLocaleString('vi-VN')} - {job?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} /tháng</div></Flex>
+                                    <Flex align="center" gap={3}><FaMapLocationDot size={16} /> <Text>{job?.jobLocation}</Text></Flex>
                                 </Flex>
                             </BoxContainer>
                         </Flex>

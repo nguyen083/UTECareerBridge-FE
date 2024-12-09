@@ -100,7 +100,7 @@ const VoucherModal = ({ visible, onClose, onSelectVoucher }) => {
                       {coupon.amount > 0 && (
                         <>
                           <Divider type="vertical" />
-                          <Text>Giảm {coupon.amount} VNĐ</Text>
+                          <Text>Giảm {coupon.amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
                         </>
                       )}
                     </>

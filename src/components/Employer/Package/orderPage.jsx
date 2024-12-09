@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, Typography, Table, Modal, message } from 'antd';
+import { Button, Divider, Typography, Table, Modal, message, Flex, Descriptions, Radio } from 'antd';
 import './orderPage.scss';
 import BoxContainer from '../../Generate/BoxContainer';
-import { DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
-import { getCartByEmployer, getAllCoupon, removePackageFromCart } from '../../../services/apiService';
+import { CloseOutlined, DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
+import { getCartByEmployer, getAllCoupon, removePackageFromCart, updateQuantityPackage, createOrder, createPayment } from '../../../services/apiService';
 import VoucherModal from './voucherModal';
 import VoucherCard from '../../Generate/VoucherCard';
+import ModalDetailOrder from '../Order/ModalDetailOrder';
 const { Title, Text } = Typography;
 
 const OrderPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [selectedVoucher, setSelectedVoucher] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [orderId, setOrderId] = useState(null);
+  const [openOrderModal, setOpenOrderModal] = useState(false);
 
   const getItemsInCart = async () => {
     try {
@@ -23,6 +26,7 @@ const OrderPage = () => {
         description: item.jobPackage.description,
         quantity: item.quantity,
         total: item.jobPackage.price * item.quantity,
+        packageId: item.jobPackage.packageId,
       }));
       setCartItems(formattedItems);
     } catch (error) {
@@ -33,16 +37,27 @@ const OrderPage = () => {
     getItemsInCart();
   }, []);
 
-  const handleQuantityChange = (itemId, newQuantity) => {
-    setCartItems(
-      cartItems.map((item) =>
-        item.id === itemId ? { ...item, quantity: newQuantity } : item
-      )
-    );
+  useEffect(() => {
+    if (orderId) {
+      setOpenOrderModal(true);
+    }
+  }, [orderId]);
+
+  const handleQuantityChange = (packageId, newQuantity, quantityChange) => {
+    if (newQuantity === 0)
+      handleDeleteItem(packageId);
+    else {
+      updateQuantityPackage({ packageId, quantity: quantityChange }).then((res) => {
+        if (res.status === 'OK') {
+          getItemsInCart();
+          // message.success(res.message);
+        }
+      });
+    }
   };
 
-  const handleDeleteItem = (itemId) => {
-    removePackageFromCart(itemId).then((res) => {
+  const handleDeleteItem = (packageId) => {
+    removePackageFromCart(packageId).then((res) => {
       if (res.status === 'OK') {
         getItemsInCart();
         message.success(res.message);
@@ -98,14 +113,14 @@ const OrderPage = () => {
           <Button
             type="default"
             icon={<MinusOutlined />}
-            onClick={() => handleQuantityChange(record.id, Math.max(1, quantity - 1))}
+            onClick={() => handleQuantityChange(record.packageId, quantity - 1, -1)}
             size="small"
           />
           <span style={{ width: 50, textAlign: 'center', margin: '0 8px' }}>{quantity}</span>
           <Button
             type="default"
             icon={<PlusOutlined />}
-            onClick={() => handleQuantityChange(record.id, quantity + 1)}
+            onClick={() => handleQuantityChange(record.packageId, quantity + 1, 1)}
             size="small"
           />
         </div>
@@ -130,11 +145,21 @@ const OrderPage = () => {
           type="primary"
           danger
           icon={<DeleteOutlined />}
-          onClick={() => handleDeleteItem(record.cartItemId)}
+          onClick={() => handleDeleteItem(record.packageId)}
         />
       ),
     },
   ];
+  const handleCreateOrder = () => {
+    createOrder(selectedVoucher).then((res) => {
+      if (res.status === 'CREATED') {
+        message.success(res.message);
+        setOrderId(res.data.orderId);
+      } else {
+        message.error(res.message);
+      }
+    });
+  }
 
   return (
     <>
@@ -160,24 +185,29 @@ const OrderPage = () => {
               <Text className="value">{getTaxAmount().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
             </div>
             <Divider />
-            <div className="voucher">
-              <Button type="primary" onClick={() => setIsModalVisible(true)}>Chọn mã ưu đãi</Button>
-              {selectedVoucher && <Text className="selected-voucher">{selectedVoucher}</Text>}
+            <div className="voucher d-flex align-items-center justify-content-between">
+              <Button type="primary" onClick={() => setIsModalVisible(true)} className='voucher-button'>Chọn mã ưu đãi</Button>
+              {selectedVoucher && <Flex align='center' gap={8}>
+                <Button danger type='text' icon={<CloseOutlined />} onClick={() => setSelectedVoucher(null)}></Button>
+                <Text className="selected-voucher">{selectedVoucher}</Text></Flex>
+              }
             </div>
             <div className="info-item">
               <Text className="label">Tổng thanh toán (Đã bao gồm VAT)</Text>
               <Text className="value">{getTotalWithTax().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
             </div>
             <div className="actions">
-              <Button className="btn-checkout" type="primary">Tạo đơn hàng</Button>
+              <Button className="btn-checkout" type="primary" onClick={handleCreateOrder}>Tạo đơn hàng</Button>
             </div>
           </div>
         </div>
         <VoucherModal
           visible={isModalVisible}
           onClose={() => setIsModalVisible(false)}
+          onSelectVoucher={handleVoucherSelect}
         />
       </BoxContainer>
+      <ModalDetailOrder openOrderModal={openOrderModal} setOpenOrderModal={setOpenOrderModal} id={orderId} />
     </>
   );
 };

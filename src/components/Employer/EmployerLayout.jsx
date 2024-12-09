@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setInfor } from '../../redux/action/employerSlice.jsx';
 import { useRedux } from '../../utils/useRedux.jsx';
 import FooterComponent from '../Generate/Footer.jsx';
+import { AiOutlinePayCircle } from "react-icons/ai";
 
 import {
     BarChartOutlined,
@@ -50,9 +51,10 @@ const itemSider = [
     { key: '/employer/applicant', icon: <TeamOutlined />, label: 'Ứng viên' },
     { key: '/employer/manage-list-jobs', icon: <LiaBriefcaseSolid />, label: 'Việc làm' },
     { key: '/employer/list-resumes', icon: <SolutionOutlined />, label: 'Hồ sơ' },
-    { key: '/employer/interview', icon: <IoIosPeople />, label: 'Phỏng vấn' },
-    { key: '/employer/message', icon: <MdOutlineMessage />, label: 'Tin nhắn' },
-    { key: '/employer/notification', icon: <BellOutlined />, label: 'Thông báo' },
+    { key: '/employer/list-order', icon: <AiOutlinePayCircle />, label: 'Đơn hàng' },
+    // { key: '/employer/interview', icon: <IoIosPeople />, label: 'Phỏng vấn' },
+    // { key: '/employer/message', icon: <MdOutlineMessage />, label: 'Tin nhắn' },
+    // { key: '/employer/notification', icon: <BellOutlined />, label: 'Thông báo' },
     { key: '/employer/buy-service', icon: <BsTicketPerforated />, label: 'Gói dịch vụ' },
     { key: 'logout', icon: <LogoutOutlined />, label: 'Đăng xuất' },
 ];

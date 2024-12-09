@@ -158,9 +158,9 @@ const JobList = () => {
                   >
                     {item.company}
                   </Paragraph>
-                  <div style={{ color: '#ff4d4f', fontSize: 14, margin: '8px 0' }}>
-                    <DollarOutlined style={{ color: "#1677ff" }} /> {new Intl.NumberFormat('vi-VN').format(item.jobMinSalary)} - {new Intl.NumberFormat('vi-VN').format(item.jobMaxSalary)}  <Text style={{ fontSize: 12 }}>VNĐ/tháng</Text>
-                  </div>
+                  <Flex align='center' gap={3} style={{ color: '#ff4d4f', fontSize: 14, margin: '8px 0' }}>
+                    {item?.jobMinSalary?.toLocaleString('vi-VN')} - {item?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}  <div style={{ fontSize: 14 }}>/tháng</div>
+                  </Flex>
 
                   < Paragraph
                     type='secondary'

@@ -55,6 +55,7 @@ import EventDetail from './components/Student/Event/EventPageDetail.jsx';
 import JobSearchPage from './components/Student/Search/JobSearchPage.jsx';
 import AccountManagement from './components/Student/PersonalLayout/AccountManagement/AccountManagement.jsx';
 import ListResumes from './components/Employer/ListResumes/ListResumes.jsx';
+import ListOrder from './components/Employer/Order/ListOrder.jsx';
 const App = () => {
   return (
     <ConfigProvider locale={viVN}
@@ -185,6 +186,7 @@ const App = () => {
             <Route path='change-password' element={<EmployerChangePassword />} />
             <Route path='company' element={<EmployerCompany />} />
             <Route path='list-resumes' element={<ListResumes />} />
+            <Route path='list-order' element={<ListOrder />} />
             <Route path='detail-resume' element={<ViewCV />} />
             <Route path='applicant' element={<Applicant />} >
               <Route index element={<Navigate to="list-job" replace />} />

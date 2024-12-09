@@ -199,7 +199,9 @@ const ViewJob = () => {
                                 <Flex vertical gap={"1.25rem"}>
                                     <BoxContainer background='#F8F9FA'>
                                         <div className='job-name mb-5'>{job.jobTitle} </div>
-                                        <div className='salary mb-3'>Lương: {new Intl.NumberFormat('en-US', { useGrouping: true }).format(job.jobMinSalary)} - {new Intl.NumberFormat('en-US', { useGrouping: true }).format(job.jobMaxSalary)} VNĐ/tháng</div>
+                                        <div className='salary mb-3'>
+                                            Lương: {job?.jobMinSalary?.toLocaleString('vi-VN')} - {job?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}/tháng
+                                        </div>
                                         <Flex className='mb-3'>
                                             <Text><ClockCircleOutlined className='icon-small' /> Hết hạn ngày: {job.jobDeadline} </Text>
                                             <Divider type='vertical' style={{ height: 'auto' }} />
