@@ -1,4 +1,4 @@
-import { Button, Flex, Form, Input, Select } from 'antd';
+import { Button, Flex, Form, Input, Select, message } from 'antd';
 import BoxContainer from '../../Generate/BoxContainer';
 import './EmployerCompany.scss';
 import { useEffect, useState } from 'react';
@@ -9,7 +9,6 @@ import CustomizeQuill from '../../Generate/CustomizeQuill';
 import { PicturesWall } from '../../Generate/Upload';
 import { useSelector, useDispatch } from 'react-redux';
 import { setInfor } from '../../../redux/action/employerSlice';
-import { toast } from 'react-toastify';
 import IconLoading from "../../Generate/IconLoading";
 import React from 'react';
 import ImgCrop from 'antd-img-crop';
@@ -48,12 +47,12 @@ const EmployerCompany = () => {
         try {
             updateEmployerCompanyProfile(values).then(res => {
                 if (res.status === 'OK') {
-                    toast.success(res.message);
+                    message.success(res.message);
                     // cập nhật lại redux
                     dispatch(setInfor(res.data));
                 }
                 else {
-                    toast.error(res.message);
+                    message.error(res.message);
                 }
             });
         } catch (err) {

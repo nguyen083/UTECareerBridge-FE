@@ -1,10 +1,9 @@
 import './LoginPage.scss';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { employerLogin, setToken } from '../../services/apiService';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { Button, Flex, Form, Input, Typography } from 'antd';
+import { Button, Flex, Form, Input, Typography, message } from 'antd';
 import { useDispatch } from 'react-redux';
 import { loading, stop } from '../../redux/action/webSlice';
 import { setInfor } from '../../redux/action/userSlice';
@@ -39,13 +38,13 @@ const LoginPage = () => {
         try {
             const res = await employerLogin(updatedValues);
             if (res.status === 'OK') {
-                toast.success(res.message);
+                message.success(res.message);
                 setToken(res.data.token, res.data.refreshToken);
                 dispatch(setInfor({ userId: res.data.id, role: res.data.roles.roleName, email: res.data.username }));
                 navigate('/employer');
 
             } else {
-                toast.error(res.message);
+                message.error(res.message);
             }
 
         } catch (error) {

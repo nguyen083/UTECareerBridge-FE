@@ -1,9 +1,8 @@
 import React from 'react';
-import { Form, Input, Button, Typography, Row, Col, Flex, Image, Divider, Card } from 'antd';
+import { Form, Input, Button, Typography, Row, Col, Flex, Image, Divider, Card, message } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setToken, studentLogin } from '../../../services/apiService';
-import { toast } from 'react-toastify';
 import { loading, stop } from '../../../redux/action/webSlice';
 import './LoginPage.scss'; // Import file SCSS
 import { IoIosArrowRoundBack } from 'react-icons/io';
@@ -42,7 +41,7 @@ const LoginPage = () => {
             let res = await studentLogin(updatedValues);
             if (res.status === 'OK') {
                 form.resetFields();
-                toast.success(res.message);
+                message.success(res.message);
                 await setToken(res.data.token, res.data.refresh_token); // set token
                 login(res); // set user info to redux
                 if (res.data.roles.roleName === 'student') {
@@ -51,10 +50,10 @@ const LoginPage = () => {
                     navigate('/admin');
                 }
             } else {
-                toast.error(res.message);
+                message.error(res.message);
             }
         } catch (err) {
-            toast.error('Đã có lỗi xảy ra, vui lòng thử lại sau');
+            message.error('Đã có lỗi xảy ra, vui lòng thử lại sau');
         }
         finally {
             dispatch(stop());

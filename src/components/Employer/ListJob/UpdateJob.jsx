@@ -1,11 +1,10 @@
-import { Button, Collapse, DatePicker, Flex, Form, Input, InputNumber, Select } from 'antd';
+import { Button, Collapse, DatePicker, Flex, Form, Input, InputNumber, Select, message } from 'antd';
 import BoxContaier from '../../Generate/BoxContainer';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import CustomizeQuill from '../../Generate/CustomizeQuill';
 import { useEffect, useState } from 'react';
 import { getAllJobCategories, getAllJobLevels, getAllSkills, getJobById, postJob, putJob } from '../../../services/apiService';
-import { toast } from 'react-toastify';
 import { useNavigate, useParams } from 'react-router-dom';
 
 
@@ -45,7 +44,7 @@ const UpdateJob = () => {
                     };
                     form.setFieldsValue(jobData); // Set dữ liệu vào form
                 } else {
-                    toast.error(res.message);
+                    message.error(res.message);
                 }
             });
         }
@@ -220,12 +219,12 @@ const UpdateJob = () => {
     const updateJob = (values) => {
         putJob(id, values).then((res) => {
             if (res.status === 'OK') {
-                toast.success(res.message);
+                message.success(res.message);
                 //trở về trang danh sách công việc
                 navigate('/employer/manage-list-jobs');
             }
             else {
-                toast.error(res.message);
+                message.error(res.message);
             }
         });
     }

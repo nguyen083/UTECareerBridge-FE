@@ -27,9 +27,8 @@ import {
     MenuOutlined,
     ShoppingCartOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, Avatar, Flex, Badge, Button, Tooltip, } from 'antd';
+import { Layout, Menu, Avatar, Flex, Badge, Button, Tooltip, message } from 'antd';
 import { getInfor, logOut, removeToken } from '../../services/apiService.jsx';
-import { toast } from 'react-toastify';
 import { current, loading, stop } from '../../redux/action/webSlice.jsx';
 import COLOR from '../styles/_variables.jsx';
 const { Header, Content, Footer, Sider } = Layout;
@@ -44,7 +43,7 @@ const siderStyle = {
     scrollbarColor: 'unset',
 };
 const itemSider = [
-    { key: '/employer/dashboard', icon: <BarChartOutlined />, label: 'Dashboard' },
+    { key: '/employer/dashboard', icon: <BarChartOutlined />, label: 'Thống kê' },
     { key: '2', icon: <UserOutlined />, label: 'Tài khoản', children: [{ key: '/employer/profile', label: 'Thông tin cá nhân', icon: <MdManageAccounts /> }, { key: '/employer/change-password', label: 'Đổi mật khẩu', icon: <RiLockPasswordLine /> }] },
     { key: '3', icon: <IoBusinessOutline />, label: 'Công ty', children: [{ key: '/employer/company', label: 'Thông tin công ty', icon: <TiBusinessCard /> }, { key: '/employer/business-certificate', label: 'Giấy chứng nhận', icon: <FaRegNewspaper /> }] },
     { key: '/employer/post-job', icon: <UploadOutlined />, label: 'Đăng tuyển' },
@@ -86,7 +85,7 @@ const EmployerLayout = () => {
             //Lưu thông tin người dùng vào redux
             dispatch(setInfor(res.data));
             if (res.status !== 'OK') {
-                toast.error('Có lỗi xảy ra');
+                message.error('Có lỗi xảy ra');
             }
         };
         if (localStorage.getItem('accessToken') === null) {
@@ -106,12 +105,12 @@ const EmployerLayout = () => {
             const res = await logOut();
             if (res.status === 'OK') {
                 removeToken();
-                toast.success(res.message);
+                message.success(res.message);
                 navigate('login');
                 clearRedux();
 
             } else {
-                toast.error(res.message);
+                message.error(res.message);
             }
         } catch (error) {
             console.log(error);

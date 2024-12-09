@@ -18,11 +18,10 @@ import {
     SearchOutlined,
     MenuOutlined
 } from '@ant-design/icons';
-import { Layout, Menu, Avatar, Flex, Badge, Space } from 'antd';
+import { Layout, Menu, Avatar, Flex, Badge, Space, message } from 'antd';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut, removeToken } from '../../services/apiService';
-import { toast } from 'react-toastify';
 import { current, loading, stop } from '../../redux/action/webSlice';
 import { useRedux } from '../../utils/useRedux.jsx';
 
@@ -177,12 +176,12 @@ const AdminLayout = () => {
                         clearRedux();
                         removeToken();
                         navigate('/');
-                        toast.success(res.message);
+                        message.success(res.message);
                     } else {
-                        toast.error(res.message);
+                        message.error(res.message);
                     }
                 } catch (error) {
-                    toast.error(error.message);
+                    message.error(error.message);
                 } finally {
                     dispatch(stop());
                 }

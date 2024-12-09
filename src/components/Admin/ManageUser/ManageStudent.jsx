@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Tabs, Modal, Form, Input, DatePicker, message, Select, Space, Button } from 'antd';
+import { Tabs, Modal, Form, Input, DatePicker, message, Select, Space, Button, message } from 'antd';
 import { UserOutlined, LockOutlined, StopOutlined } from '@ant-design/icons';
 import TableListUser from './TableListUser';
 import BoxContainer from '../../Generate/BoxContainer';
 import { getUserByUserId, updateUser } from '../../../services/apiService';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
-import { toast } from 'react-toastify';
 const { TabPane } = Tabs;
 const { Option } = Select;
 const ManageListUser = () => {
@@ -122,15 +121,15 @@ const ManageListUser = () => {
             updateUser(selectedUser.userId, values).then((res) => {
                 if (res.status === 'OK') {
                     setRes(res.data);
-                    toast.success(res.message);
+                    message.success(res.message);
                 }
                 else
-                    toast.error(res.message);
+                    message.error(res.message);
             });
-            // toast.success('Cập nhật thông tin người dùng thành công');
+            // message.success('Cập nhật thông tin người dùng thành công');
             handleModalCancel();
         } catch (error) {
-            toast.error('Vui lòng kiểm tra lại thông tin');
+            message.error('Vui lòng kiểm tra lại thông tin');
         } finally {
             setLoading(false);
         }

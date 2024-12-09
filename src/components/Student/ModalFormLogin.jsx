@@ -1,10 +1,9 @@
-import { Button, Flex, Form, Input, Modal } from 'antd';
+import { Button, Flex, Form, Input, Modal, message } from 'antd';
 import React from 'react';
 import './ModalFormLogin.scss';
 import { setToken, studentLogin } from '../../services/apiService';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { loading, setloading, stop } from '../../redux/action/webSlice';
 
@@ -47,7 +46,7 @@ const ModalFormLogin = (props) => {
 
         if (res.status === 'OK') {
             const userRoleFromAPI = res.data.roles.roleName;
-            toast.success(res.message);
+            message.success(res.message);
             setToken(res.data.token, res.data.refresh_token);
 
             if (userRoleFromAPI === 'student') {
@@ -56,7 +55,7 @@ const ModalFormLogin = (props) => {
                 navigate('/admin');
             }
         } else {
-            toast.error(res.message);
+            message.error(res.message);
         }
         dispatch(stop());
 

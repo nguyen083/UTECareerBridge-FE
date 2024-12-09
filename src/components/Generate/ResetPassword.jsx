@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Button, Form, Input, Space } from 'antd';
+import { Button, Form, Input, Space, message } from 'antd';
 import { useLocation } from 'react-router-dom';
 import "./ResetPassword.scss";
 import { userResetPassword } from "../../services/apiService";
-import { toast } from "react-toastify";
 
 
 const ResetPassword = () => {
@@ -25,11 +24,11 @@ const ResetPassword = () => {
         // Gọi API để cập nhật mật khẩu mới cho người dùng abc@gmail
         if (res.status === 'OK') {
             setMessage(res.message);
-            toast.success("Đặt lại mật khẩu thành công");
+            message.success("Đặt lại mật khẩu thành công");
             setSubmit(true);
         }
         else {
-            toast.error("Đặt lại mật khẩu thất bại. Vui long thử lại sau");
+            message.error("Đặt lại mật khẩu thất bại. Vui long thử lại sau");
         }
 
     };

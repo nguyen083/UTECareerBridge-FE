@@ -1,4 +1,4 @@
-import { Button, Divider, Flex, Form, Input, Radio, Space, DatePicker } from 'antd';
+import { Button, Divider, Flex, Form, Input, Radio, Space, DatePicker, message } from 'antd';
 import BoxContainer from '../../Generate/BoxContainer';
 import './EmployerProfile.scss';
 import { useState } from 'react';
@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { updateEmployerProfile } from '../../../services/apiService';
-import { toast } from 'react-toastify';
 import { setInfor } from '../../../redux/action/employerSlice';
 
 const EmployerProfile = () => {
@@ -26,11 +25,11 @@ const EmployerProfile = () => {
         console.log(values);
         updateEmployerProfile(values).then(res => {
             if (res.status === 'OK') {
-                toast.success(res.message);
+                message.success(res.message);
                 dispatch(setInfor(res.data));
             }
             else {
-                toast.error(res.message);
+                message.error(res.message);
             }
         });
     };

@@ -1,8 +1,7 @@
-import { Button, Flex, Form, Image, Modal } from "antd";
+import { Button, Flex, Form, Image, Modal, message } from "antd";
 import BoxContainer from "../../Generate/BoxContainer";
 import { PicturesWall } from "../../Generate/Upload";
 import React, { useState } from "react";
-import { toast } from "react-toastify";
 import IconLoading from "../../Generate/IconLoading";
 import { useSelector, useDispatch } from "react-redux";
 import { updateBusinessCertificate } from "../../../services/apiService";
@@ -21,14 +20,14 @@ const BusinessCertificate = () => {
             if (res.status === 'OK') {
                 setLoading(false)
                 setChange(false);
-                toast.success(res.message)
+                message.success(res.message)
                 dispatch(setBusinessCertificate(res));
                 form.resetFields();
             }
             else {
                 setLoading(false);
                 setChange(false);
-                toast.error(res.message);
+                message.error(res.message);
             }
         })
     }

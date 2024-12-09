@@ -1,9 +1,8 @@
 // import { useEffect, useState } from "react";
 import "./RegisterPage.scss";
 import React, { useState } from 'react';
-import { Form, Input, Space, Button, DatePicker, Checkbox, Radio, Typography, Row, Col } from 'antd';
+import { Form, Input, Space, Button, DatePicker, Checkbox, Radio, Typography, Row, Col, message } from 'antd';
 import { studentRegister } from "../../services/apiService";
-import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
 const { Title } = Typography;
@@ -28,9 +27,9 @@ const RegisterPage = () => {
         console.log(values);
         let res = await studentRegister({ ...values, dob: DoB });
         if (res.status === "CREATED") {
-            toast.success(res.message);
+            message.success(res.message);
         } else {
-            toast.error(res.message);
+            message.error(res.message);
         }
     }
 

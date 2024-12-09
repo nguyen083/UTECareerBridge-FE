@@ -1,12 +1,11 @@
 import { DashboardOutlined, LogoutOutlined, SettingOutlined, SolutionOutlined, UserOutlined } from "@ant-design/icons";
-import { Avatar, Button, Divider, Flex, Menu, Popover, Typography } from "antd";
+import { Avatar, Button, Divider, Flex, Menu, Popover, Typography, message } from "antd";
 import React, { useEffect, useState } from "react";
 import './PopoverAvatar.scss';
 import { current, loading, stop } from "../../../redux/action/webSlice.jsx";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut, removeToken } from "../../../services/apiService.jsx";
 import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import { useRedux } from "../../../utils/useRedux.jsx";
 import { IoIosBusiness } from "react-icons/io";
 import { IoBriefcaseOutline } from "react-icons/io5";
@@ -71,11 +70,11 @@ const PopoverAvatar = () => {
                 removeToken();
                 dispatch(stop());
                 clearRedux();
-                toast.success(res.message);
+                message.success(res.message);
                 navigate('/home');
                 return true;
             } else {
-                toast.error(res.message);
+                message.error(res.message);
                 dispatch(stop());
             }
         }
