@@ -33,7 +33,7 @@ const PicturesWall = (props) => {
                         <InboxOutlined />
                     </p>
                     <p className="ant-upload-hint">
-                        Kéo thả hoặc click vào đây để tải ảnh lên
+                        Kéo thả hoặc nhấn vào đây để tải ảnh lên
                     </p>
                 </>
             ) : (

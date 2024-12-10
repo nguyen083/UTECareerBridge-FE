@@ -19,7 +19,7 @@ import {
     MenuOutlined
 } from '@ant-design/icons';
 import { Layout, Menu, Avatar, Flex, Badge, Space, message } from 'antd';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut, removeToken } from '../../services/apiService';
 import { current, loading, stop } from '../../redux/action/webSlice';
@@ -40,7 +40,7 @@ const siderStyle = {
 
 const itemSider = [
     {
-        key: '1',
+        key: '/admin/dashboard',
         icon: <DashboardOutlined />,
         label: 'Tổng quan',
     },
@@ -49,8 +49,8 @@ const itemSider = [
         icon: <TeamOutlined />,
         label: 'Quản lý người dùng',
         children: [
-            { key: '2.1', label: 'Ứng viên' },
-            { key: '2.2', label: 'Nhà tuyển dụng' },
+            { key: '/admin/manage-students', label: 'Ứng viên' },
+            { key: '/admin/manage-employers', label: 'Nhà tuyển dụng' },
         ]
     },
     {
@@ -58,8 +58,8 @@ const itemSider = [
         icon: <FileTextOutlined />,
         label: 'Quản lý công ty',
         children: [
-            { key: '3.1', label: 'Duyệt công ty' },
-            { key: '3.2', label: 'Duyệt bài đăng' },
+            { key: '/admin/company-approval', label: 'Duyệt công ty' },
+            { key: '/admin/post-approval', label: 'Duyệt bài đăng' },
         ]
     },
     {
@@ -67,9 +67,9 @@ const itemSider = [
         icon: <DollarOutlined />,
         label: 'Quản lý giao dịch',
         children: [
-            { key: '4.1', label: 'Gói dịch vụ' },
-            { key: '4.2', label: 'Lịch sử giao dịch' },
-            { key: '4.3', label: 'Báo cáo doanh thu' }
+            { key: '/admin/service-packages', label: 'Gói dịch vụ' },
+            { key: '/admin/transactions', label: 'Lịch sử giao dịch' },
+            { key: '/admin/revenue', label: 'Báo cáo doanh thu' }
         ]
     },
     {
@@ -77,8 +77,8 @@ const itemSider = [
         icon: <BarChartOutlined />,
         label: 'Thống kê & Báo cáo',
         children: [
-            { key: '5.1', label: 'Thống kê tổng quan' },
-            { key: '5.2', label: 'Báo cáo chi tiết' }
+            { key: '/admin/statistics', label: 'Thống kê tổng quan' },
+            { key: '/admin/reports', label: 'Báo cáo chi tiết' }
         ]
     },
     {
@@ -86,9 +86,9 @@ const itemSider = [
         icon: <GlobalOutlined />,
         label: 'Quản lý nội dung',
         children: [
-            { key: '6.1', label: 'Tin tức & Sự kiện' },
-            { key: '6.2', label: 'Banner & Quảng cáo' },
-            { key: '6.3', label: 'Trang tĩnh' }
+            { key: '/admin/news-events', label: 'Tin tức & Sự kiện' },
+            { key: '/admin/banners', label: 'Banner & Quảng cáo' },
+            { key: '/admin/pages', label: 'Trang tĩnh' }
         ]
     },
     {
@@ -96,8 +96,8 @@ const itemSider = [
         icon: <QuestionCircleOutlined />,
         label: 'Hỗ trợ',
         children: [
-            { key: '7.1', label: 'Ticket hỗ trợ' },
-            { key: '7.2', label: 'FAQ' }
+            { key: '/admin/support-tickets', label: 'Ticket hỗ trợ' },
+            { key: '/admin/faq', label: 'FAQ' }
         ]
     },
     {
@@ -105,42 +105,22 @@ const itemSider = [
         icon: <SettingOutlined />,
         label: 'Cài đặt hệ thống',
         children: [
-            { key: '8.1', label: 'Cấu hình chung' },
-            { key: '8.2', label: 'Phân quyền' },
-            { key: '8.3', label: 'Nhật ký hệ thống' }
+            { key: '/admin/settings', label: 'Cấu hình chung' },
+            { key: '/admin/roles', label: 'Phân quyền' },
+            { key: '/admin/logs', label: 'Nhật ký hệ thống' }
         ]
     },
-    { key: '9', icon: <LogoutOutlined />, label: 'Đăng xuất' },
+    { key: 'logout', icon: <LogoutOutlined />, label: 'Đăng xuất' },
 ];
 
-const navigationMap = {
-    '1': '/admin/dashboard',
-    '2.1': '/admin/manage-students',
-    '2.2': '/admin/manage-employers',
-    '3.1': '/admin/company-approval',
-    '3.2': '/admin/post-approval',
-    '4.1': '/admin/service-packages',
-    '4.2': '/admin/transactions',
-    '4.3': '/admin/revenue',
-    '5.1': '/admin/statistics',
-    '5.2': '/admin/reports',
-    '6.1': '/admin/news-events',
-    '6.2': '/admin/banners',
-    '6.3': '/admin/pages',
-    '7.1': '/admin/support-tickets',
-    '7.2': '/admin/faq',
-    '8.1': '/admin/settings',
-    '8.2': '/admin/roles',
-    '8.3': '/admin/logs',
-    '9': 'logout'
-};
+
 
 const AdminLayout = () => {
+    const location = useLocation();
     const { clearRedux } = useRedux();
     const dispatch = useDispatch();
     const [defaultImage, setDefaultImage] = useState(null);
     const navigate = useNavigate();
-    const [index, setIndex] = useState(useSelector(state => state.web.current));
     const [collapsed, setCollapsed] = useState(false);
 
     const adminInfo = useSelector(state => state.admin);
@@ -154,7 +134,7 @@ const AdminLayout = () => {
         //     //Lưu thông tin người dùng vào redux
         //     dispatch(setInfor(res.data));
         //     if (res.status !== 'OK') {
-        //         toast.error('Có lỗi xảy ra');
+        //         message.error('Có lỗi xảy ra');
         //     }
         // };
 
@@ -165,33 +145,28 @@ const AdminLayout = () => {
         // }
     }, []);
 
-    useEffect(() => {
-        const handleNavigation = async (key) => {
-            const path = navigationMap[key];
-            if (path === 'logout') {
-                try {
-                    dispatch(loading());
-                    const res = await logOut();
-                    if (res.status === 'OK') {
-                        clearRedux();
-                        removeToken();
-                        navigate('/');
-                        message.success(res.message);
-                    } else {
-                        message.error(res.message);
-                    }
-                } catch (error) {
-                    message.error(error.message);
-                } finally {
-                    dispatch(stop());
+    const handleNavigation = async (key) => {
+        if (key.key === 'logout') {
+            try {
+                dispatch(loading());
+                const res = await logOut();
+                if (res.status === 'OK') {
+                    clearRedux();
+                    removeToken();
+                    navigate('/');
+                    message.success(res.message);
+                } else {
+                    message.error(res.message);
                 }
-            } else if (path) {
-                navigate(path);
+            } catch (error) {
+                message.error(error.message);
+            } finally {
+                dispatch(stop());
             }
-        };
-
-        handleNavigation(index);
-    }, [index]);
+        } else {
+            navigate(key.key);
+        }
+    };
 
     useEffect(() => {
         setDefaultImage("https://res.cloudinary.com/utejobhub/image/upload/v1723888103/rg2do6iommv6wp840ixr.png")
@@ -216,11 +191,10 @@ const AdminLayout = () => {
                     />
                 </div>
                 <Menu
-                    onClick={(e) => {
-                        dispatch(current(e.key))
-                        setIndex(e.key)
-                    }}
-                    selectedKeys={[index]}
+                    onSelect={
+                        (key) => handleNavigation(key)
+                    }
+                    selectedKeys={[location.pathname]}
                     theme="light"
                     mode="inline"
                     items={itemSider}

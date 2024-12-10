@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './EmployerLayout.scss';
 import { IoBusinessOutline } from "react-icons/io5";
 import { LiaBriefcaseSolid } from "react-icons/lia";
-import { IoIosPeople } from "react-icons/io";
 import { FaRegNewspaper } from "react-icons/fa";
-import { MdOutlineMessage } from "react-icons/md";
 import { BsTicketPerforated } from "react-icons/bs";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdManageAccounts } from "react-icons/md";
@@ -29,7 +27,7 @@ import {
 } from '@ant-design/icons';
 import { Layout, Menu, Avatar, Flex, Badge, Button, Tooltip, message } from 'antd';
 import { getInfor, logOut, removeToken } from '../../services/apiService.jsx';
-import { current, loading, stop } from '../../redux/action/webSlice.jsx';
+import { loading, stop } from '../../redux/action/webSlice.jsx';
 import COLOR from '../styles/_variables.jsx';
 const { Header, Content, Footer, Sider } = Layout;
 const siderStyle = {

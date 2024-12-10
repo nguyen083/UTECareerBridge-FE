@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs, Modal, Form, Input, DatePicker, message, Select, Space, Button, message } from 'antd';
+import { Tabs, Modal, Form, Input, DatePicker, Select, Space, Button, message } from 'antd';
 import { UserOutlined, LockOutlined, StopOutlined } from '@ant-design/icons';
 import TableListUser from './TableListUser';
 import BoxContainer from '../../Generate/BoxContainer';

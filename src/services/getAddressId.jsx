@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-    baseURL: 'https://api.nosomovo.xyz/',
+    // baseURL: 'https://api.nosomovo.xyz/',
     withCredentials: false,
 });
 export const apiService = {
@@ -16,31 +16,34 @@ export const apiService = {
     },
     async getInforAddress(address, provinceId, districtId, wardId) {
         try {
-            const resProvince = await axiosInstance.get(`/province/getdetail/${provinceId}`);
-            const provinceName = resProvince.data.name;
+            const resProvince = await this.getNameAddress(wardId);
 
-            const resDistrict = await axiosInstance.get(`/district/getdetail/${districtId}`);
-            const districtName = resDistrict.data.name;
-
-            const resWard = await axiosInstance.get(`/commune/getdetail/${wardId}`);
-            const wardName = resWard.data.name;
-
-            return `${address}, ${wardName}, ${districtName}, ${provinceName}`;
+            return `${address}, ${resProvince.data.data.name}`;
         } catch (error) {
             console.error("Error fetching address information:", error);
             throw error;
         }
     },
-    // getAllFolk() {
-    //     return axiosInstance.get(`/ethnic/getalllist/`)
+
+    // getAllProvince() {
+    //     return axiosInstance.get(`/province/getalllist/193`)
     // },
+    // getDistrictByProvinceId(id) {
+    //     return axiosInstance.get(`/district/getalllist/${id}`)
+    // },
+    // getWardByDistrictId(id) {
+    //     return axiosInstance.get(`/commune/getalllist/${id}`)
+    // },
+    getNameAddress(id) {
+        return axiosInstance.get(`https://esgoo.net/api-tinhthanh/5/${id}.htm`)
+    },
     getAllProvince() {
-        return axiosInstance.get(`/province/getalllist/193`)
+        return axiosInstance.get(`https://esgoo.net/api-tinhthanh/1/0.htm`)
     },
     getDistrictByProvinceId(id) {
-        return axiosInstance.get(`/district/getalllist/${id}`)
+        return axiosInstance.get(`https://esgoo.net/api-tinhthanh/2/${id}.htm`)
     },
     getWardByDistrictId(id) {
-        return axiosInstance.get(`/commune/getalllist/${id}`)
+        return axiosInstance.get(`https://esgoo.net/api-tinhthanh/3/${id}.htm`)
     },
 }

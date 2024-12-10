@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Statistic, Progress, Table, Select, Space   } from 'antd';
+import { Card, Row, Col, Statistic, Progress, Table, Select, Space } from 'antd';
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
-import { 
-  UserOutlined, 
-  BankOutlined, 
-  FileTextOutlined,
+import {
+  UserOutlined,
+  BankOutlined,
   RiseOutlined,
   DollarOutlined,
-  ShoppingOutlined,
-  StarOutlined,
-  TeamOutlined
+
 } from '@ant-design/icons';
 import { getStatisticsByJobCategory, getRevenueByMonth, getStatisticUser, getStatisticPackage } from '../../../services/apiService';
 const { Option } = Select;
@@ -17,7 +14,7 @@ const AdminDashboard = () => {
   const [jobCategoryStats, setJobCategoryStats] = useState([]);
   const [currentMonthRevenue, setCurrentMonthRevenue] = useState(0);
   const [packageStats, setPackageStats] = useState([]);
-  const [statisticUser,setStatisticUser]=useState({
+  const [statisticUser, setStatisticUser] = useState({
     totalCandidates: 0,
     totalEmployers: 0,
   });
@@ -46,7 +43,7 @@ const AdminDashboard = () => {
         // Tính phần trăm và làm tròn đến 1 chữ số thập phân
         percentage: ((pkg.packageCount / totalPackages) * 100).toFixed(1)
       }));
-      
+
       // Sắp xếp theo số lượng công việc giảm dần (tùy chọn)
       transformedData.sort((a, b) => b.value - a.value);
       setPackageStats(transformedData);
@@ -73,7 +70,7 @@ const AdminDashboard = () => {
         subscriptions: item.numberOfPackages
       }));
       const currentMonthRevenue = new Date().getMonth() + 1;
-      const currentYear=new Date().getFullYear();
+      const currentYear = new Date().getFullYear();
       if (!filters.year || filters.year === currentYear) {
         const currentMonthData = transformedData.find(item => item.month === currentMonthRevenue);
         setCurrentMonthRevenue(currentMonthData?.revenue || 0);
@@ -93,30 +90,30 @@ const AdminDashboard = () => {
   const fetchJobCategoryStats = async () => {
     try {
       setLoading(true);
-    
+
       const params = {};
       if (filters.month) params.month = filters.month;
       if (filters.year) params.year = filters.year;
-      
+
       const response = await getStatisticsByJobCategory(params);
-      
+
       const filteredData = response.data.filter(category => category.jobCount > 0);
-  
-        // Tính tổng số jobs
-        const totalJobs = filteredData.reduce((sum, category) => sum + category.jobCount, 0);
-        
-        // Transform data và tính percentage
-        const transformedData = filteredData.map(category => ({
-          name: category.categoryName,
-          value: category.jobCount,
-          // Tính phần trăm và làm tròn đến 1 chữ số thập phân
-          percentage: ((category.jobCount / totalJobs) * 100).toFixed(1)
-        }));
-        
-        // Sắp xếp theo số lượng công việc giảm dần (tùy chọn)
-        transformedData.sort((a, b) => b.value - a.value);
-        
-      setJobCategoryStats(transformedData); 
+
+      // Tính tổng số jobs
+      const totalJobs = filteredData.reduce((sum, category) => sum + category.jobCount, 0);
+
+      // Transform data và tính percentage
+      const transformedData = filteredData.map(category => ({
+        name: category.categoryName,
+        value: category.jobCount,
+        // Tính phần trăm và làm tròn đến 1 chữ số thập phân
+        percentage: ((category.jobCount / totalJobs) * 100).toFixed(1)
+      }));
+
+      // Sắp xếp theo số lượng công việc giảm dần (tùy chọn)
+      transformedData.sort((a, b) => b.value - a.value);
+
+      setJobCategoryStats(transformedData);
 
       setError(null);
     } catch (err) {
@@ -128,8 +125,8 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchJobCategoryStats();
   }, [filters]);
-  
-  const fetchStatisticUser=async()=>{
+
+  const fetchStatisticUser = async () => {
     try {
       setLoading(true);
       const response = await getStatisticUser();
@@ -193,13 +190,16 @@ const AdminDashboard = () => {
   const columns = [
     { title: 'Công ty', dataIndex: 'company', key: 'company' },
     { title: 'Tin đăng', dataIndex: 'jobPosts', key: 'jobPosts' },
-    { title: 'Chi tiêu', dataIndex: 'spending', key: 'spending', 
-      render: (value) => `$${value.toLocaleString()}` },
+    {
+      title: 'Chi tiêu', dataIndex: 'spending', key: 'spending',
+      render: (value) => `$${value.toLocaleString()}`
+    },
     { title: 'Gói dịch vụ', dataIndex: 'activeSubscription', key: 'activeSubscription' }
   ];
   const FilterControls = () => (
     <Space style={{ marginBottom: 16 }}>
       <Select
+        size='large'
         value={filters.month}
         onChange={(value) => setFilters(prev => ({ ...prev, month: value }))}
         style={{ width: 120 }}
@@ -210,6 +210,7 @@ const AdminDashboard = () => {
         ))}
       </Select>
       <Select
+        size='large'
         value={filters.year}
         onChange={(value) => setFilters(prev => ({ ...prev, year: value }))}
         style={{ width: 120 }}
@@ -223,7 +224,7 @@ const AdminDashboard = () => {
   );
   return (
     <div style={{ padding: 24, background: '#f0f2f5', minHeight: '100vh' }}>
-      <Card style={{ marginBottom: 16 }}>
+      <Card style={{ marginBottom: 16 }} className='box_shadow'>
         <FilterControls />
       </Card>
       {/* Overview Statistics */}
@@ -271,76 +272,76 @@ const AdminDashboard = () => {
       {/* Revenue and Subscriptions */}
       <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
         <Col xs={24} lg={24}>
-        <Card title="Doanh thu theo tháng">
-          <div style={{ height: 400 }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={revenueByMonth}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis 
-                  dataKey="month"
-                  axisLine={{ stroke: '#d9d9d9' }}
-                  tick={{ fill: '#8c8c8c' }}
-                />
-                <YAxis 
-                  yAxisId="left"
-                  tickFormatter={(value) => 
-                    new Intl.NumberFormat('vi-VN', {
-                      style: 'currency',
-                      currency: 'VND',
-                      minimumFractionDigits: 0,
-                      maximumFractionDigits: 0
-                    }).format(value)
-                  }
-                  domain={[0, dataMax => Math.ceil(dataMax * 1.1)]}
-                  axisLine={{ stroke: '#d9d9d9' }}
-                  tick={{ fill: '#8c8c8c' }}
-                  width={120}
-                />
-                <YAxis 
-                  yAxisId="right" 
-                  orientation="right"
-                  domain={[0, dataMax => Math.ceil(dataMax * 1.1)]}
-                  axisLine={{ stroke: '#d9d9d9' }}
-                  tick={{ fill: '#8c8c8c' }}
-                />
-                <Tooltip 
-                  formatter={(value, name) => {
-                    if (name === "Doanh thu (VND)") {
-                      return [new Intl.NumberFormat('vi-VN', {
+          <Card title="Doanh thu theo tháng">
+            <div style={{ height: 400 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={revenueByMonth}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="month"
+                    axisLine={{ stroke: '#d9d9d9' }}
+                    tick={{ fill: '#8c8c8c' }}
+                  />
+                  <YAxis
+                    yAxisId="left"
+                    tickFormatter={(value) =>
+                      new Intl.NumberFormat('vi-VN', {
                         style: 'currency',
                         currency: 'VND',
                         minimumFractionDigits: 0,
                         maximumFractionDigits: 0
-                      }).format(value), name];
+                      }).format(value)
                     }
-                    return [value, name];
-                  }}
-                />
-                <Legend />
-                <Line 
-                  yAxisId="left"
-                  type="monotone" 
-                  dataKey="revenue" 
-                  stroke="#52c41a" 
-                  name="Doanh thu (VND)"
-                  strokeWidth={2}
-                  dot={{ stroke: '#52c41a', strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6 }}
-                />
-                <Line 
-                  yAxisId="right"
-                  type="monotone" 
-                  dataKey="subscriptions" 
-                  stroke="#1890ff" 
-                  name="Số lượng gói"
-                  strokeWidth={2}
-                  dot={{ stroke: '#1890ff', strokeWidth: 2, r: 4 }}
-                  activeDot={{ r: 6 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </Card>
+                    domain={[0, dataMax => Math.ceil(dataMax * 1.1)]}
+                    axisLine={{ stroke: '#d9d9d9' }}
+                    tick={{ fill: '#8c8c8c' }}
+                    width={120}
+                  />
+                  <YAxis
+                    yAxisId="right"
+                    orientation="right"
+                    domain={[0, dataMax => Math.ceil(dataMax * 1.1)]}
+                    axisLine={{ stroke: '#d9d9d9' }}
+                    tick={{ fill: '#8c8c8c' }}
+                  />
+                  <Tooltip
+                    formatter={(value, name) => {
+                      if (name === "Doanh thu (VND)") {
+                        return [new Intl.NumberFormat('vi-VN', {
+                          style: 'currency',
+                          currency: 'VND',
+                          minimumFractionDigits: 0,
+                          maximumFractionDigits: 0
+                        }).format(value), name];
+                      }
+                      return [value, name];
+                    }}
+                  />
+                  <Legend />
+                  <Line
+                    yAxisId="left"
+                    type="monotone"
+                    dataKey="revenue"
+                    stroke="#52c41a"
+                    name="Doanh thu (VND)"
+                    strokeWidth={2}
+                    dot={{ stroke: '#52c41a', strokeWidth: 2, r: 4 }}
+                    activeDot={{ r: 6 }}
+                  />
+                  <Line
+                    yAxisId="right"
+                    type="monotone"
+                    dataKey="subscriptions"
+                    stroke="#1890ff"
+                    name="Số lượng gói"
+                    strokeWidth={2}
+                    dot={{ stroke: '#1890ff', strokeWidth: 2, r: 4 }}
+                    activeDot={{ r: 6 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </Card>
         </Col>
 
         <Col xs={24} lg={12}>
@@ -348,47 +349,47 @@ const AdminDashboard = () => {
             <div style={{ height: 400 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                <Pie
-                  data={packageStats}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={40}    // Thêm innerRadius để tạo doughnut chart (tùy chọn)
-                  outerRadius={110}   // Tăng outerRadius từ 80 lên 120
-                  fill="#722ed1"
-                  paddingAngle={1}    // Thêm khoảng cách giữa các phần (tùy chọn)
-                  label={({name, value, percentage}) => `${value} gói dịch vụ - ${percentage}%`}
-                  labelLine={{ stroke: '#555', strokeWidth: 0.5 }}  // Tùy chỉnh đường kẻ label
-                >
-                  {packageStats.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip 
-                  formatter={(value, name, props) => [
-                    `${value} việc làm (${packageStats.find(item => item.name === name)?.percentage}%)`,
-                    name
-                  ]}
-                  contentStyle={{
-                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                    border: '1px solid #ccc',
-                    borderRadius: '4px',
-                    padding: '6px'
-                  }}
-                />
-                <Legend 
-                  layout="vertical" 
-                  align="right"
-                  verticalAlign="middle"
-                  wrapperStyle={{
-                    paddingLeft: '20px'
-                  }}
-                />
-              </PieChart>
+                  <Pie
+                    data={packageStats}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={40}    // Thêm innerRadius để tạo doughnut chart (tùy chọn)
+                    outerRadius={110}   // Tăng outerRadius từ 80 lên 120
+                    fill="#722ed1"
+                    paddingAngle={1}    // Thêm khoảng cách giữa các phần (tùy chọn)
+                    label={({ name, value, percentage }) => `${value} gói dịch vụ - ${percentage}%`}
+                    labelLine={{ stroke: '#555', strokeWidth: 0.5 }}  // Tùy chỉnh đường kẻ label
+                  >
+                    {packageStats.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(value, name, props) => [
+                      `${value} việc làm (${packageStats.find(item => item.name === name)?.percentage}%)`,
+                      name
+                    ]}
+                    contentStyle={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                      border: '1px solid #ccc',
+                      borderRadius: '4px',
+                      padding: '6px'
+                    }}
+                  />
+                  <Legend
+                    layout="vertical"
+                    align="right"
+                    verticalAlign="middle"
+                    wrapperStyle={{
+                      paddingLeft: '20px'
+                    }}
+                  />
+                </PieChart>
               </ResponsiveContainer>
             </div>
           </Card>
@@ -398,50 +399,50 @@ const AdminDashboard = () => {
         <Col xs={24} lg={12}>
           <Card title="Việc làm theo ngành">
             <div style={{ height: 400 }}>
-            <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-                <Pie
-                  data={jobCategoryStats}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={40}    // Thêm innerRadius để tạo doughnut chart (tùy chọn)
-                  outerRadius={110}   // Tăng outerRadius từ 80 lên 120
-                  fill="#722ed1"
-                  paddingAngle={1}    // Thêm khoảng cách giữa các phần (tùy chọn)
-                  label={({name, value, percentage}) => `${value} việc làm - ${percentage}%`}
-                  labelLine={{ stroke: '#555', strokeWidth: 0.5 }}  // Tùy chỉnh đường kẻ label
-                >
-                  {jobCategoryStats.map((entry, index) => (
-                    <Cell 
-                      key={`cell-${index}`} 
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip 
-                  formatter={(value, name, props) => [
-                    `${value} việc làm (${jobCategoryStats.find(item => item.name === name)?.percentage}%)`,
-                    name
-                  ]}
-                  contentStyle={{
-                    backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                    border: '1px solid #ccc',
-                    borderRadius: '4px',
-                    padding: '6px'
-                  }}
-                />
-                <Legend 
-                  layout="vertical" 
-                  align="right"
-                  verticalAlign="middle"
-                  wrapperStyle={{
-                    paddingLeft: '20px'
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={jobCategoryStats}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={40}    // Thêm innerRadius để tạo doughnut chart (tùy chọn)
+                    outerRadius={110}   // Tăng outerRadius từ 80 lên 120
+                    fill="#722ed1"
+                    paddingAngle={1}    // Thêm khoảng cách giữa các phần (tùy chọn)
+                    label={({ name, value, percentage }) => `${value} việc làm - ${percentage}%`}
+                    labelLine={{ stroke: '#555', strokeWidth: 0.5 }}  // Tùy chỉnh đường kẻ label
+                  >
+                    {jobCategoryStats.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(value, name, props) => [
+                      `${value} việc làm (${jobCategoryStats.find(item => item.name === name)?.percentage}%)`,
+                      name
+                    ]}
+                    contentStyle={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                      border: '1px solid #ccc',
+                      borderRadius: '4px',
+                      padding: '6px'
+                    }}
+                  />
+                  <Legend
+                    layout="vertical"
+                    align="right"
+                    verticalAlign="middle"
+                    wrapperStyle={{
+                      paddingLeft: '20px'
+                    }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
             </div>
           </Card>
         </Col>
@@ -449,8 +450,8 @@ const AdminDashboard = () => {
         {/* Additional Analytics */}
         <Col xs={24}>
           <Card title="Top nhà tuyển dụng theo chi tiêu">
-            <Table 
-              columns={columns} 
+            <Table
+              columns={columns}
               dataSource={topEmployersData}
               pagination={false}
             />
@@ -465,9 +466,9 @@ const AdminDashboard = () => {
                   <XAxis dataKey="month" />
                   <YAxis />
                   <Tooltip />
-                  <Line 
-                    type="monotone" 
-                    dataKey="applications" 
+                  <Line
+                    type="monotone"
+                    dataKey="applications"
                     stroke="#fa8c16"
                     strokeWidth={2}
                   />
@@ -477,7 +478,7 @@ const AdminDashboard = () => {
           </Card>
         </Col>
 
-       
+
 
         <Col xs={24} lg={8}>
           <Card title="Trạng thái ứng viên">
@@ -504,8 +505,8 @@ const AdminDashboard = () => {
                     <span>{item.name}</span>
                     <span>${item.revenue}</span>
                   </div>
-                  <Progress 
-                    percent={Math.round((item.revenue / 52000) * 100)} 
+                  <Progress
+                    percent={Math.round((item.revenue / 52000) * 100)}
                     size="small"
                   />
                 </div>

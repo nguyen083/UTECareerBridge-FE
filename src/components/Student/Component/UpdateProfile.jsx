@@ -3,7 +3,7 @@ import styles from "./UpdateProfile.module.scss";
 import React, { useEffect, useState } from "react";
 import { Form, Input, Modal, Row, Col, Select, Radio, Space, DatePicker, InputNumber, message } from "antd";
 import { apiService } from "../../../services/getAddressId";
-import UploadAvatar from "./UploadAvatar.jsx";
+import { UploadAvatar } from "./UploadAvatar.jsx";
 import { getAllJobCategories, updateInforStudent } from "../../../services/apiService";
 import { deleteImageFromCloudinaryByLink } from "../../../services/uploadCloudary.jsx";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,10 +29,10 @@ const UpdateProfile = () => {
 
     useEffect(() => {
         apiService.getAllProvince().then((res) => {
-            setProvince(res.data.map((item) => {
+            setProvince(res.data.data.map((item) => {
                 return {
                     value: +item.id,
-                    label: item.name
+                    label: item.full_name
                 }
             }));
         });
@@ -50,10 +50,10 @@ const UpdateProfile = () => {
     }, [categories]);
     useEffect(() => {
         apiService.getDistrictByProvinceId(currentProvinceId).then((res) => {
-            setCurrentListDistrict(res.data.map((item) => {
+            setCurrentListDistrict(res.data.data.map((item) => {
                 return {
                     value: +item.id,
-                    label: item.name
+                    label: item.full_name
                 }
             }));
         });
@@ -61,17 +61,17 @@ const UpdateProfile = () => {
 
     useEffect(() => {
         apiService.getWardByDistrictId(currentDistrictId).then((res) => {
-            setCurrentListWard(res.data.map((item) => {
+            setCurrentListWard(res.data.data.map((item) => {
                 return {
                     value: +item.id,
-                    label: item.name
+                    label: item.full_name
                 }
             }));
         });
     }, [currentDistrictId]);
 
     const handleUpdateProfile = (values) => {
-        deleteImageFromCloudinaryByLink(infor.profileImage)
+        // deleteImageFromCloudinaryByLink(infor.profileImage)
         values.dob = values.dob.format("DD/MM/YYYY");
         updateInforStudent(values).then((res) => {
             res.status === "OK" ? message.success(res.message) : message.error(res.message);

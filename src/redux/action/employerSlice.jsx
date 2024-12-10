@@ -20,6 +20,8 @@ const initialState = {
     companySize: null,
     businessCertificate: null,
     industryId: null,
+    countFollower: null,
+    countJob: null,
     id: null,
     benefitArray: [],
 };
@@ -48,6 +50,8 @@ export const employerSlice = createSlice({
             state.businessCertificate = action.payload.businessCertificate;
             state.industryId = action.payload.industry.industryId;
             state.id = action.payload.id;
+            state.countFollower = action.payload.countFollower;
+            state.countJob = action.payload.countJob;
             state.benefitArray = action.payload.benefitDetails.map((benefit) => {
                 return {
                     benefitId: benefit.benefitId,
@@ -77,6 +81,8 @@ export const employerSlice = createSlice({
             state.companySize = null;
             state.businessCertificate = null;
             state.industryId = null;
+            state.countFollower = null;
+            state.countJob = null;
             state.id = null;
             state.benefitArray = [];
         },

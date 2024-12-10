@@ -201,22 +201,9 @@ const EmployerCompany = () => {
                             <CustomizeQuill />
                         </Form.Item>
                         <Form.Item name="companyLogo" className='col-12 mt-0' label="Logo công ty" tooltip="Kéo thả hoặc nhấp chọn để tải ảnh lên">
-                            <ImgCrop
-                                rotate
-                                quality={1}
-                                showReset
-                                modalTitle='Cắt ảnh'
-                                modalOk='Xác nhận'
-                                modalCancel='Hủy bỏ'
-                                resetText='Đặt lại'
-                                aspectSlider
-                                aspect={1 / 1}
-                                modalWidth={600}
-                            >
-                                <PicturesWall listType={"text"} defaultImage={defaultLogo} />
-                            </ImgCrop>
+                            <PicturesWall listType={"text"} defaultImage={defaultLogo} />
                         </Form.Item>
-                        <Form.Item name="backgroundImage" className='col-12 mt-0' label="Hình Ảnh Công Ty">
+                        <Form.Item name="backgroundImage" className='col-12 mt-0' label="Hình Ảnh Công Ty" tooltip="Kéo thả hoặc nhấp chọn để tải ảnh lên">
                             <PicturesWall listType={"text"} defaultImage={defaultBackground} />
                         </Form.Item>
                         <Form.Item name="companyWebsite" className='col-12 mt-0' label="Website công ty">

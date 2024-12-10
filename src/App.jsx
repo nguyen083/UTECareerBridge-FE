@@ -1,8 +1,7 @@
 import './App.scss';
 import { Route, Routes, Navigate } from "react-router-dom";
 import { ConfigProvider, Spin } from 'antd';
-import { ToastContainer } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css";
+
 import { useSelector } from 'react-redux';
 import HomePage from './components/Student/HomePage/HomePage.jsx';
 import Page404 from './components/User/Page404.jsx';
@@ -56,6 +55,7 @@ import JobSearchPage from './components/Student/Search/JobSearchPage.jsx';
 import AccountManagement from './components/Student/PersonalLayout/AccountManagement/AccountManagement.jsx';
 import ListResumes from './components/Employer/ListResumes/ListResumes.jsx';
 import ListOrder from './components/Employer/Order/ListOrder.jsx';
+import ListEvent from './components/Admin/ManageEvent/ListEvent.jsx';
 const App = () => {
   return (
     <ConfigProvider locale={viVN}
@@ -66,6 +66,7 @@ const App = () => {
           fontFamily: "'Inter', sans-serif",
           inputFontSize: '1rem',
           //inputFontSizeLG: '1rem',
+
         },
         components: {
           Descriptions: {
@@ -153,8 +154,10 @@ const App = () => {
             <Route path='/home' element={<HomePage />} />
             <Route path='/event' element={<EventPage />}>
 
-            </Route><Route path='/event-detail' element={<EventDetail />} />
+            </Route>
+
             <Route element={<ViewLayout width='90%' />}>
+              <Route path='/event-detail/:id' element={<EventDetail />} />
               <Route path='/search' element={<JobSearchPage />} />
             </Route>
 
@@ -215,6 +218,7 @@ const App = () => {
             <Route path='manage-employers' element={<ManageListEmployer />} />
             <Route path='company-approval' element={<CompanyApproval />} />
             <Route path='post-approval' element={<PostApproval />} />
+            <Route path='news-events' element={<ListEvent />} />
           </Route>
 
           <Route path='forgot-password' element={<BackgroundAndForm />}>
@@ -236,17 +240,6 @@ const App = () => {
         </Routes>
       </Spin>
       {/* <Navigation/> */}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
     </ConfigProvider >
   );
 }

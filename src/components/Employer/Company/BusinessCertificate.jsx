@@ -34,7 +34,7 @@ const BusinessCertificate = () => {
     const onChange = () => {
         Modal.confirm({
             title: 'Xác nhận gửi thông tin',
-            content: <span className="text-center">Bằng cách nhấp vào nút xác nhận, bạn đồng ý rằng việc không cung cấp hoặc cung cấp thông tin sai được coi là một vi phạm có thể dẫn tới tạm dừng dịch vụ và/hoặc hủy tài khoản mà không được hoàn tiền. Bạn có thể kiểm tra lại thông tin đã cung cấp</span>,
+            content: <span className="f-16">Bằng cách nhấp vào nút xác nhận, bạn đồng ý rằng việc không cung cấp hoặc cung cấp thông tin sai được coi là một vi phạm có thể dẫn tới tạm dừng dịch vụ và/hoặc hủy tài khoản mà không được hoàn tiền. Bạn có thể kiểm tra lại thông tin đã cung cấp</span>,
             onOk() {
                 setChange(true);
             },
@@ -55,9 +55,9 @@ const BusinessCertificate = () => {
                 </div>
             </BoxContainer>
             <BoxContainer>
-                <Flex gap="1rem" align="center">
+                <Flex gap="1rem" align="center" >
                     < Form className=" col-12 col-md-7" onChange={onChange} form={form} onFinish={onFinish} layout="vertical" size="large">
-                        <Form.Item name="businessCertificate" label="Ảnh giấy chứng nhận kinh doanh">
+                        <Form.Item name="businessCertificate" label="Ảnh giấy chứng nhận kinh doanh" tooltip="Kéo thả hoặc nhấp chọn để tải ảnh lên">
                             <PicturesWall defaultImage={defaultImage} listType={"text"} />
                         </Form.Item>
 

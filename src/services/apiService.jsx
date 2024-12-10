@@ -350,6 +350,19 @@ const getOrderById = async (id) => {
 const getJobPackage = async () => {
   return axios.get('employers/manage-package/get-all-non-expired');
 }
+const getAllEvent = async (params) => {
+  if (!params.eventType) {
+    delete params.eventType; // Xóa eventType nếu không tồn tại
+  }
+  const queryString = new URLSearchParams(params).toString();
+  return axios.get(`admin/events/get-all?${queryString}`);
+}
+const createEvent = async (values) => {
+  return axios.post('admin/events', values);
+}
+const getCountStudentApplied = async () => {
+  return axios.get('employers/get-total-student-application');
+}
 export {
   uploadCV,
   setToken,
@@ -435,4 +448,7 @@ export {
   getDetailOrder,
   getOrderById,
   getJobPackage,
+  getAllEvent,
+  createEvent,
+  getCountStudentApplied
 }
