@@ -56,6 +56,7 @@ import AccountManagement from './components/Student/PersonalLayout/AccountManage
 import ListResumes from './components/Employer/ListResumes/ListResumes.jsx';
 import ListOrder from './components/Employer/Order/ListOrder.jsx';
 import ListEvent from './components/Admin/ManageEvent/ListEvent.jsx';
+import PaymentReturn from './components/Employer/Order/PaymentReturn.jsx';
 const App = () => {
   return (
     <ConfigProvider locale={viVN}
@@ -153,8 +154,8 @@ const App = () => {
             <Route index element={<Navigate to={"/home"} replace />} />
             <Route path='/home' element={<HomePage />} />
             <Route path='/event' element={<EventPage />}>
-
             </Route>
+            <Route path='/vnpay-payment-return' element={<PaymentReturn />} />
 
             <Route element={<ViewLayout width='90%' />}>
               <Route path='/event-detail/:id' element={<EventDetail />} />

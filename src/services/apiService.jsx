@@ -332,7 +332,10 @@ const updateQuantityPackage = async (values) => {
   return axios.post(`carts/add-to-cart`, formData);
 }
 const createOrder = async (couponCode) => {
-  const formData = objectToFormData({ couponCode });
+  const formData = new FormData();
+  if (couponCode) {
+    formData.append('couponCode', couponCode);
+  }
   return axios.post(`orders/create-order`, formData);
 }
 const createPayment = async (orderId) => {
