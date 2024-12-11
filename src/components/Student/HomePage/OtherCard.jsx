@@ -3,6 +3,8 @@ import { Card, Button } from "antd";
 import "./OrtherCard.scss";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { FaLongArrowAltRight } from "react-icons/fa";
+
 
 const OrtherCard = () => {
   const navigate = useNavigate();
@@ -27,7 +29,7 @@ const OrtherCard = () => {
       title: "Tạo CV Ứng Tuyển",
       description:
         "Hồ sơ thể hiện thế mạnh của bản thân thông qua việc đính kèm học vấn, kinh nghiệm, dự án, kỹ năng,... của mình",
-      buttonText: "Tạo Profile",
+      buttonText: "Tạo CV",
       image: "https://cdn-new.topcv.vn/unsafe/https://static.topcv.vn/v4/image/welcome/sel-growth/cv-builder-desktop.png",
       onclick: () => {
         isAuthenticated("/profile");
@@ -40,7 +42,7 @@ const OrtherCard = () => {
       buttonText: "Tham gia ngay",
       image: "https://res.cloudinary.com/utejobhub/image/upload/v1733329165/Green_Geometric_We_re_Hiring_Flyer_Set_rfuuwq.jpg",
       onclick: () => {
-        isAuthenticated("/event");
+        navigate("/event");
       }
     },
   ];
@@ -64,7 +66,7 @@ const OrtherCard = () => {
                   href={card.buttonLink}
                   className="profile-cards__button"
                 >
-                  {card.buttonText} →
+                  {card.buttonText} <FaLongArrowAltRight />
                 </Button>
               </div>
               <div className="profile-cards__image">

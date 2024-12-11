@@ -1,13 +1,15 @@
+import { Col, Row } from "antd";
 import { Outlet } from "react-router-dom";
+import "./BackgroundAndForm.scss";
 const BackgroundAndForm = () => {
     return (
-        <div className="d-flex">
-            <div className='col-lg-4 sticky-top' style={{ height: "100vh", backgroundColor: "#ADADAD" }}>
-            </div>
-            <div className='col-lg-8 col-12' >
+        <Row className="layout-container">
+            <Col span={12} className="sticky-top">
+            </Col>
+            <Col span={12} >
                 <Outlet />
-            </div>
-        </div>
+            </Col>
+        </Row>
     );
 }
 export default BackgroundAndForm;

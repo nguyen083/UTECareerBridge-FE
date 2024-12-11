@@ -56,12 +56,12 @@ const itemSider = [
     { key: 'logout', icon: <LogoutOutlined />, label: 'Đăng xuất' },
 ];
 const itemHeader = [
-    { key: '1', label: 'Việc làm' },
-    { key: '2', label: 'Tuyển dụng' },
-    { key: '3', label: 'Sự kiện' },
-    { key: '4', label: 'Liên hệ' },
-    { key: '5', label: 'Điều khoản' },
-    { key: '6', label: 'Về chúng tôi' },
+    // { key: '1', label: 'Việc làm' },
+    // { key: '2', label: 'Tuyển dụng' },
+    // { key: '3', label: 'Sự kiện' },
+    // { key: '4', label: 'Liên hệ' },
+    // { key: '5', label: 'Điều khoản' },
+    // { key: '6', label: 'Về chúng tôi' },
 ];
 
 
@@ -146,7 +146,7 @@ const EmployerLayout = () => {
             <Layout className='site-layout'>
                 <Header
                     className='header-employer'>
-                    <Flex align='center' justify='space-between'>
+                    <Flex align='center' justify='space-between' className='h-100'>
                         <MenuOutlined className='font-size' onClick={() => setCollapsed(!collapsed)} />
                         <div>
                             <Menu
@@ -170,13 +170,13 @@ const EmployerLayout = () => {
                                     </Button>
                                 </Badge>
                             </Tooltip>
-                            <Tooltip title='Thông báo' placement='bottom' color={COLOR.bgTooltipColor}>
+                            {/* <Tooltip title='Thông báo' placement='bottom' color={COLOR.bgTooltipColor}>
                                 <Badge count={0}>
                                     <Button className='btn-header rounded-circle btn-bell' size='large' type="text">
                                         <BellOutlined />
                                     </Button>
                                 </Badge>
-                            </Tooltip>
+                            </Tooltip> */}
                             <Avatar size={'large'} className='avatar' icon={<UserOutlined />} src={avatar && <img src={avatar} alt='' />} />
                             {/* <span className={`username d-none d-lg-inline`}>{name}</span> */}
                         </Flex>

@@ -86,31 +86,32 @@ const Notification = ({ userId = null }) => {
     }, []);
 
     return (
-        <Popover
-            overlayClassName="notification-popover"
-            arrow={false}
-            placement="bottom"
-            title={
-                <Flex justify="space-between">
-                    <Typography.Title className="notification-title-header" level={5}>
-                        Thông báo
-                    </Typography.Title>
-                    <Tooltip color={COLOR.bgTooltipColor} title="Làm mới">
-                        <SyncOutlined className="me-2" spin={loading} onClick={handleRefresh} />
-                    </Tooltip>
-                </Flex>
-            }
-            content={<ListNotification notification={notification} userId={userId} />}
-            trigger={['click']}
-        >
-            <Tooltip title="Thông báo" placement="bottom" color={COLOR.bgTooltipColor}>
-                <Badge count={notification.filter((item) => item.read === true).length}>
-                    <Button className="btn-header rounded-circle btn-bell" size="large" type="text">
-                        <BellOutlined />
-                    </Button>
-                </Badge>
-            </Tooltip>
-        </Popover>
+        // <Popover
+        //     overlayClassName="notification-popover"
+        //     arrow={false}
+        //     placement="bottom"
+        //     title={
+        //         <Flex justify="space-between">
+        //             <Typography.Title className="notification-title-header" level={5}>
+        //                 Thông báo
+        //             </Typography.Title>
+        //             <Tooltip color={COLOR.bgTooltipColor} title="Làm mới">
+        //                 <SyncOutlined className="me-2" spin={loading} onClick={handleRefresh} />
+        //             </Tooltip>
+        //         </Flex>
+        //     }
+        //     content={<ListNotification notification={notification} userId={userId} />}
+        //     trigger={['click']}
+        // >
+        //     <Tooltip title="Thông báo" placement="bottom" color={COLOR.bgTooltipColor}>
+        //         <Badge count={notification.filter((item) => item.read === true).length}>
+        //             <Button className="btn-header rounded-circle btn-bell" size="large" type="text">
+        //                 <BellOutlined />
+        //             </Button>
+        //         </Badge>
+        //     </Tooltip>
+        // </Popover>
+        <div></div>
     );
 };
 

@@ -2,7 +2,7 @@ import BoxContainer from "../Generate/BoxContainer";
 import React, { useEffect, useState } from 'react';
 import { Flex, Card, Button, Typography, Image, Anchor, Descriptions, Spin, message, Avatar } from 'antd';
 import HtmlContent from "../Generate/HtmlContent";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { checkFollowCompany, followCompany, getCompanyById, unfollowCompany } from "../../services/apiService";
 import YouTubeVideo from "../Generate/YouTubeVideo";
 import BenefitCard from "../Generate/BenefitComponent";
@@ -23,6 +23,7 @@ const InforCompany = () => {
     const [loading, setLoading] = useState(true);
     const [isFollow, setIsFollow] = useState(false);
     const { id } = useParams();
+    const navigate = useNavigate();
     const items = [
         {
             key: '1',

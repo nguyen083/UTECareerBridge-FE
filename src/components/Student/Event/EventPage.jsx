@@ -31,7 +31,7 @@ const EventPage = () => {
       // Gọi API lấy dữ liệu sự kiện
       const response = await getAllEvent(params).then(res => {
         if (res.status === 'OK') {
-          message.success(res.message);
+          // message.success(res.message);
           setEvents(res.data.eventResponses);
           setTotal(res.data.totalPages);
         } else {
@@ -144,6 +144,7 @@ const EventPage = () => {
                 total={total}
                 onChange={(page) => setCurrentPage(page)}
                 showSizeChanger
+                pageSizeOptions={['8', '16', '24']}
                 onShowSizeChange={(current, size) => setPageSize(size)}
               />
             </div>
