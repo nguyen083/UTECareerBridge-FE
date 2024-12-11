@@ -51,7 +51,7 @@ const FileGroup = (props) => {
                                 </Typography.Link>
                                 <br />
                                 <Text type="secondary">
-                                    <PaperClipOutlined /> Attached resume • Uploaded: {item.updatedAt}
+                                    <PaperClipOutlined /> Hồ sơ đính kèm • Tải lên lúc: {item.updatedAt}
                                 </Text>
                             </div>
                             <Dropdown

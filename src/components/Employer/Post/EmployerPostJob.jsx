@@ -292,8 +292,9 @@ const EmployerPostJob = () => {
                         <Collapse className='box_shadow' collapsible='false' expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse2} bordered={false} />
                         <Collapse className='box_shadow' collapsible='false' expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse3} bordered={false} />
                         <Flex gap="middle" justify="end">
-                            <Button loading={loading} type="primary" htmlType="submit">Đăng bài</Button>
+
                             <Button type="default" htmlType='reset'>Hủy</Button>
+                            <Button loading={loading} type="primary" htmlType="submit">Đăng bài</Button>
                         </Flex>
                     </Flex>
                 </Form>

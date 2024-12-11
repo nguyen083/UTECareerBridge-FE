@@ -2,9 +2,10 @@ import { Button, Form, Input } from "antd";
 import BoxContainer from "../../Generate/BoxContainer";
 import { useSelector } from "react-redux";
 import { changePassword } from "../../../services/apiService";
+import { useState } from "react";
 
 const EmployerChangePassword = () => {
-    const email = useSelector(state => state.employer.companyEmail);
+    const email = useSelector(state => state.user.email);
     const [loading, setLoading] = useState(false);
     const infor = {
         email: email
@@ -98,7 +99,7 @@ const EmployerChangePassword = () => {
                     <Form.Item wrapperCol={{
                         offset: 21,
                     }}>
-                        <Button htmlType="submit" type="primary">Lưu</Button>
+                        <Button loading={loading} htmlType="submit" type="primary">Lưu</Button>
                     </Form.Item>
                 </Form>
             </BoxContainer>
