@@ -39,11 +39,11 @@ const PersonalLayout = () => {
     const [resumeIdActive, setResumeIdActive] = useState(0);
 
     const menuItems = [
-        {
-            key: "/dashboard",
-            label: <div className="f-16">Tổng quan</div>,
-            icon: <DashboardOutlined />,
-        },
+        // {
+        //     key: "/dashboard",
+        //     label: <div className="f-16">Tổng quan</div>,
+        //     icon: <DashboardOutlined />,
+        // },
         {
             key: "/profile",
             label: <div className="f-16">Hồ sơ của tôi</div>,

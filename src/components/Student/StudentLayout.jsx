@@ -19,23 +19,23 @@ const PopoverCategory = () => {
     return (
         <div className="dropdown-content">
             <Row gutter={[32, 16]}>
-                <Col span={8}>
+                <Col span={12}>
                     <Title level={5}>Việc làm</Title>
                     <Button size='large' type="text" onClick={() => navigate('/search')} >Việc làm mới nhất</Button>
                     <Button size='large' type="text" onClick={() => navigate('/search')} >Tìm việc làm</Button>
-                    <Button size='large' type="text" onClick={() => navigate('/search')} >Việc làm quản lý</Button>
+                    {/* <Button size='large' type="text" onClick={() => navigate('/search')} >Việc làm quản lý</Button> */}
                 </Col>
-                <Col span={8}>
+                <Col span={12}>
                     <Title level={5}>Việc của tôi</Title>
                     <Button size='large' type="text" onClick={() => navigate('/my-job#job-saved')} >Việc đã lưu</Button>
                     <Button size='large' type="text" onClick={() => navigate('/my-job#job-applied')} >Việc đã ứng tuyển</Button>
-                    <Button size='large' type="text"  >Thông báo việc làm</Button>
-                    <Button size='large' type="text"  >Việc dành cho bạn</Button>
+                    {/* <Button size='large' type="text"  >Thông báo việc làm</Button>
+                    <Button size='large' type="text"  >Việc dành cho bạn</Button> */}
                 </Col>
-                <Col span={8}>
+                {/* <Col span={8}>
                     <Title level={5}>Công ty</Title>
                     <Button size='large' type="text"  >Tất cả công ty</Button>
-                </Col>
+                </Col> */}
             </Row>
 
         </div>

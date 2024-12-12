@@ -112,7 +112,7 @@ const JobCardSmall = ({ job }) => {
                         {job.jobLocation}</Paragraph>
                 </div>}
             />
-            <HeartOutlined />
+            {/* <HeartOutlined /> */}
         </List.Item>
     );
 };

@@ -101,11 +101,11 @@ const EventDetail = () => {
                   >
                     {eventDetail.eventLocation}
                   </Descriptions.Item>
-                  <Descriptions.Item
+                  {/* <Descriptions.Item
                     label={<Space><UserOutlined /> Số Lượng</Space>}
                   >
                     {eventDetail.currentParticipants} / {eventDetail.maxParticipants} người
-                  </Descriptions.Item>
+                  </Descriptions.Item> */}
                 </Descriptions>
               </Card>
 

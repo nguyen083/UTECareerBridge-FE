@@ -146,7 +146,7 @@ const JobList = () => {
                       }}>
                       {item.title}
                     </Title>
-                    <Like liked={item.saved} handleClick={() => alert('Liked')} />
+                    {/* <Like liked={item.saved} handleClick={() => alert('Liked')} /> */}
                   </Flex>
                   < Paragraph
                     style={{ margin: 0 }}
