@@ -72,15 +72,7 @@ const itemSider = [
             { key: '/admin/revenue', label: 'Báo cáo doanh thu' }
         ]
     },
-    {
-        key: '5',
-        icon: <BarChartOutlined />,
-        label: 'Thống kê & Báo cáo',
-        children: [
-            { key: '/admin/statistics', label: 'Thống kê tổng quan' },
-            { key: '/admin/reports', label: 'Báo cáo chi tiết' }
-        ]
-    },
+    
     {
         key: '6',
         icon: <GlobalOutlined />,
@@ -89,25 +81,6 @@ const itemSider = [
             { key: '/admin/news-events', label: 'Tin tức & Sự kiện' },
             { key: '/admin/banners', label: 'Banner & Quảng cáo' },
             { key: '/admin/pages', label: 'Trang tĩnh' }
-        ]
-    },
-    {
-        key: '7',
-        icon: <QuestionCircleOutlined />,
-        label: 'Hỗ trợ',
-        children: [
-            { key: '/admin/support-tickets', label: 'Ticket hỗ trợ' },
-            { key: '/admin/faq', label: 'FAQ' }
-        ]
-    },
-    {
-        key: '8',
-        icon: <SettingOutlined />,
-        label: 'Cài đặt hệ thống',
-        children: [
-            { key: '/admin/settings', label: 'Cấu hình chung' },
-            { key: '/admin/roles', label: 'Phân quyền' },
-            { key: '/admin/logs', label: 'Nhật ký hệ thống' }
         ]
     },
     { key: 'logout', icon: <LogoutOutlined />, label: 'Đăng xuất' },
@@ -216,9 +189,9 @@ const AdminLayout = () => {
                         </div>
                     </Flex>
                     <Space size={24}>
-                        <Badge count={messages} overflowCount={10}>
+                        {/* <Badge count={messages} overflowCount={10}>
                             <MessageOutlined className="message-icon" />
-                        </Badge>
+                        </Badge> */}
                         {/* <NotificationPopover /> */}
                         <Notification userId={1} />
 
