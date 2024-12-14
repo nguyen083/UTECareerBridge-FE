@@ -1,5 +1,5 @@
 import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
-import { Input, Card, Typography, Flex } from "antd";
+import { Input, Card, Typography, Flex, Empty } from "antd";
 import React, { useEffect, useState } from "react";
 import Banner from "./Banner";
 import FeaturedJobs from "./FeaturedJobs";
@@ -83,14 +83,14 @@ const HomePage = () => {
           size="large"
           title={<Typography.Title level={3} className="mb-0">Việc làm mới nhất</Typography.Title>}
           className="mx-auto customize-card" style={{ width: "80%" }}>
-          <FeaturedJobs jobs={jobsNewest} />
+          {jobsNewest.length > 0 ? <FeaturedJobs jobs={jobsNewest} /> : <Empty description="Không tìm thấy việc làm nào" />}
         </Card>
 
         <Card
           size="large"
           title={<Typography.Title level={3} className="mb-0">Việc làm đang tuyển gấp</Typography.Title>}
           className="mx-auto customize-card" style={{ width: "80%" }}>
-          <FeaturedJobs jobs={jobsUrgent} />
+          {jobsUrgent.length > 0 ? <FeaturedJobs jobs={jobsUrgent} /> : <Empty description="Không tìm thấy việc làm nào" />}
         </Card>
         <div className="other-items">
           <OrtherCard />

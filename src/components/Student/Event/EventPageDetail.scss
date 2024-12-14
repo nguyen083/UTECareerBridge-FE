@@ -1,0 +1,70 @@
+@import "../../../components/styles/_variables.scss";
+
+.custom-timeline {
+    .ant-timeline-item {
+        padding-bottom: 50px;
+
+        &:last-child {
+            padding-bottom: 0px;
+        }
+
+        // Thêm màu cho đường timeline
+        .ant-timeline-item-tail {
+            border-left    : 2px solid $text-color-hover; // Màu xanh mặc định của Ant Design
+            // Hoặc có thể dùng gradient
+            // border-image: linear-gradient(to bottom, #1890ff, #69c0ff) 1;
+        }
+
+        // Tăng khoảng cách cho label (thời gian)
+        .ant-timeline-item-label {
+            padding-right: 30px; // Cho label bên phải
+            padding-left : 30px; // Cho label bên trái
+        }
+
+        // Tăng khoảng cách cho nội dung (children)
+        .ant-timeline-item-content {
+            padding-right: 30px; // Cho content bên phải
+            padding-left : 30px; // Cho content bên trái
+        }
+    }
+}
+
+.text-hightlight {
+    color      : $text-color !important;
+    font-weight: 550;
+}
+
+.text-title {
+    color      : $text-color-hover !important;
+    font-weight: 530;
+}
+
+.card_timeline {
+    position           : relative;
+    background-image   : url('https://res.cloudinary.com/utejobhub/image/upload/v1728728442/admin/event/ngay_hoi_viec_lam.jpg');
+    background-size    : cover;
+    background-position: center;
+    background-repeat  : no-repeat;
+
+    &::before {
+        content         : '';
+        position        : absolute;
+        top             : 0;
+        left            : 0;
+        width           : 100%;
+        height          : 100%;
+        background-color: rgba(255, 255, 255, 0.8);
+    }
+
+    // Thêm style cho title và nội dung
+    .ant-card-head,
+    .ant-card-body {
+        position: relative;
+        z-index : 1; // Đưa nội dung lên trên lớp overlay
+    }
+}
+
+.card_box_shadow {
+    box-shadow: 5px 5px 5px #cacaca,
+        -5px -5px 10px #f6f6f6;
+}

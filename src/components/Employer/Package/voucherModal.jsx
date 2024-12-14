@@ -96,13 +96,13 @@ const VoucherModal = ({ visible, onClose, onSelectVoucher }) => {
                     </div>}
                   title={
                     <>
-                      <Text strong>{coupon.discount}% giảm</Text>
-                      {coupon.amount > 0 && (
+                      <Text strong>Giảm {coupon.discount}%</Text>
+                      {/* {coupon.amount > 0 && (
                         <>
                           <Divider type="vertical" />
                           <Text>Giảm {coupon.amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
                         </>
-                      )}
+                      )} */}
                     </>
                   }
                   description={

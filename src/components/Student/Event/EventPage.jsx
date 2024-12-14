@@ -4,9 +4,9 @@ import { CalendarOutlined, EnvironmentOutlined, FilterOutlined, InfoCircleOutlin
 import BoxContainer from '../../Generate/BoxContainer';
 import { getAllEvent } from '../../../services/apiService';
 import { useNavigate } from 'react-router-dom';
+import { FaFilter } from 'react-icons/fa';
 
-const { Title, Text } = Typography;
-const { Option } = Select;
+const { Text } = Typography;
 
 const EventPage = () => {
   const [events, setEvents] = useState([]);
@@ -72,7 +72,7 @@ const EventPage = () => {
               style={{ width: 200 }}
               placeholder="Lọc theo loại"
               onChange={(value) => setEventType(value)}
-              prefix={<FilterOutlined />}
+              prefix={<FaFilter />}
             >
               <Select.Option value="SEMINAR">Hội thảo</Select.Option>
               <Select.Option value="CONFERENCE">Hội nghị</Select.Option>
@@ -114,16 +114,16 @@ const EventPage = () => {
                     <Card.Meta
                       title={event.eventTitle}
                       description={
-                        <Space direction="vertical">
+                        <Space direction="vertical" className='w-100'>
                           <Text>
                             <CalendarOutlined /> {event.eventDate}
                           </Text>
                           <Text>
                             <EnvironmentOutlined /> {event.eventLocation}
                           </Text>
-                          <Space>
+                          <Flex justify='space-between'>
                             <Tag color="blue">{event?.eventType}</Tag>
-                          </Space>
+                          </Flex>
                         </Space>
                       }
                     />
@@ -153,7 +153,7 @@ const EventPage = () => {
           <Empty description="Không tìm thấy sự kiện" />
         )}
       </BoxContainer>
-    </div>
+    </div >
   );
 };
 

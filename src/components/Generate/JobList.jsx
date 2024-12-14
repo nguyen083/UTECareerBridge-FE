@@ -21,7 +21,6 @@ const JobList = () => {
 
   // Simulated API call - replace with your actual API endpoint
   const fetchData = async (page, pageSize) => {
-    console.log('Fetching data...');
     setLoading(true);
     try {
       const params = {

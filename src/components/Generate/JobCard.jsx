@@ -86,6 +86,8 @@ const JobCardSmall = ({ job }) => {
     return (
         <List.Item className='d-flex align-items-start border border-1 rounded-3 p-3 justify-content-between' style={{ maxWidth: '100%', overflow: 'hidden' }}>
             <List.Item.Meta
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleClick(job.jobId)}
                 className='d-flex align-items-center w-100 meta-description'
                 avatar={<img
                     src={job.employerResponse.companyLogo} // Replace with the actual logo URL
@@ -93,7 +95,7 @@ const JobCardSmall = ({ job }) => {
                 />}
                 description={<div>
                     <Title level={5}
-                        onClick={() => handleClick(job.jobId)}
+
                         className="limit-text w-100"
                         ellipsis={{ tooltip: true, rows: 2 }}
                     >
@@ -132,6 +134,7 @@ const JobCardLarge = ({ job, disable = false }) => {
     return (
         <Card
             onClick={() => handleClick(job.jobId)}
+
             hoverable
             style={{
                 width: "100%",
@@ -148,13 +151,9 @@ const JobCardLarge = ({ job, disable = false }) => {
                 />
                 <div>
                     <Title level={5}
-                    // style={{
-                    //     margin: 0,
-                    //     whiteSpace: 'nowrap',        // Keeps the text on a single line
-                    //     overflow: 'hidden',           // Hides any overflow
-                    //     textOverflow: 'ellipsis',     // Adds ellipsis for overflowed text
-                    //     maxWidth: 500                 // Optional: set max width to control where it cuts off
-                    // }}
+                        style={{
+                            cursor: 'pointer'
+                        }}
                     >
                         {job.jobTitle} {Lable(job.packageId)}
                     </Title>

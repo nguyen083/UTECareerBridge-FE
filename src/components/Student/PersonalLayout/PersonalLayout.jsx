@@ -148,7 +148,7 @@ const PersonalLayout = () => {
         });
     }
     return (<>
-        <Row gutter={[8, 8]} className={styles["row"]}>
+        <Row gutter={[16, 8]} className={styles["row"]}>
             <Col span={5} className={styles["col_l"]}>
                 <Row justify="center" >
                     <Col span={24}>

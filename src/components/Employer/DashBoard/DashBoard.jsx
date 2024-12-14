@@ -199,12 +199,12 @@ const DashBoard = () => {
                             />
                         </Card>
                     </Col>
-                    <Col sm={24} lg={12}>
+                    {/* <Col sm={24} lg={12}>
                         <Card title="Biểu đồ" className="box_shadow">
                             <Chart />
                         </Card>
-                    </Col>
-                    <Col sm={24} lg={12}>
+                    </Col> */}
+                    <Col sm={24} lg={24}>
                         <Card title="Gói dịch vụ" className="box_shadow">
                             <ListPackage />
                         </Card>

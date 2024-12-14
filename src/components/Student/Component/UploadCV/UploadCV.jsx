@@ -99,7 +99,6 @@ const UploadCV = ({ listResume, fetchCV }) => {
         <>
             <div className={`${styles.div} ${styles.box_shadow}`}>
                 <Tabs defaultActiveKey="2" size="large" className={styles["tabs"]}>
-
                     <Tabs.TabPane tab="Hồ sơ đính kèm" key="2">
                         <div className={styles["tab_content"]}>
                             <Text className={styles["text"]}>Hồ sơ đã tải lên</Text>
@@ -107,16 +106,34 @@ const UploadCV = ({ listResume, fetchCV }) => {
                                 <Dragger
                                     maxCount={1}
                                     showUploadList={false}
+                                    accept=".doc,.docx,.pdf"
                                     customRequest={({ file, onSuccess, onError }) => {
+                                        const isDocOrPdf = file.type === 'application/pdf' ||
+                                            file.type === 'application/msword' ||
+                                            file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+                                        const isSizeValid = file.size / 1024 / 1024 < 5; // Kiểm tra kích thước dưới 5MB
+
+                                        if (!isDocOrPdf) {
+                                            message.error('Chỉ hỗ trợ định dạng .doc, .docx, .pdf');
+                                            onError('Invalid file type');
+                                            return;
+                                        }
+
+                                        if (!isSizeValid) {
+                                            message.error('Kích thước tệp vượt quá 5MB');
+                                            onError('File size exceeds limit');
+                                            return;
+                                        }
+
                                         // Gọi API upload của bạn
-                                        handleUpload(file)
+                                        handleUpload(file);
                                     }}
                                 >
                                     <p className="ant-upload-drag-icon">
                                         <InboxOutlined />
                                     </p>
                                     <p>Chọn hoặc kéo thả hồ sơ từ máy của bạn</p>
-                                    <p>Hỗ trợ định dạng .doc, .docx, .pdf có kích thước dưới 5120KB</p>
+                                    <p>Hỗ trợ định dạng .doc, .docx, .pdf có kích thước dưới 5MB</p>
                                 </Dragger>}
                             {listResume.length !== 0 &&
                                 <List

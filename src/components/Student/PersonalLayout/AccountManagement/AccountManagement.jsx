@@ -5,10 +5,12 @@ import { useState } from "react";
 
 const AccountManagement = () => {
     const [loading, setLoading] = useState(false);
+    const [form] = Form.useForm();
     const onFinish = (values) => {
         setLoading(true);
         changePassword(values).then(res => {
             if (res.status === 'OK') {
+                form.resetFields();
                 message.success(res.message);
             } else {
                 message.error(res.message);
@@ -25,7 +27,7 @@ const AccountManagement = () => {
                 <div className="title1">Đổi mật khẩu</div>
             </BoxContainer>
             <BoxContainer className="box_shadow">
-                <Form onFinish={onFinish} layout="horizontal" size="large" requiredMark={false} autoComplete="false"
+                <Form form={form} onFinish={onFinish} layout="horizontal" size="large" requiredMark={false} autoComplete="false"
                     labelCol={{
                         md: { span: 4 },
                         span: 24

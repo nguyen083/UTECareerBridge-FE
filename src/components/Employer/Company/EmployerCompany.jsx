@@ -203,7 +203,7 @@ const EmployerCompany = () => {
                         <Form.Item name="companyLogo" className='col-12 mt-0' label="Logo công ty" tooltip="Kéo thả hoặc nhấp chọn để tải ảnh lên">
                             <PicturesWall listType={"text"} defaultImage={defaultLogo} />
                         </Form.Item>
-                        <Form.Item name="backgroundImage" className='col-12 mt-0' label="Hình Ảnh Công Ty" tooltip="Kéo thả hoặc nhấp chọn để tải ảnh lên">
+                        <Form.Item name="backgroundImage" className='col-12 mt-0' label="Hình ảnh công ty" tooltip="Kéo thả hoặc nhấp chọn để tải ảnh lên">
                             <PicturesWall listType={"text"} defaultImage={defaultBackground} />
                         </Form.Item>
                         <Form.Item name="companyWebsite" className='col-12 mt-0' label="Website công ty">

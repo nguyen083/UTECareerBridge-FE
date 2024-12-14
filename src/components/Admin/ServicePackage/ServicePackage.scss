@@ -1,0 +1,54 @@
+@import '../../styles/variables.scss';
+
+.service-package-list {
+    .ant-list-items {
+        gap           : 10px;
+        display       : flex;
+        flex-direction: column;
+
+        .voucher-meta {
+            display    : flex !important;
+            align-items: stretch !important;
+
+            .ant-list-item-meta-avatar {
+
+                .voucher-flex {
+                    background-color: #52C41A;
+                    width           : 200px;
+
+                    .voucher-avatar {
+                        color      : white;
+                        font-weight: 550;
+                        font-size  : 18 !important;
+
+                    }
+                }
+
+
+            }
+
+            .ant-list-item-meta-description {
+                padding-top   : 12px;
+                padding-bottom: 12px;
+            }
+
+            .voucher-title {
+                font-size: 1rem;
+                color    : $text-color;
+            }
+
+
+        }
+
+        .voucher-card-admin {
+            .ant-card-body {
+                padding: 0;
+
+                .ant-list-item {
+                    padding: 0;
+
+                }
+            }
+        }
+    }
+}

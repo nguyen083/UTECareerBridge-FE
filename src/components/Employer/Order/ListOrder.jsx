@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getOrderList } from "../../../services/apiService";
 import BoxContainer from "../../Generate/BoxContainer";
-import { Button, Table, Tag, Tooltip, Typography } from "antd";
+import { Button, Table, Tag, Tooltip, Typography, message } from "antd";
 import ModalDetailOrder from "./ModalDetailOrder";
 import { FaMoneyCheckDollar } from "react-icons/fa6";
 import { EyeOutlined } from "@ant-design/icons";
@@ -9,22 +9,20 @@ import { EyeOutlined } from "@ant-design/icons";
 const { Title } = Typography;
 const ListOrder = () => {
     const [orders, setOrders] = useState([]);
-    const [pagination, setPagination] = useState({ current: 1, pageSize: 10 });
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [total, setTotal] = useState(0);
     const [loading, setLoading] = useState(false);
     const [order, setOrder] = useState(null);
     const [openOrderModal, setOpenOrderModal] = useState(false);
     const [status, setStatus] = useState('PENDING');
 
-    const fetchOrders = async (page, pageSize) => {
+    const fetchOrders = async (page, size) => {
         setLoading(true);
         try {
-            const response = await getOrderList(page - 1, pageSize);
+            const response = await getOrderList(page - 1, size);
             setOrders(response.data.orders);
-            setPagination({
-                current: response.data.currentPage,
-                pageSize: response.data.pageSize,
-                total: response.data.totalCount,
-            });
+            setTotal(response.data.totalPage * size);
         } catch (error) {
             message.error("Lỗi khi tải danh sách đơn hàng");
         } finally {
@@ -33,11 +31,12 @@ const ListOrder = () => {
     };
 
     useEffect(() => {
-        fetchOrders(pagination.current, pagination.pageSize);
-    }, [pagination.current, pagination.pageSize]);
+        fetchOrders(currentPage, pageSize);
+    }, [currentPage, pageSize]);
 
     const handleTableChange = (pagination) => {
-        setPagination(pagination);
+        setCurrentPage(pagination.current);
+        setPageSize(pagination.pageSize);
     };
 
     const columns = [
@@ -88,7 +87,13 @@ const ListOrder = () => {
                 <Table
                     columns={columns}
                     dataSource={orders}
-                    pagination={pagination}
+                    pagination={{
+                        current: currentPage,
+                        pageSize: pageSize,
+                        total: total,
+                        showSizeChanger: true,
+                        showQuickJumper: true,
+                    }}
                     loading={loading}
                     onChange={handleTableChange}
                     rowKey="orderId"

@@ -178,7 +178,7 @@ const RegisterPage = () => {
                             </Form.Item>
                         </Form>
                     </div>
-                    <div className="text-center mt-3 mb-3"><p className="fst-italic text-decoration-underline">Hoặc</p></div>
+                    <div className="text-center mt-3 mb-3"><p className="fst-italic">hoặc</p></div>
                     <div className="google-btn">
                         <Link className="text-decoration-none" to="/home">Trở về trang chủ</Link>
                     </div>

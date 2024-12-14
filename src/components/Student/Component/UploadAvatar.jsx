@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import styles from './UploadAvatar.module.scss';
 import { Avatar, Image, Progress, Upload, message, Typography } from "antd";
 import { UploadOutlined, UserOutlined } from "@ant-design/icons";
@@ -80,35 +80,36 @@ const UploadAvatar = ({ src, setSrc }) => {
     );
 }
 
-const UploadImage = (props) => {
+const UploadImage = ({ value, onChange }) => {
     const [uploadProgress, setUploadProgress] = useState(0);
     const [uploading, setUploading] = useState(false);
     let [urlImage, setUrlImage] = useState(null);
 
+    useEffect(() => {
+        setUrlImage(value);
+    }, [value]);
+
     const handleImageChange = async (file) => {
         if (!file) return;
-        setUploading(true); // Bắt đầu upload
-        setUploadProgress(0); // Đặt lại tiến trình về 0
+        setUploading(true);
+        setUploadProgress(0);
         try {
-            // Gọi hàm upload với callback để cập nhật tiến trình   ----> Department này là tạo thư mục trên cloud để biết ảnh ở thư mục nào á
-            const url = await uploadToCloudinary(file, "admin", (progress) => {
+            const url = await uploadToCloudinary(file, "admin/event", (progress) => {
                 setUploadProgress(progress);
             });
-            props.onChange(url); // Lưu URL ảnh sau khi upload
+            onChange(url); // Lưu URL ảnh sau khi upload
             setUrlImage(url);
             message.success("Upload thành công!");
         } catch (error) {
             message.error("Upload thất bại. Vui lòng thử lại.");
             console.error(error);
         } finally {
-            setUploading(false); // Kết thúc upload
+            setUploading(false);
         }
     };
 
-
-
     return (
-        <div >
+        <div>
             <ImgCrop
                 rotate
                 quality={1}
@@ -124,22 +125,24 @@ const UploadImage = (props) => {
                 modalWidth={600}
             >
                 <Upload.Dragger
-                    // className="py-5"
                     showUploadList={false}
                     beforeUpload={(file) => {
-                        handleImageChange(file)
-                        return false
-                    }}>
+                        handleImageChange(file);
+                        return false;
+                    }}
+                >
                     <div className={styles["container"]}>
-                        <div className={`${styles.div} ${uploading ? 'uploading' : ''}`} >
-
-                            {urlImage ? <Image
-                                preview={false}
-                                width={"200px"}
-                                src={urlImage}
-                                alt="Uploaded"
-                            /> : !uploadProgress && <Text className="py-5">Kéo thả ảnh hoặc nhấn vào để tải ảnh lên</Text>}
-
+                        <div className={`${styles.div} ${uploading ? 'uploading' : ''}`}>
+                            {urlImage ? (
+                                <Image
+                                    preview={false}
+                                    width={"200px"}
+                                    src={urlImage}
+                                    alt="Uploaded"
+                                />
+                            ) : (
+                                !uploadProgress && <Text className="py-5">Kéo thả ảnh hoặc nhấn vào để tải ảnh lên</Text>
+                            )}
                         </div>
                         {uploading && (
                             <div className={styles["progress-container"]}>
@@ -149,9 +152,9 @@ const UploadImage = (props) => {
                     </div>
                 </Upload.Dragger>
             </ImgCrop>
-        </div >
+        </div>
     );
-}
+};
 
 
 

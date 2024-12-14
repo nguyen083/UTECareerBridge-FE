@@ -57,6 +57,7 @@ import ListResumes from './components/Employer/ListResumes/ListResumes.jsx';
 import ListOrder from './components/Employer/Order/ListOrder.jsx';
 import ListEvent from './components/Admin/ManageEvent/ListEvent.jsx';
 import PaymentReturn from './components/Employer/Order/PaymentReturn.jsx';
+import ServicePackage from './components/Admin/ServicePackage/ServicePackage.jsx';
 const App = () => {
   return (
     <ConfigProvider locale={viVN}
@@ -214,6 +215,7 @@ const App = () => {
           </Route>
           <Route path='admin' element={<AdminLayout />} >
             <Route index element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path='service-packages' element={<ServicePackage />} />
             <Route path='dashboard' element={<AdminDashboard />} />
             <Route path='manage-students' element={<UserManagement />} />
             <Route path='manage-employers' element={<ManageListEmployer />} />

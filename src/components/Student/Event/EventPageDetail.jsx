@@ -1,62 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Row,
-  Col,
-  Typography,
-  Button,
-  Space,
-  Tag,
-  Descriptions,
-  Divider,
-  Card,
-  Avatar,
-  Tooltip,
-  Collapse
-} from 'antd';
-import {
-  CalendarOutlined,
-  EnvironmentOutlined,
-  UserOutlined,
-  ClockCircleOutlined,
-  InfoCircleOutlined,
-  BookOutlined,
-  ShareAltOutlined,
-  HeartOutlined
-} from '@ant-design/icons';
+import { Row, Col, Typography, Button, Space, Tag, Descriptions, Card, Avatar, Flex, Tooltip, Timeline } from 'antd';
+import { CalendarOutlined, EnvironmentOutlined, BookOutlined, ShareAltOutlined, HeartOutlined } from '@ant-design/icons';
 import BoxContainer from '../../Generate/BoxContainer';
 import HtmlContent from '../../Generate/HtmlContent';
+import { useParams } from 'react-router-dom';
+import { getEventDetail } from '../../../services/apiService';
+import './EventPageDetail.scss';
+import { FaDotCircle } from "react-icons/fa";
+
 
 const { Title, Text, Paragraph } = Typography;
 
 const EventDetail = () => {
-  // Mock data chi tiết sự kiện
-  const eventDetail = {
-    eventId: 1,
-    eventTitle: 'Ngày Hội Tuyển Dụng Công Nghệ Thông Tin 2024',
-    eventDescription: `Sự kiện kết nối trực tiếp giữa sinh viên CNTT và các doanh nghiệp hàng đầu. 
-    Bạn sẽ có cơ hội:
-    - Trực tiếp phỏng vấn với các nhà tuyển dụng
-    - Tham dự các workshop chuyên sâu
-    - Nhận các suất thực tập và việc làm hấp dẫn`,
-    eventDatetime: '2024-06-15 09:00:00',
-    eventLocation: 'Hội trường Đại học Bách Khoa, 268 Lý Thường Kiệt, Q.10, TP.HCM',
-    eventImage: 'https://res.cloudinary.com/utejobhub/image/upload/v1728728442/admin/event/ngay_hoi_viec_lam.jpg',
-    eventType: 'Tuyển Dụng',
-    registrationDeadline: '2024-06-10 23:59:59',
-    maxParticipants: 500,
-    currentParticipants: 320,
-    organizer: {
-      name: 'Trung tâm Hỗ trợ Sinh viên',
-      logo: 'https://res.cloudinary.com/utejobhub/image/upload/v1731551121/student/ua3ccjvawfxkb1yqqirb.png',
-      contact: 'support@student.hcmute.edu.vn'
-    },
-    timeline: [
-      { timelineStart: '09:00', timelineTitle: 'Đăng ký và welcome coffee' },
-      { timelineStart: '10:00', timelineTitle: 'Khai mạc và giới thiệu' },
-      { timelineStart: '11:00', timelineTitle: 'Phiên giới thiệu việc làm' },
-      { timelineStart: '14:00', timelineTitle: 'Workshop kỹ năng phỏng vấn' }
-    ]
+  const { id } = useParams();
+  const [eventDetail, setEventDetail] = useState({});
+  const [timeline, setTimeline] = useState([]);
+
+  const fetchEventDetail = () => {
+    getEventDetail(id)
+      .then(response => {
+        setEventDetail(response.data);
+        setTimeline(response.data.timeline.map((item, index) => ({
+          key: index,
+          label: <Text className='text-hightlight f-18'>{item.timelineStart}</Text>,
+          children: (
+            <Tooltip color='#4478c0' title={<Text style={{ color: '#ffffff' }} className='f-16'>{item.timelineDescription}</Text>} placement="top">
+              <Text className='text-title pe-auto'>{item.timelineTitle}</Text>
+            </Tooltip>
+          ),
+          dot: (
+            <FaDotCircle
+              style={{
+                fontSize: '19px',
+              }}
+            />
+          ),
+        })));
+      })
+      .catch(error => {
+        console.error('Lỗi khi lấy chi tiết sự kiện:', error);
+      });
   };
+
+  useEffect(() => {
+    fetchEventDetail();
+  }, [id]);
+
+
 
   return (
     <BoxContainer padding={'0'}>
@@ -77,63 +67,45 @@ const EventDetail = () => {
         <Row gutter={[24, 24]}>
           {/* Thông tin chính */}
           <Col xs={24} md={16}>
-            <Space direction="vertical" size="large" style={{ width: '100%' }}>
+            <Flex vertical gap={24} className='w-100'>
               <Title level={2}>{eventDetail.eventTitle}</Title>
 
               {/* Thẻ loại sự kiện */}
               <Space>
                 <Tag color="blue" key={eventDetail.eventType}>{eventDetail.eventType}</Tag>
               </Space>
-
-              {/* Mô tả sự kiện */}
-              <HtmlContent htmlString={eventDetail.eventDescription} />
+              <Card title={<Text className='f-18 text-hightlight'>Mô Tả Sự Kiện</Text>} className='box_shadow'>
+                {/* Mô tả sự kiện */}
+                <HtmlContent htmlString={eventDetail.eventDescription} />
+              </Card>
 
               {/* Chi tiết sự kiện */}
               <Card className='box_shadow'>
                 <Descriptions column={1}>
-                  <Descriptions.Item
-                    label={<Space><CalendarOutlined /> Thời Gian</Space>}
+                  <Descriptions.Item className='d-flex align-center'
+                    label={<Space className='text-hightlight'><CalendarOutlined /> Thời Gian diễn ra sự kiện</Space>}
                   >
-                    {new Date(eventDetail.eventDatetime).toLocaleString()}
+                    <Text className='text-title'>{eventDetail.eventDate}</Text>
                   </Descriptions.Item>
-                  <Descriptions.Item
-                    label={<Space><EnvironmentOutlined /> Địa Điểm</Space>}
+                  <Descriptions.Item className='d-flex align-center'
+                    label={<Space className='text-hightlight'><EnvironmentOutlined /> Địa Điểm</Space>}
                   >
-                    {eventDetail.eventLocation}
+                    <Text className='text-title'>{eventDetail.eventLocation}</Text>
                   </Descriptions.Item>
-                  {/* <Descriptions.Item
-                    label={<Space><UserOutlined /> Số Lượng</Space>}
-                  >
-                    {eventDetail.currentParticipants} / {eventDetail.maxParticipants} người
-                  </Descriptions.Item> */}
                 </Descriptions>
               </Card>
 
               {/* Chương trình sự kiện */}
-              <Card title="Chương Trình Chi Tiết" className='box_shadow'>
-                {eventDetail.timeline.map((item, index) => (
-                  <div
-                    key={index}
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      marginBottom: '12px',
-                      padding: '8px',
-                      borderBottom: '1px solid #f0f0f0'
-                    }}
-                  >
-                    <Collapse bordered={false} style={{ width: '100%' }}>
-                      <Collapse.Panel
-                        key={index}
-                        header={item.timelineStart}
-                      >
-                        <Text>{item.timelineTitle}</Text>
-                      </Collapse.Panel>
-                    </Collapse>
-                  </div>
-                ))}
+              <Card size='large' title={<Text className='f-18 text-hightlight'>Chi Tiết Chương Trình</Text>} className=' card_box_shadow card_timeline'>
+
+                <Space direction='vertical' size={24} style={{ width: '100%' }}>
+                  <Timeline
+                    className="custom-timeline"
+                    mode='alternate'
+                    items={timeline} />
+                </Space>
               </Card>
-            </Space>
+            </Flex>
           </Col>
 
           {/* Sidebar */}
@@ -142,9 +114,9 @@ const EventDetail = () => {
               {/* Thông tin nhà tổ chức */}
               <Card className='box_shadow'>
                 <Card.Meta
-                  avatar={<Avatar src={eventDetail.organizer.logo} size={64} />}
-                  title={eventDetail.organizer.name}
-                  description={eventDetail.organizer.contact}
+                  avatar={<Avatar src="https://res.cloudinary.com/utejobhub/image/upload/v1731551121/student/ua3ccjvawfxkb1yqqirb.png" size={64} />}
+                  title="Trung tâm Hỗ trợ Sinh viên"
+                  description="support@student.hcmute.edu.vn"
                 />
               </Card>
 
@@ -179,7 +151,7 @@ const EventDetail = () => {
           </Col>
         </Row>
       </div>
-    </BoxContainer>
+    </BoxContainer >
   );
 };
 

@@ -147,7 +147,6 @@ const exportUserToPdf = async (queryParams) => {
   });
 };
 const getAllJobEmployer = (id, filter) => {
-  h
   const params = new URLSearchParams(filter).toString();
   return axios.get(`jobs/employers/${id}/all-jobs?${params}`);
 }
@@ -322,7 +321,7 @@ const getJobUrgent = async () => {
   return axios.get('jobs/recruitment-urgent');
 }
 const changePassword = async (values) => {
-  return axios.post('users/update-password', values);
+  return axios.put('users/update-password', values);
 }
 const getJobsNewest = async () => {
   return axios.get(`jobs/search?keyword=&page=0&limit=30&sorting=newest`);
@@ -366,6 +365,24 @@ const createEvent = async (values) => {
 }
 const getCountStudentApplied = async () => {
   return axios.get('employers/get-total-student-application');
+}
+const getEventDetail = async (id) => {
+  return axios.get(`admin/events/${id}`);
+}
+const deleteEvent = async (id) => {
+  return axios.delete(`admin/events/${id}`);
+}
+const updateEvent = async (id, values) => {
+  return axios.put(`admin/events/${id}`, values);
+}
+const createServicePackage = (values) => {
+  return axios.post('packages/create-package', values);
+}
+const deleteServicePackage = (id) => {
+  return axios.delete(`packages/delete-package/${id}`);
+}
+const updateServicePackage = (id, values) => {
+  return axios.put(`packages/update-package/${id}`, values);
 }
 export {
   uploadCV,
@@ -454,5 +471,11 @@ export {
   getJobPackage,
   getAllEvent,
   createEvent,
-  getCountStudentApplied
+  getCountStudentApplied,
+  getEventDetail,
+  deleteEvent,
+  updateEvent,
+  createServicePackage,
+  deleteServicePackage,
+  updateServicePackage
 }

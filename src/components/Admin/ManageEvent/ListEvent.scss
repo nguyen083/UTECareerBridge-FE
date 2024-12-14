@@ -1,0 +1,15 @@
+@import '../../styles/variables.scss';
+
+.title-event {
+    font-size  : 1.2rem !important;
+    font-weight: 550;
+    color      : $text-color !important;
+}
+
+.list-event {
+    .card-event {
+
+        margin-bottom: 20px;
+    }
+}
+

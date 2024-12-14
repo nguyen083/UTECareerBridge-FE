@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Layout, Row, Col, Card, Tag, Carousel, Select, List, Pagination, Radio, Flex } from 'antd';
+import { Layout, Row, Col, Card, Tag, Carousel, Select, List, Pagination, Radio, Flex, Empty } from 'antd';
 import FilterPanel from './FilterPanel';
 import BoxContainer from '../../Generate/BoxContainer';
 import './JobPage.scss';
@@ -24,29 +24,6 @@ const JobSearchPage = () => {
     jobLevelId: undefined,
     skillId: undefined,
   });
-  const featuredCompanies = [
-    {
-      id: 1,
-      name: 'FPT Software',
-      logo: 'https://res.cloudinary.com/utejobhub/image/upload/v1726158727/company/FPT_Software_logo.png',
-      jobCount: 50,
-      description: 'Leading software engineering company'
-    },
-    {
-      id: 2,
-      name: 'Viettel',
-      logo: 'https://res.cloudinary.com/utejobhub/image/upload/v1726158727/company/FPT_Software_logo.png',
-      jobCount: 30,
-      description: 'Largest telecommunications company'
-    },
-    {
-      id: 3,
-      name: 'VNG Corporation',
-      logo: 'https://res.cloudinary.com/utejobhub/image/upload/v1726158727/company/FPT_Software_logo.png',
-      jobCount: 25,
-      description: 'Top internet technology company'
-    }
-  ];
   const [jobs, setJobs] = useState([]);
 
   const sanitizeParams = (params) => {
@@ -78,6 +55,9 @@ const JobSearchPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (location.state?.filters?.jobStatus === 'newest') {
+      setSorting('newest');
+    }
     handleSearch();
   }, [keyword, filters, sorting, pageSize, currentPage]);
 
@@ -110,23 +90,14 @@ const JobSearchPage = () => {
                       <div className='div-radio'><Radio.Button className='radio' value="salary_asc">Lương (thấp-cao)</Radio.Button></div>
                     </Flex>
                   </Radio.Group>
-                  {/* <Select value={sorting}
-                    size='large'
-                    style={{ width: "200px" }}
-                    onChange={(value) => setSorting(value)}
-                    placeholder="Sắp xếp theo">
-                    <Option value="">Tất cả</Option>
-                    <Option value="newest">Ngày đăng (mới nhất)</Option>
-                    <Option value="oldest">Ngày đăng (cũ nhất)</Option>
-                    <Option value="salary_desc">Lương (cao-thấp)</Option>
-                    <Option value="salary_asc">Lương (thấp-cao)</Option>
-                  </Select> */}
+
                 </div>
               </div>
               <List
                 split={false}
                 itemLayout="vertical"
                 size="large"
+                locale={{ emptyText: <Empty description="Không tìm thấy việc làm nào" /> }}
                 pagination={{
                   current: currentPage,
                   pageSize: pageSize,

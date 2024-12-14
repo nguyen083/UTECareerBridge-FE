@@ -85,7 +85,7 @@ export const deleteImageFromCloudinaryByLink = async (link, type = "image") => {
     }
 };
 // Hàm xóa ảnh từ Cloudinary
-const deleteImageFromCloudinary = async (publicId) => {
+export const deleteImageFromCloudinary = async (publicId) => {
     const timestamp = Math.floor(Date.now() / 1000);
     const signature = generateSignatureDelete(publicId, timestamp);
     try {

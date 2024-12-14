@@ -1,13 +1,40 @@
-import React from "react";
-import { Form, Input, DatePicker, TimePicker, InputNumber, Button, Upload, Select, Space, Row, Col, Modal, Flex, message } from "antd";
+import React, { useEffect, useState } from "react";
+import { Form, Input, DatePicker, TimePicker, InputNumber, Button, Select, Row, Col, Modal, message } from "antd";
 import { UploadImage } from "../../Student/Component/UploadAvatar";
 import { DeleteOutlined } from "@ant-design/icons";
-import { createEvent } from "../../../services/apiService";
+import { createEvent, getEventDetail, updateEvent } from "../../../services/apiService";
+import dayjs from "dayjs";
 
-const CreateEventPage = ({ open, setOpen }) => {
+const CreateEventPage = ({ open, setOpen, setIsFetching, item = null }) => {
     const [form] = Form.useForm();
+    const [eventDetail, setEventDetail] = useState({});
+    const fetchEventDetail = async () => {
+        getEventDetail(item.eventId).then((res) => {
+            setEventDetail(
+                {
+                    ...res.data,
+                    eventDate: dayjs(res.data.eventDate, 'DD/MM/YYYY HH:mm:ss'),
+                    timeline: res.data.timeline.map(t => ({
+                        ...t,
+                        timelineStart: dayjs(t.timelineStart, 'HH:mm')
+                    }))
+                });
+        }).catch((err) => {
+            message.error(err.message);
+        });
+    }
+    useEffect(() => {
+        if (item) {
+            fetchEventDetail();
+        }
+    }, [item]);
+
+    useEffect(() => {
+        if (eventDetail && Object.keys(eventDetail).length > 0) {
+            form.setFieldsValue(eventDetail);
+        }
+    }, [eventDetail]);
     const handleFinish = (values) => {
-        console.log(values);
         const formattedValues = {
             ...values,
             eventDate: values.eventDate.format('YYYY-MM-DDTHH:mm:ss'),
@@ -16,18 +43,32 @@ const CreateEventPage = ({ open, setOpen }) => {
                 timelineStart: item.timelineStart.format('HH:mm')
             }))
         };
-        createEvent(formattedValues).then((res) => {
+        console.log(item);
+        !item ? createEvent(formattedValues).then((res) => {
             if (res.status === 'CREATED') {
                 setOpen(false);
                 form.resetFields();
                 message.success(res.message);
+                setIsFetching(true);
             } else {
                 message.error(res.message);
             }
         }).catch((err) => {
             message.error(err.message);
-        })
-    };
+        }) : updateEvent(eventDetail.eventId, formattedValues).then((res) => {
+            if (res.status === 'OK') {
+                form.resetFields();
+                message.success(res.message);
+                setOpen(false);
+                setIsFetching(true);
+
+            } else {
+                message.error(res.message);
+            }
+        }).catch((err) => {
+            message.error(err.message);
+        });
+    }
     const handleCancel = () => {
         setOpen(false);
         form.resetFields();
@@ -35,14 +76,13 @@ const CreateEventPage = ({ open, setOpen }) => {
     return (
         <Modal
             width={1500}
-            title="Tạo Sự Kiện mới" open={open} onCancel={handleCancel} okText="Tạo" cancelText="Hủy" onOk={() => form.submit()}>
-
+            title={item ? "Chỉnh sửa Sự Kiện" : "Tạo Sự Kiện mới"} open={open} onCancel={handleCancel} okText={item ? "Cập nhật" : "Tạo"} cancelText="Hủy" onOk={() => form.submit()}>
             <Form
+                initialValues={eventDetail}
                 size="large"
                 form={form}
                 onFinish={handleFinish}
                 layout="vertical"
-
             >
                 <Row gutter={24}>
                     <Col span={12}>
@@ -104,7 +144,10 @@ const CreateEventPage = ({ open, setOpen }) => {
                 </Row>
 
 
-                <Form.Item label="Hình Ảnh Sự Kiện" name="eventImage" tooltip="Hình ảnh sự kiện sẽ được hiển thị trên trang chủ"
+                <Form.Item
+                    label="Hình Ảnh Sự Kiện"
+                    name="eventImage"
+                    tooltip="Hình ảnh sự kiện sẽ được hiển thị trên trang chủ"
                     rules={[{ required: true, message: 'Vui lòng chọn hình ảnh sự kiện!' }]}
                 >
                     <UploadImage />

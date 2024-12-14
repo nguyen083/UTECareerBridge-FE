@@ -10,7 +10,7 @@ import { useRedux } from "../../../utils/useRedux.jsx";
 import { IoIosBusiness } from "react-icons/io";
 import { IoBriefcaseOutline } from "react-icons/io5";
 const menuItems = [
-    { key: '1', icon: <DashboardOutlined />, label: 'Tổng Quan' },
+    // { key: '1', icon: <DashboardOutlined />, label: 'Tổng Quan' },
     { key: '2', icon: <SolutionOutlined />, label: 'Hồ Sơ Của Tôi' },
     { key: '3', icon: <IoIosBusiness />, label: 'Công Ty Của Tôi' },
     { key: '4', icon: <IoBriefcaseOutline />, label: 'Việc Làm Của Tôi' },
