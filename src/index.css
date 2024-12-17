@@ -95,28 +95,28 @@ html{
   text-decoration: none;
 }
 .f-12{
-  font-size: 12px;
+  font-size: 12px !important;
 }
 .f-13{
-  font-size: 13px;
+  font-size: 13px !important;
 }
 .f-14{
-  font-size: 14px;
+  font-size: 14px !important;
 }
 .f-15{
-  font-size: 15px;
+  font-size: 15px !important;
 }
 .f-16{
-  font-size: 16px;
+  font-size: 16px !important;
 }
 .f-18{
-  font-size: 18px;
+  font-size: 18px !important;
 }
 .f-20{
-  font-size: 20px;
+  font-size: 20px !important;
 }
 .f-24{
-  font-size: 24px;
+  font-size: 24px !important;
 }
 .border-item{
   border    : 1px solid #c0c0c069;

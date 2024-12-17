@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import './ListApplicant.scss';
 import { getAllApplicantByCategoryId, getAllJobCategories } from "../../../services/apiService";
 import { FaFilter } from "react-icons/fa6";
+import { useSelector } from "react-redux";
 
 const { Text } = Typography;
 const ListApplicant = ({ categoryId }) => {
@@ -73,7 +74,7 @@ const ListApplicant = ({ categoryId }) => {
 
 const ListResumes = () => {
     const [listCategory, setListCategory] = useState([]);
-    const [categoryId, setCategoryId] = useState();
+    const [categoryId, setCategoryId] = useState(useSelector(state => state.employer.categoryId));
     useEffect(() => {
         // fetch data
         getAllJobCategories().then((res) => {
@@ -91,6 +92,7 @@ const ListResumes = () => {
             <BoxContainer>
                 <Flex align="center" justify="end">
                     <Select
+                        value={categoryId}
                         placeholder='Ngành nghề'
                         size="large"
                         style={{ minWidth: 200 }}

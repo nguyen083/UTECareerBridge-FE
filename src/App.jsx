@@ -58,6 +58,8 @@ import ListOrder from './components/Employer/Order/ListOrder.jsx';
 import ListEvent from './components/Admin/ManageEvent/ListEvent.jsx';
 import PaymentReturn from './components/Employer/Order/PaymentReturn.jsx';
 import ServicePackage from './components/Admin/ServicePackage/ServicePackage.jsx';
+import PaymentSuccess from './components/User/PaymentSuccess.jsx';
+import PaymentFail from './components/User/PaymentFail.jsx';
 const App = () => {
   return (
     <ConfigProvider locale={viVN}
@@ -238,6 +240,8 @@ const App = () => {
             <Route path='403' element={<Page403 />} />
             <Route path='500' element={<Page500 />} />
           </Route>
+          <Route path='payment-success' element={<PaymentSuccess />} />
+          <Route path='payment-fail' element={<PaymentFail />} />
           <Route path='login' element={<StudentLogin />} />
           <Route path='/employer/login' element={<LoginPage />} />
           <Route path='favorite' element={<FavoritePage />} />
