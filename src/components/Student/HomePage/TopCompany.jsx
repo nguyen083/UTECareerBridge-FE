@@ -14,7 +14,7 @@ const { Meta } = Card;
 const TopCompany = ({ companies }) => {
   const navigate = useNavigate();
   return (
-    <div className="top-company">
+    <div className="top-company pe-none">
       <Title level={2}>Công ty hàng đầu</Title>
       <Flex justify='space-between'>
         {companies.map((company) => (<Card
@@ -39,7 +39,7 @@ const TopCompany = ({ companies }) => {
             </div>
           } description={
             <div className="text-center">
-              <Button size='large' onClick={() => {
+              <Button className='pe-auto' size='large' onClick={() => {
                 navigate(`/company/${company?.employerResponse?.id}`)
               }} type="primary">Xem thêm</Button>
             </div>

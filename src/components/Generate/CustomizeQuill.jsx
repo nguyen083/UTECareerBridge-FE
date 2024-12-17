@@ -47,8 +47,6 @@ const formats = [
     "color",
 ];
 
-
-
 export default function CustomizeQuill(props) {
     const { value } = props;
     const onChange = (value) => {

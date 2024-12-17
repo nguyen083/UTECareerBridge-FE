@@ -312,6 +312,9 @@ const checkFollowCompany = async (id) => {
   return axios.get(`students/follow/company?companyId=${id}`);
 }
 const getAllApplicantByCategoryId = async (id) => {
+  if (!id) {
+    return axios.get('students/students-finding-job');
+  }
   return axios.get(`students/students-finding-job/${id}`);
 }
 const getAds = async () => {

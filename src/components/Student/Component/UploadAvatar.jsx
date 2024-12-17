@@ -121,8 +121,8 @@ const UploadImage = ({ value, onChange }) => {
                 aspectSlider
                 minZoom={0.2}
                 maxZoom={10}
-                aspect={16 / 9}
-                modalWidth={600}
+                aspect={1636 / 400}
+                modalWidth={1500}
             >
                 <Upload.Dragger
                     showUploadList={false}

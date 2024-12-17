@@ -187,8 +187,8 @@ const ListServicePackage = ({ fetch, setFetch }) => {
     const handleDeleteServicePackage = (item) => {
         Modal.confirm({
             centered: true,
-            title: <span className="fw-bold f-18">Xác nhận xóa</span>,
-            content: <span className="f-16">Bạn có chắc chắn muốn xóa gói dịch vụ này?</span>,
+            title: "Xác nhận xóa",
+            content: "Bạn có chắc chắn muốn xóa gói dịch vụ này?",
             okType: 'danger',
             okText: 'Xóa',
             onOk: () => {

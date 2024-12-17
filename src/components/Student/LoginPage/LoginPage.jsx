@@ -29,13 +29,11 @@ const LoginPage = () => {
     };
 
     const handleLogin = async (values) => {
-
         const { username, ...rest } = values;
         const updatedValues = {
             ...rest,
             ...checkUserName(username)
         };
-        console.log(updatedValues);
         try {
             dispatch(loading());
             let res = await studentLogin(updatedValues);

@@ -9,7 +9,6 @@ import { JobCardLarge } from '../../Generate/JobCard';
 import CarouselTopCompnay from './CarouselTopCompnay';
 import { useLocation } from 'react-router-dom';
 const { Content } = Layout;
-const { Option } = Select;
 const JobSearchPage = () => {
   const keyword = useSelector(state => state.web.keyword);
   const location = useLocation();

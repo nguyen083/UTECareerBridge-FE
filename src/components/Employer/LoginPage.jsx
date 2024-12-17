@@ -17,24 +17,25 @@ const LoginPage = () => {
     const dispatch = useDispatch();
     var inputType = '';
 
-    const handleInputChange = (e) => {
-        const value = e.target.value;
+    const checkUserName = (value) => {
         if (emailRegex.test(value)) {
-            inputType = 'email';
+            return { "email": value };
         } else if (phoneRegex.test(value)) {
-            inputType = 'phoneNumber';
+            return { "phone_number": value };
         } else {
-            inputType = '';
+            return { "": value };
         }
     };
 
     const handleLogin = async (values) => {
-        dispatch(loading());
+        console.log(values);
         const { username, ...rest } = values;
         const updatedValues = {
             ...rest,
-            [inputType]: username,
+            ...checkUserName(username)
         };
+        console.log(updatedValues);
+        dispatch(loading());
         try {
             const res = await employerLogin(updatedValues);
             if (res.status === 'OK') {
@@ -91,7 +92,7 @@ const LoginPage = () => {
                                     },
                                 })
                                 ]} validateFirst >
-                                <Input onChange={handleInputChange} prefix={<UserOutlined />} />
+                                <Input prefix={<UserOutlined />} />
                             </Form.Item>
                             <Form.Item
                                 label={<span className='lable-text'>Mật khẩu</span>}

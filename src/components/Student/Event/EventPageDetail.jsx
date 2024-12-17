@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Typography, Button, Space, Tag, Descriptions, Card, Avatar, Flex, Tooltip, Timeline } from 'antd';
-import { CalendarOutlined, EnvironmentOutlined, BookOutlined, ShareAltOutlined, HeartOutlined } from '@ant-design/icons';
+import { Row, Col, Typography, Button, Space, Tag, Descriptions, Card, Avatar, Flex, Tooltip, Timeline, message } from 'antd';
+import { CalendarOutlined, EnvironmentOutlined, BookOutlined, ShareAltOutlined, HeartOutlined, FacebookFilled } from '@ant-design/icons';
 import BoxContainer from '../../Generate/BoxContainer';
 import HtmlContent from '../../Generate/HtmlContent';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import { getEventDetail } from '../../../services/apiService';
 import './EventPageDetail.scss';
 import { FaDotCircle } from "react-icons/fa";
 
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text } = Typography;
 
 const EventDetail = () => {
   const { id } = useParams();
@@ -48,6 +48,25 @@ const EventDetail = () => {
 
 
 
+  const handleShareClick = () => {
+    navigator.clipboard.writeText(window.location.href)
+      .then(() => {
+        message.success("Sao chép vào bộ nhớ tạm")
+      })
+      .catch(err => {
+        console.error('Lỗi khi sao chép URL: ', err);
+      });
+  };
+  const handleSharetoFacebook = () => {
+    const hashtag = `/&hashtag=%23${eventDetail.eventType}%0a%23UTECAREERBRIDGE%0a%23HCMUTE%0aTham%20gia%20ngay!`;
+    const ngrokUrl = import.meta.env.VITE_NGROK_URL;
+    const updatedUrl = window.location.href.replace('http://localhost:3000', ngrokUrl);
+    window.open(
+      `https://www.facebook.com/sharer/sharer.php?u=${updatedUrl}${hashtag}`,
+      '_blank'
+    );
+  }
+
   return (
     <BoxContainer padding={'0'}>
       <div style={{ maxWidth: '100%', margin: '0 auto', padding: '24px' }}>
@@ -72,7 +91,7 @@ const EventDetail = () => {
 
               {/* Thẻ loại sự kiện */}
               <Space>
-                <Tag color="blue" key={eventDetail.eventType}>{eventDetail.eventType}</Tag>
+                <Text strong style={{ color: "#91CAFF" }}># HASHTAG: </Text> <Tag color="blue" key={eventDetail.eventType}>{eventDetail.eventType}</Tag>
               </Space>
               <Card title={<Text className='f-18 text-hightlight'>Mô Tả Sự Kiện</Text>} className='box_shadow'>
                 {/* Mô tả sự kiện */}
@@ -116,15 +135,13 @@ const EventDetail = () => {
                 <Card.Meta
                   avatar={<Avatar src="https://res.cloudinary.com/utejobhub/image/upload/v1731551121/student/ua3ccjvawfxkb1yqqirb.png" size={64} />}
                   title="Trung tâm Hỗ trợ Sinh viên"
-                  description="support@student.hcmute.edu.vn"
+                  description={<><Text className='f-14' strong> Mọi thắc mắc xin vui lòng liên hệ</Text> <Text className='f-14' type='secondary'> support@student.hcmute.edu.vn</Text></>}
                 />
               </Card>
 
-
-
               {/* Nút hành động */}
               <Space direction="vertical" style={{ width: '100%' }}>
-                <Button
+                {/* <Button
                   type="primary"
                   block
                   size="large"
@@ -138,13 +155,22 @@ const EventDetail = () => {
                   icon={<HeartOutlined />}
                 >
                   Quan Tâm
-                </Button>
+                </Button> */}
                 <Button
                   block
                   size="large"
                   icon={<ShareAltOutlined />}
+                  onClick={handleShareClick}
                 >
-                  Chia Sẻ Sự Kiện
+                  Chia sẻ ngay
+                </Button>
+                <Button
+                  block
+                  size="large"
+                  icon={<FacebookFilled />}
+                  onClick={handleSharetoFacebook}
+                >
+                  Chia sẻ lên Facebook
                 </Button>
               </Space>
             </Space>

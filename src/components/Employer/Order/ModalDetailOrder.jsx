@@ -91,7 +91,10 @@ const ModalDetailOrder = ({ openOrderModal, setOpenOrderModal, id, status = 'PEN
                     <Descriptions title={<Title strong level={5}>Thông tin đơn hàng</Title>} column={1} bordered>
                         <Descriptions.Item label="ID Đơn hàng">{order?.orderId}</Descriptions.Item>
                         <Descriptions.Item label="Công ty">{order?.employer.companyName}</Descriptions.Item>
-                        <Descriptions.Item label="Mã Coupon">{order?.couponCode}</Descriptions.Item>
+                        {order?.couponCode && <>
+                            <Descriptions.Item label="Mã Coupon">{order?.couponCode}</Descriptions.Item>
+                            <Descriptions.Item label="Mã Coupon">{order?.couponCode}</Descriptions.Item>
+                        </>}
                         <Descriptions.Item label="Ngày đặt hàng">{order?.orderDate}</Descriptions.Item>
                         <Descriptions.Item label="Tổng tiền">{order?.total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Descriptions.Item>
                     </Descriptions>

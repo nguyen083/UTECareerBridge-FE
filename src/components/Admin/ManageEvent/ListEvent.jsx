@@ -11,40 +11,6 @@ import { deleteImageFromCloudinary, deleteImageFromCloudinaryByLink } from "../.
 const { Text, Title } = Typography;
 
 
-// const eventData = [
-//     {
-//         eventId: 11,
-//         eventTitle: "Hội chợ việc làm cuối năm 2024",
-//         eventDescription: "abc",
-//         eventDate: "31/12/2024 08:00:00",
-//         eventLocation: "Hội trường khu A trường SPKT",
-//         eventImage: "https://res.cloudinary.com/utejobhub/image/upload/v1728728442/admin/event/ngay_hoi_viec_lam.jpg",
-//         maxParticipants: 1000,
-//         currentParticipants: 0,
-//         eventType: "SEMINAR",
-//         timeline: [
-//             { timelineId: 10, timelineTitle: "a", timelineDescription: "a", timelineStart: "08:00:00" },
-//             { timelineId: 11, timelineTitle: "b", timelineDescription: "b", timelineStart: "09:00:00" },
-//         ],
-//     },
-//     {
-//         eventId: 10,
-//         eventTitle: "Ngày Hội Việc Làm Cng Nghệ 2024",
-//         eventDescription: "Sự kiện kết nối trực tiếp sinh viên CNTT với các doanh nghiệp hàng đầu, tạo cơ hội việc làm và thực tập",
-//         eventDate: "30/09/2024 09:00:00",
-//         eventLocation: "Hội Trường Khu A Nhà Trường",
-//         eventImage: "https://res.cloudinary.com/utejobhub/image/upload/v1728728442/admin/event/ngay_hoi_viec_lam.jpg",
-//         maxParticipants: 900,
-//         currentParticipants: 0,
-//         eventType: "CAREER_FAIR",
-//         timeline: [
-//             { timelineId: 7, timelineTitle: "Đăng Ký & Chuẩn Bị", timelineDescription: "Hướng dẫn sinh viên chuẩn bị hồ sơ và CV chuyên nghiệp", timelineStart: "08:00:00" },
-//             { timelineId: 8, timelineTitle: "Giới Thiệu Thị Trường Việc Làm", timelineDescription: "Phân tích xu hướng tuyển dụng và kỹ năng cần thiết trong ngành CNTT", timelineStart: "09:00:00" },
-//             { timelineId: 9, timelineTitle: "Phiên Phỏng Vấn Trực Tiếp", timelineDescription: "Sinh viên gặp gỡ và phỏng vấn trực tiếp với các nhà tuyển dụng", timelineStart: "10:30:00" },
-//         ],
-//     },
-// ];
-
 const EventList = ({ isFetching, setIsFetching, eventType }) => {
     const [eventData, setEventData] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
@@ -83,8 +49,8 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
     const handleDeleteEvent = (item) => {
         Modal.confirm({
             centered: true,
-            title: <span className="f-18">Xác nhận xóa</span>,
-            content: <span className="f-16">Bạn có chắc chắn muốn xóa sự kiện này không?</span>,
+            title: "Xác nhận xóa",
+            content: "Bạn có chắc chắn muốn xóa sự kiện này không?",
             okText: 'Xóa',
             okType: 'danger',
             cancelText: 'Hủy',
@@ -190,10 +156,10 @@ const ListEvent = () => {
                     <Select
                         size='large'
                         allowClear
-                        style={{ width: 200 }}
+                        style={{ minWidth: 200 }}
                         placeholder="Lọc theo loại"
                         onChange={(value) => setEventType(value)}
-                        suffixIcon={<FaFilter />}
+                        prefix={<FaFilter color="#1E4F94" style={{ marginRight: 8 }} />}
                     >
                         <Select.Option value="SEMINAR">Hội thảo</Select.Option>
                         <Select.Option value="CONFERENCE">Hội nghị</Select.Option>

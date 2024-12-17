@@ -146,6 +146,10 @@ const App = () => {
           Collapse: {
             headerBg: COLOR.cardColor,
             headerPadding: '0px 50px',
+          },
+          Modal: {
+            titleFontSize: "1.125rem",
+            fontSize: "1rem",
           }
         }
       }}>

@@ -307,19 +307,19 @@ const TableListJobs = (props) => {
             render: (_, record) => (
                 <Space size="small">
                     <Tooltip color='blue' title="Xem">
-                        <Button shape="circle" onClick={() => handleView(record.key)} icon={<EyeOutlined />} />
+                        <Button onClick={() => handleView(record.key)} icon={<EyeOutlined />} />
                     </Tooltip>
                     <div hidden={props.status === 'REJECTED'}>
                         <Tooltip color='cyan' title="Chỉnh sửa">
-                            <Button shape="circle" onClick={() => handleEdit(record.key)} icon={<EditOutlined />} />
+                            <Button onClick={() => handleEdit(record.key)} icon={<EditOutlined />} />
                         </Tooltip>
                     </div>
                     <Tooltip color='red' title="Xóa">
-                        <Button shape="circle" danger onClick={() => handleDelete(record.key)} icon={<DeleteOutlined />} />
+                        <Button danger onClick={() => handleDelete(record.key)} icon={<DeleteOutlined />} />
                     </Tooltip>
                     <div hidden={props.status === 'PENDING' || props.status === 'REJECTED'}>
                         <Tooltip title="Ẩn/Hiện">
-                            <Button shape="circle" onClick={() => handleHide(record.key)}
+                            <Button onClick={() => handleHide(record.key)}
                                 icon={<EyeInvisibleOutlined />} />
                         </Tooltip>
                     </div>

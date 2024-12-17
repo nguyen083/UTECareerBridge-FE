@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Card, Divider, Layout, Row, Col, Typography, Alert, Pagination, message } from 'antd';
+import { Button, Card, Divider, Layout, Row, Col, Typography, Alert, Pagination, message, Flex } from 'antd';
 import BoxContainer from '../../Generate/BoxContainer';
 import './packageDashboard.scss';
 import { getAllPackages, addPackageToCart } from '../../../services/apiService';
+import { ShoppingCartOutlined } from '@ant-design/icons';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
 const ServiceMarketplace = () => {
   const [services, setServices] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6
-  const [cart, setCart] = useState([]);
+  const navigate = useNavigate();
   const handleAddToCart = async (service) => {
-    if (cart.some((item) => item.packageId === service.packageId)) {
-      message.warning("Sản phẩm này đã có trong giỏ hàng.");
-      return;
-    }
     try {
       const values = {
         packageId: service.packageId,
@@ -24,7 +23,6 @@ const ServiceMarketplace = () => {
       const response = await addPackageToCart(values);
 
       if (response.status === 'OK') {
-        setCart((prevCart) => [...prevCart, { ...service, quantity: 1 }]);
         message.success(response.message);
       } else {
         message.error("Không thể thêm sản phẩm vào giỏ hàng.");
@@ -35,8 +33,10 @@ const ServiceMarketplace = () => {
     }
   };
 
-  const handleCheckout = (service) => {
-    console.log('Checking out:', service);
+  const handleCheckout = async (service) => {
+    await handleAddToCart(service);
+    navigate('/employer/cart');
+
   };
   const fetchPackages = async () => {
     try {
@@ -51,7 +51,7 @@ const ServiceMarketplace = () => {
   }, []);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentServices = services.slice(startIndex, endIndex);
+  // const currentServices = services.slice(startIndex, endIndex);
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
@@ -77,20 +77,23 @@ const ServiceMarketplace = () => {
                     title={<Title level={5} style={{ color: '#52C41A' }}>{service.packageName}</Title>}
                     className='service-card'
                     actions={[
-                      <Button
-                        type="default"
-                        onClick={() => handleAddToCart(service)}
-                        className='add-to-cart-btn'
-                      >
-                        <span role="img" aria-label="cart">🛒</span> Thêm vào giỏ
-                      </Button>,
-                      <Button
-                        type="primary"
-                        onClick={() => handleCheckout(service)}
-                        className='buy-now-btn'
-                      >
-                        Mua ngay
-                      </Button>,
+                      <Flex justify='space-around' align='center'>
+                        <Button
+                          type="default"
+                          onClick={() => handleAddToCart(service)}
+                          className='add-to-cart-btn'
+                          icon={<ShoppingCartOutlined />}
+                        >
+                          Thêm vào giỏ
+                        </Button>
+                        <Button
+                          type="primary"
+                          onClick={() => handleCheckout(service)}
+                          className='buy-now-btn'
+                        >
+                          Mua ngay
+                        </Button>
+                      </Flex>
                     ]}
                   >
                     <Text strong className='price-text'>

@@ -34,7 +34,7 @@ const BusinessCertificate = () => {
     const onChange = () => {
         Modal.confirm({
             title: 'Xác nhận gửi thông tin',
-            content: <span className="f-16">Bằng cách nhấp vào nút xác nhận, bạn đồng ý rằng việc không cung cấp hoặc cung cấp thông tin sai được coi là một vi phạm có thể dẫn tới tạm dừng dịch vụ và/hoặc hủy tài khoản mà không được hoàn tiền. Bạn có thể kiểm tra lại thông tin đã cung cấp</span>,
+            content: "Bằng cách nhấp vào nút xác nhận, bạn đồng ý rằng việc không cung cấp hoặc cung cấp thông tin sai được coi là một vi phạm có thể dẫn tới tạm dừng dịch vụ và/hoặc hủy tài khoản mà không được hoàn tiền. Bạn có thể kiểm tra lại thông tin đã cung cấp",
             onOk() {
                 setChange(true);
             },

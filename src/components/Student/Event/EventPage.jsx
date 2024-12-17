@@ -72,7 +72,7 @@ const EventPage = () => {
               style={{ width: 200 }}
               placeholder="Lọc theo loại"
               onChange={(value) => setEventType(value)}
-              prefix={<FaFilter />}
+              prefix={<FaFilter color="#1E4F94" style={{ marginRight: 8 }} />}
             >
               <Select.Option value="SEMINAR">Hội thảo</Select.Option>
               <Select.Option value="CONFERENCE">Hội nghị</Select.Option>

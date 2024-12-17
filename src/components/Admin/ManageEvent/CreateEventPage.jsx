@@ -4,6 +4,8 @@ import { UploadImage } from "../../Student/Component/UploadAvatar";
 import { DeleteOutlined } from "@ant-design/icons";
 import { createEvent, getEventDetail, updateEvent } from "../../../services/apiService";
 import dayjs from "dayjs";
+import { deleteImageFromCloudinaryByLink } from "../../../services/uploadCloudary";
+import CustomizeQuill from "../../Generate/CustomizeQuill";
 
 const CreateEventPage = ({ open, setOpen, setIsFetching, item = null }) => {
     const [form] = Form.useForm();
@@ -34,6 +36,7 @@ const CreateEventPage = ({ open, setOpen, setIsFetching, item = null }) => {
             form.setFieldsValue(eventDetail);
         }
     }, [eventDetail]);
+
     const handleFinish = (values) => {
         const formattedValues = {
             ...values,
@@ -43,7 +46,6 @@ const CreateEventPage = ({ open, setOpen, setIsFetching, item = null }) => {
                 timelineStart: item.timelineStart.format('HH:mm')
             }))
         };
-        console.log(item);
         !item ? createEvent(formattedValues).then((res) => {
             if (res.status === 'CREATED') {
                 setOpen(false);
@@ -57,6 +59,12 @@ const CreateEventPage = ({ open, setOpen, setIsFetching, item = null }) => {
             message.error(err.message);
         }) : updateEvent(eventDetail.eventId, formattedValues).then((res) => {
             if (res.status === 'OK') {
+
+                {
+                    eventDetail.eventImage !== formattedValues.eventImage && deleteImageFromCloudinaryByLink(eventDetail.eventImage, 'image', 'admin/event').then((res) => {
+                        console.log(res);
+                    });
+                }
                 form.resetFields();
                 message.success(res.message);
                 setOpen(false);
@@ -138,7 +146,7 @@ const CreateEventPage = ({ open, setOpen, setIsFetching, item = null }) => {
                         <Form.Item label="Mô Tả Sự Kiện" name="eventDescription"
                             rules={[{ required: true, message: 'Vui lòng nhập mô tả sự kiện!' }]}
                         >
-                            <Input.TextArea rows={4} />
+                            <CustomizeQuill />
                         </Form.Item>
                     </Col>
                 </Row>

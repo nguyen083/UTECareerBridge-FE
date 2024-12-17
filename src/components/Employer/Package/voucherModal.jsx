@@ -48,7 +48,7 @@ const VoucherModal = ({ visible, onClose, onSelectVoucher }) => {
     }
   };
   const handleUseCoupon = (coupon) => {
-    onSelectVoucher(coupon.code); // Call the function passed from props
+    onSelectVoucher(coupon); // Call the function passed from props
     onClose();
 
   };

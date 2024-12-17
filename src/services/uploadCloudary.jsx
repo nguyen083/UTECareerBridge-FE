@@ -44,8 +44,8 @@ export const uploadToCloudinary = async (file, folder, onProgress) => {
         throw error;  // Ném lỗi để xử lý ở nơi gọi
     }
 };
-export const deleteImageFromCloudinaryByLink = async (link, type = "image") => {
-    const publicId = "student" + "/" + link.split('/').pop().split('.')[0];
+export const deleteImageFromCloudinaryByLink = async (link, type = "image", folder = "student") => {
+    const publicId = folder + "/" + link.split('/').pop().split('.')[0];
     console.log("publicId:", publicId);
     const timestamp = Math.floor(Date.now() / 1000);
     const signature = generateSignatureDelete(publicId, timestamp);
