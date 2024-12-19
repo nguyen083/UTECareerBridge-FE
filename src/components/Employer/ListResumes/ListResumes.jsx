@@ -13,22 +13,26 @@ const ListApplicant = ({ categoryId }) => {
     const navigate = useNavigate();
     const [datasource, setDatasource] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
     const [totalApplicants, setTotalApplicants] = useState(0);
     const handlePageChange = (page, pageSize) => {
         setCurrentPage(page);
         setPageSize(pageSize);
     };
     useEffect(() => {
-        console.log(categoryId);
         window.scrollTo(0, 0);
-        getAllApplicantByCategoryId(categoryId).then(res => {
+        const param = {
+            page: currentPage - 1,
+            limit: pageSize,
+            categoryId
+        }
+        getAllApplicantByCategoryId(param).then(res => {
             if (res.status === 'OK') {
                 setDatasource(res.data.content);
-                setTotalApplicants(res.data.totalElements);
-            }
-            else {
+                setTotalApplicants(res.data.numberOfElements);
+            } else {
                 setDatasource([]);
+                setTotalApplicants(0);
                 return;
             }
         });

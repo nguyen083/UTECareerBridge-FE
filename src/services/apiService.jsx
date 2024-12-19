@@ -311,11 +311,9 @@ const getJobSaved = async () => {
 const checkFollowCompany = async (id) => {
   return axios.get(`students/follow/company?companyId=${id}`);
 }
-const getAllApplicantByCategoryId = async (id) => {
-  if (!id) {
-    return axios.get('students/students-finding-job');
-  }
-  return axios.get(`students/students-finding-job/${id}`);
+const getAllApplicantByCategoryId = async (values) => {
+  const params = new URLSearchParams(values).toString();
+  return axios.get(`students/students-finding-job?${params}`);
 }
 const getAds = async () => {
   return axios.get('employers/top-company');

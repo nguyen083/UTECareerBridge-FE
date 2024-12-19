@@ -1,6 +1,8 @@
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from 'react-quill';
 import './CustomizeQuill.scss';
+import { Row } from 'antd';
+import { useRef } from "react";
 
 const modules = {
     toolbar: [
@@ -48,14 +50,17 @@ const formats = [
 ];
 
 export default function CustomizeQuill(props) {
+    const quillRef = useRef(null);
     const { value } = props;
     const onChange = (value) => {
+        console.log(quillRef.current);
         props.onChange(value);
     }
     return (
         <>
             <ReactQuill
                 // style={{ borderRadius: "10px", border: "1px solid #d9d9d9" }}
+                ref={quillRef}
                 theme="snow"
                 modules={modules}
                 formats={formats}

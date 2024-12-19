@@ -10,7 +10,7 @@ import { getCVByEmployer, getCVById } from '../../../services/apiService';
 import { apiService } from '../../../services/getAddressId';
 import { useSelector } from 'react-redux';
 const { Text, Title } = Typography;
-const ViewCV = () => {
+const ViewCV = ({ setStudentId = null }) => {
     const user = useSelector(state => state.user);
     const { id } = useParams();
     const location = useLocation();
@@ -95,6 +95,7 @@ const ViewCV = () => {
                 getCVByEmployer(id).then((res) => {
                     if (res.status === 'OK') {
                         setCv(res.data);
+                        setStudentId(res.data.studentId);
                         apiService.getInforAddress(res.data.address, res.data.provinceId, res.data.districtId, res.data.wardId).then((res) => {
                             setAddress(res);
                         })

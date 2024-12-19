@@ -147,4 +147,6 @@ html{
 .slick-arrow {
   color: #1890ff !important;
 }
-
+.ql-container{
+  min-height: 100px;
+}
