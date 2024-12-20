@@ -68,11 +68,12 @@ const itemSider = [
         label: 'Quản lý giao dịch',
         children: [
             { key: '/admin/service-packages', label: 'Gói dịch vụ' },
-            { key: '/admin/transactions', label: 'Lịch sử giao dịch' },
-            { key: '/admin/revenue', label: 'Báo cáo doanh thu' }
+            // { key: '/admin/transactions', label: 'Lịch sử giao dịch' },
+            // { key: '/admin/revenue', label: 'Báo cáo doanh thu' }
+            { key: '/admin/coupons', label: 'Mã giảm giá' }
         ]
     },
-    
+
     {
         key: '6',
         icon: <GlobalOutlined />,

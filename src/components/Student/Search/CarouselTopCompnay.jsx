@@ -27,8 +27,8 @@ const CarouselTopCompnay = () => {
         className='box_shadow border border-1 carousel-top-company'
     >
         <Carousel
-            // autoplay
-            // autoplaySpeed={3000}
+            autoplay
+            autoplaySpeed={3000}
             dots={true}
             arrows
             pauseOnHover={true}

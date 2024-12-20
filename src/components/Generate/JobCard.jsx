@@ -3,8 +3,10 @@ import { Card, Divider, Flex, List, Tag, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import Lable from '../../constant/Lable';
-import { HeartOutlined } from '@ant-design/icons';
 import './JobCard.scss';
+import { FaMapLocationDot } from 'react-icons/fa6';
+import { FaRegMoneyBillAlt } from 'react-icons/fa';
+import { IoIosBusiness } from 'react-icons/io';
 const { Text, Title, Paragraph } = Typography;
 
 // const JobCardSmall = ({ job }) => {
@@ -102,15 +104,18 @@ const JobCardSmall = ({ job }) => {
                         {job.jobTitle}
                     </Title>
                     < Text className='f-14 limit-text'>
+                        <IoIosBusiness size={16} /> &ensp;
                         {job.employerResponse.companyName}</Text>
 
 
                     <Flex align='center' gap={3} style={{ color: '#ff4d4f', fontSize: 14, margin: '8px 0' }}>
+                        <FaRegMoneyBillAlt size={16} />&ensp;
                         {job?.jobMinSalary?.toLocaleString('vi-VN')} - {job?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} <div style={{ fontSize: 14 }}>/tháng</div>
                     </Flex>
                     < Paragraph
                         type='secondary limit-text mb-0'
                     >
+                        <FaMapLocationDot />&ensp;
                         {job.jobLocation}</Paragraph>
                 </div>}
             />
@@ -166,10 +171,11 @@ const JobCardLarge = ({ job, disable = false }) => {
                     //     textOverflow: 'ellipsis',     // Adds ellipsis for overflowed text
                     //     maxWidth: 140                 // Optional: set max width to control where it cuts off
                     // }}
-                    >
+                    ><IoIosBusiness /> &ensp;
                         {job.employerResponse.companyName}</Paragraph>
                     <Flex align='center' >
                         <Flex align='center' gap={3} style={{ color: '#ff4d4f', fontSize: 14 }}>
+                            <FaRegMoneyBillAlt size={16} />&ensp;
                             {job?.jobMinSalary?.toLocaleString('vi-VN')} - {job?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} <div style={{ fontSize: 14 }}>/tháng</div>
                         </Flex>
                         <Divider type='vertical' />
@@ -183,6 +189,7 @@ const JobCardLarge = ({ job, disable = false }) => {
                         //     maxWidth: 140                 // Optional: set max width to control where it cuts off
                         // }}
                         >
+                            <FaMapLocationDot />&ensp;
                             {job.jobLocation}</div>
                     </Flex>
                 </div>

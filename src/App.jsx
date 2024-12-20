@@ -60,6 +60,7 @@ import PaymentReturn from './components/Employer/Order/PaymentReturn.jsx';
 import ServicePackage from './components/Admin/ServicePackage/ServicePackage.jsx';
 import PaymentSuccess from './components/User/PaymentSuccess.jsx';
 import PaymentFail from './components/User/PaymentFail.jsx';
+import Coupon from './components/Admin/Coupon.jsx/Coupon.jsx';
 const App = () => {
   return (
     <ConfigProvider locale={viVN}
@@ -228,6 +229,7 @@ const App = () => {
             <Route path='company-approval' element={<CompanyApproval />} />
             <Route path='post-approval' element={<PostApproval />} />
             <Route path='news-events' element={<ListEvent />} />
+            <Route path='coupons' element={<Coupon />} />
           </Route>
 
           <Route path='forgot-password' element={<BackgroundAndForm />}>
@@ -247,7 +249,6 @@ const App = () => {
           <Route path='favorite' element={<FavoritePage />} />
           <Route path='register' element={<RegisterPage />} />
           <Route path='*' element={<Page404 />} />
-
         </Routes>
       </Spin>
       {/* <Navigation/> */}

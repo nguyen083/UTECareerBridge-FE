@@ -19,7 +19,7 @@ const ApplicantCard = ({ applicant, status }) => {
                                 <Text className="f-16">{applicant?.email}</Text>
                             </div>
                         </Flex>
-                        <Button size="large" variant="text" type="default" onClick={() => { applicant?.applicationId && navigate(`/employer/applicant-job/${applicant?.applicationId}`, { state: { status } }) }}>Hồ sơ chi tiết</Button>
+                        <Button size="large" variant="text" type="default" onClick={() => { applicant?.applicationId && navigate(`/employer/applicant-job/${applicant?.applicationId}`, { state: { status, jobId: applicant.jobId } }) }}>Hồ sơ chi tiết</Button>
                     </Flex>
                 </div>
             </Card>

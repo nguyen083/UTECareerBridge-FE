@@ -80,14 +80,12 @@ const getAllSkills = async () => {
   return axios.get('skills/get-all-skills');
 };
 const postJob = async (values) => {
-
+  if (!values.packageId) {
+    delete values.packageId;
+  }
   return axios.post('jobs/job-posting/new-job', values);
 };
-const getAllJobs = async (values) => {
 
-  const formData = objectToFormData(values);
-  return axios.get('jobs/employers/all-jobs', formData);
-};
 const getJobsByStatus = async (values) => {
 
   const params = new URLSearchParams(values).toString();
@@ -385,6 +383,9 @@ const deleteServicePackage = (id) => {
 const updateServicePackage = (id, values) => {
   return axios.put(`packages/update-package/${id}`, values);
 }
+const sendMailApprove = async (values) => {
+  return axios.post(`employers/send-mail-reply-accept-interview`, values);
+}
 export {
   uploadCV,
   setToken,
@@ -405,7 +406,6 @@ export {
   getAllJobLevels,
   getAllSkills,
   postJob,
-  getAllJobs,
   getJobsByStatus,
   putHideJob,
   deleteJob,
@@ -478,5 +478,6 @@ export {
   updateEvent,
   createServicePackage,
   deleteServicePackage,
-  updateServicePackage
+  updateServicePackage,
+  sendMailApprove
 }

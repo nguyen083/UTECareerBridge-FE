@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, List, Typography, Divider, Pagination, Tag } from 'antd';
+import { Modal, Button, List, Typography, Divider, Pagination, Tag, Flex, Empty } from 'antd';
 import { getAllCoupon } from '../../../services/apiService';
 import './voucherModal.scss';
+import { CalendarOutlined } from '@ant-design/icons';
+import { RiDiscountPercentLine } from 'react-icons/ri';
 const { Text } = Typography;
 
 const VoucherModal = ({ visible, onClose, onSelectVoucher }) => {
@@ -61,14 +63,12 @@ const VoucherModal = ({ visible, onClose, onSelectVoucher }) => {
       visible={visible}
       onCancel={onClose}
       footer={null}
+      title="Chọn voucher"
       width={800}
       className="voucher-modal"
     >
       {loading && <div>Loading...</div>}
       {error && <div>{error}</div>}
-      {!loading && !error && coupons.length === 0 && (
-        <div>Không có mã ưu đãi nào.</div>
-      )}
       {!loading && !error && coupons.length > 0 && (
         <div>
           <List
@@ -92,7 +92,7 @@ const VoucherModal = ({ visible, onClose, onSelectVoucher }) => {
                   className='d-flex align-items-stretch'
                   avatar={
                     <div className="voucher-left rounded-start">
-                      <div className="voucher-label">Voucher</div>
+                      <div className="voucher-label"><Flex align="center" gap={5}><RiDiscountPercentLine size={20} /> Voucher</Flex></div>
                     </div>}
                   title={
                     <>
@@ -109,7 +109,10 @@ const VoucherModal = ({ visible, onClose, onSelectVoucher }) => {
                     <div className='ps-1'>
                       <p>Mã: <Tag color="orange">{coupon.code}</Tag></p>
                       <p>{coupon.description}</p>
-                      <p>Còn lại: {coupon.expiredAt}</p>
+                      <Flex align="center">
+                        <p>Còn lại: {coupon.amount}</p> <Divider type="vertical" />
+                        <p> <CalendarOutlined /> Ngày hết hạn: {new Date(coupon.expiredAt).toLocaleDateString('vi-VN').split(' ')[0]}</p>
+                      </Flex>
                     </div>
                   }
                 />

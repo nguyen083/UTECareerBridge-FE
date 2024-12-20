@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Row, Col, Card, Button, Space, Image, Typography, Flex, Carousel, Divider, Descriptions, Spin, message } from 'antd';
 import { EnvironmentOutlined, TeamOutlined, ClockCircleOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
 import { FaCalendarAlt, FaInbox, FaUserTie, FaCubes, FaReact, FaUsers, } from "react-icons/fa";
-import { checkSaveJob, getAllCompany, getJobById, getSimilarJob, saveJob, unSaveJob } from '../../services/apiService';
+import { checkSaveJob, getAllCompany, getAllJobEmployer, getJobById, getSimilarJob, saveJob, unSaveJob } from '../../services/apiService';
 import BoxContainer from '../Generate/BoxContainer';
 import HtmlContent from '../Generate/HtmlContent';
 import BenefitComponent from '../Generate/BenefitComponent';
@@ -27,6 +27,7 @@ const ViewJob = () => {
     const [loading, setLoading] = useState(true);
     const { id } = useParams();
     const [similarJobs, setSimilarJobs] = useState([]);
+    const [jobSameCompany, setJobSameCompany] = useState([]);
     const [willLoveJob, setWillLoveJob] = useState([]);
     const navigate = useNavigate();
     const [carouselItems, setCarouselItems] = useState([]);
@@ -65,6 +66,7 @@ const ViewJob = () => {
                     industry: company.industry.industryName, //Lĩnh vực công ty
                     amount: job.amount, //Số lượng tuyển
                     jobLevel: job.jobLevel.nameLevel, //Cấp bậc
+                    jobCategoryId: job.jobCategory.jobCategoryId,
                     jobSkills: job.jobSkills.map(skill => skill.skillName).join(', '), //kĩ năng
                     // đã like hay chưa
                 });
@@ -109,6 +111,13 @@ const ViewJob = () => {
                 })));
             } else {
                 setCarouselItems([]);
+            }
+        });
+        getAllJobEmployer(company.id).then((res) => {
+            if (res.status === 'OK' && res.data) {
+                setJobSameCompany(res.data.jobResponses.filter((item) => item.jobId !== +id));
+            } else {
+                setJobSameCompany([]);
             }
         });
     }, [company])
@@ -198,7 +207,7 @@ const ViewJob = () => {
                     {/* Cột trái - Main content */}
                     <Col xs={24} md={16} lg={18}>
                         <Flex vertical gap={8}>
-                            <BoxContainer padding='1rem'>
+                            <BoxContainer className='box_shadow' padding='1rem'>
                                 <Flex vertical gap={"1.25rem"}>
                                     <BoxContainer background='#F8F9FA'>
                                         <div className='job-name mb-5'>{job.jobTitle} </div>
@@ -252,13 +261,13 @@ const ViewJob = () => {
                                 </Flex>
                             </BoxContainer>
                             {willLoveJob?.length > 0 ?
-                                <Card actions={[<Link onClick={() => { }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-start'>Việc làm bạn sẽ thích</div>}
+                                <Card className='box_shadow' actions={[<Link onClick={() => { navigate('/search', { state: { filters: { categoryId: infor.categoryId } } }) }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-start'>Việc làm bạn sẽ thích</div>}
                                     style={{ width: "100%" }} size='small'>
                                     <Flex gap={"0.5rem"} vertical>
                                         {willLoveJob.map((job) => <JobCardSmall job={job} />)}
                                     </Flex>
                                 </Card> :
-                                similarJobs && similarJobs.length > 0 && <Card actions={[<Link onClick={() => { }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-start'>Việc làm bạn sẽ thích</div>}
+                                similarJobs && similarJobs.length > 0 && <Card className='box_shadow' actions={[<Link onClick={() => { navigate('/search', { state: { filters: { categoryId: id } } }) }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-start'>Việc làm bạn sẽ thích</div>}
                                     style={{ width: "100%" }} size='small'>
                                     <Flex gap={"0.5rem"} vertical>
                                         {similarJobs.map((job) => <JobCardSmall job={job} />)}
@@ -271,7 +280,7 @@ const ViewJob = () => {
                     <Col xs={24} md={8} lg={6}>
                         <Row gutter={[0, 8]}>
 
-                            <Card
+                            <Card className='box_shadow'
                                 style={{ width: "100%", borderRadius: '10px', textAlign: 'center' }}
                                 cover={
                                     <div
@@ -320,7 +329,7 @@ const ViewJob = () => {
                                     </Space>
                                 </Flex>
                             </Card>
-                            {carouselItems.length > 0 && <Card
+                            {carouselItems.length > 0 && <Card className='box_shadow'
                                 title={<div className='title2 p-3'>Công ty cùng lĩnh vực</div>}
                                 style={{ textAlign: "center", width: "100%" }}
                             >
@@ -357,16 +366,16 @@ const ViewJob = () => {
                                     ))}
                                 </Carousel>
                             </Card>}
-                            {similarJobs && similarJobs.length > 0 && <Card actions={[<Link onClick={() => { }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-center'>Việc làm tương tự</div>}
+                            {similarJobs && similarJobs.length > 0 && <Card className='box_shadow' actions={[<Link onClick={() => { navigate('/search', { state: { filters: { categoryId: job.jobCategoryId } } }) }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-center'>Việc làm tương tự</div>}
                                 style={{ width: "100%" }} size='small'>
                                 <Flex gap={"0.5rem"} vertical>
                                     {similarJobs.map((job) => <JobCardSmall job={job} />)}
                                 </Flex>
                             </Card>}
-                            {similarJobs && similarJobs.length > 0 && <Card actions={[<Link type='secondary' onClick={() => { }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-center'>Việc làm cùng công ty</div>}
+                            {jobSameCompany && jobSameCompany.length > 0 && <Card className='box_shadow' title={<div className='title2 p-3 text-center'>Việc làm cùng công ty</div>}
                                 style={{ width: "100%", marginBottom: 16 }} size='small'>
                                 <Flex gap={"0.5rem"} vertical>
-                                    {similarJobs.map((job) => <JobCardSmall job={job} />)}
+                                    {jobSameCompany.slice(0, 5).map((job) => <JobCardSmall job={job} />)}
                                 </Flex>
                             </Card>}
                         </Row>

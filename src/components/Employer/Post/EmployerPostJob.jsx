@@ -162,9 +162,7 @@ const EmployerPostJob = () => {
         <BoxContaier>
             <div className="form-group row g-3">
                 <Form.Item className='col-12 mt-0' name="packageId" label="Gói dịch vụ"
-                    rules={[
-                        { required: true, message: 'Vui lòng chọn gói dịch vụ trước khi đăng tuyển' },
-                    ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
+                >
                     <Select placeholder="Vui lòng chọn gói dịch vụ" onChange={handlePackageChanged} allowClear>
                         {packages.map(pkg => (
                             <Select.Option key={pkg.packageResponse.packageId} value={pkg.packageResponse.packageId} >
@@ -195,7 +193,7 @@ const EmployerPostJob = () => {
 
                 </Descriptions>}
             </div>
-        </BoxContaier>
+        </BoxContaier >
     );
     const itemsCollapse1 = [
         {

@@ -2,14 +2,16 @@ import { Affix, Button, Col, DatePicker, Flex, Form, Input, message, Modal, Radi
 import BoxContainer from "../../Generate/BoxContainer";
 import ViewCV from "../../Student/CV/ViewCV";
 import styles from "./ViewDetailApplicant.module.scss";
-import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import { useParams, useLocation } from "react-router-dom";
-import { convertStatus } from "../../../services/apiService";
+import { CheckOutlined, CloseCircleOutlined, CloseOutlined } from "@ant-design/icons";
+import { useParams, useLocation, useSearchParams } from "react-router-dom";
+import { convertStatus, sendMailApprove } from "../../../services/apiService";
 import { useEffect, useState } from "react";
 import './ModalInterview.scss';
 import CustomizeQuill from './../../Generate/CustomizeQuill';
 import dayjs from "dayjs";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { use } from "react";
+import { loading, stop } from "../../../redux/action/webSlice";
 
 const { Text } = Typography;
 const ViewDetailApplicant = () => {
@@ -17,7 +19,6 @@ const ViewDetailApplicant = () => {
     const location = useLocation();
     const [open, setOpen] = useState(false);
     const [studentId, setStudentId] = useState(null);
-
 
     useEffect(() => {
         if (location.state?.status === "PENDING") {
@@ -36,27 +37,31 @@ const ViewDetailApplicant = () => {
 
     return (
         <Flex vertical gap={20}>
-            <Affix offsetTop={80}>
+            {location.state?.status !== 'APPROVED' && <Affix Affix offsetTop={80}>
                 <BoxContainer className={styles.box_container}>
                     <Flex justify='space-between' align='center'>
                         <Text className="mb-0 title1">Duyệt ứng viên</Text>
                         <Flex gap={10} align='center'>
                             <Button icon={<CheckOutlined />} size="large" type="primary" className={styles.btn_success} onClick={() => setOpen(true)}>Duyệt</Button>
-                            <Button icon={<CloseOutlined />} size="large" type="primary" danger onClick={handleReject}>Từ chối</Button>
+                            {location.state?.status !== 'REJECTED' && <Button icon={<CloseOutlined />} size="large" type="primary" danger onClick={handleReject}>Từ chối</Button>}
                         </Flex>
                     </Flex>
                 </BoxContainer>
-            </Affix>
+            </Affix>}
             <ViewCV setStudentId={setStudentId} />
             <ModalInterview open={open} setOpen={setOpen} studentId={studentId} />
-        </Flex>
+        </Flex >
     )
 }
 const ModalInterview = ({ open, setOpen, studentId }) => {
 
+    const { id } = useParams();
     const [form] = Form.useForm();
-    const [type, setType] = useState("offline");
+    const [type, setType] = useState("ONLINE");
     const employerId = useSelector(state => state.employer.id);
+    const location = useLocation();
+    const dispatch = useDispatch();
+    const load = useSelector(state => state.web.loading);
     const handleOk = () => {
         form.submit();
     }
@@ -66,25 +71,80 @@ const ModalInterview = ({ open, setOpen, studentId }) => {
     }
     const handleSubmit = (values) => {
         values.studentId = studentId;
-        values.employerId = employerId;
-        values.dateTime = dayjs(values.dateTime).format('YYYY-MM-DD HH:mm:ss');
-
-        // call api here
-        console.log(values);
-
-        // cập nhật trạng thái hồ sơ
-        convertStatus(id, "APPROVED").then((res) => {
-            if (res.status === "OK") {
-                message.success(res.message);
-                handleCancel();
+        if (type === "ONLINE") {
+            values.jobId = location.state?.jobId;
+            values.interviewDate = dayjs(values.interviewDate).format('YYYY-MM-DD HH:mm:ss');
+            values.interviewMethod = type;
+            dispatch(loading());
+            sendMailApprove(values).then((res) => {
+                if (res.status === "OK") {
+                    message.success(res.message);
+                } else {
+                    message.error(res.message);
+                }
+            }).catch((err) => {
+                message.error(err.message);
             }
-        });
-    }
+            ).finally(() => {
+                convertStatus(id, "APPROVED").then((response) => {
+                    console.log(response);
+                    if (response.status === "OK") {
+                        message.success(response.message);
+                        handleCancel();
+                    }
+                }).catch((err) => {
+                    message.error(err.message);
+                }).finally(() => {
+                    dispatch(stop());
+                    form.resetFields();
+                });
 
+            });
+        } else {
+            values.employerId = employerId;
+            values.dateTime = dayjs(values.dateTime).format('YYYY-MM-DD HH:mm:ss');
+        }
+
+
+    }
+    const disablePastDates = (current) => {
+        // Chỉ cho phép chọn các ngày từ hôm nay trở đi
+        return current && current < new Date().setHours(0, 0, 0, 0);
+    };
     const onlineForm = (
         <>
-            <Form.Item name="link" layout="vertical" label="Link phỏng vấn">
-                <Input placeholder="Nhập link phỏng vấn" />
+            <Form.Item required label="Vị trí phỏng vấn" name='jobPosition' rules={[{ required: true, message: 'Vui vị trí phỏng vấn!' }]} >
+                <Input allowClear placeholder="Nhập vị trí phỏng vấn" />
+            </Form.Item>
+            <Form.Item required label="Thời gian phỏng vấn" name='interviewDate' rules={[{ required: true, message: 'Vui lòng chọn thời gian phỏng vấn!' }]} >
+                <DatePicker placeholder="Chọn thời gian phỏng vấn" allowClear showTime className="w-100" format={'DD/MM/YYYY HH:mm:ss'} disabledDate={disablePastDates} />
+            </Form.Item>
+            <Form.Item required name="interviewLocation" layout="vertical" label="Link phỏng vấn" rules={[{ required: true, message: 'Vui lòng nhập link Google Meet!' }]} >
+                <Input.TextArea allowClear rows={4} placeholder="Nhập link Google Meet" />
+            </Form.Item>
+            <Form.Item label="Thông tin bổ sung" name='description' >
+                <CustomizeQuill />
+            </Form.Item>
+            <Form.Item required label="Người phỏng vấn" name='interviewer' rules={[{ required: true, message: 'Vui lòng nhập tên người phỏng vấn!' }]} >
+                <Input allowClear placeholder="Người phỏng vấn" />
+            </Form.Item>
+            <Form.Item name='contactEmail'
+                label="Email"
+                rules={[
+                    { required: true, message: 'Vui lòng nhập email!' },
+                    { type: 'email', message: 'Email không hợp lệ!' },
+                ]} validateFirst validateTrigger={['onBlur']}>
+                <Input allowClear placeholder="Email" />
+            </Form.Item>
+            <Form.Item name='contactPhone'
+                label="Số điện thoại"
+                rules={[
+                    { required: true, message: 'Vui lòng nhập số điện thoại!' },
+                    {
+                        pattern: new RegExp(/^(0[3|5|7|8|9])[0-9]{8}$/),
+                        message: 'Số điện thoại không hợp lệ'
+                    }]} validateFirst >
+                <Input allowClear placeholder="Số điện thoại" />
             </Form.Item>
         </>
     )
@@ -110,7 +170,7 @@ const ModalInterview = ({ open, setOpen, studentId }) => {
                             {
                                 pattern: new RegExp(/^(0[3|5|7|8|9])[0-9]{8}$/),
                                 message: 'Số điện thoại không hợp lệ'
-                            }]} validateFirst validateTrigger={['onBlur']}>
+                            }]} validateFirst >
                             <Input allowClear placeholder="Số điện thoại" />
                         </Form.Item>
                     </Col>
@@ -135,18 +195,21 @@ const ModalInterview = ({ open, setOpen, studentId }) => {
                 </Row>
             </Form.Item>
         </>);
+    return <Modal closable={false} className="modal_interview" width={800} centered title="Thông báo phỏng vấn" open={open}
 
-
-
-    return <Modal className="modal_interview" width={800} centered title="Thông báo phỏng vấn" open={open} onOk={handleOk} okText={"Gửi"} onCancel={handleCancel}>
-        <Form autoComplete layout="vertical" required size="large" form={form} onFinish={handleSubmit}>
+        footer={[
+            <Button size="large" key="back" onClick={handleCancel} >Hủy</Button>,
+            <Button loading={load} size="large" key="submit" type="primary" onClick={handleOk}>Gửi</Button>,
+        ]}
+    >
+        <Form autoComplete="on" layout="vertical" required size="large" form={form} onFinish={handleSubmit}>
             <Form.Item label="Hình thức phỏng vấn">
                 <Radio.Group value={type} onChange={(e) => { form.resetFields(); setType(e.target.value) }}>
-                    <Radio className="f-16" value="offline">Trực tiếp</Radio>
-                    <Radio className="f-16" value="online">Trực tuyến</Radio>
+                    <Radio className="f-16" value="OFFLINE">Trực tiếp</Radio>
+                    <Radio className="f-16" value="ONLINE">Trực tuyến</Radio>
                 </Radio.Group>
             </Form.Item>
-            {type === "online" ?
+            {type === "ONLINE" ?
                 onlineForm
                 : offlineForm}
         </Form>

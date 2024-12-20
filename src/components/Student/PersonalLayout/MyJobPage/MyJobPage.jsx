@@ -1,6 +1,6 @@
 import BoxContainer from "../../../Generate/BoxContainer";
 import React, { useEffect, useState } from 'react';
-import { Table, Flex, Typography, Tabs } from 'antd';
+import { Table, Flex, Typography, Tabs, Alert } from 'antd';
 import { getApplyJobByStudent, getJobSaved } from '../../../../services/apiService';
 import Status from "../../../../constant/status";
 import { checkThoiHan } from "../../../../utils/day";
@@ -202,7 +202,15 @@ const MyJobPage = () => {
 
                 <Tabs onChange={handleTabChange} activeKey={activeTab} size="large">
                     <Tabs.TabPane tab="Đã ứng tuyển" key="job-applied">
-                        <AppliedJob />
+                        <Flex vertical gap={16}>
+                            <Alert
+                                message={<Text strong>Chú ý</Text>}
+                                description={<Text>Nếu đơn ứng tuyển có trạng thái <Text strong>"Đã duyệt"</Text>. Vui lòng kiểm tra email để xem thông báo phỏng vấn. </Text>}
+                                type="info"
+                                showIcon
+                            />
+                            <AppliedJob />
+                        </Flex>
                     </Tabs.TabPane>
                     <Tabs.TabPane tab="Đã lưu" key="job-saved">
                         <SavedJob />

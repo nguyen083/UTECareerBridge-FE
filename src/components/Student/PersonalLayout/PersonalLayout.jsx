@@ -191,7 +191,7 @@ const PersonalLayout = () => {
 
             <Col span={6} className={`${styles.sol_r}`}>
                 {willLoveJob?.length > 0 &&
-                    <Card actions={[<Link onClick={() => { }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-start'>Việc làm bạn sẽ thích</div>}
+                    <Card actions={[<Link onClick={() => { navigate('/search', { state: { filters: { categoryId: infor.categoryId } } }) }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-start'>Việc làm bạn sẽ thích</div>}
                         style={{ width: "100%" }} size='small'>
                         <Flex gap={"0.5rem"} vertical>
                             {willLoveJob.map((job) => <JobCardSmall job={job} />)}
