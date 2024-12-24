@@ -1,6 +1,6 @@
 import { List, Tabs } from "antd";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ApplicantCard from "../../Generate/ApplicantCard";
 import { getApplyJobByJobId } from "../../../services/apiService";
 
@@ -10,12 +10,14 @@ const ListApplicant = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [totalApplicants, setTotalApplicants] = useState(0);
     const [pageSize, setPageSize] = useState(10); // Số lượng ứng viên mỗi trang
-
+    const location = useLocation();
+    const navigate = useNavigate();
+    const activeKey = location.hash.replace('#', '') || 'PENDING';
     const [listApplicant, setListApplicant] = useState([]);
     const { id } = useParams();
-    const [activeKey, setActiveKey] = useState('PENDING');
+    // const [activeKey, setActiveKey] = useState('PENDING');
     const handleTabChange = (key) => {
-        setActiveKey(key);
+        navigate(`#${key}`);
     };
     const fetchData = async () => {
         const response = await getApplyJobByJobId(id, activeKey);

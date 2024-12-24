@@ -1,17 +1,17 @@
-import { Button, Divider, Empty, Flex, Form, List, Tag, Typography } from "antd";
+import { Button, Divider, Empty, Flex, Form, List, Tag, Typography, Modal, Input, Row, Col, InputNumber, Select, DatePicker, message, Dropdown, Menu, } from "antd";
 import BoxContainer from "../../Generate/BoxContainer";
 import { useState, useEffect } from "react";
 import './Coupon.scss'
-import { getAllCoupon } from "../../../services/apiService";
-import { CalendarOutlined, PlusOutlined } from "@ant-design/icons";
+import { createCoupon, deleteCoupon, getAllCoupon, updateCoupon } from "../../../services/apiService";
+import { CalendarOutlined, DeleteOutlined, EditOutlined, MoreOutlined, PlusOutlined } from "@ant-design/icons";
 import { RiDiscountPercentLine } from "react-icons/ri";
+import dayjs from 'dayjs';
 const { Text } = Typography;
-const CouponList = () => {
+const CouponList = ({ fetch, setFetch }) => {
     const [coupons, setCoupons] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [totalPage, setTotalPage] = useState(0);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [pageSize, setPageSize] = useState(1);
+    const [open, setOpen] = useState(false);
+    const [couponSelected, setCouponSelected] = useState(null);
     const fetchCoupons = async () => {
         setLoading(true);
         try {
@@ -38,14 +38,33 @@ const CouponList = () => {
             console.error("Error fetching coupons:", error);
         } finally {
             setLoading(false);
+            setFetch(false);
         }
     }
     useEffect(() => {
         fetchCoupons();
-    }, [pageSize, currentPage]);
-    const handleChangePage = (page, pageSize) => {
-        setCurrentPage(page);
-        setPageSize(pageSize);
+    }, [fetch === true]);
+    useEffect(() => {
+        setCouponSelected(null);
+    }, [open === false]);
+    const handleEditServicePackage = (coupon) => {
+        coupon.expiredAt = dayjs(coupon.expiredAt);
+        setCouponSelected(coupon);
+        setOpen(true);
+    }
+    const handleDeleteServicePackage = (coupon) => {
+        deleteCoupon(coupon.id).then((res) => {
+            if (res.status === 'OK') {
+                message.success(res.message);
+            }
+            else {
+                message.error('Xoá mã giảm giá không thành công');
+            }
+        }).catch((err) => {
+            console.log(err);
+        }).finally(() => {
+            setFetch(true);
+        });
     }
     return (
         <>
@@ -56,8 +75,24 @@ const CouponList = () => {
                 renderItem={(coupon) => (
                     <List.Item
                         key={coupon.key}
-                        actions={[]}
-                        className="coupon-list-item border rounded border-warning my-3 py-0"
+                        actions={[
+                            <Dropdown
+                                overlay={
+                                    <Menu>
+                                        <Menu.Item key="2" onClick={() => handleEditServicePackage(coupon)}>
+                                            <Button icon={<EditOutlined />} type="link" color="primary" >Chỉnh sửa</Button>
+                                        </Menu.Item>
+                                        <Menu.Item key="3" onClick={() => { handleDeleteServicePackage(coupon) }}>
+                                            <Button icon={<DeleteOutlined />} type="link" danger >Xóa</Button>
+                                        </Menu.Item>
+                                    </Menu >
+                                }
+                                trigger={['click']}
+                            >
+                                <MoreOutlined className="f-20 border-1" />
+                            </Dropdown >
+                        ]}
+                        className="coupon-list-item box_shadow border rounded border-warning my-3 py-0"
                     >
                         <List.Item.Meta
                             className='d-flex align-items-stretch'
@@ -85,30 +120,36 @@ const CouponList = () => {
                     </List.Item >
                 )}
             />
+            < ModalCreateCoupon open={open} setOpen={setOpen} setFetch={setFetch} item={couponSelected} />
         </>
     )
 }
 const ModalCreateCoupon = ({ open, setOpen, setFetch, item = null }) => {
     const [form] = Form.useForm();
-    const [service, setService] = useState(null);
+    const [coupon, setCoupon] = useState(null);
     const handleCancel = () => {
+        form.resetFields();
         form.setFieldValue(null);
-        setService(null);
+        setCoupon(null);
         setOpen(false);
     }
 
-
+    const disablePastDates = (current) => {
+        // Chỉ cho phép chọn các ngày từ hôm nay trở đi
+        return current && current < dayjs().startOf('day');
+    };
     useEffect(() => {
         if (item) {
-            setService(item);
+            console.log(item);
+            setCoupon(item);
             form.setFieldsValue(item);
         }
     }, [item]);
     const handleFinish = (values) => {
-        values.packageName = values.packageName.toUpperCase();
-
-        if (service) {
-            updateServicePackage(service.packageId, values).then((res) => {
+        values.couponCode = values.couponCode.toUpperCase();
+        values.expiredAt = values.expiredAt.format('YYYY-MM-DDTHH:mm:ss');
+        if (coupon) {
+            updateCoupon(coupon.id, values).then((res) => {
                 if (res.status === 'OK') {
                     message.success(res.message);
                 }
@@ -123,7 +164,8 @@ const ModalCreateCoupon = ({ open, setOpen, setFetch, item = null }) => {
             });
 
         } else {
-            createServicePackage(values).then((res) => {
+            console.log(values);
+            createCoupon(values).then((res) => {
                 if (res.status === 'OK') {
                     message.success(res.message);
                 }
@@ -149,10 +191,10 @@ const ModalCreateCoupon = ({ open, setOpen, setFetch, item = null }) => {
 
             <Modal
                 width={800}
-                title={item ? "Chỉnh sửa gói dịch vụ" : "Tạo gói dịch vụ mới"}
+                title={coupon ? "Chỉnh sửa mã giảm giá" : "Tạo mã giảm giá mới"}
                 open={open}
                 onCancel={handleCancel}
-                okText={item ? "Cập nhật" : "Tạo"}
+                okText={coupon ? "Cập nhật" : "Tạo"}
                 cancelText="Hủy"
                 onOk={() => form.submit()}
             >
@@ -161,12 +203,12 @@ const ModalCreateCoupon = ({ open, setOpen, setFetch, item = null }) => {
                     form={form}
                     layout="vertical"
                     onFinish={handleFinish}
-                    initialValues={service}
+                    initialValues={coupon}
                 >
                     <Form.Item
-                        name="packageName"
-                        label="Tên gói dịch vụ"
-                        rules={[{ required: true, message: "Vui lòng nhập tên gói dịch vụ!" }]}
+                        name="couponCode"
+                        label="Mã giảm giá"
+                        rules={[{ required: true, message: "Vui lòng nhập mã giảm giá!" }]}
                     >
                         <Input
                             style={{ textTransform: 'uppercase' }}
@@ -175,30 +217,43 @@ const ModalCreateCoupon = ({ open, setOpen, setFetch, item = null }) => {
                     <Row gutter={[16]}>
                         <Col span={12}>
                             <Form.Item
-                                name="price"
-                                label="Giá"
-                                rules={[{ required: true, message: "Vui lòng nhập giá!" }]}
+                                name="amount"
+                                label="Số lượng"
+                                rules={[{ required: true, message: "Vui lòng nhập số lượng!" }]}
                             >
                                 <InputNumber
                                     min={0}
                                     className="w-100"
-                                    suffix="₫"
-                                    formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                 />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
                             <Form.Item
-                                name="duration"
-                                label="Thời hạn (tháng)"
-                                rules={[{ required: true, message: "Vui lòng nhập thời gian!" }]}
+                                name="discount"
+                                label="Mức giảm giá"
+                                rules={[{ required: true, message: "Vui lòng nhập mức giảm giá!" }]}
                             >
                                 <InputNumber min={1} className="w-100" />
                             </Form.Item>
                         </Col>
                     </Row>
+                    <Row gutter={16}>
 
+                        <Col span={12}><Form.Item
+                            name="maxUsage"
+                            label="Số lần sử dụng tối đa"
+                            rules={[{ required: true, message: "Vui lòng nhập số lần sử dụng tối đa!" }]}>
+                            <InputNumber min={1} className="w-100" />
+                        </Form.Item></Col>
+                        <Col span={12}><Form.Item
+                            name="expiredAt"
+                            label="Ngày hết hạn"
+                            rules={[{ required: true, message: "Vui lòng chọn ngày hết hạn!" }]}
+                        >
+                            <DatePicker className="w-100" allowClear disabledDate={disablePastDates} />
+                        </Form.Item></Col>
+                    </Row>
                     <Form.Item
                         name="description"
                         label="Mô tả"
@@ -206,28 +261,17 @@ const ModalCreateCoupon = ({ open, setOpen, setFetch, item = null }) => {
                     >
                         <Input.TextArea rows={4} />
                     </Form.Item>
-
-                    <Form.Item
-                        name="amount"
-                        label="Số lượng"
-                        rules={[{ required: true, message: "Vui lòng nhập số lượng!" }]}
+                    {coupon && <Form.Item
+                        name="active"
+                        label="Trạng thái"
                     >
-                        <InputNumber min={1} className="w-100" />
-                    </Form.Item>
-                    <Form.Item
-                        name="featureId"
-                        label="Tính năng"
-                        rules={[{ required: true, message: "Vui lòng chọn tính năng!" }]}
-                    >
-                        <Select placeholder="Vui lòng chọn tính năng" allowClear>
-                            <Select.Option value={1}>Đăng tin tuyển dụng không giới hạn</Select.Option>
-                            <Select.Option value={2}>Ưu tiên hiển thị tin tuyển dụng</Select.Option>
-                            <Select.Option value={3}>Gửi thông báo ứng viên phù hợp</Select.Option>
-                            <Select.Option value={4}>Đăng tin tuyển dụng với nhãn hot</Select.Option>
-                            <Select.Option value={5}>Truy cập vào ngân hàng CV</Select.Option>
-                            <Select.Option value={6}>Đăng tin tuyển dụng gấp</Select.Option>
+                        <Select
+                            placeholder="Chọn trạng thái"
+                            className="w-100">
+                            <Select.Option value={true}>Hoạt động</Select.Option>
+                            <Select.Option value={false}>Khóa</Select.Option>
                         </Select>
-                    </Form.Item>
+                    </Form.Item>}
                 </Form>
             </Modal>
         </>
@@ -235,6 +279,9 @@ const ModalCreateCoupon = ({ open, setOpen, setFetch, item = null }) => {
 
 }
 const Coupon = () => {
+    const [open, setOpen] = useState(false);
+    const [fetch, setFetch] = useState(false);
+
     return (
         <>
             <BoxContainer>
@@ -244,8 +291,9 @@ const Coupon = () => {
                 <Flex align="center" justify="end" gap={20}>
                     <Button icon={<PlusOutlined />} onClick={() => { setOpen(true) }}>Tạo mã giảm giá mới</Button>
                 </Flex>
-                <CouponList />
+                <CouponList fetch={fetch} setFetch={setFetch} />
             </BoxContainer>
+            <ModalCreateCoupon open={open} setOpen={setOpen} setFetch={setFetch} />
         </>
     )
 }

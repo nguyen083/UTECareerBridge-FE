@@ -53,7 +53,6 @@ export default function CustomizeQuill(props) {
     const quillRef = useRef(null);
     const { value } = props;
     const onChange = (value) => {
-        console.log(quillRef.current);
         props.onChange(value);
     }
     return (

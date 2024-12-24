@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Divider, Typography, Table, message, Flex } from 'antd';
+import { Button, Divider, Typography, Table, message, Flex, Card, Row, Col } from 'antd';
 import './orderPage.scss';
 import BoxContainer from '../../Generate/BoxContainer';
 import { CloseOutlined, DeleteOutlined, MinusOutlined, PlusOutlined } from '@ant-design/icons';
@@ -169,50 +169,53 @@ const OrderPage = () => {
   return (
     <>
       <BoxContainer>
-        <div className="order-page">
-          <div className="order-summary">
-            <Title level={3}>Chi tiết dịch vụ</Title>
-            <Table columns={columns}
-              dataSource={cartItems}
-              rowKey="cartItemId"
-              pagination={false}
-            />
-            <Divider />
-          </div>
-          <div className="order-info">
-            <Title level={3}>Thông tin đơn hàng</Title>
-            <div className="info-item">
-              <Text className="f-16">Tổng giá trị đơn hàng</Text>
-              <Text className="f-16 fw-bold">{getTotalPrice().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
-            </div>
-            {selectedVoucher && <div className="info-item">
-              <Text className="f-16 d-flex align-items-center"><RiDiscountPercentLine />&ensp;Giảm giá</Text>
-              <Text className="f-16 fw-bold">{selectedVoucher?.discount} %</Text>
-            </div>}
-            {/* <div className="info-item">
+        <Row gutter={16} justify="space-between">
+          <Col span={14}>
+            <Card title={<Text className='f-20 card-title'>Chi tiết giỏ hàng</Text>} className='box_shadow detail-cart-card'>
+
+              <Table
+                columns={columns}
+                dataSource={cartItems}
+                rowKey="cartItemId"
+                pagination={false}
+              />
+            </Card></Col>
+          <Col span={10}>
+            <Card title={<Text className='f-20 card-title'>Thông tin đơn hàng</Text>} className='box_shadow'>
+
+              <div className="info-item">
+                <Text className="f-16">Tổng giá trị đơn hàng</Text>
+                <Text className="f-16 fw-bold">{getTotalPrice().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
+              </div>
+              {selectedVoucher && <div className="info-item">
+                <Text className="f-16 d-flex align-items-center"><RiDiscountPercentLine />&ensp;Giảm giá</Text>
+                <Text className="f-16 fw-bold">{selectedVoucher?.discount} %</Text>
+              </div>}
+              {/* <div className="info-item">
               <Text className="label">VAT (8%)</Text>
               <Text className="value">{getTaxAmount().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
             </div> */}
-            <Divider />
-            <div className="voucher d-flex align-items-center justify-content-between">
-              <Button type="primary" onClick={() => setIsModalVisible(true)} className='voucher-button'>Chọn mã ưu đãi</Button>
-              {selectedVoucher && <Flex align='center' gap={8}>
-                <Button danger type='text' icon={<CloseOutlined />} onClick={() => setSelectedVoucher(null)}></Button>
-                <Text className="selected-voucher">{selectedVoucher.code}</Text></Flex>
-              }
-            </div>
-            <div className="info-item mt-5">
-              <Text className="f-16">Tổng thanh toán</Text>
-              <Flex gap={8}>
-                {selectedVoucher && <Text type='danger' className="f-16 fw-bold " delete>{getTotalPrice().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>}
-                <Text className="f-16 fw-bold">{getTotalWithTax().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
-              </Flex>
-            </div>
-            <div className="actions">
-              <Button className="btn-checkout" type="primary" onClick={handleCreateOrder}>Tạo đơn hàng</Button>
-            </div>
-          </div>
-        </div>
+              <Divider />
+              <div className="voucher d-flex align-items-center justify-content-between">
+                <Button type="primary" onClick={() => setIsModalVisible(true)} className='voucher-button'>Chọn mã ưu đãi</Button>
+                {selectedVoucher && <Flex align='center' gap={8}>
+                  <Button danger type='text' icon={<CloseOutlined />} onClick={() => setSelectedVoucher(null)}></Button>
+                  <Text className="selected-voucher">{selectedVoucher.code}</Text></Flex>
+                }
+              </div>
+              <div className="info-item mt-5">
+                <Text className="f-16">Tổng thanh toán</Text>
+                <Flex gap={8}>
+                  {selectedVoucher && <Text type='danger' className="f-16 fw-bold " delete>{getTotalPrice().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>}
+                  <Text className="f-16 fw-bold">{getTotalWithTax().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
+                </Flex>
+              </div>
+              <div className="actions">
+                <Button className="btn-checkout" type="primary" onClick={handleCreateOrder}>Tạo đơn hàng</Button>
+              </div>
+            </Card>
+          </Col>
+        </Row>
         <VoucherModal
           visible={isModalVisible}
           onClose={() => setIsModalVisible(false)}

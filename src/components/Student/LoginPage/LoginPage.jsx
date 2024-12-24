@@ -63,10 +63,12 @@ const LoginPage = () => {
             <Col xs={24} lg={12} className="left-column">
                 <Flex vertical gap={20} justify='center' align='center' className='w-100'>
                     <Image
+                        className='logo'
                         src="https://res.cloudinary.com/utejobhub/image/upload/v1723888103/rg2do6iommv6wp840ixr.png"
-                        alt="Website Logo"
+                        alt=""
                         preview={false}
                         width={200}
+                        onClick={() => navigate('/home')}
                     />
                     <Card
                         title={<Title level={3} className='my-auto text-center card-title'>Đăng nhập</Title>}
@@ -114,19 +116,21 @@ const LoginPage = () => {
                                 >
                                     <Input.Password placeholder="Nhập mật khẩu" className="input-field" />
                                 </Form.Item>
+
                                 <Form.Item className='mb-1'>
                                     <Button className='w-100 login-button' type="primary" htmlType="submit">
                                         Đăng nhập
                                     </Button>
                                 </Form.Item>
-                                <Text className='text-center'>Bạn chưa có tài khoản? <Button className='p-0 f-14' type='link' onClick={() => navigate('/register')}>Đăng ký ngay</Button></Text>
-                                <Divider className='mb-0' />
-                                <Form.Item>
-                                    <Flex justify='space-between' gap={20}>
-                                        <Link className='text-decoration-none link-text' to="/home"><IoIosArrowRoundBack className='fs-4' /> Trở về trang chủ</Link>
+                                <Form.Item className='p-0 m-0'>
+                                    <Flex justify='end' gap={20}>
+                                        {/* <Link className='text-decoration-none link-text' to="/home"><IoIosArrowRoundBack className='fs-4' /> Trở về trang chủ</Link> */}
                                         <Link className='text-decoration-none link-text' to="/forgot-password" target='_blank'>Quên mật khẩu?</Link>
                                     </Flex>
                                 </Form.Item>
+                                <Text className='text-center'>Bạn chưa có tài khoản? <Button className='p-0 f-14' type='link' onClick={() => navigate('/register')}>Đăng ký ngay</Button></Text>
+                                <Divider className='mb-0' />
+
                             </Form>
                         </Flex>
                     </Card>

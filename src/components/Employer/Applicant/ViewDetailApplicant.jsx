@@ -10,7 +10,6 @@ import './ModalInterview.scss';
 import CustomizeQuill from './../../Generate/CustomizeQuill';
 import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
-import { use } from "react";
 import { loading, stop } from "../../../redux/action/webSlice";
 
 const { Text } = Typography;
@@ -53,7 +52,7 @@ const ViewDetailApplicant = () => {
         </Flex >
     )
 }
-const ModalInterview = ({ open, setOpen, studentId }) => {
+export const ModalInterview = ({ open, setOpen, studentId }) => {
 
     const { id } = useParams();
     const [form] = Form.useForm();
@@ -203,12 +202,12 @@ const ModalInterview = ({ open, setOpen, studentId }) => {
         ]}
     >
         <Form autoComplete="on" layout="vertical" required size="large" form={form} onFinish={handleSubmit}>
-            <Form.Item label="Hình thức phỏng vấn">
+            {/* <Form.Item label="Hình thức phỏng vấn">
                 <Radio.Group value={type} onChange={(e) => { form.resetFields(); setType(e.target.value) }}>
                     <Radio className="f-16" value="OFFLINE">Trực tiếp</Radio>
                     <Radio className="f-16" value="ONLINE">Trực tuyến</Radio>
                 </Radio.Group>
-            </Form.Item>
+            </Form.Item> */}
             {type === "ONLINE" ?
                 onlineForm
                 : offlineForm}

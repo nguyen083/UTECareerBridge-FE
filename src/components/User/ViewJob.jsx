@@ -101,25 +101,27 @@ const ViewJob = () => {
     }, [willLoveJob]);
 
     useEffect(() => {
-        company.industryId && getAllCompany({ industryId: company.industryId }).then((res) => {
-            if (res.status === 'OK' && res.data) {
-                setCarouselItems(res.data?.employerResponses.filter((item) => item.id !== company.id).map((item) => ({
-                    id: item.id,
-                    imgSrc: item.companyLogo,
-                    title: item.companyName,
-                    description: item.companyDescription,
-                })));
-            } else {
-                setCarouselItems([]);
-            }
-        });
-        getAllJobEmployer(company.id).then((res) => {
-            if (res.status === 'OK' && res.data) {
-                setJobSameCompany(res.data.jobResponses.filter((item) => item.jobId !== +id));
-            } else {
-                setJobSameCompany([]);
-            }
-        });
+        if (company.id) {
+            company.industryId && getAllCompany({ industryId: company.industryId }).then((res) => {
+                if (res.status === 'OK' && res.data) {
+                    setCarouselItems(res.data?.employerResponses.filter((item) => item.id !== company.id).map((item) => ({
+                        id: item.id,
+                        imgSrc: item.companyLogo,
+                        title: item.companyName,
+                        description: item.companyDescription,
+                    })));
+                } else {
+                    setCarouselItems([]);
+                }
+            });
+            getAllJobEmployer(company.id).then((res) => {
+                if (res.status === 'OK' && res.data) {
+                    setJobSameCompany(res.data.jobResponses.filter((item) => item.jobId !== +id));
+                } else {
+                    setJobSameCompany([]);
+                }
+            });
+        }
     }, [company])
 
     useEffect(() => {
@@ -233,13 +235,14 @@ const ViewJob = () => {
                                         <div className='title2'>
                                             Mô tả công việc
                                         </div>
-                                        <HtmlContent htmlString={job.jobDescription} />
+
+                                        <div className='px-3 py-1'><HtmlContent htmlString={job.jobDescription} /></div>
                                     </Flex>
                                     <Flex vertical gap={"1rem"}>
                                         <div className='title2'>
                                             Yêu cầu công việc
                                         </div>
-                                        <HtmlContent htmlString={job.jobRequirements} />
+                                        <div className='px-3 py-1'><HtmlContent htmlString={job.jobRequirements} /></div>
                                     </Flex>
 
                                     {job?.benefitDetails?.length !== 0 && <Flex vertical gap={"1rem"}>
@@ -267,7 +270,7 @@ const ViewJob = () => {
                                         {willLoveJob.map((job) => <JobCardSmall job={job} />)}
                                     </Flex>
                                 </Card> :
-                                similarJobs && similarJobs.length > 0 && <Card className='box_shadow' actions={[<Link onClick={() => { navigate('/search', { state: { filters: { categoryId: id } } }) }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-start'>Việc làm bạn sẽ thích</div>}
+                                similarJobs && similarJobs.length > 0 && <Card className='box_shadow' actions={[<Link onClick={() => { navigate('/search', { state: { filters: { categoryId: job.jobCategoryId } } }) }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-start'>Việc làm bạn sẽ thích</div>}
                                     style={{ width: "100%" }} size='small'>
                                     <Flex gap={"0.5rem"} vertical>
                                         {similarJobs.map((job) => <JobCardSmall job={job} />)}

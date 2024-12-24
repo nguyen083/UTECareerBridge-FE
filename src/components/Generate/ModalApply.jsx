@@ -11,21 +11,28 @@ import styles from "./ModalApply.module.scss";
 const { Title, Text } = Typography;
 export const ModalApply = ({ show, setShow, company, job }) => {
     const { id } = useParams();
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         resumeId: 0,
         jobId: id,
     });
 
     const handleApply = () => {
-
-        applyJob(formData).then((res) => {
-            if (res.status === 'OK') {
-                message.success(res.message);
-                setShow(false);
-            }
-            else
-                message.error(res.message);
-        });
+        try {
+            setLoading(true);
+            applyJob(formData).then((res) => {
+                if (res.status === 'OK') {
+                    message.success(res.message);
+                    setShow(false);
+                }
+                else
+                    message.error(res.message);
+            });
+        } catch (error) {
+            message.error(error);
+        } finally {
+            setLoading(false);
+        }
 
     }
     return (

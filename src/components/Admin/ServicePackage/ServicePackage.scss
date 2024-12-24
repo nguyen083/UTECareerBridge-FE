@@ -6,6 +6,7 @@
         display       : flex;
         flex-direction: column;
 
+
         .voucher-meta {
             display    : flex !important;
             align-items: stretch !important;
@@ -41,6 +42,12 @@
         }
 
         .voucher-card-admin {
+            transition: transform 0.3s ease !important;
+
+            &:hover {
+                transform: translateY(-1px) !important;
+            }
+
             .ant-card-body {
                 padding: 0;
 

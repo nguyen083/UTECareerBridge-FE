@@ -150,3 +150,6 @@ html{
 .ql-container{
   min-height: 100px;
 }
+.cursor-pointer{
+  cursor: pointer !important;
+}

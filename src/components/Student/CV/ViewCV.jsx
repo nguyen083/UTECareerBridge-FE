@@ -47,7 +47,7 @@ const ViewCV = ({ setStudentId = null }) => {
             label: <Text className='f-16' strong>Số điện thoại</Text>,
             children: <Text className='f-16'>{cv?.phoneNumber}</Text>
         },
-        {
+        address && {
             key: 5,
             label: <Text className='f-16' strong>Địa chỉ</Text>,
             children: <Text className='f-16'>{address}</Text>
@@ -72,9 +72,7 @@ const ViewCV = ({ setStudentId = null }) => {
             label: <Text className='f-16' strong>Kỹ năng</Text>,
             children: <Text className='f-16'>{Array.isArray(cv.studentSkills) ? cv.studentSkills.map((skill) => skill.skillName).join(', ') : ''}</Text>
         }
-
-
-    ];
+    ].filter(Boolean);
     const fetchData = async () => {
         if (user.role === 'student') {
             getCVById(id).then((res) => {

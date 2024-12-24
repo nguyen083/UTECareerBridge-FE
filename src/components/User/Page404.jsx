@@ -13,7 +13,7 @@ const Page404 = () => {
         <Result
             status="404"
             title="404"
-            subTitle="Sorry, the page you visited does not exist."
+            subTitle="Xin lỗi, trang bạn đang tìm kiếm không tồn tại."
             extra={<Button onClick={() => navigate('/home')} size="large" type="primary">Trở về trang chủ</Button>}
         />
     );

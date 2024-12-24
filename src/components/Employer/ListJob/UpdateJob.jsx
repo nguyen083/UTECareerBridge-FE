@@ -180,13 +180,13 @@ const UpdateJob = () => {
     const itemsCollapse1 = [
         {
             key: '1',
-            label: <span className='title2'>Thông tin tuyển dụng</span>,
+            label: <span className='title2 card-title'>Thông tin tuyển dụng</span>,
             children: form1,
         }];
     const itemsCollapse2 = [
         {
             key: '1',
-            label: <span className='title2'>Yêu cầu tuyển dụng</span>,
+            label: <span className='title2 card-title'>Yêu cầu tuyển dụng</span>,
             children: form2,
         }];
     useEffect(() => {
@@ -243,25 +243,27 @@ const UpdateJob = () => {
             <BoxContaier>
                 <div className='title1'>Chỉnh sửa bài đăng</div>
             </BoxContaier>
-            <Form
+            <BoxContaier>
+                <Form
 
-                onFinish={onFinish}
-                onFinishFailed={onFinishFailed}
-                onReset={onReset}
-                requiredMark={false}
-                form={form}
-                size='large'
-                autoComplete="off"
-                layout='vertical'>
-                <Flex vertical gap="middle">
-                    <Collapse collapsible='false' expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse1} bordered={false} />
-                    <Collapse expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse2} bordered={false} />
-                    <Flex gap="middle" justify="end">
-                        <Button type="primary" htmlType="submit">Lưu</Button>
-                        <Button type="default" htmlType='reset'>Hủy</Button>
+                    onFinish={onFinish}
+                    onFinishFailed={onFinishFailed}
+                    onReset={onReset}
+                    requiredMark={false}
+                    form={form}
+                    size='large'
+                    autoComplete="off"
+                    layout='vertical'>
+                    <Flex vertical gap="middle">
+                        <Collapse collapsible='false' expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse1} bordered={false} />
+                        <Collapse expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse2} bordered={false} />
+                        <Flex gap="middle" justify="end">
+                            <Button type="default" htmlType='reset'>Hủy</Button>
+                            <Button type="primary" htmlType="submit">Cập nhật</Button>
+                        </Flex>
                     </Flex>
-                </Flex>
-            </Form>
+                </Form>
+            </BoxContaier>
         </>
     );
 };

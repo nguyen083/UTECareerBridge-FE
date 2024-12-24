@@ -306,9 +306,9 @@ const TableListJobs = (props) => {
             width: '13%',
             render: (_, record) => (
                 <Space size="small">
-                    <Tooltip color='blue' title="Xem">
+                    {/* <Tooltip color='blue' title="Xem">
                         <Button onClick={() => handleView(record.key)} icon={<EyeOutlined />} />
-                    </Tooltip>
+                    </Tooltip> */}
                     <div hidden={props.status === 'REJECTED'}>
                         <Tooltip color='cyan' title="Chỉnh sửa">
                             <Button onClick={() => handleEdit(record.key)} icon={<EditOutlined />} />

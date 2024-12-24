@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { List, Card, Pagination, Select, Spin, Flex, Typography } from 'antd';
+import { List, Card, Pagination, Select, Spin, Flex, Typography, Empty } from 'antd';
 import { EnvironmentOutlined, DollarOutlined, InboxOutlined } from '@ant-design/icons';
 import { Like } from './Like';
 import { getAllJobEmployer, getJobsByStatus } from '../../services/apiService';
@@ -78,11 +78,8 @@ const JobList = () => {
     });
   };
   const handleClick = (key) => {
-    if (user.role === 'student') {
-      navigate('/job/' + key);
-    } else {
-      navigate('/employer/job/view/' + key);
-    }
+    navigate('/job/' + key);
+
   }
   const handlePageSizeChange = (current, size) => {
     setPagination({
@@ -107,10 +104,7 @@ const JobList = () => {
         }}
         locale={{
           emptyText: (
-            <div className='p-5'>
-              <InboxOutlined style={{ fontSize: '50px', marginBottom: '8px' }} />
-              <div>Không có dữ liệu</div>
-            </div>
+            <Empty description="Không có công việc"></Empty>
           ),
         }}
         renderItem={(item) => (
@@ -126,7 +120,7 @@ const JobList = () => {
               }}
               bodyStyle={{ padding: 16 }}
             >
-              <Flex align='center'>
+              <Flex onClick={() => handleClick(item.jobId)} align='center' className='cursor-pointer'>
                 <img
                   src={item.logo} // Replace with the actual logo URL
                   style={{ width: 80, height: 80, borderRadius: 4, marginRight: 12 }}
@@ -134,9 +128,7 @@ const JobList = () => {
                 <div style={{ width: '100%' }}>
                   <Flex align='center' justify='space-between' >
                     <Title level={5}
-                      onClick={() => handleClick(item.jobId)}
                       style={{
-                        cursor: 'pointer',
                         margin: 0,
                         whiteSpace: 'nowrap',        // Keeps the text on a single line
                         overflow: 'hidden',           // Hides any overflow

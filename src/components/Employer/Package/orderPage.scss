@@ -23,84 +23,78 @@
   white-space       : normal;
 }
 
-.order-page {
+
+
+
+
+
+
+.info-item {
   display        : flex;
   justify-content: space-between;
-  margin         : 2rem;
+  margin-bottom  : 1rem;
 
-  .order-summary {
-    flex            : 1;
-    background-color: #f5f5f5;
-    padding         : 1.5rem;
-    border-radius   : 8px;
+  .label {
+    font-size: 14px;
   }
 
-  .order-info {
-    flex            : 0.8;
-    background-color: #f5f5f5;
-    padding         : 1.5rem;
-    border-radius   : 8px;
-    margin-left     : 2rem;
+  .value {
+    font-size  : 14px;
+    font-weight: bold;
+  }
+}
 
-    .info-item {
-      display        : flex;
-      justify-content: space-between;
-      margin-bottom  : 1rem;
+.voucher {
+  display    : flex;
+  align-items: center;
+  gap        : 1rem;
+  margin-top : 1rem;
 
-      .label {
-        font-size: 14px;
-      }
+  .selected-voucher {
+    font-weight: bold;
+    color      : #007bff;
+  }
 
-      .value {
-        font-size  : 14px;
-        font-weight: bold;
-      }
+  .voucher-button {
+    background-color: #007bff;
+    color           : #fff;
+    border          : none;
+    border-radius   : 4px;
+    padding         : 0.5rem 1rem;
+    cursor          : pointer;
+    font-size       : 14px;
+
+    &:hover {
+      background-color: #3697ff !important;
     }
+  }
+}
 
-    .voucher {
-      display    : flex;
-      align-items: center;
-      gap        : 1rem;
-      margin-top : 1rem;
+.actions {
+  text-align: right;
+  margin-top: 2rem;
 
-      .selected-voucher {
-        font-weight: bold;
-        color      : #007bff;
-      }
+  .btn-checkout {
+    background-color: #28a745;
+    color           : #fff;
+    border          : none;
+    border-radius   : 4px;
+    padding         : 0.75rem 1.5rem;
+    font-size       : 14px;
+    font-weight     : bold;
+    cursor          : pointer;
 
-      .voucher-button {
-        background-color: #007bff;
-        color           : #fff;
-        border          : none;
-        border-radius   : 4px;
-        padding         : 0.5rem 1rem;
-        cursor          : pointer;
-        font-size       : 14px;
-
-        &:hover {
-          background-color: #0056b3;
-        }
-      }
+    &:hover {
+      background-color: #218838 !important;
     }
+  }
+}
 
-    .actions {
-      text-align: right;
-      margin-top: 2rem;
-
-      .btn-checkout {
-        background-color: #28a745;
-        color           : #fff;
-        border          : none;
-        border-radius   : 4px;
-        padding         : 0.75rem 1.5rem;
-        font-size       : 14px;
-        font-weight     : bold;
-        cursor          : pointer;
-
-        &:hover {
-          background-color: #218838;
-        }
-      }
+.detail-cart-card {
+  .ant-card-body {
+    .ant-table-wrapper {
+      border       : 1px solid #f0f0f0;
+      border-radius: 5px;
     }
   }
 }

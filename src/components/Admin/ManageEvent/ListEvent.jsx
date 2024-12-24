@@ -60,7 +60,7 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
                     if (res.status === 'OK') {
                         message.success(res.message);
                         deleteImageFromCloudinaryByLink(item.eventImage).then((status) => {
-                            status === 200 && message.success("Xóa ảnh thành công!");
+                            // status === 200 && message.success("Xóa ảnh thành công!");
                             fetchEvent();
                         });
                     } else {

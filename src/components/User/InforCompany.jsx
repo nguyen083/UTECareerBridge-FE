@@ -195,12 +195,12 @@ const InforCompany = () => {
                                 {
                                     key: 'about',
                                     href: '#about',
-                                    title: <Text className="size">Về chúng tôi</Text>,
+                                    title: <Text className="f-18">Về chúng tôi</Text>,
                                 },
                                 {
                                     key: 'list-job',
                                     href: '#list-job',
-                                    title: <Text className="size">Vị trí đang tuyển dụng</Text>,
+                                    title: <Text className="f-18">Vị trí đang tuyển dụng</Text>,
                                 },
                             ]}
                         />

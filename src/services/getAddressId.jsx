@@ -17,8 +17,15 @@ export const apiService = {
     async getInforAddress(address, provinceId, districtId, wardId) {
         try {
             const resProvince = await this.getNameAddress(wardId);
-
-            return `${address}, ${resProvince.data.data.name}`;
+            if (address && resProvince.data.data.name)
+                return `${address}, ${resProvince.data.data.name}`;
+            else if (address && !resProvince.data.data.name) {
+                return `${address}`;
+            } else if (!address && resProvince.data.data.name) {
+                return `${resProvince.data.data.name}`;
+            }
+            else
+                return null;
         } catch (error) {
             console.error("Error fetching address information:", error);
             throw error;

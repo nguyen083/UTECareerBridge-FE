@@ -19,14 +19,25 @@
     .coupon-list-item {
         padding      : 0;
         border-bottom: 1px solid #f0f0f0;
+        transition   : transform 0.1s ease;
+
+        .more-icon {
+            &:hover {
+                cursor: pointer;
+            }
+
+            font-size   : 20px;
+            margin-right: 1rem;
+        }
 
         &:last-child {
             border-bottom: none;
         }
 
         &:hover {
-            background-color: #f8f8f8;
+            transform: translateY(-1px);
         }
+
 
         .ant-list-item-meta-avatar {
 

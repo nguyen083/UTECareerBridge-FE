@@ -61,6 +61,7 @@ import ServicePackage from './components/Admin/ServicePackage/ServicePackage.jsx
 import PaymentSuccess from './components/User/PaymentSuccess.jsx';
 import PaymentFail from './components/User/PaymentFail.jsx';
 import Coupon from './components/Admin/Coupon.jsx/Coupon.jsx';
+import DetailResume from './components/Employer/DetailResume/DetailResume.jsx';
 const App = () => {
   return (
     <ConfigProvider locale={viVN}
@@ -116,6 +117,7 @@ const App = () => {
             defaultHoverBg: COLOR.cardColor,
           },
           Menu: {
+            fontSize: '1rem',
             iconMarginInlineEnd: '0.625rem',
             itemActiveBg: COLOR.backgroundColor,
             iconSize: '1.25rem',
@@ -203,7 +205,7 @@ const App = () => {
             <Route path='company' element={<EmployerCompany />} />
             <Route path='list-resumes' element={<ListResumes />} />
             <Route path='list-order' element={<ListOrder />} />
-            <Route path='detail-resume' element={<ViewCV />} />
+            <Route path='detail-resume' element={<DetailResume />} />
             <Route path='applicant' element={<Applicant />} >
               <Route index element={<Navigate to="list-job" replace />} />
               <Route path='list-job' element={<ListJob />} />
@@ -215,8 +217,8 @@ const App = () => {
             <Route path='buy-service' element={<ServiceMarketplace />} />
             <Route path='cart' element={<ShoppingCart />} />
             <Route path='manage-list-jobs' element={<ManageListJobs />} />
-            <Route path='job/view/:id' element={<ViewJob />} />
-            <Route path='job/edit/:id' element={<UpdateJob />} />
+            {/* <Route path='job/view/:id' element={<ViewJob />} />
+            <Route path='job/edit/:id' element={<UpdateJob />} /> */}
           </Route>
           <Route element={<BoxContainer width={"100%"} background='#F5F5F5' />} >
           </Route>

@@ -198,20 +198,20 @@ const EmployerPostJob = () => {
     const itemsCollapse1 = [
         {
             key: '1',
-            label: <span className='title2'>Thông tin tuyển dụng</span>,
+            label: <span className='title2 card-title'>Thông tin tuyển dụng</span>,
             children: form1,
         }];
     const itemsCollapse2 = [
         {
             key: '1',
-            label: <span className='title2'>Yêu cầu tuyển dụng</span>,
+            label: <span className='title2 card-title'>Yêu cầu tuyển dụng</span>,
             children: form2,
         },
     ];
     const itemsCollapse3 = [
         {
             key: '1',
-            label: <span className='title2'>Chọn gói dịch vụ</span>,
+            label: <span className='title2 card-title'>Chọn gói dịch vụ</span>,
             children: form3,
         }
     ];
@@ -268,8 +268,7 @@ const EmployerPostJob = () => {
             setLoading(false);
         });
     }
-    const onFinishFailed = (errorInfo) => { };
-    const onReset = () => { };
+
 
     return (
         <>
@@ -279,8 +278,6 @@ const EmployerPostJob = () => {
             <BoxContaier>
                 <Form
                     onFinish={onFinish}
-                    onFinishFailed={onFinishFailed}
-                    onReset={onReset}
                     form={form}
                     size='large'
                     autoComplete="off"

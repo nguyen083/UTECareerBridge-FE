@@ -80,8 +80,8 @@ const itemSider = [
         label: 'Quản lý nội dung',
         children: [
             { key: '/admin/news-events', label: 'Tin tức & Sự kiện' },
-            { key: '/admin/banners', label: 'Banner & Quảng cáo' },
-            { key: '/admin/pages', label: 'Trang tĩnh' }
+            // { key: '/admin/banners', label: 'Banner & Quảng cáo' },
+            // { key: '/admin/pages', label: 'Trang tĩnh' }
         ]
     },
     { key: 'logout', icon: <LogoutOutlined />, label: 'Đăng xuất' },
@@ -179,7 +179,7 @@ const AdminLayout = () => {
                 <Header className="admin-header">
                     <Flex>
                         <MenuOutlined className='font-size' onClick={() => setCollapsed(!collapsed)} />
-                        <div className='search-container'>
+                        {/* <div className='search-container'>
                             <div>
                                 <SearchOutlined className='search-icon' />
                             </div>
@@ -187,7 +187,7 @@ const AdminLayout = () => {
                                 <input type="text" placeholder="Tìm kiếm" className="search-input" />
                             </div>
 
-                        </div>
+                        </div> */}
                     </Flex>
                     <Space size={24}>
                         {/* <Badge count={messages} overflowCount={10}>

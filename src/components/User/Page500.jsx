@@ -13,7 +13,7 @@ const Page500 = () => {
         <Result
             status="500"
             title="500"
-            subTitle="Sorry, something went wrong."
+            subTitle="Xin lỗi, trang bạn đang truy cập hiện không hoạt động."
             extra={<Button type="primary" onClick={() => navigate('/home')}>Back Home</Button>}
         />
     );

@@ -45,7 +45,7 @@ const itemSider = [
     { key: '2', icon: <UserOutlined />, label: 'Tài khoản', children: [{ key: '/employer/profile', label: 'Thông tin cá nhân', icon: <MdManageAccounts /> }, { key: '/employer/change-password', label: 'Đổi mật khẩu', icon: <RiLockPasswordLine /> }] },
     { key: '3', icon: <IoBusinessOutline />, label: 'Công ty', children: [{ key: '/employer/company', label: 'Thông tin công ty', icon: <TiBusinessCard /> }, { key: '/employer/business-certificate', label: 'Giấy chứng nhận', icon: <FaRegNewspaper /> }] },
     { key: '/employer/post-job', icon: <UploadOutlined />, label: 'Đăng tuyển' },
-    { key: '/employer/applicant', icon: <TeamOutlined />, label: 'Ứng viên' },
+    { key: '/employer/applicant/list-job', icon: <TeamOutlined />, label: 'Ứng viên' },
     { key: '/employer/manage-list-jobs', icon: <LiaBriefcaseSolid />, label: 'Việc làm' },
     { key: '/employer/list-resumes', icon: <SolutionOutlined />, label: 'Hồ sơ' },
     { key: '/employer/list-order', icon: <AiOutlinePayCircle />, label: 'Đơn hàng' },

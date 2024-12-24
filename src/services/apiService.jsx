@@ -310,6 +310,9 @@ const checkFollowCompany = async (id) => {
   return axios.get(`students/follow/company?companyId=${id}`);
 }
 const getAllApplicantByCategoryId = async (values) => {
+  if (!values.categoryId) {
+    delete values.categoryId;
+  }
   const params = new URLSearchParams(values).toString();
   return axios.get(`students/students-finding-job?${params}`);
 }
@@ -385,6 +388,15 @@ const updateServicePackage = (id, values) => {
 }
 const sendMailApprove = async (values) => {
   return axios.post(`employers/send-mail-reply-accept-interview`, values);
+}
+const createCoupon = async (values) => {
+  return axios.post(`coupons`, values);
+}
+const updateCoupon = async (id, values) => {
+  return axios.put(`coupons/${id}`, values);
+}
+const deleteCoupon = async (id) => {
+  return axios.delete(`coupons/${id}`);
 }
 export {
   uploadCV,
@@ -479,5 +491,8 @@ export {
   createServicePackage,
   deleteServicePackage,
   updateServicePackage,
-  sendMailApprove
+  sendMailApprove,
+  createCoupon,
+  updateCoupon,
+  deleteCoupon
 }

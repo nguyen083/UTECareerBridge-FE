@@ -79,11 +79,7 @@ const JobCardSmall = ({ job }) => {
     const navigate = useNavigate();
     const user = useSelector(state => state.user);
     const handleClick = (key) => {
-        if (user.role === "employer") {
-            navigate('/employer/job/view/' + key);
-        } else {
-            navigate('/job/' + key);
-        }
+        navigate('/job/' + key);
     }
     return (
         <List.Item className='d-flex align-items-start border border-1 rounded-3 p-3 justify-content-between' style={{ maxWidth: '100%', overflow: 'hidden' }}>
@@ -128,9 +124,7 @@ const JobCardLarge = ({ job, disable = false }) => {
     const user = useSelector(state => state.user);
     const handleClick = (key) => {
         if (disable) return;
-        else if (user.role === "employer") {
-            navigate('/employer/job/view/' + key);
-        } else {
+        else {
             navigate('/job/' + key);
         }
 
