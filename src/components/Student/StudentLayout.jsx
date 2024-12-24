@@ -64,7 +64,7 @@ const StudentLayout = () => {
     }, []);
 
     const nagigateLogin = () => {
-        localStorage.getItem('accessToken') ? navigate('/employer') : navigate('/employer/login');
+        infor.role === 'employer' ? navigate('/employer') : navigate('/employer/login');
     }
 
     return (
@@ -95,7 +95,7 @@ const StudentLayout = () => {
                         <Button onClick={nagigateLogin} className='rounded-pill btn-header' size='large'>Nhà tuyển dụng</Button>
                         <Flex gap={"0.5rem"}>
                             <Notification userId={useSelector(state => state.user.userId)} />
-                            {!localStorage.getItem('accessToken')
+                            {infor.role !== 'student'
                                 ? <Button
                                     onClick={() => navigate('/login')}
                                     className='rounded-pill btn-header btn-login' size='large'>

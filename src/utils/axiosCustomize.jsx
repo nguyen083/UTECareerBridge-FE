@@ -48,10 +48,10 @@ instance.interceptors.response.use(
         //     window.location = '/user/500';
         //     return Promise.reject(error);
         // }
-        if (error.response?.status === 404) {
-            window.location = '/user/404';
-            return Promise.reject(error);
-        }
+        // if (error.response?.status === 404) {
+        //     window.location = '/user/404';
+        //     return Promise.reject(error);
+        // }
         // Handle 401 Unauthorized
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
