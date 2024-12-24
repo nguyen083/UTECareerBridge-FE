@@ -1,0 +1,64 @@
+    @import '../styles/variables.scss';
+
+    .demo-logo-vertical {
+        background-color: rgba(255, 255, 255, 0.919);
+        height          : 6.25rem;
+        display         : flex;
+        justify-content : center;
+        align-items     : center;
+    }
+
+    .site-layout {
+        .header-employer {
+            position: sticky;
+            top     : 0;
+            z-index : 1000;
+            width   : 100%;
+
+            background-color: $card-color;
+
+            @media screen and (max-width: 1024px) {
+                padding-left: 0;
+            }
+
+            .menu-header {
+                padding-left    : 20;
+                background-color: $card-color;
+            }
+
+            .btn-header {
+                color       : $text-color;
+                border-color: $text-color;
+            }
+
+            .btn-bell {
+                background-color: $text-color;
+                color           : white;
+                border          : 0px;
+                height          : 40px;
+                width           : 40px;
+
+                &:hover {
+                    background-color: $text-color-hover !important;
+                    color           : white !important;
+                }
+            }
+
+            .username {
+                font-weight         : 500;
+                // @media (max-width: 768px) {
+                //     // display: none;
+                // }
+            }
+        }
+
+        .content-employer {
+            margin  : 1.5rem 1.5rem 0;
+            overflow: initial;
+
+            @media (max-width: 426px) {
+                margin: 1.5rem 1rem 0;
+
+            }
+        }
+    }

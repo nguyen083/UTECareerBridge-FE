@@ -1,0 +1,75 @@
+@import '../styles/variables.scss';
+
+.image {
+    background-image   : url(https://res.cloudinary.com/utejobhub/image/upload/v1724932543/demo/j5e70j4xexkxqmirgum2.jpg);
+    background-position: 0 0;
+    background-repeat  : no-repeat;
+    background-size    : cover;
+    height             : 100vh;
+    overflow           : hidden;
+    position           : sticky;
+    top                : 0;
+}
+
+.parent-register-form {
+    background: $background-color;
+    padding   : 5rem 0 5rem 0;
+
+    @media (max-width: 576px) {
+        padding: 0;
+
+    }
+
+    .register-form {
+        border-radius   : 1rem;
+        width           : 75%;
+        background-color: $card-color;
+
+        @media (max-width: 576px) {
+
+            width      : 100%;
+            padding-top: 3rem;
+        }
+
+        .title {
+            color: $text-color;
+        }
+
+        .size {
+            font-size: 1rem !important;
+            padding  : 1rem 0.75rem !important;
+        }
+
+        .google-btn {
+            display        : flex;
+            text-align     : center;
+            align-items    : center;
+            justify-content: center;
+
+            .vsUcT {
+                margin-top     : 1rem;
+                text-decoration: none;
+                width          : 14rem;
+                height         : 2.1625rem;
+
+                svg {
+                    // position: relative;
+                    // top: 3px;
+                    margin-right: 0.5rem;
+                }
+
+                display        : flex;
+                text-align     : center;
+                align-items    : center;
+                justify-content: center;
+                white-space    : nowrap;
+                padding        : 0.375rem 1rem;
+                border         : 1px solid rgb(201, 201, 201);
+                color          : rgb(51, 51, 51);
+                font-weight    : 600;
+                border-radius  : 0.25rem;
+                background     : rgb(255, 255, 255);
+            }
+        }
+    }
+}

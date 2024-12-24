@@ -1,0 +1,19 @@
+@import "../../components/styles/variables.scss";
+
+.layout-container {
+    background-color: $background-color;
+
+    .sticky-top {
+        background-color   : $background-color;
+        background-image   : url('https://res.cloudinary.com/utejobhub/image/upload/v1731489660/background-website_zmcplv.webp');
+        background-size    : cover;
+        background-position: center;
+        align-items        : center;
+        justify-content    : center;
+        flex-direction     : column;
+        padding            : 2rem;
+        height             : 100vh;
+        text-align         : end;
+        position           : relative;
+    }
+}

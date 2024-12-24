@@ -1,0 +1,58 @@
+@import "../../styles/variables.scss";
+
+.full-height-row {
+    min-height: 100vh;
+}
+
+.left-column {
+    display         : flex;
+    align-items     : center;
+    justify-content : center;
+    background-color: $background-color;
+}
+
+.right-column {
+    background-color   : $background-color;
+    background-image   : url('https://res.cloudinary.com/utejobhub/image/upload/v1731489660/background-website_zmcplv.webp');
+    background-size    : cover;
+    background-position: center;
+    align-items        : center;
+    justify-content    : center;
+    flex-direction     : column;
+    padding            : 2rem;
+    text-align         : end;
+    position           : relative;
+}
+
+.card-title {
+    color: $text-color !important;
+}
+
+.login-card {
+    background-color: $card-color !important;
+    width           : 75%;
+}
+
+.form-label {
+    color: $text-color;
+}
+
+.input-field {
+    color: $text-color !important;
+}
+
+.login-button {
+    background-color: $text-color !important;
+
+    &:hover {
+        background-color: $text-color-hover !important;
+    }
+}
+
+.link-text {
+    color: $text-color !important;
+}
+
+.logo {
+    cursor: pointer !important;
+}

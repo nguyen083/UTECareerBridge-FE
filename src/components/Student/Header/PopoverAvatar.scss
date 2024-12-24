@@ -1,0 +1,24 @@
+@import '../../../components/styles/variables.scss';
+
+.popover-avatar {
+    cursor: pointer;
+}
+
+.ant-popover-inner {
+    min-width: 300px;
+
+    .text-small {
+        font-size: 13px;
+    }
+
+    .update-infor-btn {
+        color       : $text-color;
+        border-color: $text-color;
+
+        &:hover {
+            color           : $text-color-hover !important;
+            border-color    : $text-color-hover !important;
+            background-color: $background-color !important;
+        }
+    }
+}

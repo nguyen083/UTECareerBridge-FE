@@ -1,0 +1,100 @@
+.package-name {
+  font-size    : 16px;
+  font-weight  : bold;
+  margin-bottom: 1rem;
+  color        : #52c41a;
+}
+
+.package-price {
+  font-size    : 16px;
+  font-weight  : bold;
+  color        : #007bff;
+  margin-bottom: 1rem;
+}
+
+
+.description {
+  display           : -webkit-box;
+  -webkit-line-clamp: 2;
+  /* Giới hạn số dòng mô tả là 2 dòng */
+  -webkit-box-orient: vertical;
+  overflow          : hidden;
+  text-overflow     : ellipsis;
+  white-space       : normal;
+}
+
+
+
+
+
+
+
+.info-item {
+  display        : flex;
+  justify-content: space-between;
+  margin-bottom  : 1rem;
+
+  .label {
+    font-size: 14px;
+  }
+
+  .value {
+    font-size  : 14px;
+    font-weight: bold;
+  }
+}
+
+.voucher {
+  display    : flex;
+  align-items: center;
+  gap        : 1rem;
+  margin-top : 1rem;
+
+  .selected-voucher {
+    font-weight: bold;
+    color      : #007bff;
+  }
+
+  .voucher-button {
+    background-color: #007bff;
+    color           : #fff;
+    border          : none;
+    border-radius   : 4px;
+    padding         : 0.5rem 1rem;
+    cursor          : pointer;
+    font-size       : 14px;
+
+    &:hover {
+      background-color: #3697ff !important;
+    }
+  }
+}
+
+.actions {
+  text-align: right;
+  margin-top: 2rem;
+
+  .btn-checkout {
+    background-color: #28a745;
+    color           : #fff;
+    border          : none;
+    border-radius   : 4px;
+    padding         : 0.75rem 1.5rem;
+    font-size       : 14px;
+    font-weight     : bold;
+    cursor          : pointer;
+
+    &:hover {
+      background-color: #218838 !important;
+    }
+  }
+}
+
+.detail-cart-card {
+  .ant-card-body {
+    .ant-table-wrapper {
+      border       : 1px solid #f0f0f0;
+      border-radius: 5px;
+    }
+  }
+}

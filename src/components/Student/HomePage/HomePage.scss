@@ -1,0 +1,70 @@
+@import "../../../components/styles/_variables.scss";
+
+.homepage {
+  width: 100%;
+
+  .gradient-background {
+    background: #f5faff;
+    background: linear-gradient(50deg, #f5faff 0%, #e1edfc 50%);
+    background: -webkit-linear-gradient(50deg, #f5faff 0%, #e1edfc 50%);
+    background: -moz-linear-gradient(50deg, #f5faff 0%, #e1edfc 50%);
+    transition: all 0.5s ease;
+
+    &:hover {
+      background: linear-gradient(230deg, #f5faff 0%, #e1edfc 50%);
+      background: -webkit-linear-gradient(230deg, #f5faff 0%, #e1edfc 50%);
+      background: -moz-linear-gradient(230deg, #f5faff 0%, #e1edfc 50%);
+    }
+  }
+
+  .customize-card {
+    border: 1px solid $divider-color;
+
+    .ant-card-head {
+      border-bottom    : 1px solid $divider-color;
+      background-image : url(https://www.vietnamworks.com/assets-page-container/images/featured-jobs-background.png);
+      background-repeat: no-repeat;
+      background-color : $card-color;
+      padding          : 1rem;
+    }
+  }
+
+  .banner {
+    width: 100%;
+
+  }
+
+  h2 {
+    max-width    : 1180px;
+    margin       : 0 auto;
+    font-size    : 1.5rem;
+    font-weight  : 600;
+    margin-bottom: 10px;
+    color        : #333;
+  }
+
+  &__header {
+    text-align: center;
+    padding   : 20px;
+
+    h1 {
+      font-size    : 2rem;
+      margin-bottom: 20px;
+    }
+
+    .homepage__search {
+      max-width: 800px;
+      margin   : 0 auto;
+
+      .ant-input-search-button {
+        background-color: #1890ff;
+        color           : white;
+      }
+    }
+  }
+}
+
+.box_shadow {
+  box-shadow: 9px 9px 18px #d8d8d8,
+    -9px -9px 18px #fefefe;
+}

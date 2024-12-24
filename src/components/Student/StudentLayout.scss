@@ -1,0 +1,52 @@
+@import "../styles/variables.scss";
+
+.layout-student {
+    .header-student {
+        position: sticky;
+        top     : 0;
+        z-index : 1000;
+        width   : 100%;
+
+        background-color: $card-color !important;
+
+        @media screen and (max-width: 1024px) {
+            padding-left: 0;
+        }
+
+
+        .btn-header {
+            color       : $text-color;
+            border-color: $text-color;
+
+
+
+            &:hover {
+                color       : $text-color-hover !important;
+                border-color: $text-color-hover !important;
+            }
+        }
+
+        .btn-bell {
+            background-color: $text-color;
+            color           : white;
+            border          : 0px;
+            height          : 40px;
+            width           : 40px;
+
+            &:hover {
+                background-color: $text-color-hover !important;
+                color           : white !important;
+            }
+        }
+
+        .btn-login {
+            gap            : 0.5rem;
+            justify-content: space-between;
+        }
+    }
+
+    .content-student {
+        // background: white;
+        // padding: 1rem 1rem;
+    }
+}

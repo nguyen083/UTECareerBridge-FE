@@ -1,0 +1,90 @@
+// @import "../../styles/variables.scss";
+
+// .banner-slider {
+//   position : relative;
+//   max-width: 80%;
+//   margin   : 0 auto;
+
+//   &__controls {
+//     position       : absolute;
+//     top            : 204px; // Căn giữa theo chiều dọc
+//     left           : 0;
+//     right          : 0;
+//     display        : flex;
+//     justify-content: space-between;
+//     transform      : translateY(-50%); // Điều chỉnh chính xác
+//     z-index        : 1; // Đặt controls nổi trên ảnh
+//   }
+
+//   &__control {
+//     background-color: rgba(0, 0, 0, 0.5);
+//     color           : white;
+//     border          : none;
+//     margin          : 0 18px;
+
+//     &:hover {
+//       background-color: rgba(0, 0, 0, 0.7);
+//     }
+//   }
+
+//   &__card {
+//     text-align: center;
+//     border    : none;
+//     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+//   }
+
+//   &__image {
+//     cursor    : pointer;
+//     height    : 400px;
+//     object-fit: cover;
+//     width     : 100%;
+//   }
+
+//   .banner-wrapper {
+//     display  : flex;
+//     width    : 100%;
+//     height   : auto;
+//     flex-wrap: wrap;
+
+//     &__company {
+//       font-size      : 20px;
+//       font-weight    : bold;
+//       margin         : 10px 0;
+//       cursor         : pointer;
+//       color          : $text-color;
+//       flex           : 4;
+//       display        : flex;
+//       justify-content: flex-start;
+//       align-items    : flex-start;
+
+//       &:hover {
+//         text-decoration: underline;
+//       }
+//     }
+
+//     &__button {
+//       flex            : 1;
+//       width           : 100%;
+//       margin-top      : 10px;
+//       height          : 48px;
+//       background-color: white;
+//       color           : $text-color;
+//       font-weight     : 700;
+//       font-size       : medium;
+//       border          : solid 1px $text-color;
+
+//       &:hover {
+//         border: none;
+//       }
+//     }
+//   }
+// }
+
+.body-card {
+    background: rgb(63, 94, 251);
+    background: linear-gradient(45deg, rgba(63, 94, 251, 0.7231267507002801) 0%, rgba(70, 165, 252, 0.6082808123249299) 100%);
+
+    .company-name {
+        color: white;
+    }
+}

@@ -11,3 +11,145 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+.font-size{
+  font-size: 1rem;
+}
+.font-size-small{
+  font-size: 0.875rem;
+}
+.username{
+  font-size: 1rem;
+  font-weight: 550;
+  color: #1E4F94;
+  @media screen and (max-width: 1025px) {
+    display: none;
+    
+  }
+}
+.title {
+  font-size    : 2rem;
+  color: #555555;
+}
+.title1{
+  font-size    : 1.5rem;
+  font-weight: 500;
+  color: #474747;
+  line-height: 1rem;
+}
+.title2{
+  font-size    : 1.125rem;
+  font-weight: 550;
+  color: #333;
+  line-height: 1rem;
+}
+.job-name{
+  font-size    : 1.35rem;
+  font-weight: 550;
+  color: #333;
+  line-height: 1rem;
+}
+html{
+  font-family:  'Inter', sans-serif;
+  font-size: 16px;
+  @media (max-width: 320px) {
+    font-size: 11px;  
+  }
+}
+.size{
+  font-size: 1rem !important;
+  padding: 1rem 0.75rem !important;
+  align-content: center;
+}
+.salary{
+  font-size: 1rem;
+  color: orange;
+}
+.icon-small{
+  font-size: 0.75rem;
+  color: #646464;
+}
+
+/* Ghi đè style cho các dấu (dots) của Carousel */
+.ant-carousel .slick-dots li button {
+  background-color: rgb(195, 194, 194);
+  opacity: 1;
+}
+
+/* Style cho dấu (dot) đang được chọn */
+.ant-carousel .slick-dots li.slick-active button {
+  background-color: rgb(131, 131, 131);
+}
+.hover-effect {
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+.hover-effect:hover {
+  color: #1890ff;
+}
+.custom-anchor .ant-anchor-link {
+  margin-right: 16px;
+}
+
+.custom-anchor .ant-anchor-link-title {
+  text-decoration: none;
+}
+.f-12{
+  font-size: 12px !important;
+}
+.f-13{
+  font-size: 13px !important;
+}
+.f-14{
+  font-size: 14px !important;
+}
+.f-15{
+  font-size: 15px !important;
+}
+.f-16{
+  font-size: 16px !important;
+}
+.f-18{
+  font-size: 18px !important;
+}
+.f-20{
+  font-size: 20px !important;
+}
+.f-24{
+  font-size: 24px !important;
+}
+.border-item{
+  border    : 1px solid #c0c0c069;
+}
+.box_shadow {
+  box-shadow: 5px 5px 5px #ebebeb;
+}
+/* index.css hoặc global.css */
+.ql-size-small {
+  font-size: 14px !important;
+}
+
+.ql-size-medium {
+  font-size: 20px !important;
+}
+
+.ql-size-large {
+  font-size: 18px !important;
+}
+
+.ql-size-huge {
+  font-size: 28px !important;
+}
+.ql-editor{
+  font-size: 16px !important;
+  font-family: 'Inter', sans-serif;
+}
+.slick-arrow {
+  color: #1890ff !important;
+}
+.ql-container{
+  min-height: 100px;
+}
+.cursor-pointer{
+  cursor: pointer !important;
+}

@@ -1,0 +1,21 @@
+.form-register {
+    height     : 100%;
+    width      : 100%;
+    padding    : auto;
+    padding-top: 2rem;
+
+    @media (max-width: 1024px) {
+        padding: 6rem 8rem;
+    }
+
+    @media (max-width: 992px) {
+        padding: 3rem;
+    }
+
+}
+
+.bottom-footer {
+    background: #C3C3C3;
+    font-size : 0.875rem;
+    width     : -webkit-fill-available
+}

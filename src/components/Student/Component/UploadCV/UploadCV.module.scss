@@ -1,0 +1,69 @@
+.box_shadow {
+    box-shadow: 5px 5px 5px #ebebeb;
+}
+
+.div {
+    background   : white;
+    padding-left : 16px;
+    padding-right: 16px;
+    border-radius: 10px;
+
+    .tabs {
+
+        padding: auto !important;
+
+        .tab_content {
+            padding: 0 20px 20px 20px;
+
+            .text {
+                font-size  : 1.5em;
+                font-weight: 300;
+            }
+        }
+
+
+
+        .ant-upload-drag-icon {
+            font-size: 24px;
+            /* Tùy chỉnh kích thước icon */
+        }
+
+        p {
+            color: #8c8c8c;
+            /* Tùy chỉnh màu chữ */
+
+        }
+
+
+        .list-item {
+            .ant-list-item-meta {
+                .ant-list-item-meta-title {
+                    font-weight: bold;
+                }
+
+                .ant-list-item-meta-description {
+                    p {
+                        color: #8c8c8c;
+                        /* Màu mô tả */
+                    }
+
+                    a {
+                        color          : blue;
+                        text-decoration: underline;
+                    }
+                }
+            }
+
+            .ant-dropdown {
+                .ant-btn {
+                    padding: 5px;
+                }
+
+                .anticon {
+                    font-size: 20px;
+                }
+            }
+        }
+    }
+
+}

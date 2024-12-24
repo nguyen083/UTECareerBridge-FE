@@ -1,0 +1,97 @@
+.job-card {
+    transition: all 0.3s ease;
+    background-color: #f0f4f9;
+    border: 1px solid #e6eaf0;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+    }
+  
+    .ant-card-body {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+  
+    .company-logo {
+      flex-shrink: 0;
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      object-fit: contain;
+      margin-right: 16px;
+      border: 1px solid #e6e6e6;
+    }
+  
+    .job-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+  
+      .job-title {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 4px;
+        
+        a {
+          color: #2c3e50;
+          text-decoration: none;
+          transition: color 0.2s ease;
+  
+          &:hover {
+            color: #3498db;
+          }
+        }
+      }
+  
+      .company-name {
+        color: #7f8c8d;
+        font-size: 0.9rem;
+      }
+  
+      .job-description {
+        color: #34495e;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+  
+      .salary-tag {
+        margin-top: 8px;
+      }
+    }
+  
+    .save-icon-container {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    
+        .save-icon {
+          cursor: pointer;
+          transition: transform 0.2s ease;
+
+          &:hover {
+            transform: scale(1.1);
+            color: red;
+          }
+        }
+        
+      }
+
+  }

@@ -1,0 +1,367 @@
+.kJYTOq {
+    position: relative;
+    z-index : 90;
+
+    .hfEnWi {
+        position         : relative;
+        display          : flex;
+        -webkit-box-align: center;
+        align-items      : center;
+        -webkit-box-pack : justify;
+        justify-content  : space-between;
+        padding          : 0.4rem 1rem;
+        background-color : rgb(0, 54, 153);
+        color            : rgb(255, 255, 255);
+        z-index          : 10;
+
+        .hTBdHF {
+            position   : relative;
+            z-index    : 1;
+            flex-shrink: 0;
+
+            .cJtnGK {
+                display: block;
+                height : 2.5rem;
+            }
+
+            .dhbLpn {
+                display: none;
+                height : 2.5rem;
+            }
+        }
+
+        .iepeKq {
+            display          : flex;
+            -webkit-box-align: center;
+            align-items      : center;
+            position         : static;
+            flex             : 1 1 0%;
+
+            .fdGNbR {
+                box-sizing       : border-box;
+                display          : flex;
+                flex-flow        : wrap;
+                -webkit-box-align: start;
+                align-items      : start;
+                -webkit-box-pack : start;
+
+                /* justify-content: start; */
+                .fnXIET {
+                    flex     : 0 0 100%;
+                    max-width: 100%;
+
+                    .gujvVy {
+                        display          : flex;
+                        -webkit-box-align: center;
+                        align-items      : center;
+                        -webkit-box-pack : end;
+                        justify-content  : flex-end;
+
+                        .eesaxc {
+                            display          : flex;
+                            -webkit-box-align: center;
+                            align-items      : center;
+
+                            .hTBdHF {
+                                position   : relative;
+                                z-index    : 1;
+                                flex-shrink: 0;
+
+                                .cJtnJk {
+                                    display: block;
+                                    height : 1.5rem;
+                                }
+
+                                .dhbLmR {
+                                    display: none;
+                                    height : 1.5rem;
+                                }
+                            }
+
+                            .gChyuM {
+                                position: relative;
+                                height  : 100%;
+                                display : flex;
+
+                                .kjwsGF {
+                                    position  : relative;
+                                    border    : 0;
+                                    background: transparent;
+                                    padding   : 0;
+                                    height    : 100%;
+                                    cursor    : pointer;
+
+                                    .kCosHO {
+                                        border       : 1px solid rgb(52, 123, 255);
+                                        border-radius: 3rem;
+                                        padding      : 0;
+                                        margin-left  : 1.25rem;
+                                        line-height  : 2.5rem;
+
+                                        svg {
+                                            width       : 1.25rem;
+                                            height      : auto !important;
+                                            margin-right: 0.625rem;
+                                            position    : relative;
+                                            bottom      : 0.125rem;
+                                        }
+                                    }
+                                }
+                            }
+
+                            .etFDyw {
+                                display        : grid;
+                                row-gap        : 0.25rem;
+                                text-align     : center;
+                                color          : rgb(255, 255, 255);
+                                transition     : color 0.1s ease-in-out;
+                                margin-left    : 0.625rem;
+                                border         : 1px solid rgb(52, 123, 255);
+                                border-radius  : 3rem;
+                                padding        : 0 0.625rem;
+                                line-height    : 2.5rem;
+                                text-decoration: none;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        .gFYrLR {
+            position             : relative;
+            display              : grid;
+            grid-template-columns: auto auto 1fr;
+            padding              : 0.25rem;
+            column-gap           : 0.5rem;
+            border-radius        : 5.9375rem;
+            border               : 1px solid rgb(0, 90, 255);
+
+            .gChyuM {
+                position: relative;
+                height  : 100%;
+                display : flex;
+
+                .kjwsGF {
+                    position  : relative;
+                    border    : 0;
+                    background: transparent;
+                    padding   : 0;
+                    height    : 100%;
+                    cursor    : pointer;
+
+                    .iUPoZR {
+                        font-weight      : 500;
+                        display          : inline-flex;
+                        -webkit-box-align: center;
+                        align-items      : center;
+                        -webkit-box-pack : center;
+                        justify-content  : center;
+                        transition       : background-color 0.3s;
+                        white-space      : nowrap;
+                        position         : relative;
+                        overflow         : hidden;
+                        padding          : 0;
+                        width            : 2rem;
+                        min-width        : 2rem;
+                        min-height       : 2rem;
+                        font-size        : 0.75rem;
+                        height           : 2rem;
+                        line-height      : 1.25rem;
+                        border-radius    : 3rem;
+                        outline          : none !important;
+                        color            : rgb(255, 255, 255) !important;
+                        background-color : rgb(0, 90, 255) !important;
+                        border           : 2px solid rgb(0, 90, 255) !important;
+                    }
+                }
+            }
+
+            .fmgDmC {
+                position: relative;
+                cursor  : pointer;
+
+                .notification-icon {
+                    transition: 0.3s;
+                    opacity   : 0.9;
+
+                    .iUPoZR {
+                        font-weight      : 500;
+                        display          : inline-flex;
+                        -webkit-box-align: center;
+                        align-items      : center;
+                        -webkit-box-pack : center;
+                        justify-content  : center;
+                        transition       : background-color 0.3s;
+                        white-space      : nowrap;
+                        position         : relative;
+                        overflow         : hidden;
+                        padding          : 0;
+                        width            : 2rem;
+                        min-width        : 2rem;
+                        min-height       : 2rem;
+                        font-size        : 0.75rem;
+                        height           : 2rem;
+                        line-height      : 1.25rem;
+                        border-radius    : 3rem;
+                        outline          : none !important;
+                        color            : rgb(255, 255, 255) !important;
+                        background-color : rgb(0, 90, 255) !important;
+                        border           : 2px solid rgb(0, 90, 255) !important;
+
+                        svg {
+                            width : 1.125rem;
+                            height: 1.125rem;
+                        }
+                    }
+                }
+            }
+
+            .kAIlcu {
+                background-color: rgb(0, 90, 255);
+                color           : rgb(255, 255, 255);
+            }
+
+            .eXCBCp {
+                width            : 100%;
+                height           : 2rem;
+                border-radius    : 624.9375rem;
+                display          : flex;
+                -webkit-box-align: center;
+                align-items      : center;
+                -webkit-box-pack : center;
+                justify-content  : center;
+                border           : none;
+                font-weight      : 500;
+
+                .krqNeo {
+                    position: relative;
+                    width   : 100%;
+                    height  : 100%;
+
+                    .kapIWZ {
+                        width                  : 100%;
+                        height                 : 2rem;
+                        border-radius          : 624.9375rem;
+                        border                 : none;
+                        background             : transparent;
+                        overflow               : hidden;
+                        color                  : inherit;
+                        display                : grid;
+                        grid-template-columns  : auto 1fr;
+                        //column-gap           : 6px;
+                        -webkit-box-align      : center;
+                        align-items            : center;
+                        padding                : 0 0.5rem;
+
+                        svg {
+                            width : 1.25rem;
+                            height: 1.25rem;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.form-login {
+    display: none;
+    height : 14.625rem;
+    width  : 22rem;
+
+    a {
+        text-decoration: none;
+    }
+
+    .hKDGed {
+        transition-property: opacity, transform, transform-origin;
+        opacity            : 1;
+        transform          : scaleY(1);
+        transform-origin   : center top;
+        transition-duration: 250ms;
+        background         : rgb(255, 255, 255);
+        border-radius      : 0.75rem;
+        color              : rgb(51, 51, 51);
+        width              : 22rem;
+        box-shadow         : rgba(0, 0, 0, 0.16) 0 0.25rem 2.5rem 0;
+        overflow           : hidden;
+
+        .hmTqcE {
+            display      : grid;
+            row-gap      : 1rem;
+            padding      : 1.25rem 1.5rem;
+            border-bottom: 1px solid rgb(226, 226, 226);
+
+            .fCdZWY {
+                margin-bottom: 0;
+                font-size    : 1.125rem;
+                font-weight  : 600;
+            }
+
+            .cThveb {
+                display        : flex;
+                text-align     : center;
+                align-items    : center;
+                justify-content: center;
+
+                // display: grid;
+                // grid-template-columns: repeat(2, 1fr);
+                // column-gap: 8px;
+                .vsUcT {
+                    width : 10.125rem;
+                    height: 2.1625rem;
+
+                    svg {
+                        // position: relative;
+                        // top: 3px;
+                        margin-right: 0.5rem;
+                    }
+
+                    display        : flex;
+                    text-align     : center;
+                    align-items    : center;
+                    justify-content: center;
+                    white-space    : nowrap;
+                    padding        : 0.375rem 1rem;
+                    border         : 1px solid rgb(201, 201, 201);
+                    color          : rgb(51, 51, 51);
+                    font-weight    : 600;
+                    border-radius  : 0.25rem;
+                    background     : rgb(255, 255, 255);
+                }
+            }
+        }
+
+        a:not([href]),
+        a:not([href]):hover {
+            color          : inherit;
+            text-decoration: none;
+        }
+
+        .iczlp {
+            display              : grid;
+            grid-template-columns: auto 1fr;
+            padding              : 1rem 1.5rem;
+            cursor               : pointer;
+            column-gap           : 1rem;
+            -webkit-box-align    : center;
+            align-items          : center;
+            color                : rgb(51, 51, 51);
+            background           : rgb(255, 255, 255);
+            border-bottom        : 1px solid rgb(226, 226, 226);
+        }
+
+        .bcmeti {
+            display              : grid;
+            grid-template-columns: auto 1fr;
+            padding              : 1rem 1.5rem;
+            cursor               : pointer;
+            column-gap           : 1rem;
+            -webkit-box-align    : center;
+            align-items          : center;
+            color                : rgb(51, 51, 51);
+            background           : rgb(255, 255, 255);
+        }
+    }
+}

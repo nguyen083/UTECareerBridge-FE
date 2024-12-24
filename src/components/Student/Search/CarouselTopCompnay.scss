@@ -1,0 +1,41 @@
+.carousel-top-company {
+    .ant-card-body {
+        display       : flex;
+        flex-direction: column;
+        align-items   : stretch;
+
+        .card-company {
+            height        : 100%;
+            display       : flex;
+            flex-direction: column;
+            padding       : 0px;
+
+            .ant-card-body {
+                height: 146px;
+
+                .ant-card-meta {
+                    margin: 0;
+                    height: 100%;
+
+                    .ant-card-meta-detail {
+                        height         : 100%;
+                        display        : flex !important;
+                        flex-direction : column !important;
+                        justify-content: space-between !important;
+
+                        .company-name {
+                            display   : block;
+                            /* Đảm bảo nó là một khối để có thể xuống dòng */
+                            text-align: center;
+                            /* Căn giữa văn bản */
+                            text-wrap : balance;
+                            /* Đảm bảo văn bản sẽ xuống dòng nếu quá dài */
+                        }
+                    }
+                }
+
+
+            }
+        }
+    }
+}

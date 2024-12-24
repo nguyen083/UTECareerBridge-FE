@@ -1,0 +1,17 @@
+.meta-description {
+    display    : flex;
+    align-items: stretch;
+
+
+
+}
+
+.limit-text {
+    display           : -webkit-box !important;
+    -webkit-line-clamp: 1 !important;
+    -webkit-box-orient: vertical !important;
+    overflow          : hidden !important;
+    word-wrap         : break-all !important;
+    word-break        : break-word !important;
+    text-overflow     : ellipsis !important;
+}

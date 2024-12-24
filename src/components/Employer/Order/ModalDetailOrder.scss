@@ -1,0 +1,14 @@
+.modal-detail-order {
+    max-height: 90%;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        width: 8px; // Độ dày của scrollbar
+    }
+
+    &-content {
+        padding: 20px;
+    }
+
+
+}

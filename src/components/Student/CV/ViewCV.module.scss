@@ -1,0 +1,49 @@
+.view_cv {
+    width         : 80%;
+    margin        : auto;
+    display       : flex;
+    flex-direction: column;
+    gap           : 1rem;
+
+    @media (max-width: 768px) {
+        width: 100%;
+    }
+
+    .list-infor {
+        background-color: white;
+        padding         : 10px;
+        border          : 1px solid #f0f0f0;
+        border-radius   : 8px;
+        box-shadow      : 5px 5px 5px #ebebeb;
+
+        .title {
+            font-size  : 20px;
+            font-weight: 600;
+        }
+
+        .infor_card {
+            height       : 100%;
+            margin-top   : auto;
+            margin-bottom: auto;
+
+            .name {
+                // margin-bottom: 16px;
+                font-size  : 16px;
+                font-weight: 500;
+                color      : #333333;
+            }
+
+            // .infor {}
+
+            .icon {
+                font-weight: 500;
+                color      : #333333;
+                font-size  : 15px;
+            }
+        }
+    }
+
+    .box_shadow {
+        box-shadow: 5px 5px 5px #ebebeb;
+    }
+}

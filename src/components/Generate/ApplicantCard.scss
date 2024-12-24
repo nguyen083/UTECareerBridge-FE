@@ -1,0 +1,8 @@
+@import "../../components/styles/variables.scss";
+
+.card-applicant {
+    &:hover {
+        background-color: $background-color;
+        border-color    : $text-color-hover;
+    }
+}
