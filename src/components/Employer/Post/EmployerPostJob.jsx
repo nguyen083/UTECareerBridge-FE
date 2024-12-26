@@ -259,6 +259,7 @@ const EmployerPostJob = () => {
         postJob(values).then((res) => {
             if (res.status === 'OK') {
                 message.success(res.message);
+                form.resetFields();
             }
             else {
                 message.error(res.message);

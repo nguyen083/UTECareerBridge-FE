@@ -1,4 +1,4 @@
-import { Avatar, Button, Divider, Flex, List, message, Typography } from "antd";
+import { Avatar, Button, Divider, Empty, Flex, List, message, Typography } from "antd";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getFollowCompany, unfollowCompany } from "../../../../services/apiService";
@@ -49,6 +49,7 @@ const ListCompany = () => {
         <>
             <List
                 loading={loading}
+                locale={{ emptyText: <Empty description="Bạn chưa theo dõi bất kỳ công ty nào" image={Empty.PRESENTED_IMAGE_SIMPLE} /> }}
                 split={false}
                 className="list-company "
                 bordered={true}
