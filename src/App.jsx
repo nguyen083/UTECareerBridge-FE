@@ -217,8 +217,8 @@ const App = () => {
             <Route path='buy-service' element={<ServiceMarketplace />} />
             <Route path='cart' element={<ShoppingCart />} />
             <Route path='manage-list-jobs' element={<ManageListJobs />} />
-            {/* <Route path='job/view/:id' element={<ViewJob />} />
-            <Route path='job/edit/:id' element={<UpdateJob />} /> */}
+            <Route path='job/view/:id' element={<ViewJob />} />
+            <Route path='job/edit/:id' element={<UpdateJob />} />
           </Route>
           <Route element={<BoxContainer width={"100%"} background='#F5F5F5' />} >
           </Route>

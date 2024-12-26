@@ -62,12 +62,13 @@ const EmployerPostJob = () => {
                             },
                         }),
                     ]} validateTrigger={['onChange', 'onBlur']}>
-                    <Select placeholder="Vui lòng chọn lĩnh vực">
-                        {categories.map(category => (
-                            <Select.Option key={category.value} value={category.value}>
-                                {category.label}
-                            </Select.Option>
-                        ))}
+                    <Select
+                        showSearch
+                        filterOption={(input, option) =>
+                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                        }
+                        placeholder="Vui lòng chọn lĩnh vực"
+                        options={categories}>
                     </Select>
                 </Form.Item>
                 <Flex gap="large" className="col-7 mt-0">

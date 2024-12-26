@@ -96,7 +96,9 @@ const InforCompany = () => {
         } catch (error) {
             message.error(error.message);
         } finally {
-            setLoading(false);
+            setTimeout(() => {
+                setLoading(false);
+            }, 50);
         }
         if (localStorage.getItem('accessToken')) {
             if (user.role === 'student') {

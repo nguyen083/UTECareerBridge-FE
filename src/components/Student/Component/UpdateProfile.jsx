@@ -107,7 +107,7 @@ const UpdateProfile = () => {
     return (
         <>
             <EditOutlined className={styles["icon"]} onClick={() => setOpen(true)} />
-            <Modal width={750} centered title="Thông tin cơ bản" open={open} onCancel={handleReset} onOk={() => { form.submit() }} okText="Lưu" cancelText="Hủy">
+            <Modal className={styles.modalUpdateProfile} width={750} centered title="Thông tin cơ bản" open={open} onCancel={handleReset} onOk={() => { form.submit() }} okText="Lưu" cancelText="Hủy">
                 <Form
                     form={form}
                     onFinish={handleUpdateProfile}

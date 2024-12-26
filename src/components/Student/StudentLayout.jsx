@@ -16,6 +16,7 @@ const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 const PopoverCategory = () => {
     const navigate = useNavigate();
+    const infor = useSelector(state => state?.user);
     return (
         <div className="dropdown-content">
             <Row gutter={[32, 16]}>
@@ -27,8 +28,8 @@ const PopoverCategory = () => {
                 </Col>
                 <Col span={8}>
                     <Title level={5}>Việc của tôi</Title>
-                    <Button size='large' type="text" onClick={() => navigate('/my-job#job-saved')} >Việc đã lưu</Button>
-                    <Button size='large' type="text" onClick={() => navigate('/my-job#job-applied')} >Việc đã ứng tuyển</Button>
+                    <Button size='large' type="text" onClick={() => { infor.role === 'student' ? navigate('/my-job#job-saved') : navigate('login') }} >Việc đã lưu</Button>
+                    <Button size='large' type="text" onClick={() => { infor.role === 'student' ? navigate('/my-job#job-applied') : navigate('login') }} >Việc đã ứng tuyển</Button>
                     {/* <Button size='large' type="text"  >Thông báo việc làm</Button>
                     <Button size='large' type="text"  >Việc dành cho bạn</Button> */}
                 </Col>
