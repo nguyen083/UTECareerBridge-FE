@@ -1,4 +1,4 @@
-import { Button, Collapse, DatePicker, Descriptions, Flex, Form, Input, InputNumber, message, Select, Tooltip } from 'antd';
+import { Button, Collapse, DatePicker, Descriptions, Flex, Form, Input, InputNumber, message, Select } from 'antd';
 import BoxContaier from '../../Generate/BoxContainer';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -26,7 +26,11 @@ const EmployerPostJob = () => {
     const [packages, setPackages] = useState([]);
     const [selectedPackage, setSelectedPackage] = useState(null);
     const [loading, setLoading] = useState(false);
-
+    const [form] = Form.useForm();
+    const packageId = Form.useWatch('packageId', form);
+    useEffect(() => {
+        console.log("packageId: ", packageId);
+    }, [packageId]);
     const handlePackageChanged = (pkgId) => {
         const selectedPkg = packages.find(pkg => pkg.packageResponse.packageId === pkgId);
         setSelectedPackage(selectedPkg);
@@ -62,12 +66,13 @@ const EmployerPostJob = () => {
                             },
                         }),
                     ]} validateTrigger={['onChange', 'onBlur']}>
-                    <Select placeholder="Vui lòng chọn lĩnh vực">
-                        {categories.map(category => (
-                            <Select.Option key={category.value} value={category.value}>
-                                {category.label}
-                            </Select.Option>
-                        ))}
+                    <Select
+                        showSearch
+                        filterOption={(input, option) =>
+                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+                        }
+                        placeholder="Vui lòng chọn lĩnh vực"
+                        options={categories}>
                     </Select>
                 </Form.Item>
                 <Flex gap="large" className="col-7 mt-0">
@@ -171,7 +176,7 @@ const EmployerPostJob = () => {
                         ))}
                     </Select>
                 </Form.Item>
-                {selectedPackage && <Descriptions className='px-5 ' title="Chi tiết gói dịch vụ" layout="vertical" column={2}>
+                {packageId && <Descriptions className='px-5 ' title="Chi tiết gói dịch vụ" layout="vertical" column={2}>
                     <Descriptions.Item label="Tên gói dịch vụ">
                         <span>{selectedPackage?.packageResponse.packageName}</span>
                     </Descriptions.Item>
@@ -248,7 +253,7 @@ const EmployerPostJob = () => {
             }
         });
     }, []);
-    const [form] = Form.useForm();
+
 
     const onFinish = (values) => {
         setLoading(true);
@@ -258,6 +263,7 @@ const EmployerPostJob = () => {
         postJob(values).then((res) => {
             if (res.status === 'OK') {
                 message.success(res.message);
+                form.resetFields();
             }
             else {
                 message.error(res.message);

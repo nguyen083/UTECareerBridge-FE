@@ -12,6 +12,7 @@ import {
   Tooltip,
   Modal,
   Dropdown,
+  Empty,
 } from 'antd';
 import {
   EditOutlined,
@@ -35,7 +36,6 @@ const TableListUser = ({
   onEdit,
   onDelete
 }) => {
-  const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchText, setSearchText] = useState('');
@@ -94,13 +94,6 @@ const TableListUser = ({
       align: 'center'
     },
     {
-      title: 'Địa chỉ',
-      dataIndex: 'address',
-      key: 'address',
-      align: 'center',
-      width: '20%'
-    },
-    {
       title: 'Ngày sinh',
       dataIndex: 'dob',
       key: 'dob',
@@ -124,29 +117,29 @@ const TableListUser = ({
     {
       key: 'actions',
       fixed: 'right',
-      width: 150,
+      width: '10%',
       render: (_, record) => (
         <Space size="middle">
-          <Button
+          <Tooltip title="Cập nhật tài khoản" color='cyan'><Button
             icon={<EditOutlined />}
             onClick={() => {
               onEdit(record);
             }
             }
-          />
+          /></Tooltip>
           {userType === 'employer' && (
-            <Link to={`/company/${record.key}`} target='_blank'>
+            <Tooltip title="Xem công ty" color='blue'><Link to={`/company/${record.key}`} target='_blank'>
               <Button
                 icon={<EyeOutlined />}
               />
-            </Link>
+            </Link></Tooltip>
           )}
-          <Button
+          {userType !== 'employer' && <Tooltip color='red' title="Xóa tài khoản">< Button
             type="primary"
             danger
             onClick={() => onDelete(record.key)}
             icon={<DeleteOutlined />}
-          />
+          /></Tooltip>}
         </Space>
       ),
     },
@@ -398,12 +391,7 @@ const TableListUser = ({
         scroll={{ x: 1000 }}
         locale={{
           emptyText: (
-            <div className="p-5">
-              <InboxOutlined
-                style={{ fontSize: "50px", marginBottom: "8px" }}
-              />
-              <div>Không có dữ liệu</div>
-            </div>
+            <Empty description="Không có dữ liệu" />
           ),
         }}
       />

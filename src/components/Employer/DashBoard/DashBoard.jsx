@@ -173,7 +173,7 @@ const DashBoard = () => {
                         <Card className="box_shadow">
                             <Statistic
                                 title={<Text>Số người theo dõi</Text>}
-                                value={countFollower}
+                                value={countFollower || 0}
                                 prefix={<SlUserFollowing style={{ color: '#52c41a' }} />}
                                 suffix={<Text>người</Text>}
                             />
@@ -183,7 +183,7 @@ const DashBoard = () => {
                         <Card className="box_shadow">
                             <Statistic
                                 title={<Text>Tổng số ứng viên</Text>}
-                                value={countStudentApplied}
+                                value={countStudentApplied || 0}
                                 prefix={<ImUserTie style={{ color: '#1890ff' }} />}
                                 suffix={<Text>người</Text>}
                             />
@@ -193,7 +193,7 @@ const DashBoard = () => {
                         <Card className="box_shadow">
                             <Statistic
                                 title={<Text >Số công việc đã đăng</Text>}
-                                value={countJob}
+                                value={countJob || 0}
                                 prefix={<LiaBriefcaseSolid style={{ color: '#52c41a' }} />}
                                 suffix={<Text>công việc</Text>}
                             />

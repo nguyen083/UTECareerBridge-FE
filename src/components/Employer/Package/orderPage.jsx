@@ -156,7 +156,7 @@ const OrderPage = () => {
     },
   ];
   const handleCreateOrder = () => {
-    createOrder(selectedVoucher).then((res) => {
+    createOrder(selectedVoucher.couponCode).then((res) => {
       if (res.status === 'CREATED') {
         message.success(res.message);
         setOrderId(res.data.orderId);

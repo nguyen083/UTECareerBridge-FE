@@ -92,7 +92,6 @@ const ListOrder = () => {
                         pageSize: pageSize,
                         total: total,
                         showSizeChanger: true,
-                        showQuickJumper: true,
                     }}
                     loading={loading}
                     onChange={handleTableChange}

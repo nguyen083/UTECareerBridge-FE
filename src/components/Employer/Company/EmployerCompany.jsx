@@ -9,9 +9,7 @@ import CustomizeQuill from '../../Generate/CustomizeQuill';
 import { PicturesWall } from '../../Generate/Upload';
 import { useSelector, useDispatch } from 'react-redux';
 import { setInfor } from '../../../redux/action/employerSlice';
-import IconLoading from "../../Generate/IconLoading";
 import React from 'react';
-import ImgCrop from 'antd-img-crop';
 
 const EmployerCompany = () => {
 
@@ -43,24 +41,24 @@ const EmployerCompany = () => {
         });
         const { benefitArray, ...rest } = values;
         values = { ...rest, ...keyValueObject };
+
+
         setLoading(true);
-        try {
-            updateEmployerCompanyProfile(values).then(res => {
-                if (res.status === 'OK') {
-                    message.success(res.message);
-                    // cập nhật lại redux
-                    dispatch(setInfor(res.data));
-                }
-                else {
-                    message.error(res.message);
-                }
-            });
-        } catch (err) {
+        updateEmployerCompanyProfile(values).then(res => {
+            if (res.status === 'OK') {
+                message.success(res.message);
+                // cập nhật lại redux
+                dispatch(setInfor(res.data));
+            }
+            else {
+                message.error(res.message);
+            }
+        }).catch(err => {
             console.log(err);
-        }
-        finally {
+        }).finally(() => {
             setLoading(false);
-        }
+        })
+
         // console.log(values);
 
     }
@@ -198,7 +196,7 @@ const EmployerCompany = () => {
                             </Form.List>
                         </Form.Item>
                         <Form.Item name="companyDescription" className="col-12 mt-0 " label="Mô tả công ty">
-                            <CustomizeQuill />
+                            <CustomizeQuill key="description" />
                         </Form.Item>
                         <Form.Item name="companyLogo" className='col-12 mt-0' label="Logo công ty" tooltip="Kéo thả hoặc nhấp chọn để tải ảnh lên">
                             <PicturesWall listType={"text"} defaultImage={defaultLogo} />
@@ -215,7 +213,7 @@ const EmployerCompany = () => {
                     </div>
                     <Flex gap={"1rem"} align='center' justify='end'>
                         <Button type='default' onClick={handleReset}>Hủy</Button>
-                        <Button type='primary' htmlType='submit' disabled={loading}><IconLoading loading={loading} setLoading={setLoading} />Lưu</Button>
+                        <Button type='primary' htmlType='submit' loading={loading}>Lưu</Button>
                     </Flex>
                 </Form>
             </BoxContainer>

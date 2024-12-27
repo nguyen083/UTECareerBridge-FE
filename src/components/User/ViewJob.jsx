@@ -32,8 +32,8 @@ const ViewJob = () => {
     const navigate = useNavigate();
     const [carouselItems, setCarouselItems] = useState([]);
     useEffect(() => {
-        window.scrollTo(0, 0);
-    }, []);
+        id && window.scrollTo(0, 0);
+    }, [id]);
     useEffect(() => {
 
         setLoading(true);
@@ -160,6 +160,7 @@ const ViewJob = () => {
         ]);
     }, [job]);
 
+
     const handleSave = () => {
         if (localStorage.getItem('accessToken')) {
             if (user.role === 'student') {
@@ -223,8 +224,7 @@ const ViewJob = () => {
                                         </Flex>
                                         <Row gutter={8}>
                                             <Col xs={24} md={18}>
-                                                <Button type='primary' style={{ width: "100%" }} size='large' onClick={() => setApply(!apply)}>Nộp đơn</Button>
-                                                <ModalApply show={apply} setShow={setApply} company={company} job={job} />
+                                                <Button type='primary' style={{ width: "100%" }} size='large' onClick={() => { user.role === 'student' ? setApply(true) : navigate('/login') }}>Nộp đơn</Button>
                                             </Col>
                                             <Col xs={24} md={6}>
                                                 <Button onClick={handleSave} type={isSaved ? 'primary' : 'default'} ghost={isSaved} style={{ width: "100%" }} size='large'>{isSaved ? <HeartFilled /> : <HeartOutlined />} {isSaved ? "Đã lưu" : "Lưu công việc"}</Button>
@@ -385,6 +385,7 @@ const ViewJob = () => {
                     </Col>
                 </Row >
             </div >
+            <ModalApply show={apply} setShow={setApply} company={company} job={job} key={id} />
         </>
     );
 }
