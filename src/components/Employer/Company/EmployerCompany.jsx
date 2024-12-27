@@ -43,24 +43,24 @@ const EmployerCompany = () => {
         });
         const { benefitArray, ...rest } = values;
         values = { ...rest, ...keyValueObject };
+
+
         setLoading(true);
-        try {
-            updateEmployerCompanyProfile(values).then(res => {
-                if (res.status === 'OK') {
-                    message.success(res.message);
-                    // cập nhật lại redux
-                    dispatch(setInfor(res.data));
-                }
-                else {
-                    message.error(res.message);
-                }
-            });
-        } catch (err) {
+        updateEmployerCompanyProfile(values).then(res => {
+            if (res.status === 'OK') {
+                message.success(res.message);
+                // cập nhật lại redux
+                dispatch(setInfor(res.data));
+            }
+            else {
+                message.error(res.message);
+            }
+        }).catch(err => {
             console.log(err);
-        }
-        finally {
+        }).finally(() => {
             setLoading(false);
-        }
+        })
+
         // console.log(values);
 
     }
