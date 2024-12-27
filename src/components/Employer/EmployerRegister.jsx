@@ -1,9 +1,12 @@
 import React from 'react';
 import { useState } from 'react';
-import { Button, Form, Input, Space, DatePicker, Steps, Radio, Card } from 'antd';
+import { Button, Form, Input, Space, DatePicker, Steps, Radio, Card, message } from 'antd';
 import './EmployerRegister.scss';
 import SubmitButton from '../Generate/SubmitButton';
 import COLOR from '../styles/_variables'
+import { registerEmployer } from '../../services/apiService';
+import { use } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 
 const steps = [
@@ -19,6 +22,7 @@ const steps = [
 const EmployerRegister = () => {
   const [form1] = Form.useForm();
   const [form2] = Form.useForm();
+  const naviagte = useNavigate();
   const gender = 0; // giới tính mặc định
   const [DoB, setDoB] = useState('');
   const [current, setCurrent] = useState(0);
@@ -41,8 +45,19 @@ const EmployerRegister = () => {
   }));
 
   const onFinish = (values) => {
-    console.log({ ...values, ...form });
-
+    registerEmployer({ ...form, ...values }).then(res => {
+      if (res.status === 'CREATED') {
+        message.success(res.message);
+        form1.resetFields();
+        form2.resetFields();
+        naviagte('employer/login');
+      } else {
+        message.error(res.message);
+      }
+    }).catch(err => {
+      message.error('Đăng ký thất bại');
+    });
+    // console.log({ ...form, ...values });
   };
   return (
     <>
@@ -56,7 +71,7 @@ const EmployerRegister = () => {
               <Form size='large' form={form2} name="validateOnlyform2" requiredMark={false} layout="vertical" autoComplete="off"
                 initialValues={{ gender: 0, dob: DoB }}>
                 <div className="form-group row g-3">
-                  <Form.Item name="fist_name" className=" col-12 col-md-6 mt-0" label={<span>Tên <span style={{ color: "red" }}> *</span></span>}
+                  <Form.Item name="first_name" className=" col-12 col-md-6 mt-0" label={<span>Tên <span style={{ color: "red" }}> *</span></span>}
                     rules={[
                       {
                         required: true,

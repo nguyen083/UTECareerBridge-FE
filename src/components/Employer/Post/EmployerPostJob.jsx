@@ -1,4 +1,4 @@
-import { Button, Collapse, DatePicker, Descriptions, Flex, Form, Input, InputNumber, message, Select, Tooltip } from 'antd';
+import { Button, Collapse, DatePicker, Descriptions, Flex, Form, Input, InputNumber, message, Select } from 'antd';
 import BoxContaier from '../../Generate/BoxContainer';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -26,7 +26,11 @@ const EmployerPostJob = () => {
     const [packages, setPackages] = useState([]);
     const [selectedPackage, setSelectedPackage] = useState(null);
     const [loading, setLoading] = useState(false);
-
+    const [form] = Form.useForm();
+    const packageId = Form.useWatch('packageId', form);
+    useEffect(() => {
+        console.log("packageId: ", packageId);
+    }, [packageId]);
     const handlePackageChanged = (pkgId) => {
         const selectedPkg = packages.find(pkg => pkg.packageResponse.packageId === pkgId);
         setSelectedPackage(selectedPkg);
@@ -172,7 +176,7 @@ const EmployerPostJob = () => {
                         ))}
                     </Select>
                 </Form.Item>
-                {selectedPackage && <Descriptions className='px-5 ' title="Chi tiết gói dịch vụ" layout="vertical" column={2}>
+                {packageId && <Descriptions className='px-5 ' title="Chi tiết gói dịch vụ" layout="vertical" column={2}>
                     <Descriptions.Item label="Tên gói dịch vụ">
                         <span>{selectedPackage?.packageResponse.packageName}</span>
                     </Descriptions.Item>
@@ -249,7 +253,7 @@ const EmployerPostJob = () => {
             }
         });
     }, []);
-    const [form] = Form.useForm();
+
 
     const onFinish = (values) => {
         setLoading(true);

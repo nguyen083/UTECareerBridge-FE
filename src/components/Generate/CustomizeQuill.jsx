@@ -66,6 +66,7 @@ export default function CustomizeQuill(props) {
                 placeholder="Nhập mô tả ở đây..."
                 value={value}
                 onChange={onChange}
+                key={props.key}
             />
         </>
     );

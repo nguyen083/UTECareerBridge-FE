@@ -87,17 +87,17 @@ const ManageListUser = () => {
             centered: true,
             cancelText: 'Hủy',
             onOk: async () => {
-                // try {
-                //     setLoading(true);
-                //     await deleteUserById(userId);
-                //     message.success('Xóa người dùng thành công');
-                //     // Reload the user list or update the state as needed here
-                // } catch (error) {
-                //     message.error('Không thể xóa người dùng');
-                //     console.error('Error deleting user:', error);
-                // } finally {
-                //     setLoading(false);
-                // }
+                try {
+                    setLoading(true);
+                    await deleteUserById(userId);
+                    message.success('Xóa người dùng thành công');
+                    // Reload the user list or update the state as needed here
+                } catch (error) {
+                    message.error('Không thể xóa người dùng');
+                    console.error('Error deleting user:', error);
+                } finally {
+                    setLoading(false);
+                }
             },
             onCancel() {
                 console.log('Cancel delete');
@@ -176,28 +176,23 @@ const ManageListUser = () => {
                         <Form.Item
                             name="lastName"
                             label="Họ"
-                            rules={[{ required: true, message: 'Vui lòng nhập họ' }]}
                             style={{ flex: 1 }}
                         >
-                            <Input />
+                            <Input disabled />
                         </Form.Item>
                         <Form.Item
                             name="firstName"
                             label="Tên"
-                            rules={[{ required: true, message: 'Vui lòng nhập tên' }]}
                             style={{ flex: 1 }}
                         >
-                            <Input />
+                            <Input disabled />
                         </Form.Item>
                     </div>
 
                     <Form.Item
                         name="email"
                         label="Email"
-                        rules={[
-                            { required: true, message: 'Vui lòng nhập email' },
-                            { type: 'email', message: 'Email không hợp lệ' }
-                        ]}
+
                     >
                         <Input disabled />
                     </Form.Item>
@@ -205,34 +200,28 @@ const ManageListUser = () => {
                     <Form.Item
                         name="phone"
                         label="Số điện thoại"
-                        rules={[
-                            { required: true, message: 'Vui lòng nhập số điện thoại' },
-                            { pattern: /^[0-9]{10}$/, message: 'Số điện thoại không hợp lệ' }
-                        ]}
+
                     >
-                        <Input />
+                        <Input disabled />
                     </Form.Item>
 
                     <Form.Item
                         name="address"
                         label="Địa chỉ"
-                        rules={[{ required: true, message: 'Vui lòng nhập địa chỉ' }]}
                     >
-                        <Input />
+                        <Input disabled />
                     </Form.Item>
 
                     <Form.Item
                         name="dob"
                         label="Ngày sinh"
-                        rules={[{ required: true, message: 'Vui lòng chọn ngày sinh' }]}
                     >
-                        <DatePicker format={'DD/MM/YYYY'} style={{ width: '100%' }} />
+                        <DatePicker format={'DD/MM/YYYY'} style={{ width: '100%' }} disabled />
                     </Form.Item>
 
                     <Form.Item
                         name="active"
                         label="Trạng thái"
-                        rules={[{ required: true, message: 'Vui lòng chọn trạng thái' }]}
                     >
                         <Select>
                             <Option value={true}>Hoạt động</Option>

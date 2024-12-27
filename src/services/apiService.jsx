@@ -398,6 +398,9 @@ const updateCoupon = async (id, values) => {
 const deleteCoupon = async (id) => {
   return axios.delete(`coupons/${id}`);
 }
+const registerEmployer = async (values) => {
+  return axios.post('employers/register', values);
+}
 export {
   uploadCV,
   setToken,
@@ -494,5 +497,6 @@ export {
   sendMailApprove,
   createCoupon,
   updateCoupon,
-  deleteCoupon
+  deleteCoupon,
+  registerEmployer
 }

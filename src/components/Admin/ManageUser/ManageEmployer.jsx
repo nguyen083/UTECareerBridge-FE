@@ -84,14 +84,13 @@ const ManageListEmployer = () => {
             // định dạng dob thành string
             dayjs.extend(customParseFormat);
             values.dob = dayjs(values.dob, 'YYYY-MM-DD').format('DD/MM/YYYY');
-            console.log('Form values:', values);
             updateUser(selectedUser, values).then((res) => {
                 if (res.status === 'OK') {
                     setRes(res.data);
                     message.success(res.message);
                 }
                 else
-                    message.error(res.message);
+                    message.error('Cập nhật thông tin người dùng thất bại');
             });
             // message.success('Cập nhật thông tin người dùng thành công');
             handleModalCancel();
@@ -136,33 +135,28 @@ const ManageListEmployer = () => {
                     onFinish={handleModalOk}
                     layout="vertical"
                 >
-                    <div style={{ display: 'flex', gap: '20px' }}>
+                    <div style={{ display: 'flex', gap: '1rem' }}>
                         <Form.Item
                             name="lastName"
                             label="Họ"
-                            rules={[{ required: true, message: 'Vui lòng nhập họ' }]}
                             style={{ flex: 1 }}
                         >
-                            <Input />
+                            <Input disabled />
                         </Form.Item>
 
                         <Form.Item
                             name="firstName"
                             label="Tên"
-                            rules={[{ required: true, message: 'Vui lòng nhập tên' }]}
                             style={{ flex: 1 }}
                         >
-                            <Input />
+                            <Input disabled />
                         </Form.Item>
                     </div>
 
                     <Form.Item
                         name="email"
                         label="Email"
-                        rules={[
-                            { required: true, message: 'Vui lòng nhập email' },
-                            { type: 'email', message: 'Email không hợp lệ' }
-                        ]}
+
                     >
                         <Input disabled />
                     </Form.Item>
@@ -170,34 +164,20 @@ const ManageListEmployer = () => {
                     <Form.Item
                         name="phone"
                         label="Số điện thoại"
-                        rules={[
-                            { required: true, message: 'Vui lòng nhập số điện thoại' },
-                            { pattern: /^[0-9]{10}$/, message: 'Số điện thoại không hợp lệ' }
-                        ]}
                     >
-                        <Input />
-                    </Form.Item>
-
-                    <Form.Item
-                        name="address"
-                        label="Địa chỉ"
-                        rules={[{ required: true, message: 'Vui lòng nhập địa chỉ' }]}
-                    >
-                        <Input />
+                        <Input disabled />
                     </Form.Item>
 
                     <Form.Item
                         name="dob"
                         label="Ngày sinh"
-                        rules={[{ required: true, message: 'Vui lòng chọn ngày sinh' }]}
                     >
-                        <DatePicker format={'DD/MM/YYYY'} style={{ width: '100%' }} />
+                        <DatePicker format={'DD/MM/YYYY'} style={{ width: '100%' }} disabled />
                     </Form.Item>
 
                     <Form.Item
                         name="active"
                         label="Trạng thái"
-                        rules={[{ required: true, message: 'Vui lòng chọn trạng thái' }]}
                     >
                         <Select defaultValue={true}>
                             <Option value={true}>Hoạt động</Option>

@@ -158,7 +158,7 @@ const TableCompany = ({ status }) => {
         },
         {
             title: 'Địa chỉ',
-            dataIndex: 'address',
+            dataIndex: 'companyAddress',
             key: 'address',
             ...getColumnSearchProps('address'),
             width: "15%",

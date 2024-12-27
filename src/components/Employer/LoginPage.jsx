@@ -15,7 +15,6 @@ const LoginPage = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const phoneRegex = /^[0-9]{10,11}$/;
     const dispatch = useDispatch();
-    var inputType = '';
 
     const checkUserName = (value) => {
         if (emailRegex.test(value)) {
