@@ -131,9 +131,6 @@ const Chat = () => {
 
     return (
         <>
-            {/* <button onClick={() => changeLanguage('en')}>English</button>
-            <button onClick={() => changeLanguage('vi')}>Tiếng Việt</button> */}
-
             <Row className="min-h-screen">
                 <Col span={6} className=" min-h-full p-4">
                     <Space size={"small"} className=" w-full py-5" direction="vertical">
@@ -157,11 +154,12 @@ const Chat = () => {
                     </Space>
                     <CardCompany className="shadow-md rounded-t-none" />
 
-                    {/* Đoạn chat với công ty */}
+                    {/* Đoạn chat với công ty khi chưa có tin nhắn nào*/}
                     {/* <div className="w-full flex-1 overflow-y-auto flex flex-col justify-center">
                         <Empty image={Empty.PRESENTED_IMAGE_DEFAULT} description={t('no_message')} />
                     </div> */}
 
+                    {/* Đoạn chat với công ty khi có tin nhắn */}
                     <div className="w-full flex-1 overflow-y-auto flex flex-col h-auto px-2 gap-4">
                         <Empty className="mt-36" image={<Avatar src="https://randomuser.me/api/portraits/men/43.jpg" size={100} />} description={<Text className="text-base font-bold">Công ty ABC</Text>} />
                         {messages.map((message, index) => {
@@ -172,6 +170,7 @@ const Chat = () => {
                             }
                         })}
                     </div>
+
                     <Flex className=" p-2 w-full h-auto mb-4" gap={16} justify="center" align="flex-end">
                         <TextArea className="rounded-3xl resize-none overflow-hidden h-auto" placeholder={t('enter_message')} size="large" autoSize={{ minRows: 1, maxRows: 4 }} />
                         <Flex className="min-h-[41px]" justify="center" align="center"><SendOutlined className="text-3xl text-blue-600" /></Flex>

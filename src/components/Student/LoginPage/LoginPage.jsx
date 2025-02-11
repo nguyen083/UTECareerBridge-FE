@@ -5,8 +5,9 @@ import { useDispatch } from 'react-redux';
 import { setToken, studentLogin } from '../../../services/apiService';
 import { loading, stop } from '../../../redux/action/webSlice';
 import './LoginPage.scss'; // Import file SCSS
-import { IoIosArrowRoundBack } from 'react-icons/io';
 import { useRedux } from '../../../utils/useRedux';
+import { FcGoogle } from "react-icons/fc";
+import { useGoogleLogin } from '@react-oauth/google';
 
 const { Title, Text } = Typography;
 
@@ -57,11 +58,19 @@ const LoginPage = () => {
             dispatch(stop());
         }
     };
-
+    const handleLoginWithGoogle = useGoogleLogin({
+        onSuccess: (response) => {
+            console.log("Access Token:", response.access_token);
+            // Gửi access_token về backend
+        },
+        onError: () => {
+            console.log("Login Failed");
+        },
+    });
     return (
         <Row className="full-height-row">
             <Col xs={24} lg={12} className="left-column">
-                <Flex vertical gap={20} justify='center' align='center' className='w-100'>
+                <Flex vertical gap={20} justify='center' align='center' className='w-full'>
                     <Image
                         className='logo'
                         src="https://res.cloudinary.com/utejobhub/image/upload/v1723888103/rg2do6iommv6wp840ixr.png"
@@ -116,20 +125,25 @@ const LoginPage = () => {
                                 >
                                     <Input.Password placeholder="Nhập mật khẩu" className="input-field" />
                                 </Form.Item>
-
-                                <Form.Item className='mb-1'>
-                                    <Button className='w-100 login-button' type="primary" htmlType="submit">
-                                        Đăng nhập
-                                    </Button>
-                                </Form.Item>
-                                <Form.Item className='p-0 m-0'>
-                                    <Flex justify='end' gap={20}>
+                                <Form.Item className='p-0 mb-2'>
+                                    <Flex justify='end' align='center'>
                                         {/* <Link className='text-decoration-none link-text' to="/home"><IoIosArrowRoundBack className='fs-4' /> Trở về trang chủ</Link> */}
                                         <Link className='text-decoration-none link-text' to="/forgot-password" target='_blank'>Quên mật khẩu?</Link>
                                     </Flex>
                                 </Form.Item>
+                                <Form.Item >
+                                    <Button className='w-100 login-button' type="primary" htmlType="submit">
+                                        Đăng nhập
+                                    </Button>
+                                </Form.Item>
+                                <Divider className='mb-3'><div className='text-gray-500'>Hoặc</div></Divider>
+                                <Form.Item >
+                                    <Button className='w-full rounded-full' type="default" onClick={handleLoginWithGoogle}>
+                                        <FcGoogle size={24} className='me-1' />Đăng nhập với Google
+                                    </Button>
+                                </Form.Item>
+                                {/* <Divider className='mb-0' /> */}
                                 <Text className='text-center'>Bạn chưa có tài khoản? <Button className='p-0 f-14' type='link' onClick={() => navigate('/register')}>Đăng ký ngay</Button></Text>
-                                <Divider className='mb-0' />
 
                             </Form>
                         </Flex>

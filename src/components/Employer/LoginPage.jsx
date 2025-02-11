@@ -3,13 +3,17 @@ import { Link, useNavigate } from 'react-router-dom';
 import { employerLogin, setToken } from '../../services/apiService';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { Button, Flex, Form, Input, Typography, message } from 'antd';
+import { Button, Divider, Flex, Form, Input, Typography, message } from 'antd';
 import { useDispatch } from 'react-redux';
 import { loading, stop } from '../../redux/action/webSlice';
 import { setInfor } from '../../redux/action/userSlice';
+import { FcGoogle } from 'react-icons/fc';
+import { useGoogleLogin, GoogleLogin } from '@react-oauth/google';
+import { useRef } from 'react';
 
 const { Text } = Typography;
 const LoginPage = () => {
+    const hiddenButton = useRef(null);
     const navigate = useNavigate();
     const [form] = Form.useForm();
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -53,7 +57,14 @@ const LoginPage = () => {
             dispatch(stop());
         }
     }
-
+    const handleLoginWithGoogle = useGoogleLogin({
+        onSuccess: (res) => {
+            console.log(res);
+        },
+        onError: () => {
+            console.log("Login Failed");
+        },
+    });
     return (
         <div className="login-page d-flex">
             <div className="image col-lg-5 d-none d-lg-block"></div>
@@ -111,13 +122,32 @@ const LoginPage = () => {
                                 </Flex>
                             </Form.Item>
                             <Flex align='center' justify='space-between'>
-                                <Link to='/home'>
+                                <Link to='/home' className='flex align-center'>
                                     <IoIosArrowRoundBack className='fs-4' />Quay lại trang chủ
                                 </Link>
                                 <Button style={{ backgroundColor: "#1E4F94" }} size='large' className='w-25' type="primary" htmlType='submit'>
                                     Đăng nhập
                                 </Button>
+
                             </Flex>
+                            <Divider className='mb-3'><div className='text-gray-500'>Hoặc</div></Divider>
+
+                            <Form.Item className='mb-1'>
+                                <Button className='w-full rounded-full' type="default" onClick={handleLoginWithGoogle}>
+                                    <FcGoogle size={24} className='me-1' />Đăng nhập với Google
+                                </Button>
+                                {/* <div className='hidden' ref={hiddenButton}>
+                                    <GoogleLogin
+                                        onSuccess={credentialResponse => {
+                                            console.log(credentialResponse);
+                                        }}
+                                        onError={() => {
+                                            console.log('Login Failed');
+                                        }}
+                                    />
+                                </div> */}
+
+                            </Form.Item>
                         </Form>
                     </div>
                 </div>
