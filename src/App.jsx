@@ -1,6 +1,6 @@
 import './App.scss';
-import { Route, Routes, Navigate } from "react-router-dom";
-import { ConfigProvider, Spin } from 'antd';
+import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
+import { ConfigProvider, Spin, App as AntApp } from 'antd';
 
 import { useSelector } from 'react-redux';
 import HomePage from './components/Student/HomePage/HomePage.jsx';
@@ -62,6 +62,8 @@ import PaymentSuccess from './components/User/PaymentSuccess.jsx';
 import PaymentFail from './components/User/PaymentFail.jsx';
 import Coupon from './components/Admin/Coupon.jsx/Coupon.jsx';
 import DetailResume from './components/Employer/DetailResume/DetailResume.jsx';
+import Chat from './pages/Chat/Chat.jsx';
+import './i18n.jsx';
 const App = () => {
   return (
     <ConfigProvider locale={viVN}
@@ -158,101 +160,106 @@ const App = () => {
           }
         }
       }}>
-      <Spin style={{ maxHeight: "100vh", height: "100%" }} size='large' spinning={useSelector(state => state.web.loading)}>
-        <Routes>
-          <Route element={<StudentLayout />}>
-            <Route index element={<Navigate to={"/home"} replace />} />
-            <Route path='/home' element={<HomePage />} />
-            <Route path='/event' element={<EventPage />}>
-            </Route>
-            <Route path='/vnpay-payment-return' element={<PaymentReturn />} />
+      <AntApp>
+        <BrowserRouter>
+          <Spin style={{ maxHeight: "100vh", height: "100%" }} size='large' spinning={useSelector(state => state.web.loading)}>
+            <Routes>
+              <Route path='/chat' element={<Chat />} />
+              <Route element={<StudentLayout />}>
+                <Route index element={<Navigate to={"/home"} replace />} />
+                <Route path='/home' element={<HomePage />} />
+                <Route path='/event' element={<EventPage />}>
+                </Route>
+                <Route path='/vnpay-payment-return' element={<PaymentReturn />} />
 
-            <Route element={<ViewLayout width='90%' />}>
-              <Route path='/event-detail/:id' element={<EventDetail />} />
-              <Route path='/search' element={<JobSearchPage />} />
-            </Route>
+                <Route element={<ViewLayout width='90%' />}>
+                  <Route path='/event-detail/:id' element={<EventDetail />} />
+                  <Route path='/search' element={<JobSearchPage />} />
+                </Route>
 
-            <Route element={<PersonalLayout />} >
-              <Route path='/profile' element={<ProfilePage />} />
+                <Route element={<PersonalLayout />} >
+                  <Route path='/profile' element={<ProfilePage />} />
 
-              <Route path='/my-company' element={<MyCompanyPage />} />
-              <Route path='/my-job' element={<MyJobPage />} />
-              <Route path='/account-management' element={<AccountManagement />} />
-            </Route>
-            <Route element={<ViewLayout width='90%' />}>
-              <Route path='/job/:id' element={<ViewJob />} />
-              <Route path="/company/:id" element={<InforCompany />} />
-              <Route path='/resume/view/:id' element={<ViewCV />} />
-            </Route>
-          </Route>
-          <Route element={<ViewLayout />} >
-            <Route path="view/company/:id" element={<InforCompany />} />
-            <Route path='view/job/:id' element={<ViewJob />} />
-          </Route>
+                  <Route path='/my-company' element={<MyCompanyPage />} />
+                  <Route path='/my-job' element={<MyJobPage />} />
+                  <Route path='/account-management' element={<AccountManagement />} />
+                </Route>
+                <Route element={<ViewLayout width='90%' />}>
+                  <Route path='/job/:id' element={<ViewJob />} />
+                  <Route path="/company/:id" element={<InforCompany />} />
+                  <Route path='/resume/view/:id' element={<ViewCV />} />
+                </Route>
+              </Route>
+              <Route element={<ViewLayout />} >
+                <Route path="view/company/:id" element={<InforCompany />} />
+                <Route path='view/job/:id' element={<ViewJob />} />
+              </Route>
 
 
-          <Route path='employer/register' element={<BackgroundAndForm />}>
-            <Route index element={<EmployerRegister />} />
-          </Route>
+              <Route path='employer/register' element={<BackgroundAndForm />}>
+                <Route index element={<EmployerRegister />} />
+              </Route>
 
-          <Route path='employer' element={<EmployerLayout />} >
-            <Route path="" element={<Navigate to="dashboard" replace />} />
-            {/* <Route element={<Navigate to="/employer/infor-company/11" replace />} /> */}
-            <Route index path='dashboard' element={<DashBoard />} />
-            <Route path='infor-company/:id' element={<InforCompany />} />
-            <Route path='profile' element={<EmployerProfile />} />
-            <Route path='change-password' element={<EmployerChangePassword />} />
-            <Route path='company' element={<EmployerCompany />} />
-            <Route path='list-resumes' element={<ListResumes />} />
-            <Route path='list-order' element={<ListOrder />} />
-            <Route path='detail-resume' element={<DetailResume />} />
-            <Route path='applicant' element={<Applicant />} >
-              <Route index element={<Navigate to="list-job" replace />} />
-              <Route path='list-job' element={<ListJob />} />
-              <Route path='list-applicant-job/:id' element={<ListApplicant />} />
-            </Route>
-            <Route path='applicant-job/:id' element={<ViewDetailApplicant />} />
-            <Route path='business-certificate' element={<BusinessCertificate />} />
-            <Route path='post-job' element={<EmployerPostJob />} />
-            <Route path='buy-service' element={<ServiceMarketplace />} />
-            <Route path='cart' element={<ShoppingCart />} />
-            <Route path='manage-list-jobs' element={<ManageListJobs />} />
-            <Route path='job/view/:id' element={<ViewJob />} />
-            <Route path='job/edit/:id' element={<UpdateJob />} />
-          </Route>
-          <Route element={<BoxContainer width={"100%"} background='#F5F5F5' />} >
-          </Route>
-          <Route path='admin' element={<AdminLayout />} >
-            <Route index element={<Navigate to="/admin/dashboard" replace />} />
-            <Route path='service-packages' element={<ServicePackage />} />
-            <Route path='dashboard' element={<AdminDashboard />} />
-            <Route path='manage-students' element={<UserManagement />} />
-            <Route path='manage-employers' element={<ManageListEmployer />} />
-            <Route path='company-approval' element={<CompanyApproval />} />
-            <Route path='post-approval' element={<PostApproval />} />
-            <Route path='news-events' element={<ListEvent />} />
-            <Route path='coupons' element={<Coupon />} />
-          </Route>
+              <Route path='employer' element={<EmployerLayout />} >
+                <Route path="" element={<Navigate to="dashboard" replace />} />
+                {/* <Route element={<Navigate to="/employer/infor-company/11" replace />} /> */}
+                <Route index path='dashboard' element={<DashBoard />} />
+                <Route path='infor-company/:id' element={<InforCompany />} />
+                <Route path='profile' element={<EmployerProfile />} />
+                <Route path='change-password' element={<EmployerChangePassword />} />
+                <Route path='company' element={<EmployerCompany />} />
+                <Route path='list-resumes' element={<ListResumes />} />
+                <Route path='list-order' element={<ListOrder />} />
+                <Route path='detail-resume' element={<DetailResume />} />
+                <Route path='applicant' element={<Applicant />} >
+                  <Route index element={<Navigate to="list-job" replace />} />
+                  <Route path='list-job' element={<ListJob />} />
+                  <Route path='list-applicant-job/:id' element={<ListApplicant />} />
+                </Route>
+                <Route path='applicant-job/:id' element={<ViewDetailApplicant />} />
+                <Route path='business-certificate' element={<BusinessCertificate />} />
+                <Route path='post-job' element={<EmployerPostJob />} />
+                <Route path='buy-service' element={<ServiceMarketplace />} />
+                <Route path='cart' element={<ShoppingCart />} />
+                <Route path='manage-list-jobs' element={<ManageListJobs />} />
+                <Route path='job/view/:id' element={<ViewJob />} />
+                <Route path='job/edit/:id' element={<UpdateJob />} />
+              </Route>
+              <Route element={<BoxContainer width={"100%"} background='#F5F5F5' />} >
+              </Route>
+              <Route path='admin' element={<AdminLayout />} >
+                <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                <Route path='service-packages' element={<ServicePackage />} />
+                <Route path='dashboard' element={<AdminDashboard />} />
+                <Route path='manage-students' element={<UserManagement />} />
+                <Route path='manage-employers' element={<ManageListEmployer />} />
+                <Route path='company-approval' element={<CompanyApproval />} />
+                <Route path='post-approval' element={<PostApproval />} />
+                <Route path='news-events' element={<ListEvent />} />
+                <Route path='coupons' element={<Coupon />} />
+              </Route>
 
-          <Route path='forgot-password' element={<BackgroundAndForm />}>
-            <Route index element={<ForgotPassword />} />
-          </Route>
-          <Route path='reset-password' element={<BackgroundAndForm />} >
-            <Route index element={<ResetPassword />} />
-          </Route>
-          <Route path='user' element={<EmployerPage />}>
-            <Route path='403' element={<Page403 />} />
-            <Route path='500' element={<Page500 />} />
-          </Route>
-          <Route path='payment-success' element={<PaymentSuccess />} />
-          <Route path='payment-fail' element={<PaymentFail />} />
-          <Route path='login' element={<StudentLogin />} />
-          <Route path='/employer/login' element={<LoginPage />} />
-          <Route path='favorite' element={<FavoritePage />} />
-          <Route path='register' element={<RegisterPage />} />
-          <Route path='*' element={<Page404 />} />
-        </Routes>
-      </Spin>
+              <Route path='forgot-password' element={<BackgroundAndForm />}>
+                <Route index element={<ForgotPassword />} />
+              </Route>
+              <Route path='reset-password' element={<BackgroundAndForm />} >
+                <Route index element={<ResetPassword />} />
+              </Route>
+              <Route path='user' element={<EmployerPage />}>
+                <Route path='403' element={<Page403 />} />
+                <Route path='500' element={<Page500 />} />
+              </Route>
+              <Route path='payment-success' element={<PaymentSuccess />} />
+              <Route path='payment-fail' element={<PaymentFail />} />
+              <Route path='login' element={<StudentLogin />} />
+              <Route path='/employer/login' element={<LoginPage />} />
+              <Route path='favorite' element={<FavoritePage />} />
+              <Route path='register' element={<RegisterPage />} />
+              <Route path='*' element={<Page404 />} />
+            </Routes>
+          </Spin>
+        </BrowserRouter>
+      </AntApp>
       {/* <Navigation/> */}
     </ConfigProvider >
   );

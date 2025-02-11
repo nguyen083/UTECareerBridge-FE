@@ -50,7 +50,7 @@ const EmployerRegister = () => {
         message.success(res.message);
         form1.resetFields();
         form2.resetFields();
-        naviagte('employer/login');
+        naviagte('/employer/login');
       } else {
         message.error(res.message);
       }

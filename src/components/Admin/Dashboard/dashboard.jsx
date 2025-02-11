@@ -229,7 +229,7 @@ const AdminDashboard = () => {
       </Card>
       {/* Overview Statistics */}
       <Row gutter={[16, 16]}>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={24} sm={12} lg={8}>
           <Card>
             <Statistic
               title="Doanh thu tháng này"
@@ -239,7 +239,7 @@ const AdminDashboard = () => {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={24} sm={12} lg={8}>
           <Card>
             <Statistic
               title="Tổng ứng viên"
@@ -248,7 +248,7 @@ const AdminDashboard = () => {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={24} sm={12} lg={8}>
           <Card>
             <Statistic
               title="Tổng nhà tuyển dụng"
@@ -257,7 +257,7 @@ const AdminDashboard = () => {
             />
           </Card>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        {/* <Col xs={24} sm={12} lg={6}>
           <Card>
             <Statistic
               title="Tỷ lệ chuyển đổi"
@@ -266,7 +266,7 @@ const AdminDashboard = () => {
               suffix="%"
             />
           </Card>
-        </Col>
+        </Col> */}
       </Row>
 
       {/* Revenue and Subscriptions */}
@@ -448,7 +448,7 @@ const AdminDashboard = () => {
         </Col>
 
         {/* Additional Analytics */}
-        
+
       </Row>
     </div>
   );

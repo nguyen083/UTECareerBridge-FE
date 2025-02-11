@@ -9,4 +9,7 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 3000, // Đặt cổng là 3000
   },
+  // css: {
+  //   postcss: './postcss.config.js',
+  // }
 })

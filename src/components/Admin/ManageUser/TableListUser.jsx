@@ -117,6 +117,7 @@ const TableListUser = ({
     {
       key: 'actions',
       fixed: 'right',
+      align: 'center',
       width: '10%',
       render: (_, record) => (
         <Space size="middle">
@@ -134,12 +135,12 @@ const TableListUser = ({
               />
             </Link></Tooltip>
           )}
-          {userType !== 'employer' && <Tooltip color='red' title="Xóa tài khoản">< Button
+          {/* {userType !== 'employer' && <Tooltip color='red' title="Xóa tài khoản">< Button
             type="primary"
             danger
             onClick={() => onDelete(record.key)}
             icon={<DeleteOutlined />}
-          /></Tooltip>}
+          /></Tooltip>} */}
         </Space>
       ),
     },

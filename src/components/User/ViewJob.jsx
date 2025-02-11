@@ -31,6 +31,7 @@ const ViewJob = () => {
     const [willLoveJob, setWillLoveJob] = useState([]);
     const navigate = useNavigate();
     const [carouselItems, setCarouselItems] = useState([]);
+    const [notice, setNotice] = useState(null);
     useEffect(() => {
         id && window.scrollTo(0, 0);
     }, [id]);
@@ -199,6 +200,16 @@ const ViewJob = () => {
     //         imgSrc: "https://res.cloudinary.com/utejobhub/image/upload/v1726556316/demo/zeklxmv28quelifvcefo.jpg",
     //     },
     // ];
+    useEffect(() => {
+        if (notice?.status === 'OK') {
+            message.success("Ứng tuyển thành công");
+            setNotice(null);
+        }
+        else {
+            message.error("Hồ sơ đã được ứng tuyển");
+            setNotice(null);
+        }
+    }, [notice !== null]);
     return (
         <>
             <Flex align='center' justify='center' style={{ height: '100vh', width: "100%" }} hidden={!loading}>
@@ -385,7 +396,7 @@ const ViewJob = () => {
                     </Col>
                 </Row >
             </div >
-            <ModalApply show={apply} setShow={setApply} company={company} job={job} key={id} />
+            <ModalApply show={apply} setShow={setApply} company={company} job={job} key={id} setNotice={setNotice} />
         </>
     );
 }

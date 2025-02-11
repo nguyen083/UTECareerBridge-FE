@@ -1,0 +1,7 @@
+{
+    "logo": "https://dieselpunkcore.com/wp-content/uploads/2014/06/logo-placeholder.png",
+    "images": {
+        "heroBanner": "https://res.cloudinary.com/your-cloud-name/image/upload/v1234567890/hero-banner.jpg",
+        "icon1": "https://res.cloudinary.com/your-cloud-name/image/upload/v1234567890/icon1.png"
+    }
+}

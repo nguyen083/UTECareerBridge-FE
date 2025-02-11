@@ -3,8 +3,8 @@ import { FaRegMoneyBillAlt } from "react-icons/fa";
 import { FaMapLocationDot } from "react-icons/fa6";
 import FileGroup from "./FileGroup";
 import { useParams } from "react-router-dom";
-import { Modal, Button, Row, Col, Typography, Flex, Divider, Image, Card, message } from "antd";
-import { useState } from "react";
+import { Modal, Button, Row, Col, Typography, Flex, Divider, Image, Card, message, App } from "antd";
+import { useEffect, useState } from "react";
 import LineEllipsis from "./LineEllipsis";
 import { applyJob } from "../../services/apiService";
 import styles from "./ModalApply.module.scss";
@@ -17,23 +17,23 @@ export const ModalApply = ({ show, setShow, company, job }) => {
         jobId: id,
     });
 
-    const handleApply = () => {
+    const handleApply = async () => {
+
         try {
             setLoading(true);
-            applyJob(formData).then((res) => {
-                if (res.status === 'OK') {
-                    message.success(res.message);
-                    setShow(false);
-                }
-                else
-                    message.error(res.message);
-            });
-        } catch (error) {
-            message.error(error);
-        } finally {
+            const res = await applyJob(formData);
+            if (res.status === 'OK') {
+                message.success(res.message);
+                setShow(false);
+            }
+            else
+                message.error(res.message);
+        } catch (err) {
+            console.log(err);
+        }
+        finally {
             setLoading(false);
         }
-
     }
     return (
         <Modal title={<><Title level={4}>Ứng tuyển công việc</Title> <Divider className="m-0" /></>}
@@ -42,7 +42,7 @@ export const ModalApply = ({ show, setShow, company, job }) => {
             centered
             maskClosable={false}
             footer={[
-                <Button size="large" type="primary" onClick={handleApply}> Ứng tuyển</Button>
+                <Button size="large" type="primary" onClick={handleApply} loading={loading}> Ứng tuyển</Button>
             ]}
         >
 
@@ -77,5 +77,5 @@ export const ModalApply = ({ show, setShow, company, job }) => {
                 </Col>
             </Row>
         </Modal>
-    );
+    )
 }
