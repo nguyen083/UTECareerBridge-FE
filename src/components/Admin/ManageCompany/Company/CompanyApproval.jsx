@@ -13,10 +13,10 @@ const CompanyApproval = () => {
     };
     return (
         <>
-            <BoxContainer>
+            <BoxContainer className="shadow-md">
                 <div className="title1">Duyệt công ty</div>
             </BoxContainer>
-            <BoxContainer>
+            <BoxContainer className="shadow-md">
                 <Tabs size='large' activeKey={activeKey} onChange={handleTabChange}>
                     <TabPane
                         tab="Đang chờ duyệt"

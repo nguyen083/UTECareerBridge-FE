@@ -96,28 +96,31 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
                     <Card
                         size="small"
                         className="card-event shadow">
-                        <List.Item actions={[
-                            <Dropdown
-                                overlay={
-                                    <Menu>
-                                        <Menu.Item key="1" onClick={() => { window.open(`/event-detail/${item.eventId}`, '_blank') }}>
-                                            <Button icon={<EyeOutlined />} type="link" style={{ color: 'black' }}>Xem chi tiết</Button>
-                                        </Menu.Item>
-                                        <Menu.Item key="2">
-                                            <Button icon={<EditOutlined />} type="link" color="primary" onClick={() => handleEditEvent(item.eventId)}>Chỉnh sửa</Button>
-                                        </Menu.Item>
-                                        <Menu.Item key="3" onClick={() => { handleDeleteEvent(item) }}>
-                                            <Button icon={<DeleteOutlined />} type="link" danger >Xóa</Button>
-                                        </Menu.Item>
-                                    </Menu>
-                                }
-                                trigger={['click']}
-                            >
-                                <MoreOutlined className="text-xl border" />
-                            </Dropdown>
-                        ]}>
+                        <List.Item
+                            className="!py-0"
+                            actions={[
+                                <Dropdown
+                                    overlay={
+                                        <Menu>
+                                            <Menu.Item key="1" onClick={() => { window.open(`/event-detail/${item.eventId}`, '_blank') }}>
+                                                <Button icon={<EyeOutlined />} type="link" style={{ color: 'black' }}>Xem chi tiết</Button>
+                                            </Menu.Item>
+                                            <Menu.Item key="2">
+                                                <Button icon={<EditOutlined />} type="link" color="primary" onClick={() => handleEditEvent(item.eventId)}>Chỉnh sửa</Button>
+                                            </Menu.Item>
+                                            <Menu.Item key="3" onClick={() => { handleDeleteEvent(item) }}>
+                                                <Button icon={<DeleteOutlined />} type="link" danger >Xóa</Button>
+                                            </Menu.Item>
+                                        </Menu>
+                                    }
+                                    trigger={['click']}
+                                >
+                                    <MoreOutlined className="text-lg" />
+                                </Dropdown>
+                            ]}>
                             <List.Item.Meta
-                                avatar={<Image preview={false} src={item.eventImage} height={100} />}
+                                className="flex"
+                                avatar={<Image preview={false} src={item.eventImage} height={110} />}
                                 title={
                                     <Flex justify='space-between'>
                                         <Title className="title-event">{item.eventTitle}</Title>
@@ -147,10 +150,10 @@ const ListEvent = () => {
     const [isFetching, setIsFetching] = useState(false);
     const [eventType, setEventType] = useState(null);
     return (<>
-        <BoxContainer width='100%' className="shadow">
+        <BoxContainer width='100%' className="shadow-md">
             <div className='title1'>Quản lý Sự Kiện</div>
         </BoxContainer>
-        <BoxContainer width='100%' className="shadow">
+        <BoxContainer width='100%' className="shadow-md">
             <Flex gap={20} vertical>
                 <Flex justify='end' align='center' gap={10}>
                     <Select

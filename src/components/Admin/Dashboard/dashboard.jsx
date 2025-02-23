@@ -202,7 +202,6 @@ const AdminDashboard = () => {
         size='large'
         value={filters.month}
         onChange={(value) => setFilters(prev => ({ ...prev, month: value }))}
-        style={{ width: 120 }}
       >
         <Option value={null}>Tất cả tháng</Option>
         {months.map(month => (
@@ -213,7 +212,6 @@ const AdminDashboard = () => {
         size='large'
         value={filters.year}
         onChange={(value) => setFilters(prev => ({ ...prev, year: value }))}
-        style={{ width: 120 }}
       >
         <Option value={null}>Tất cả năm</Option>
         {years.map(year => (
@@ -224,13 +222,13 @@ const AdminDashboard = () => {
   );
   return (
     <div style={{ padding: 24, background: '#f0f2f5', minHeight: '100vh' }}>
-      <Card style={{ marginBottom: 16 }} className='shadow'>
+      <Card style={{ marginBottom: 16 }} className='shadow-md'>
         <FilterControls />
       </Card>
       {/* Overview Statistics */}
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={12} lg={8}>
-          <Card>
+          <Card className='shadow-md'>
             <Statistic
               title="Doanh thu tháng này"
               value={currentMonthRevenue}
@@ -240,7 +238,7 @@ const AdminDashboard = () => {
           </Card>
         </Col>
         <Col xs={24} sm={12} lg={8}>
-          <Card>
+          <Card className='shadow-md'>
             <Statistic
               title="Tổng ứng viên"
               value={statisticUser.totalCandidates}
@@ -249,7 +247,7 @@ const AdminDashboard = () => {
           </Card>
         </Col>
         <Col xs={24} sm={12} lg={8}>
-          <Card>
+          <Card className='shadow-md'>
             <Statistic
               title="Tổng nhà tuyển dụng"
               value={statisticUser.totalEmployers}
@@ -272,7 +270,7 @@ const AdminDashboard = () => {
       {/* Revenue and Subscriptions */}
       <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
         <Col xs={24} lg={24}>
-          <Card title="Doanh thu theo tháng">
+          <Card title="Doanh thu theo tháng" className='shadow-md'>
             <div style={{ height: 400 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={revenueByMonth}>

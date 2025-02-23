@@ -89,13 +89,13 @@ const CouponList = ({ fetch, setFetch }) => {
                                 }
                                 trigger={['click']}
                             >
-                                <MoreOutlined className=" border" />
+                                <MoreOutlined className="text-lg" />
                             </Dropdown >
                         ]}
-                        className="coupon-list-item shadow border rounded border-warning my-4 py-0"
+                        className="coupon-list-item shadow border rounded border-warning my-4 !py-0"
                     >
                         <List.Item.Meta
-                            className='flex items-stretch'
+                            className='flex !items-stretch'
                             avatar={
                                 <div className="voucher-left rounded-start">
                                     <div className="voucher-label"> <Flex align="center" gap={5}><RiDiscountPercentLine size={20} /> Voucher</Flex></div>
@@ -284,10 +284,10 @@ const Coupon = () => {
 
     return (
         <>
-            <BoxContainer>
+            <BoxContainer className="shadow-md">
                 <div className="title1">Mã giảm giá</div>
             </BoxContainer>
-            <BoxContainer>
+            <BoxContainer className="shadow-md">
                 <Flex align="center" justify="end" gap={20}>
                     <Button icon={<PlusOutlined />} onClick={() => { setOpen(true) }}>Tạo mã giảm giá mới</Button>
                 </Flex>

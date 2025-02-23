@@ -101,10 +101,10 @@ const ManageListEmployer = () => {
 
     return (
         <>
-            <BoxContainer>
+            <BoxContainer className='shadow-md'>
                 <div className="title1">Quản lý doanh nghiệp</div>
             </BoxContainer>
-            <BoxContainer>
+            <BoxContainer className='shadow-md'>
                 <TableListUser
                     fetch={res}
                     userType="employer"

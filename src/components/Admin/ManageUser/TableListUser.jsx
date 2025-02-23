@@ -26,7 +26,7 @@ import {
   FileExcelOutlined,
   FilePdfOutlined
 } from '@ant-design/icons';
-import { getAllUsers, getCompanyById, exportUserToPdf } from '../../../services/apiService';
+import { getAllUsers, exportUserToPdf } from '../../../services/apiService';
 const { Search } = Input;
 
 const TableListUser = ({
@@ -62,7 +62,7 @@ const TableListUser = ({
       dataIndex: 'index',
       key: 'index',
       width: '5%',
-      align: 'right'
+      align: 'center'
     },
     {
       title: 'Họ',
@@ -104,13 +104,16 @@ const TableListUser = ({
       dataIndex: 'active',
       key: 'active',
       align: 'center',
+      width: "10%",
       render: (active) => {
         const displayStatus = active ? 'Hoạt động' : 'Bị khóa';
         const statusKey = active ? 'ACTIVE' : 'BLOCKED';
         return (
-          <Tag className="w-fit text-sm font-normal" color={statusColors[statusKey]}>
-            {displayStatus}
-          </Tag>
+          <div className='w-full flex justify-center items-center'>
+            <Tag className="w-fit text-sm font-normal" color={statusColors[statusKey]}>
+              {displayStatus}
+            </Tag>
+          </div>
         );
       }
     },
@@ -159,7 +162,6 @@ const TableListUser = ({
     });
   };
   const fetchUsers = async (params = {}) => {
-    console.log('Fetching users with params:', pagination);
     try {
       setLoading(true);
 
@@ -190,7 +192,6 @@ const TableListUser = ({
         message.error('Không thể tải danh sách người dùng');
       }
     } catch (error) {
-      message.error('Đã xảy ra lỗi khi tải danh sách người dùng');
       console.error('Error fetching users:', error);
     } finally {
       setLoading(false);

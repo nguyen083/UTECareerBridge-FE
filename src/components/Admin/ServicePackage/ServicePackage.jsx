@@ -23,6 +23,9 @@ const ModalCreateServicePackage = ({ open, setOpen, setFetch, item = null }) => 
             form.setFieldsValue(item);
         }
     }, [item]);
+    useEffect(() => {
+        console.log("service: ", service);
+    }, [service]);
     const handleFinish = (values) => {
         values.packageName = values.packageName.toUpperCase();
 
@@ -68,10 +71,10 @@ const ModalCreateServicePackage = ({ open, setOpen, setFetch, item = null }) => 
 
             <Modal
                 width={800}
-                title={item ? "Chỉnh sửa gói dịch vụ" : "Tạo gói dịch vụ mới"}
+                title={service ? "Chỉnh sửa gói dịch vụ" : "Tạo gói dịch vụ mới"}
                 open={open}
                 onCancel={handleCancel}
-                okText={item ? "Cập nhật" : "Tạo"}
+                okText={service ? "Cập nhật" : "Tạo"}
                 cancelText="Hủy"
                 onOk={() => form.submit()}
             >
@@ -277,10 +280,10 @@ const ServicePackage = () => {
 
     return (
         <>
-            <BoxContainer>
+            <BoxContainer className="shadow-md">
                 <Text className="title1">Gói dịch vụ</Text>
             </BoxContainer>
-            <BoxContainer>
+            <BoxContainer className="shadow-md">
                 <Flex align="center" justify="end" gap={20}>
                     <Button icon={<PlusOutlined />} onClick={() => { setOpen(true) }}>Tạo gói dịch vụ mới</Button>
                 </Flex>

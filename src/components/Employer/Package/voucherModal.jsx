@@ -89,7 +89,7 @@ const VoucherModal = ({ visible, onClose, onSelectVoucher }) => {
                 className="coupon-list-item border rounded border-warning my-3"
               >
                 <List.Item.Meta
-                  className='flex items-stretch'
+                  className='flex !items-stretch'
                   avatar={
                     <div className="voucher-left rounded-l !bottom-0">
                       <div className="voucher-label"><Flex align="center" gap={5}><RiDiscountPercentLine size={20} /> Voucher</Flex></div>

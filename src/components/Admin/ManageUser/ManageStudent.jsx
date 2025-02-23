@@ -137,10 +137,10 @@ const ManageListUser = () => {
 
     return (
         <>
-            <BoxContainer>
+            <BoxContainer className='shadow-md'>
                 <div className="title1">Quản lý người tìm việc</div>
             </BoxContainer>
-            <BoxContainer>
+            <BoxContainer className='shadow-md'>
                 <TableListUser
                     fetch={res}
                     userType="student"

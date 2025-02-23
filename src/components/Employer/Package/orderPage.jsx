@@ -171,7 +171,7 @@ const OrderPage = () => {
       <BoxContainer>
         <Row gutter={16} justify="space-between">
           <Col span={14}>
-            <Card title={<Text className='f-20 card-title'>Chi tiết giỏ hàng</Text>} className='shadow detail-cart-card'>
+            <Card title={<Text className='f-20 card-title'>Chi tiết giỏ hàng</Text>} className='shadow-md detail-cart-card'>
 
               <Table
                 columns={columns}
@@ -181,7 +181,7 @@ const OrderPage = () => {
               />
             </Card></Col>
           <Col span={10}>
-            <Card title={<Text className='f-20 card-title'>Thông tin đơn hàng</Text>} className='shadow'>
+            <Card title={<Text className='f-20 card-title'>Thông tin đơn hàng</Text>} className='shadow-md'>
 
               <div className="info-item">
                 <Text className="text-base">Tổng giá trị đơn hàng</Text>
