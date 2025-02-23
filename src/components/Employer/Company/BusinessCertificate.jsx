@@ -6,6 +6,7 @@ import IconLoading from "../../Generate/IconLoading";
 import { useSelector, useDispatch } from "react-redux";
 import { updateBusinessCertificate } from "../../../services/apiService";
 import { setBusinessCertificate } from "../../../redux/action/employerSlice";
+import { UploadImage } from "../../Student/Component/UploadAvatar";
 const BusinessCertificate = () => {
     const [loading, setLoading] = useState(false);
     const defaultImage = useSelector(state => state.employer.businessCertificate);
@@ -49,16 +50,16 @@ const BusinessCertificate = () => {
     }
     return (
         <>
-            <BoxContainer>
+            <BoxContainer className="shadow-md">
                 <div className="title1">
                     Giấy chứng nhận kinh doanh
                 </div>
             </BoxContainer>
-            <BoxContainer>
+            <BoxContainer className="shadow-md">
                 <Flex gap="1rem" align="center" >
-                    < Form className=" col-12 col-md-7" onChange={onChange} form={form} onFinish={onFinish} layout="vertical" size="large">
+                    < Form className=" w-full md:w-7/12" onChange={onChange} form={form} onFinish={onFinish} layout="vertical" size="large" initialValues={{ businessCertificate: defaultImage }} >
                         <Form.Item name="businessCertificate" label="Ảnh giấy chứng nhận kinh doanh" tooltip="Kéo thả hoặc nhấp chọn để tải ảnh lên">
-                            <PicturesWall defaultImage={defaultImage} listType={"text"} />
+                            <UploadImage />
                         </Form.Item>
 
                         <Form.Item>
@@ -67,7 +68,7 @@ const BusinessCertificate = () => {
                             </Flex>
                         </Form.Item>
                     </Form>
-                    <div className="d-none d-md-block col-5">
+                    <div className="hidden md:block w-5/12">
                         <Flex align="center" justify="center" vertical>
                             <div className="mb-1" style={{ fontSize: "1rem" }}>Ảnh minh họa</div>
                             <Image alt="Giấy phép minh họa" src="https://res.cloudinary.com/utejobhub/image/upload/v1727667740/company/tma_technology_group_business_certificate.jpg" width="60%" />

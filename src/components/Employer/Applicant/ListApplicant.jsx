@@ -77,7 +77,7 @@ const ListApplicant = () => {
                 }}
                 renderItem={(item) => (
                     <List.Item>
-                        <div className="w-100">
+                        <div className="w-full">
                             <ApplicantCard applicant={item} status={activeKey} />
                         </div>
                     </List.Item>

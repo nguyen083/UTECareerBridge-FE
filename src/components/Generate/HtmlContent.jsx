@@ -3,7 +3,7 @@ import { Typography } from 'antd';
 
 const { Paragraph, Link } = Typography;
 
-const HtmlContent = ({ htmlString, className = 'font-size' }) => {
+const HtmlContent = ({ htmlString, className = 'text-base' }) => {
     const [expanded, setExpanded] = useState(false);
 
     return (

@@ -7,10 +7,10 @@ const MyCompanyPage = () => {
 
     return (
         <Flex vertical gap={8}>
-            <BoxContainer className="box_shadow">
+            <BoxContainer className="shadow">
                 <div className="title1">Công ty của tôi</div>
             </BoxContainer>
-            <BoxContainer className="box_shadow">
+            <BoxContainer className="shadow">
                 <Tabs defaultActiveKey="1" size="large">
                     <Tabs.TabPane tab="Theo dõi công ty" key="1">
                         <ListCompany />

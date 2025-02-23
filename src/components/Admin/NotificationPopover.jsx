@@ -203,7 +203,7 @@ const NotificationPopover = () => {
                   title={
                     <Space className="w-full justify-between">
                       <Text strong>{notification.title}</Text>
-                      {!notification.isRead && <Tag color="blue">Mới</Tag>}
+                      {!notification.isRead && <Tag className="w-fit text-sm font-normal" color="blue">Mới</Tag>}
                     </Space>
                   }
                   description={

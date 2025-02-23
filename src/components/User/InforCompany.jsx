@@ -7,9 +7,9 @@ import { checkFollowCompany, followCompany, getCompanyById, unfollowCompany } fr
 import YouTubeVideo from "../Generate/YouTubeVideo";
 import BenefitCard from "../Generate/BenefitComponent";
 import JobList from "../Generate/JobList";
-import { CheckCircleOutlined, CheckOutlined } from "@ant-design/icons";
+import { CheckOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
-import COLOR from "../../components/styles/_variables.jsx";
+import { UserPlus } from "lucide-react";
 
 const { Title, Text, Link } = Typography;
 
@@ -149,7 +149,7 @@ const InforCompany = () => {
             <Flex align='center' justify='center' style={{ height: '100vh', width: "100%", }} hidden={!loading}>
                 <Spin spinning={loading} size='large' />
             </Flex>
-            <BoxContainer padding="1rem" hidden={loading}>
+            <BoxContainer padding="1rem" hidden={loading} className="shadow-lg">
                 <Card
                     style={{ width: '100%', borderRadius: '10px', overflow: 'hidden' }}
                     cover={
@@ -182,10 +182,30 @@ const InforCompany = () => {
                                     </Title>
                                     <Text>{company.countFollower} lượt theo dõi</Text>
                                 </div>
-                                <Button className="p-4" onClick={handleFollow} size="large" type="primary" hidden={isFollow}>
-                                    Theo dõi
+                                <Button
+                                    size="large"
+                                    onClick={isFollow ? handleUnfollow : handleFollow}
+                                    type={isFollow ? "default" : "primary"}
+                                    className={`
+                                        transition-all duration-300 ease-in-out
+                                        focus:ring-4 focus:ring-blue-300
+                                        font-medium rounded-lg text-sm px-5 py-2.5
+                                        flex items-center justify-center
+                                        w-32 h-10
+                                    `}
+                                >
+                                    {isFollow ? (
+                                        <>
+                                            <CheckOutlined className="mr-2 h-4 w-4" />
+                                            Đang theo dõi
+                                        </>
+                                    ) : (
+                                        <>
+                                            <UserPlus className="mr-2 h-4 w-4" />
+                                            Theo dõi
+                                        </>
+                                    )}
                                 </Button>
-                                <Button className="p-4" onClick={handleUnfollow} size="large" type="default" hidden={!isFollow}> <CheckOutlined /> Đang theo dõi</Button>
                             </Flex>
                         </Flex>
                         <Anchor
@@ -197,12 +217,12 @@ const InforCompany = () => {
                                 {
                                     key: 'about',
                                     href: '#about',
-                                    title: <Text className="f-18">Về chúng tôi</Text>,
+                                    title: <Text className="text-lg">Về chúng tôi</Text>,
                                 },
                                 {
                                     key: 'list-job',
                                     href: '#list-job',
-                                    title: <Text className="f-18">Vị trí đang tuyển dụng</Text>,
+                                    title: <Text className="text-lg">Vị trí đang tuyển dụng</Text>,
                                 },
                             ]}
                         />

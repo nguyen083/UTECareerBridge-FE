@@ -5,7 +5,7 @@ const PaymentFail = () => {
     const navigate = useNavigate();
     return (
         <Result
-            className="d-flex justify-content-center align-items-center flex-column"
+            className="flex justify-center items-center flex-column"
             style={{ height: '100vh' }}
             status="error"
             title={<Title className="f-24">Thanh toán thất bại!</Title>}

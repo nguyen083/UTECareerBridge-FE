@@ -6,9 +6,9 @@ import { Tag } from "antd";
 const Lable = (type) => {
     switch (type) {
         case 4:
-            return <Tag icon={<FireOutlined />} color='volcano'> Hot</Tag>
+            return <Tag className="w-fit text-sm font-normal" icon={<FireOutlined />} color='volcano'> Hot</Tag>
         case 6:
-            return <Tag icon={<AiFillThunderbolt />} color='red'> Gấp</Tag >
+            return <Tag className="w-fit text-sm font-normal" icon={<AiFillThunderbolt />} color='red'> Gấp</Tag >
         default: return null;
     }
 }

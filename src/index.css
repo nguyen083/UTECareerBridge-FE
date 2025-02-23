@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -34,22 +35,10 @@ code {
   color: #555555;
 }
 .title1{
-  font-size    : 1.5rem;
-  font-weight: 500;
-  color: #474747;
-  line-height: 1rem;
+@apply text-2xl font-medium text-gray-700 leading-4;
 }
 .title2{
-  font-size    : 1.125rem;
-  font-weight: 550;
-  color: #333;
-  line-height: 1rem;
-}
-.job-name{
-  font-size    : 1.35rem;
-  font-weight: 550;
-  color: #333;
-  line-height: 1rem;
+  @apply text-lg font-[550] text-[#333] leading-4;
 }
 html{
   font-family:  'Inter', sans-serif;
@@ -58,75 +47,61 @@ html{
     font-size: 11px;  
   }
 }
-.size{
+/* .size{
   font-size: 1rem !important;
   padding: 1rem 0.75rem !important;
   align-content: center;
-}
+} */
 .salary{
-  font-size: 1rem;
-  color: orange;
+  @apply text-base text-[orange] ;
 }
 .icon-small{
-  font-size: 0.75rem;
-  color: #646464;
+  @apply text-xs text-[#646464];
 }
 
 /* Ghi đè style cho các dấu (dots) của Carousel */
 .ant-carousel .slick-dots li button {
-  background-color: rgb(195, 194, 194);
-  opacity: 1;
+  @apply bg-[#c3c2c2] opacity-100;
 }
 
 /* Style cho dấu (dot) đang được chọn */
 .ant-carousel .slick-dots li.slick-active button {
-  background-color: rgb(131, 131, 131);
+  @apply bg-[#838383];
 }
 .hover-effect {
-  cursor: pointer;
-  transition: color 0.3s;
+  /* cursor: pointer;
+  transition: color 0.3s; */
+  @apply cursor-pointer transition-colors duration-300;
 }
 
 .hover-effect:hover {
-  color: #1890ff;
+  /* color: #1890ff; */
+  @apply text-[#1890ff];
 }
 .custom-anchor .ant-anchor-link {
-  margin-right: 16px;
+  /* margin-right: 1rem; */
+  @apply mr-4;
 }
 
 .custom-anchor .ant-anchor-link-title {
-  text-decoration: none;
+  /* text-decoration: none; */
+  @apply no-underline;
 }
-.f-12{
-  font-size: 12px !important;
-}
-.f-13{
-  font-size: 13px !important;
-}
-.f-14{
-  font-size: 14px !important;
-}
-.f-15{
-  font-size: 15px !important;
-}
-.f-16{
+
+
+/* .f-16{
   font-size: 16px !important;
-}
-.f-18{
-  font-size: 18px !important;
-}
+} */
+
 .f-20{
   font-size: 20px !important;
 }
 .f-24{
   font-size: 24px !important;
 }
-.border-item{
-  border    : 1px solid #c0c0c069;
-}
-.box_shadow {
+/* .box_shadow {
   box-shadow: 5px 5px 5px #ebebeb;
-}
+} */
 /* index.css hoặc global.css */
 .ql-size-small {
   font-size: 14px !important;
@@ -155,4 +130,8 @@ html{
 }
 .cursor-pointer{
   cursor: pointer !important;
+}
+.ant-tag
+{
+  @apply items-center flex;
 }

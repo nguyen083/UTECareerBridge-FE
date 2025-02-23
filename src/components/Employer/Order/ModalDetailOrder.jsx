@@ -104,17 +104,17 @@ const ModalDetailOrder = ({ openOrderModal, setOpenOrderModal, id, status = 'PEN
                     {status === 'PENDING' && <> <Title strong level={5}>Chọn phương thức thanh toán</Title>
                         <Radio.Group value={1}>
                             <Flex vertical gap={16}>
-                                <Flex className="border border-1 p-2 rounded-2" align="center" gap={16}>
+                                <Flex className="border p-2 rounded-2" align="center" gap={16}>
                                     <Radio value={1} />
                                     <Avatar shape="square" size={64} src={"https://res.cloudinary.com/utejobhub/image/upload/v1733687883/vnpay_vgngax.png"} />
                                     <Text strong>Ví điện tử VNPAY</Text>
                                 </Flex>
-                                {/* <Flex className="border border-1 p-2 rounded-2" align="center" gap={16}>
+                                {/* <Flex className="border p-2 rounded-2" align="center" gap={16}>
                                     <Radio value={2} />
                                     <Avatar shape="square" size={64} src={"https://res.cloudinary.com/utejobhub/image/upload/v1733688330/ATMCard_r2pfq0.png"} />
                                     <Text strong>Thẻ ATM và Tài khoản ngân hàng</Text>
                                 </Flex>
-                                <Flex className="border border-1 p-2 rounded-2" align="center" gap={16}>
+                                <Flex className="border p-2 rounded-2" align="center" gap={16}>
                                     <Radio value={3} />
                                     <Avatar shape="square" size={64} src={"https://res.cloudinary.com/utejobhub/image/upload/v1733688425/phan-loai-the-thanh-toan-quoc-te_rjgejr.jpg"} />
                                     <Text strong>Thẻ thanh toán quốc tế</Text>

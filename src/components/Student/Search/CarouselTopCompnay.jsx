@@ -24,7 +24,7 @@ const CarouselTopCompnay = () => {
     }, []);
     return <Card
         title={<Text className="title2">Công ty hàng đầu</Text>}
-        className='box_shadow border border-1 carousel-top-company'
+        className='shadow border carousel-top-company'
     >
         <Carousel
             autoplay

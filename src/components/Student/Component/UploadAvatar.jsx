@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import styles from './UploadAvatar.module.scss';
+import './UploadAvatar.scss';
 import { Avatar, Image, Progress, Upload, message, Typography } from "antd";
 import { UploadOutlined, UserOutlined } from "@ant-design/icons";
 import { uploadToCloudinary } from "../../../services/uploadCloudary";
@@ -55,21 +55,21 @@ const UploadAvatar = ({ src, setSrc }) => {
                         handleImageChange(file)
                         return false
                     }}>
-                    <div className={styles["container"]}>
-                        <div className={`${styles.div} ${uploading ? 'uploading' : ''}`} >
+                    <div className="container">
+                        <div className={`div ${uploading ? 'uploading' : ''}`}  >
 
                             <Avatar
-                                className={styles["avatar-upload"]}
+                                className="avatar-upload"
                                 icon={<UserOutlined />}
 
                                 src={urlImage}
                                 alt="Uploaded"
                                 size={200}
                             ></Avatar>
-                            <UploadOutlined className={styles["upload-icon"]} />
+                            <UploadOutlined className="upload-icon" />
                         </div>
                         {uploading && (
-                            <div className={styles["progress-container"]}>
+                            <div className="progress-container">
                                 <Progress percent={uploadProgress} status="active" size="small" percentPosition={{ align: "center", type: "outer" }} />
                             </div>
                         )}
@@ -80,7 +80,7 @@ const UploadAvatar = ({ src, setSrc }) => {
     );
 }
 
-const UploadImage = ({ value, onChange }) => {
+const UploadImage = ({ value, onChange, link = "admin/event" }) => {
     const [uploadProgress, setUploadProgress] = useState(0);
     const [uploading, setUploading] = useState(false);
     let [urlImage, setUrlImage] = useState(null);
@@ -94,7 +94,7 @@ const UploadImage = ({ value, onChange }) => {
         setUploading(true);
         setUploadProgress(0);
         try {
-            const url = await uploadToCloudinary(file, "admin/event", (progress) => {
+            const url = await uploadToCloudinary(file, link, (progress) => {
                 setUploadProgress(progress);
             });
             onChange(url); // Lưu URL ảnh sau khi upload
@@ -131,12 +131,12 @@ const UploadImage = ({ value, onChange }) => {
                         return false;
                     }}
                 >
-                    <div className={styles["container"]}>
-                        <div className={`${styles.div} ${uploading ? 'uploading' : ''}`}>
+                    <div className="container">
+                        <div className={`div ${uploading ? 'uploading' : ''}`}>
                             {urlImage ? (
                                 <Image
                                     preview={false}
-                                    width={"200px"}
+                                    height={"200px"}
                                     src={urlImage}
                                     alt="Uploaded"
                                 />
@@ -145,7 +145,7 @@ const UploadImage = ({ value, onChange }) => {
                             )}
                         </div>
                         {uploading && (
-                            <div className={styles["progress-container"]}>
+                            <div className="progress-container">
                                 <Progress percent={uploadProgress} status="active" size="small" percentPosition={{ align: "center", type: "outer" }} />
                             </div>
                         )}

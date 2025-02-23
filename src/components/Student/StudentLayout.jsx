@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import './StudentLayout.scss';
 import '../Generate/CustomizePopover.scss';
-import { Layout, theme, Image, Button, Flex, Popover, Row, Col, Typography, App } from 'antd';
+import { Layout, Image, Button, Flex, Popover, Row, Col, Typography } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa6';
@@ -12,6 +12,7 @@ import PopoverAvatar from './Header/PopoverAvatar.jsx';
 import { setInforStudent } from '../../redux/action/studentSlice.jsx';
 import { getInforStudent } from '../../services/apiService.jsx';
 import JobSearchBar from './Search/JobSearchBar.jsx';
+import path from '../../constant/path.jsx';
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 const PopoverCategory = () => {
@@ -73,11 +74,11 @@ const StudentLayout = () => {
             <Header
                 className='header-student'
             >
-                <Flex align='center' justify='space-between' className='w-100'>
+                <Flex align='center' justify='space-between' className='w-full'>
                     <Image
                         style={{ cursor: 'pointer' }}
                         onClick={() => navigate('/')}
-                        src="https://res.cloudinary.com/utejobhub/image/upload/v1723888103/rg2do6iommv6wp840ixr.png"
+                        src={path.logo}
                         alt="Website Logo"
                         preview={false}
                         width={150}
@@ -91,16 +92,16 @@ const StudentLayout = () => {
                             content={PopoverCategory}
                             trigger={['click']}
                         >
-                            <Button className='rounded-pill btn-header' size='large'><Flex gap={4}><MenuOutlined /> <div className='d-none d-md-block'>Tất cả danh mục</div></Flex></Button>
+                            <Button className='rounded-full btn-header' size='large'><Flex gap={4}><MenuOutlined /> <div className='hidden md:block'>Tất cả danh mục</div></Flex></Button>
                         </Popover>
-                        <Button onClick={nagigateLogin} className='rounded-pill btn-header' size='large'>Nhà tuyển dụng</Button>
+                        <Button onClick={nagigateLogin} className='rounded-full btn-header' size='large'>Nhà tuyển dụng</Button>
                         <Flex gap={"0.5rem"}>
                             <Notification userId={useSelector(state => state.user.userId)} />
                             {infor.role !== 'student'
                                 ? <Button
                                     onClick={() => navigate('/login')}
-                                    className='rounded-pill btn-header btn-login' size='large'>
-                                    <Flex gap={4} align='center'> <FaUser /><div className='d-none d-md-block'> Đăng nhập</div></Flex></Button> :
+                                    className='rounded-full btn-header btn-login' size='large'>
+                                    <Flex gap={4} align='center'> <FaUser /><div className='hidden md:block'> Đăng nhập</div></Flex></Button> :
                                 <PopoverAvatar />}
                         </Flex>
                     </Flex>

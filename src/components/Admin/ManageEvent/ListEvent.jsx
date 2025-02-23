@@ -95,7 +95,7 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
                 renderItem={(item) => (
                     <Card
                         size="small"
-                        className="card-event box_shadow">
+                        className="card-event shadow">
                         <List.Item actions={[
                             <Dropdown
                                 overlay={
@@ -113,7 +113,7 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
                                 }
                                 trigger={['click']}
                             >
-                                <MoreOutlined className="f-20 border-1" />
+                                <MoreOutlined className="text-xl border" />
                             </Dropdown>
                         ]}>
                             <List.Item.Meta
@@ -125,11 +125,11 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
                                 }
                                 description={
                                     <>
-                                        <Text className="fw-bold">Ngày tổ chức: </Text> <Text>{item.eventDate}</Text>
+                                        <Text className="font-bold">Ngày tổ chức: </Text> <Text>{item.eventDate}</Text>
                                         <br />
-                                        <Text className="fw-bold">Địa điểm: </Text> <Text>{item.eventLocation}</Text>
+                                        <Text className="font-bold">Địa điểm: </Text> <Text>{item.eventLocation}</Text>
                                         <br />
-                                        <Tag color="blue">{item.eventType}</Tag>
+                                        <Tag className="w-fit text-sm font-normal" color="blue">{item.eventType}</Tag>
                                     </>
                                 }
                             />
@@ -147,10 +147,10 @@ const ListEvent = () => {
     const [isFetching, setIsFetching] = useState(false);
     const [eventType, setEventType] = useState(null);
     return (<>
-        <BoxContainer width='100%' className="box_shadow">
+        <BoxContainer width='100%' className="shadow">
             <div className='title1'>Quản lý Sự Kiện</div>
         </BoxContainer>
-        <BoxContainer width='100%' className="box_shadow">
+        <BoxContainer width='100%' className="shadow">
             <Flex gap={20} vertical>
                 <Flex justify='end' align='center' gap={10}>
                     <Select

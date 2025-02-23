@@ -50,7 +50,7 @@ const FeaturedJobs = ({ jobs }) => {
                 <div key={index}>
                   <Card
                     bordered={false}
-                    className="featured-jobs__item border-item d-flex align-items-stretch"
+                    className="featured-jobs__item border-[#c0c0c069] border flex items-stretch"
                     hoverable
                     onClick={() => handleJobClick(job.jobId)}
                   >
@@ -59,8 +59,11 @@ const FeaturedJobs = ({ jobs }) => {
                         <img src={job?.employerResponse?.companyLogo} alt={job?.employerResponse?.companyName} />
                       </div>
                       <div className="card-details">
-                        <Text className="fw-bold f-16 job-title mb-1">{job.jobTitle} {Lable(job.packageId)}</Text>
-                        <Text className="f-14 company-name">{job.employerResponse?.companyName}</Text>
+                        <Flex justify='start' align="center" gap={3} className="mb-1">
+                          <Text className="font-bold text-base job-title">{job.jobTitle} </Text>
+                          {Lable(job.packageId)}
+                        </Flex>
+                        <Text className="text-sm company-name">{job.employerResponse?.companyName}</Text>
                         <Flex align='center' gap={3} style={{ color: '#ff4d4f', fontSize: 14, margin: '8px 0' }}>
                           {job.jobMinSalary.toLocaleString('vi-VN')} - {job.jobMaxSalary.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}  <div style={{ fontSize: 14 }}>/tháng</div>
                         </Flex>

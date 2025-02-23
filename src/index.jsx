@@ -5,10 +5,9 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './redux/store.jsx';
 import App from './App.jsx';
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 import './index.css';
 import { GoogleOAuthProvider } from '@react-oauth/google';
-
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

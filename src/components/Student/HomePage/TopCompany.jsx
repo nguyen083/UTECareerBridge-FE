@@ -14,38 +14,40 @@ const { Meta } = Card;
 const TopCompany = ({ companies }) => {
   const navigate = useNavigate();
   return (
-    <div className="top-company pe-none">
+    <div className="top-company">
       <Title level={2}>Công ty hàng đầu</Title>
       <Flex justify='space-between'>
-        {companies.map((company) => (<Card
-          className='p-2 card-company box_shadow'
-          style={{ width: "fit-content" }}
-          hoverable
-          cover={
-            <div className='text-center'>
-              <Avatar
-                size={200}
-                shape="square"
-                src={company?.employerResponse?.companyLogo}
-                alt={company?.employerResponse?.companyName}
-                loading="lazy"
-              />
-            </div>
-          }
-        >
-          <Meta title={
-            <div className='text-center' style={{ width: 200 }}>
-              <span className='company-name'>{company?.employerResponse?.companyName}</span>
-            </div>
-          } description={
-            <div className="text-center">
-              <Button className='pe-auto' size='large' onClick={() => {
-                navigate(`/company/${company?.employerResponse?.id}`)
-              }} type="primary">Xem thêm</Button>
-            </div>
-          } />
+        {companies.map((company) => (
+          <Card
+            key={company?.employerResponse?.id}
+            onClick={() => {
+              navigate(`/company/${company?.employerResponse?.id}`)
+            }}
+            className='p-2 card-company shadow w-fit'
+            hoverable
+            cover={
+              <div className='text-center'>
+                <Avatar
+                  size={200}
+                  shape="square"
+                  src={company?.employerResponse?.companyLogo}
+                  alt={company?.employerResponse?.companyName}
+                  loading="lazy"
+                />
+              </div>
+            }
+          >
+            <Meta title={
+              <div className='text-center' style={{ width: 200 }}>
+                <span className='company-name'>{company?.employerResponse?.companyName}</span>
+              </div>
+            } description={
+              <div className="text-center">
+                <Button className='cursor-pointer' size='large' type="primary">Xem thêm</Button>
+              </div>
+            } />
 
-        </Card>))}
+          </Card>))}
       </Flex>
     </div>
   );

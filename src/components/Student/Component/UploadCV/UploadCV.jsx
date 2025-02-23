@@ -143,7 +143,7 @@ const UploadCV = ({ listResume, fetchCV }) => {
                                     dataSource={listResume}
                                     renderItem={(item) => (
                                         <List.Item className={styles.list_CV}>
-                                            <Card className="w-100" size="small">
+                                            <Card className="w-full" size="small">
                                                 <List.Item
                                                     key={item.id}
                                                     actions={[<Dropdown

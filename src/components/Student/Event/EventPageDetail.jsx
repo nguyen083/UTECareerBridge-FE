@@ -22,17 +22,15 @@ const EventDetail = () => {
         setEventDetail(response.data);
         setTimeline(response.data.timeline.map((item, index) => ({
           key: index,
-          label: <Text className='text-hightlight f-18'>{item.timelineStart}</Text>,
+          label: <Text className='text-hightlight text-lg'>{item.timelineStart}</Text>,
           children: (
-            <Tooltip color='#4478c0' title={<Text style={{ color: '#ffffff' }} className='f-16'>{item.timelineDescription}</Text>} placement="top">
-              <Text className='text-title pe-auto'>{item.timelineTitle}</Text>
+            <Tooltip color='#4478c0' title={<Text style={{ color: '#ffffff' }} className='text-base'>{item.timelineDescription}</Text>} placement="top">
+              <Text className='text-title cursor-pointer'>{item.timelineTitle}</Text>
             </Tooltip>
           ),
           dot: (
             <FaDotCircle
-              style={{
-                fontSize: '19px',
-              }}
+              className='text-[19px]'
             />
           ),
         })));
@@ -86,27 +84,27 @@ const EventDetail = () => {
         <Row gutter={[24, 24]}>
           {/* Thông tin chính */}
           <Col xs={24} md={16}>
-            <Flex vertical gap={24} className='w-100'>
+            <Flex vertical gap={24} className='w-full'>
               <Title level={2}>{eventDetail.eventTitle}</Title>
 
               {/* Thẻ loại sự kiện */}
               <Space>
                 <Text strong style={{ color: "#91CAFF" }}># HASHTAG: </Text> <Tag color="blue" key={eventDetail.eventType}>{eventDetail.eventType}</Tag>
               </Space>
-              <Card title={<Text className='f-18 text-hightlight'>Mô Tả Sự Kiện</Text>} className='box_shadow'>
+              <Card title={<Text className='text-lg text-hightlight'>Mô Tả Sự Kiện</Text>} className='shadow'>
                 {/* Mô tả sự kiện */}
                 <HtmlContent htmlString={eventDetail.eventDescription} />
               </Card>
 
               {/* Chi tiết sự kiện */}
-              <Card className='box_shadow'>
+              <Card className='shadow'>
                 <Descriptions column={1}>
-                  <Descriptions.Item className='d-flex align-center'
+                  <Descriptions.Item className='flex items-center'
                     label={<Space className='text-hightlight'><CalendarOutlined /> Thời Gian diễn ra sự kiện</Space>}
                   >
                     <Text className='text-title'>{eventDetail.eventDate}</Text>
                   </Descriptions.Item>
-                  <Descriptions.Item className='d-flex align-center'
+                  <Descriptions.Item className='flex items-center'
                     label={<Space className='text-hightlight'><EnvironmentOutlined /> Địa Điểm</Space>}
                   >
                     <Text className='text-title'>{eventDetail.eventLocation}</Text>
@@ -115,7 +113,7 @@ const EventDetail = () => {
               </Card>
 
               {/* Chương trình sự kiện */}
-              <Card size='large' title={<Text className='f-18 text-hightlight'>Chi Tiết Chương Trình</Text>} className=' card_box_shadow card_timeline'>
+              <Card size='large' title={<Text className='text-lg text-hightlight'>Chi Tiết Chương Trình</Text>} className=' card_box_shadow card_timeline'>
 
                 <Space direction='vertical' size={24} style={{ width: '100%' }}>
                   <Timeline
@@ -131,11 +129,11 @@ const EventDetail = () => {
           <Col xs={24} md={8}>
             <Space direction="vertical" size="large" style={{ width: '100%' }}>
               {/* Thông tin nhà tổ chức */}
-              <Card className='box_shadow'>
+              <Card className='shadow'>
                 <Card.Meta
                   avatar={<Avatar src="https://res.cloudinary.com/utejobhub/image/upload/v1731551121/student/ua3ccjvawfxkb1yqqirb.png" size={64} />}
                   title="Trung tâm Hỗ trợ Sinh viên"
-                  description={<><Text className='f-14' strong> Mọi thắc mắc xin vui lòng liên hệ</Text> <Text className='f-14' type='secondary'> support@student.hcmute.edu.vn</Text></>}
+                  description={<><Text className='text-sm' strong> Mọi thắc mắc xin vui lòng liên hệ</Text> <Text className='text-sm' type='secondary'> support@student.hcmute.edu.vn</Text></>}
                 />
               </Card>
 

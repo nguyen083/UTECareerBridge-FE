@@ -116,7 +116,7 @@ export const ModalInterview = ({ open, setOpen, studentId }) => {
                 <Input allowClear placeholder="Nhập vị trí phỏng vấn" />
             </Form.Item>
             <Form.Item required label="Thời gian phỏng vấn" name='interviewDate' rules={[{ required: true, message: 'Vui lòng chọn thời gian phỏng vấn!' }]} >
-                <DatePicker placeholder="Chọn thời gian phỏng vấn" allowClear showTime className="w-100" format={'DD/MM/YYYY HH:mm:ss'} disabledDate={disablePastDates} />
+                <DatePicker placeholder="Chọn thời gian phỏng vấn" allowClear showTime className="w-full" format={'DD/MM/YYYY HH:mm:ss'} disabledDate={disablePastDates} />
             </Form.Item>
             <Form.Item required name="interviewLocation" layout="vertical" label="Link phỏng vấn" rules={[{ required: true, message: 'Vui lòng nhập link Google Meet!' }]} >
                 <Input.TextArea allowClear rows={4} placeholder="Nhập link Google Meet" />
@@ -150,7 +150,7 @@ export const ModalInterview = ({ open, setOpen, studentId }) => {
     const offlineForm = (
         <>
             <Form.Item required label="Thời gian phỏng vấn" name='dateTime' rules={[{ required: true, message: 'Vui lòng chọn thời gian phỏng vấn!' }]} >
-                <DatePicker placeholder="Chọn thời gian phỏng vấn" allowClear showTime className="w-100" format={'DD/MM/YYYY HH:mm:ss'} />
+                <DatePicker placeholder="Chọn thời gian phỏng vấn" allowClear showTime className="w-full" format={'DD/MM/YYYY HH:mm:ss'} />
             </Form.Item>
             <Form.Item required label="Địa điểm phỏng vấn" name='location' rules={[{ required: true, message: 'Vui lòng nhập địa điểm phỏng vấn!' }]} >
                 <Input allowClear placeholder="Nhập địa điểm phỏng vấn" />
@@ -177,7 +177,7 @@ export const ModalInterview = ({ open, setOpen, studentId }) => {
                     <Col span={12}>
                         <Form.Item allowClear name='name' rules={[{ required: true, message: 'Vui lòng nhập tên người liên hệ!' }]}>
                             <Space.Compact>
-                                <Input className="f-16" value={'Gặp Anh/ Chị: '} disabled style={{ width: 'fit-content' }} />
+                                <Input className="text-base" value={'Gặp Anh/ Chị: '} disabled style={{ width: 'fit-content' }} />
                                 <Input allowClear placeholder="Tên người liên hệ" />
                             </Space.Compact>
                         </Form.Item>
@@ -204,8 +204,8 @@ export const ModalInterview = ({ open, setOpen, studentId }) => {
         <Form autoComplete="on" layout="vertical" required size="large" form={form} onFinish={handleSubmit}>
             {/* <Form.Item label="Hình thức phỏng vấn">
                 <Radio.Group value={type} onChange={(e) => { form.resetFields(); setType(e.target.value) }}>
-                    <Radio className="f-16" value="OFFLINE">Trực tiếp</Radio>
-                    <Radio className="f-16" value="ONLINE">Trực tuyến</Radio>
+                    <Radio className="text-base" value="OFFLINE">Trực tiếp</Radio>
+                    <Radio className="text-base" value="ONLINE">Trực tuyến</Radio>
                 </Radio.Group>
             </Form.Item> */}
             {type === "ONLINE" ?

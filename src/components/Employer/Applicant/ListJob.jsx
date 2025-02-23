@@ -31,7 +31,7 @@ const ListJob = () => {
     return (
         <>
             <Alert
-                message={<Text className="f-16" strong>Chú ý</Text>}
+                message={<Text className="text-base" strong>Chú ý</Text>}
                 type="info"
                 showIcon
                 closable

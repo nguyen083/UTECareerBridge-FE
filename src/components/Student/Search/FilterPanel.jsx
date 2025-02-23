@@ -50,14 +50,14 @@ const FilterPanel = ({ onValuesChange, filters = null }) => {
   return (
 
     <Form size='large' form={form}
-      className='w-100'
+      className='w-full'
       onValuesChange={(_, allValues) => {
         console.log(allValues);
         onValuesChange(allValues)
       }}
       initialValues={filters}
     >
-      <Flex gap={16} className='w-100'>
+      <Flex gap={16} className='w-full'>
         <Form.Item name='categoryId' className={styles.wSelect}>
           <Select placeholder='Ngành nghề'
             allowClear

@@ -41,27 +41,27 @@ const PersonalLayout = () => {
     const menuItems = [
         // {
         //     key: "/dashboard",
-        //     label: <div className="f-16">Tổng quan</div>,
+        //     label: <div className="text-base">Tổng quan</div>,
         //     icon: <DashboardOutlined />,
         // },
         {
             key: "/profile",
-            label: <div className="f-16">Hồ sơ của tôi</div>,
+            label: <div className="text-base">Hồ sơ của tôi</div>,
             icon: <SolutionOutlined />,
         },
         {
             key: "/my-company",
-            label: <div className="f-16">Công ty của tôi</div>,
+            label: <div className="text-base">Công ty của tôi</div>,
             icon: <IoIosBusiness />,
         },
         {
             key: "/my-job",
-            label: <div className="f-16">Việc làm của tôi</div>,
+            label: <div className="text-base">Việc làm của tôi</div>,
             icon: <IoBriefcaseOutline />
         },
         {
             key: "/account-management",
-            label: <div className="f-16">Đổi mật khẩu</div>,
+            label: <div className="text-base">Đổi mật khẩu</div>,
             icon: <SettingOutlined />,
         }
     ];
@@ -162,7 +162,7 @@ const PersonalLayout = () => {
                             />
                             <div className={styles.div}>
                                 <Flex gap={16} justify="space-between" align="center">
-                                    <Text className="f-16" strong >Cho phép tìm kiếm hồ sơ</Text>
+                                    <Text className="text-base" strong >Cho phép tìm kiếm hồ sơ</Text>
                                     <Switch checked={infor.findingJob} onChange={() => switchFindjob()} />
                                 </Flex>
                                 <Button onClick={() => setModalResume(true)} type="link">Thiết lập hồ sơ</Button>
@@ -212,7 +212,7 @@ const PersonalLayout = () => {
 
             <Form initialValues={{ resumeId: resumeIdActive }} form={formResume} >
                 <Form.Item name="resumeId">
-                    <Radio.Group className="w-100">
+                    <Radio.Group className="w-full">
                         <List
                             size="small"
                             className={styles.ant_list}
@@ -236,7 +236,7 @@ const PersonalLayout = () => {
                                                     {item.title}
                                                 </Typography.Link>
                                                 <br />
-                                                <Text type="secondary" italic className="f-12">
+                                                <Text type="secondary" italic className="text-xs">
                                                     <PaperClipOutlined /> Tệp đính kèm • Cập nhật lúc: {item.lastUpdated.split(" ", 1)}
                                                 </Text>
                                             </div>

@@ -246,7 +246,7 @@ const UpdateProfile = () => {
                             <Col span={12}>
                                 <Form.Item name="year" label="Năm thứ"
                                     rules={[{ required: true, message: "Vui lòng  nhập năm học" }]}>
-                                    <InputNumber className="w-100" type="number" placeholder="Bạn là sinh viên năm mấy" />
+                                    <InputNumber className="w-full" type="number" placeholder="Bạn là sinh viên năm mấy" />
                                 </Form.Item>
                             </Col>
                             <Col span={12}>

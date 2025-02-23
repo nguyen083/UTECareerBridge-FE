@@ -1,4 +1,4 @@
-import { Button, Collapse, DatePicker, Descriptions, Flex, Form, Input, InputNumber, message, Select } from 'antd';
+import { Button, Col, Collapse, DatePicker, Descriptions, Flex, Form, Input, InputNumber, message, Row, Select } from 'antd';
 import BoxContaier from '../../Generate/BoxContainer';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
@@ -38,53 +38,62 @@ const EmployerPostJob = () => {
 
     const form1 = (
         <BoxContaier>
-            <div className="form-group row g-3">
-                <Form.Item className='col-12 mt-0' name="jobTitle" label="Tiêu đề"
-                    rules={[
-                        { required: true, message: 'Vui lòng nhập tiêu đề' },
-                    ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
-                    <Input />
-                </Form.Item>
-                <Form.Item className='col-12 col-md-7 mt-0' name="jobLocation" label="Địa điểm làm việc"
-                    rules={[
-                        { required: true, message: 'Vui lòng nhập địa điểm làm việc' },
-                    ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
-                    <Input />
-                </Form.Item>
-                <Form.Item name="jobCategoryId" className="col-12 col-md-5 mt-0" label="Lĩnh vực"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Vui lòng chọn lĩnh vực của công ty',
-                        },
-                        ({ getFieldValue }) => ({
-                            validator(_, value) {
-                                if (value === 0) {
-                                    return Promise.reject(new Error('Vui lòng chọn lĩnh vực của công ty'));
-                                }
-                                return Promise.resolve();
+            <Row gutter={[16]}>
+                <Col span={24}>
+                    <Form.Item name="jobTitle" label={<span>Tiêu đề <span className='text-red-500'> *</span></span>}
+                        rules={[
+                            { required: true, message: 'Vui lòng nhập tiêu đề' },
+                        ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
+                        <Input />
+                    </Form.Item>
+                </Col>
+                <Col span={14}>
+                    <Form.Item name="jobLocation" label={<span>Địa điểm làm việc <span className='text-red-500'> *</span></span>}
+                        rules={[
+                            { required: true, message: 'Vui lòng nhập địa điểm làm việc' },
+                        ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
+                        <Input />
+                    </Form.Item>
+                </Col>
+                <Col span={10}>
+                    <Form.Item name="jobCategoryId" label={<span>Lĩnh vực <span className='text-red-500'> *</span></span>}
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Vui lòng chọn lĩnh vực của công ty',
                             },
-                        }),
-                    ]} validateTrigger={['onChange', 'onBlur']}>
-                    <Select
-                        showSearch
-                        filterOption={(input, option) =>
-                            (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
-                        }
-                        placeholder="Vui lòng chọn lĩnh vực"
-                        options={categories}>
-                    </Select>
-                </Form.Item>
-                <Flex gap="large" className="col-7 mt-0">
-                    <Form.Item name="jobMinSalary" label="Lương tối thiểu"
+                            ({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (value === 0) {
+                                        return Promise.reject(new Error('Vui lòng chọn lĩnh vực của công ty'));
+                                    }
+                                    return Promise.resolve();
+                                },
+                            }),
+                        ]} validateTrigger={['onChange', 'onBlur']}>
+                        <Select defaultValue={0}>
+                            <Select.Option value={0}>Vui lòng chọn</Select.Option>
+                            {categories.map(category => (
+                                <Select.Option key={category.value} value={category.value}>
+                                    {category.label}
+                                </Select.Option>
+                            ))}
+                        </Select>
+                    </Form.Item>
+                </Col>
+
+                <Col span={8}>
+                    <Form.Item name="jobMinSalary" label={<span>Lương tối thiểu <span className='text-red-500'> *</span></span>}
                         rules={[
                             { required: true, message: 'Vui lòng nhập lương tối thiểu' },
                         ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
-                        <InputNumber addonAfter="VNĐ"
+                        <InputNumber addonAfter="VNĐ" className='w-full'
                             formatter={value => format(value)}
                             parser={value => value.replace(/\s/g, '')} />
                     </Form.Item>
-                    <Form.Item name="jobMaxSalary" label="Lương tối đa"
+                </Col>
+                <Col span={8}>
+                    <Form.Item name="jobMaxSalary" label={<span>Lương tối đa <span className='text-red-500'> *</span></span>}
                         rules={[
                             { required: true, message: 'Vui lòng nhập lương tối đa' },
                             ({ getFieldValue }) => ({
@@ -96,77 +105,87 @@ const EmployerPostJob = () => {
                                 },
                             }),
                         ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
-                        <InputNumber addonAfter="VNĐ"
+                        <InputNumber addonAfter="VNĐ" className='w-full'
                             formatter={value => format(value)}
                             parser={value => value.replace(/\s/g, '')} />
                     </Form.Item>
-                </Flex>
-                <Form.Item name="jobDeadline" className="col-12 col-md-5 mt-0" label="Ngày hết hạn" rules={[
-                    {
-                        required: true,
-                        message: 'Vui lòng nhập thời gian hết hạn nộp hồ sơ',
-                    },
-                ]} validateTrigger={['onChange']}>
-                    <DatePicker className='form-control' format={"DD/MM/YYYY"} placeholder='Vui lòng chọn ngày' />
-                </Form.Item>
-            </div>
+                </Col>
+                <Col span={8}>
+                    <Form.Item name="jobDeadline" label={<span>Ngày hết hạn <span className='text-red-500'> *</span></span>} rules={[
+                        {
+                            required: true,
+                            message: 'Vui lòng nhập thời gian hết hạn nộp hồ sơ',
+                        },
+                    ]} validateTrigger={['onChange']}>
+                        <DatePicker className='w-full' format={"DD/MM/YYYY"} placeholder='Vui lòng chọn ngày' />
+                    </Form.Item>
+
+                </Col>
+
+            </Row>
         </BoxContaier >
     );
     const form2 = (
         <BoxContaier>
-            <div className="form-group row g-3">
-                <Form.Item className='col-12 col-md-6 mt-0' name="amount" label="Số lượng tuyển dụng"
-                    rules={[
-                        { required: true, message: 'Vui lòng nhập số lượng tuyển dụng' },
-                        ({ getFieldValue }) => ({
-                            validator(_, value) {
-                                if (value <= 0) {
-                                    return Promise.reject(new Error('Số lượng tuyển dụng phải lớn hơn 0'));
-                                }
-                                return Promise.resolve();
+            <Row gutter={[16]}>
+                <Col span={6}>
+                    <Form.Item name="amount" label={<span>Số lượng tuyển dụng <span className='text-red-500'> *</span></span>}
+                        rules={[
+                            { required: true, message: 'Vui lòng nhập số lượng tuyển dụng' },
+                        ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
+                        <InputNumber className='w-full'
+                            formatter={value => format(value)}
+                            parser={value => value.replace(/\s/g, '')} />
+                    </Form.Item>
+                </Col>
+                <Col span={18}>
+                    <Form.Item name="jobLevelId" label={<span>Cấp bậc <span className='text-red-500'> *</span></span>}
+                        rules={
+                            [({ getFieldValue }) => ({
+                                validator(_, value) {
+                                    if (value === 0) {
+                                        return Promise.reject(new Error('Vui lòng chọn cấp bậc cần tuyển dụng'));
+                                    }
+                                    return Promise.resolve();
+                                },
+                            }),]
+                        }>
+                        <Select defaultValue={0}>
+                            <Select.Option value={0}>Vui lòng chọn</Select.Option>
+                            {levels.map(level => (<Select.Option key={level.value} value={level.value}>{level.label}</Select.Option>))}
+                        </Select>
+                    </Form.Item>
+                </Col>
+                <Col span={24}>
+                    <Form.Item name="skillIds" label="Kĩ năng yêu cầu"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Vui lòng chọn ít nhất một kĩ năng',
                             },
-                        })
-                    ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
-                    <InputNumber style={{ width: 200 }}
-                        formatter={value => format(value)}
-                        parser={value => value.replace(/\s/g, '')} />
-                </Form.Item>
-                <Form.Item className='col-12 col-md-6 mt-0' name="jobLevelId" label="Cấp bậc" placeholder="Vui lòng chọn cấp bậc"
-                    rules={
-                        [{ required: true, message: 'Vui lòng chọn cấp bậc' }]
-                    }>
-                    <Select placeholder="Vui lòng chọn cấp bậc">
-                        {levels.map(level => (<Select.Option key={level.value} value={level.value}>{level.label}</Select.Option>))}
-                    </Select>
-                </Form.Item>
-                <Form.Item className="col-12 mt-0" name="skillIds" label="Kĩ năng yêu cầu"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Vui lòng chọn ít nhất một kĩ năng',
-                        },
-                    ]} validateFirst validateTrigger={['onBlur', 'onChange']}>
-                    <Select
-                        mode="multiple"
-                        size="large"
-                        placeholder="Vui lòng chọn kĩ năng"
-                        options={skills}
-                        filterOption={(input, option) => option.label.toLowerCase().includes(input.toLowerCase())}
-                    />
-                </Form.Item>
-                <Form.Item name="jobRequirements" className="col-12 mt-0 " label="Yêu cầu tuyển dụng">
+                        ]} validateFirst validateTrigger={['onBlur', 'onChange']}>
+                        <Select
+                            mode="multiple"
+                            size="large"
+                            placeholder="Vui lòng chọn kĩ năng"
+                            options={skills}
+                            filterOption={(input, option) => option.label.toLowerCase().includes(input.toLowerCase())}
+                        />
+                    </Form.Item>
+                </Col>
+                <Form.Item name="jobRequirements" className="w-full mt-0 " label="Yêu cầu tuyển dụng">
                     <CustomizeQuill />
                 </Form.Item>
-                <Form.Item name="jobDescription" className="col-12 mt-0 " label="Mô tả công việc">
+                <Form.Item name="jobDescription" className="w-full mt-0 " label="Mô tả công việc">
                     <CustomizeQuill />
                 </Form.Item>
-            </div>
+            </Row>
         </BoxContaier>
     );
     const form3 = (
         <BoxContaier>
-            <div className="form-group row g-3">
-                <Form.Item className='col-12 mt-0' name="packageId" label="Gói dịch vụ"
+            <div className="form-group grid gap-3">
+                <Form.Item className='w-full mt-0' name="packageId" label="Gói dịch vụ"
                 >
                     <Select placeholder="Vui lòng chọn gói dịch vụ" onChange={handlePackageChanged} allowClear>
                         {packages.map(pkg => (
@@ -278,20 +297,21 @@ const EmployerPostJob = () => {
 
     return (
         <>
-            <BoxContaier>
+            <BoxContaier className='shadow-md'>
                 <div className='title1'>Đăng bài tuyển dụng</div>
             </BoxContaier>
-            <BoxContaier>
+            <BoxContaier className='shadow-md'>
                 <Form
                     onFinish={onFinish}
                     form={form}
                     size='large'
+                    requiredMark={false}
                     autoComplete="off"
                     layout='vertical'>
                     <Flex vertical gap="middle">
-                        <Collapse className='box_shadow' collapsible='false' expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse1} bordered={false} />
-                        <Collapse className='box_shadow' collapsible='false' expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse2} bordered={false} />
-                        <Collapse className='box_shadow' collapsible='false' expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse3} bordered={false} />
+                        <Collapse className='shadow-md' collapsible='false' expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse1} bordered={false} />
+                        <Collapse className='shadow-md' collapsible='false' expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse3} bordered={false} />
+                        <Collapse className='shadow-md' collapsible='false' expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse2} bordered={false} />
                         <Flex gap="middle" justify="end">
 
                             <Button type="default" htmlType='reset'>Hủy</Button>

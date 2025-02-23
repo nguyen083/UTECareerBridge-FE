@@ -188,28 +188,19 @@ const ViewJob = () => {
     const handleToCompany = (id) => {
         navigate('/company/' + id);
     }
-    // const carouselItems = [
-    //     {
-    //         title: "Tham gia thực hiện nhiệm vụ",
-    //         description: "Yêu cầu ứng viên tham gia khảo sát/thử việc hoặc làm nhiệm vụ bằng cách cài đặt các ứng dụng điện thoại.",
-    //         imgSrc: "https://res.cloudinary.com/utejobhub/image/upload/v1726556316/demo/zeklxmv28quelifvcefo.jpg",
-    //     },
-    //     {
-    //         title: "Tham gia thực hiện nhiệm vụ",
-    //         description: "Yêu cầu ứng viên tham gia khảo sát/thử việc hoặc làm nhiệm vụ bằng cách cài đặt các ứng dụng điện thoại.",
-    //         imgSrc: "https://res.cloudinary.com/utejobhub/image/upload/v1726556316/demo/zeklxmv28quelifvcefo.jpg",
-    //     },
-    // ];
+
     useEffect(() => {
-        if (notice?.status === 'OK') {
-            message.success("Ứng tuyển thành công");
-            setNotice(null);
+        if (notice != null) {
+            if (notice?.status === 'OK') {
+                message.success("Ứng tuyển thành công");
+                setNotice(null);
+            }
+            else {
+                message.error("Hồ sơ đã được ứng tuyển");
+                setNotice(null);
+            }
         }
-        else {
-            message.error("Hồ sơ đã được ứng tuyển");
-            setNotice(null);
-        }
-    }, [notice !== null]);
+    }, [notice]);
     return (
         <>
             <Flex align='center' justify='center' style={{ height: '100vh', width: "100%" }} hidden={!loading}>
@@ -221,10 +212,10 @@ const ViewJob = () => {
                     {/* Cột trái - Main content */}
                     <Col xs={24} md={16} lg={18}>
                         <Flex vertical gap={8}>
-                            <BoxContainer className='box_shadow' padding='1rem'>
+                            <BoxContainer className='shadow' padding='1rem'>
                                 <Flex vertical gap={"1.25rem"}>
                                     <BoxContainer background='#F8F9FA'>
-                                        <div className='job-name mb-5'>{job.jobTitle} </div>
+                                        <div className='text-lg font-[550] text-[#333] leading-4 text-[1.35rem] mb-5'>{job.jobTitle} </div>
                                         <div className='salary mb-3'>
                                             Lương: {job?.jobMinSalary?.toLocaleString('vi-VN')} - {job?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}/tháng
                                         </div>
@@ -275,13 +266,13 @@ const ViewJob = () => {
                                 </Flex>
                             </BoxContainer>
                             {willLoveJob?.length > 0 ?
-                                <Card className='box_shadow' actions={[<Link onClick={() => { navigate('/search', { state: { filters: { categoryId: infor.categoryId } } }) }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-start'>Việc làm bạn sẽ thích</div>}
+                                <Card className='shadow' actions={[<Link onClick={() => { navigate('/search', { state: { filters: { categoryId: infor.categoryId } } }) }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-start'>Việc làm bạn sẽ thích</div>}
                                     style={{ width: "100%" }} size='small'>
                                     <Flex gap={"0.5rem"} vertical>
                                         {willLoveJob.map((job) => <JobCardSmall job={job} />)}
                                     </Flex>
                                 </Card> :
-                                similarJobs && similarJobs.length > 0 && <Card className='box_shadow' actions={[<Link onClick={() => { navigate('/search', { state: { filters: { categoryId: job.jobCategoryId } } }) }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-start'>Việc làm bạn sẽ thích</div>}
+                                similarJobs && similarJobs.length > 0 && <Card className='shadow' actions={[<Link onClick={() => { navigate('/search', { state: { filters: { categoryId: job.jobCategoryId } } }) }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-start'>Việc làm bạn sẽ thích</div>}
                                     style={{ width: "100%" }} size='small'>
                                     <Flex gap={"0.5rem"} vertical>
                                         {similarJobs.map((job) => <JobCardSmall job={job} />)}
@@ -294,7 +285,7 @@ const ViewJob = () => {
                     <Col xs={24} md={8} lg={6}>
                         <Row gutter={[0, 8]}>
 
-                            <Card className='box_shadow'
+                            <Card className='shadow'
                                 style={{ width: "100%", borderRadius: '10px', textAlign: 'center' }}
                                 cover={
                                     <div
@@ -318,7 +309,7 @@ const ViewJob = () => {
                                         style={{ border: '6px solid white', borderRadius: "10px", textAlign: "center", objectFit: 'cover' }} // Để logo nổi lên giữa
                                     />
                                     <Space className='mt-2' direction="vertical" style={{ width: '100%' }}>
-                                        <Text onClick={() => handleToCompany(company.id)} strong className='font-size hover-effect'>
+                                        <Text onClick={() => handleToCompany(company.id)} strong className='text-base hover-effect'>
                                             {company.companyName}
                                         </Text>
 
@@ -343,7 +334,7 @@ const ViewJob = () => {
                                     </Space>
                                 </Flex>
                             </Card>
-                            {carouselItems.length > 0 && <Card className='box_shadow'
+                            {carouselItems.length > 0 && <Card className='shadow'
                                 title={<div className='title2 p-3'>Công ty cùng lĩnh vực</div>}
                                 style={{ textAlign: "center", width: "100%" }}
                             >
@@ -369,7 +360,7 @@ const ViewJob = () => {
                                                         width={"80%"}
                                                     />
                                                 </Flex>
-                                                <Text strong className='f-16' ellipsis={{ rows: 2, tooltip: item.title }}>
+                                                <Text strong className='text-base' ellipsis={{ rows: 2, tooltip: item.title }}>
                                                     {item.title}
                                                 </Text>
                                                 <br />
@@ -380,13 +371,13 @@ const ViewJob = () => {
                                     ))}
                                 </Carousel>
                             </Card>}
-                            {similarJobs && similarJobs.length > 0 && <Card className='box_shadow' actions={[<Link onClick={() => { navigate('/search', { state: { filters: { categoryId: job.jobCategoryId } } }) }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-center'>Việc làm tương tự</div>}
+                            {similarJobs && similarJobs.length > 0 && <Card className='shadow' actions={[<Link onClick={() => { navigate('/search', { state: { filters: { categoryId: job.jobCategoryId } } }) }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-center'>Việc làm tương tự</div>}
                                 style={{ width: "100%" }} size='small'>
                                 <Flex gap={"0.5rem"} vertical>
                                     {similarJobs.map((job) => <JobCardSmall job={job} />)}
                                 </Flex>
                             </Card>}
-                            {jobSameCompany && jobSameCompany.length > 0 && <Card className='box_shadow' title={<div className='title2 p-3 text-center'>Việc làm cùng công ty</div>}
+                            {jobSameCompany && jobSameCompany.length > 0 && <Card className='shadow' title={<div className='title2 p-3 text-center'>Việc làm cùng công ty</div>}
                                 style={{ width: "100%", marginBottom: 16 }} size='small'>
                                 <Flex gap={"0.5rem"} vertical>
                                     {jobSameCompany.slice(0, 5).map((job) => <JobCardSmall job={job} />)}

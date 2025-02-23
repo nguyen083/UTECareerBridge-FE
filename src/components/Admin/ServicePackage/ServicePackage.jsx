@@ -100,7 +100,7 @@ const ModalCreateServicePackage = ({ open, setOpen, setFetch, item = null }) => 
                             >
                                 <InputNumber
                                     min={0}
-                                    className="w-100"
+                                    className="w-full"
                                     suffix="₫"
                                     formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
@@ -113,7 +113,7 @@ const ModalCreateServicePackage = ({ open, setOpen, setFetch, item = null }) => 
                                 label="Thời hạn (tháng)"
                                 rules={[{ required: true, message: "Vui lòng nhập thời gian!" }]}
                             >
-                                <InputNumber min={1} className="w-100" />
+                                <InputNumber min={1} className="w-full" />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -131,7 +131,7 @@ const ModalCreateServicePackage = ({ open, setOpen, setFetch, item = null }) => 
                         label="Số lượng"
                         rules={[{ required: true, message: "Vui lòng nhập số lượng!" }]}
                     >
-                        <InputNumber min={1} className="w-100" />
+                        <InputNumber min={1} className="w-full" />
                     </Form.Item>
                     <Form.Item
                         name="featureId"
@@ -223,7 +223,7 @@ const ListServicePackage = ({ fetch, setFetch }) => {
                 renderItem={(item) => (
                     <Card
                         size="small"
-                        className="voucher-card-admin box_shadow">
+                        className="voucher-card-admin shadow">
                         <List.Item actions={[
                             <Dropdown
                                 overlay={
@@ -238,26 +238,26 @@ const ListServicePackage = ({ fetch, setFetch }) => {
                                 }
                                 trigger={['click']}
                             >
-                                <MoreOutlined className="f-20 border-1" />
+                                <MoreOutlined className="f-20 border" />
                             </Dropdown>
                         ]}>
                             <List.Item.Meta
                                 className="voucher-meta"
-                                avatar={<Flex className="h-100 voucher-flex" align="center" justify="center">
+                                avatar={<Flex className="h-full voucher-flex" align="center" justify="center">
                                     <Text className="voucher-avatar">{item.packageName}</Text>
                                 </Flex>}
                                 description={
                                     <>
-                                        <Text className="fw-bold voucher-title">Giá:&nbsp;</Text> <Text className="salary f-16">{item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
+                                        <Text className="font-bold voucher-title">Giá:&nbsp;</Text> <Text className="salary text-base">{item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
                                         <br />
-                                        <Text className="fw-bold voucher-title">Tính năng:&nbsp;</Text> <Text>{item.featureName}</Text>
+                                        <Text className="font-bold voucher-title">Tính năng:&nbsp;</Text> <Text>{item.featureName}</Text>
                                         <br />
-                                        <Text className="fw-bold voucher-title">Mô tả:&nbsp;</Text> <Text>{item.description}</Text>
+                                        <Text className="font-bold voucher-title">Mô tả:&nbsp;</Text> <Text>{item.description}</Text>
                                         <br />
                                         <Flex align="center">
-                                            <Text className="fw-bold voucher-title">Thời hạn:&nbsp;</Text> <Text>{item.duration} tháng </Text>
+                                            <Text className="font-bold voucher-title">Thời hạn:&nbsp;</Text> <Text>{item.duration} tháng </Text>
                                             <Divider type="vertical" />
-                                            <Text className="fw-bold voucher-title">Số lượng bài đăng:&nbsp;</Text> <Text>{item.amount}</Text>
+                                            <Text className="font-bold voucher-title">Số lượng bài đăng:&nbsp;</Text> <Text>{item.amount}</Text>
                                         </Flex>
                                     </>
                                 }

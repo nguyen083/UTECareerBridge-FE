@@ -89,9 +89,9 @@ const VoucherModal = ({ visible, onClose, onSelectVoucher }) => {
                 className="coupon-list-item border rounded border-warning my-3"
               >
                 <List.Item.Meta
-                  className='d-flex align-items-stretch'
+                  className='flex items-stretch'
                   avatar={
-                    <div className="voucher-left rounded-start">
+                    <div className="voucher-left rounded-l !bottom-0">
                       <div className="voucher-label"><Flex align="center" gap={5}><RiDiscountPercentLine size={20} /> Voucher</Flex></div>
                     </div>}
                   title={
@@ -107,7 +107,7 @@ const VoucherModal = ({ visible, onClose, onSelectVoucher }) => {
                   }
                   description={
                     <div className='ps-1'>
-                      <p>Mã: <Tag color="orange">{coupon.code}</Tag></p>
+                      <p className='flex gap-3'>Mã: <Tag className="w-fit text-sm font-normal" color="orange">{coupon.code}</Tag></p>
                       <p>{coupon.description}</p>
                       <Flex align="center">
                         <p>Còn lại: {coupon.amount}</p> <Divider type="vertical" />

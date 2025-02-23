@@ -1,4 +1,4 @@
-import { Button, Divider, Flex, Form, Input, Radio, Space, DatePicker, message } from 'antd';
+import { Button, Divider, Flex, Form, Input, Radio, Space, DatePicker, message, Row, Col } from 'antd';
 import BoxContainer from '../../Generate/BoxContainer';
 import './EmployerProfile.scss';
 import { useState } from 'react';
@@ -38,12 +38,12 @@ const EmployerProfile = () => {
 
     return (
         <>
-            <BoxContainer>
+            <BoxContainer className="shadow-md">
                 <div className="title1">
                     Thông tin cá nhân
                 </div>
             </BoxContainer>
-            <BoxContainer>
+            <BoxContainer className='shadow-md'>
                 <Flex align='center' justify='space-between'>
                     <span className='title2'>Thông tin chung</span>
                     <Button disabled={!enableEdit} onClick={() => { setEnableEdit(false) }}>Chỉnh sửa</Button>
@@ -51,65 +51,74 @@ const EmployerProfile = () => {
                 <Divider />
                 <Form onFinish={handleSubmit} form={form} size='large' layout='horizontal' requiredMark={false} autoComplete='false' disabled={enableEdit}
                     initialValues={infor}>
-                    <div className="div-form-profile form-group row g-3">
-                        <Form.Item name="firstName" className="col-12 col-md-6 mt-0" label={<span>Tên <span style={{ color: "red" }}> *</span></span>}
-                            rules={[
+                    <Row className="div-form-profile" gutter={16}>
+                        <Col span={12}>
+                            <Form.Item name="firstName" label={<span>Tên <span className='text-red-500'> *</span></span>}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Vui lòng nhập tên',
+                                    },
+                                    {
+                                        pattern: regChar,
+                                        message: 'Tên không hợp lệ',
+                                    }
+                                ]} validateTrigger={['onChange']}>
+                                <Input allowClear />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item name="lastName" label={<span>Họ <span className='text-red-500'> *</span></span>}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Vui lòng nhập họ',
+                                    },
+                                    {
+                                        pattern: regChar,
+                                        message: 'Họ không hợp lệ',
+                                    }
+                                ]} validateTrigger={['onChange']}>
+                                <Input allowClear />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item name="gender" layout='horizontal' label="Giới tính" >
+                                <Radio.Group className='mb-0'>
+                                    <Space direction="horizontal">
+                                        <Radio value={0}>Nam</Radio>
+                                        <Radio value={1}>Nữ</Radio>
+                                    </Space>
+                                </Radio.Group>
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item name="dob" label={<span>Ngày sinh <span className='text-red-500'> *</span></span>} rules={[
                                 {
                                     required: true,
-                                    message: 'Vui lòng nhập tên',
+                                    message: 'Vui lòng nhập ngày sinh của bạn',
                                 },
-                                {
-                                    pattern: regChar,
-                                    message: 'Tên không hợp lệ',
-                                }
                             ]} validateTrigger={['onChange']}>
-                            <Input allowClear />
-                        </Form.Item>
-
-                        <Form.Item name="lastName" className="col-12 col-md-6 mt-0" label={<span>Họ <span style={{ color: "red" }}> *</span></span>}
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập họ',
-                                },
-                                {
-                                    pattern: regChar,
-                                    message: 'Họ không hợp lệ',
-                                }
-                            ]} validateTrigger={['onChange']}>
-                            <Input allowClear />
-                        </Form.Item>
-                        <Form.Item name="gender" layout='horizontal' className="col-12 col-md-6 mt-0 mb-0" label="Giới tính" >
-                            <Radio.Group className='mb-0'>
-                                <Space direction="horizontal">
-                                    <Radio value={0}>Nam</Radio>
-                                    <Radio value={1}>Nữ</Radio>
-                                </Space>
-                            </Radio.Group>
-                        </Form.Item>
-                        <Form.Item name="dob" className="col-12 col-md-6 mt-0" label={<span>Ngày sinh <span style={{ color: "red" }}> *</span></span>} rules={[
-                            {
-                                required: true,
-                                message: 'Vui lòng nhập ngày sinh của bạn',
-                            },
-                        ]} validateTrigger={['onChange']}>
-                            <DatePicker className='form-control' format={"DD/MM/YYYY"} />
-                        </Form.Item>
-                        <Form.Item name="phoneNumber" className="col-12 mt-0" label={<span>Số điện thoại <span style={{ color: "red" }}> *</span></span>}
-                            rules={[
-                                {
-                                    required: true,
-                                    message: 'Vui lòng nhập số điện thoại của bạn',
-                                },
-                                {
-                                    pattern: new RegExp(/^(0[3|5|7|8|9])[0-9]{8}$/),
-                                    message: 'Số điện thoại không hợp lệ'
-                                }
-                            ]}
-                            validateTrigger={['onBlur']}>
-                            <Input allowClear />
-                        </Form.Item>
-                    </div>
+                                <DatePicker className='w-full' format={"DD/MM/YYYY"} />
+                            </Form.Item>
+                        </Col>
+                        <Col span={24}>
+                            <Form.Item name="phoneNumber" label={<span>Số điện thoại <span className='text-red-500'> *</span></span>}
+                                rules={[
+                                    {
+                                        required: true,
+                                        message: 'Vui lòng nhập số điện thoại của bạn',
+                                    },
+                                    {
+                                        pattern: new RegExp(/^(0[3|5|7|8|9])[0-9]{8}$/),
+                                        message: 'Số điện thoại không hợp lệ'
+                                    }
+                                ]}
+                                validateTrigger={['onBlur']}>
+                                <Input allowClear />
+                            </Form.Item>
+                        </Col>
+                    </Row>
                     <Flex gap={"1rem"} align='center' justify='end' hidden={enableEdit}>
                         <Button size='middle' type='default' onClick={handleReset}>Hủy</Button>
                         <Button size='middle' type='primary' htmlType='submit'>Lưu</Button>

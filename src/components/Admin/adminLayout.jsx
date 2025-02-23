@@ -178,7 +178,7 @@ const AdminLayout = () => {
             <Layout className="site-layout">
                 <Header className="admin-header">
                     <Flex>
-                        <MenuOutlined className='font-size' onClick={() => setCollapsed(!collapsed)} />
+                        <MenuOutlined className='text-base' onClick={() => setCollapsed(!collapsed)} />
                         {/* <div className='search-container'>
                             <div>
                                 <SearchOutlined className='search-icon' />

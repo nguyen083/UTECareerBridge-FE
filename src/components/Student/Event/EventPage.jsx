@@ -29,7 +29,7 @@ const EventPage = () => {
         eventType: eventType
       }
       // Gọi API lấy dữ liệu sự kiện
-      const response = await getAllEvent(params).then(res => {
+      await getAllEvent(params).then(res => {
         if (res.status === 'OK') {
           // message.success(res.message);
           setEvents(res.data.eventResponses);
@@ -55,14 +55,10 @@ const EventPage = () => {
 
 
   return (
-    <div style={{ padding: '24px', backgroundColor: '#f0f2f5' }}>
+    <div className='p-6 bg-gray-100'>
       {/* Tiêu đề và thanh lọc loại sự kiện */}
-      <div style={{
-        marginBottom: '24px',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-      }}>
+      <Flex className='mb-6' justify='space-between' align='center'>
+
         <BoxContainer width='100%'>
           <Flex justify='space-between' align='center'>
             <div className='title1'>Danh Sách Sự Kiện</div>
@@ -83,7 +79,7 @@ const EventPage = () => {
             </Select>
           </Flex>
         </BoxContainer>
-      </div>
+      </Flex>
 
       <BoxContainer width='100%'>
         {/* Danh sách sự kiện */}
@@ -114,7 +110,7 @@ const EventPage = () => {
                     <Card.Meta
                       title={event.eventTitle}
                       description={
-                        <Space direction="vertical" className='w-100'>
+                        <Space direction="vertical" className='w-full'>
                           <Text>
                             <CalendarOutlined /> {event.eventDate}
                           </Text>

@@ -7,7 +7,7 @@ import { Modal, Button, Row, Col, Typography, Flex, Divider, Image, Card, messag
 import { useEffect, useState } from "react";
 import LineEllipsis from "./LineEllipsis";
 import { applyJob } from "../../services/apiService";
-import styles from "./ModalApply.module.scss";
+// import styles from "./ModalApply.module.scss";
 const { Title, Text } = Typography;
 export const ModalApply = ({ show, setShow, company, job }) => {
     const { id } = useParams();
@@ -48,17 +48,17 @@ export const ModalApply = ({ show, setShow, company, job }) => {
 
             <Row gutter={[8, 8]}>
                 <Col span={9} color="#F8F9FA">
-                    <BoxContainer className={styles.box_shadow} background="#F8F9FA" borderRadius="0" padding="1rem">
+                    <BoxContainer className="shadow" background="#F8F9FA" borderRadius="0" padding="1rem">
                         <Flex vertical gap={8}>
-                            <BoxContainer className={styles.box_shadow} padding="0.5rem">
+                            <BoxContainer className="shadow" padding="0.5rem">
                                 <Flex gap={3} align="center">
                                     <Image width={120}
                                         preview={false}
                                         src={company.companyLogo} />
-                                    <Text className="font-size" type="secondary"><LineEllipsis line={2}>{company.companyName}</LineEllipsis></Text>
+                                    <Text className="text-base" type="secondary"><LineEllipsis line={2}>{company.companyName}</LineEllipsis></Text>
                                 </Flex>
                             </BoxContainer>
-                            <BoxContainer className={styles.box_shadow} padding="0.5rem">
+                            <BoxContainer className="shadow" padding="0.5rem">
                                 <Flex vertical>
                                     <Title level={5}>{job.jobTitle}</Title>
                                     <Flex align="center" gap={3}><FaRegMoneyBillAlt size={16} /> <div className='salary'>{job?.jobMinSalary?.toLocaleString('vi-VN')} - {job?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} /tháng</div></Flex>
@@ -69,7 +69,7 @@ export const ModalApply = ({ show, setShow, company, job }) => {
                     </BoxContainer>
                 </Col>
                 <Col span={15}>
-                    <Card className={styles.box_shadow} size="default" title={"Chọn đơn ứng tuyển"}>
+                    <Card className="shadow" size="default" title={"Chọn đơn ứng tuyển"}>
                         <Flex vertical>
                             <FileGroup formData={formData} setFormData={setFormData} />
                         </Flex>

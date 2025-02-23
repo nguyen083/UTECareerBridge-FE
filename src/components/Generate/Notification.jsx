@@ -105,7 +105,7 @@ const Notification = ({ userId = null }) => {
         // >
         //     <Tooltip title="Thông báo" placement="bottom" color={COLOR.bgTooltipColor}>
         //         <Badge count={notification.filter((item) => item.read === true).length}>
-        //             <Button className="btn-header rounded-circle btn-bell" size="large" type="text">
+        //             <Button className="btn-header rounded-full btn-bell" size="large" type="text">
         //                 <BellOutlined />
         //             </Button>
         //         </Badge>

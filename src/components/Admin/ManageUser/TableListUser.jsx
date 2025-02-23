@@ -108,7 +108,7 @@ const TableListUser = ({
         const displayStatus = active ? 'Hoạt động' : 'Bị khóa';
         const statusKey = active ? 'ACTIVE' : 'BLOCKED';
         return (
-          <Tag color={statusColors[statusKey]}>
+          <Tag className="w-fit text-sm font-normal" color={statusColors[statusKey]}>
             {displayStatus}
           </Tag>
         );

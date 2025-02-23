@@ -171,7 +171,7 @@ const OrderPage = () => {
       <BoxContainer>
         <Row gutter={16} justify="space-between">
           <Col span={14}>
-            <Card title={<Text className='f-20 card-title'>Chi tiết giỏ hàng</Text>} className='box_shadow detail-cart-card'>
+            <Card title={<Text className='f-20 card-title'>Chi tiết giỏ hàng</Text>} className='shadow detail-cart-card'>
 
               <Table
                 columns={columns}
@@ -181,22 +181,22 @@ const OrderPage = () => {
               />
             </Card></Col>
           <Col span={10}>
-            <Card title={<Text className='f-20 card-title'>Thông tin đơn hàng</Text>} className='box_shadow'>
+            <Card title={<Text className='f-20 card-title'>Thông tin đơn hàng</Text>} className='shadow'>
 
               <div className="info-item">
-                <Text className="f-16">Tổng giá trị đơn hàng</Text>
-                <Text className="f-16 fw-bold">{getTotalPrice().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
+                <Text className="text-base">Tổng giá trị đơn hàng</Text>
+                <Text className="text-base font-bold">{getTotalPrice().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
               </div>
               {selectedVoucher && <div className="info-item">
-                <Text className="f-16 d-flex align-items-center"><RiDiscountPercentLine />&ensp;Giảm giá</Text>
-                <Text className="f-16 fw-bold">{selectedVoucher?.discount} %</Text>
+                <Text className="text-base flex items-center"><RiDiscountPercentLine />&ensp;Giảm giá</Text>
+                <Text className="text-base font-bold">{selectedVoucher?.discount} %</Text>
               </div>}
               {/* <div className="info-item">
               <Text className="label">VAT (8%)</Text>
               <Text className="value">{getTaxAmount().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
             </div> */}
               <Divider />
-              <div className="voucher d-flex align-items-center justify-content-between">
+              <div className="voucher flex items-center justify-between">
                 <Button type="primary" onClick={() => setIsModalVisible(true)} className='voucher-button'>Chọn mã ưu đãi</Button>
                 {selectedVoucher && <Flex align='center' gap={8}>
                   <Button danger type='text' icon={<CloseOutlined />} onClick={() => setSelectedVoucher(null)}></Button>
@@ -204,10 +204,10 @@ const OrderPage = () => {
                 }
               </div>
               <div className="info-item mt-5">
-                <Text className="f-16">Tổng thanh toán</Text>
+                <Text className="text-base">Tổng thanh toán</Text>
                 <Flex gap={8}>
-                  {selectedVoucher && <Text type='danger' className="f-16 fw-bold " delete>{getTotalPrice().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>}
-                  <Text className="f-16 fw-bold">{getTotalWithTax().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
+                  {selectedVoucher && <Text type='danger' className="text-base font-bold " delete>{getTotalPrice().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>}
+                  <Text className="text-base font-bold">{getTotalWithTax().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
                 </Flex>
               </div>
               <div className="actions">

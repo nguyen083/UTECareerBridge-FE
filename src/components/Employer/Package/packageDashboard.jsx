@@ -57,10 +57,10 @@ const ServiceMarketplace = () => {
     setCurrentPage(page);
   };
   return (<>
-    <BoxContainer>
+    <BoxContainer className='shadow-md'>
       <div className='title1'>Danh sách gói dịch vụ</div>
     </BoxContainer>
-    <BoxContainer>
+    <BoxContainer className='shadow-md'>
       <Layout style={{ minHeight: '100vh' }}>
         <Header style={{ backgroundColor: '#E6F7FF', padding: '20px' }}>
           <Alert

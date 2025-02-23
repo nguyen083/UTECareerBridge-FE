@@ -162,15 +162,15 @@ const DashBoard = () => {
     }, []);
     return (
         <>
-            <BoxContainer className="box_shadow">
+            <BoxContainer className="shadow-md">
                 <div className="title1">
                     Thống kê
                 </div>
             </BoxContainer>
-            <BoxContainer className="box_shadow">
+            <BoxContainer className="shadow-md">
                 <Row gutter={[16, 16]}>
                     <Col xs={24} sm={12} lg={8}>
-                        <Card className="box_shadow">
+                        <Card className="shadow">
                             <Statistic
                                 title={<Text>Số người theo dõi</Text>}
                                 value={countFollower || 0}
@@ -180,7 +180,7 @@ const DashBoard = () => {
                         </Card>
                     </Col>
                     <Col xs={24} sm={12} lg={8}>
-                        <Card className="box_shadow">
+                        <Card className="shadow">
                             <Statistic
                                 title={<Text>Tổng số ứng viên</Text>}
                                 value={countStudentApplied || 0}
@@ -190,7 +190,7 @@ const DashBoard = () => {
                         </Card>
                     </Col>
                     <Col xs={24} sm={12} lg={8}>
-                        <Card className="box_shadow">
+                        <Card className="shadow">
                             <Statistic
                                 title={<Text >Số công việc đã đăng</Text>}
                                 value={countJob || 0}
@@ -200,12 +200,12 @@ const DashBoard = () => {
                         </Card>
                     </Col>
                     {/* <Col sm={24} lg={12}>
-                        <Card title="Biểu đồ" className="box_shadow">
+                        <Card title="Biểu đồ" className="shadow">
                             <Chart />
                         </Card>
                     </Col> */}
                     <Col sm={24} lg={24}>
-                        <Card title="Gói dịch vụ" className="box_shadow">
+                        <Card title="Gói dịch vụ" className="shadow">
                             <ListPackage />
                         </Card>
                     </Col>

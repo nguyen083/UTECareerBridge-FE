@@ -66,7 +66,7 @@ const ListOrder = () => {
             title: 'Trạng thái',
             dataIndex: 'paymentStatus',
             key: 'paymentStatus',
-            render: (text) => text === 'PENDING' ? <Tag color="default">Chờ thanh toán</Tag> : <Tag color="green">Đã thanh toán</Tag>,
+            render: (text) => text === 'PENDING' ? <Tag className="w-fit text-sm font-normal" color="default">Chờ thanh toán</Tag> : <Tag className="w-fit text-sm font-normal" color="green">Đã thanh toán</Tag>,
         },
         {
             title: ' Xem / Thanh toán',
@@ -80,10 +80,10 @@ const ListOrder = () => {
 
     return (
         <>
-            <BoxContainer>
+            <BoxContainer className="shadow-md">
                 <div className="title1">Đơn hàng</div>
             </BoxContainer>
-            <BoxContainer>
+            <BoxContainer className="shadow-md">
                 <Table
                     columns={columns}
                     dataSource={orders}

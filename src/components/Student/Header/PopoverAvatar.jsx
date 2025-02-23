@@ -36,7 +36,7 @@ const CustomizePopover = ({ setIndex, setOpen }) => {
                     <Typography.Text>
                         {infor.lastName} {infor.firstName}
                     </Typography.Text>
-                    <Typography.Text className="text-small" type="secondary">
+                    <Typography.Text className="text-xs" type="secondary">
                         {infor.email}
                     </Typography.Text>
                 </Flex>
@@ -93,7 +93,7 @@ const PopoverAvatar = () => {
     }, [index]);
     return (
         <Popover
-            className="popover-avatar"
+            className="cursor-pointer"
             open={open}
             onOpenChange={(e) => setOpen(e)}
             popupVisible

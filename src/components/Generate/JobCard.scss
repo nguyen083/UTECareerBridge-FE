@@ -1,3 +1,5 @@
+@import "../styles/variables.scss";
+
 .meta-description {
     display    : flex;
     align-items: stretch;
@@ -6,12 +8,33 @@
 
 }
 
-.limit-text {
-    display           : -webkit-box !important;
-    -webkit-line-clamp: 1 !important;
-    -webkit-box-orient: vertical !important;
-    overflow          : hidden !important;
-    word-wrap         : break-all !important;
-    word-break        : break-word !important;
-    text-overflow     : ellipsis !important;
+.item-company {
+    border-radius: 10px;
+    border       : 1px solid #e5e5e5;
+    margin-bottom: 16px;
+
+    &:last-child {
+        margin-bottom: 0;
+    }
+
+    &:hover {
+        background-color   : $background-color;
+        cursor             : pointer;
+        transition         : all 0.3s ease;
+        // box-shadow      : 0 12px 24px rgba(0, 0, 0, 0.2);
+        @apply shadow-md;
+        /* Bóng đổ mạnh hơn khi hover */
+        transform: translateY(-1px);
+        /* Nâng container lên khi hover */
+    }
+
+    .limit-text {
+        display           : -webkit-box !important;
+        -webkit-line-clamp: 1 !important;
+        -webkit-box-orient: vertical !important;
+        overflow          : hidden !important;
+        word-wrap         : break-all !important;
+        word-break        : break-word !important;
+        text-overflow     : ellipsis !important;
+    }
 }

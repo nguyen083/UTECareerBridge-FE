@@ -67,19 +67,19 @@ const ListCompany = () => {
                 }}
                 dataSource={data}
                 renderItem={(item, index) => (
-                    <List.Item className="item-company box_shadow">
+                    <List.Item className="item-company shadow">
                         <List.Item.Meta
-                            className="d-flex justify-content-between align-items-center"
+                            className="flex justify-between items-center"
                             avatar={<Avatar shape="square" size={100} src={item?.companyLogo} />}
                             title={<Link className="text-decoration-none" to={`/company/${item.id}`}><Title level={5} className="p-0 m-0">{item.companyName}</Title></Link>}
                             description={
                                 <Flex vertical justify="center">
-                                    <Text type="secondary"><FaIndustry /> {item.industry.industryName}</Text>
-                                    <div>
-                                        <Text type="secondary"><IoIosPeople /> {item.countFollower} lượt theo dõi</Text>
+                                    <Text className="flex gap-3 items-center" type="secondary"><FaIndustry /> {item.industry.industryName}</Text>
+                                    <Flex align="center" className="mt-2">
+                                        <Text className="flex gap-3 items-center" type="secondary"><IoIosPeople /> {item.countFollower} lượt theo dõi</Text>
                                         <Divider type="vertical" />
-                                        <Text type="secondary"><IoBriefcaseSharp /> {item.countJob} công việc</Text>
-                                    </div>
+                                        <Text className="flex gap-3 items-center" type="secondary"><IoBriefcaseSharp /> {item.countJob} công việc</Text>
+                                    </Flex>
                                 </Flex>}
 
                         />

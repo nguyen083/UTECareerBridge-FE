@@ -13,7 +13,7 @@ const PaymentSuccess = () => {
         <>
             <Pride autorun={{ speed: 5 }} />
             <Result
-                className="d-flex justify-content-center align-items-center flex-column"
+                className="flex justify-center items-center flex-column"
                 style={{ height: '100vh' }}
                 status="success"
                 title={<Title className="f-24">Thanh toán thành công!</Title>}

@@ -89,13 +89,13 @@ const CouponList = ({ fetch, setFetch }) => {
                                 }
                                 trigger={['click']}
                             >
-                                <MoreOutlined className="f-20 border-1" />
+                                <MoreOutlined className=" border" />
                             </Dropdown >
                         ]}
-                        className="coupon-list-item box_shadow border rounded border-warning my-3 py-0"
+                        className="coupon-list-item shadow border rounded border-warning my-4 py-0"
                     >
                         <List.Item.Meta
-                            className='d-flex align-items-stretch'
+                            className='flex items-stretch'
                             avatar={
                                 <div className="voucher-left rounded-start">
                                     <div className="voucher-label"> <Flex align="center" gap={5}><RiDiscountPercentLine size={20} /> Voucher</Flex></div>
@@ -108,7 +108,7 @@ const CouponList = ({ fetch, setFetch }) => {
                             }
                             description={
                                 <div className='ps-1'>
-                                    <p>Mã: <Tag color="orange">{coupon.code}</Tag></p>
+                                    <p>Mã: <Tag className="w-fit text-sm font-normal" color="orange">{coupon.code}</Tag></p>
                                     <p>{coupon.description}</p>
                                     <Flex align="center">
                                         <p>Còn lại: {coupon.amount}</p> <Divider type="vertical" />
@@ -223,7 +223,7 @@ const ModalCreateCoupon = ({ open, setOpen, setFetch, item = null }) => {
                             >
                                 <InputNumber
                                     min={0}
-                                    className="w-100"
+                                    className="w-full"
                                     parser={value => value.replace(/\$\s?|(,*)/g, '')}
                                 />
                             </Form.Item>
@@ -234,7 +234,7 @@ const ModalCreateCoupon = ({ open, setOpen, setFetch, item = null }) => {
                                 label="Mức giảm giá"
                                 rules={[{ required: true, message: "Vui lòng nhập mức giảm giá!" }]}
                             >
-                                <InputNumber min={1} className="w-100" />
+                                <InputNumber min={1} className="w-full" />
                             </Form.Item>
                         </Col>
                     </Row>
@@ -244,14 +244,14 @@ const ModalCreateCoupon = ({ open, setOpen, setFetch, item = null }) => {
                             name="maxUsage"
                             label="Số lần sử dụng tối đa"
                             rules={[{ required: true, message: "Vui lòng nhập số lần sử dụng tối đa!" }]}>
-                            <InputNumber min={1} className="w-100" />
+                            <InputNumber min={1} className="w-full" />
                         </Form.Item></Col>
                         <Col span={12}><Form.Item
                             name="expiredAt"
                             label="Ngày hết hạn"
                             rules={[{ required: true, message: "Vui lòng chọn ngày hết hạn!" }]}
                         >
-                            <DatePicker className="w-100" allowClear disabledDate={disablePastDates} />
+                            <DatePicker className="w-full" allowClear disabledDate={disablePastDates} />
                         </Form.Item></Col>
                     </Row>
                     <Form.Item
@@ -267,7 +267,7 @@ const ModalCreateCoupon = ({ open, setOpen, setFetch, item = null }) => {
                     >
                         <Select
                             placeholder="Chọn trạng thái"
-                            className="w-100">
+                            className="w-full">
                             <Select.Option value={true}>Hoạt động</Select.Option>
                             <Select.Option value={false}>Khóa</Select.Option>
                         </Select>

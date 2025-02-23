@@ -1,7 +1,6 @@
 import React from 'react';
 import "./Footer.scss"
 import { Row, Col, Typography, Divider, Space, Flex } from 'antd';
-import { FacebookOutlined, LinkedinOutlined, YoutubeOutlined, InstagramOutlined, AppleOutlined, AndroidOutlined } from '@ant-design/icons';
 
 const { Title, Text, Link } = Typography;
 

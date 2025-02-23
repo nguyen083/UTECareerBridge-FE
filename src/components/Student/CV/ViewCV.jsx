@@ -19,58 +19,58 @@ const ViewCV = ({ setStudentId = null }) => {
     const items = [
         {
             key: 1,
-            label: <Text className='f-16' strong>Họ và tên</Text>,
-            children: <Text className='f-16'>{cv?.lastName} {cv?.firstName}</Text>
+            label: <Text className='text-base' strong>Họ và tên</Text>,
+            children: <Text className='text-base'>{cv?.lastName} {cv?.firstName}</Text>
         },
         {
             key: 2,
-            label: <Text className='f-16' strong>Giới tính</Text>,
-            children: <Text className='f-16'>{cv?.gender ? 'Nữ' : "Nam"}</Text>
+            label: <Text className='text-base' strong>Giới tính</Text>,
+            children: <Text className='text-base'>{cv?.gender ? 'Nữ' : "Nam"}</Text>
         },
         {
             key: 3,
-            label: <Text className='f-16' strong>Ngày sinh</Text>,
-            children: <Text className='f-16'>{cv?.dob}</Text>
+            label: <Text className='text-base' strong>Ngày sinh</Text>,
+            children: <Text className='text-base'>{cv?.dob}</Text>
         },
         {
             key: 3,
-            label: <Text className='f-16' strong>Email</Text>,
-            children: <Text className='f-16'>{cv?.email}</Text>
+            label: <Text className='text-base' strong>Email</Text>,
+            children: <Text className='text-base'>{cv?.email}</Text>
         },
         {
             key: 4,
-            label: <Text className='f-16' strong>Email trường đại học</Text>,
-            children: <Text className='f-16'>{cv?.universityEmail}</Text>
+            label: <Text className='text-base' strong>Email trường đại học</Text>,
+            children: <Text className='text-base'>{cv?.universityEmail}</Text>
         },
         {
             key: 4,
-            label: <Text className='f-16' strong>Số điện thoại</Text>,
-            children: <Text className='f-16'>{cv?.phoneNumber}</Text>
+            label: <Text className='text-base' strong>Số điện thoại</Text>,
+            children: <Text className='text-base'>{cv?.phoneNumber}</Text>
         },
         address && {
             key: 5,
-            label: <Text className='f-16' strong>Địa chỉ</Text>,
-            children: <Text className='f-16'>{address}</Text>
+            label: <Text className='text-base' strong>Địa chỉ</Text>,
+            children: <Text className='text-base'>{address}</Text>
         },
         {
             key: 6,
-            label: <Text className='f-16' strong>Năm học</Text>,
-            children: <Text className='f-16'>{cv?.year}</Text>
+            label: <Text className='text-base' strong>Năm học</Text>,
+            children: <Text className='text-base'>{cv?.year}</Text>
         },
         {
             key: 7,
-            label: <Text className='f-16' strong>Chuyên nghành/ Lĩnh vực</Text>,
-            children: <Text className='f-16'>{cv?.categoryName}</Text>
+            label: <Text className='text-base' strong>Chuyên nghành/ Lĩnh vực</Text>,
+            children: <Text className='text-base'>{cv?.categoryName}</Text>
         },
         {
             key: 8,
-            label: <Text className='f-16' strong>Cấp bậc</Text>,
-            children: <Text className='f-16'>{cv?.levelName}</Text>
+            label: <Text className='text-base' strong>Cấp bậc</Text>,
+            children: <Text className='text-base'>{cv?.levelName}</Text>
         },
         {
             key: 9,
-            label: <Text className='f-16' strong>Kỹ năng</Text>,
-            children: <Text className='f-16'>{Array.isArray(cv.studentSkills) ? cv.studentSkills.map((skill) => skill.skillName).join(', ') : ''}</Text>
+            label: <Text className='text-base' strong>Kỹ năng</Text>,
+            children: <Text className='text-base'>{Array.isArray(cv.studentSkills) ? cv.studentSkills.map((skill) => skill.skillName).join(', ') : ''}</Text>
         }
     ].filter(Boolean);
     const fetchData = async () => {
@@ -121,7 +121,7 @@ const ViewCV = ({ setStudentId = null }) => {
             >
                 <List.Item>
                     <List.Item.Meta
-                        className={`${styles.meta} d-flex align-items-stretch`}
+                        className={`${styles.meta} flex items-stretch`}
                         avatar={<Avatar size={102} icon={<UserOutlined />} src={cv.profileImage} />}
                         title={
                             <Flex justify="space-between">
@@ -137,7 +137,7 @@ const ViewCV = ({ setStudentId = null }) => {
                                             <Col span={1}>
                                                 <BiSolidSchool className={styles["icon"]} />
                                             </Col>
-                                            <Col span={23} className="f-16"> Sinh viên năm  thứ {cv?.year}</Col>
+                                            <Col span={23} className="text-base"> Sinh viên năm  thứ {cv?.year}</Col>
                                         </Row>
                                     </Col>
 
@@ -148,7 +148,7 @@ const ViewCV = ({ setStudentId = null }) => {
                                             <Col span={1}>
                                                 <MailOutlined className={styles["icon"]} />
                                             </Col>
-                                            <Col span={23} className="f-16">{cv?.email}</Col>
+                                            <Col span={23} className="text-base">{cv?.email}</Col>
                                         </Row>
                                     </Col>
                                 </Row>

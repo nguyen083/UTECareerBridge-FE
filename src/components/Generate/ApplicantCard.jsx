@@ -8,15 +8,15 @@ const ApplicantCard = ({ applicant, status }) => {
     return (
         <>
             <Card size="smalls" className="card-applicant">
-                <div className="w-100">
+                <div className="w-full">
                     <Flex justify='space-between' align='center'>
                         <Flex align='center'>
                             <Avatar icon={<UserOutlined />} size={80} src={applicant?.profileImage} />
                             <div className="ms-3">
                                 <Title level={4}>{applicant?.lastName} {applicant?.firstName}</Title>
-                                <Text className="f-16">Sinh viên năm {applicant?.year}</Text>
+                                <Text className="text-base">Sinh viên năm {applicant?.year}</Text>
                                 <br />
-                                <Text className="f-16">{applicant?.email}</Text>
+                                <Text className="text-base">{applicant?.email}</Text>
                             </div>
                         </Flex>
                         <Button size="large" variant="text" type="default" onClick={() => { applicant?.applicationId && navigate(`/employer/applicant-job/${applicant?.applicationId}`, { state: { status, jobId: applicant.jobId } }) }}>Hồ sơ chi tiết</Button>

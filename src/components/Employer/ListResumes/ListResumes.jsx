@@ -54,15 +54,15 @@ const ListApplicant = ({ categoryId }) => {
                     pageSizeOptions: ['10', '20', '50']
                 }}
                 renderItem={(item) => (
-                    <List.Item className="p-3 border border-1 rounded-2 box_shadow">
+                    <List.Item className="!p-3 border rounded-lg shadow">
                         <List.Item.Meta
                             avatar={<Avatar icon={<UserOutlined />} size={70} src={item?.profileImage} />}
-                            title={<Text className="f-16 fw-bold">{item?.lastName} {item?.firstName}</Text>}
+                            title={<Text className="text-base font-bold">{item?.lastName} {item?.firstName}</Text>}
                             description={
                                 <>
-                                    <Text className="f-16"> Sinh viên năm {item?.year}, chuyên ngành {item?.categoryName}</Text>
+                                    <Text className="text-base"> Sinh viên năm {item?.year}, chuyên ngành {item?.categoryName}</Text>
                                     <br />
-                                    <Text className="f-16"> <span className="fw-bold">Email:</span> {item?.email}</Text>
+                                    <Text className="text-base"> <span className="font-bold">Email:</span> {item?.email}</Text>
                                 </>
                             }
                         />
@@ -90,10 +90,10 @@ const ListResumes = () => {
     }, []);
     return (
         <>
-            <BoxContainer>
+            <BoxContainer className="shadow-md">
                 <div className="title1">Danh sách sinh viên đang tìm việc</div>
             </BoxContainer>
-            <BoxContainer>
+            <BoxContainer className="shadow-md">
                 <Flex align="center" justify="end">
                     <Select
                         value={categoryId}

@@ -4,11 +4,12 @@ import { EnvironmentOutlined, DollarOutlined, InboxOutlined } from '@ant-design/
 import { Like } from './Like';
 import { getAllJobEmployer, getJobsByStatus } from '../../services/apiService';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { IoIosBusiness } from 'react-icons/io';
+import { FaMapLocationDot } from 'react-icons/fa6';
+import { FaRegMoneyBillAlt } from 'react-icons/fa';
 
-const { Title, Paragraph, Text } = Typography;
+const { Title, Paragraph } = Typography;
 const JobList = () => {
-  const user = useSelector(state => state.user);
   const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
@@ -90,7 +91,7 @@ const JobList = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-4">
+    <div className="w-full mx-auto p-4">
       <List
         grid={{ gutter: 16, xs: 1, sm: 1, md: 1, lg: 1, xl: 1, xxl: 1 }}
         dataSource={data}
@@ -108,61 +109,42 @@ const JobList = () => {
           ),
         }}
         renderItem={(item) => (
-          <List.Item>
+          <List.Item className='w-full'>
             <Card
               hoverable
-              style={{
-                cursor: 'default',
-                width: "100%",
-                borderRadius: 10,
-                overflow: 'hidden',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-              }}
+              className='cursor-default w-full rounded-[10px] overflow-hidden shadow '
               bodyStyle={{ padding: 16 }}
             >
               <Flex onClick={() => handleClick(item.jobId)} align='center' className='cursor-pointer'>
                 <img
                   src={item.logo} // Replace with the actual logo URL
-                  style={{ width: 80, height: 80, borderRadius: 4, marginRight: 12 }}
+                  className='w-20 h-20 rounded mr-3'
                 />
-                <div style={{ width: '100%' }}>
+                <div className='w-full'>
                   <Flex align='center' justify='space-between' >
                     <Title level={5}
-                      style={{
-                        margin: 0,
-                        whiteSpace: 'nowrap',        // Keeps the text on a single line
-                        overflow: 'hidden',           // Hides any overflow
-                        textOverflow: 'ellipsis',     // Adds ellipsis for overflowed text
-                        maxWidth: "80%"                 // Optional: set max width to control where it cuts off
-                      }}>
+                      className='m-0 whitespace-nowrap overflow-hidden text-ellipsis max-w-[80%]'>
                       {item.title}
                     </Title>
-                    {/* <Like liked={item.saved} handleClick={() => alert('Liked')} /> */}
                   </Flex>
                   < Paragraph
-                    style={{ margin: 0 }}
+                    className='m-0 flex gap-2 items-center !mb-2'
                     type='secondary'
                     ellipsis={{
                       rows: 1,
                       tooltip: true
                     }}
                   >
-                    {item.company}
+                    <IoIosBusiness />{item.company}
                   </Paragraph>
-                  <Flex align='center' gap={3} style={{ color: '#ff4d4f', fontSize: 14, margin: '8px 0' }}>
-                    {item?.jobMinSalary?.toLocaleString('vi-VN')} - {item?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}  <div style={{ fontSize: 14 }}>/tháng</div>
+                  <Flex align='center' className='text-red-500 text-sm my-2 mx-0 flex items-center gap-2'>
+                    <FaRegMoneyBillAlt /><div className='flex'>{item?.jobMinSalary?.toLocaleString('vi-VN')} - {item?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}  <div className='text-sm'>/tháng</div></div>
                   </Flex>
 
                   < Paragraph
                     type='secondary'
-                    style={{
-                      margin: 0,
-                      whiteSpace: 'nowrap',        // Keeps the text on a single line
-                      overflow: 'hidden',           // Hides any overflow
-                      textOverflow: 'ellipsis',     // Adds ellipsis for overflowed text
-                      maxWidth: "80%"                  // Optional: set max width to control where it cuts off
-                    }}>
-                    {item.jobLocation}</Paragraph>
+                    className='m-0 whitespace-nowrap overflow-hidden text-ellipsis max-w-[80%] gap-2 flex items-center !mb-0'>
+                    <FaMapLocationDot />{item.jobLocation}</Paragraph>
                 </div>
               </Flex>
             </Card>

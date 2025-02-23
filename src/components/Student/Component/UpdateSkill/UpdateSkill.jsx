@@ -72,16 +72,16 @@ const UpdateSkill = () => {
         fetchStudentSkill();
     }, [listSkill]);
     return <>
-        <BoxContainer className={styles.box_shadow} padding="1rem" width={"100%"}>
-            <Card title={<Text className={styles.title}>Kĩ năng</Text>} extra={<EditOutlined className={styles.icon_edit} onClick={() => setOpenModalSkill(true)} />}>
+        <BoxContainer className="shadow" padding="1rem" width={"100%"}>
+            <Card title={<Text className="text-2xl font-semibold">Kĩ năng</Text>} extra={<EditOutlined className={styles.icon_edit} onClick={() => setOpenModalSkill(true)} />}>
                 <List size="small"
                     dataSource={studentSkill}
                     renderItem={(item, index) => (
                         <List.Item>
-                            <div className="w-100">
+                            <div className="w-full">
                                 <Row>
                                     <Col span={8}>
-                                        <Text className="f-16">{item.skillName}</Text>
+                                        <Text className="text-base">{item.skillName}</Text>
                                     </Col>
                                     <Col span={12}>
                                         <Rate disabled value={item.level} />
@@ -96,7 +96,7 @@ const UpdateSkill = () => {
         <Modal
             centered
             width={"40%"}
-            title={<Text className={styles.title}>Thêm kỹ năng</Text>}
+            title={<Text className="text-2xl font-semibold">Thêm kỹ năng</Text>}
             open={openModalSkill}
             onCancel={() => setOpenModalSkill(false)}
             footer={null}>
@@ -107,7 +107,7 @@ const UpdateSkill = () => {
                 autoComplete="off"
                 layout="inline"
             >
-                <Flex className="w-100" gap={16}>
+                <Flex className="w-full" gap={16}>
                     <Form.Item
                         name="skillId"
                         style={{ width: "45%" }}
@@ -133,16 +133,16 @@ const UpdateSkill = () => {
                     </Form.Item>
                 </Flex>
             </Form>
-            <Space direction="vertical" className={styles.space_list} size="large">
+            <Space direction="vertical" className="max-h-screen mt-8 w-full" size="large">
                 <List size="small"
                     split={false}
                     dataSource={studentSkill}
                     renderItem={(item, index) => (
                         <List.Item className={styles.list_item} key={index}>
-                            <div className="w-100">
+                            <div className="w-full">
                                 <Row >
                                     <Col span={8} className="align-content-center">
-                                        <Text className="f-16">{item.skillName}</Text>
+                                        <Text className="text-base">{item.skillName}</Text>
                                     </Col>
                                     <Col span={12} className="align-content-center">
                                         <Rate disabled value={item.level} />

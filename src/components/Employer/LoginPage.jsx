@@ -3,17 +3,16 @@ import { Link, useNavigate } from 'react-router-dom';
 import { employerLogin, setToken } from '../../services/apiService';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
 import { IoIosArrowRoundBack } from "react-icons/io";
-import { Button, Divider, Flex, Form, Input, Typography, message } from 'antd';
+import { Button, Divider, Flex, Form, Image, Input, Typography, message } from 'antd';
 import { useDispatch } from 'react-redux';
 import { loading, stop } from '../../redux/action/webSlice';
 import { setInfor } from '../../redux/action/userSlice';
 import { FcGoogle } from 'react-icons/fc';
-import { useGoogleLogin, GoogleLogin } from '@react-oauth/google';
-import { useRef } from 'react';
+import path from '../../constant/path';
+
 
 const { Text } = Typography;
 const LoginPage = () => {
-    const hiddenButton = useRef(null);
     const navigate = useNavigate();
     const [form] = Form.useForm();
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
@@ -51,27 +50,33 @@ const LoginPage = () => {
                 message.error(res.message);
             }
 
+
         } catch (error) {
             console.log(error);
         } finally {
             dispatch(stop());
         }
     }
-    const handleLoginWithGoogle = useGoogleLogin({
-        onSuccess: (res) => {
-            console.log(res);
-        },
-        onError: () => {
-            console.log("Login Failed");
-        },
-    });
+    const handleLoginWithGoogle = () => {
+        return;
+    }
     return (
-        <div className="login-page d-flex">
-            <div className="image col-lg-5 d-none d-lg-block"></div>
-            <div className="col-12 p-sm-5 p-0 col-lg-7">
-                <div className="login-form mt-4 p-5 shadow">
-                    <span className="d-flex justify-content-center title">Đăng Nhập</span>
-                    <div className="col-md-12 form-group mt-5 mb-4">
+        <div className="login-page flex">
+            <div className="image lg:w-5/12 hidden lg:block"></div>
+            <div className="w-full sm:p-5 p-0 lg:w-7/12 h-screen flex flex-col items-center justify-center">
+                <Link to='/home' className='flex items-center'>
+                    <Image
+                        className='logo'
+                        src={path.logo}
+                        alt=""
+                        preview={false}
+                        width={200}
+                        onClick={() => navigate('/home')}
+                    />
+                </Link>
+                <div className="login-form p-5 h-fit mt-10 shadow-2xl lg:w-7/12 ">
+                    <span className="flex justify-center title">Đăng Nhập</span>
+                    <div className="md:w-full form-group mt-5 mb-4">
                         <Form
                             size='large'
                             requiredMark={false}
@@ -112,20 +117,19 @@ const LoginPage = () => {
                                     required: true,
                                     message: 'Vui lòng nhập mật khẩu của bạn',
                                 }]}>
-                                <Input.Password prefix={<UnlockOutlined />} className='input-field' />
+                                <Input.Password prefix={<UnlockOutlined />} />
                             </Form.Item>
 
                             <Form.Item>
                                 <Flex justify='space-between'>
-                                    <Text>Bạn chưa đăng ký? <Link to='/employer/register'>Đăng ký ngay</Link></Text>
+                                    <Flex gap={7} align='center' justify='center'> <Text>Bạn chưa đăng ký?</Text> <Link to='/employer/register'>Đăng ký ngay</Link></Flex>
+
                                     <Link to='/forgot-password' target='_blank'>Quên mật khẩu?</Link>
                                 </Flex>
                             </Form.Item>
                             <Flex align='center' justify='space-between'>
-                                <Link to='/home' className='flex align-center'>
-                                    <IoIosArrowRoundBack className='fs-4' />Quay lại trang chủ
-                                </Link>
-                                <Button style={{ backgroundColor: "#1E4F94" }} size='large' className='w-25' type="primary" htmlType='submit'>
+
+                                <Button size='large' className='w-full' type="primary" htmlType='submit'>
                                     Đăng nhập
                                 </Button>
 
@@ -133,26 +137,15 @@ const LoginPage = () => {
                             <Divider className='mb-3'><div className='text-gray-500'>Hoặc</div></Divider>
 
                             <Form.Item className='mb-1'>
-                                <Button className='w-full rounded-full' type="default" onClick={handleLoginWithGoogle}>
-                                    <FcGoogle size={24} className='me-1' />Đăng nhập với Google
+                                <Button className='w-full' type="default" onClick={handleLoginWithGoogle}>
+                                    <FcGoogle size={24} className='mr-1' />Đăng nhập với Google
                                 </Button>
-                                {/* <div className='hidden' ref={hiddenButton}>
-                                    <GoogleLogin
-                                        onSuccess={credentialResponse => {
-                                            console.log(credentialResponse);
-                                        }}
-                                        onError={() => {
-                                            console.log('Login Failed');
-                                        }}
-                                    />
-                                </div> */}
-
                             </Form.Item>
                         </Form>
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 export default LoginPage;

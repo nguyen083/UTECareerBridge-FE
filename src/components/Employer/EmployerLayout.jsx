@@ -141,13 +141,13 @@ const EmployerLayout = () => {
                 </div>
                 <Menu
                     onSelect={(key) => handleMenu(key)}
-                    selectedKeys={[location.pathname]} theme='light' style={{ fontSize: "1rem" }} mode="inline" items={itemSider} background />
+                    selectedKeys={[location.pathname]} theme='light' className="text-base" mode="inline" items={itemSider} background />
             </Sider>
             <Layout className='site-layout'>
                 <Header
                     className='header-employer'>
-                    <Flex align='center' justify='space-between' className='h-100'>
-                        <MenuOutlined className='font-size' onClick={() => setCollapsed(!collapsed)} />
+                    <Flex align='center' justify='space-between' className='h-full'>
+                        <MenuOutlined className='text-base' onClick={() => setCollapsed(!collapsed)} />
                         <div>
                             <Menu
                                 className="menu-header"
@@ -165,20 +165,20 @@ const EmployerLayout = () => {
                         <Flex gap={20} align='center'>
                             <Tooltip title='Giỏ hàng' placement='bottom' color={COLOR.bgTooltipColor}>
                                 <Badge count={0}>
-                                    <Button onClick={() => navigate('/employer/cart')} className='btn-header rounded-circle btn-bell' size='large' type="text">
+                                    <Button onClick={() => navigate('/employer/cart')} className='btn-header rounded-full btn-bell' size='large' type="text">
                                         <ShoppingCartOutlined />
                                     </Button>
                                 </Badge>
                             </Tooltip>
                             {/* <Tooltip title='Thông báo' placement='bottom' color={COLOR.bgTooltipColor}>
                                 <Badge count={0}>
-                                    <Button className='btn-header rounded-circle btn-bell' size='large' type="text">
+                                    <Button className='btn-header rounded-full btn-bell' size='large' type="text">
                                         <BellOutlined />
                                     </Button>
                                 </Badge>
                             </Tooltip> */}
                             <Avatar size={'large'} className='avatar' icon={<UserOutlined />} src={avatar && <img src={avatar} alt='' />} />
-                            {/* <span className={`username d-none d-lg-inline`}>{name}</span> */}
+                            {/* <span className={`username hidden d-lg-inline`}>{name}</span> */}
                         </Flex>
                     </Flex>
                 </Header>

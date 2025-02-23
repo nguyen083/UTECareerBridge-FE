@@ -59,7 +59,7 @@ const Navigation = () => {
         };
     }, []);
     return (
-        <div className={`navigation d-block d-md-none`} style={{ zIndex: '90', width: "100%", bottom: `${show? '-29px':'-100px'}`}}>
+        <div className={`navigation block d-mhidden`} style={{ zIndex: '90', width: "100%", bottom: `${show ? '-29px' : '-100px'}` }}>
             <BottomNavigation showLabels value={value} onChange={(event, newValue) => { handleClickNavigate(newValue); }}>
                 <BottomNavigationAction icon={<HomeIcon />} />
                 <BottomNavigationAction icon={<WorkIcon />} />

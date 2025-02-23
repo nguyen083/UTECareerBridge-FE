@@ -82,11 +82,11 @@ const JobCardSmall = ({ job }) => {
         navigate('/job/' + key);
     }
     return (
-        <List.Item className='d-flex align-items-start border border-1 rounded-3 p-3 justify-content-between' style={{ maxWidth: '100%', overflow: 'hidden' }}>
+        <List.Item className='flex items-start border  rounded-md p-3 justify-between item-company shadow' style={{ maxWidth: '100%', overflow: 'hidden' }}>
             <List.Item.Meta
                 style={{ cursor: 'pointer' }}
                 onClick={() => handleClick(job.jobId)}
-                className='d-flex align-items-center w-100 meta-description'
+                className='flex items-center w-full meta-description'
                 avatar={<img
                     src={job.employerResponse.companyLogo} // Replace with the actual logo URL
                     style={{ width: 80, height: 80, borderRadius: 4, marginRight: 12 }}
@@ -94,29 +94,33 @@ const JobCardSmall = ({ job }) => {
                 description={<div>
                     <Title level={5}
 
-                        className="limit-text w-100"
+                        className="limit-text w-full"
                         ellipsis={{ tooltip: true, rows: 2 }}
                     >
                         {job.jobTitle}
                     </Title>
-                    < Text className='f-14 limit-text'>
-                        <IoIosBusiness size={16} /> &ensp;
-                        {job.employerResponse.companyName}</Text>
+                    < Flex gap={5}>
+                        <IoIosBusiness size={18} />
+                        <Text className='text-sm limit-text'>{job.employerResponse.companyName}</Text>
+                    </Flex>
 
 
-                    <Flex align='center' gap={3} style={{ color: '#ff4d4f', fontSize: 14, margin: '8px 0' }}>
-                        <FaRegMoneyBillAlt size={16} />&ensp;
+                    <Flex align='center' gap={5} style={{ color: '#ff4d4f', fontSize: 14, margin: '8px 0' }}>
+                        <FaRegMoneyBillAlt size={18} />
                         {job?.jobMinSalary?.toLocaleString('vi-VN')} - {job?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} <div style={{ fontSize: 14 }}>/tháng</div>
                     </Flex>
-                    < Paragraph
-                        type='secondary limit-text mb-0'
-                    >
-                        <FaMapLocationDot />&ensp;
-                        {job.jobLocation}</Paragraph>
+                    <Flex gap={5} >
+                        <Text type='secondary'>
+                            <FaMapLocationDot size={18} />
+                        </Text>
+                        < Paragraph
+                            type='secondary limit-text mb-0'
+                        >   {job.jobLocation}</Paragraph>
+                    </Flex>
                 </div>}
             />
             {/* <HeartOutlined /> */}
-        </List.Item>
+        </List.Item >
     );
 };
 const JobCardLarge = ({ job, disable = false }) => {
@@ -150,13 +154,12 @@ const JobCardLarge = ({ job, disable = false }) => {
                 />
                 <div>
                     <Title level={5}
-                        style={{
-                            cursor: 'pointer'
-                        }}
+                        className='cursor-pointer flex gap-3'
                     >
                         {job.jobTitle} {Lable(job.packageId)}
                     </Title>
                     < Paragraph
+                        className='flex items-center'
                         type='secondary'
                     // style={{
                     //     margin: 0,
@@ -173,7 +176,7 @@ const JobCardLarge = ({ job, disable = false }) => {
                             {job?.jobMinSalary?.toLocaleString('vi-VN')} - {job?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} <div style={{ fontSize: 14 }}>/tháng</div>
                         </Flex>
                         <Divider type='vertical' />
-                        < div
+                        < Text className='flex items-center'
                             type='secondary'
                         // style={{
                         //     margin: 0,
@@ -184,7 +187,7 @@ const JobCardLarge = ({ job, disable = false }) => {
                         // }}
                         >
                             <FaMapLocationDot />&ensp;
-                            {job.jobLocation}</div>
+                            {job.jobLocation}</Text>
                     </Flex>
                 </div>
             </Flex>

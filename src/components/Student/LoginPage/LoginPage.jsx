@@ -7,7 +7,7 @@ import { loading, stop } from '../../../redux/action/webSlice';
 import './LoginPage.scss'; // Import file SCSS
 import { useRedux } from '../../../utils/useRedux';
 import { FcGoogle } from "react-icons/fc";
-import { useGoogleLogin } from '@react-oauth/google';
+import path from '../../../constant/path';
 
 const { Title, Text } = Typography;
 
@@ -58,34 +58,28 @@ const LoginPage = () => {
             dispatch(stop());
         }
     };
-    const handleLoginWithGoogle = useGoogleLogin({
-        onSuccess: (response) => {
-            console.log("Access Token:", response.access_token);
-            // Gửi access_token về backend
-        },
-        onError: () => {
-            console.log("Login Failed");
-        },
-    });
+    const handleLoginWithGoogle = () => {
+        return;
+    }
     return (
         <Row className="full-height-row">
             <Col xs={24} lg={12} className="left-column">
                 <Flex vertical gap={20} justify='center' align='center' className='w-full'>
                     <Image
                         className='logo'
-                        src="https://res.cloudinary.com/utejobhub/image/upload/v1723888103/rg2do6iommv6wp840ixr.png"
+                        src={path.logo}
                         alt=""
                         preview={false}
                         width={200}
                         onClick={() => navigate('/home')}
                     />
                     <Card
-                        title={<Title level={3} className='my-auto text-center card-title'>Đăng nhập</Title>}
-                        className="login-card shadow">
+                        title={<Title level={3} className='mt-5 text-center card-title '>Đăng nhập</Title>}
+                        className="bg-card-color w-2/4 shadow-lg">
                         <Flex>
                             <Form
                                 form={form}
-                                className='w-100'
+                                className='w-full'
                                 name="login"
                                 onFinish={handleLogin}
                                 layout="vertical"
@@ -132,18 +126,17 @@ const LoginPage = () => {
                                     </Flex>
                                 </Form.Item>
                                 <Form.Item >
-                                    <Button className='w-100 login-button' type="primary" htmlType="submit">
+                                    <Button className='w-full login-button' type="primary" htmlType="submit">
                                         Đăng nhập
                                     </Button>
                                 </Form.Item>
                                 <Divider className='mb-3'><div className='text-gray-500'>Hoặc</div></Divider>
                                 <Form.Item >
-                                    <Button className='w-full rounded-full' type="default" onClick={handleLoginWithGoogle}>
+                                    <Button className='w-full' type="default" onClick={handleLoginWithGoogle}>
                                         <FcGoogle size={24} className='me-1' />Đăng nhập với Google
                                     </Button>
                                 </Form.Item>
-                                {/* <Divider className='mb-0' /> */}
-                                <Text className='text-center'>Bạn chưa có tài khoản? <Button className='p-0 f-14' type='link' onClick={() => navigate('/register')}>Đăng ký ngay</Button></Text>
+                                <Text className='text-center'>Bạn chưa có tài khoản? <Button className='p-0 text-sm' type='link' onClick={() => navigate('/register')}>Đăng ký ngay</Button></Text>
 
                             </Form>
                         </Flex>

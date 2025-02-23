@@ -59,7 +59,7 @@ const JobCategory = () => {
               key={index}
               onClick={() => handleCategoryClick(category.key)}
               hoverable
-              className="job-category__item box_shadow"
+              className="job-category__item shadow"
               style={{ textAlign: "center" }}
             >
               <div className="job-category__icon">{category.icon}</div>

@@ -27,12 +27,12 @@ const EmployerChangePassword = () => {
     };
     return (
         <>
-            <BoxContainer>
+            <BoxContainer className="shadow-md">
                 <div className="title1">
                     Đổi mật khẩu
                 </div>
             </BoxContainer>
-            <BoxContainer>
+            <BoxContainer className="shadow-md">
                 <Form onFinish={onFinish} layout="horizontal" initialValues={infor} size="large" requiredMark={false} autoComplete="false"
                     labelCol={{
                         md: { span: 4 },

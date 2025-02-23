@@ -14,12 +14,12 @@ const Banner = ({ ads }) => {
     <>
       <Carousel autoplay
         arrows
-        className="w-75 mx-auto"
+        className="w-3/4 mx-auto"
       >
         {ads.map((ad) => (
           <Card
             className="body-card"
-            key={ad.id}
+            key={ad?.employerResponse?.id}
             cover={<Image
               height={422}
               preview={false}
@@ -30,7 +30,7 @@ const Banner = ({ ads }) => {
             <Flex align="center" justify="space-between">
               <Flex gap={"1rem"} align="center" >
                 <Avatar shape="square" src={ad?.employerResponse.companyLogo} size={100} />
-                <Text className="fs-5 fw-bold company-name">{ad?.employerResponse?.companyName}</Text>
+                <Text className="text-2xl font-medium company-name">{ad?.employerResponse?.companyName}</Text>
               </Flex>
               <Button
                 onClick={() => handleNavigate(ad?.employerResponse?.id)}

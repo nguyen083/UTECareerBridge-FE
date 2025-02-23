@@ -67,7 +67,7 @@ const AvatarUploader = (props) => {
     };
 
     return (
-        <div style={{ textAlign: 'center' }}>
+        <div className='items-center flex justify-center'>
 
             <Upload
                 onChange={handleUpload}
@@ -79,6 +79,7 @@ const AvatarUploader = (props) => {
                 fileList={fileList}
                 showUploadList={false} // Không hiển thị danh sách file tải lên
                 style={{ border: '1px dashed #d9d9d9', padding: 16 }}
+                clssName="flex items-center justify-center"
             >
                 <Avatar
                     size={128}

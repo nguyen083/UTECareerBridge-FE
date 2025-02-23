@@ -120,14 +120,14 @@ const CreateEventPage = ({ open, setOpen, setIsFetching, item = null }) => {
                         <Form.Item label="Thời gian tổ chức" name="eventDate" placeholder="Chọn thời gian tổ chức"
                             rules={[{ required: true, message: 'Vui lòng chọn thời gian tổ chức!' }]}
                         >
-                            <DatePicker className="w-100" showTime />
+                            <DatePicker className="w-full" showTime />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
                         <Form.Item label="Số lượng người tối đa" name="maxParticipants"
                             rules={[{ required: true, message: 'Vui lòng nhập số lượng người tối đa!' }]}
                         >
-                            <InputNumber min={0} className="w-100" />
+                            <InputNumber min={0} className="w-full" />
                         </Form.Item>
                     </Col>
                 </Row>
@@ -167,7 +167,7 @@ const CreateEventPage = ({ open, setOpen, setIsFetching, item = null }) => {
 
                     >
                         {(fields, { add, remove }) => (
-                            <div className="border border-1 rounded-2 p-2">
+                            <div className="border rounded-2 p-2">
 
                                 {fields.map(({ key, fieldKey, name, field }) => (
                                     <Row gutter={24} key={key} align="top" justify="space-between" >
@@ -199,7 +199,7 @@ const CreateEventPage = ({ open, setOpen, setIsFetching, item = null }) => {
                                                 fieldKey={[fieldKey, 'timelineStart']}
                                                 rules={[{ required: true, message: 'Vui lòng nhập thời gian!' }]}
                                             >
-                                                <TimePicker format="HH:mm" className="w-100" />
+                                                <TimePicker format="HH:mm" className="w-full" />
                                             </Form.Item>
                                         </Col>
                                         <Col span={1}>

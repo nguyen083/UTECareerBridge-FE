@@ -4,10 +4,10 @@ import BoxContainer from '../../Generate/BoxContainer';
 const Applicant = () => {
     return (
         <>
-            <BoxContainer>
+            <BoxContainer className='shadow-md'>
                 <div className='title1'>Danh sách ứng viên</div>
             </BoxContainer>
-            <BoxContainer>
+            <BoxContainer className='shadow-md'>
                 <Outlet />
             </BoxContainer>
         </>

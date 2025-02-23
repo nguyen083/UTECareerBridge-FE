@@ -85,12 +85,14 @@ const App = () => {
 
           },
           Input: {
+            colorBorder: "rgba(0,0,0,0.4)",
             activeShadow: "0 0 0 2px rgba(68, 120, 192, 0.2)",
             colorTextDisabled: "#AAA8A9",
             // colorText: COLOR.textColor,
 
           },
           Select: {
+            colorBorder: "rgba(0,0,0,0.4)",
             // selectorBg: COLOR.backgroundColor,
             optionSelectedBg: COLOR.cardColor,
             optionSelectedColor: COLOR.textColor,
@@ -157,6 +159,12 @@ const App = () => {
           Modal: {
             titleFontSize: "1.125rem",
             fontSize: "1rem",
+          },
+          DatePicker: {
+            colorBorder: "rgba(0,0,0,0.4)",
+          },
+          InputNumber: {
+            colorBorder: "rgba(0,0,0,0.4)",
           }
         }
       }}>
