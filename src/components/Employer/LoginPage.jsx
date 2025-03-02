@@ -9,6 +9,7 @@ import { loading, stop } from '../../redux/action/webSlice';
 import { setInfor } from '../../redux/action/userSlice';
 import { FcGoogle } from 'react-icons/fc';
 import path from '../../constant/path';
+import { useEffect } from 'react';
 
 
 const { Text } = Typography;

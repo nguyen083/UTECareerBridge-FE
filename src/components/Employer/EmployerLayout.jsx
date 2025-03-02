@@ -25,11 +25,12 @@ import {
     MenuOutlined,
     ShoppingCartOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, Avatar, Flex, Badge, Button, Tooltip, message } from 'antd';
+import { Layout, Menu, Avatar, Flex, Badge, Button, Tooltip, message, Space, Typography } from 'antd';
 import { getInfor, logOut, removeToken } from '../../services/apiService.jsx';
 import { loading, stop } from '../../redux/action/webSlice.jsx';
 import COLOR from '../styles/_variables.jsx';
 const { Header, Content, Footer, Sider } = Layout;
+const { Text } = Typography;
 const siderStyle = {
     overflow: 'auto',
     height: '100vh',
@@ -187,8 +188,14 @@ const EmployerLayout = () => {
                         <Outlet />
                     </Flex>
                 </Content>
-                <Footer className='p-0'>
-                    <FooterComponent />
+                <Footer className='py-5 bg-card-color'>
+                    <Flex justify='center'>
+                        <Space size='small'>
+                            <Text style={{ color: '#1E4F94' }}>
+                                Copyright ©2024 UTE CAREERBRIDGE
+                            </Text>
+                        </Space>
+                    </Flex>
                 </Footer>
             </Layout>
         </Layout >

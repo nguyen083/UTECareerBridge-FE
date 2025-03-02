@@ -96,9 +96,7 @@ const EmployerChangePassword = () => {
                             }>
                         <Input.Password />
                     </Form.Item>
-                    <Form.Item wrapperCol={{
-                        offset: 21,
-                    }}>
+                    <Form.Item wrapperCol={{ span: 24, offset: 13 }}>
                         <Button loading={loading} htmlType="submit" type="primary">Lưu</Button>
                     </Form.Item>
                 </Form>

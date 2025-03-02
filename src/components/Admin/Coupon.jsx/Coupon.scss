@@ -17,9 +17,13 @@
     }
 
     .coupon-list-item {
-        padding      : 0;
-        border-bottom: 1px solid #f0f0f0;
-        transition   : transform 0.1s ease;
+        padding            : 0;
+        // border-block-end: none !important;
+        transition         : transform 0.1s ease;
+
+        .ant-list-item {
+            border-block-end: none !important;
+        }
 
         .more-icon {
             &:hover {
@@ -30,9 +34,9 @@
             margin-right: 1rem;
         }
 
-        &:last-child {
-            border-bottom: none;
-        }
+        // &:last-child {
+        //     border-bottom: none;
+        // }
 
         &:hover {
             transform: translateY(-1px);

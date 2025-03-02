@@ -38,3 +38,10 @@
         text-overflow     : ellipsis !important;
     }
 }
+
+.job-card-large {
+    .ant-card-body {
+        padding: 16px;
+        width  : 100%;
+    }
+}

@@ -351,7 +351,7 @@ const TableListUser = ({
             allowClear
             onSearch={handleSearch}
             style={{ width: "400px" }}
-            className="search-input"
+            className="search-input "
           />
           <Dropdown
             menu={{

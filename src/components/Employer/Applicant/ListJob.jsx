@@ -1,4 +1,4 @@
-import { Alert, Flex, List, Typography } from "antd";
+import { Alert, List, Typography } from "antd";
 import { JobCardLargeApplicant } from "../../Generate/JobCard";
 import { useEffect, useState } from "react";
 import { getJobsByStatus } from "../../../services/apiService";

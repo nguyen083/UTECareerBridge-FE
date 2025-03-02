@@ -241,7 +241,7 @@ const ListServicePackage = ({ fetch, setFetch }) => {
                                 }
                                 trigger={['click']}
                             >
-                                <MoreOutlined className="f-20 border" />
+                                <MoreOutlined className="f-20" />
                             </Dropdown>
                         ]}>
                             <List.Item.Meta

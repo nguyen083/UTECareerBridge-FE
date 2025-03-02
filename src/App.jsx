@@ -65,6 +65,7 @@ import './i18n.jsx';
 // import DetailResume from './components/Employer/DetailResume/DetailResume.jsx';
 // import Chat from './pages/Chat/Chat.jsx';
 import { lazy, Suspense } from "react"
+import GoogleAuthCallback from './components/Student/GoogleAuthCallback.jsx';
 
 const HomePage = lazy(() => import("./components/Student/HomePage/HomePage.jsx"));
 const Page404 = lazy(() => import("./components/User/Page404.jsx"));
@@ -326,6 +327,7 @@ const App = () => {
                 <Route path='/employer/login' element={<LoginPage />} />
                 <Route path='favorite' element={<FavoritePage />} />
                 <Route path='register' element={<RegisterPage />} />
+                {/* <Route path="/auth/google/callback" element={<StudentLogin />} /> */}
                 <Route path='*' element={<Page404 />} />
               </Routes>
             </Spin>

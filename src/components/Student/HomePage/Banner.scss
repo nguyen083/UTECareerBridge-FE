@@ -80,9 +80,15 @@
 //   }
 // }
 
+.ant-card-bordered {
+    border: none !important;
+}
+
 .body-card {
     background: rgb(63, 94, 251);
     background: linear-gradient(45deg, rgba(63, 94, 251, 0.7231267507002801) 0%, rgba(70, 165, 252, 0.6082808123249299) 100%);
+
+
 
     .company-name {
         color: white;

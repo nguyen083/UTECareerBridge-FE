@@ -85,6 +85,7 @@ const StudentLayout = () => {
                     />
                     <JobSearchBar onSearch={() => { }} />
                     <Flex gap={"1rem"}>
+                        <Button onClick={() => navigate('/chat')} className='rounded-full btn-header' size='large'>Nhắn tin</Button>
                         <Popover
                             overlayClassName='customize-popover'
                             placement='bottomRight'

@@ -49,17 +49,18 @@ const FeaturedJobs = ({ jobs }) => {
               {jobs.length > 0 && jobs.slice(i * 9, i * 9 + 9).map((job, index) => (
                 <div key={index}>
                   <Card
+
                     bordered={false}
-                    className="featured-jobs__item border-[#c0c0c069] border flex items-stretch"
+                    className="featured-jobs__item border-[#c0c0c069] border flex items-stretch "
                     hoverable
                     onClick={() => handleJobClick(job.jobId)}
                   >
-                    <div className="card-body">
+                    <div className="card-body ">
                       <div className="card-logo">
                         <img src={job?.employerResponse?.companyLogo} alt={job?.employerResponse?.companyName} />
                       </div>
                       <div className="card-details">
-                        <Flex justify='start' align="center" gap={3} className="mb-1">
+                        <Flex justify='space-between' align="center" gap={3} className="mb-1">
                           <Text className="font-bold text-base job-title">{job.jobTitle} </Text>
                           {Lable(job.packageId)}
                         </Flex>

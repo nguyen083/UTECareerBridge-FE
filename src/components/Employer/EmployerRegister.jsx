@@ -66,13 +66,12 @@ const EmployerRegister = () => {
         <Image
           className='logo'
           src={path.logo}
-          alt=""
           preview={false}
           width={200}
           onClick={() => navigate('/home')}
         />
         <Card style={{ backgroundColor: COLOR.cardColor }} className='shadow-lg w-3/4 mx-auto'>
-          <span className='title' style={{ color: COLOR.textColor }}>Đăng Ký</span>
+          <span className='title flex justify-center' style={{ color: COLOR.textColor }}>Đăng Ký</span>
           <Steps className='p-5 w-3/4 mx-auto' current={current} items={items} />
           <Form form={form1} onFinish={onFinish} name="validateOnlyform1" requiredMark={false} layout="vertical" autoComplete="off" size='large'>
             {steps[current].content === '1' && <div className='w-full mt-3'>
@@ -218,9 +217,7 @@ const EmployerRegister = () => {
                 </Row>
                 <Flex justify='end'>
                   {current < steps.length - 1 && (
-
                     <SubmitButton form={form2} onClick={next}>Tiếp tục</SubmitButton>
-
                   )}
                 </Flex>
               </Form>

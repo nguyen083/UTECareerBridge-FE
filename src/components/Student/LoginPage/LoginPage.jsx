@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Form, Input, Button, Typography, Row, Col, Flex, Image, Divider, Card, message } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setToken, studentLogin } from '../../../services/apiService';
 import { loading, stop } from '../../../redux/action/webSlice';
@@ -8,6 +8,7 @@ import './LoginPage.scss'; // Import file SCSS
 import { useRedux } from '../../../utils/useRedux';
 import { FcGoogle } from "react-icons/fc";
 import path from '../../../constant/path';
+import auth from '../../../services/api/auth';
 
 const { Title, Text } = Typography;
 
@@ -18,6 +19,10 @@ const LoginPage = () => {
     const phoneRegex = /^[0-9]{10,11}$/;
     const [form] = Form.useForm();
     const navigate = useNavigate();
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const code = queryParams.get("code");
+
 
     const checkUserName = (value) => {
         if (emailRegex.test(value)) {
@@ -28,6 +33,19 @@ const LoginPage = () => {
             return { "": value };
         }
     };
+
+    useEffect(() => {
+        if (code) {
+            const param = { code: code, login_type: 'google', role: 'student' };
+            auth.sendCodeToBE(param).then(res => {
+                console.log(res);
+                // navigate('/home');
+            }).catch(err => {
+                message.error(err);
+            });
+        }
+
+    });
 
     const handleLogin = async (values) => {
         const { username, ...rest } = values;
@@ -59,6 +77,11 @@ const LoginPage = () => {
         }
     };
     const handleLoginWithGoogle = () => {
+        auth.loginGoogle().then(res => {
+            window.open(res);
+        }).catch(err => {
+            message.error('Đã có lỗi xảy ra, vui lòng thử lại sau');
+        });
         return;
     }
     return (

@@ -137,24 +137,17 @@ const JobCardLarge = ({ job, disable = false }) => {
     return (
         <Card
             onClick={() => handleClick(job.jobId)}
-
             hoverable
-            style={{
-                width: "100%",
-                borderRadius: 10,
-                overflow: 'hidden',
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-            }}
-            bodyStyle={{ padding: 16 }}
+            className='job-card-large w-full rounded-xl overflow-hidden'
         >
-            <Flex align='center'>
+            <Flex align='center' className='w-full'>
                 <img
                     src={job.employerResponse.companyLogo} // Replace with the actual logo URL
                     style={{ width: 100, height: 100, borderRadius: 4, marginRight: 12 }}
                 />
-                <div>
+                <div className='w-full'>
                     <Title level={5}
-                        className='cursor-pointer flex gap-3'
+                        className='cursor-pointer flex w-full items-center justify-between'
                     >
                         {job.jobTitle} {Lable(job.packageId)}
                     </Title>
@@ -191,7 +184,7 @@ const JobCardLarge = ({ job, disable = false }) => {
                     </Flex>
                 </div>
             </Flex>
-        </Card>
+        </Card >
     );
 };
 

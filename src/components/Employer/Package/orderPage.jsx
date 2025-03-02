@@ -145,6 +145,8 @@ const OrderPage = () => {
       title: 'Thao tác',
       dataIndex: '',
       key: 'x',
+      width: '12%',
+      align: 'center',
       render: (_, record) => (
         <Button
 

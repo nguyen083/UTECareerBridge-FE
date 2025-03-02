@@ -12,9 +12,10 @@ const Banner = ({ ads }) => {
   };
   return (
     <>
-      <Carousel autoplay
+      <Carousel
+        // autoplay
         arrows
-        className="w-3/4 mx-auto"
+        className="w-3/4 mx-auto "
       >
         {ads.map((ad) => (
           <Card

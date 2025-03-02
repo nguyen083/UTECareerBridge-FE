@@ -49,7 +49,7 @@ const EmployerProfile = () => {
                     <Button disabled={!enableEdit} onClick={() => { setEnableEdit(false) }}>Chỉnh sửa</Button>
                 </Flex>
                 <Divider />
-                <Form onFinish={handleSubmit} form={form} size='large' layout='horizontal' requiredMark={false} autoComplete='false' disabled={enableEdit}
+                <Form onFinish={handleSubmit} form={form} size='large' layout='vertical' requiredMark={false} autoComplete='false' disabled={enableEdit}
                     initialValues={infor}>
                     <Row className="div-form-profile" gutter={16}>
                         <Col span={12}>
@@ -82,8 +82,8 @@ const EmployerProfile = () => {
                                 <Input allowClear />
                             </Form.Item>
                         </Col>
-                        <Col span={12}>
-                            <Form.Item name="gender" layout='horizontal' label="Giới tính" >
+                        <Col span={3}>
+                            <Form.Item name="gender" label="Giới tính" >
                                 <Radio.Group className='mb-0'>
                                     <Space direction="horizontal">
                                         <Radio value={0}>Nam</Radio>
@@ -92,7 +92,7 @@ const EmployerProfile = () => {
                                 </Radio.Group>
                             </Form.Item>
                         </Col>
-                        <Col span={12}>
+                        <Col span={9}>
                             <Form.Item name="dob" label={<span>Ngày sinh <span className='text-red-500'> *</span></span>} rules={[
                                 {
                                     required: true,
@@ -102,7 +102,7 @@ const EmployerProfile = () => {
                                 <DatePicker className='w-full' format={"DD/MM/YYYY"} />
                             </Form.Item>
                         </Col>
-                        <Col span={24}>
+                        <Col span={12}>
                             <Form.Item name="phoneNumber" label={<span>Số điện thoại <span className='text-red-500'> *</span></span>}
                                 rules={[
                                     {

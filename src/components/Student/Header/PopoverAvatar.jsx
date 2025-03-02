@@ -31,7 +31,7 @@ const CustomizePopover = ({ setIndex, setOpen }) => {
     const infor = useSelector(state => state.student);
     return (
         <>
-            <Flex justify="space-between" align="center">
+            <Flex justify="space-between" align="center" gap={15}>
                 <Flex vertical>
                     <Typography.Text>
                         {infor.lastName} {infor.firstName}
@@ -40,7 +40,7 @@ const CustomizePopover = ({ setIndex, setOpen }) => {
                         {infor.email}
                     </Typography.Text>
                 </Flex>
-                <Button className="update-infor-btn" onClick={() => { navigate("/profile"); setOpen(false) }}> Cập nhật hồ sơ</Button>
+                <Button size="small" className="update-infor-btn" onClick={() => { navigate("/profile"); setOpen(false) }}> Cập nhật hồ sơ</Button>
             </Flex>
             <Divider className="my-1" />
             <Menu

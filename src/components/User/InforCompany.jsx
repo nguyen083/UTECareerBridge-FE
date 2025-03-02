@@ -10,6 +10,7 @@ import JobList from "../Generate/JobList";
 import { CheckOutlined } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { UserPlus } from "lucide-react";
+import './InforCompany.scss';
 
 const { Title, Text, Link } = Typography;
 
@@ -62,7 +63,7 @@ const InforCompany = () => {
         },
         {
             key: '7',
-            children: <Flex vertical gap={"0.5rem"}> {company?.companyDescription && <Title level={4}>Mô tả chi tiết</Title>}<HtmlContent htmlString={company?.companyDescription} /></Flex>,
+            children: <Flex vertical gap={"0.5rem"}> {company?.companyDescription && <Title level={5}>Mô tả chi tiết</Title>}<HtmlContent htmlString={company?.companyDescription} /></Flex>,
         },
 
     ];
@@ -231,7 +232,7 @@ const InforCompany = () => {
                                 <BoxContainer padding="1rem">
                                     <Text className="title1">Về chúng tôi</Text>
                                 </BoxContainer>
-                                <Descriptions labelStyle={{ fontWeight: 550 }} size="middle" items={items} column={1} />
+                                <Descriptions labelStyle={{ fontWeight: 550, color: "black" }} size="middle" items={items} column={1} />
                                 <Flex gap={"1rem"} vertical>
                                     <BoxContainer padding="1rem">
                                         <Text className="title1">Video</Text>

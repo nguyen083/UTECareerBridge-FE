@@ -93,8 +93,8 @@ const getJobsByStatus = async (values) => {
 };
 const putHideJob = async (id, status) => {
 
-  const formData = objectToFormData({ jobStatus: status });
-  return axios.put(`jobs/employer/job-posting/hide/${id}`, formData);
+  // const formData = objectToFormData({ jobStatus: status });
+  return axios.put(`jobs/employer/job-posting/hide/${id}?jobStatus=${status}`);
 }
 const deleteJob = async (id) => {
 
@@ -154,8 +154,8 @@ const getAllCV = async () => {
 }
 const applyJob = async (values) => {
 
-  const formData = objectToFormData(values);
-  return axios.post('students/jobs/apply', formData);
+  const param = new URLSearchParams(values).toString();
+  return axios.post(`students/jobs/apply?${param}`,);
 }
 const getStatisticsByJobCategory = async (values) => {
 
@@ -213,8 +213,9 @@ const getSkillStudent = async () => {
 }
 const addSkillStudent = async (values) => {
 
-  const formData = objectToFormData(values);
-  return axios.post('students/skills/add', formData);
+  // const formData = objectToFormData(values);
+  const param = new URLSearchParams(values).toString();
+  return axios.post(`students/skills/add?${param}`);
 }
 const deleteSkillStudent = async (id) => {
 
@@ -329,8 +330,9 @@ const getJobsNewest = async () => {
   return axios.get(`jobs/search?keyword=&page=0&limit=30&sorting=newest`);
 }
 const updateQuantityPackage = async (values) => {
-  const formData = objectToFormData(values);
-  return axios.post(`carts/add-to-cart`, formData);
+  // const formData = objectToFormData(values);
+  const param = new URLSearchParams(values).toString();
+  return axios.post(`carts/add-to-cart${param}`)
 }
 const createOrder = async (couponCode) => {
   const formData = new FormData();
@@ -340,8 +342,9 @@ const createOrder = async (couponCode) => {
   return axios.post(`orders/create-order`, formData);
 }
 const createPayment = async (orderId) => {
-  const formData = objectToFormData({ orderId });
-  return axios.post(`orders/create-payment`, formData);
+  // const formData = objectToFormData({ orderId });
+  const param = new URLSearchParams({ orderId }).toString();
+  return axios.post(`orders/create-payment${param}`);
 }
 const getOrderList = async (page, pageSize) => {
   return axios.get(`orders/get-orders?page=${page}&limit=${pageSize}`);
@@ -400,6 +403,9 @@ const deleteCoupon = async (id) => {
 }
 const registerEmployer = async (values) => {
   return axios.post('employers/register', values);
+}
+const loginGoogle = async () => {
+  return axios.get('users/auth/social-login?login_type=google');
 }
 export {
   uploadCV,
@@ -498,5 +504,6 @@ export {
   createCoupon,
   updateCoupon,
   deleteCoupon,
-  registerEmployer
+  registerEmployer,
+  loginGoogle
 }

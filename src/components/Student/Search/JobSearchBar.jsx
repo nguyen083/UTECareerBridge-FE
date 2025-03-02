@@ -1,4 +1,5 @@
 import { Input } from "antd";
+import './JobSearchBar.scss';
 import { setKeyword } from "../../../redux/action/webSlice";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -23,12 +24,11 @@ const JobSearchBar = () => {
   };
 
   return (
-    <div style={{ display: 'flex', }}>
+    <div className="flex search-input">
       <Input.Search
-        prefix={<SearchOutlined />}
         placeholder="Tìm kiếm công việc, kỹ năng..."
         allowClear
-        enterButton="Tìm kiếm"
+        enterButton={<SearchOutlined />}
         size="large"
         onSearch={(value) => handleSearch(value)}
         style={{ width: '500px' }}
