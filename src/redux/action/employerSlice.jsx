@@ -60,7 +60,8 @@ export const employerSlice = createSlice({
             });
         },
         setBusinessCertificate: (state, action) => {
-            state.businessCertificate = action.payload.data;
+            console.log("action.payload: ", action.payload);
+            state.businessCertificate = action.payload;
         },
         setInitEmployer: (state, action) => {
             state.phoneNumber = null;

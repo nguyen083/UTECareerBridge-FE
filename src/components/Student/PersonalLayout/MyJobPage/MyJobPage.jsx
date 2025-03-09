@@ -9,7 +9,6 @@ import { EyeOutlined } from "@ant-design/icons";
 const { Text } = Typography;
 
 
-
 const AppliedJob = () => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);

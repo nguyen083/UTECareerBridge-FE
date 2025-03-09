@@ -22,6 +22,7 @@ const LoginPage = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const code = queryParams.get("code");
+    const state = queryParams.get("state");
 
 
     const checkUserName = (value) => {
@@ -36,16 +37,21 @@ const LoginPage = () => {
 
     useEffect(() => {
         if (code) {
-            const param = { code: code, login_type: 'google', role: 'student' };
+            const param = { code, login_type: 'google', role: 'student', state };
             auth.sendCodeToBE(param).then(res => {
-                console.log(res);
-                // navigate('/home');
+                if (res.status === 'OK') {
+                    message.success(res.message);
+                    setToken(res.data.token, res.data.refreshToken); // set token
+                    login(res); // set user info to redux
+                    navigate('/home');
+                }
+
             }).catch(err => {
                 message.error(err);
             });
         }
 
-    });
+    }, []);
 
     const handleLogin = async (values) => {
         const { username, ...rest } = values;
@@ -77,7 +83,7 @@ const LoginPage = () => {
         }
     };
     const handleLoginWithGoogle = () => {
-        auth.loginGoogle().then(res => {
+        auth.loginGoogle('student').then(res => {
             window.open(res);
         }).catch(err => {
             message.error('Đã có lỗi xảy ra, vui lòng thử lại sau');

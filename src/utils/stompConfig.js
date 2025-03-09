@@ -23,17 +23,14 @@ export const connectStomp = (onConnected, onError) => {
         heartbeatOutgoing: 4000,
 
         onConnect: (frame) => {
-            console.log('Kết nối thành công:', frame);
             if (onConnected) onConnected(client);
         },
 
         onStompError: (frame) => {
-            console.error('Lỗi STOMP:', frame);
             if (onError) onError(frame);
         },
 
         onWebSocketClose: () => {
-            console.log('WebSocket đã đóng kết nối');
         }
     });
 
@@ -45,7 +42,6 @@ export const connectStomp = (onConnected, onError) => {
 export const disconnectStomp = () => {
     if (stompClient) {
         stompClient.deactivate();
-        console.log('Đã ngắt kết nối STOMP');
     }
 };
 

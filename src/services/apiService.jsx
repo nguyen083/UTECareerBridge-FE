@@ -60,15 +60,13 @@ const updateEmployerProfile = async (values) => {
   return axios.post('employers/update-profile', values);
 }
 const updateEmployerCompanyProfile = async (values) => {
-
-  const formData = objectToFormData(values);
-  return axios.post('employers/update-company-profile', formData);
+  console.log("values: ", values);
+  return axios.post('employers/update-company-profile', values);
 }
 
 const updateBusinessCertificate = async (values) => {
-
-  const formData = objectToFormData(values);
-  return axios.post('employers/legal-info', formData);
+  console.log("values: ", values);
+  return axios.post('employers/legal-info', values);
 }
 const getAllJobCategories = async () => {
   return axios.get('job-categories/get-all-job-categories');

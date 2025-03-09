@@ -1,6 +1,5 @@
 import { Button, Flex, Form, Image, Modal, message } from "antd";
 import BoxContainer from "../../Generate/BoxContainer";
-import { PicturesWall } from "../../Generate/Upload";
 import React, { useState } from "react";
 import IconLoading from "../../Generate/IconLoading";
 import { useSelector, useDispatch } from "react-redux";
@@ -9,7 +8,7 @@ import { setBusinessCertificate } from "../../../redux/action/employerSlice";
 import { UploadImage } from "../../Student/Component/UploadAvatar";
 const BusinessCertificate = () => {
     const [loading, setLoading] = useState(false);
-    const defaultImage = useSelector(state => state.employer.businessCertificate);
+    const businessCertificate = useSelector(state => state.employer.businessCertificate);
     const [change, setChange] = useState(false);
     const dispatch = useDispatch();
     const [form] = Form.useForm();
@@ -22,8 +21,8 @@ const BusinessCertificate = () => {
                 setLoading(false)
                 setChange(false);
                 message.success(res.message)
-                dispatch(setBusinessCertificate(res));
-                form.resetFields();
+                console.log(res.data);
+                dispatch(setBusinessCertificate(res.data));
             }
             else {
                 setLoading(false);
@@ -57,7 +56,7 @@ const BusinessCertificate = () => {
             </BoxContainer>
             <BoxContainer className="shadow-md">
                 <Flex gap="1rem" align="center" >
-                    < Form className=" w-full md:w-7/12" onChange={onChange} form={form} onFinish={onFinish} layout="vertical" size="large" initialValues={{ businessCertificate: defaultImage }} >
+                    < Form className=" w-full md:w-7/12" onChange={onChange} form={form} onFinish={onFinish} layout="vertical" size="large" initialValues={{ businessCertificate }} >
                         <Form.Item name="businessCertificate" label="Ảnh giấy chứng nhận kinh doanh" tooltip="Kéo thả hoặc nhấp chọn để tải ảnh lên">
                             <UploadImage />
                         </Form.Item>

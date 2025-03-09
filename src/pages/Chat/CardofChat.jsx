@@ -2,6 +2,8 @@ import React, { useLayoutEffect, useState } from 'react';
 import { Avatar, Badge, Button, Card, Divider, Empty, Flex, List, Skeleton, Typography } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useTranslation } from 'react-i18next';
+import { getApplyJobByStudent } from '../../services/apiService';
+import { useNavigate } from 'react-router-dom';
 
 const { Text } = Typography;
 const customScrollbarStyle = {
@@ -34,22 +36,23 @@ const customScrollbarCSS = `
 `;
 const ListJob = ({ className = "" }) => {
     const [loading, setLoading] = useState(false);
+    const [total, setTotal] = useState(0);
     const [data, setData] = useState([]);
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const loadMoreData = () => {
         if (loading) {
             return;
         }
         setLoading(true);
-        fetch('https://randomuser.me/api/?results=11&inc=name,gender,email,nat,picture&noinfo')
-            .then((res) => res.json())
-            .then((body) => {
-                setData([...data, ...body.results]);
-                setLoading(false);
-            })
-            .catch(() => {
-                setLoading(false);
-            });
+        getApplyJobByStudent().then((response) => {
+            setData(response.data.content);
+            setTotal(response.data.totalElements);
+        }).catch((error) => {
+            console.error('Error fetching data:', error);
+        }).finally(() => {
+            setLoading(false);
+        });
     };
     useLayoutEffect(() => {
         loadMoreData();
@@ -64,7 +67,7 @@ const ListJob = ({ className = "" }) => {
             <InfiniteScroll
                 dataLength={data.length}
                 next={loadMoreData}
-                hasMore={data.length < 50}
+                hasMore={data.length < total}
                 loader={
                     <Skeleton
                         avatar
@@ -83,15 +86,13 @@ const ListJob = ({ className = "" }) => {
                     split={false}
                     size='large'
                     renderItem={(item) => (
-                        <List.Item key={item.email}>
+                        <List.Item key={item.applicationId}>
                             <List.Item.Meta
-                                avatar={<Avatar size={50} src={item.picture.large} />} // logo công ty
-                                // title={<a href="https://ant.design">{item.name.last}</a>} //tên bài tuyển dụng
-                                title={<div className='max-w-52 truncate'><a href="https://ant.design" target='_blank'>Tuyển dụng nhân viên</a></div>}
-                                // description={item.email} //tên công ty
-                                description={<div className='max-w-52 truncate'><Text type='secondary'>Công ty ABCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</Text></div>}
+                                avatar={<Avatar size={50} src={item.companyLogo} />}
+                                title={<div className='max-w-52 truncate'><a href="https://ant.design" target='_blank'>{item.jobTitle}</a></div>}
+                                description={<div className='max-w-52 truncate'><Text type='secondary'>{item.companyName}</Text></div>}
                             />
-                            <Button className='border-0 rounded-full text-blue-600 bg-blue-200' type='text'>{t('chat')}</Button>
+                            <Button className='border-0 rounded-full text-blue-600 bg-blue-200' type='text' onClick={() => navigate(`/chat/${item.companyId}`)}>{t('chat')}</Button>
                         </List.Item>
                     )}
                 />
