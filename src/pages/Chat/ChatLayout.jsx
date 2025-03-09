@@ -24,14 +24,40 @@ const ChatLayout = () => {
     const senderId = useSelector((state) => state.user.userId);
     const token = localStorage.getItem("accessToken");
     const divRef = useRef(null);
+    const currentConversationRef = useRef(null);
+
+    const getConversationId = (id1, id2) => {
+        return parseInt(id1) < parseInt(id2) ? `${id1}-${id2}` : `${id2}-${id1}`;
+    };
 
     const onConnected = useCallback((client) => {
         setStompClient(client);
-        client.subscribe('/user/' + senderId + '/queue/messages', (message) => {
-            const receivedMessage = JSON.parse(message.body);
-            setMessages((prevMessages) => [...prevMessages, receivedMessage]);
-        });
-    }, [recipientId]);
+
+        if (recipientId) {
+            const conversationId = getConversationId(senderId, recipientId);
+            currentConversationRef.current = conversationId;
+
+            client.subscribe('/topic/conversation/' + conversationId, (message) => {
+                const receivedMessage = JSON.parse(message.body);
+                setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+            });
+        }
+    }, [recipientId, senderId]);
+
+    useEffect(() => {
+        if (recipientId) {
+            chat.loadMessages({ user2Id: recipientId, user1Id: senderId }, token)
+                .then((res) => {
+                    setMessages(res);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+
+
+        }
+    }, [recipientId, senderId]);
+
 
     useEffect(() => {
         if (divRef !== null) {
@@ -70,7 +96,7 @@ const ChatLayout = () => {
         };
 
         chat.sendMessage(stompClient, message);
-        setMessages((prevMessages) => [...prevMessages, message]);
+
         setNewMessage("");
     }
     const changeLanguage = () => {
