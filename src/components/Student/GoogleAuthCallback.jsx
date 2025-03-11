@@ -1,44 +1,47 @@
 import { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import auth from "../../services/api/auth";
+import { message } from "antd";
+import { setToken } from "../../services/apiService";
+import { useRedux } from "../../utils/useRedux";
 
 const GoogleAuthCallback = () => {
-    const navigate = useNavigate();
     const location = useLocation();
+    const queryParams = new URLSearchParams(location.search);
+    const code = queryParams.get("code");
+    const state = queryParams.get("state");
+    const navigate = useNavigate();
+    const { login } = useRedux();
 
     useEffect(() => {
-        const urlParams = new URLSearchParams(location.search);
-        const code = urlParams.get("code");
-
         if (code) {
-            console.log("Google Auth Code:", code);
-
-            // Gửi code lên backend để xử lý đăng nhập
-            fetch("http://localhost:5000/api/auth/google", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ code })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Server Response:", data);
-
-                    // Lưu token vào localStorage hoặc context
-                    if (data.token) {
-                        localStorage.setItem("token", data.token);
+            const param = { code, login_type: 'google', state };
+            const role = atob(state);
+            auth.sendCodeToBE(param).then(res => {
+                console.log(res);
+                if (res.status === 'OK') {
+                    message.success(res.message);
+                    setToken(res.data.token, res.data.refreshToken);
+                    login(res);
+                    if (role === 'student') {
+                        navigate('/home', { replace: true });
+                    } else if (role === 'employer') {
+                        navigate('/employer', { replace: true });
                     }
-
-                    // Điều hướng về trang chính hoặc dashboard
-                    navigate("/dashboard");
-                })
-                .catch(error => {
-                    console.error("Error:", error);
-                    navigate("/login"); // Nếu lỗi, quay về trang đăng nhập
-                });
-        } else {
-            navigate("/login"); // Nếu không có code, quay về trang login
+                } else {
+                    message.error(res.message);
+                    if (role === 'student') {
+                        navigate('/login', { replace: true });
+                    } else if (role === 'employer') {
+                        navigate('/employer/login', { replace: true });
+                    }
+                }
+            }).catch(err => {
+                message.error(err);
+            });
         }
-    }, [location, navigate]);
 
+    }, []);
     return null; // Không hiển thị gì trên UI
 };
 

@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Form, Input, Button, Typography, Row, Col, Flex, Image, Divider, Card, message } from 'antd';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setToken, studentLogin } from '../../../services/apiService';
 import { loading, stop } from '../../../redux/action/webSlice';
@@ -13,16 +13,12 @@ import auth from '../../../services/api/auth';
 const { Title, Text } = Typography;
 
 const LoginPage = () => {
-    const { login } = useRedux();
     const dispatch = useDispatch();
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const phoneRegex = /^[0-9]{10,11}$/;
     const [form] = Form.useForm();
     const navigate = useNavigate();
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const code = queryParams.get("code");
-    const state = queryParams.get("state");
+
 
 
     const checkUserName = (value) => {
@@ -35,23 +31,6 @@ const LoginPage = () => {
         }
     };
 
-    useEffect(() => {
-        if (code) {
-            const param = { code, login_type: 'google', role: 'student', state };
-            auth.sendCodeToBE(param).then(res => {
-                if (res.status === 'OK') {
-                    message.success(res.message);
-                    setToken(res.data.token, res.data.refreshToken); // set token
-                    login(res); // set user info to redux
-                    navigate('/home');
-                }
-
-            }).catch(err => {
-                message.error(err);
-            });
-        }
-
-    }, []);
 
     const handleLogin = async (values) => {
         const { username, ...rest } = values;
@@ -85,7 +64,7 @@ const LoginPage = () => {
     const handleLoginWithGoogle = () => {
         auth.loginGoogle('student').then(res => {
             window.open(res);
-        }).catch(err => {
+        }).catch(() => {
             message.error('Đã có lỗi xảy ra, vui lòng thử lại sau');
         });
         return;

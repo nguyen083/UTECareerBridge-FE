@@ -2,14 +2,13 @@ import './LoginPage.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { employerLogin, setToken } from '../../services/apiService';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
-import { IoIosArrowRoundBack } from "react-icons/io";
 import { Button, Divider, Flex, Form, Image, Input, Typography, message } from 'antd';
 import { useDispatch } from 'react-redux';
 import { loading, stop } from '../../redux/action/webSlice';
 import { setInfor } from '../../redux/action/userSlice';
 import { FcGoogle } from 'react-icons/fc';
 import path from '../../constant/path';
-import { useEffect } from 'react';
+import auth from '../../services/api/auth';
 
 
 const { Text } = Typography;
@@ -59,7 +58,11 @@ const LoginPage = () => {
         }
     }
     const handleLoginWithGoogle = () => {
-        return;
+        // auth.loginGoogle('employer').then(res => {
+        //     window.open(res);
+        // }).catch(() => {
+        //     message.error('Đã có lỗi xảy ra, vui lòng thử lại sau');
+        // });
     }
     return (
         <div className="login-page flex">
