@@ -6,10 +6,14 @@ export default defineConfig({
   base: '/',
   plugins: [react()],
   server: {
-    host: '0.0.0.0',
     port: 3000, // Đặt cổng là 3000
+    proxy: {
+      '/api': {
+        target: env.VITE_BASE_URL_BE,
+        changeOrigin: true,
+        rewrite: path => path.replace(/^\/api/, ''),
+      },
+    },
   },
-  // css: {
-  //   postcss: './postcss.config.js',
-  // }
+
 })
