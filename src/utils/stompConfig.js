@@ -3,13 +3,11 @@ import SockJS from 'sockjs-client';
 
 let stompClient = null;
 
+
 export const connectStomp = (onConnected, onError) => {
     const client = new Client({
         // Sử dụng SockJS làm transport layer
-        webSocketFactory: () => new SockJS('http://localhost:8080/ws'), // Đường dẫn đến endpoint WebSocket của server
-
-        // Hoặc sử dụng WebSocket trực tiếp nếu không cần SockJS
-        // brokerURL: 'ws://localhost:8080/ws',
+        webSocketFactory: () => new SockJS('/ws'), // Đường dẫn đến endpoint WebSocket của server
 
         connectHeaders: {
             // Thêm headers nếu cần thiết, ví dụ để xác thực

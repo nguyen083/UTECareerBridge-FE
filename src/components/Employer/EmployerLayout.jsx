@@ -5,7 +5,7 @@ import { LiaBriefcaseSolid } from "react-icons/lia";
 import { FaRegNewspaper } from "react-icons/fa";
 import { BsTicketPerforated } from "react-icons/bs";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { MdManageAccounts } from "react-icons/md";
+import { MdManageAccounts, MdOutlineMessage } from "react-icons/md";
 import { TiBusinessCard } from "react-icons/ti";
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -51,7 +51,7 @@ const itemSider = [
     { key: '/employer/list-resumes', icon: <SolutionOutlined />, label: 'Hồ sơ' },
     { key: '/employer/list-order', icon: <AiOutlinePayCircle />, label: 'Đơn hàng' },
     // { key: '/employer/interview', icon: <IoIosPeople />, label: 'Phỏng vấn' },
-    // { key: '/employer/message', icon: <MdOutlineMessage />, label: 'Tin nhắn' },
+    { key: '/employer/chat', icon: <MdOutlineMessage />, label: 'Tin nhắn' },
     // { key: '/employer/notification', icon: <BellOutlined />, label: 'Thông báo' },
     { key: '/employer/buy-service', icon: <BsTicketPerforated />, label: 'Gói dịch vụ' },
     { key: 'logout', icon: <LogoutOutlined />, label: 'Đăng xuất' },

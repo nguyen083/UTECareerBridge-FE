@@ -8,6 +8,7 @@ import viVN from 'antd/lib/locale/vi_VN'; // Locale của Ant Design
 import './i18n.jsx';
 import { lazy, Suspense } from "react"
 import GoogleAuthCallback from './components/Student/GoogleAuthCallback.jsx';
+import ChatEmployerLayout from './components/Employer/Chat/ChatEmployerLayout.jsx';
 
 const HomePage = lazy(() => import("./components/Student/HomePage/HomePage.jsx"));
 const Page404 = lazy(() => import("./components/User/Page404.jsx"));
@@ -199,12 +200,9 @@ const App = () => {
                   <Route path="view/company/:id" element={<InforCompany />} />
                   <Route path='view/job/:id' element={<ViewJob />} />
                 </Route>
-
-
                 <Route path='employer/register' element={<BackgroundAndForm />}>
                   <Route index element={<EmployerRegister />} />
                 </Route>
-
                 <Route path='employer' element={<EmployerLayout />} >
                   <Route path="" element={<Navigate to="dashboard" replace />} />
                   <Route index path='dashboard' element={<DashBoard />} />
@@ -223,6 +221,7 @@ const App = () => {
                   <Route path='applicant-job/:id' element={<ViewDetailApplicant />} />
                   <Route path='business-certificate' element={<BusinessCertificate />} />
                   <Route path='post-job' element={<EmployerPostJob />} />
+                  <Route path='chat' element={<ChatEmployerLayout />} />
                   <Route path='buy-service' element={<ServiceMarketplace />} />
                   <Route path='cart' element={<ShoppingCart />} />
                   <Route path='manage-list-jobs' element={<ManageListJobs />} />

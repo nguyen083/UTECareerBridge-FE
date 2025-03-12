@@ -13,6 +13,7 @@ import auth from '../../../services/api/auth';
 const { Title, Text } = Typography;
 
 const LoginPage = () => {
+    const { login } = useRedux();
     const dispatch = useDispatch();
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const phoneRegex = /^[0-9]{10,11}$/;
