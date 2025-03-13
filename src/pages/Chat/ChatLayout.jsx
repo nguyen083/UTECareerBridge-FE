@@ -161,8 +161,6 @@ const ChatLayout = () => {
                         <div className="w-full flex-1 overflow-y-auto flex flex-col justify-center">
                             <Empty image={Empty.PRESENTED_IMAGE_DEFAULT} description={t('no_message')} />
                         </div>}
-
-
                 </Col>
                 <Col span={6} className="min-h-full">
                     <Space size={"large"} className=" w-full py-5 ps-3" direction="vertical">

@@ -48,9 +48,7 @@ const StudentLayout = () => {
     const navigate = useNavigate();
     const infor = useSelector(state => state?.user);
     const dispatch = useDispatch();
-    // const {
-    //     token: { colorBgContainer, borderRadiusLG },
-    // } = theme.useToken();
+    const token = localStorage.getItem('accessToken');
 
     useEffect(() => {
         if (infor.role === 'student') {
@@ -85,7 +83,7 @@ const StudentLayout = () => {
                     />
                     <JobSearchBar onSearch={() => { }} />
                     <Flex gap={"1rem"}>
-                        <Button onClick={() => navigate('/chat')} className='rounded-full btn-header' size='large'>Nhắn tin</Button>
+                        <Button onClick={() => { token ? navigate('/chat') : navigate('/login') }} className='rounded-full btn-header' size='large'>Nhắn tin</Button>
                         <Popover
                             overlayClassName='customize-popover'
                             placement='bottomRight'

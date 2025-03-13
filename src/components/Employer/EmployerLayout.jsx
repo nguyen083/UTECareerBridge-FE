@@ -133,9 +133,11 @@ const EmployerLayout = () => {
     };
     return (
         <Layout hasSider>
-            <Sider onBreakpoint={(broken) => {
-                setCollapsed(broken);
-            }} trigger={null} collapsible collapsed={collapsed} breakpoint='lg' width={250} style={siderStyle} theme='light' /*collapsible*/ >
+            <Sider
+                className='!border-r'
+                onBreakpoint={(broken) => {
+                    setCollapsed(broken);
+                }} trigger={null} collapsible collapsed={collapsed} breakpoint='lg' width={250} style={siderStyle} theme='light' /*collapsible*/ >
                 <div className="demo-logo-vertical" >
                     <img src={defaultImage} alt="logo"
                         style={{ width: "80%", height: "80%", objectFit: "contain" }} />
@@ -188,7 +190,7 @@ const EmployerLayout = () => {
                         <Outlet />
                     </Flex>
                 </Content>
-                <Footer className='py-5 bg-card-color'>
+                {/* <Footer className='py-5 bg-card-color'>
                     <Flex justify='center'>
                         <Space size='small'>
                             <Text style={{ color: '#1E4F94' }}>
@@ -196,7 +198,7 @@ const EmployerLayout = () => {
                             </Text>
                         </Space>
                     </Flex>
-                </Footer>
+                </Footer> */}
             </Layout>
         </Layout >
     );

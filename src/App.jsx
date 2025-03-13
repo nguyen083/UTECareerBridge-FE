@@ -7,9 +7,10 @@ import COLOR from './components/styles/_variables.jsx';
 import viVN from 'antd/lib/locale/vi_VN'; // Locale của Ant Design
 import './i18n.jsx';
 import { lazy, Suspense } from "react"
-import GoogleAuthCallback from './components/Student/GoogleAuthCallback.jsx';
-import ChatEmployerLayout from './components/Employer/Chat/ChatEmployerLayout.jsx';
 
+
+const GoogleAuthCallback = lazy(() => import("./components/Student/GoogleAuthCallback.jsx"));
+const ChatEmployerLayout = lazy(() => import('./components/Employer/Chat/ChatEmployerLayout.jsx'))
 const HomePage = lazy(() => import("./components/Student/HomePage/HomePage.jsx"));
 const Page404 = lazy(() => import("./components/User/Page404.jsx"));
 const Page403 = lazy(() => import("./components/User/Page403.jsx"));
@@ -222,6 +223,7 @@ const App = () => {
                   <Route path='business-certificate' element={<BusinessCertificate />} />
                   <Route path='post-job' element={<EmployerPostJob />} />
                   <Route path='chat' element={<ChatEmployerLayout />} />
+                  <Route path='chat/:recipientId' element={<ChatEmployerLayout />} />
                   <Route path='buy-service' element={<ServiceMarketplace />} />
                   <Route path='cart' element={<ShoppingCart />} />
                   <Route path='manage-list-jobs' element={<ManageListJobs />} />

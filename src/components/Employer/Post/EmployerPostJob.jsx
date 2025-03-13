@@ -14,11 +14,6 @@ const format = (value) => {
     return formattedValue;
 }
 
-
-
-
-
-
 const EmployerPostJob = () => {
     const [categories, setCategories] = useState([]);
     const [skills, setSkills] = useState([]);

@@ -167,7 +167,7 @@ const ListCompany = ({ className = "" }) => {
                     dataSource={data}
                     size='large'
                     renderItem={(item) => (
-                        <List.Item key={item.email}>
+                        <List.Item key={item.email} className='cursor-pointer'>
                             <List.Item.Meta
                                 avatar={<Avatar size={50} src={item.picture.large} />} // logo công ty
                                 // title={<a href="https://ant.design">{item.name.last}</a>} //tên bài tuyển dụng
