@@ -8,9 +8,13 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import chat from "../../../services/api/chat";
 import { useSelector } from "react-redux";
 import { connectStomp, disconnectStomp } from "../../../utils/stompConfig";
+import { customScrollbarCSS } from "../../../constant/scrollbar";
+
 
 const { Text } = Typography;
 const { TextArea } = Input;
+
+
 const ChatEmployerLayout = () => {
 
     const [newMessage, setNewMessage] = useState("");
@@ -88,44 +92,45 @@ const ChatEmployerLayout = () => {
     return (
         <>
             <Row className="border h-full">
-                <Col span={18}>
-                    <div className="border border-x-gray-200 flex flex-col">
-                        <Space direction="vertical" className="w-full py-3 px-2 border-b h-auto">
-                            <Text className="text-base font-bold">Trò chuyện với sinh viên</Text>
-                        </Space>
-                        {recipientId ? <>
-                            <div className="w-full flex-1 overflow-y-auto flex flex-col h-[500px] px-2 gap-4 " ref={divRef}>
-                                <Empty className="mt-36" image={<Avatar src="https://randomuser.me/api/portraits/men/43.jpg" size={100} />} description={<Text className="text-base font-bold">Công ty ABC</Text>} />
-                                {messages.map((message, index) => {
-                                    if (message.senderId === senderId) {
-                                        return <SenderChat key={index} message={message} />;
-                                    } {
-                                        return <ReceiverChat key={index} message={message} />;
-                                    }
-                                })}
-                            </div>
-                            <Flex className=" p-2 w-full mb-4" gap={16} justify="center" align="flex-end">
-                                <TextArea className="rounded-3xl resize-none overflow-hidden h-auto" placeholder={t('enter_message')} size="large" autoSize={{ minRows: 1, maxRows: 4 }} value={newMessage} onChange={(e) => setNewMessage(e.target.value)}
-                                    onKeyDown={(e) => {
-                                        if (e.key === 'Enter' && !e.shiftKey) {
-                                            e.preventDefault();
-                                            if (newMessage.trim()) {
-                                                sendMessage();
-                                            }
+                <Col span={18} className="border border-x-gray-200 flex flex-col">
+
+                    <Space direction="vertical" className="w-full py-3 px-2 border-b h-auto">
+                        <Text className="text-base font-bold">Trò chuyện với sinh viên</Text>
+                    </Space>
+                    {recipientId ? <>
+                        <div className="w-full max-h-[703px] flex-1 overflow-y-auto flex flex-col px-2 gap-4 " ref={divRef}>
+                            <style>{customScrollbarCSS}</style>
+                            <Empty className="mt-36" image={<Avatar src="https://randomuser.me/api/portraits/men/43.jpg" size={100} />} description={<Text className="text-base font-bold">Công ty ABC</Text>} />
+                            {messages.map((message, index) => {
+                                if (message.senderId === senderId) {
+                                    return <SenderChat key={index} message={message} />;
+                                } {
+                                    return <ReceiverChat key={index} message={message} />;
+                                }
+                            })}
+                        </div>
+                        <Flex className=" p-2 w-full mb-4" gap={16} justify="center" align="flex-end">
+                            <TextArea className="rounded-3xl resize-none overflow-hidden h-auto" placeholder={t('enter_message')} size="large" autoSize={{ minRows: 1, maxRows: 4 }} value={newMessage} onChange={(e) => setNewMessage(e.target.value)}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter' && !e.shiftKey) {
+                                        e.preventDefault();
+                                        if (newMessage.trim()) {
+                                            sendMessage();
                                         }
-                                    }} />
-                                <Flex className="min-h-[41px]" justify="center" align="center"><Button size="large" type="text" icon={<SendOutlined className="text-3xl text-blue-600" />} onClick={() => sendMessage()}></Button></Flex>
-                            </Flex>
-                        </> :
-                            <div className="w-full h-full flex items-center justify-center">
-                                <Empty image={Empty.PRESENTED_IMAGE_DEFAULT} description={t('no_message')} />
-                            </div>}
-                    </div>
+                                    }
+                                }} />
+                            <Flex className="min-h-[41px]" justify="center" align="center"><Button size="large" type="text" icon={<SendOutlined className="text-3xl text-blue-600" />} onClick={() => sendMessage()}></Button></Flex>
+                        </Flex>
+                    </> :
+                        <div className="w-full h-full flex items-center justify-center">
+                            <Empty image={Empty.PRESENTED_IMAGE_DEFAULT} description={t('no_message')} />
+                        </div>}
+
                 </Col>
                 <Col span={6} className="min-h-full border-l">
-                    <ListCompany className="min-h-full" />
+                    {/* <ListCompany className="min-h-full" /> */}
                 </Col>
-            </Row>
+            </Row >
         </>
     )
 }

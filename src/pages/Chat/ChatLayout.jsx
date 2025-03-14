@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import assets from '../../constant/assets.json';
 import { IoMdChatboxes } from "react-icons/io";
 import { ReceiverChat, SenderChat } from "./ContainerofChat";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import chat from '../../services/api/chat';
 import { connectStomp, disconnectStomp } from "../../utils/stompConfig";
 import { useSelector } from "react-redux";

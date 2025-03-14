@@ -186,7 +186,7 @@ const EmployerLayout = () => {
                     </Flex>
                 </Header>
                 <Content className='content-employer'>
-                    <Flex gap={"1rem"} vertical>
+                    <Flex className='h-full' gap={"1rem"} vertical>
                         <Outlet />
                     </Flex>
                 </Content>
