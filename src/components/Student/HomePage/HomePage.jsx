@@ -12,6 +12,7 @@ import COLOR from "../../styles/_variables";
 import { Alert } from 'antd';
 import Marquee from 'react-fast-marquee';
 import { getAds, getJobsNewest, getJobUrgent } from "../../../services/apiService";
+import IconChatBot from "../../Generate/ChatBot/Chatbot";
 
 const HomePage = () => {
 
@@ -51,6 +52,7 @@ const HomePage = () => {
   }, []);
   return (
     <BoxContainer padding="0 0 1rem 0" width={"100%"} className="mx-auto shadow" borderRadius="0px" background={COLOR.backgroundColor}>
+      <IconChatBot />
       <Flex gap={16} vertical className="homepage">
         <div>
           <div className="gradient-background">

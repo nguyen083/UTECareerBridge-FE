@@ -44,19 +44,7 @@ const ChatLayout = () => {
         }
     }, [recipientId, senderId]);
 
-    useEffect(() => {
-        if (recipientId) {
-            chat.loadMessages({ user2Id: recipientId, user1Id: senderId }, token)
-                .then((res) => {
-                    setMessages(res);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
 
-
-        }
-    }, [recipientId, senderId]);
 
 
     useEffect(() => {
