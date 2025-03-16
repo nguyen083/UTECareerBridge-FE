@@ -17,6 +17,15 @@ const chat = {
                 body: JSON.stringify(message)
             });
         }
+    },
+    sendMessageToChatBot: (stompClient, message) => {
+        if (stompClient && message.content.trim()) {
+            stompClient.publish({
+                destination: '/app/chatbot.send',
+                headers: { 'priority': 'high' },
+                body: JSON.stringify(message)
+            });
+        }
     }
 }
 export default chat;

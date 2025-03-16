@@ -1,4 +1,4 @@
-import { Flex, Space, Typography } from "antd";
+import { Flex, Typography } from "antd";
 
 const { Text } = Typography;
 
@@ -21,7 +21,7 @@ const ReceiverChat = ({ message }) => {
             <div className="bg-gray-200 px-4 py-2 rounded-t-3xl rounded-e-3xl ">
                 <Text className="text-base">{message.content}</Text>
             </div>
-            <Text type="secondary" className="whitespace-nowrap">{message.createdAt}</Text>
+            <Text type="secondary" className="whitespace-nowrap">{message?.createdAt}</Text>
         </Flex>
     </div>);
 }

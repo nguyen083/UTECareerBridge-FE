@@ -1,40 +1,42 @@
 @import '../../../components/styles/_variables.scss';
 
-.ant-popover-inner {
-    padding: 0 !important;
-}
+
 
 .popover-chat {
-
-    .ant-float-btn {
-        .ant-float-btn-body {
-            .ant-float-btn-content {
-                .ant-float-btn-icon {
-                    width: fit-content;
-                }
-            }
-        }
-    }
-
-
-
-    .ant-float-btn {
-        .ant-float-btn-body {
-            .ant-float-btn-content {
-                .ant-float-btn-icon {
-                    width: fit-content;
-                }
-            }
-        }
-    }
-
     .ant-popover-inner {
         padding: 0 !important;
     }
+
+    .ant-float-btn {
+        .ant-float-btn-body {
+            .ant-float-btn-content {
+                .ant-float-btn-icon {
+                    width: fit-content;
+                }
+            }
+        }
+    }
+
+
+
+    .ant-float-btn {
+        .ant-float-btn-body {
+            .ant-float-btn-content {
+                .ant-float-btn-icon {
+                    width: fit-content;
+                }
+            }
+        }
+    }
+
+
 }
 
 .chatbot {
 
+    .ant-popover-inner {
+        padding: 0 !important;
+    }
 
     .ant-card-head {
         background: $footer-color;

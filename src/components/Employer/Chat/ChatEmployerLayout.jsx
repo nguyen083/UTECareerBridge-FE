@@ -20,7 +20,7 @@ const ChatEmployerLayout = () => {
     const [newMessage, setNewMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const [stompClient, setStompClient] = useState(null);
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const { recipientId } = useParams();
     const senderId = useSelector((state) => state.user.userId);
     const token = localStorage.getItem("accessToken");
