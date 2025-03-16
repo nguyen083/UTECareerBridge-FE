@@ -1,13 +1,13 @@
 import axios from "../../utils/axiosCustomize.jsx";
 
 const chat = {
-    loadMessages: async (param, token) => {
+    loadMessages: async (param) => {
         const urlParams = new URLSearchParams(param);
-        return axios.get(`/messages/conversation?${urlParams}`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
+        return axios.get(`/messages/conversation?${urlParams}`);
+    },
+    getListConversation: (param) => {
+        const urlParams = new URLSearchParams(param);
+        return axios.get(`/messages/contacts?${urlParams}`);
     },
     sendMessage: (stompClient, message) => {
         if (stompClient && message.content.trim()) {
@@ -26,6 +26,9 @@ const chat = {
                 body: JSON.stringify(message)
             });
         }
+    },
+    readed: (id) => {
+        return axios.put(`/messages/${id}/read`);
     }
 }
 export default chat;

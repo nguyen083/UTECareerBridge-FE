@@ -57,7 +57,7 @@ const ChatEmployerLayout = () => {
     //Load tin nhắn nếu có recipientId
     useEffect(() => {
         if (recipientId)
-            chat.loadMessages({ user2Id: recipientId, user1Id: senderId }, token).then((res) => {
+            chat.loadMessages({ user2Id: recipientId, user1Id: senderId }).then((res) => {
                 setMessages(res);
             }
             ).catch((err) => {
@@ -128,7 +128,7 @@ const ChatEmployerLayout = () => {
 
                 </Col>
                 <Col span={6} className="min-h-full border-l">
-                    {/* <ListCompany className="min-h-full" /> */}
+                    <ListCompany className="min-h-full" />
                 </Col>
             </Row >
         </>

@@ -58,7 +58,7 @@ const ChatLayout = () => {
 
     useEffect(() => {
         if (recipientId)
-            chat.loadMessages({ user2Id: recipientId, user1Id: senderId }, token).then((res) => {
+            chat.loadMessages({ user2Id: recipientId, user1Id: senderId }).then((res) => {
                 setMessages(res);
             }
             ).catch((err) => {
@@ -77,6 +77,10 @@ const ChatLayout = () => {
     }, [onConnected]);
 
     const sendMessage = () => {
+        const lastMessage = messages[messages.length - 1];
+        if (lastMessage.read === false && lastMessage.senderId !== senderId) {
+            chat.readed(lastMessage.id);
+        }
         const message = {
             senderId: senderId,
             recipientId: recipientId,

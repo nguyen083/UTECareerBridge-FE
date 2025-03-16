@@ -58,11 +58,11 @@ const LoginPage = () => {
         }
     }
     const handleLoginWithGoogle = () => {
-        // auth.loginGoogle('employer').then(res => {
-        //     window.open(res);
-        // }).catch(() => {
-        //     message.error('Đã có lỗi xảy ra, vui lòng thử lại sau');
-        // });
+        auth.loginGoogle('employer').then(res => {
+            window.open(res);
+        }).catch(() => {
+            message.error('Đã có lỗi xảy ra, vui lòng thử lại sau');
+        });
     }
     return (
         <div className="login-page flex">
