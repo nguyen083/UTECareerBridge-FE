@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Avatar, Badge, Button, Card, Divider, Empty, Flex, List, Skeleton, Typography, message } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useTranslation } from 'react-i18next';
@@ -6,8 +6,8 @@ import { getApplyJobByStudent } from '../../services/apiService';
 import { useNavigate } from 'react-router-dom';
 import { customScrollbarCSS } from '../../constant/scrollbar';
 import chat from '../../services/api/chat';
-import { use } from 'react';
 import { useSelector } from 'react-redux';
+import { connectStomp, subscribeToTopic, unsubscribeFromTopic } from '../../utils/stompConfig';
 
 const { Text } = Typography;
 const customScrollbarStyle = {
@@ -45,7 +45,7 @@ const ListJob = ({ className = "" }) => {
             setLoading(false);
         });
     };
-    useLayoutEffect(() => {
+    useEffect(() => {
         loadMoreData();
     }, []);
     return (
@@ -110,12 +110,31 @@ const CardCompany = ({ className = "" }) => {
     )
 }
 const ListCompany = ({ className = "" }) => {
+    const ListConversationTopic = '/user/15/queue/messages';
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
     const [data, setData] = useState([]);
     const [total, setTotal] = useState(0);
     const role = useSelector((state) => state.user.role);
     const navigate = useNavigate();
+    const senderId = useSelector((state) => state.user.userId);
+
+    useEffect(() => {
+        console.log('ListCompany useEffect');
+        connectStomp(() => {
+            // Lấy STOMP client sau khi kết nối (nếu cần)
+            subscribeToTopic(ListConversationTopic, (message) => {
+                const receivedMessage = JSON.parse(message.body);
+                let newArrMessage = [...data];
+                newArrMessage.reverse().push(receivedMessage);
+                const messageMap = new Map(newArrMessage.map((item) => [item.recipientId, item]));
+                setData([...messageMap.values()].reverse());
+            });
+        });
+        return () => {
+            unsubscribeFromTopic(ListConversationTopic);
+        };
+    }, []);
 
     const ChooseItem = (item) => {
         if (!item.read && !item.lastSenderId)
@@ -131,7 +150,6 @@ const ListCompany = ({ className = "" }) => {
         setLoading(true);
         chat.getListConversation({ page, size: 10 })
             .then((res) => {
-                console.log("body: ", res);
                 setData([...data, ...res.data.content]);
                 setPage(res.data.pageable.pageNumber + 1);
                 setTotal(res.data.totalElements);
@@ -141,7 +159,8 @@ const ListCompany = ({ className = "" }) => {
                 setLoading(false);
             });
     };
-    useLayoutEffect(() => {
+
+    useEffect(() => {
         loadMoreData();
     }, []);
     return (

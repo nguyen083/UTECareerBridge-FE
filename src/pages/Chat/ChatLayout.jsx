@@ -9,40 +9,25 @@ import { IoMdChatboxes } from "react-icons/io";
 import { ReceiverChat, SenderChat } from "./ContainerofChat";
 import { useParams } from "react-router-dom";
 import chat from '../../services/api/chat';
-import { connectStomp, disconnectStomp } from "../../utils/stompConfig";
+import { connectStomp, subscribeToTopic, unsubscribeFromTopic } from "../../utils/stompConfig";
 import { useSelector } from "react-redux";
 const { Text } = Typography
 const { TextArea } = Input;
 
 const ChatLayout = () => {
+    const ConversationTopic = '/topic/conversation/';
     const { t, i18n } = useTranslation();
     const [lang, setLang] = useState("en");
     const [newMessage, setNewMessage] = useState("");
     const [messages, setMessages] = useState([]);
-    const [stompClient, setStompClient] = useState(null);
     const { recipientId } = useParams();
     const senderId = useSelector((state) => state.user.userId);
-    const token = localStorage.getItem("accessToken");
     const divRef = useRef(null);
     const currentConversationRef = useRef(null);
 
     const getConversationId = (id1, id2) => {
         return parseInt(id1) < parseInt(id2) ? `${id1}-${id2}` : `${id2}-${id1}`;
     };
-
-    const onConnected = useCallback((client) => {
-        setStompClient(client);
-
-        if (recipientId) {
-            const conversationId = getConversationId(senderId, recipientId);
-            currentConversationRef.current = conversationId;
-
-            client.subscribe('/topic/conversation/' + conversationId, (message) => {
-                const receivedMessage = JSON.parse(message.body);
-                setMessages((prevMessages) => [...prevMessages, receivedMessage]);
-            });
-        }
-    }, [recipientId, senderId]);
 
 
 
@@ -57,38 +42,43 @@ const ChatLayout = () => {
     }, [messages]);
 
     useEffect(() => {
-        if (recipientId)
+        if (recipientId) {
             chat.loadMessages({ user2Id: recipientId, user1Id: senderId }).then((res) => {
                 setMessages(res);
             }
             ).catch((err) => {
                 console.log(err);
             })
-    }, [recipientId]);
+            connectStomp(() => {
 
-    useEffect(() => {
-        connectStomp(onConnected, (error) => {
-            console.error('Lỗi kết nối:', error);
-        });
+                // Lấy STOMP client sau khi kết nối (nếu cần)
+                const conversationId = getConversationId(senderId, recipientId);
+                currentConversationRef.current = conversationId;
+                subscribeToTopic(ConversationTopic + conversationId, (message) => {
+                    const receivedMessage = JSON.parse(message.body);
+                    setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+                });
+            });
+        }
 
         return () => {
-            disconnectStomp();
+            unsubscribeFromTopic(ConversationTopic + currentConversationRef.current);
         };
-    }, [onConnected]);
+    }, [recipientId]);
 
     const sendMessage = () => {
-        const lastMessage = messages[messages.length - 1];
-        if (lastMessage.read === false && lastMessage.senderId !== senderId) {
-            chat.readed(lastMessage.id);
+        if (messages.length > 0) {
+            const lastMessage = messages[messages.length - 1];
+            if (lastMessage.read === false && lastMessage.senderId !== senderId) {
+                chat.readed(lastMessage.id);
+            }
         }
         const message = {
             senderId: senderId,
             recipientId: recipientId,
             content: newMessage,
         };
-
-        chat.sendMessage(stompClient, message);
-
+        chat.sendMessage(message);
         setNewMessage("");
     }
     const changeLanguage = () => {

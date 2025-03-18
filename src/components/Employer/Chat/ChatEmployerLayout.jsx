@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { useCallback, useEffect, useRef, useState } from "react";
 import chat from "../../../services/api/chat";
 import { useSelector } from "react-redux";
-import { connectStomp, disconnectStomp } from "../../../utils/stompConfig";
+import { connectStomp, disconnectStomp, subscribeToTopic, unsubscribeFromTopic } from "../../../utils/stompConfig";
 import { customScrollbarCSS } from "../../../constant/scrollbar";
 
 
@@ -16,14 +16,12 @@ const { TextArea } = Input;
 
 
 const ChatEmployerLayout = () => {
-
+    const ConversationTopic = '/topic/conversation/';
     const [newMessage, setNewMessage] = useState("");
     const [messages, setMessages] = useState([]);
-    const [stompClient, setStompClient] = useState(null);
     const { t } = useTranslation();
     const { recipientId } = useParams();
     const senderId = useSelector((state) => state.user.userId);
-    const token = localStorage.getItem("accessToken");
     const divRef = useRef(null);
     const currentConversationRef = useRef(null);
 
@@ -31,18 +29,29 @@ const ChatEmployerLayout = () => {
         return parseInt(id1) < parseInt(id2) ? `${id1}-${id2}` : `${id2}-${id1}`;
     };
 
-    const onConnected = useCallback((client) => {
-        setStompClient(client);
-
+    //load tin nhắn và tạo/ hủy subcribe khi recipientId thay đổi
+    useEffect(() => {
         if (recipientId) {
-            const conversationId = getConversationId(senderId, recipientId);
-            currentConversationRef.current = conversationId;
-            client.subscribe('/topic/conversation/' + conversationId, (message) => {
-                const receivedMessage = JSON.parse(message.body);
-                setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+            chat.loadMessages({ user2Id: recipientId, user1Id: senderId }).then((res) => {
+                setMessages(res);
+            }
+            ).catch((err) => {
+                console.log(err);
+            });
+            connectStomp(() => {
+                // Lấy STOMP client sau khi kết nối (nếu cần)
+                const conversationId = getConversationId(senderId, recipientId);
+                currentConversationRef.current = conversationId;
+                subscribeToTopic(ConversationTopic + conversationId, (message) => {
+                    const receivedMessage = JSON.parse(message.body);
+                    setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+                });
             });
         }
-    }, [recipientId, senderId]);
+        return () => {
+            unsubscribeFromTopic(ConversationTopic + currentConversationRef.current);
+        };
+    }, [recipientId]);
 
     //Tự động scroll khi cập nhật tin nhắn
     useEffect(() => {
@@ -54,29 +63,8 @@ const ChatEmployerLayout = () => {
         }
     }, [messages]);
 
-    //Load tin nhắn nếu có recipientId
-    useEffect(() => {
-        if (recipientId)
-            chat.loadMessages({ user2Id: recipientId, user1Id: senderId }).then((res) => {
-                setMessages(res);
-            }
-            ).catch((err) => {
-                console.log(err);
-            })
-    }, [recipientId]);
 
-    //Kết nối stomp, ngắt kết nối khi unmount
-    useEffect(() => {
-        connectStomp(onConnected, (error) => {
-            console.error('Lỗi kết nối:', error);
-        });
-
-        return () => {
-            disconnectStomp();
-        };
-    }, [onConnected]);
-
-    //Gửi tin nhắn
+    //Hàm gửi tin nhắn
     const sendMessage = () => {
         const message = {
             senderId: senderId,
@@ -84,7 +72,7 @@ const ChatEmployerLayout = () => {
             content: newMessage,
         };
 
-        chat.sendMessage(stompClient, message);
+        chat.sendMessage(message);
 
         setNewMessage("");
     }

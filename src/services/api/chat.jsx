@@ -1,4 +1,5 @@
 import axios from "../../utils/axiosCustomize.jsx";
+import { getStompClient } from "../../utils/stompConfig.js";
 
 const chat = {
     loadMessages: async (param) => {
@@ -9,7 +10,8 @@ const chat = {
         const urlParams = new URLSearchParams(param);
         return axios.get(`/messages/contacts?${urlParams}`);
     },
-    sendMessage: (stompClient, message) => {
+    sendMessage: (message) => {
+        const stompClient = getStompClient();
         if (stompClient && message.content.trim()) {
             stompClient.publish({
                 destination: '/app/chat',
