@@ -55,6 +55,7 @@ const ChatLayout = () => {
                 const conversationId = getConversationId(senderId, recipientId);
                 currentConversationRef.current = conversationId;
                 subscribeToTopic(ConversationTopic + conversationId, (message) => {
+                    console.log(message.body);
                     const receivedMessage = JSON.parse(message.body);
                     setMessages((prevMessages) => [...prevMessages, receivedMessage]);
                 });

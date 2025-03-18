@@ -91,7 +91,7 @@ const ChatBot = () => {
     return (
         <Card title={<Flex className='text-white' align='center' gap={6}><Image size={30} src='src\assets\chatbot.png' preview={false} /> ChatBot</Flex>}>
             <div className='flex flex-col h-fit'>
-                <div className='!min-h-96 !min-w-80 !max-h-[500px] !max-w-[400px] flex flex-col gap-4 overflow-x-auto' ref={divRef}>
+                <div className='!min-h-96 !min-w-[400px] !max-h-[500px] !max-w-[400px] flex flex-col gap-4 overflow-x-auto' ref={divRef}>
                     {/* <style>{customScrollbarCSS}</style> */}
                     {messages.map((message, index) => {
                         if (message.senderId === currentUserId) {

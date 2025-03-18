@@ -8,7 +8,7 @@ const subscriptions = new Map(); // Lưu danh sách các subscription
 // ✅ Kết nối WebSocket (chỉ tạo một lần)
 export const connectStomp = (onConnected, onError) => {
     if (stompClient && isConnected) {
-        console.log('WebSocket đã kết nối, không tạo lại.');
+        // console.log('WebSocket đã kết nối, không tạo lại.');
         if (onConnected) onConnected(stompClient);
         return stompClient;
     }
@@ -24,7 +24,7 @@ export const connectStomp = (onConnected, onError) => {
         heartbeatOutgoing: 4000,
 
         onConnect: () => {
-            console.log('WebSocket đã kết nối.');
+            // console.log('WebSocket đã kết nối.');
             isConnected = true;
             if (onConnected) onConnected(stompClient);
 
@@ -40,7 +40,7 @@ export const connectStomp = (onConnected, onError) => {
         },
 
         onWebSocketClose: () => {
-            console.log('WebSocket đã đóng.');
+            // console.log('WebSocket đã đóng.');
             isConnected = false;
         }
     });
@@ -61,12 +61,12 @@ export const disconnectStomp = () => {
 // ✅ Đăng ký nhận tin nhắn từ topic
 export const subscribeToTopic = (topic, callback) => {
     if (!stompClient || !isConnected) {
-        console.warn('WebSocket chưa kết nối, vui lòng gọi connectStomp trước.');
+        // console.warn('WebSocket chưa kết nối, vui lòng gọi connectStomp trước.');
         return;
     }
 
     if (!subscriptions.has(topic)) {
-        console.log(`Đăng ký nhận tin từ topic: ${topic}`);
+        // console.log(`Đăng ký nhận tin từ topic: ${topic}`);
         const subscription = stompClient.subscribe(topic, callback);
         subscriptions.set(topic, callback);
         return subscription;
