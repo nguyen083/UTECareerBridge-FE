@@ -9,72 +9,6 @@ import { FaRegMoneyBillAlt } from 'react-icons/fa';
 import { IoIosBusiness } from 'react-icons/io';
 const { Text, Title, Paragraph } = Typography;
 
-// const JobCardSmall = ({ job }) => {
-//     const navigate = useNavigate();
-//     const user = useSelector(state => state.user);
-//     const handleClick = (key) => {
-//         if (user.role === "employer") {
-//             navigate('/employer/job/view/' + key);
-//         } else {
-//             navigate('/job/' + key);
-//         }
-//     }
-//     return (
-//         <Card
-//             hoverable
-//             style={{
-//                 cursor: 'default',
-//                 width: "100%",
-//                 borderRadius: 10,
-//                 overflow: 'hidden',
-//                 boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-//                 // padding: "1rem"
-//             }}
-//         >
-//             <Flex align='center'>
-//                 <img
-//                     src={job.employerResponse.companyLogo} // Replace with the actual logo URL
-//                     style={{ width: 80, height: 80, borderRadius: 4, marginRight: 12 }}
-//                 />
-//                 <div className='w-75'>
-//                     <Title level={5}
-//                         onClick={() => handleClick(job.jobId)}
-//                         style={{
-//                             cursor: 'pointer',
-//                             margin: 0,
-//                             whiteSpace: 'nowrap',        // Keeps the text on a single line
-//                             overflow: 'hidden',           // Hides any overflow
-//                             textOverflow: 'ellipsis',     // Adds ellipsis for overflowed text
-//                         }}>
-//                         {job.jobTitle}
-//                     </Title>
-//                     < Paragraph
-//                         type='secondary'
-//                         style={{
-//                             margin: 0,
-//                             whiteSpace: 'nowrap',        // Keeps the text on a single line
-//                             overflow: 'hidden',           // Hides any overflow
-//                             textOverflow: 'ellipsis',     // Adds ellipsis for overflowed text
-//                         }}>
-//                         {job.employerResponse.companyName}</Paragraph>
-//                     <div style={{ color: '#ff4d4f', fontSize: 14, margin: '8px 0' }}>
-//                         {job.jobMinSalary.toLocaleString()} - {job.jobMaxSalary.toLocaleString()} <Text style={{ fontSize: 12 }}>VNĐ/tháng</Text>
-//                     </div>
-//                     < Paragraph
-//                         type='secondary'
-//                         style={{
-//                             margin: 0,
-//                             whiteSpace: 'nowrap',        // Keeps the text on a single line
-//                             overflow: 'hidden',           // Hides any overflow
-//                             textOverflow: 'ellipsis',     // Adds ellipsis for overflowed text
-//                             // Optional: set max width to control where it cuts off
-//                         }}>
-//                         {job.jobLocation}</Paragraph>
-//                 </div>
-//             </Flex>
-//         </Card>
-//     );
-// };
 const JobCardSmall = ({ job }) => {
     const navigate = useNavigate();
     const user = useSelector(state => state.user);
@@ -82,14 +16,15 @@ const JobCardSmall = ({ job }) => {
         navigate('/job/' + key);
     }
     return (
-        <List.Item className='flex items-start border  rounded-md p-3 justify-between item-company shadow' style={{ maxWidth: '100%', overflow: 'hidden' }}>
+        <div className='job-card-small'>
+        <List.Item className='flex items-start border  rounded-md p-3 justify-between item-company shadow max-w-full overflow-hidden' >
             <List.Item.Meta
                 style={{ cursor: 'pointer' }}
                 onClick={() => handleClick(job.jobId)}
                 className='flex items-center w-full meta-description'
                 avatar={<img
                     src={job.employerResponse.companyLogo} // Replace with the actual logo URL
-                    style={{ width: 80, height: 80, borderRadius: 4, marginRight: 12 }}
+                    className='h-20 !w-20 rounded mr-3 max-w-fit'
                 />}
                 description={<div>
                     <Title level={5}
@@ -121,6 +56,7 @@ const JobCardSmall = ({ job }) => {
             />
             {/* <HeartOutlined /> */}
         </List.Item >
+        </div>
     );
 };
 const JobCardLarge = ({ job, disable = false }) => {

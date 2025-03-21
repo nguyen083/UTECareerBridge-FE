@@ -3,7 +3,7 @@ import { Avatar, Badge, Button, Card, Divider, Empty, Flex, List, Skeleton, Typo
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useTranslation } from 'react-i18next';
 import { getApplyJobByStudent } from '../../services/apiService';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { customScrollbarCSS } from '../../constant/scrollbar';
 import chat from '../../services/api/chat';
 import { useSelector } from 'react-redux';
@@ -80,7 +80,7 @@ const ListJob = ({ className = "" }) => {
                         <List.Item key={item.applicationId}>
                             <List.Item.Meta
                                 avatar={<Avatar size={50} src={item.companyLogo} />}
-                                title={<div className='max-w-52 truncate'><a href="https://ant.design" target='_blank'>{item.jobTitle}</a></div>}
+                                title={<div className='max-w-52 truncate'>{item.jobTitle}</div>}
                                 description={<div className='max-w-52 truncate'><Text type='secondary'>{item.companyName}</Text></div>}
                             />
                             <Button className='border-0 rounded-full text-blue-600 bg-blue-200' type='text' onClick={() => navigate(`/chat/${item.companyId}`)}>{t('chat')}</Button>
@@ -109,8 +109,8 @@ const CardCompany = ({ className = "" }) => {
         </Card>
     )
 }
-const ListCompany = ({ className = "" }) => {
-    const ListConversationTopic = '/topic/conversation/';
+const ListConversation = ({ className = "" }) => {
+    const ListConversationTopic = '/topic/chat-list/';
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
     const [data, setData] = useState([]);
@@ -118,23 +118,38 @@ const ListCompany = ({ className = "" }) => {
     const role = useSelector((state) => state.user.role);
     const navigate = useNavigate();
     const senderId = useSelector((state) => state.user.userId);
+    // const { recipientId } = useParams();
 
     useEffect(() => {
         connectStomp(() => {
-            // Lấy STOMP client sau khi kết nối (nếu cần)
             subscribeToTopic(ListConversationTopic + senderId, (message) => {
                 const receivedMessage = JSON.parse(message.body);
-                let newArrMessage = [...data];
-                newArrMessage.reverse().push(receivedMessage);
-                const messageMap = new Map(newArrMessage.map((item) => [item.recipientId, item]));
-                console.log("messageMap: ", messageMap);
-                setData([...messageMap.values()].reverse());
+                console.log("receivedMessage: ", receivedMessage);
+                setData(prevData => {
+                    // Kiểm tra xem tin nhắn này đã tồn tại chưa (dựa trên recipientId)
+                    const existingMessageIndex = prevData.findIndex(item => item.recipientId === receivedMessage.recipientId);
+                    const isNewConversation = existingMessageIndex === -1;
+
+                    // Nếu là cuộc trò chuyện mới, cần tăng total
+                    if (isNewConversation) {
+                        setTotal(prevTotal => prevTotal + 1);
+                    }
+
+                    // Cách xử lý đúng: loại bỏ tin nhắn cũ nếu có
+                    let newData = prevData.filter(item => item.recipientId !== receivedMessage.recipientId);
+                    // Thêm tin nhắn mới vào đầu mảng để nó hiển thị trên cùng
+                    newData.unshift(receivedMessage);
+
+                    // Trả về mảng mới
+                    return newData;
+                });
             });
         });
+
         return () => {
             unsubscribeFromTopic(ListConversationTopic + senderId);
         };
-    }, []);
+    }, [senderId]);
 
     const ChooseItem = (item) => {
         if (!item.read && !item.lastSenderId)
@@ -150,7 +165,19 @@ const ListCompany = ({ className = "" }) => {
         setLoading(true);
         chat.getListConversation({ page, size: 10 })
             .then((res) => {
-                setData([...data, ...res.data.content]);
+                // Sắp xếp dữ liệu mới theo thứ tự phù hợp (nếu cần)
+                const newContent = res.data.content;
+
+                // Kết hợp dữ liệu mới và cũ, loại bỏ trùng lặp
+                setData(prevData => {
+                    // Lấy danh sách recipientId đã có
+                    const existingIds = new Set(prevData.map(item => item.recipientId));
+                    // Lọc ra các tin nhắn mới chưa có trong danh sách hiện tại
+                    const uniqueNewItems = newContent.filter(item => !existingIds.has(item.recipientId));
+                    // Kết hợp dữ liệu cũ và mới
+                    return [...prevData, ...uniqueNewItems];
+                });
+
                 setPage(res.data.pageable.pageNumber + 1);
                 setTotal(res.data.totalElements);
                 setLoading(false);
@@ -191,7 +218,7 @@ const ListCompany = ({ className = "" }) => {
                     dataSource={data}
                     size='large'
                     renderItem={(item) => (
-                        <List.Item key={item.recipientId} className='cursor-pointer' onClick={() => ChooseItem(item)}>
+                        <List.Item key={item.recipientId + item.messageId} className='cursor-pointer' onClick={() => ChooseItem(item)}>
                             <List.Item.Meta
                                 avatar={<Avatar size={50} src={item.avatar} />}
                                 title={<div className='max-w-72 truncate font-bold'><Text className='text-base'>{item.name}</Text></div>}
@@ -208,7 +235,7 @@ const ListCompany = ({ className = "" }) => {
     );
 }
 export {
-    ListCompany,
+    ListConversation,
     ListJob,
     CardCompany
 };

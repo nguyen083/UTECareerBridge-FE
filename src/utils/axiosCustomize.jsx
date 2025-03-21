@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import {removeToken} from '../services/apiService';
 const instance = axios.create({
     baseURL: '/api',
     timeout: 10000,
@@ -60,13 +60,15 @@ instance.interceptors.response.use(
 
             try {
                 const newTokens = await refreshToken();
+                console.log('New tokens:', newTokens);
                 localStorage.setItem('accessToken', newTokens.accessToken);
+                document.cookie = `refreshToken=${refreshToken}`;
                 originalRequest.headers['Authorization'] = `Bearer ${newTokens.accessToken}`;
                 return instance(originalRequest);
             } catch (refreshError) {
                 // Handle authentication failure
                 console.error('Failed to refresh token. User may need to re-authenticate.');
-                localStorage.removeItem('accessToken');
+                removeToken();
                 window.location = '/login';
                 return Promise.reject(refreshError);
             }

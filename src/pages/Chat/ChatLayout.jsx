@@ -1,9 +1,9 @@
 import { Avatar, Button, Col, Empty, Flex, Input, Row, Space, Typography } from "antd";
 import { useTranslation } from "react-i18next";
 import { SearchOutlined, SendOutlined } from "@ant-design/icons";
-import { CardCompany, ListCompany, ListJob } from "./CardofChat";
+import { CardCompany, ListConversation, ListJob } from "./CardofChat";
 import { SiGoogletranslate } from "react-icons/si";
-import { useCallback, useEffect, useRef, useState } from "react";
+import {  useEffect, useRef, useState } from "react";
 import assets from '../../constant/assets.json';
 import { IoMdChatboxes } from "react-icons/io";
 import { ReceiverChat, SenderChat } from "./ContainerofChat";
@@ -44,7 +44,7 @@ const ChatLayout = () => {
     useEffect(() => {
         if (recipientId) {
             chat.loadMessages({ user2Id: recipientId, user1Id: senderId }).then((res) => {
-                setMessages(res);
+                setMessages(res.data.content);
             }
             ).catch((err) => {
                 console.log(err);
@@ -97,7 +97,7 @@ const ChatLayout = () => {
             <Row className="min-h-screen">
                 <Col span={6} className=" min-h-full p-4">
                     <Space size={"small"} className=" w-full py-5" direction="vertical">
-                        <Flex gap={8} justify="space-between" align="center" className="w-full ">
+                        <Flex gap={8} justify="space-between" align="center" className="w-full border-b">
                             <Flex gap={8} align="center">
                                 <Avatar shape="square" src={assets.logo} size={75} />
                                 <Flex gap={4}>
@@ -107,8 +107,7 @@ const ChatLayout = () => {
                             </Flex>
                             <SiGoogletranslate size={24} onClick={changeLanguage} className="text-blue-400" />
                         </Flex>
-                        <Input prefix={<SearchOutlined className="text-lg" />} allowClear size="large" className="rounded-full" placeholder={t('find_company_name_employer')} />
-                        <ListCompany />
+                        <ListConversation />
                     </Space>
                 </Col>
                 <Col span={12} className="border border-x-gray-200 flex flex-col max-h-screen">

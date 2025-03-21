@@ -1,5 +1,5 @@
 import { Avatar, Col, Empty, Flex, Row, Space, Typography, Input, Button } from "antd";
-import { CardCompany, ListCompany } from "../../../pages/Chat/CardofChat";
+import { CardCompany, ListConversation } from "../../../pages/Chat/CardofChat";
 import { ReceiverChat, SenderChat } from "../../../pages/Chat/ContainerofChat";
 import { SendOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
@@ -33,7 +33,7 @@ const ChatEmployerLayout = () => {
     useEffect(() => {
         if (recipientId) {
             chat.loadMessages({ user2Id: recipientId, user1Id: senderId }).then((res) => {
-                setMessages(res);
+                setMessages(res.data.content);
             }
             ).catch((err) => {
                 console.log(err);
@@ -79,11 +79,11 @@ const ChatEmployerLayout = () => {
 
     return (
         <>
-            <Row className="border h-full">
+            <Row className="border h-full rounded-s-lg overflow-hidden">
                 <Col span={18} className="border border-x-gray-200 flex flex-col">
 
-                    <Space direction="vertical" className="w-full py-3 px-2 border-b h-auto">
-                        <Text className="text-base font-bold">Trò chuyện với sinh viên</Text>
+                    <Space direction="vertical" className="w-full py-3 px-2 border-b h-auto bg-card-color">
+                        <Text className="text-base font-bold ">Trò chuyện với sinh viên</Text>
                     </Space>
                     {recipientId ? <>
                         <div className="w-full max-h-[703px] flex-1 overflow-y-auto flex flex-col px-2 gap-4 " ref={divRef}>
@@ -115,8 +115,8 @@ const ChatEmployerLayout = () => {
                         </div>}
 
                 </Col>
-                <Col span={6} className="min-h-full border-l">
-                    <ListCompany className="min-h-full" />
+                <Col span={6} className="min-h-full border-l bg-white">
+                    <ListConversation className="min-h-full" />
                 </Col>
             </Row >
         </>

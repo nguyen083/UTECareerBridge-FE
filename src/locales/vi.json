@@ -6,5 +6,92 @@
     "end": "Kết thúc",
     "chat": "Nhắn tin",
     "no_conversations_found": "Không tìm thấy cuộc trò chuyện nào.",
-    "enter_message": "Nhập tin nhắn..."
+    "enter_message": "Nhập tin nhắn...",
+    "common": {
+        "save": "Lưu",
+        "cancel": "Hủy",
+        "complete": "Hoàn tất",
+        "error": "Lỗi",
+        "success": "Thành công",
+        "empty": "Không có",
+        "copy": "Sao chép vào bộ nhớ tạm",
+        "seeMore": "Xem thêm"
+    },
+    "auth": {
+        "login": {
+            "emailPlaceholder": "Nhập email/SĐT",
+            "passwordPlaceholder": "Nhập mật khẩu"
+        },
+        "register": {
+            "firstName": "Nhập tên của bạn",
+            "lastName": "Nhập họ của bạn",
+            "birthday": "Chọn ngày sinh",
+            "phone": "Nhập số điện thoại của bạn",
+            "email": "Nhập email của bạn",
+            "password": "Nhập mật khẩu của bạn",
+            "confirmPassword": "Nhập mật khẩu xác nhận",
+            "terms": "Bạn đã đọc và đồng ý với các điều khoản và điều kiện của chúng tôi"
+        },
+        "resetPassword": {
+            "success": "Đặt lại mật khẩu thành công",
+            "error": "Đặt lại mật khẩu thất bại. Vui long thử lại sau",
+            "userNotFound": "Không tìm thấy thông tin người dùng"
+        }
+    },
+    "profile": {
+        "accountManagement": {
+            "currentPassword": "Mật khẩu hiện tại",
+            "newPassword": "Mật khẩu mới",
+            "confirmNewPassword": "Nhập lại mật khẩu mới"
+        }
+    },
+    "job": {
+        "search": {
+            "placeholder": "Tìm kiếm công việc, kỹ năng...",
+            "noResults": "Không tìm thấy việc làm nào"
+        },
+        "categories": {
+            "media": "Báo chí/ truyền hình",
+            "mechanical": "Cơ khí / Chế tạo / Tự động hóa",
+            "automotive": "Công nghệ Ô tô",
+            "it": "Công nghệ thông tin",
+            "electrical": "Điện / Điện tử / Điện lạnh",
+            "accounting": "Kế toán / Kiểm toán",
+            "hospitality": "Khách sạn / Nhà hàng",
+            "marketing": "Marketing / Truyền thông / Quảng cáo",
+            "banking": "Ngân hàng / Tài chính"
+        },
+        "apply": {
+            "success": "Ứng tuyển thành công",
+            "alreadyApplied": "Hồ sơ đã được ứng tuyển",
+            "selectApplication": "Chọn đơn ứng tuyển"
+        },
+        "save": {
+            "saved": "Đã lưu",
+            "saveJob": "Lưu công việc"
+        }
+    },
+    "cv": {
+        "upload": {
+            "success": "Tải lên thành công!",
+            "error": "Tải lên thất bại. Vui lòng thử lại.",
+            "deleteSuccess": "Xóa hồ sơ thành công!",
+            "deleteError": "Xóa hồ sơ thất bại",
+            "updateError": "Cập nhật hồ sơ thất bại"
+        },
+        "form": {
+            "title": "Tiêu đề",
+            "titleRequired": "Vui lòng nhập tiêu đề!",
+            "description": "Mô tả",
+            "descriptionRequired": "Vui lòng nhập mô tả!",
+            "descriptionPlaceholder": "Nhập mô tả resume",
+            "level": "Cấp độ",
+            "levelRequired": "Vui lòng chọn cấp độ!"
+        }
+    },
+    "errors": {
+        "404": "Xin lỗi, trang bạn đang tìm kiếm không tồn tại.",
+        "403": "Xin lỗi, bạn không có quyền truy cập trang này.",
+        "500": "Xin lỗi, trang bạn đang truy cập hiện không hoạt động."
+    }
 }

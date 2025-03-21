@@ -18,7 +18,7 @@ export const connectStomp = (onConnected, onError) => {
         connectHeaders: {
             'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
         },
-        debug: (str) => console.log(str),
+        // debug: (str) => console.log(str),
         reconnectDelay: 5000,
         heartbeatIncoming: 4000,
         heartbeatOutgoing: 4000,
