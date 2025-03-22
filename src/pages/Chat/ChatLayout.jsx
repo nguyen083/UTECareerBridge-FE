@@ -2,7 +2,6 @@ import { Avatar, Button, Col, Empty, Flex, Input, Row, Space, Typography } from 
 import { useTranslation } from "react-i18next";
 import { SearchOutlined, SendOutlined } from "@ant-design/icons";
 import { CardCompany, ListConversation, ListJob } from "./CardofChat";
-import { SiGoogletranslate } from "react-icons/si";
 import {  useEffect, useRef, useState } from "react";
 import assets from '../../constant/assets.json';
 import { IoMdChatboxes } from "react-icons/io";
@@ -16,7 +15,7 @@ const { TextArea } = Input;
 
 const ChatLayout = () => {
     const ConversationTopic = '/topic/conversation/';
-    const { t, i18n } = useTranslation();
+    const { t } = useTranslation();
     const [lang, setLang] = useState("en");
     const [newMessage, setNewMessage] = useState("");
     const [messages, setMessages] = useState([]);
@@ -82,15 +81,7 @@ const ChatLayout = () => {
         chat.sendMessage(message);
         setNewMessage("");
     }
-    const changeLanguage = () => {
-        if (lang === "en") {
-            i18n.changeLanguage("vi");
-            setLang("vi");
-        } else {
-            i18n.changeLanguage("en");
-            setLang("en");
-        }
-    };
+
 
     return (
         <>
@@ -105,7 +96,7 @@ const ChatLayout = () => {
                                     <IoMdChatboxes className="text-blue-800" size={20} />
                                 </Flex>
                             </Flex>
-                            <SiGoogletranslate size={24} onClick={changeLanguage} className="text-blue-400" />
+                            
                         </Flex>
                         <ListConversation />
                     </Space>

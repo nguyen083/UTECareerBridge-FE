@@ -70,6 +70,7 @@ const PaymentFail = lazy(() => import("./components/User/PaymentFail.jsx"));
 const Coupon = lazy(() => import("./components/Admin/Coupon.jsx/Coupon.jsx"));
 const DetailResume = lazy(() => import("./components/Employer/DetailResume/DetailResume.jsx"));
 const ChatLayout = lazy(() => import('./pages/Chat/ChatLayout.jsx'))
+// import from ''
 
 const App = () => {
   useEffect(() => {

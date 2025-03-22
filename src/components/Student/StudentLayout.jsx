@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import './StudentLayout.scss';
 import '../Generate/CustomizePopover.scss';
 import { Layout, Image, Button, Flex, Popover, Row, Col, Typography } from 'antd';
 import { MenuOutlined } from '@ant-design/icons';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { LuLanguages } from "react-icons/lu";
 import { FaUser } from 'react-icons/fa6';
 import FooterComponent from '../Generate/Footer.jsx';
 import Notification from '../Generate/Notification.jsx';
@@ -13,6 +14,8 @@ import { setInforStudent } from '../../redux/action/studentSlice.jsx';
 import { getInforStudent } from '../../services/apiService.jsx';
 import JobSearchBar from './Search/JobSearchBar.jsx';
 import path from '../../constant/path.jsx';
+import { useTranslation } from 'react-i18next';
+import { setLang as setLanguageLocalStorage } from '../../redux/action/webSlice.jsx';
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 const PopoverCategory = () => {
@@ -45,10 +48,12 @@ const PopoverCategory = () => {
 }
 
 const StudentLayout = () => {
+    const {t, i18n} = useTranslation();
     const navigate = useNavigate();
     const infor = useSelector(state => state?.user);
     const dispatch = useDispatch();
     const token = localStorage.getItem('accessToken');
+    const [lang, setLang] = useState(useSelector(state => state.web.lang));
 
     useEffect(() => {
         if (infor.role === 'student') {
@@ -62,7 +67,17 @@ const StudentLayout = () => {
         }
 
     }, []);
-
+    const changeLanguage = () => {
+        if (lang === "en") {
+            i18n.changeLanguage("vi");
+            setLang("vi");
+            dispatch(setLanguageLocalStorage("vi"));
+        } else {
+            i18n.changeLanguage("en");
+            setLang("en");
+            dispatch(setLanguageLocalStorage("en"));
+        }
+    };
     const nagigateLogin = () => {
         infor.role === 'employer' ? navigate('/employer') : navigate('/employer/login');
     }
@@ -82,7 +97,7 @@ const StudentLayout = () => {
                         width={150}
                     />
                     <JobSearchBar onSearch={() => { }} />
-                    <Flex gap={"1rem"}>
+                    <Flex gap={"1rem"} align='center'>
                         <Button onClick={() => { token ? navigate('/chat') : navigate('/login') }} className='rounded-full btn-header' size='large'>Nhắn tin</Button>
                         <Popover
                             overlayClassName='customize-popover'
@@ -93,7 +108,9 @@ const StudentLayout = () => {
                         >
                             <Button className='rounded-full btn-header' size='large'><Flex gap={4}><MenuOutlined /> <div className='hidden md:block'>Tất cả danh mục</div></Flex></Button>
                         </Popover>
+                        <div className="flex space-x-8 items-center">
                         <Button onClick={nagigateLogin} className='rounded-full btn-header' size='large'>Nhà tuyển dụng</Button>
+                        <LuLanguages size={24} onClick={changeLanguage} className="text-blue-400" />
                         <Flex gap={"0.5rem"}>
                             <Notification userId={useSelector(state => state.user.userId)} />
                             {infor.role !== 'student'
@@ -103,6 +120,7 @@ const StudentLayout = () => {
                                     <Flex gap={4} align='center'> <FaUser /><div className='hidden md:block'> Đăng nhập</div></Flex></Button> :
                                 <PopoverAvatar />}
                         </Flex>
+                        </div>
                     </Flex>
                 </Flex>
             </Header>
