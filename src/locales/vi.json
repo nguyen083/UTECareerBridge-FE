@@ -9,14 +9,20 @@
     "no_conversations_found": "Không tìm thấy cuộc trò chuyện nào.",
     "enter_message": "Nhập tin nhắn...",
     "list_applicant": "Danh sách ứng viên",
-    "top_Companies": "Công ty hàng đầu",
+    "top_companies": "Công ty hàng đầu",
+    "hot_categories": "Nghành nghề trọng điểm",
+    "newest_jobs": "Việc làm mới nhất",
+    "urgent_jobs": "Việc làm tuyển gấp",
+    "build_your_branch": "Cùng UTE-Career xây dựng thương hiệu cá nhân",
     "my_company": "Công ty của tôi",
     "follow_company": "Theo dõi công ty",
+    "marquee": "Khởi đầu sự nghiệp, tìm việc dễ dàng - Cơ hội nghề nghiệp dành cho bạn ngay hôm nay!",
     "all_categories": {
         "title": "Tất cả danh mục"
     },
     "common": {
         "save": "Lưu",
+        "edit":"Chỉnh sửa",
         "cancel": "Hủy",
         "complete": "Hoàn tất",
         "error": "Lỗi",
@@ -27,7 +33,9 @@
         "seeMore": "Xem thêm",
         "learnMore": "Tìm hiểu thêm",
         "or": "hoặc",
-        "googleLogin": "Đăng nhập với Google"
+        "googleLogin": "Đăng nhập với Google",
+        "hot": "Hot",
+        "urgent": "Gấp"
     },
     "role": {
         "student": "Người tìm việc",
@@ -65,6 +73,73 @@
           },
           "messages": {
             "notFound": "Không tìm thấy thông tin"
+          },
+          "viewDetail": {
+              "title": "Duyệt ứng viên",
+              "approve": "Duyệt",
+              "reject": "Từ chối",
+              "interview": {
+                  "title": "Thông báo phỏng vấn",
+                  "cancel": "Hủy",
+                  "send": "Gửi",
+                  "type": {
+                      "label": "Hình thức phỏng vấn",
+                      "offline": "Trực tiếp",
+                      "online": "Trực tuyến"
+                  },
+                  "position": {
+                      "label": "Vị trí phỏng vấn",
+                      "placeholder": "Nhập vị trí phỏng vấn",
+                      "required": "Vui vị trí phỏng vấn!"
+                  },
+                  "time": {
+                      "label": "Thời gian phỏng vấn",
+                      "placeholder": "Chọn thời gian phỏng vấn",
+                      "required": "Vui lòng chọn thời gian phỏng vấn!"
+                  },
+                  "location": {
+                      "online": {
+                          "label": "Link phỏng vấn",
+                          "placeholder": "Nhập link Google Meet",
+                          "required": "Vui lòng nhập link Google Meet!"
+                      },
+                      "offline": {
+                          "label": "Địa điểm phỏng vấn",
+                          "placeholder": "Nhập địa điểm phỏng vấn",
+                          "required": "Vui lòng nhập địa điểm phỏng vấn!"
+                      }
+                  },
+                  "additionalInfo": "Thông tin bổ sung",
+                  "interviewer": {
+                      "label": "Người phỏng vấn",
+                      "placeholder": "Người phỏng vấn",
+                      "required": "Vui lòng nhập tên người phỏng vấn!"
+                  },
+                  "language": {
+                      "label": "Ngôn ngữ phỏng vấn",
+                      "placeholder": "Ngôn ngữ phỏng vấn",
+                      "required": "Vui lòng nhập ngôn ngữ sẽ phỏng vấn!"
+                  },
+                  "contact": {
+                      "label": "Thông tin liên hệ",
+                      "tooltip": "Thông tin liên hệ khi người nhận được thông báo này cần hỗ trợ",
+                      "phone": {
+                          "placeholder": "Số điện thoại",
+                          "required": "Vui lòng nhập số điện thoại!",
+                          "invalid": "Số điện thoại không hợp lệ"
+                      },
+                      "name": {
+                          "prefix": "Gặp Anh/ Chị: ",
+                          "placeholder": "Tên người liên hệ",
+                          "required": "Vui lòng nhập tên người liên hệ!"
+                      },
+                      "email": {
+                          "placeholder": "Email",
+                          "required": "Vui lòng nhập email!",
+                          "invalid": "Email không hợp lệ!"
+                      }
+                  }
+              }
           }
       },
       "chat":{
@@ -74,6 +149,77 @@
           "end": "Kết thúc",
           "chat": "Nhắn tin",
           "enterMessage": "Nhập tin nhắn..."
+      },
+      "changePassword": {
+          "title": "Đổi mật khẩu",
+          "loginEmail": "Email đăng nhập",
+          "currentPassword": {
+              "label": "Mật khẩu hiện tại",
+              "required": "Vui lòng nhập mật khẩu hiện tại!"
+          },
+          "newPassword": {
+              "label": "Mật khẩu mới",
+              "required": "Vui lòng nhập mật khẩu mới!",
+              "minLength": "Mật khẩu phải có ít nhất 8 ký tự",
+              "uppercase": "Mật khẩu phải chứa ít nhất 1 chữ cái viết hoa",
+              "number": "Mật khẩu phải chứa ít nhất 1 chữ số",
+              "special": "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt"
+          },
+          "confirmPassword": {
+              "label": "Nhập lại mật khẩu mới",
+              "required": "Vui lòng nhập lại mật khẩu mới!",
+              "mismatch": "Mật khẩu xác nhận không khớp!"
+          },
+          "save": "Lưu"
+      },
+      "company": {
+          "title": "Công ty",
+          "info": "Thông tin công ty",
+          "certificate": {
+              "title": "Giấy chứng nhận kinh doanh",
+              "uploadLabel": "Ảnh giấy chứng nhận kinh doanh",
+              "uploadTooltip": "Kéo thả hoặc nhấp chọn để tải ảnh lên",
+              "previewTitle": "Ảnh minh họa",
+              "previewAlt": "Giấy phép minh họa",
+              "confirmModal": {
+                  "title": "Xác nhận gửi thông tin",
+                  "content": "Bằng cách nhấp vào nút xác nhận, bạn đồng ý rằng việc không cung cấp hoặc cung cấp thông tin sai được coi là một vi phạm có thể dẫn tới tạm dừng dịch vụ và/hoặc hủy tài khoản mà không được hoàn tiền. Bạn có thể kiểm tra lại thông tin đã cung cấp"
+              }
+          }
+      },
+      "dashboard": {
+          "title": "Thống kê",
+          "stats": {
+              "followers": {
+                  "title": "Số người theo dõi",
+                  "unit": "người"
+              },
+              "candidates": {
+                  "title": "Tổng số ứng viên",
+                  "unit": "người"
+              },
+              "jobs": {
+                  "title": "Số công việc đã đăng",
+                  "unit": "công việc"
+              }
+          },
+          "servicePackage": {
+              "title": "Gói dịch vụ",
+              "table": {
+                  "packageName": "Tên Gói Dịch Vụ",
+                  "amount": "Số Lượng",
+                  "expiredAt": "Ngày Hết Hạn",
+                  "emptyText": "Không có gói dịch vụ nào"
+              }
+          }
+      },
+      "profile": {
+          "title": "Thông tin cá nhân",
+          "generalInfo": "Thông tin chung",
+          "messages": {
+              "updateSuccess": "Cập nhật thông tin thành công",
+              "updateError": "Cập nhật thông tin thất bại"
+          }
       }
   },
     "auth": {

@@ -3,7 +3,10 @@ import axios from 'axios';
 const instance = axios.create({
     baseURL: '/api',
     timeout: 10000,
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 
+        'Content-Type': 'application/json',
+        'Accept-Language': localStorage.getItem('lang') || 'en'
+    },
     withCredentials: true,
 });
 

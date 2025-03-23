@@ -11,9 +11,11 @@ import CustomizeQuill from './../../Generate/CustomizeQuill';
 import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
 import { loading, stop } from "../../../redux/action/webSlice";
+import { useTranslation } from "react-i18next";
 
 const { Text } = Typography;
 const ViewDetailApplicant = () => {
+    const { t } = useTranslation();
     const { id } = useParams();
     const location = useLocation();
     const [open, setOpen] = useState(false);
@@ -33,16 +35,15 @@ const ViewDetailApplicant = () => {
         });
     }
 
-
     return (
         <Flex vertical gap={20}>
             {location.state?.status !== 'APPROVED' && <Affix Affix offsetTop={80}>
                 <BoxContainer className={styles.box_container}>
                     <Flex justify='space-between' align='center'>
-                        <Text className="mb-0 title1">Duyệt ứng viên</Text>
+                        <Text className="mb-0 title1">{t('employer.applicant.viewDetail.title')}</Text>
                         <Flex gap={10} align='center'>
-                            <Button icon={<CheckOutlined />} size="large" type="primary" className={styles.btn_success} onClick={() => setOpen(true)}>Duyệt</Button>
-                            {location.state?.status !== 'REJECTED' && <Button icon={<CloseOutlined />} size="large" type="primary" danger onClick={handleReject}>Từ chối</Button>}
+                            <Button icon={<CheckOutlined />} size="large" type="primary" className={styles.btn_success} onClick={() => setOpen(true)}>{t('employer.applicant.viewDetail.approve')}</Button>
+                            {location.state?.status !== 'REJECTED' && <Button icon={<CloseOutlined />} size="large" type="primary" danger onClick={handleReject}>{t('employer.applicant.viewDetail.reject')}</Button>}
                         </Flex>
                     </Flex>
                 </BoxContainer>
@@ -52,8 +53,9 @@ const ViewDetailApplicant = () => {
         </Flex >
     )
 }
-export const ModalInterview = ({ open, setOpen, studentId }) => {
 
+export const ModalInterview = ({ open, setOpen, studentId }) => {
+    const { t } = useTranslation();
     const { id } = useParams();
     const [form] = Form.useForm();
     const [type, setType] = useState("ONLINE");
@@ -61,13 +63,16 @@ export const ModalInterview = ({ open, setOpen, studentId }) => {
     const location = useLocation();
     const dispatch = useDispatch();
     const load = useSelector(state => state.web.loading);
+
     const handleOk = () => {
         form.submit();
     }
+
     const handleCancel = () => {
         form.resetFields();
         setOpen(false);
     }
+
     const handleSubmit = (values) => {
         values.studentId = studentId;
         if (type === "ONLINE") {
@@ -97,115 +102,114 @@ export const ModalInterview = ({ open, setOpen, studentId }) => {
                     dispatch(stop());
                     form.resetFields();
                 });
-
             });
         } else {
             values.employerId = employerId;
             values.dateTime = dayjs(values.dateTime).format('YYYY-MM-DD HH:mm:ss');
         }
-
-
     }
+
     const disablePastDates = (current) => {
-       
         return current && current < new Date().setHours(0, 0, 0, 0);
     };
+
     const onlineForm = (
         <>
-            <Form.Item required label="Vị trí phỏng vấn" name='jobPosition' rules={[{ required: true, message: 'Vui vị trí phỏng vấn!' }]} >
-                <Input allowClear placeholder="Nhập vị trí phỏng vấn" />
+            <Form.Item required label={t('employer.applicant.viewDetail.interview.position.label')} name='jobPosition' rules={[{ required: true, message: t('employer.applicant.viewDetail.interview.position.required') }]} >
+                <Input allowClear placeholder={t('employer.applicant.viewDetail.interview.position.placeholder')} />
             </Form.Item>
-            <Form.Item required label="Thời gian phỏng vấn" name='interviewDate' rules={[{ required: true, message: 'Vui lòng chọn thời gian phỏng vấn!' }]} >
-                <DatePicker placeholder="Chọn thời gian phỏng vấn" allowClear showTime className="w-full" format={'DD/MM/YYYY HH:mm:ss'} disabledDate={disablePastDates} />
+            <Form.Item required label={t('employer.applicant.viewDetail.interview.time.label')} name='interviewDate' rules={[{ required: true, message: t('employer.applicant.viewDetail.interview.time.required') }]} >
+                <DatePicker placeholder={t('employer.applicant.viewDetail.interview.time.placeholder')} allowClear showTime className="w-full" format={'DD/MM/YYYY HH:mm:ss'} disabledDate={disablePastDates} />
             </Form.Item>
-            <Form.Item required name="interviewLocation" layout="vertical" label="Link phỏng vấn" rules={[{ required: true, message: 'Vui lòng nhập link Google Meet!' }]} >
-                <Input.TextArea allowClear rows={4} placeholder="Nhập link Google Meet" />
+            <Form.Item required name="interviewLocation" layout="vertical" label={t('employer.applicant.viewDetail.interview.location.online.label')} rules={[{ required: true, message: t('employer.applicant.viewDetail.interview.location.online.required') }]} >
+                <Input.TextArea allowClear rows={4} placeholder={t('employer.applicant.viewDetail.interview.location.online.placeholder')} />
             </Form.Item>
-            <Form.Item label="Thông tin bổ sung" name='description' >
+            <Form.Item label={t('employer.applicant.viewDetail.interview.additionalInfo')} name='description' >
                 <CustomizeQuill />
             </Form.Item>
-            <Form.Item required label="Người phỏng vấn" name='interviewer' rules={[{ required: true, message: 'Vui lòng nhập tên người phỏng vấn!' }]} >
-                <Input allowClear placeholder="Người phỏng vấn" />
+            <Form.Item required label={t('employer.applicant.viewDetail.interview.interviewer.label')} name='interviewer' rules={[{ required: true, message: t('employer.applicant.viewDetail.interview.interviewer.required') }]} >
+                <Input allowClear placeholder={t('employer.applicant.viewDetail.interview.interviewer.placeholder')} />
             </Form.Item>
             <Form.Item name='contactEmail'
                 label="Email"
                 rules={[
-                    { required: true, message: 'Vui lòng nhập email!' },
-                    { type: 'email', message: 'Email không hợp lệ!' },
+                    { required: true, message: t('employer.applicant.viewDetail.interview.contact.email.required') },
+                    { type: 'email', message: t('employer.applicant.viewDetail.interview.contact.email.invalid') },
                 ]} validateFirst validateTrigger={['onBlur']}>
-                <Input allowClear placeholder="Email" />
+                <Input allowClear placeholder={t('employer.applicant.viewDetail.interview.contact.email.placeholder')} />
             </Form.Item>
             <Form.Item name='contactPhone'
-                label="Số điện thoại"
+                label={t('employer.applicant.viewDetail.interview.contact.phone.placeholder')}
                 rules={[
-                    { required: true, message: 'Vui lòng nhập số điện thoại!' },
+                    { required: true, message: t('employer.applicant.viewDetail.interview.contact.phone.required') },
                     {
                         pattern: new RegExp(/^(0[3|5|7|8|9])[0-9]{8}$/),
-                        message: 'Số điện thoại không hợp lệ'
+                        message: t('employer.applicant.viewDetail.interview.contact.phone.invalid')
                     }]} validateFirst >
-                <Input allowClear placeholder="Số điện thoại" />
+                <Input allowClear placeholder={t('employer.applicant.viewDetail.interview.contact.phone.placeholder')} />
             </Form.Item>
         </>
     )
+
     const offlineForm = (
         <>
-            <Form.Item required label="Thời gian phỏng vấn" name='dateTime' rules={[{ required: true, message: 'Vui lòng chọn thời gian phỏng vấn!' }]} >
-                <DatePicker placeholder="Chọn thời gian phỏng vấn" allowClear showTime className="w-full" format={'DD/MM/YYYY HH:mm:ss'} />
+            <Form.Item required label={t('employer.applicant.viewDetail.interview.time.label')} name='dateTime' rules={[{ required: true, message: t('employer.applicant.viewDetail.interview.time.required') }]} >
+                <DatePicker placeholder={t('employer.applicant.viewDetail.interview.time.placeholder')} allowClear showTime className="w-full" format={'DD/MM/YYYY HH:mm:ss'} />
             </Form.Item>
-            <Form.Item required label="Địa điểm phỏng vấn" name='location' rules={[{ required: true, message: 'Vui lòng nhập địa điểm phỏng vấn!' }]} >
-                <Input allowClear placeholder="Nhập địa điểm phỏng vấn" />
+            <Form.Item required label={t('employer.applicant.viewDetail.interview.location.offline.label')} name='location' rules={[{ required: true, message: t('employer.applicant.viewDetail.interview.location.offline.required') }]} >
+                <Input allowClear placeholder={t('employer.applicant.viewDetail.interview.location.offline.placeholder')} />
             </Form.Item>
-            <Form.Item label="Ngôn ngữ phỏng vấn" name='language' required rules={[{ required: true, message: 'Vui lòng nhập ngôn ngữ sẽ phỏng vấn!' }]} >
-                <Input allowClear placeholder="Ngôn ngữ phỏng vấn" />
+            <Form.Item label={t('employer.applicant.viewDetail.interview.language.label')} name='language' required rules={[{ required: true, message: t('employer.applicant.viewDetail.interview.language.required') }]} >
+                <Input allowClear placeholder={t('employer.applicant.viewDetail.interview.language.placeholder')} />
             </Form.Item>
-            <Form.Item label="Thông tin bổ sung" name='description' >
+            <Form.Item label={t('employer.applicant.viewDetail.interview.additionalInfo')} name='description' >
                 <CustomizeQuill />
             </Form.Item>
-            <Form.Item required label="Thông tin liên hệ" tooltip="Thông tin liên hệ khi người nhận được thông báo này cần hỗ trợ" >
+            <Form.Item required label={t('employer.applicant.viewDetail.interview.contact.label')} tooltip={t('employer.applicant.viewDetail.interview.contact.tooltip')} >
                 <Row gutter={10}>
                     <Col span={12}>
                         <Form.Item name='phoneNumber' rules={[
-                            { required: true, message: 'Vui lòng nhập số điện thoại!' },
+                            { required: true, message: t('employer.applicant.viewDetail.interview.contact.phone.required') },
                             {
                                 pattern: new RegExp(/^(0[3|5|7|8|9])[0-9]{8}$/),
-                                message: 'Số điện thoại không hợp lệ'
+                                message: t('employer.applicant.viewDetail.interview.contact.phone.invalid')
                             }]} validateFirst >
-                            <Input allowClear placeholder="Số điện thoại" />
+                            <Input allowClear placeholder={t('employer.applicant.viewDetail.interview.contact.phone.placeholder')} />
                         </Form.Item>
                     </Col>
 
                     <Col span={12}>
-                        <Form.Item allowClear name='name' rules={[{ required: true, message: 'Vui lòng nhập tên người liên hệ!' }]}>
+                        <Form.Item allowClear name='name' rules={[{ required: true, message: t('employer.applicant.viewDetail.interview.contact.name.required') }]}>
                             <Space.Compact>
-                                <Input className="text-base" value={'Gặp Anh/ Chị: '} disabled style={{ width: 'fit-content' }} />
-                                <Input allowClear placeholder="Tên người liên hệ" />
+                                <Input className="text-base" value={t('employer.applicant.viewDetail.interview.contact.name.prefix')} disabled style={{ width: 'fit-content' }} />
+                                <Input allowClear placeholder={t('employer.applicant.viewDetail.interview.contact.name.placeholder')} />
                             </Space.Compact>
                         </Form.Item>
                     </Col>
                     <Col span={24}>
                         <Form.Item name='email'
                             rules={[
-                                { required: true, message: 'Vui lòng nhập email!' },
-                                { type: 'email', message: 'Email không hợp lệ!' },
+                                { required: true, message: t('employer.applicant.viewDetail.interview.contact.email.required') },
+                                { type: 'email', message: t('employer.applicant.viewDetail.interview.contact.email.invalid') },
                             ]} validateFirst validateTrigger={['onBlur']}>
-                            <Input allowClear placeholder="Email" />
+                            <Input allowClear placeholder={t('employer.applicant.viewDetail.interview.contact.email.placeholder')} />
                         </Form.Item>
                     </Col>
                 </Row>
             </Form.Item>
         </>);
-    return <Modal closable={false} className="modal_interview" width={800} centered title="Thông báo phỏng vấn" open={open}
 
+    return <Modal closable={false} className="modal_interview" width={800} centered title={t('employer.applicant.viewDetail.interview.title')} open={open}
         footer={[
-            <Button size="large" key="back" onClick={handleCancel} >Hủy</Button>,
-            <Button loading={load} size="large" key="submit" type="primary" onClick={handleOk}>Gửi</Button>,
+            <Button size="large" key="back" onClick={handleCancel}>{t('employer.applicant.viewDetail.interview.cancel')}</Button>,
+            <Button loading={load} size="large" key="submit" type="primary" onClick={handleOk}>{t('employer.applicant.viewDetail.interview.send')}</Button>,
         ]}
     >
         <Form autoComplete="on" layout="vertical" required size="large" form={form} onFinish={handleSubmit}>
-            <Form.Item label="Hình thức phỏng vấn">
+            <Form.Item label={t('employer.applicant.viewDetail.interview.type.label')}>
                 <Radio.Group value={type} onChange={(e) => { form.resetFields(); setType(e.target.value) }}>
-                    <Radio className="text-base" value="OFFLINE">Trực tiếp</Radio>
-                    <Radio className="text-base" value="ONLINE">Trực tuyến</Radio>
+                    <Radio className="text-base" value="OFFLINE">{t('employer.applicant.viewDetail.interview.type.offline')}</Radio>
+                    <Radio className="text-base" value="ONLINE">{t('employer.applicant.viewDetail.interview.type.online')}</Radio>
                 </Radio.Group>
             </Form.Item>
             {type === "ONLINE" ?
@@ -214,4 +218,5 @@ export const ModalInterview = ({ open, setOpen, studentId }) => {
         </Form>
     </Modal>
 }
+
 export default ViewDetailApplicant;

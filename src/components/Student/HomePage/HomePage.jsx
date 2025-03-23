@@ -13,9 +13,10 @@ import { Alert } from 'antd';
 import Marquee from 'react-fast-marquee';
 import { getAds, getJobsNewest, getJobUrgent } from "../../../services/apiService";
 import IconChatBot from "../../Generate/ChatBot/Chatbot.jsx";
+import { useTranslation } from "react-i18next";
 
 const HomePage = () => {
-
+  const { t } = useTranslation();
   const [company, setCompany] = useState([]);
   const [jobsUrgent, setJobsUrgent] = useState([]);
   const [jobsNewest, setJobsNewest] = useState([]);
@@ -63,7 +64,7 @@ const HomePage = () => {
              
               message={
                 <Marquee pauseOnHover gradient={false} className="text-lg font-bold">
-                  Khởi đầu sự nghiệp, tìm việc dễ dàng - Cơ hội nghề nghiệp dành cho bạn ngay hôm nay!
+                  {t('marquee')}
                 </Marquee>
               }
             />
@@ -82,14 +83,14 @@ const HomePage = () => {
 
         <Card
           size="large"
-          title={<Typography.Title level={3} className="mb-0">Việc làm mới nhất</Typography.Title>}
+          title={<Typography.Title level={3} className="mb-0">{t('newest_jobs')}</Typography.Title>}
           className="mx-auto customize-card" style={{ width: "80%" }}>
           {jobsNewest.length > 0 ? <FeaturedJobs jobs={jobsNewest} /> : <Empty description="Không tìm thấy việc làm nào" />}
         </Card>
 
         <Card
           size="large"
-          title={<Typography.Title level={3} className="mb-0">Việc làm đang tuyển gấp</Typography.Title>}
+          title={<Typography.Title level={3} className="mb-0">{t('urgent_jobs')}</Typography.Title>}
           className="mx-auto customize-card" style={{ width: "80%" }}>
           {jobsUrgent.length > 0 ? <FeaturedJobs jobs={jobsUrgent} /> : <Empty description="Không tìm thấy việc làm nào" />}
         </Card>

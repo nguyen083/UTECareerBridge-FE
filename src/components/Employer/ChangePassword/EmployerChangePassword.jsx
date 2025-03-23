@@ -1,10 +1,12 @@
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import BoxContainer from "../../Generate/BoxContainer";
 import { useSelector } from "react-redux";
 import { changePassword } from "../../../services/apiService";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const EmployerChangePassword = () => {
+    const { t } = useTranslation();
     const email = useSelector(state => state.user.email);
     const [loading, setLoading] = useState(false);
     const infor = {
@@ -23,13 +25,13 @@ const EmployerChangePassword = () => {
         }).finally(() => {
             setLoading(false);
         });
-
     };
+
     return (
         <>
             <BoxContainer className="shadow-md">
                 <div className="title1">
-                    Đổi mật khẩu
+                    {t('employer.changePassword.title')}
                 </div>
             </BoxContainer>
             <BoxContainer className="shadow-md">
@@ -42,66 +44,76 @@ const EmployerChangePassword = () => {
                         md: { span: 10 },
                         span: 24
                     }}>
-                    <Form.Item label="Email đăng nhập" name="email">
+                    <Form.Item label={t('employer.changePassword.loginEmail')} name="email">
                         <Input disabled />
                     </Form.Item>
-                    <Form.Item label="Mật khẩu hiện tại" name="oldPassword"
-                        rules={
-                            [{
-                                required: true,
-                                message: 'Vui lòng nhập mật khẩu hiện tại!'
-                            }]
-                        } validateTrigger={['onBlur']}>
+                    <Form.Item 
+                        label={t('employer.changePassword.currentPassword.label')} 
+                        name="oldPassword"
+                        rules={[{
+                            required: true,
+                            message: t('employer.changePassword.currentPassword.required')
+                        }]} 
+                        validateTrigger={['onBlur']}>
                         <Input.Password />
                     </Form.Item>
-                    <Form.Item label="Mật khẩu mới" name="newPassword"
-                        rules={
-                            [{
+                    <Form.Item 
+                        label={t('employer.changePassword.newPassword.label')} 
+                        name="newPassword"
+                        rules={[
+                            {
                                 required: true,
-                                message: 'Vui lòng nhập mật khẩu mới!'
+                                message: t('employer.changePassword.newPassword.required')
                             },
                             {
                                 min: 8,
-                                message: 'Mật khẩu phải có ít nhất 8 ký tự'
+                                message: t('employer.changePassword.newPassword.minLength')
                             },
                             {
                                 pattern: new RegExp(/^(?=.*[A-Z])/),
-                                message: 'Mật khẩu phải chứa ít nhất 1 chữ cái viết hoa'
+                                message: t('employer.changePassword.newPassword.uppercase')
                             },
                             {
                                 pattern: new RegExp(/^(?=.*[0-9])/),
-                                message: 'Mật khẩu phải chứa ít nhất 1 chữ số'
+                                message: t('employer.changePassword.newPassword.number')
                             },
                             {
                                 pattern: new RegExp(/^(?=.*[!@#$%^&*(),.?":{}|<>])/),
-                                message: 'Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt'
-                            }]
-                        } validateFirst validateTrigger={['onBlur']}>
+                                message: t('employer.changePassword.newPassword.special')
+                            }
+                        ]} 
+                        validateFirst 
+                        validateTrigger={['onBlur']}>
                         <Input.Password />
                     </Form.Item>
-                    <Form.Item label="Nhập lại mật khẩu mới" name="confirmPassword"
-                        rules={
-                            [{
+                    <Form.Item 
+                        label={t('employer.changePassword.confirmPassword.label')} 
+                        name="confirmPassword"
+                        rules={[
+                            {
                                 required: true,
-                                message: 'Vui lòng nhập lại mật khẩu mới!'
+                                message: t('employer.changePassword.confirmPassword.required')
                             },
                             ({ getFieldValue }) => ({
                                 validator(_, value) {
                                     if (!value || getFieldValue('new_password') !== value) {
                                         return Promise.resolve();
                                     }
-                                    return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
+                                    return Promise.reject(new Error(t('employer.changePassword.confirmPassword.mismatch')));
                                 },
-                            }),]} validateFirst validateTrigger={['onBlur']
-                            }>
+                            })
+                        ]} 
+                        validateFirst 
+                        validateTrigger={['onBlur']}>
                         <Input.Password />
                     </Form.Item>
                     <Form.Item wrapperCol={{ span: 24, offset: 13 }}>
-                        <Button loading={loading} htmlType="submit" type="primary">Lưu</Button>
+                        <Button loading={loading} htmlType="submit" type="primary">{t('employer.changePassword.save')}</Button>
                     </Form.Item>
                 </Form>
             </BoxContainer>
         </>
     );
 };
+
 export default EmployerChangePassword;

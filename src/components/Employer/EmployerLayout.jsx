@@ -30,6 +30,7 @@ import { Layout, Menu, Avatar, Flex, Badge, Button, Tooltip, message, Space, Typ
 import { getInfor, logOut, removeToken } from '../../services/apiService.jsx';
 import { loading, stop } from '../../redux/action/webSlice.jsx';
 import COLOR from '../styles/_variables.jsx';
+import ChangeLanguageBtn from './../Generate/ChangeLanguageBtn';
 const { Header, Content, Footer, Sider } = Layout;
 const { Text } = Typography;
 const siderStyle = {
@@ -206,6 +207,7 @@ const EmployerLayout = () => {
                                     </Button>
                                 </Badge>
                             </Tooltip> */}
+                            <ChangeLanguageBtn />
                             <Avatar size={'large'} className='avatar' icon={<UserOutlined />} src={avatar && <img src={avatar} alt='' />} />
                         </Flex>
                     </Flex>

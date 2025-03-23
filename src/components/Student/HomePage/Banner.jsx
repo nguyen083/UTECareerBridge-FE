@@ -2,10 +2,12 @@ import { Avatar, Button, Card, Carousel, Flex, Image, Typography } from "antd";
 import React from "react";
 import "./Banner.scss";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 const { Text } = Typography;
 
 
 const Banner = ({ ads }) => {
+  const {t} = useTranslation();
   const navigate = useNavigate();
   const handleNavigate = (id) => {
     navigate(`/company/${id}`);
@@ -35,7 +37,7 @@ const Banner = ({ ads }) => {
               </Flex>
               <Button
                 onClick={() => handleNavigate(ad?.employerResponse?.id)}
-                size="large" type="default">Tìm hiểu thêm</Button>
+                size="large" type="default">{t('common.learnMore')}</Button>
             </Flex>
           </Card>
         ))}

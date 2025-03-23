@@ -15,6 +15,8 @@ import JobSearchBar from './Search/JobSearchBar.jsx';
 import path from '../../constant/path.jsx';
 import { useTranslation } from 'react-i18next';
 import ChangeLanguageBtn from '../Generate/ChangeLanguageBtn.jsx';
+import { BsChatLeftText } from "react-icons/bs";
+
 
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
@@ -93,9 +95,6 @@ const StudentLayout = () => {
                     />
                     <JobSearchBar onSearch={() => { }} />
                     <Flex gap={"1rem"} align='center'>
-                        <Button onClick={() => { token ? navigate('/chat') : navigate('/login') }} className='rounded-full btn-header' size='large'>
-                            {t('chat')}
-                        </Button>
                         <Popover
                             overlayClassName='customize-popover'
                             placement='bottomRight'
@@ -113,8 +112,10 @@ const StudentLayout = () => {
                         <Button onClick={nagigateLogin} className='rounded-full btn-header' size='large'>
                             {t('role.employer')}
                         </Button>
-                        <Flex gap={"0.5rem"}>
+                        <Flex gap={"0.5rem"} className='border rounded-full p-1 border-text-color'>
+                            <Button icon={<BsChatLeftText />} shape='circle' onClick={() => { token ? navigate('/chat') : navigate('/login') }} className='rounded-full btn-header hover:scale-105 transform ease-out' size='large'/>
                             <Notification userId={useSelector(state => state.user.userId)} />
+                            <ChangeLanguageBtn />
                             {infor.role !== 'student'
                                 ? <Button
                                     onClick={() => navigate('/login')}
@@ -128,7 +129,6 @@ const StudentLayout = () => {
                                 : <PopoverAvatar />
                             }
                         </Flex>
-                        <ChangeLanguageBtn />
                     </Flex>
                 </Flex>
             </Header>

@@ -6,10 +6,12 @@ import { FaNewspaper, FaMicrochip } from "react-icons/fa6";
 import { FaCogs, FaCar, FaCalculator, FaHotel, FaRoute, FaBullhorn, FaLaptopCode, } from "react-icons/fa";
 import { BankOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const JobCategory = () => {
   const carouselRef = useRef(null);
   const navigate = useNavigate();
+  const {t} = useTranslation();
 
   const categories = [
     { name: "Báo chí/ truyền hình", icon: <FaNewspaper />, key: 4 },
@@ -38,7 +40,7 @@ const JobCategory = () => {
 
   return (
     <section className="job-category">
-      <h2>Ngành nghề trọng điểm</h2>
+      <h2>{t('hot_categories')}</h2>
       <div className="job-category__carousel-wrapper">
         <Button
           icon={<LeftOutlined />}

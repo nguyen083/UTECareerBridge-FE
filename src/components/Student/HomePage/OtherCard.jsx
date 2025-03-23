@@ -4,12 +4,14 @@ import "./OrtherCard.scss";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { FaLongArrowAltRight } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 
 const OrtherCard = () => {
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const token = localStorage.getItem("accessToken");
+  const {t} = useTranslation();
 
   const isAuthenticated = (link) => {
 
@@ -50,7 +52,7 @@ const OrtherCard = () => {
   return (
     <section className="profile-cards">
       <h2>
-        Cùng UTE-Career xây dựng thương hiệu cá nhân
+        {t('build_your_branch')}
       </h2>
       <div className="profile-cards__container">
         {cards.map((card, index) => (

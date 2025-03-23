@@ -3,11 +3,7 @@ import { Tag } from 'antd';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 
-// Kích hoạt plugin customParseFormat
 dayjs.extend(customParseFormat);
-
-// Hàm tính khoảng cách từ ngày nhập đến hôm nay
-
 
 const checkThoiHan = ({ dateInput }) => {
     const tinhKhoangCach = (dateInput) => {

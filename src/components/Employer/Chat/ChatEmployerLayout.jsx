@@ -34,7 +34,6 @@ const ChatEmployerLayout = () => {
         let stompSubscription = null;
 
         if (recipientId && senderId) {
-            // Tải tin nhắn cũ
             chat.loadMessages({ user2Id: recipientId, user1Id: senderId })
                 .then((res) => {
                     setMessages(res.data.content);
@@ -43,7 +42,6 @@ const ChatEmployerLayout = () => {
                     console.log(err);
                 });
 
-            // Kết nối và đăng ký nhận tin nhắn mới
             const conversationId = getConversationId(senderId, recipientId);
             currentConversationRef.current = conversationId;
             const topic = ConversationTopic + conversationId;
@@ -56,7 +54,6 @@ const ChatEmployerLayout = () => {
             });
         }
 
-        // Cleanup function
         return () => {
             if (currentConversationRef.current) {
                 const topic = ConversationTopic + currentConversationRef.current;
@@ -93,7 +90,7 @@ const ChatEmployerLayout = () => {
     return (
         <>
             <Row className="border h-full rounded-s-lg overflow-hidden">
-                <Col span={18} className="border border-x-gray-200 flex flex-col">
+                <Col span={18} className="border border-x-gray-200 flex flex-col bg-white">
 
                     <Space direction="vertical" className="w-full py-3 px-2 border-b h-auto bg-card-color">
                         <Text className="text-base font-bold ">{t('employer.chat.title')}</Text>
@@ -110,7 +107,7 @@ const ChatEmployerLayout = () => {
                                 }
                             })}
                         </div>
-                        <Flex className=" p-2 w-full mb-4" gap={16} justify="center" align="flex-end">
+                        <Flex className=" p-2 w-full mb-4 border-t" gap={16} justify="center" align="flex-end">
                             <TextArea className="rounded-3xl resize-none overflow-hidden h-auto" placeholder={t('enter_message')} size="large" autoSize={{ minRows: 1, maxRows: 4 }} value={newMessage} onChange={(e) => setNewMessage(e.target.value)}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' && !e.shiftKey) {

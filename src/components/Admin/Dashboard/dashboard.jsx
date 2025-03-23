@@ -20,8 +20,6 @@ const AdminDashboard = () => {
   });
   const [revenueByMonth, setRevenueByMonth] = useState([]);
   const COLORS = ['#722ed1', '#2f54eb', '#1890ff', '#13c2c2', '#52c41a', '#faad14', '#fadb14', '#f5222d', '#eb2f96', '#eb2f96'];
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [filters, setFilters] = useState({
     month: null,
     year: null
@@ -33,7 +31,7 @@ const AdminDashboard = () => {
 
   const fetchPackageStats = async () => {
     try {
-      setLoading(true);
+      
       const response = await getStatisticPackage();
       const totalPackages = response.data.reduce((sum, item) => sum + item.packageCount, 0);
       const transformedData = response.data.map(pkg => ({
@@ -44,11 +42,9 @@ const AdminDashboard = () => {
 
       transformedData.sort((a, b) => b.value - a.value);
       setPackageStats(transformedData);
-      setError(null);
+      
     } catch (err) {
-      setError('Lỗi khi tải dữ liệu');
-    } finally {
-      setLoading(false);
+      console.error(err)
     }
   };
   useEffect(() => {
@@ -57,7 +53,7 @@ const AdminDashboard = () => {
 
   const fetchRevenueByMonth = async () => {
     try {
-      setLoading(true);
+      
       const params = {};
       if (filters.year) params.year = filters.year;
       const response = await getRevenueByMonth(params);
@@ -73,11 +69,9 @@ const AdminDashboard = () => {
         setCurrentMonthRevenue(currentMonthData?.revenue || 0);
       }
       setRevenueByMonth(transformedData);
-      setError(null);
+      
     } catch (err) {
-      setError('Lỗi khi tải dữ liệu');
-    } finally {
-      setLoading(false);
+      console.error(err)
     }
   };
   useEffect(() => {
@@ -86,7 +80,7 @@ const AdminDashboard = () => {
 
   const fetchJobCategoryStats = async () => {
     try {
-      setLoading(true);
+      
 
       const params = {};
       if (filters.month) params.month = filters.month;
@@ -108,11 +102,9 @@ const AdminDashboard = () => {
 
       setJobCategoryStats(transformedData);
 
-      setError(null);
+      
     } catch (err) {
-      setError('Lỗi khi tải dữ liệu');
-    } finally {
-      setLoading(false);
+      console.error(err)
     }
   };
   useEffect(() => {
@@ -121,14 +113,12 @@ const AdminDashboard = () => {
 
   const fetchStatisticUser = async () => {
     try {
-      setLoading(true);
+      
       const response = await getStatisticUser();
       setStatisticUser(...response.data);
-      setError(null);
+      
     } catch (err) {
-      setError('Lỗi khi tải dữ liệu');
-    } finally {
-      setLoading(false);
+      console.error(err)
     }
   }
   useEffect(() => {

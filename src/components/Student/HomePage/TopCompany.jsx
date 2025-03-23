@@ -17,7 +17,7 @@ const TopCompany = ({ companies }) => {
   const navigate = useNavigate();
   return (
     <div className="top-company">
-      <Title level={2}>{t('top_Companies')}</Title>
+      <Title level={2}>{t('top_companies')}</Title>
       <Flex justify='space-between'>
         {companies.map((company) => (
           <Card
@@ -45,7 +45,7 @@ const TopCompany = ({ companies }) => {
               </div>
             } description={
               <div className="text-center">
-                <Button className='cursor-pointer' size='large' type="primary">{t('seeMore')}</Button>
+                <Button className='cursor-pointer' size='large' type="primary">{t('common.seeMore')}</Button>
               </div>
             } />
 

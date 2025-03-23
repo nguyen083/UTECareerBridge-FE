@@ -3,7 +3,7 @@ import BoxContainer from "../../Generate/BoxContainer";
 import React, { useEffect, useState } from 'react';
 import { SlUserFollowing } from "react-icons/sl";
 import { ImUserTie } from "react-icons/im";
-
+import { useTranslation } from "react-i18next";
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { LiaBriefcaseSolid } from "react-icons/lia";
@@ -12,8 +12,6 @@ import { useSelector } from "react-redux";
 
 const { Text } = Typography;
 const Chart = () => {
-
-
     const data = [
         {
             name: 'Page A',
@@ -59,15 +57,12 @@ const Chart = () => {
         },
     ];
 
-
     return (
         <ResponsiveContainer width="100%" height={300}>
             <LineChart
                 data={data}
                 margin={{
                     top: 5,
-                   
-                   
                     bottom: 5,
                 }}
             >
@@ -81,34 +76,33 @@ const Chart = () => {
             </LineChart>
         </ResponsiveContainer>
     );
-
 }
+
 const ListPackage = () => {
+    const { t } = useTranslation();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
 
-
     const columns = [
         {
-            title: 'Tên Gói Dịch Vụ',
+            title: t('employer.dashboard.servicePackage.table.packageName'),
             dataIndex: 'packageName',
             key: 'packageName',
         },
         {
-            title: 'Số Lượng',
+            title: t('employer.dashboard.servicePackage.table.amount'),
             dataIndex: 'amount',
             key: 'amount',
             align: 'center'
         },
         {
-            title: 'Ngày Hết Hạn',
+            title: t('employer.dashboard.servicePackage.table.expiredAt'),
             dataIndex: 'expiredAt',
             key: 'expiredAt',
             align: 'center'
         },
     ];
 
-   
     const fetchData = async () => {
         setLoading(true);
         try {
@@ -129,7 +123,6 @@ const ListPackage = () => {
         }
     };
 
-   
     useEffect(() => {
         fetchData();
     }, []);
@@ -137,6 +130,11 @@ const ListPackage = () => {
     return (
         <div>
             <Table
+                locale={
+                    {
+                        emptyText: t('employer.dashboard.servicePackage.table.emptyText')
+                }
+            }
                 style={{ maxHeight: 350, overflow: 'auto' }}
                 bordered
                 loading={loading}
@@ -149,8 +147,10 @@ const ListPackage = () => {
 };
 
 const DashBoard = () => {
+    const { t } = useTranslation();
     const { countJob, countFollower } = useSelector(state => state.employer);
     const [countStudentApplied, setCountStudentApplied] = useState(0);
+
     useEffect(() => {
         getCountStudentApplied().then(res => {
             if (res.status === 'OK') {
@@ -160,11 +160,12 @@ const DashBoard = () => {
             }
         });
     }, []);
+
     return (
         <>
             <BoxContainer className="shadow-md">
                 <div className="title1">
-                    Thống kê
+                    {t('employer.dashboard.title')}
                 </div>
             </BoxContainer>
             <BoxContainer className="shadow-md">
@@ -172,47 +173,42 @@ const DashBoard = () => {
                     <Col xs={24} sm={12} lg={8}>
                         <Card className="shadow">
                             <Statistic
-                                title={<Text>Số người theo dõi</Text>}
+                                title={<Text>{t('employer.dashboard.stats.followers.title')}</Text>}
                                 value={countFollower || 0}
                                 prefix={<SlUserFollowing style={{ color: '#52c41a' }} />}
-                                suffix={<Text>người</Text>}
+                                suffix={<Text>{t('employer.dashboard.stats.followers.unit')}</Text>}
                             />
                         </Card>
                     </Col>
                     <Col xs={24} sm={12} lg={8}>
                         <Card className="shadow">
                             <Statistic
-                                title={<Text>Tổng số ứng viên</Text>}
+                                title={<Text>{t('employer.dashboard.stats.candidates.title')}</Text>}
                                 value={countStudentApplied || 0}
                                 prefix={<ImUserTie style={{ color: '#1890ff' }} />}
-                                suffix={<Text>người</Text>}
+                                suffix={<Text>{t('employer.dashboard.stats.candidates.unit')}</Text>}
                             />
                         </Card>
                     </Col>
                     <Col xs={24} sm={12} lg={8}>
                         <Card className="shadow">
                             <Statistic
-                                title={<Text >Số công việc đã đăng</Text>}
+                                title={<Text>{t('employer.dashboard.stats.jobs.title')}</Text>}
                                 value={countJob || 0}
                                 prefix={<LiaBriefcaseSolid style={{ color: '#52c41a' }} />}
-                                suffix={<Text>công việc</Text>}
+                                suffix={<Text>{t('employer.dashboard.stats.jobs.unit')}</Text>}
                             />
                         </Card>
                     </Col>
-                    {/* <Col sm={24} lg={12}>
-                        <Card title="Biểu đồ" className="shadow">
-                            <Chart />
-                        </Card>
-                    </Col> */}
                     <Col sm={24} lg={24}>
-                        <Card title="Gói dịch vụ" className="shadow">
+                        <Card title={t('employer.dashboard.servicePackage.title')} className="shadow">
                             <ListPackage />
                         </Card>
                     </Col>
                 </Row>
-
             </BoxContainer>
         </>
     );
 };
+
 export default DashBoard;

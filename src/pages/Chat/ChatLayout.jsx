@@ -108,13 +108,13 @@ const ChatLayout = () => {
                     </Space>
                 </Col>
                 <Col span={12} className="border border-x-gray-200 flex flex-col max-h-screen">
-                    <Space direction="vertical" className="w-full py-3 px-2 border-b h-auto">
+                    <Space direction="vertical" className="w-full py-3 px-2 border-b h-auto bg-card-color">
                         <Text className="text-base font-bold">{t('chat_with_employer')}</Text>
                     </Space>
 
                     {recipientId ? <>
                         <CardCompany className="shadow-md rounded-t-none" company={companyInfor}/>
-                        <div className="w-full flex-1 overflow-y-auto flex flex-col h-auto px-2 gap-4 " ref={divRef}>
+                        <div className="w-full flex-1 overflow-y-auto flex flex-col h-auto p-2 gap-4 " ref={divRef}>
                             {messages.length === 0 && <Empty className="mt-36" image={<Avatar src={companyInfor.companyLogo} size={100} />} description={<Text className="text-base font-bold">{companyInfor.companyName}</Text>} />}
                             {messages.map((message, index) => {
                                 if (message.senderId === senderId) {
@@ -124,7 +124,7 @@ const ChatLayout = () => {
                                 }
                             })}
                         </div>
-                        <Flex className=" p-2 w-full h-auto mb-4" gap={16} justify="center" align="flex-end">
+                        <Flex className=" p-2 w-full h-auto mb-4 border-t" gap={16} justify="center" align="flex-end">
                             <TextArea className="rounded-3xl resize-none overflow-hidden h-auto" placeholder={t('enter_message')} size="large" autoSize={{ minRows: 1, maxRows: 4 }} value={newMessage} onChange={(e) => setNewMessage(e.target.value)}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' && !e.shiftKey) {

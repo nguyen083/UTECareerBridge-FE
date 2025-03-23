@@ -7,8 +7,10 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { updateEmployerProfile } from '../../../services/apiService';
 import { setInfor } from '../../../redux/action/employerSlice';
+import { useTranslation } from 'react-i18next';
 
 const EmployerProfile = () => {
+    const { t } = useTranslation();
     const regChar = new RegExp(/^[a-zA-ZÀÁÂÃÈÉÊÌÍÒÓÔÕÙÚĂĐĨŨƠàáâãèéêìíòóôõùúăđĩũơƯĂẠẢẤẦẨẪẬẮẰẲẴẶẸẺẼỀỀỂưăạảấầẩẫậắằẳẵặẹẻẽềềểếỄỆỈỊỌỎỐỒỔỖỘỚỜỞỠỢỤỦỨỪễệỉịọỏốồổỗộớờởỡợụủứừỬỮỰỲỴÝỶỸửữựỳỵỷỹ\s]*$/);
     const [enableEdit, setEnableEdit] = useState(true);
     const [form] = Form.useForm();
@@ -40,78 +42,78 @@ const EmployerProfile = () => {
         <>
             <BoxContainer className="shadow-md">
                 <div className="title1">
-                    Thông tin cá nhân
+                    {t('employer.profile.title')}
                 </div>
             </BoxContainer>
             <BoxContainer className='shadow-md'>
                 <Flex align='center' justify='space-between'>
-                    <span className='title2'>Thông tin chung</span>
-                    <Button disabled={!enableEdit} onClick={() => { setEnableEdit(false) }}>Chỉnh sửa</Button>
+                    <span className='title2'>{t('employer.profile.generalInfo')}</span>
+                    <Button disabled={!enableEdit} onClick={() => { setEnableEdit(false) }}>{t('common.edit')}</Button>
                 </Flex>
                 <Divider />
                 <Form onFinish={handleSubmit} form={form} size='large' layout='vertical' requiredMark={false} autoComplete='false' disabled={enableEdit}
                     initialValues={infor}>
                     <Row className="div-form-profile" gutter={16}>
                         <Col span={12}>
-                            <Form.Item name="firstName" label={<span>Tên <span className='text-red-500'> *</span></span>}
+                            <Form.Item name="firstName" label={<span>{t('auth.register.firstName')} <span className='text-red-500'> *</span></span>}
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Vui lòng nhập tên',
+                                        message: t('auth.register.firstNameRequired'),
                                     },
                                     {
                                         pattern: regChar,
-                                        message: 'Tên không hợp lệ',
+                                        message: t('employer.register.invalidFirstName'),
                                     }
                                 ]} validateTrigger={['onChange']}>
                                 <Input allowClear />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item name="lastName" label={<span>Họ <span className='text-red-500'> *</span></span>}
+                            <Form.Item name="lastName" label={<span>{t('auth.register.lastName')} <span className='text-red-500'> *</span></span>}
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Vui lòng nhập họ',
+                                        message: t('auth.register.lastNameRequired'),
                                     },
                                     {
                                         pattern: regChar,
-                                        message: 'Họ không hợp lệ',
+                                        message: t('employer.register.invalidLastName'),
                                     }
                                 ]} validateTrigger={['onChange']}>
                                 <Input allowClear />
                             </Form.Item>
                         </Col>
                         <Col span={3}>
-                            <Form.Item name="gender" label="Giới tính" >
+                            <Form.Item name="gender" label={t('auth.register.gender')} >
                                 <Radio.Group className='mb-0'>
                                     <Space direction="horizontal">
-                                        <Radio value={0}>Nam</Radio>
-                                        <Radio value={1}>Nữ</Radio>
+                                        <Radio value={0}>{t('auth.register.male')}</Radio>
+                                        <Radio value={1}>{t('auth.register.female')}</Radio>
                                     </Space>
                                 </Radio.Group>
                             </Form.Item>
                         </Col>
                         <Col span={9}>
-                            <Form.Item name="dob" label={<span>Ngày sinh <span className='text-red-500'> *</span></span>} rules={[
+                            <Form.Item name="dob" label={<span>{t('auth.register.birthday')} <span className='text-red-500'> *</span></span>} rules={[
                                 {
                                     required: true,
-                                    message: 'Vui lòng nhập ngày sinh của bạn',
+                                    message: t('auth.register.birthdayRequired'),
                                 },
                             ]} validateTrigger={['onChange']}>
-                                <DatePicker className='w-full' format={"DD/MM/YYYY"} />
+                                <DatePicker className='w-full' format={"DD/MM/YYYY"} placeholder={t('auth.register.birthdayPlaceholder')} />
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item name="phoneNumber" label={<span>Số điện thoại <span className='text-red-500'> *</span></span>}
+                            <Form.Item name="phoneNumber" label={<span>{t('auth.register.phone')} <span className='text-red-500'> *</span></span>}
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Vui lòng nhập số điện thoại của bạn',
+                                        message: t('auth.register.phoneRequired'),
                                     },
                                     {
                                         pattern: new RegExp(/^(0[3|5|7|8|9])[0-9]{8}$/),
-                                        message: 'Số điện thoại không hợp lệ'
+                                        message: t('employer.register.invalidPhone')
                                     }
                                 ]}
                                 validateTrigger={['onBlur']}>
@@ -120,8 +122,8 @@ const EmployerProfile = () => {
                         </Col>
                     </Row>
                     <Flex gap={"1rem"} align='center' justify='end' hidden={enableEdit}>
-                        <Button size='middle' type='default' onClick={handleReset}>Hủy</Button>
-                        <Button size='middle' type='primary' htmlType='submit'>Lưu</Button>
+                        <Button size='middle' type='default' onClick={handleReset}>{t('common.cancel')}</Button>
+                        <Button size='middle' type='primary' htmlType='submit'>{t('common.save')}</Button>
                     </Flex>
                 </Form>
             </BoxContainer>

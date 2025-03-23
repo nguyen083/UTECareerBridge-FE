@@ -10,14 +10,20 @@
     "enter_message": "Enter message...",
     "list_applicant": "List of applicants",
     "top_applicants": "Top applicants",
-    "my_company": "My company",
+    "top_companies": "Top companies",
+    "hot_categories": "Hot categories",
+    "newest_jobs": "Newest jobs",
+    "urgent_jobs": "Urgent jobs",
+    "build_your_branch": "Build your personal brand with UTE-Career",
     "follow_company": "Follow company",
+    "marquee": "Kickstart your career, find a job with ease - Career opportunities await you today!",
     "all_categories": {
         "title": "All Categories"
     },
     "common": {
         "save": "Save",
         "cancel": "Cancel",
+        "edit": "Edit",
         "complete": "Complete",
         "error": "Error",
         "success": "Success",
@@ -26,7 +32,9 @@
         "copy": "Copy to clipboard",
         "seeMore": "See more",
         "learnMore": "Learn more",
-        "or": "or"
+        "or": "or",
+        "hot": "Hot",
+        "urgent": "Urgent"
     },
     "role": {
         "admin": "Admin",
@@ -64,6 +72,73 @@
             },
             "messages": {
                 "notFound": "Information not found"
+            },
+            "viewDetail": {
+                "title": "Review Candidate",
+                "approve": "Approve",
+                "reject": "Reject",
+                "interview": {
+                    "title": "Interview Notification",
+                    "cancel": "Cancel",
+                    "send": "Send",
+                    "type": {
+                        "label": "Interview Type",
+                        "offline": "In-person",
+                        "online": "Online"
+                    },
+                    "position": {
+                        "label": "Interview Position",
+                        "placeholder": "Enter interview position",
+                        "required": "Please enter interview position!"
+                    },
+                    "time": {
+                        "label": "Interview Time",
+                        "placeholder": "Select interview time",
+                        "required": "Please select interview time!"
+                    },
+                    "location": {
+                        "online": {
+                            "label": "Interview Link",
+                            "placeholder": "Enter Google Meet link",
+                            "required": "Please enter Google Meet link!"
+                        },
+                        "offline": {
+                            "label": "Interview Location",
+                            "placeholder": "Enter interview location",
+                            "required": "Please enter interview location!"
+                        }
+                    },
+                    "additionalInfo": "Additional Information",
+                    "interviewer": {
+                        "label": "Interviewer",
+                        "placeholder": "Interviewer",
+                        "required": "Please enter interviewer name!"
+                    },
+                    "language": {
+                        "label": "Interview Language",
+                        "placeholder": "Interview language",
+                        "required": "Please enter interview language!"
+                    },
+                    "contact": {
+                        "label": "Contact Information",
+                        "tooltip": "Contact information when recipient needs support",
+                        "phone": {
+                            "placeholder": "Phone number",
+                            "required": "Please enter phone number!",
+                            "invalid": "Invalid phone number"
+                        },
+                        "name": {
+                            "prefix": "Contact: ",
+                            "placeholder": "Contact person name",
+                            "required": "Please enter contact person name!"
+                        },
+                        "email": {
+                            "placeholder": "Email",
+                            "required": "Please enter email!",
+                            "invalid": "Invalid email!"
+                        }
+                    }
+                }
             }
         },
         "chat": {
@@ -73,6 +148,77 @@
             "end": "End",
             "chat": "Chat",
             "enterMessage": "Enter message..."
+        },
+        "changePassword": {
+            "title": "Change Password",
+            "loginEmail": "Login Email",
+            "currentPassword": {
+                "label": "Current Password",
+                "required": "Please enter your current password!"
+            },
+            "newPassword": {
+                "label": "New Password",
+                "required": "Please enter new password!",
+                "minLength": "Password must be at least 8 characters",
+                "uppercase": "Password must contain at least 1 uppercase letter",
+                "number": "Password must contain at least 1 number",
+                "special": "Password must contain at least 1 special character"
+            },
+            "confirmPassword": {
+                "label": "Confirm New Password",
+                "required": "Please confirm new password!",
+                "mismatch": "Password confirmation does not match!"
+            },
+            "save": "Save"
+        },
+        "company": {
+            "title": "Company",
+            "info": "Company Information",
+            "certificate": {
+                "title": "Business Certificate",
+                "uploadLabel": "Business Certificate Image",
+                "uploadTooltip": "Drag and drop or click to upload image",
+                "previewTitle": "Preview Image",
+                "previewAlt": "Business Certificate Preview",
+                "confirmModal": {
+                    "title": "Confirm Information Submission",
+                    "content": "By clicking confirm, you agree that failure to provide or providing incorrect information is considered a violation that may result in service suspension and/or account termination without refund. You can review the information provided"
+                }
+            }
+        },
+        "dashboard": {
+            "title": "Statistics",
+            "stats": {
+                "followers": {
+                    "title": "Number of Followers",
+                    "unit": "people"
+                },
+                "candidates": {
+                    "title": "Total Candidates",
+                    "unit": "people"
+                },
+                "jobs": {
+                    "title": "Posted Jobs",
+                    "unit": "jobs"
+                }
+            },
+            "servicePackage": {
+                "title": "Service Packages",
+                "table": {
+                    "packageName": "Package Name",
+                    "amount": "Amount",
+                    "expiredAt": "Expiry Date",
+                    "emptyText": "No service packages found"
+                }
+            }
+        },
+        "profile": {
+            "title": "Personal Information",
+            "generalInfo": "General Information",
+            "messages": {
+                "updateSuccess": "Profile updated successfully",
+                "updateError": "Failed to update profile"
+            }
         }
     },
     "auth": {

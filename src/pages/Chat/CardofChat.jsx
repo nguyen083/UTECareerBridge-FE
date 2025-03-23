@@ -75,16 +75,16 @@ const ListJob = ({ className = "" }) => {
                 <List
                     locale={{ emptyText: loading ? <></> : <Empty description="Không có" /> }}
                     dataSource={data}
-                    split={false}
+                    split={true}
                     size='large'
                     renderItem={(item) => (
-                        <List.Item key={item.applicationId}>
+                        <List.Item key={item.applicationId} >
                             <List.Item.Meta
                                 avatar={<Avatar size={50} src={item.companyLogo} />}
                                 title={<div className='max-w-52 truncate'>{item.jobTitle}</div>}
                                 description={<div className='max-w-52 truncate'><Text type='secondary'>{item.companyName}</Text></div>}
                             />
-                            <Button className='border-0 rounded-full text-blue-600 bg-blue-200' type='text' onClick={() => navigate(`/chat/${item.companyId}`)}>{t('chat')}</Button>
+                            <Button className='border-0 rounded-full text-blue-600 bg-blue-200 hover:scale-105 ease-in-out' type='text' onClick={() => navigate(`/chat/${item.companyId}`)}>{t('chat')}</Button>
                         </List.Item>
                     )}
                 />
