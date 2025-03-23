@@ -27,22 +27,22 @@ const FileGroup = ({ formData, setFormData }) => {
 
         fetchData();
 
-        // Cleanup function
+       
         return () => {
             isMounted = false;
         };
-    }, []); // Add setFormData to dependencies if needed
+    }, []);
 
     const handleChange = (event) => {
         setFormData(prev => ({ ...prev, resumeId: event.target.value }));
     };
 
     const dropdownItems = [
-        // Add your dropdown items here
-        // {
-        //     label: "Menu item",
-        //     key: '0',
-        // }
+       
+       
+       
+       
+       
     ];
 
     return (

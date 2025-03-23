@@ -2,8 +2,10 @@ import { Alert, List, Typography } from "antd";
 import { JobCardLargeApplicant } from "../../Generate/JobCard";
 import { useEffect, useState } from "react";
 import { getJobsByStatus } from "../../../services/apiService";
+import { useTranslation } from "react-i18next";
 const { Text } = Typography;
 const ListJob = () => {
+    const {t} = useTranslation();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
@@ -31,11 +33,11 @@ const ListJob = () => {
     return (
         <>
             <Alert
-                message={<Text className="text-base" strong>Chú ý</Text>}
+                message={<Text className="text-base" strong>{t('common.notice')}</Text>}
                 type="info"
                 showIcon
                 closable
-                description="Vui lòng chọn việc làm để xem danh sách ứng viên"
+                description={t('employer.applicant.listJob.notice')}
                 className="mb-3"
             />
 

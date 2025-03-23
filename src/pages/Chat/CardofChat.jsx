@@ -8,21 +8,22 @@ import { customScrollbarCSS } from '../../constant/scrollbar';
 import chat from '../../services/api/chat';
 import { useSelector } from 'react-redux';
 import { connectStomp, subscribeToTopic, unsubscribeFromTopic } from '../../utils/stompConfig';
+import company from './../../services/api/company';
 
 const { Text } = Typography;
 const customScrollbarStyle = {
     height: 'calc(100vh - 100px)',
     overflow: 'auto',
     padding: '0 8px',
-    scrollbarWidth: 'thin', // For Firefox
-    scrollbarColor: '#888 #f1f1f1', // For Firefox
+    scrollbarWidth: 'thin',
+    scrollbarColor: '#888 #f1f1f1',
 };
 const customScrollbarLisCompanyStyle = {
     height: 'calc(100vh - 210px)',
     overflow: 'auto',
     padding: '0 8px',
-    scrollbarWidth: 'thin', // For Firefox
-    scrollbarColor: '#888 #f1f1f1', // For Firefox
+    scrollbarWidth: 'thin',
+    scrollbarColor: '#888 #f1f1f1',
 };
 
 const ListJob = ({ className = "" }) => {
@@ -91,19 +92,14 @@ const ListJob = ({ className = "" }) => {
         </div >
     );
 }
-const CardCompany = ({ className = "" }) => {
-    const company = {
-        logo: "https://randomuser.me/api/portraits/men/43.jpg",
-        name: "Công ty ABC",
-        address: "123 Đường ABC, Quận XYZ, TP. HCM",
-    }
+const CardCompany = ({ className = "" , company}) => {
     return (
         <Card className={className}>
             <Flex gap={8}>
-                <Avatar size={50} src={company.logo} />
+                <Avatar size={50} src={company.companyLogo} />
                 <Flex vertical gap={4}>
-                    <Text>{company.name}</Text>
-                    <Text type="secondary">{company.address}</Text>
+                    <Text>{company.companyName}</Text>
+                    <Text type="secondary">{company.companyAddress}</Text>
                 </Flex>
             </Flex>
         </Card>
@@ -118,29 +114,28 @@ const ListConversation = ({ className = "" }) => {
     const role = useSelector((state) => state.user.role);
     const navigate = useNavigate();
     const senderId = useSelector((state) => state.user.userId);
-    // const { recipientId } = useParams();
+   
 
     useEffect(() => {
         connectStomp(() => {
             subscribeToTopic(ListConversationTopic + senderId, (message) => {
                 const receivedMessage = JSON.parse(message.body);
-                console.log("receivedMessage: ", receivedMessage);
                 setData(prevData => {
-                    // Kiểm tra xem tin nhắn này đã tồn tại chưa (dựa trên recipientId)
+                   
                     const existingMessageIndex = prevData.findIndex(item => item.recipientId === receivedMessage.recipientId);
                     const isNewConversation = existingMessageIndex === -1;
 
-                    // Nếu là cuộc trò chuyện mới, cần tăng total
+                   
                     if (isNewConversation) {
                         setTotal(prevTotal => prevTotal + 1);
                     }
 
-                    // Cách xử lý đúng: loại bỏ tin nhắn cũ nếu có
+                   
                     let newData = prevData.filter(item => item.recipientId !== receivedMessage.recipientId);
-                    // Thêm tin nhắn mới vào đầu mảng để nó hiển thị trên cùng
+                   
                     newData.unshift(receivedMessage);
 
-                    // Trả về mảng mới
+                   
                     return newData;
                 });
             });
@@ -165,16 +160,16 @@ const ListConversation = ({ className = "" }) => {
         setLoading(true);
         chat.getListConversation({ page, size: 10 })
             .then((res) => {
-                // Sắp xếp dữ liệu mới theo thứ tự phù hợp (nếu cần)
+               
                 const newContent = res.data.content;
 
-                // Kết hợp dữ liệu mới và cũ, loại bỏ trùng lặp
+               
                 setData(prevData => {
-                    // Lấy danh sách recipientId đã có
+                   
                     const existingIds = new Set(prevData.map(item => item.recipientId));
-                    // Lọc ra các tin nhắn mới chưa có trong danh sách hiện tại
+                   
                     const uniqueNewItems = newContent.filter(item => !existingIds.has(item.recipientId));
-                    // Kết hợp dữ liệu cũ và mới
+                   
                     return [...prevData, ...uniqueNewItems];
                 });
 

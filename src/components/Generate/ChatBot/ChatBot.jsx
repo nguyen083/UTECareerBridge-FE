@@ -71,7 +71,7 @@ const ChatBot = () => {
     const sendMessage = () => {
         if (!newMessage.trim()) return;
 
-        // Add user message to UI immediately
+       
         const userMessage = {
             content: newMessage,
             senderId: currentUserId,
@@ -79,7 +79,7 @@ const ChatBot = () => {
         };
         setMessages(prev => [...prev, userMessage]);
 
-        // Prepare and send message to chatbot
+       
         const payload = {
             sessionId: sessionId,
             content: newMessage + ". Hãy trả lời nghiêm túc theo kiểu tin nhắn"

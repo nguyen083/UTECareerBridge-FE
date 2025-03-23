@@ -7,14 +7,16 @@ import { FaFilter } from "react-icons/fa";
 import './ListEvent.scss';
 import { getAllEvent, deleteEvent } from "../../../services/apiService";
 import { deleteImageFromCloudinary, deleteImageFromCloudinaryByLink } from "../../../services/uploadCloudary";
+import { useTranslation } from 'react-i18next';
 
 const { Text, Title } = Typography;
 
 
 const EventList = ({ isFetching, setIsFetching, eventType }) => {
+    const { t } = useTranslation();
     const [eventData, setEventData] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
-    const [pageSize, setPageSize] = useState(4); // Kích thước trang mặc định
+    const [pageSize, setPageSize] = useState(4);
     const [totalItems, setTotalItems] = useState(0);
     const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
@@ -24,7 +26,7 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
         setLoading(true);
         getAllEvent({ page: currentPage, size: pageSize, eventType: eventType }).then((res) => {
             setEventData(res.data.eventResponses);
-            setTotalItems(res.data.totalPages); // Giả sử API trả về tổng số mục
+            setTotalItems(res.data.totalPages);
         }).catch((err) => {
             message.error(err.message);
         }).finally(() => {
@@ -38,7 +40,7 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
     }, [currentPage, pageSize, isFetching === true, eventType]);
 
     const handlePageChange = (page, size) => {
-        setCurrentPage(page - 1); // Ant Design sử dụng chỉ số trang bắt đầu từ 1
+        setCurrentPage(page - 1);
         setPageSize(size);
     };
 
@@ -49,18 +51,18 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
     const handleDeleteEvent = (item) => {
         Modal.confirm({
             centered: true,
-            title: "Xác nhận xóa",
-            content: "Bạn có chắc chắn muốn xóa sự kiện này không?",
-            okText: 'Xóa',
+            title: t('admin.event.modal.deleteConfirm.title'),
+            content: t('admin.event.modal.deleteConfirm.content'),
+            okText: t('admin.event.modal.deleteConfirm.okText'),
             okType: 'danger',
-            cancelText: 'Hủy',
+            cancelText: t('common.cancel'),
             onOk() {
                 setLoading(true);
                 deleteEvent(item.eventId).then((res) => {
                     if (res.status === 'OK') {
                         message.success(res.message);
                         deleteImageFromCloudinaryByLink(item.eventImage).then((status) => {
-                            // status === 200 && message.success("Xóa ảnh thành công!");
+                           
                             fetchEvent();
                         });
                     } else {
@@ -81,7 +83,7 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
                 loading={loading}
                 className="list-event"
                 split={false}
-                locale={{ emptyText: <Empty description="Không tìm thấy sự kiện" /> }}
+                locale={{ emptyText: <Empty description={t('admin.event.list.empty')} /> }}
                 itemLayout="horizontal"
                 dataSource={eventData}
                 pagination={{
@@ -103,13 +105,19 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
                                     overlay={
                                         <Menu>
                                             <Menu.Item key="1" onClick={() => { window.open(`/event-detail/${item.eventId}`, '_blank') }}>
-                                                <Button icon={<EyeOutlined />} type="link" style={{ color: 'black' }}>Xem chi tiết</Button>
+                                                <Button icon={<EyeOutlined />} type="link" style={{ color: 'black' }}>
+                                                    {t('admin.event.actions.view')}
+                                                </Button>
                                             </Menu.Item>
                                             <Menu.Item key="2">
-                                                <Button icon={<EditOutlined />} type="link" color="primary" onClick={() => handleEditEvent(item.eventId)}>Chỉnh sửa</Button>
+                                                <Button icon={<EditOutlined />} type="link" color="primary" onClick={() => handleEditEvent(item.eventId)}>
+                                                    {t('admin.event.actions.edit')}
+                                                </Button>
                                             </Menu.Item>
                                             <Menu.Item key="3" onClick={() => { handleDeleteEvent(item) }}>
-                                                <Button icon={<DeleteOutlined />} type="link" danger >Xóa</Button>
+                                                <Button icon={<DeleteOutlined />} type="link" danger>
+                                                    {t('admin.event.actions.delete')}
+                                                </Button>
                                             </Menu.Item>
                                         </Menu>
                                     }
@@ -128,12 +136,12 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
                                 }
                                 description={
                                     <>
-                                        <Text className="font-bold">Ngày tổ chức: </Text> <Text>{item.eventDate}</Text>
-                                        <br />
-                                        <Text className="font-bold">Địa điểm: </Text> <Text>{item.eventLocation}</Text>
-                                        <br />
-                                        <Tag className="w-fit text-sm font-normal" color="blue">{item.eventType}</Tag>
-                                    </>
+                                    <Text className="font-bold">{t('admin.event.list.eventDate')}: </Text> <Text>{item.eventDate}</Text>
+                                    <br />
+                                    <Text className="font-bold">{t('admin.event.list.location')}: </Text> <Text>{item.eventLocation}</Text>
+                                    <br />
+                                    <Tag className="w-fit text-sm font-normal" color="blue">{item.eventType}</Tag>
+                                </>
                                 }
                             />
                         </List.Item >
@@ -151,7 +159,7 @@ const ListEvent = () => {
     const [eventType, setEventType] = useState(null);
     return (<>
         <BoxContainer width='100%' className="shadow-md">
-            <div className='title1'>Quản lý Sự Kiện</div>
+        <div className='title1'>{t('admin.event.title.manage')}</div>
         </BoxContainer>
         <BoxContainer width='100%' className="shadow-md">
             <Flex gap={20} vertical>
@@ -159,19 +167,18 @@ const ListEvent = () => {
                     <Select
                         size='large'
                         allowClear
-                        style={{ minWidth: 200 }}
-                        placeholder="Lọc theo loại"
+                        className="min-w-[200px]"
+                        placeholder={t('admin.event.filter.placeholder')}
                         onChange={(value) => setEventType(value)}
                         prefix={<FaFilter color="#1E4F94" style={{ marginRight: 8 }} />}
                     >
-                        <Select.Option value="SEMINAR">Hội thảo</Select.Option>
-                        <Select.Option value="CONFERENCE">Hội nghị</Select.Option>
-                        <Select.Option value="WORKSHOP">Hội thảo chuyên đề</Select.Option>
-                        <Select.Option value="CAREER_FAIR">Hội chợ việc làm</Select.Option>
-                        <Select.Option value="WEBINAR">Hội thảo trực tuyến</Select.Option>
-                        {/* Các loại sự kiện khác có thể thêm vào đây */}
+                        <Select.Option value="SEMINAR">{t('admin.event.form.fields.eventType.options.seminar')}</Select.Option>
+                        <Select.Option value="CONFERENCE">{t('admin.event.form.fields.eventType.options.conference')}</Select.Option>
+                        <Select.Option value="WORKSHOP">{t('admin.event.form.fields.eventType.options.workshop')}</Select.Option>
+                        <Select.Option value="CAREER_FAIR">{t('admin.event.form.fields.eventType.options.careerFair')}</Select.Option>
+                        <Select.Option value="WEBINAR">{t('admin.event.form.fields.eventType.options.webinar')}</Select.Option>
                     </Select>
-                    <Button icon={<PlusOutlined />} onClick={() => setOpen(true)}>Tạo sự kiện mới</Button>
+                    <Button icon={<PlusOutlined />} onClick={() => setOpen(true)}>{t('admin.event.actions.create')}</Button>
                 </Flex>
                 <EventList isFetching={isFetching} setIsFetching={setIsFetching} eventType={eventType} />
             </Flex>

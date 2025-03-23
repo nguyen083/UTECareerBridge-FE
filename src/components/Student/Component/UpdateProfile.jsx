@@ -71,7 +71,7 @@ const UpdateProfile = () => {
     }, [currentDistrictId]);
 
     const handleUpdateProfile = (values) => {
-        // deleteImageFromCloudinaryByLink(infor.profileImage)
+       
         values.dob = values.dob.format("DD/MM/YYYY");
         updateInforStudent(values).then((res) => {
             res.status === "OK" ? message.success(res.message) : message.error(res.message);
@@ -85,13 +85,13 @@ const UpdateProfile = () => {
         imageUploaded && deleteImageFromCloudinaryByLink(imageUploaded).then((status) => {
             status === 200 ? message.success("Xoá ảnh thành công") : message.error("Xoá ảnh thất bại");
         });
-        // Xoá ảnh đã upload lên Cloudinary nhưng không thực hiện cập nhật vào DB
+       
         form.resetFields();
         setImageUploaded(null)
         setOpen(false)
     };
     useEffect(() => {
-        // Khi provinceId thay đổi, lấy quận/huyện
+       
         if (infor.provinceId) {
             setCurrentProvinceId(infor.provinceId);
         }
@@ -101,7 +101,7 @@ const UpdateProfile = () => {
         }
 
         if (infor.wardId) {
-            setCurrentWardId(infor.wardId); // Tạo dữ liệu ward tương ứng với infor.wardId
+            setCurrentWardId(infor.wardId);
         }
     }, [infor]);
     return (
@@ -113,14 +113,14 @@ const UpdateProfile = () => {
                     onFinish={handleUpdateProfile}
                     size="large"
                     layout="vertical"
-                    className={styles.modalForm} // Use the class from SCSS file
+                    className={styles.modalForm}
                     initialValues={{
                         gender: infor.gender,
                         email: infor.email,
                         dob: dayjs(infor.dob, "DD/MM/YYYY"),
-                        provinceId: infor.provinceId,  // Gán giá trị cho tỉnh
-                        districtId: infor.districtId,  // Gán giá trị cho quận/huyện
-                        wardId: infor.wardId,          // Gán giá trị cho phường/xã
+                        provinceId: infor.provinceId, 
+                        districtId: infor.districtId, 
+                        wardId: infor.wardId,         
                         firstName: infor.firstName,
                         lastName: infor.lastName,
                         phoneNumber: infor.phoneNumber,

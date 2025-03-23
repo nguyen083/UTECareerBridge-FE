@@ -16,7 +16,7 @@ const VoucherModal = ({ visible, onClose, onSelectVoucher }) => {
 
   useEffect(() => {
     if (visible) {
-      fetchCoupons(currentPage, 10); // Fetch with initial page and limit
+      fetchCoupons(currentPage, 10);
     }
   }, [visible, currentPage]);
 
@@ -50,7 +50,7 @@ const VoucherModal = ({ visible, onClose, onSelectVoucher }) => {
     }
   };
   const handleUseCoupon = (coupon) => {
-    onSelectVoucher(coupon); // Call the function passed from props
+    onSelectVoucher(coupon);
     onClose();
 
   };

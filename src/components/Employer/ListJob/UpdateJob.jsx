@@ -28,7 +28,7 @@ const UpdateJob = () => {
         if (id) {
             getJobById(id).then((res) => {
                 if (res.status === 'OK') {
-                    // Set dữ liệu vào form khi có phản hồi từ API
+                   
                     const jobData = {
                         jobTitle: res.data.jobTitle,
                         jobLocation: res.data.jobLocation,
@@ -42,7 +42,7 @@ const UpdateJob = () => {
                         jobRequirements: res.data.jobRequirements,
                         jobDescription: res.data.jobDescription,
                     };
-                    form.setFieldsValue(jobData); // Set dữ liệu vào form
+                    form.setFieldsValue(jobData);
                 } else {
                     message.error(res.message);
                 }
@@ -211,7 +211,7 @@ const UpdateJob = () => {
     useEffect(() => {
         getAllJobCategories().then((res) => {
             const filteredOptions = res.data
-                .filter(item => item.active === true) // Lọc các mục có thuộc tính active là true
+                .filter(item => item.active === true)
                 .map(item => {
                     return { value: item.jobCategoryId, label: item.jobCategoryName };
                 });
@@ -219,7 +219,7 @@ const UpdateJob = () => {
         });
         getAllJobLevels().then((res) => {
             const filteredOptions = res.data
-                .filter(item => item.active === true) // Lọc các mục có thuộc tính active là true
+                .filter(item => item.active === true)
                 .map(item => {
                     return { value: item.jobLevelId, label: item.nameLevel };
                 });
@@ -227,7 +227,7 @@ const UpdateJob = () => {
         });
         getAllSkills().then((res) => {
             const filteredOptions = res.data
-                .filter(item => item.active === true) // Lọc các mục có thuộc tính active là true
+                .filter(item => item.active === true)
                 .map(item => {
                     return { value: item.skillId, label: item.skillName };
                 });
@@ -239,7 +239,7 @@ const UpdateJob = () => {
         putJob(id, values).then((res) => {
             if (res.status === 'OK') {
                 message.success(res.message);
-                //trở về trang danh sách công việc
+               
                 navigate('/employer/manage-list-jobs');
             }
             else {

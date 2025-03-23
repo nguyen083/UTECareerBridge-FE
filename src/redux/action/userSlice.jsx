@@ -9,7 +9,7 @@ const initialState = {
 };
 
 export const userSlice = createSlice({
-    name: 'user', //tên của reducer
+    name: 'user',
     initialState,
     reducers: {
         setInfor: (state, action) => {

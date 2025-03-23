@@ -12,7 +12,7 @@ import COLOR from "../../styles/_variables";
 import { Alert } from 'antd';
 import Marquee from 'react-fast-marquee';
 import { getAds, getJobsNewest, getJobUrgent } from "../../../services/apiService";
-import IconChatBot from "../../Generate/ChatBot/Chatbot";
+import IconChatBot from "../../Generate/ChatBot/Chatbot.jsx";
 
 const HomePage = () => {
 
@@ -60,7 +60,7 @@ const HomePage = () => {
               className="rounded-none border-0 "
               style={{ background: COLOR.textColor, color: COLOR.backgroundColor }}
               closable={{ closeIcon: <CloseOutlined style={{ color: COLOR.backgroundColor }} /> }}
-              // banner
+             
               message={
                 <Marquee pauseOnHover gradient={false} className="text-lg font-bold">
                   Khởi đầu sự nghiệp, tìm việc dễ dàng - Cơ hội nghề nghiệp dành cho bạn ngay hôm nay!

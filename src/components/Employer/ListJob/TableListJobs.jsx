@@ -2,16 +2,16 @@ import React, { useEffect, useRef, useState } from 'react';
 import { SearchOutlined, EditOutlined, DeleteOutlined, EyeOutlined, InboxOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { Button, Input, Modal, Space, Table, Tooltip } from 'antd';
 import Highlighter from 'react-highlight-words';
-import { deleteJob, getJobsByStatus, putHideJob } from '../../../services/apiService'; // API mới để phân trang
+import { deleteJob, getJobsByStatus, putHideJob } from '../../../services/apiService';
 import { useNavigate } from 'react-router-dom';
 
 const TableListJobs = (props) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [pagination, setPagination] = useState({
-        current: 1, // Trang hiện tại
-        pageSize: 10, // Số lượng bản ghi mỗi trang (mặc định 20)
-        total: 0, // Tổng số bản ghi (lấy từ API)
+        current: 1,
+        pageSize: 10,
+        total: 0,
     });
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
@@ -30,16 +30,16 @@ const TableListJobs = (props) => {
     };
 
 
-    // Hàm gọi API để lấy dữ liệu theo trang và limit
+   
     const fetchData = async (currentPage, pageSize) => {
         setLoading(true);
         const params = {
-            jobStatus: props.status, // Truyền status từ props
-            page: currentPage - 1,       // Trang hiện tại
-            limit: pageSize,         // Số bản ghi mỗi trang
+            jobStatus: props.status,
+            page: currentPage - 1,      
+            limit: pageSize,        
         };
 
-        const res = await getJobsByStatus(params); // Gọi API
+        const res = await getJobsByStatus(params);
         if (res.status === 'OK' && res.data) {
             const data = res.data.jobResponses.map((item, index) => {
                 return {
@@ -55,12 +55,12 @@ const TableListJobs = (props) => {
                 };
             });
 
-            // Cập nhật dữ liệu và pagination từ API
+           
             setData(data);
             setPagination({
                 current: currentPage,
                 pageSize: pageSize,
-                total: res.data.totalPages, // Tổng số bản ghi từ API
+                total: res.data.totalPages,
             });
         }
         else
@@ -68,12 +68,12 @@ const TableListJobs = (props) => {
         setLoading(false);
     };
 
-    // Gọi API khi component mount và khi pagination thay đổi
+   
     useEffect(() => {
         fetchData(pagination.current, pagination.pageSize);
-    }, [pagination.current, pagination.pageSize, props.status]); // Mỗi khi status thay đổi, gọi lại API
+    }, [pagination.current, pagination.pageSize, props.status]);
 
-    // Hàm xử lý khi thay đổi trang hoặc số lượng bản ghi mỗi trang
+   
     const handleTableChange = (newPagination) => {
         setPagination({
             ...pagination,
@@ -165,7 +165,7 @@ const TableListJobs = (props) => {
             })
     }
 
-    // Cấu hình cột cho bảng
+   
     const getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
             <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
@@ -241,7 +241,7 @@ const TableListJobs = (props) => {
             ),
     });
 
-    // Định nghĩa các cột cho bảng
+   
     const columns = [
         {
             title: 'No.',
@@ -336,11 +336,11 @@ const TableListJobs = (props) => {
             pagination={{
                 current: pagination.current,
                 pageSize: pagination.pageSize,
-                total: pagination.total * pagination.pageSize, // Tổng số bản ghi
-                showSizeChanger: true, // Hiển thị tùy chọn thay đổi số lượng bản ghi trên mỗi trang
+                total: pagination.total * pagination.pageSize,
+                showSizeChanger: true,
             }}
             loading={loading}
-            onChange={handleTableChange} // Xử lý khi thay đổi trang hoặc pageSize
+            onChange={handleTableChange}
             locale={{
                 emptyText: (
                     <div className='p-5'>

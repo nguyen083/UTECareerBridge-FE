@@ -50,7 +50,7 @@ const OrderPage = () => {
       updateQuantityPackage({ packageId, quantity: quantityChange }).then((res) => {
         if (res.status === 'OK') {
           getItemsInCart();
-          // message.success(res.message);
+         
         }
       });
     }
@@ -61,7 +61,7 @@ const OrderPage = () => {
       if (res.status === 'OK') {
         getItemsInCart();
         message.success(res.message);
-        // setCartItems(cartItems.filter(item => item.cartItemId !== itemId));
+       
 
       }
     });
@@ -72,12 +72,12 @@ const OrderPage = () => {
     return cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
   };
 
-  // const getTaxAmount = () => {
-  //   return getTotalPrice() * 0.08; // Assuming 8% VAT
-  // };
+ 
+ 
+ 
 
   const getTotalWithTax = () => {
-    // return getTotalPrice() + getTaxAmount();
+   
     if (selectedVoucher) {
       return getTotalPrice() - (getTotalPrice() * selectedVoucher.discount / 100);
     }

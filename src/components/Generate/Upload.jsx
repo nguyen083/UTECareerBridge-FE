@@ -52,14 +52,14 @@ const AvatarUploader = (props) => {
     const [fileList, setFileList] = useState([]);
 
     const handleUpload = ({ file, fileList }) => {
-        setDefaultImage(null); // Xóa ảnh mặc định khi chọn ảnh mới
-        setFileList(fileList); // Cập nhật danh sách file
-        props.onChange && props.onChange(file); // Truyền file đã chọn ra ngoài qua props (nếu cần)
+        setDefaultImage(null);
+        setFileList(fileList);
+        props.onChange && props.onChange(file);
     };
 
     const onRemove = () => {
-        setFileList([]); // Xóa danh sách file
-        setDefaultImage(props.defaultImage || null); // Đặt lại ảnh mặc định
+        setFileList([]);
+        setDefaultImage(props.defaultImage || null);
     };
 
     const onDrop = (e) => {
@@ -73,11 +73,11 @@ const AvatarUploader = (props) => {
                 onChange={handleUpload}
                 onDrop={onDrop}
                 onRemove={onRemove}
-                beforeUpload={() => false} // Ngăn không cho upload tự động
-                maxCount={1} // Giới hạn chỉ upload 1 file
-                listType="picture" // Định dạng danh sách file là ảnh
+                beforeUpload={() => false}
+                maxCount={1}
+                listType="picture"
                 fileList={fileList}
-                showUploadList={false} // Không hiển thị danh sách file tải lên
+                showUploadList={false}
                 style={{ border: '1px dashed #d9d9d9', padding: 16 }}
                 clssName="flex items-center justify-center"
             >

@@ -7,6 +7,7 @@ import { loading, stop } from '../../../../redux/action/webSlice';
 import { useEffect, useState } from 'react';
 import { deleteCV, getAllJobLevels, uploadCV } from '../../../../services/apiService';
 import { deleteImageFromCloudinaryByLink, uploadToCloudinary } from '../../../../services/uploadCloudary';
+import { useTranslation } from 'react-i18next';
 const { Dragger } = Upload;
 const { Text } = Typography;
 const { Option } = Select;
@@ -16,22 +17,23 @@ const UploadCV = ({ listResume, fetchCV }) => {
     const [visible, setVisible] = useState(false);
     const [form] = Form.useForm();
     const [levelOptions, setLevelOptions] = useState([]);
+    const { t } = useTranslation();
     const items = [
         {
             label: <Text type="danger"><DeleteOutlined /> &ensp;Xóa</Text>,
             key: '1',
-            onClick: (e) => handleDelete(e), // Truyền item vào đây
+            onClick: (e) => handleDelete(e), 
         },
     ];
 
     useEffect(() => {
         getAllJobLevels().then((res) => {
             setLevelOptions(res.data
-                .filter((item) => item.active === true)  // Lọc những phần tử có active là true
+                .filter((item) => item.active === true)  
                 .map((item) => {
                     return {
-                        value: item.jobLevelId,  // Chuyển jobLevelId thành kiểu số
-                        label: item.nameLevel      // Gán label là nameLevel
+                        value: item.jobLevelId,  
+                        label: item.nameLevel     
                     }
                 })
             );
@@ -46,11 +48,11 @@ const UploadCV = ({ listResume, fetchCV }) => {
             const url = await uploadToCloudinary(file, "student", (progress) => {
             });
             setUrl(url);
-            message.success("Tải lên thành công!");
+            message.success(t('cv.upload.success'));
             setVisible(true);
-            // cập nhật vào database sau đó lấy res set lại cho listResume
+           
         } catch (error) {
-            message.error("Tải lên thất bại. Vui lòng thử lại.");
+            message.error(t('cv.upload.error'));
             console.error(error);
         } finally {
             dispatch(stop());
@@ -111,7 +113,7 @@ const UploadCV = ({ listResume, fetchCV }) => {
                                         const isDocOrPdf = file.type === 'application/pdf' ||
                                             file.type === 'application/msword' ||
                                             file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-                                        const isSizeValid = file.size / 1024 / 1024 < 5; // Kiểm tra kích thước dưới 5MB
+                                        const isSizeValid = file.size / 1024 / 1024 < 5;
 
                                         if (!isDocOrPdf) {
                                             message.error('Chỉ hỗ trợ định dạng .doc, .docx, .pdf');
@@ -125,7 +127,7 @@ const UploadCV = ({ listResume, fetchCV }) => {
                                             return;
                                         }
 
-                                        // Gọi API upload của bạn
+                                       
                                         handleUpload(file);
                                     }}
                                 >
@@ -150,7 +152,7 @@ const UploadCV = ({ listResume, fetchCV }) => {
                                                         menu={{
                                                             items: items.map((i) => ({
                                                                 ...i,
-                                                                onClick: () => i.onClick(item), // Truyền item vào trong hành động
+                                                                onClick: () => i.onClick(item),
                                                             })),
                                                         }}
                                                         trigger={['click']}
@@ -197,7 +199,7 @@ const UploadCV = ({ listResume, fetchCV }) => {
                     layout="vertical"
                     onFinish={handleSubmit}
 
-                    initialValues={{ level_id: levelOptions[0]?.value }} // Giá trị mặc định cho level_id
+                    initialValues={{ level_id: levelOptions[0]?.value }}
                 >
                     {/* Trường resume_title */}
                     <Form.Item

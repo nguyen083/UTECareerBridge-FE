@@ -4,18 +4,20 @@ import { Button, Card, Col, Divider, Dropdown, Empty, Flex, Form, Input, InputNu
 import { useEffect, useState } from "react";
 import './ServicePackage.scss';
 import { createServicePackage, deleteServicePackage, getAllPackages, updateServicePackage } from "../../../services/apiService";
-import { use } from "react";
+import { useTranslation } from "react-i18next";
 
 const { Text } = Typography;
+
 const ModalCreateServicePackage = ({ open, setOpen, setFetch, item = null }) => {
+    const { t } = useTranslation();
     const [form] = Form.useForm();
     const [service, setService] = useState(null);
+
     const handleCancel = () => {
         form.setFieldValue(null);
         setService(null);
         setOpen(false);
     }
-
 
     useEffect(() => {
         if (item) {
@@ -23,139 +25,131 @@ const ModalCreateServicePackage = ({ open, setOpen, setFetch, item = null }) => 
             form.setFieldsValue(item);
         }
     }, [item]);
-    useEffect(() => {
-        console.log("service: ", service);
-    }, [service]);
+
     const handleFinish = (values) => {
         values.packageName = values.packageName.toUpperCase();
 
         if (service) {
             updateServicePackage(service.packageId, values).then((res) => {
                 if (res.status === 'OK') {
-                    message.success(res.message);
+                    message.success(t('admin.servicePackage.messages.updateSuccess'));
                 }
                 else {
-                    message.error(res.message);
+                    message.error(t('admin.servicePackage.messages.updateError'));
                 }
             }).catch((err) => {
                 console.log(err);
+                message.error(t('admin.servicePackage.messages.updateError'));
             }).finally(() => {
                 handleCancel();
                 setFetch(true);
             });
-
         } else {
             createServicePackage(values).then((res) => {
                 if (res.status === 'OK') {
-                    message.success(res.message);
+                    message.success(t('admin.servicePackage.messages.createSuccess'));
                 }
                 else {
-                    message.error(res.message);
+                    message.error(t('admin.servicePackage.messages.createError'));
                 }
             }).catch((err) => {
                 console.log(err);
-            }
-            ).finally(() => {
+                message.error(t('admin.servicePackage.messages.createError'));
+            }).finally(() => {
                 handleCancel();
                 setFetch(true);
             });
         }
-
-
-
-
-
     }
+
     return (
-        <>
-
-            <Modal
-                width={800}
-                title={service ? "Chỉnh sửa gói dịch vụ" : "Tạo gói dịch vụ mới"}
-                open={open}
-                onCancel={handleCancel}
-                okText={service ? "Cập nhật" : "Tạo"}
-                cancelText="Hủy"
-                onOk={() => form.submit()}
+        <Modal
+            width={800}
+            title={service ? t('admin.servicePackage.modal.editTitle') : t('admin.servicePackage.modal.createTitle')}
+            open={open}
+            onCancel={handleCancel}
+            okText={service ? t('admin.servicePackage.modal.update') : t('admin.servicePackage.modal.create')}
+            cancelText={t('admin.servicePackage.modal.cancel')}
+            onOk={() => form.submit()}
+        >
+            <Form
+                size="large"
+                form={form}
+                layout="vertical"
+                onFinish={handleFinish}
+                initialValues={service}
             >
-                <Form
-                    size="large"
-                    form={form}
-                    layout="vertical"
-                    onFinish={handleFinish}
-                    initialValues={service}
+                <Form.Item
+                    name="packageName"
+                    label={t('admin.servicePackage.modal.form.packageName.label')}
+                    rules={[{ required: true, message: t('admin.servicePackage.modal.form.packageName.required') }]}
                 >
-                    <Form.Item
-                        name="packageName"
-                        label="Tên gói dịch vụ"
-                        rules={[{ required: true, message: "Vui lòng nhập tên gói dịch vụ!" }]}
-                    >
-                        <Input
-                            style={{ textTransform: 'uppercase' }}
-                        />
-                    </Form.Item>
-                    <Row gutter={[16]}>
-                        <Col span={12}>
-                            <Form.Item
-                                name="price"
-                                label="Giá"
-                                rules={[{ required: true, message: "Vui lòng nhập giá!" }]}
-                            >
-                                <InputNumber
-                                    min={0}
-                                    className="w-full"
-                                    suffix="₫"
-                                    formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-                                    parser={value => value.replace(/\$\s?|(,*)/g, '')}
-                                />
-                            </Form.Item>
-                        </Col>
-                        <Col span={12}>
-                            <Form.Item
-                                name="duration"
-                                label="Thời hạn (tháng)"
-                                rules={[{ required: true, message: "Vui lòng nhập thời gian!" }]}
-                            >
-                                <InputNumber min={1} className="w-full" />
-                            </Form.Item>
-                        </Col>
-                    </Row>
+                    <Input style={{ textTransform: 'uppercase' }} />
+                </Form.Item>
+                <Row gutter={[16]}>
+                    <Col span={12}>
+                        <Form.Item
+                            name="price"
+                            label={t('admin.servicePackage.modal.form.price.label')}
+                            rules={[{ required: true, message: t('admin.servicePackage.modal.form.price.required') }]}
+                        >
+                            <InputNumber
+                                min={0}
+                                className="w-full"
+                                suffix="₫"
+                                formatter={value => `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                                parser={value => value.replace(/\$\s?|(,*)/g, '')}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            name="duration"
+                            label={t('admin.servicePackage.modal.form.duration.label')}
+                            rules={[{ required: true, message: t('admin.servicePackage.modal.form.duration.required') }]}
+                        >
+                            <InputNumber min={1} className="w-full" />
+                        </Form.Item>
+                    </Col>
+                </Row>
 
-                    <Form.Item
-                        name="description"
-                        label="Mô tả"
-                        rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
-                    >
-                        <Input.TextArea rows={4} />
-                    </Form.Item>
+                <Form.Item
+                    name="description"
+                    label={t('admin.servicePackage.modal.form.description.label')}
+                    rules={[{ required: true, message: t('admin.servicePackage.modal.form.description.required') }]}
+                >
+                    <Input.TextArea rows={4} />
+                </Form.Item>
 
-                    <Form.Item
-                        name="amount"
-                        label="Số lượng"
-                        rules={[{ required: true, message: "Vui lòng nhập số lượng!" }]}
-                    >
-                        <InputNumber min={1} className="w-full" />
-                    </Form.Item>
-                    <Form.Item
-                        name="featureId"
-                        label="Tính năng"
-                        rules={[{ required: true, message: "Vui lòng chọn tính năng!" }]}
-                    >
-                        <Select placeholder="Vui lòng chọn tính năng" allowClear>
-                            <Select.Option value={1}>Đăng tin tuyển dụng không giới hạn</Select.Option>
-                            <Select.Option value={2}>Ưu tiên hiển thị tin tuyển dụng</Select.Option>
-                            <Select.Option value={3}>Gửi thông báo ứng viên phù hợp</Select.Option>
-                            <Select.Option value={4}>Đăng tin tuyển dụng với nhãn hot</Select.Option>
-                            <Select.Option value={5}>Truy cập vào ngân hàng CV</Select.Option>
-                            <Select.Option value={6}>Đăng tin tuyển dụng gấp</Select.Option>
-                        </Select>
-                    </Form.Item>
-                </Form>
-            </Modal>
-        </>
+                <Form.Item
+                    name="amount"
+                    label={t('admin.servicePackage.modal.form.amount.label')}
+                    rules={[{ required: true, message: t('admin.servicePackage.modal.form.amount.required') }]}
+                >
+                    <InputNumber min={1} className="w-full" />
+                </Form.Item>
+
+                <Form.Item
+                    name="featureId"
+                    label={t('admin.servicePackage.modal.form.feature.label')}
+                    rules={[{ required: true, message: t('admin.servicePackage.modal.form.feature.required') }]}
+                >
+                    <Select placeholder={t('admin.servicePackage.modal.form.feature.placeholder')} allowClear>
+                        <Select.Option value={1}>{t('admin.servicePackage.modal.form.feature.options.unlimited')}</Select.Option>
+                        <Select.Option value={2}>{t('admin.servicePackage.modal.form.feature.options.priority')}</Select.Option>
+                        <Select.Option value={3}>{t('admin.servicePackage.modal.form.feature.options.notification')}</Select.Option>
+                        <Select.Option value={4}>{t('admin.servicePackage.modal.form.feature.options.hotLabel')}</Select.Option>
+                        <Select.Option value={5}>{t('admin.servicePackage.modal.form.feature.options.cvBank')}</Select.Option>
+                        <Select.Option value={6}>{t('admin.servicePackage.modal.form.feature.options.urgent')}</Select.Option>
+                    </Select>
+                </Form.Item>
+            </Form>
+        </Modal>
     );
 }
+
 const ListServicePackage = ({ fetch, setFetch }) => {
+    const { t } = useTranslation();
     const [data, setData] = useState([]);
     const [open, setOpen] = useState(false);
     const [item, setItem] = useState(null);
@@ -173,42 +167,49 @@ const ListServicePackage = ({ fetch, setFetch }) => {
             setFetch(false);
         });
     }
+
     useEffect(() => {
         fetchData();
     }, [fetch === true]);
+
     useEffect(() => {
         setItem(null);
     }, [open === false]);
+
     useEffect(() => {
         if (item !== null) {
             setOpen(true);
         }
     }, [item]);
+
     const handleEditServicePackage = (item) => {
         setItem(item);
     }
+
     const handleDeleteServicePackage = (item) => {
         Modal.confirm({
             centered: true,
-            title: "Xác nhận xóa",
-            content: "Bạn có chắc chắn muốn xóa gói dịch vụ này?",
+            title: t('admin.servicePackage.list.deleteConfirm.title'),
+            content: t('admin.servicePackage.list.deleteConfirm.content'),
             okType: 'danger',
-            okText: 'Xóa',
+            okText: t('admin.servicePackage.list.deleteConfirm.okText'),
             onOk: () => {
                 deleteServicePackage(item.packageId).then((res) => {
                     if (res.status === 'OK') {
-                        message.success(res.message);
+                        message.success(t('admin.servicePackage.messages.deleteSuccess'));
                         setFetch(true);
                     }
                     else {
-                        message.error(res.message);
+                        message.error(t('admin.servicePackage.messages.deleteError'));
                     }
                 }).catch((err) => {
                     console.log(err);
+                    message.error(t('admin.servicePackage.messages.deleteError'));
                 });
             }
         });
     }
+
     return (
         <>
             <List
@@ -216,26 +217,37 @@ const ListServicePackage = ({ fetch, setFetch }) => {
                 loading={loading}
                 style={{ marginTop: 20 }}
                 split={false}
-                locale={{ emptyText: <Empty description="Không tìm thấy gói dịch vụ" /> }}
+                locale={{ emptyText: <Empty description={t('admin.servicePackage.list.empty')} /> }}
                 itemLayout="horizontal"
                 dataSource={data}
                 pagination={{
-                    pageSize: 10, // Số lượng mục trên mỗi trang
-                    total: data.length, // Tổng số mục
+                    pageSize: 10,
+                    total: data.length,
                 }}
                 renderItem={(item) => (
-                    <Card
-                        size="small"
-                        className="voucher-card-admin shadow">
+                    <Card size="small" className="voucher-card-admin shadow">
                         <List.Item actions={[
                             <Dropdown
                                 overlay={
                                     <Menu>
                                         <Menu.Item key="2">
-                                            <Button icon={<EditOutlined />} type="link" color="primary" onClick={() => handleEditServicePackage(item)}>Chỉnh sửa</Button>
+                                            <Button 
+                                                icon={<EditOutlined />} 
+                                                type="link" 
+                                                color="primary" 
+                                                onClick={() => handleEditServicePackage(item)}
+                                            >
+                                                {t('admin.servicePackage.list.actions.edit')}
+                                            </Button>
                                         </Menu.Item>
                                         <Menu.Item key="3" onClick={() => { handleDeleteServicePackage(item) }}>
-                                            <Button icon={<DeleteOutlined />} type="link" danger >Xóa</Button>
+                                            <Button 
+                                                icon={<DeleteOutlined />} 
+                                                type="link" 
+                                                danger
+                                            >
+                                                {t('admin.servicePackage.list.actions.delete')}
+                                            </Button>
                                         </Menu.Item>
                                     </Menu>
                                 }
@@ -246,52 +258,62 @@ const ListServicePackage = ({ fetch, setFetch }) => {
                         ]}>
                             <List.Item.Meta
                                 className="voucher-meta"
-                                avatar={<Flex className="h-full voucher-flex" align="center" justify="center">
-                                    <Text className="voucher-avatar">{item.packageName}</Text>
-                                </Flex>}
+                                avatar={
+                                    <Flex className="h-full voucher-flex" align="center" justify="center">
+                                        <Text className="voucher-avatar">{item.packageName}</Text>
+                                    </Flex>
+                                }
                                 description={
                                     <>
-                                        <Text className="font-bold voucher-title">Giá:&nbsp;</Text> <Text className="salary text-base">{item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
+                                        <Text className="font-bold voucher-title">{t('admin.servicePackage.list.price')}:&nbsp;</Text>
+                                        <Text className="salary text-base">{item.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
                                         <br />
-                                        <Text className="font-bold voucher-title">Tính năng:&nbsp;</Text> <Text>{item.featureName}</Text>
+                                        <Text className="font-bold voucher-title">{t('admin.servicePackage.list.feature')}:&nbsp;</Text>
+                                        <Text>{item.featureName}</Text>
                                         <br />
-                                        <Text className="font-bold voucher-title">Mô tả:&nbsp;</Text> <Text>{item.description}</Text>
+                                        <Text className="font-bold voucher-title">{t('admin.servicePackage.list.description')}:&nbsp;</Text>
+                                        <Text>{item.description}</Text>
                                         <br />
                                         <Flex align="center">
-                                            <Text className="font-bold voucher-title">Thời hạn:&nbsp;</Text> <Text>{item.duration} tháng </Text>
+                                            <Text className="font-bold voucher-title">{t('admin.servicePackage.list.duration')}:&nbsp;</Text>
+                                            <Text>{item.duration} {t('admin.servicePackage.list.months')}</Text>
                                             <Divider type="vertical" />
-                                            <Text className="font-bold voucher-title">Số lượng bài đăng:&nbsp;</Text> <Text>{item.amount}</Text>
+                                            <Text className="font-bold voucher-title">{t('admin.servicePackage.list.postAmount')}:&nbsp;</Text>
+                                            <Text>{item.amount}</Text>
                                         </Flex>
                                     </>
                                 }
                             />
-                        </List.Item >
+                        </List.Item>
                     </Card>
-
                 )}
             />
             <ModalCreateServicePackage open={open} setOpen={setOpen} setFetch={setFetch} item={item} />
         </>
     );
 }
+
 const ServicePackage = () => {
+    const { t } = useTranslation();
     const [open, setOpen] = useState(false);
     const [fetch, setFetch] = useState(false);
 
     return (
         <>
             <BoxContainer className="shadow-md">
-                <Text className="title1">Gói dịch vụ</Text>
+                <Text className="title1">{t('admin.servicePackage.title')}</Text>
             </BoxContainer>
             <BoxContainer className="shadow-md">
                 <Flex align="center" justify="end" gap={20}>
-                    <Button icon={<PlusOutlined />} onClick={() => { setOpen(true) }}>Tạo gói dịch vụ mới</Button>
+                    <Button icon={<PlusOutlined />} onClick={() => { setOpen(true) }}>
+                        {t('admin.servicePackage.createNew')}
+                    </Button>
                 </Flex>
                 <ListServicePackage fetch={fetch} setFetch={setFetch} />
             </BoxContainer>
             <ModalCreateServicePackage open={open} setOpen={setOpen} setFetch={setFetch} />
         </>
-
     );
 }
+
 export default ServicePackage;

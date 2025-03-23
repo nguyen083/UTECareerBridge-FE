@@ -9,7 +9,7 @@ import { setInfor } from '../../redux/action/userSlice';
 import { FcGoogle } from 'react-icons/fc';
 import path from '../../constant/path';
 import auth from '../../services/api/auth';
-
+import { useTranslation } from 'react-i18next';
 
 const { Text } = Typography;
 const LoginPage = () => {
@@ -18,6 +18,7 @@ const LoginPage = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const phoneRegex = /^[0-9]{10,11}$/;
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const checkUserName = (value) => {
         if (emailRegex.test(value)) {
@@ -61,7 +62,7 @@ const LoginPage = () => {
         auth.loginGoogle('employer').then(res => {
             window.open(res);
         }).catch(() => {
-            message.error('Đã có lỗi xảy ra, vui lòng thử lại sau');
+            message.error(t('common.error'));
         });
     }
     return (
@@ -79,7 +80,7 @@ const LoginPage = () => {
                     />
                 </Link>
                 <div className="login-form p-5 h-fit mt-10 shadow-2xl lg:w-7/12 ">
-                    <span className="flex justify-center title">Đăng Nhập</span>
+                    <span className="flex justify-center title">{t('auth.login.title')}</span>
                     <div className="md:w-full form-group mt-5 mb-4">
                         <Form
                             size='large'
@@ -91,15 +92,15 @@ const LoginPage = () => {
                             validateTrigger={['onBlur']}>
                             <Form.Item
                                 name="username"
-                                label="Email/ SĐT"
+                                label={t('auth.login.email/phone')}
                                 rules={[{
                                     required: true,
-                                    message: 'Vui lòng nhập email hoặc số điện thoại của bạn',
+                                    message: t('auth.register.emailRequired'),
                                 },
                                 ({ getFieldValue }) => ({
                                     validator(_, value) {
                                         if (!value) {
-                                            return Promise.reject('Vui lòng nhập email hoặc số điện thoại của bạn');
+                                            return Promise.reject(t('auth.register.emailRequired'));
                                         }
                                         if (emailRegex.test(value)) {
                                             return Promise.resolve();
@@ -107,42 +108,42 @@ const LoginPage = () => {
                                         if (phoneRegex.test(value)) {
                                             return Promise.resolve();
                                         }
-                                        return Promise.reject('Vui lòng nhập đúng định dạng email hoặc số điện thoại');
+                                        return Promise.reject(t('admin.employer.register.invalidEmail'));
                                     },
                                 })
                                 ]} validateFirst >
-                                <Input prefix={<UserOutlined />} />
+                                <Input prefix={<UserOutlined />} placeholder={t('auth.login.emailPlaceholder')} />
                             </Form.Item>
                             <Form.Item
-                                label={<span className='lable-text'>Mật khẩu</span>}
+                                label={t('auth.register.password')}
                                 required
                                 name="password"
                                 rules={[{
                                     required: true,
-                                    message: 'Vui lòng nhập mật khẩu của bạn',
+                                    message: t('auth.register.passwordRequired'),
                                 }]}>
-                                <Input.Password prefix={<UnlockOutlined />} />
+                                <Input.Password prefix={<UnlockOutlined />} placeholder={t('auth.login.passwordPlaceholder')} />
                             </Form.Item>
 
                             <Form.Item>
                                 <Flex justify='space-between'>
-                                    <Flex gap={7} align='center' justify='center'> <Text>Bạn chưa đăng ký?</Text> <Link to='/employer/register'>Đăng ký ngay</Link></Flex>
-
-                                    <Link to='/forgot-password' target='_blank'>Quên mật khẩu?</Link>
+                                    <Flex gap={7} align='center' justify='center'>
+                                        <Text>{t('auth.login.dont_have_an_account')}</Text>
+                                        <Link to='/employer/register'>{t('auth.register.title')}</Link>
+                                    </Flex>
+                                    <Link to='/forgot-password' target='_blank'>{t('auth.login.forgotPassword')}</Link>
                                 </Flex>
                             </Form.Item>
                             <Flex align='center' justify='space-between'>
-
                                 <Button size='large' className='w-full' type="primary" htmlType='submit'>
-                                    Đăng nhập
+                                    {t('auth.login.title')}
                                 </Button>
-
                             </Flex>
-                            <Divider className='mb-3'><div className='text-gray-500'>Hoặc</div></Divider>
+                            <Divider className='mb-3'><div className='text-gray-500'>{t('common.or')}</div></Divider>
 
                             <Form.Item className='mb-1'>
                                 <Button className='w-full' type="default" onClick={handleLoginWithGoogle}>
-                                    <FcGoogle size={24} className='mr-1' />Đăng nhập với Google
+                                    <FcGoogle size={24} className='mr-1' />{t('auth.login.googleLogin')}
                                 </Button>
                             </Form.Item>
                         </Form>

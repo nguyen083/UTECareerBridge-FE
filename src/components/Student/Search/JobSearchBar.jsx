@@ -4,11 +4,13 @@ import { setKeyword } from "../../../redux/action/webSlice";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SearchOutlined } from "@ant-design/icons";
+import { useTranslation } from 'react-i18next';
 
 const JobSearchBar = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleSearch = (value) => {
     dispatch(setKeyword(value));
@@ -26,7 +28,7 @@ const JobSearchBar = () => {
   return (
     <div className="flex search-input">
       <Input.Search
-        placeholder="Tìm kiếm công việc, kỹ năng..."
+        placeholder={t('job.search.placeholder')}
         allowClear
         enterButton={<SearchOutlined />}
         size="large"

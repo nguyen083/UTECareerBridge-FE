@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Statistic, Progress, Table, Select, Space } from 'antd';
-import { BarChart, Bar, LineChart, Line, PieChart, Pie, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
+import { Card, Row, Col, Statistic, Select, Space } from 'antd';
+import {  LineChart, Line, PieChart, Pie, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
 import {
   UserOutlined,
   BankOutlined,
-  RiseOutlined,
   DollarOutlined,
-
 } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 import { getStatisticsByJobCategory, getRevenueByMonth, getStatisticUser, getStatisticPackage } from '../../../services/apiService';
 const { Option } = Select;
 const AdminDashboard = () => {
+  const { t } = useTranslation();
   const [jobCategoryStats, setJobCategoryStats] = useState([]);
   const [currentMonthRevenue, setCurrentMonthRevenue] = useState(0);
   const [packageStats, setPackageStats] = useState([]);
@@ -27,7 +27,6 @@ const AdminDashboard = () => {
     year: null
   });
 
-  // Tạo options cho tháng và năm
   const months = Array.from({ length: 12 }, (_, i) => i + 1);
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
@@ -40,11 +39,9 @@ const AdminDashboard = () => {
       const transformedData = response.data.map(pkg => ({
         name: pkg.packageName,
         value: pkg.packageCount,
-        // Tính phần trăm và làm tròn đến 1 chữ số thập phân
         percentage: ((pkg.packageCount / totalPackages) * 100).toFixed(1)
       }));
 
-      // Sắp xếp theo số lượng công việc giảm dần (tùy chọn)
       transformedData.sort((a, b) => b.value - a.value);
       setPackageStats(transformedData);
       setError(null);
@@ -99,18 +96,14 @@ const AdminDashboard = () => {
 
       const filteredData = response.data.filter(category => category.jobCount > 0);
 
-      // Tính tổng số jobs
       const totalJobs = filteredData.reduce((sum, category) => sum + category.jobCount, 0);
 
-      // Transform data và tính percentage
       const transformedData = filteredData.map(category => ({
         name: category.categoryName,
         value: category.jobCount,
-        // Tính phần trăm và làm tròn đến 1 chữ số thập phân
         percentage: ((category.jobCount / totalJobs) * 100).toFixed(1)
       }));
 
-      // Sắp xếp theo số lượng công việc giảm dần (tùy chọn)
       transformedData.sort((a, b) => b.value - a.value);
 
       setJobCategoryStats(transformedData);
@@ -142,60 +135,6 @@ const AdminDashboard = () => {
     fetchStatisticUser();
   }, []);
 
-
-  // Subscription data
-  const subscriptionData = [
-    { name: 'Gói Cơ bản', value: 150, revenue: 15000 },
-    { name: 'Gói Pro', value: 80, revenue: 12000 },
-    { name: 'Gói Doanh nghiệp', value: 40, revenue: 10000 },
-    { name: 'Gói Premium', value: 30, revenue: 15000 }
-  ];
-
-  // Top employers data
-  const topEmployersData = [
-    { key: '1', company: 'Công ty A', jobPosts: 25, spending: 5000, activeSubscription: 'Premium' },
-    { key: '2', company: 'Công ty B', jobPosts: 20, spending: 4500, activeSubscription: 'Pro' },
-    { key: '3', company: 'Công ty C', jobPosts: 18, spending: 4000, activeSubscription: 'Premium' },
-    { key: '4', company: 'Công ty D', jobPosts: 15, spending: 3500, activeSubscription: 'Pro' },
-    { key: '5', company: 'Công ty E', jobPosts: 12, spending: 3000, activeSubscription: 'Pro' }
-  ];
-
-
-  const applicationTrendData = [
-    { month: 'Jan', applications: 450 },
-    { month: 'Feb', applications: 520 },
-    { month: 'Mar', applications: 610 },
-    { month: 'Apr', applications: 580 },
-    { month: 'May', applications: 650 },
-    { month: 'Jun', applications: 720 }
-  ];
-
-  const candidateStatusData = [
-    { name: 'Pending', value: 120 },
-    { name: 'Interviewed', value: 80 },
-    { name: 'Offered', value: 40 },
-    { name: 'Hired', value: 30 },
-    { name: 'Rejected', value: 50 }
-  ];
-
-  const employerActivityData = [
-    { month: 'Jan', newJobs: 45, activeJobs: 120 },
-    { month: 'Feb', newJobs: 52, activeJobs: 135 },
-    { month: 'Mar', newJobs: 61, activeJobs: 150 },
-    { month: 'Apr', newJobs: 58, activeJobs: 142 },
-    { month: 'May', newJobs: 65, activeJobs: 160 },
-    { month: 'Jun', newJobs: 72, activeJobs: 175 }
-  ];
-
-  const columns = [
-    { title: 'Công ty', dataIndex: 'company', key: 'company' },
-    { title: 'Tin đăng', dataIndex: 'jobPosts', key: 'jobPosts' },
-    {
-      title: 'Chi tiêu', dataIndex: 'spending', key: 'spending',
-      render: (value) => `$${value.toLocaleString()}`
-    },
-    { title: 'Gói dịch vụ', dataIndex: 'activeSubscription', key: 'activeSubscription' }
-  ];
   const FilterControls = () => (
     <Space style={{ marginBottom: 16 }}>
       <Select
@@ -203,9 +142,9 @@ const AdminDashboard = () => {
         value={filters.month}
         onChange={(value) => setFilters(prev => ({ ...prev, month: value }))}
       >
-        <Option value={null}>Tất cả tháng</Option>
+        <Option value={null}>{t('admin.dashboard.filters.allMonths')}</Option>
         {months.map(month => (
-          <Option key={month} value={month}>Tháng {month}</Option>
+          <Option key={month} value={month}>{t('admin.dashboard.filters.month', { month })}</Option>
         ))}
       </Select>
       <Select
@@ -213,7 +152,7 @@ const AdminDashboard = () => {
         value={filters.year}
         onChange={(value) => setFilters(prev => ({ ...prev, year: value }))}
       >
-        <Option value={null}>Tất cả năm</Option>
+        <Option value={null}>{t('admin.dashboard.filters.allYears')}</Option>
         {years.map(year => (
           <Option key={year} value={year}>{year}</Option>
         ))}
@@ -230,7 +169,7 @@ const AdminDashboard = () => {
         <Col xs={24} sm={12} lg={8}>
           <Card className='shadow-md'>
             <Statistic
-              title="Doanh thu tháng này"
+              title={t('admin.dashboard.stats.currentMonthRevenue')}
               value={currentMonthRevenue}
               prefix={<DollarOutlined style={{ color: '#52c41a' }} />}
               suffix="VND"
@@ -240,7 +179,7 @@ const AdminDashboard = () => {
         <Col xs={24} sm={12} lg={8}>
           <Card className='shadow-md'>
             <Statistic
-              title="Tổng ứng viên"
+              title={t('admin.dashboard.stats.totalCandidates')}
               value={statisticUser.totalCandidates}
               prefix={<UserOutlined style={{ color: '#1890ff' }} />}
             />
@@ -249,28 +188,18 @@ const AdminDashboard = () => {
         <Col xs={24} sm={12} lg={8}>
           <Card className='shadow-md'>
             <Statistic
-              title="Tổng nhà tuyển dụng"
+              title={t('admin.dashboard.stats.totalEmployers')}
               value={statisticUser.totalEmployers}
               prefix={<BankOutlined style={{ color: '#52c41a' }} />}
             />
           </Card>
         </Col>
-        {/* <Col xs={24} sm={12} lg={6}>
-          <Card>
-            <Statistic
-              title="Tỷ lệ chuyển đổi"
-              value={15.8}
-              prefix={<RiseOutlined style={{ color: '#1890ff' }} />}
-              suffix="%"
-            />
-          </Card>
-        </Col> */}
       </Row>
 
       {/* Revenue and Subscriptions */}
       <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
         <Col xs={24} lg={24}>
-          <Card title="Doanh thu theo tháng" className='shadow-md'>
+          <Card title={t('admin.dashboard.charts.monthlyRevenue')} className='shadow-md'>
             <div style={{ height: 400 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={revenueByMonth}>
@@ -304,7 +233,7 @@ const AdminDashboard = () => {
                   />
                   <Tooltip
                     formatter={(value, name) => {
-                      if (name === "Doanh thu (VND)") {
+                      if (name === t('admin.dashboard.charts.revenue')) {
                         return [new Intl.NumberFormat('vi-VN', {
                           style: 'currency',
                           currency: 'VND',
@@ -321,7 +250,7 @@ const AdminDashboard = () => {
                     type="monotone"
                     dataKey="revenue"
                     stroke="#52c41a"
-                    name="Doanh thu (VND)"
+                    name={t('admin.dashboard.charts.revenue')}
                     strokeWidth={2}
                     dot={{ stroke: '#52c41a', strokeWidth: 2, r: 4 }}
                     activeDot={{ r: 6 }}
@@ -331,7 +260,7 @@ const AdminDashboard = () => {
                     type="monotone"
                     dataKey="subscriptions"
                     stroke="#1890ff"
-                    name="Số lượng gói"
+                    name={t('admin.dashboard.charts.packageCount')}
                     strokeWidth={2}
                     dot={{ stroke: '#1890ff', strokeWidth: 2, r: 4 }}
                     activeDot={{ r: 6 }}
@@ -343,7 +272,7 @@ const AdminDashboard = () => {
         </Col>
 
         <Col xs={24} lg={12}>
-          <Card title="Gói dịch vụ được bán nhiều nhất">
+          <Card title={t('admin.dashboard.charts.topPackages')}>
             <div style={{ height: 400 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -353,12 +282,12 @@ const AdminDashboard = () => {
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    innerRadius={40}    // Thêm innerRadius để tạo doughnut chart (tùy chọn)
-                    outerRadius={110}   // Tăng outerRadius từ 80 lên 120
+                    innerRadius={40}   
+                    outerRadius={110}  
                     fill="#722ed1"
-                    paddingAngle={1}    // Thêm khoảng cách giữa các phần (tùy chọn)
-                    label={({ name, value, percentage }) => `${value} gói dịch vụ - ${percentage}%`}
-                    labelLine={{ stroke: '#555', strokeWidth: 0.5 }}  // Tùy chỉnh đường kẻ label
+                    paddingAngle={1}   
+                    label={({ name, value, percentage }) => t('admin.dashboard.charts.packages', { value, percentage })}
+                    labelLine={{ stroke: '#555', strokeWidth: 0.5 }} 
                   >
                     {packageStats.map((entry, index) => (
                       <Cell
@@ -369,7 +298,10 @@ const AdminDashboard = () => {
                   </Pie>
                   <Tooltip
                     formatter={(value, name, props) => [
-                      `${value} việc làm (${packageStats.find(item => item.name === name)?.percentage}%)`,
+                      t('admin.dashboard.charts.packages', { 
+                        value, 
+                        percentage: packageStats.find(item => item.name === name)?.percentage 
+                      }),
                       name
                     ]}
                     contentStyle={{
@@ -395,7 +327,7 @@ const AdminDashboard = () => {
 
         {/* Recruitment Analytics */}
         <Col xs={24} lg={12}>
-          <Card title="Việc làm theo ngành">
+          <Card title={t('admin.dashboard.charts.jobsByCategory')}>
             <div style={{ height: 400 }}>
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
@@ -405,12 +337,12 @@ const AdminDashboard = () => {
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    innerRadius={40}    // Thêm innerRadius để tạo doughnut chart (tùy chọn)
-                    outerRadius={110}   // Tăng outerRadius từ 80 lên 120
+                    innerRadius={40}   
+                    outerRadius={110}  
                     fill="#722ed1"
-                    paddingAngle={1}    // Thêm khoảng cách giữa các phần (tùy chọn)
-                    label={({ name, value, percentage }) => `${value} việc làm - ${percentage}%`}
-                    labelLine={{ stroke: '#555', strokeWidth: 0.5 }}  // Tùy chỉnh đường kẻ label
+                    paddingAngle={1}   
+                    label={({ name, value, percentage }) => t('admin.dashboard.charts.jobs', { value, percentage })}
+                    labelLine={{ stroke: '#555', strokeWidth: 0.5 }} 
                   >
                     {jobCategoryStats.map((entry, index) => (
                       <Cell
@@ -421,7 +353,10 @@ const AdminDashboard = () => {
                   </Pie>
                   <Tooltip
                     formatter={(value, name, props) => [
-                      `${value} việc làm (${jobCategoryStats.find(item => item.name === name)?.percentage}%)`,
+                      t('admin.dashboard.charts.jobs', {
+                        value,
+                        percentage: jobCategoryStats.find(item => item.name === name)?.percentage
+                      }),
                       name
                     ]}
                     contentStyle={{
@@ -444,9 +379,6 @@ const AdminDashboard = () => {
             </div>
           </Card>
         </Col>
-
-        {/* Additional Analytics */}
-
       </Row>
     </div>
   );

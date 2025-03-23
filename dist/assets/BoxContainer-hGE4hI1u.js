@@ -1,0 +1,1 @@
+import{j as m}from"./index-BjGqDy_t.js";const x=({className:e="",padding:r="1.875rem 1.5rem",background:s="#ffffff",borderRadius:t="0.625rem",children:f,hidden:o=!1,width:a,style:n=null})=>m.jsx("div",{className:`box-container ${e}`,style:{padding:r,background:s,borderRadius:t,width:a,style:n},hidden:o,children:f});export{x as default};

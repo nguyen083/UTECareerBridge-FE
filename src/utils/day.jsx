@@ -11,10 +11,10 @@ dayjs.extend(customParseFormat);
 
 const checkThoiHan = ({ dateInput }) => {
     const tinhKhoangCach = (dateInput) => {
-        const today = dayjs(); // Ngày hiện tại
-        const inputDate = dayjs(dateInput, 'DD/MM/YYYY'); // Ngày nhập vào với định dạng dd/mm/yyyy
+        const today = dayjs();
+        const inputDate = dayjs(dateInput, 'DD/MM/YYYY');
 
-        const daysDifference = today.diff(inputDate, 'day'); // Tính khoảng cách theo ngày
+        const daysDifference = today.diff(inputDate, 'day');
 
         return daysDifference;
     };

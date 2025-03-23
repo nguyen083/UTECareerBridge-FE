@@ -58,7 +58,7 @@ const AppliedJob = () => {
             title: 'CV',
             dataIndex: 'resumeFile',
             key: 'resumeFile',
-            render: (text) => <a href={text} target="_blank" rel="noopener noreferrer"><EyeOutlined shape="round" /></a>, // Tạo liên kết tải file
+            render: (text) => <a href={text} target="_blank" rel="noopener noreferrer"><EyeOutlined shape="round" /></a>,
             align: 'center',
             width: "9%"
         },
@@ -167,7 +167,7 @@ const SavedJob = () => {
             total: totalElements,
             onChange: handlePageChange,
             showSizeChanger: true,
-        }} // Tắt phân trang mặc định của Table
+        }}
     />
 
 }
@@ -176,22 +176,22 @@ const MyJobPage = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // Lấy hash từ URL, nếu có
-    const activeTab = location.hash.replace('#', '') || 'job-applied'; // Nếu không có hash thì mặc định là Tab job-applied
+   
+    const activeTab = location.hash.replace('#', '') || 'job-applied';
 
-    // Chuyển hướng khi người dùng thay đổi tab
+   
     const handleTabChange = (key) => {
         navigate(`#${key}`);
     };
 
     useEffect(() => {
-        // Khi hash thay đổi, tự động chọn đúng tab
+       
         const tabFromHash = location.hash.replace('#', '');
         if (tabFromHash) {
-            // Cập nhật state tab khi URL thay đổi
-            // Cần phải trigger lại trạng thái hoặc hành động để tab hiển thị đúng
+           
+           
         }
-    }, [location.hash]); // Chạy lại khi hash thay đổi
+    }, [location.hash]);
     return (<>
         <Flex vertical gap={8}>
             <BoxContainer width="100%">

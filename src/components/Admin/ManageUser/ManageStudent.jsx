@@ -6,22 +6,26 @@ import BoxContainer from '../../Generate/BoxContainer';
 import { getUserByUserId, updateUser } from '../../../services/apiService';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { useTranslation } from 'react-i18next';
+
 const { TabPane } = Tabs;
 const { Option } = Select;
+
 const ManageListUser = () => {
+    const { t } = useTranslation();
     const [activeStatus, setActiveStatus] = useState('active');
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [res, setRes] = useState(null);
     const [loading, setLoading] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [form] = Form.useForm();
-    // Handle additional columns based on status
+   
     const getAdditionalColumns = (status) => {
         const columns = [];
 
         if (status === 'pending') {
             columns.push({
-                title: 'Ngày đăng ký',
+                title: t('admin.student.table.columns.registrationDate'),
                 dataIndex: 'registrationDate',
                 key: 'registrationDate',
             });
@@ -29,7 +33,7 @@ const ManageListUser = () => {
 
         if (status === 'blocked') {
             columns.push({
-                title: 'Lý do khóa',
+                title: t('admin.student.table.columns.blockReason'),
                 dataIndex: 'blockReason',
                 key: 'blockReason',
             });
@@ -37,7 +41,7 @@ const ManageListUser = () => {
 
         if (status === 'inactive') {
             columns.push({
-                title: 'Lần đăng nhập cuối',
+                title: t('admin.student.table.columns.lastLoginDate'),
                 dataIndex: 'lastLoginDate',
                 key: 'lastLoginDate',
             });
@@ -46,17 +50,14 @@ const ManageListUser = () => {
         return columns;
     };
 
-
     const handleStatusChange = (newStatus) => {
         setActiveStatus(newStatus);
     };
 
     const handleEdit = async (record) => {
         try {
-            console.log('Record:', record);
             setLoading(true);
             const response = await getUserByUserId(record.key);
-            console.log('User details:', response.data);
             if (response.data) {
                 setSelectedUser(response.data);
                 form.setFieldsValue({
@@ -71,8 +72,7 @@ const ManageListUser = () => {
                 setIsModalVisible(true);
             }
         } catch (error) {
-            message.error('Không thể tải thông tin người dùng');
-            console.error('Error fetching user details:', error);
+            message.error(t('admin.student.messages.loadError'));
         } finally {
             setLoading(false);
         }
@@ -80,27 +80,22 @@ const ManageListUser = () => {
 
     const handleDelete = async (userId) => {
         Modal.confirm({
-            title: 'Xác nhận xóa',
-            content: 'Bạn có chắc chắn muốn xóa người dùng này không?',
-            okText: 'Xóa',
+            title: t('admin.student.modal.deleteConfirm.title'),
+            content: t('admin.student.modal.deleteConfirm.content'),
+            okText: t('admin.student.modal.deleteConfirm.okText'),
             okType: 'danger',
             centered: true,
-            cancelText: 'Hủy',
+            cancelText: t('admin.student.modal.deleteConfirm.cancelText'),
             onOk: async () => {
                 try {
                     setLoading(true);
                     await deleteUserById(userId);
-                    message.success('Xóa người dùng thành công');
-                    // Reload the user list or update the state as needed here
+                    message.success(t('admin.student.messages.deleteSuccess'));
                 } catch (error) {
-                    message.error('Không thể xóa người dùng');
-                    console.error('Error deleting user:', error);
+                    message.error(t('admin.student.messages.deleteError'));
                 } finally {
                     setLoading(false);
                 }
-            },
-            onCancel() {
-                console.log('Cancel delete');
             }
         });
     };
@@ -114,22 +109,19 @@ const ManageListUser = () => {
     const handleModalOk = async (values) => {
         try {
             setLoading(true);
-            // định dạng dob thành string
             dayjs.extend(customParseFormat);
             values.dob = dayjs(values.dob, 'YYYY-MM-DD').format('DD/MM/YYYY');
-            console.log('Form values:', values);
             updateUser(selectedUser.userId, values).then((res) => {
                 if (res.status === 'OK') {
                     setRes(res.data);
-                    message.success(res.message);
+                    message.success(t('admin.student.messages.updateSuccess'));
+                } else {
+                    message.error(t('admin.student.messages.updateError'));
                 }
-                else
-                    message.error(res.message);
             });
-            // message.success('Cập nhật thông tin người dùng thành công');
             handleModalCancel();
         } catch (error) {
-            message.error('Vui lòng kiểm tra lại thông tin');
+            message.error(t('admin.student.messages.validateError'));
         } finally {
             setLoading(false);
         }
@@ -138,7 +130,7 @@ const ManageListUser = () => {
     return (
         <>
             <BoxContainer className='shadow-md'>
-                <div className="title1">Quản lý người tìm việc</div>
+                <div className="title1">{t('admin.student.title')}</div>
             </BoxContainer>
             <BoxContainer className='shadow-md'>
                 <TableListUser
@@ -149,12 +141,12 @@ const ManageListUser = () => {
                 />
             </BoxContainer>
             <Modal
-                title="Chỉnh sửa thông tin người dùng"
+                title={t('admin.student.modal.title')}
                 open={isModalVisible}
                 onCancel={handleModalCancel}
                 footer={[
                     <Button key="back" onClick={handleModalCancel}>
-                        Hủy
+                        {t('admin.student.modal.buttons.cancel')}
                     </Button>,
                     <Button
                         key="submit"
@@ -162,7 +154,7 @@ const ManageListUser = () => {
                         loading={loading}
                         onClick={form.submit}
                     >
-                        Lưu thay đổi
+                        {t('admin.student.modal.buttons.save')}
                     </Button>
                 ]}
                 width={720}
@@ -175,14 +167,14 @@ const ManageListUser = () => {
                     <div style={{ display: 'flex', gap: '20px' }}>
                         <Form.Item
                             name="lastName"
-                            label="Họ"
+                            label={t('admin.student.modal.form.lastName.label')}
                             style={{ flex: 1 }}
                         >
                             <Input disabled />
                         </Form.Item>
                         <Form.Item
                             name="firstName"
-                            label="Tên"
+                            label={t('admin.student.modal.form.firstName.label')}
                             style={{ flex: 1 }}
                         >
                             <Input disabled />
@@ -191,41 +183,39 @@ const ManageListUser = () => {
 
                     <Form.Item
                         name="email"
-                        label="Email"
-
+                        label={t('admin.student.modal.form.email.label')}
                     >
                         <Input disabled />
                     </Form.Item>
 
                     <Form.Item
                         name="phone"
-                        label="Số điện thoại"
-
+                        label={t('admin.student.modal.form.phone.label')}
                     >
                         <Input disabled />
                     </Form.Item>
 
                     <Form.Item
                         name="address"
-                        label="Địa chỉ"
+                        label={t('admin.student.modal.form.address.label')}
                     >
                         <Input disabled />
                     </Form.Item>
 
                     <Form.Item
                         name="dob"
-                        label="Ngày sinh"
+                        label={t('admin.student.modal.form.dob.label')}
                     >
                         <DatePicker format={'DD/MM/YYYY'} style={{ width: '100%' }} disabled />
                     </Form.Item>
 
                     <Form.Item
                         name="active"
-                        label="Trạng thái"
+                        label={t('admin.student.modal.form.status.label')}
                     >
                         <Select>
-                            <Option value={true}>Hoạt động</Option>
-                            <Option value={false}>Khóa</Option>
+                            <Option value={true}>{t('admin.student.modal.form.status.options.active')}</Option>
+                            <Option value={false}>{t('admin.student.modal.form.status.options.blocked')}</Option>
                         </Select>
                     </Form.Item>
                 </Form>

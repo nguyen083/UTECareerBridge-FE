@@ -13,6 +13,7 @@ import { setInfor } from '../../redux/action/employerSlice.jsx';
 import { useRedux } from '../../utils/useRedux.jsx';
 import FooterComponent from '../Generate/Footer.jsx';
 import { AiOutlinePayCircle } from "react-icons/ai";
+import { useTranslation } from 'react-i18next';
 
 import {
     BarChartOutlined,
@@ -41,50 +42,75 @@ const siderStyle = {
     scrollbarWidth: 'thin',
     scrollbarColor: 'unset',
 };
-const itemSider = [
-    { key: '/employer/dashboard', icon: <BarChartOutlined />, label: 'Thống kê' },
-    { key: '2', icon: <UserOutlined />, label: 'Tài khoản', children: [{ key: '/employer/profile', label: 'Thông tin cá nhân', icon: <MdManageAccounts /> }, { key: '/employer/change-password', label: 'Đổi mật khẩu', icon: <RiLockPasswordLine /> }] },
-    { key: '3', icon: <IoBusinessOutline />, label: 'Công ty', children: [{ key: '/employer/company', label: 'Thông tin công ty', icon: <TiBusinessCard /> }, { key: '/employer/business-certificate', label: 'Giấy chứng nhận', icon: <FaRegNewspaper /> }] },
-    { key: '/employer/post-job', icon: <UploadOutlined />, label: 'Đăng tuyển' },
-    { key: '/employer/applicant/list-job', icon: <TeamOutlined />, label: 'Ứng viên' },
-    { key: '/employer/manage-list-jobs', icon: <LiaBriefcaseSolid />, label: 'Việc làm' },
-    { key: '/employer/list-resumes', icon: <SolutionOutlined />, label: 'Hồ sơ' },
-    { key: '/employer/list-order', icon: <AiOutlinePayCircle />, label: 'Đơn hàng' },
-    // { key: '/employer/interview', icon: <IoIosPeople />, label: 'Phỏng vấn' },
-    { key: '/employer/chat', icon: <MdOutlineMessage />, label: 'Tin nhắn' },
-    // { key: '/employer/notification', icon: <BellOutlined />, label: 'Thông báo' },
-    { key: '/employer/buy-service', icon: <BsTicketPerforated />, label: 'Gói dịch vụ' },
-    { key: 'logout', icon: <LogoutOutlined />, label: 'Đăng xuất' },
-];
-const itemHeader = [
-    // { key: '1', label: 'Việc làm' },
-    // { key: '2', label: 'Tuyển dụng' },
-    // { key: '3', label: 'Sự kiện' },
-    // { key: '4', label: 'Liên hệ' },
-    // { key: '5', label: 'Điều khoản' },
-    // { key: '6', label: 'Về chúng tôi' },
-];
+
+const itemHeader = [];
 
 
 const EmployerLayout = () => {
+    const { t } = useTranslation();
     const { clearRedux } = useRedux();
     const dispatch = useDispatch();
     const location = useLocation();
     const [defaultImage, setDefaultImage] = useState(null);
-    // const name = useSelector(state => state.employer.firstName) + ' ' + useSelector(state => state.employer.lastName);
+   
     const avatar = useSelector(state => state.employer.companyLogo);
     const user = useSelector(state => state.user);
     const navigate = useNavigate();
     const [collapsed, setCollapsed] = useState(false);
 
+    const itemSider = [
+        { key: '/employer/dashboard', icon: <BarChartOutlined />, label: t('admin.employer.sidebar.dashboard') },
+        { 
+            key: '2', 
+            icon: <UserOutlined />, 
+            label: t('admin.employer.sidebar.account.title'), 
+            children: [
+                { 
+                    key: '/employer/profile', 
+                    label: t('admin.employer.sidebar.account.profile'), 
+                    icon: <MdManageAccounts /> 
+                }, 
+                { 
+                    key: '/employer/change-password', 
+                    label: t('admin.employer.sidebar.account.changePassword'), 
+                    icon: <RiLockPasswordLine /> 
+                }
+            ] 
+        },
+        { 
+            key: '3', 
+            icon: <IoBusinessOutline />, 
+            label: t('admin.employer.sidebar.company.title'), 
+            children: [
+                { 
+                    key: '/employer/company', 
+                    label: t('admin.employer.sidebar.company.info'), 
+                    icon: <TiBusinessCard /> 
+                }, 
+                { 
+                    key: '/employer/business-certificate', 
+                    label: t('admin.employer.sidebar.company.certificate'), 
+                    icon: <FaRegNewspaper /> 
+                }
+            ] 
+        },
+        { key: '/employer/post-job', icon: <UploadOutlined />, label: t('admin.employer.sidebar.postJob') },
+        { key: '/employer/applicant/list-job', icon: <TeamOutlined />, label: t('admin.employer.sidebar.applicant') },
+        { key: '/employer/manage-list-jobs', icon: <LiaBriefcaseSolid />, label: t('admin.employer.sidebar.manageJobs') },
+        { key: '/employer/list-resumes', icon: <SolutionOutlined />, label: t('admin.employer.sidebar.resumes') },
+        { key: '/employer/list-order', icon: <AiOutlinePayCircle />, label: t('admin.employer.sidebar.orders') },
+        { key: '/employer/chat', icon: <MdOutlineMessage />, label: t('admin.employer.sidebar.messages') },
+        { key: '/employer/buy-service', icon: <BsTicketPerforated />, label: t('admin.employer.sidebar.services') },
+        { key: 'logout', icon: <LogoutOutlined />, label: t('admin.employer.sidebar.logout') },
+    ];
 
     useEffect(() => {
         const fetchData = async () => {
             let res = await getInfor();
-            //Lưu thông tin người dùng vào redux
+           
             dispatch(setInfor(res.data));
             if (res.status !== 'OK') {
-                message.error('Có lỗi xảy ra');
+                message.error(t('admin.messages.error'));
             }
         };
         if (localStorage.getItem('accessToken') === null) {
@@ -166,7 +192,7 @@ const EmployerLayout = () => {
                                 }} />
                         </div>
                         <Flex gap={20} align='center'>
-                            <Tooltip title='Giỏ hàng' placement='bottom' color={COLOR.bgTooltipColor}>
+                            <Tooltip title={t('employer.header.cart')} placement='bottom' color={COLOR.bgTooltipColor}>
                                 <Badge count={0}>
                                     <Button onClick={() => navigate('/employer/cart')} className='btn-header rounded-full btn-bell' size='large' type="text">
                                         <ShoppingCartOutlined />
@@ -181,7 +207,6 @@ const EmployerLayout = () => {
                                 </Badge>
                             </Tooltip> */}
                             <Avatar size={'large'} className='avatar' icon={<UserOutlined />} src={avatar && <img src={avatar} alt='' />} />
-                            {/* <span className={`username hidden d-lg-inline`}>{name}</span> */}
                         </Flex>
                     </Flex>
                 </Header>
@@ -190,15 +215,7 @@ const EmployerLayout = () => {
                         <Outlet />
                     </Flex>
                 </Content>
-                {/* <Footer className='py-5 bg-card-color'>
-                    <Flex justify='center'>
-                        <Space size='small'>
-                            <Text style={{ color: '#1E4F94' }}>
-                                Copyright ©2024 UTE CAREERBRIDGE
-                            </Text>
-                        </Space>
-                    </Flex>
-                </Footer> */}
+
             </Layout>
         </Layout >
     );

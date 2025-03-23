@@ -2,35 +2,112 @@
     "chat_with_employer": "Chat with employer",
     "job_application_submitted": "Job application submitted",
     "find_company_name_employer": "Search company name, employer",
-    "no_message": "No message",
+    "no_message": "No messages found",
+    "no_convesation": "No conversation found",
     "end": "End",
     "chat": "Chat",
     "no_conversations_found": "No conversations found.",
     "enter_message": "Enter message...",
+    "list_applicant": "List of applicants",
+    "top_applicants": "Top applicants",
+    "my_company": "My company",
+    "follow_company": "Follow company",
+    "all_categories": {
+        "title": "All Categories"
+    },
     "common": {
         "save": "Save",
         "cancel": "Cancel",
         "complete": "Complete",
         "error": "Error",
         "success": "Success",
+        "notice": "Notice",
         "empty": "Empty",
         "copy": "Copy to clipboard",
-        "seeMore": "See more"
+        "seeMore": "See more",
+        "learnMore": "Learn more",
+        "or": "or"
+    },
+    "role": {
+        "admin": "Admin",
+        "employer": "Employer",
+        "student": "Student"
+    },
+    "student":{
+        "layout": {
+            "jobs": {
+                "title": "Jobs",
+                "newest": "Newest Jobs",
+                "search": "Search Jobs"
+            },
+            "myJobs": {
+                "title": "My Jobs",
+                "saved": "Saved Jobs",
+                "applied": "Applied Jobs"
+            },
+            "events": {
+                "title": "Events",
+                "all": "All Events"
+            }
+        }
+    },
+    "employer":{
+        "applicant":{
+            "listJob": {
+                "notice": "Please post a job to view applicants"
+            },
+            "tabs": {
+                "pending": "Unread",
+                "viewed": "Viewed",
+                "approved": "Approved", 
+                "rejected": "Rejected"
+            },
+            "messages": {
+                "notFound": "Information not found"
+            }
+        },
+        "chat": {
+            "title": "Chat with student",
+            "noConvesation": "No conversation found",
+            "noMessages": "No messages found",
+            "end": "End",
+            "chat": "Chat",
+            "enterMessage": "Enter message..."
+        }
     },
     "auth": {
         "login": {
+            "title": "Login",
+            "email/phone": "Email/Phone Number",
+            "password": "Password",
+            "dont_have_an_account": "Don't have an account?",
+            "forgotPassword": "Forgot password?",
             "emailPlaceholder": "Enter email/phone number",
-            "passwordPlaceholder": "Enter password"
+            "passwordPlaceholder": "Enter password",
+            "googleLogin": "Login with Google"
         },
         "register": {
-            "firstName": "Enter your first name",
-            "lastName": "Enter your last name",
-            "birthday": "Select birthday",
-            "phone": "Enter your phone number",
-            "email": "Enter your email",
-            "password": "Enter your password",
-            "confirmPassword": "Confirm your password",
+            "title": "Register",
+            "firstName": "First Name",
+            "lastName": "Last Name",
+            "birthday": "Birthday",
+            "birthdayPlaceholder": "Select birthday",
+            "phone": "Phone Number",
+            "gender": "Gender",
+            "male": "Male",
+            "female":"Female",
+            "email": "Email",
+            "password": "Password",
+            "confirmPassword": "Confirm Password",
+            "firstNameRequired": "Enter your first name",
+            "lastNameRequired": "Enter your last name",
+            "birthdayRequired": "Select birthday",
+            "phoneRequired": "Enter your phone number",
+            "emailRequired": "Enter your email",
+            "passwordRequired": "Enter your password",
+            "confirmPasswordRequired": "Confirm your password",
             "terms": "You have read and agree to our terms and conditions"
+
         },
         "resetPassword": {
             "success": "Password reset successful",
@@ -93,5 +170,547 @@
         "404": "Sorry, the page you are looking for does not exist.",
         "403": "Sorry, you do not have permission to access this page.",
         "500": "Sorry, the page you are trying to access is currently not working."
+    },
+    "admin": {
+        "companyApproval": {
+            "title": "Company Approval",
+            "tabs": {
+                "pending": "Pending",
+                "approved": "Approved",
+                "rejected": "Rejected"
+            }
+        },
+        "dashboard": {
+          "title": "Overview",
+          "filters": {
+            "allMonths": "All months",
+            "month": "Month {month}",
+            "allYears": "All years"
+          },
+          "stats": {
+            "currentMonthRevenue": "Current Month Revenue",
+            "totalCandidates": "Total Candidates",
+            "totalEmployers": "Total Employers",
+            "conversionRate": "Conversion Rate"
+          },
+          "charts": {
+            "monthlyRevenue": "Monthly Revenue",
+            "revenue": "Revenue (VND)",
+            "packageCount": "Package Count",
+            "topPackages": "Top Selling Packages",
+            "jobsByCategory": "Jobs by Category",
+            "packages": "{value} packages - {percentage}%",
+            "jobs": "{value} jobs - {percentage}%"
+          },
+          "errors": {
+            "loadData": "Error loading data"
+          }
+        },
+        "sidebar": {
+        "overview": "Overview",
+        "userManagement": "User Management",
+        "candidates": "Candidates",
+        "employers": "Employers",
+        "companyManagement": "Company Management",
+        "companyApproval": "Company Approval",
+        "postApproval": "Post Approval",
+        "transactionManagement": "Transaction Management",
+        "servicePackages": "Service Packages",
+        "coupons": "Coupons",
+        "contentManagement": "Content Management",
+        "newsAndEvents": "News & Events",
+        "logout": "Logout"
+        },
+        "messages": {
+        "error": "An error occurred"
+        },
+        "coupon": {
+            "title": "Coupons",
+            "createNew": "Create New Coupon",
+            "editTitle": "Edit Coupon",
+            "createTitle": "Create New Coupon",
+            "empty": "No coupons found",
+            "edit": "Edit",
+            "delete": "Delete",
+            "deleteError": "Failed to delete coupon",
+            "voucher": "Voucher",
+            "discount": "{discount}% Off",
+            "code": "Code:",
+            "remaining": "Remaining:",
+            "expireDate": "Expire Date:",
+            "form": {
+              "code": {
+                "label": "Coupon Code",
+                "placeholder": "Enter coupon code",
+                "required": "Please enter coupon code!"
+              },
+              "amount": {
+                "label": "Amount",
+                "required": "Please enter amount!"
+              },
+              "discount": {
+                "label": "Discount",
+                "required": "Please enter discount!"
+              },
+              "maxUsage": {
+                "label": "Maximum Usage",
+                "required": "Please enter maximum usage!"
+              },
+              "expiredAt": {
+                "label": "Expiry Date",
+                "required": "Please select expiry date!"
+              },
+              "description": {
+                "label": "Description",
+                "required": "Please enter description!"
+              },
+              "status": {
+                "label": "Status",
+                "placeholder": "Select status",
+                "active": "Active",
+                "inactive": "Inactive"
+              },
+              "buttons": {
+                "update": "Update",
+                "create": "Create",
+                "cancel": "Cancel"
+              }
+            }
+        },
+        "company": {
+            "table": {
+                "columns": {
+                    "companyName": "Company Name",
+                    "address": "Address",
+                    "email": "Email",
+                    "phone": "Phone Number",
+                    "certificate": "Business Certificate",
+                    "rejectedReason": "Rejected Reason"
+                },
+                "actions": {
+                    "view": "View",
+                    "approve": "Approve",
+                    "reject": "Reject"
+                },
+                "search": {
+                    "searchFor": "Search {field}",
+                    "search": "Search",
+                    "reset": "Reset",
+                    "filter": "Filter",
+                    "close": "Close"
+                },
+                "modal": {
+                    "title": "Edit User Information",
+                    "cancel": "Cancel",
+                    "confirm": "Confirm",
+                    "rejectReason": "Reject Reason",
+                    "enterRejectReason": "Enter reject reason",
+                    "pleaseEnterReason": "Please enter reject reason"
+                }
+            }
+        },
+        "postApproval": {
+            "title": "Post Approval",
+            "tabs": {
+                "pending": "Pending",
+                "approved": "Approved",
+                "rejected": "Rejected"
+            }
+        },
+        "post": {
+            "table": {
+                "columns": {
+                    "no": "No.",
+                    "title": "Title",
+                    "category": "Category",
+                    "level": "Level",
+                    "quantity": "Quantity",
+                    "deadline": "Deadline",
+                    "rejectedReason": "Rejected Reason",
+                    "createdTime": "Created Time"
+                },
+                "actions": {
+                    "view": "View",
+                    "approve": "Approve",
+                    "reject": "Reject"
+                },
+                "search": {
+                    "searchFor": "Search {field}",
+                    "search": "Search",
+                    "reset": "Reset",
+                    "filter": "Filter",
+                    "close": "Close"
+                },
+                "modal": {
+                    "title": "Edit User Information",
+                    "cancel": "Cancel",
+                    "confirm": "Confirm",
+                    "rejectReason": "Reject Reason",
+                    "enterRejectReason": "Enter reject reason",
+                    "pleaseEnterReason": "Please enter reject reason"
+                },
+                "noData": "No data"
+            }
+        },
+        "event": {
+            "title": {
+                "edit": "Edit Event",
+                "create": "Create New Event",
+                "manage": "Event Management"
+            },
+            "form": {
+                "buttons": {
+                    "update": "Update",
+                    "create": "Create",
+                    "cancel": "Cancel",
+                    "add": "Add"
+                },
+                "fields": {
+                    "eventTitle": {
+                        "label": "Event Title",
+                        "required": "Please enter event title!"
+                    },
+                    "eventType": {
+                        "label": "Event Type",
+                        "placeholder": "Select event type",
+                        "required": "Please select event type!",
+                        "options": {
+                            "seminar": "Seminar",
+                            "conference": "Conference",
+                            "workshop": "Workshop",
+                            "careerFair": "Career Fair",
+                            "webinar": "Webinar"
+                        }
+                    },
+                    "eventDate": {
+                        "label": "Event Date",
+                        "placeholder": "Select event date",
+                        "required": "Please select event date!"
+                    },
+                    "maxParticipants": {
+                        "label": "Maximum Participants",
+                        "required": "Please enter maximum participants!"
+                    },
+                    "eventLocation": {
+                        "label": "Event Location",
+                        "required": "Please enter event location!"
+                    },
+                    "eventDescription": {
+                        "label": "Event Description",
+                        "required": "Please enter event description!"
+                    },
+                    "eventImage": {
+                        "label": "Event Image",
+                        "tooltip": "Event image will be displayed on homepage",
+                        "required": "Please select event image!"
+                    },
+                    "timeline": {
+                        "label": "Event Timeline",
+                        "required": "Please add event timeline!",
+                        "fields": {
+                            "title": {
+                                "label": "Title",
+                                "required": "Please enter title!"
+                            },
+                            "description": {
+                                "label": "Description",
+                                "required": "Please enter description!"
+                            },
+                            "time": {
+                                "label": "Time",
+                                "required": "Please enter time!"
+                            }
+                        }
+                    }
+                }
+            },
+            "actions": {
+                "view": "View details",
+                "edit": "Edit",
+                "delete": "Delete",
+                "create": "Create new event"
+            },
+            "list": {
+                "empty": "No events found",
+                "eventDate": "Event date",
+                "location": "Location"
+            },
+            "modal": {
+                "deleteConfirm": {
+                    "title": "Confirm deletion",
+                    "content": "Are you sure you want to delete this event?",
+                    "okText": "Delete"
+                }
+            },
+            "filter": {
+                "placeholder": "Filter by type"
+            }
+        },
+        "employer": {
+            "title": "Business Management",
+            "table": {
+                "columns": {
+                    "registrationDate": "Registration Date",
+                    "blockReason": "Block Reason",
+                    "lastLoginDate": "Last Login Date"
+                }
+            },
+            "modal": {
+                "title": "Edit User Information",
+                "buttons": {
+                    "cancel": "Cancel",
+                    "save": "Save Changes"
+                },
+                "form": {
+                    "lastName": {
+                        "label": "Last Name"
+                    },
+                    "firstName": {
+                        "label": "First Name"
+                    },
+                    "email": {
+                        "label": "Email"
+                    },
+                    "phone": {
+                        "label": "Phone Number"
+                    },
+                    "dob": {
+                        "label": "Date of Birth"
+                    },
+                    "status": {
+                        "label": "Status",
+                        "options": {
+                            "active": "Active",
+                            "blocked": "Blocked"
+                        }
+                    }
+                }
+            },
+            "messages": {
+                "updateSuccess": "User information updated successfully",
+                "updateError": "Failed to update user information",
+                "validateError": "Please check the information again"
+            },
+            "sidebar": {
+                "dashboard": "Statistics",
+                "account": {
+                    "title": "Account",
+                    "profile": "Personal Information",
+                    "changePassword": "Change Password"
+                },
+                "company": {
+                    "title": "Company",
+                    "info": "Company Information",
+                    "certificate": "Business Certificate"
+                },
+                "postJob": "Post Job",
+                "applicant": "Candidates",
+                "manageJobs": "Jobs",
+                "resumes": "Resumes",
+                "orders": "Orders",
+                "messages": "Messages",
+                "services": "Service Packages",
+                "logout": "Logout"
+            },
+            "header": {
+                "cart": "Cart",
+                "notifications": "Notifications"
+            },
+            "register": {
+                "title": "Register",
+                "contact": "Contact",
+                "company": "Company",
+                "gender": "Gender",
+                "male": "Male",
+                "female": "Female",
+                "invalidFirstName": "Invalid first name",
+                "invalidLastName": "Invalid last name",
+                "invalidPhone": "Invalid phone number",
+                "invalidEmail": "Invalid email",
+                "passwordMinLength": "Password must be at least 8 characters",
+                "passwordUppercase": "Password must contain at least 1 uppercase letter",
+                "passwordNumber": "Password must contain at least 1 number",
+                "passwordSpecial": "Password must contain at least 1 special character",
+                "passwordMismatch": "Password confirmation does not match",
+                "companyName": "Company Name",
+                "companyNameRequired": "Please enter company name",
+                "companyEmail": "Company Email",
+                "companyEmailRequired": "Please enter company email",
+                "companyAddress": "Company Address",
+                "companyAddressRequired": "Please enter company address",
+                "companyWebsite": "Company Website"
+            }
+        },
+        "student": {
+            "title": "Job Seeker Management",
+            "table": {
+                "columns": {
+                    "registrationDate": "Registration Date",
+                    "blockReason": "Block Reason",
+                    "lastLoginDate": "Last Login Date"
+                }
+            },
+            "modal": {
+                "title": "Edit User Information",
+                "buttons": {
+                    "cancel": "Cancel",
+                    "save": "Save Changes"
+                },
+                "form": {
+                    "lastName": {
+                        "label": "Last Name"
+                    },
+                    "firstName": {
+                        "label": "First Name"
+                    },
+                    "email": {
+                        "label": "Email"
+                    },
+                    "phone": {
+                        "label": "Phone Number"
+                    },
+                    "address": {
+                        "label": "Address"
+                    },
+                    "dob": {
+                        "label": "Date of Birth"
+                    },
+                    "status": {
+                        "label": "Status",
+                        "options": {
+                            "active": "Active",
+                            "blocked": "Blocked"
+                        }
+                    }
+                },
+                "deleteConfirm": {
+                    "title": "Confirm deletion",
+                    "content": "Are you sure you want to delete this user?",
+                    "okText": "Delete",
+                    "cancelText": "Cancel"
+                }
+            },
+            "messages": {
+                "loadError": "Cannot load user information",
+                "deleteSuccess": "User deleted successfully",
+                "deleteError": "Cannot delete user",
+                "updateSuccess": "User information updated successfully",
+                "updateError": "Failed to update user information",
+                "validateError": "Please check the information again"
+            }
+        },
+        "userTable": {
+            "columns": {
+                "no": "No.",
+                "lastName": "Last Name",
+                "firstName": "First Name",
+                "email": "Email",
+                "phone": "Phone Number",
+                "dob": "Date of Birth",
+                "status": "Status",
+                "statusValues": {
+                    "active": "Active",
+                    "blocked": "Blocked"
+                }
+            },
+            "tooltips": {
+                "updateAccount": "Update Account",
+                "viewCompany": "View Company",
+                "deleteAccount": "Delete Account"
+            },
+            "search": {
+                "placeholder": "Search users...",
+                "sort": "Sort",
+                "refresh": "Refresh",
+                "totalUsers": "Total {total} users"
+            },
+            "sort": {
+                "newest": "Newest Users",
+                "oldest": "Oldest Users",
+                "nameAZ": "Users by Name A-Z",
+                "nameZA": "Users by Name Z-A"
+            },
+            "export": {
+                "title": "Choose export format",
+                "excel": "Export Excel",
+                "pdf": "Export PDF",
+                "success": "Export PDF successful!",
+                "error": "Error exporting {type}. Please try again later."
+            },
+            "noData": "No data",
+            "loadError": "Cannot load user list"
+        },
+        "servicePackage": {
+            "title": "Service Packages",
+            "createNew": "Create new service package",
+            "modal": {
+                "editTitle": "Edit service package",
+                "createTitle": "Create new service package",
+                "update": "Update",
+                "create": "Create",
+                "cancel": "Cancel",
+                "form": {
+                    "packageName": {
+                        "label": "Package Name",
+                        "required": "Please enter package name!"
+                    },
+                    "price": {
+                        "label": "Price",
+                        "required": "Please enter price!"
+                    },
+                    "duration": {
+                        "label": "Duration (months)",
+                        "required": "Please enter duration!"
+                    },
+                    "description": {
+                        "label": "Description",
+                        "required": "Please enter description!"
+                    },
+                    "amount": {
+                        "label": "Amount",
+                        "required": "Please enter amount!"
+                    },
+                    "feature": {
+                        "label": "Feature",
+                        "required": "Please select feature!",
+                        "placeholder": "Please select feature",
+                        "options": {
+                            "unlimited": "Unlimited job posting",
+                            "priority": "Priority job display",
+                            "notification": "Send notifications to matching candidates",
+                            "hotLabel": "Post jobs with hot label",
+                            "cvBank": "Access to CV bank",
+                            "urgent": "Post urgent jobs"
+                        }
+                    }
+                }
+            },
+            "list": {
+                "empty": "No service packages found",
+                "price": "Price",
+                "feature": "Feature",
+                "description": "Description",
+                "duration": "Duration",
+                "postAmount": "Number of posts",
+                "months": "months",
+                "actions": {
+                    "edit": "Edit",
+                    "delete": "Delete"
+                },
+                "deleteConfirm": {
+                    "title": "Confirm deletion",
+                    "content": "Are you sure you want to delete this service package?",
+                    "okText": "Delete"
+                }
+            },
+            "messages": {
+                "createSuccess": "Create service package successfully",
+                "createError": "Create service package failed",
+                "updateSuccess": "Update service package successfully",
+                "updateError": "Update service package failed",
+                "deleteSuccess": "Delete service package successfully",
+                "deleteError": "Delete service package failed"
+            }
+        }
     }
 }

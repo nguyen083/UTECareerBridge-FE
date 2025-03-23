@@ -1,0 +1,1 @@
+import{j as t,Z as s}from"./index-BjGqDy_t.js";import e from"./BoxContainer-hGE4hI1u.js";const i=({width:a="90%"})=>t.jsx(e,{padding:"1rem",width:"100%",className:"mx-auto",background:"#F5F5F5",children:t.jsx("div",{className:"mx-auto",style:{width:a},children:t.jsx(s,{})})});export{i as default};

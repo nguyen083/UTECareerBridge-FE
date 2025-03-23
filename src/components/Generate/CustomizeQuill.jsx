@@ -14,7 +14,7 @@ const modules = {
                 color: ["black", "red", "blue", "yellow"],
             },
         ],
-        // [{ font: [] }],
+       
         [{ align: [false, "right", "center", "justify"] }],
         [
             { list: "ordered" },
@@ -26,14 +26,14 @@ const modules = {
         [{ background: [false, "red", "#785412"] }]
     ],
     clipboard: {
-        // toggle to add extra line breaks when pasting HTML:
+       
         matchVisual: false,
     },
 };
 
 const formats = [
-    // "header",
-    // "font",
+   
+   
     "size",
     "bold",
     "italic",
@@ -58,7 +58,7 @@ export default function CustomizeQuill(props) {
     return (
         <>
             <ReactQuill
-                // style={{ borderRadius: "10px", border: "1px solid #d9d9d9" }}
+               
                 ref={quillRef}
                 theme="snow"
                 modules={modules}

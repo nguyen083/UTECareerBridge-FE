@@ -3,33 +3,109 @@
     "job_application_submitted": "Tin tuyển dụng đã ứng tuyển",
     "find_company_name_employer": "Tìm tên công ty, nhà tuyển dụng",
     "no_message": "Không có tin nhắn",
-    "end": "Kết thúc",
+    "no_conversation": "Không có cuộc trò chuyện nào",
+    "end": "Hết",
     "chat": "Nhắn tin",
     "no_conversations_found": "Không tìm thấy cuộc trò chuyện nào.",
     "enter_message": "Nhập tin nhắn...",
+    "list_applicant": "Danh sách ứng viên",
+    "top_Companies": "Công ty hàng đầu",
+    "my_company": "Công ty của tôi",
+    "follow_company": "Theo dõi công ty",
+    "all_categories": {
+        "title": "Tất cả danh mục"
+    },
     "common": {
         "save": "Lưu",
         "cancel": "Hủy",
         "complete": "Hoàn tất",
         "error": "Lỗi",
         "success": "Thành công",
+        "notice": "Chú ý",
         "empty": "Không có",
         "copy": "Sao chép vào bộ nhớ tạm",
-        "seeMore": "Xem thêm"
+        "seeMore": "Xem thêm",
+        "learnMore": "Tìm hiểu thêm",
+        "or": "hoặc",
+        "googleLogin": "Đăng nhập với Google"
     },
+    "role": {
+        "student": "Người tìm việc",
+        "employer": "Nhà tuyển dụng",
+        "admin": "Quản trị viên"
+    },
+    "student":{
+      "layout": {
+            "jobs": {
+                "title": "Việc làm",
+                "newest": "Việc làm mới nhất",
+                "search": "Tìm việc làm"
+            },
+            "myJobs": {
+                "title": "Việc của tôi",
+                "saved": "Việc đã lưu",
+                "applied": "Việc đã ứng tuyển"
+            },
+            "events": {
+                "title": "Sự kiện",
+                "all": "Tất cả sự kiện"
+            }
+        }
+    },
+    "employer":{
+      "applicant":{
+          "listJob": {
+              "notice": "Vui lòng chọn việc làm để xem danh sách ứng viên"
+          },
+          "tabs": {
+            "pending": "Chưa xem",
+            "viewed": "Đã xem",
+            "approved": "Đã duyệt",
+            "rejected": "Bị từ chối"
+          },
+          "messages": {
+            "notFound": "Không tìm thấy thông tin"
+          }
+      },
+      "chat":{
+          "title": "Trò chuyện với ứng viên",
+          "noConversations": "Không có cuộc trò chuyện nào",
+          "noMessages": "Không có tin nhắn nào",
+          "end": "Kết thúc",
+          "chat": "Nhắn tin",
+          "enterMessage": "Nhập tin nhắn..."
+      }
+  },
     "auth": {
         "login": {
+            "title": "Đăng nhập",
+            "email/phone": "Email/Số điện thoại",
+            "password": "Mật khẩu",
+            "dont_have_an_account": "Chưa có tài khoản?",
+            "forgotPassword": "Quên mật khẩu?",
             "emailPlaceholder": "Nhập email/SĐT",
             "passwordPlaceholder": "Nhập mật khẩu"
         },
         "register": {
-            "firstName": "Nhập tên của bạn",
-            "lastName": "Nhập họ của bạn",
-            "birthday": "Chọn ngày sinh",
-            "phone": "Nhập số điện thoại của bạn",
-            "email": "Nhập email của bạn",
-            "password": "Nhập mật khẩu của bạn",
-            "confirmPassword": "Nhập mật khẩu xác nhận",
+            "title": "Đăng ký",
+            "firstName": "Tên",
+            "lastName": "Họ",
+            "birthday": "Ngày sinh",
+            "birthdayPlaceholder": "Chọn ngày sinh",
+            "phone": "Số điện thoại",
+            "gender": "Giới tính",
+            "male": "Nam",
+            "female":"Nữ",
+            "email": "Email",
+            "password": "Mật khẩu",
+            "confirmPassword": "Xác nhận mật khẩu",
+            "firstNameRequired": "Nhập tên của bạn",
+            "lastNameRequired": "Nhập họ của bạn",
+            "birthdayRequired": "Chọn ngày sinh",
+            "phoneRequired": "Nhập số điện thoại của bạn",
+            "emailRequired": "Nhập email của bạn",
+            "passwordRequired": "Nhập mật khẩu của bạn",
+            "confirmPasswordRequired": "Nhập mật khẩu xác nhận",
             "terms": "Bạn đã đọc và đồng ý với các điều khoản và điều kiện của chúng tôi"
         },
         "resetPassword": {
@@ -92,6 +168,549 @@
     "errors": {
         "404": "Xin lỗi, trang bạn đang tìm kiếm không tồn tại.",
         "403": "Xin lỗi, bạn không có quyền truy cập trang này.",
-        "500": "Xin lỗi, trang bạn đang truy cập hiện không hoạt động."
+        "500": "Xin lỗi, trang bạn đang truy cập hiện không hoạt động.",
+        "backToHome": "Quay lại trang chủ"
+    },
+    "admin": {
+      "companyApproval": {
+        "title": "Duyệt công ty",
+        "tabs": {
+            "pending": "Đang chờ duyệt",
+            "approved": "Đã duyệt",
+            "rejected": "Bị từ chối"
+        }
+      },
+      "dashboard": {
+      "title": "Tổng quan",
+      "filters": {
+        "allMonths": "Tất cả tháng",
+        "month": "Tháng {month}",
+        "allYears": "Tất cả năm"
+      },
+      "stats": {
+        "currentMonthRevenue": "Doanh thu tháng này",
+        "totalCandidates": "Tổng ứng viên",
+        "totalEmployers": "Tổng nhà tuyển dụng",
+        "conversionRate": "Tỷ lệ chuyển đổi"
+      },
+      "charts": {
+        "monthlyRevenue": "Doanh thu theo tháng",
+        "revenue": "Doanh thu (VND)",
+        "packageCount": "Số lượng gói",
+        "topPackages": "Gói dịch vụ được bán nhiều nhất",
+        "jobsByCategory": "Việc làm theo ngành",
+        "packages": "{value} gói dịch vụ - {percentage}%",
+        "jobs": "{value} việc làm - {percentage}%"
+      },
+      "errors": {
+        "loadData": "Lỗi khi tải dữ liệu"
+      }
+      },
+      "sidebar": {
+      "overview": "Tổng quan",
+      "userManagement": "Quản lý người dùng",
+      "candidates": "Ứng viên",
+      "employers": "Nhà tuyển dụng",
+      "companyManagement": "Quản lý công ty",
+      "companyApproval": "Duyệt công ty",
+      "postApproval": "Duyệt bài đăng",
+      "transactionManagement": "Quản lý giao dịch",
+      "servicePackages": "Gói dịch vụ",
+      "coupons": "Mã giảm giá",
+      "contentManagement": "Quản lý nội dung",
+      "newsAndEvents": "Tin tức & Sự kiện",
+      "logout": "Đăng xuất"
+      },
+      "messages": {
+      "error": "Có lỗi xảy ra"
+      },
+      "coupon": {
+          "title": "Mã giảm giá",
+          "createNew": "Tạo mã giảm giá mới",
+          "editTitle": "Chỉnh sửa mã giảm giá",
+          "createTitle": "Tạo mã giảm giá mới",
+          "empty": "Không có mã giảm giá nào",
+          "edit": "Chỉnh sửa",
+          "delete": "Xóa",
+          "deleteError": "Xoá mã giảm giá không thành công",
+          "voucher": "Voucher",
+          "discount": "Giảm {discount}%",
+          "code": "Mã:",
+          "remaining": "Còn lại:",
+          "expireDate": "Ngày hết hạn:",
+          "form": {
+            "code": {
+              "label": "Mã giảm giá",
+              "placeholder": "Nhập mã giảm giá",
+              "required": "Vui lòng nhập mã giảm giá!"
+            },
+            "amount": {
+              "label": "Số lượng",
+              "required": "Vui lòng nhập số lượng!"
+            },
+            "discount": {
+              "label": "Mức giảm giá",
+              "required": "Vui lòng nhập mức giảm giá!"
+            },
+            "maxUsage": {
+              "label": "Số lần sử dụng tối đa",
+              "required": "Vui lòng nhập số lần sử dụng tối đa!"
+            },
+            "expiredAt": {
+              "label": "Ngày hết hạn",
+              "required": "Vui lòng chọn ngày hết hạn!"
+            },
+            "description": {
+              "label": "Mô tả",
+              "required": "Vui lòng nhập mô tả!"
+            },
+            "status": {
+              "label": "Trạng thái",
+              "placeholder": "Chọn trạng thái",
+              "active": "Hoạt động",
+              "inactive": "Khóa"
+            },
+            "buttons": {
+              "update": "Cập nhật",
+              "create": "Tạo",
+              "cancel": "Hủy"
+            }
+          }
+      },
+      "company": {
+          "table": {
+              "columns": {
+                  "companyName": "Tên công ty",
+                  "address": "Địa chỉ",
+                  "email": "Email",
+                  "phone": "Số điện thoại",
+                  "certificate": "Giấy chứng nhận",
+                  "rejectedReason": "Lý do từ chối"
+              },
+              "actions": {
+                  "view": "Xem",
+                  "approve": "Duyệt",
+                  "reject": "Từ chối"
+              },
+              "search": {
+                  "searchFor": "Tìm {field}",
+                  "search": "Tìm",
+                  "reset": "Đặt lại",
+                  "filter": "Lọc",
+                  "close": "Đóng"
+              },
+              "modal": {
+                  "title": "Chỉnh sửa thông tin người dùng",
+                  "cancel": "Hủy",
+                  "confirm": "Xác nhận",
+                  "rejectReason": "Lý do từ chối",
+                  "enterRejectReason": "Nhập lý do từ chối",
+                  "pleaseEnterReason": "Vui lòng nhập lý do từ chối"
+              }
+          }
+      },
+      "postApproval": {
+          "title": "Duyệt bài đăng",
+          "tabs": {
+              "pending": "Đang chờ duyệt",
+              "approved": "Đã duyệt",
+              "rejected": "Bị từ chối"
+          }
+      },
+      "post": {
+          "table": {
+              "columns": {
+                  "no": "No.",
+                  "title": "Tiêu đề",
+                  "category": "Lĩnh vực",
+                  "level": "Cấp bậc",
+                  "quantity": "Số lượng",
+                  "deadline": "Thời hạn",
+                  "rejectedReason": "Lý do từ chối",
+                  "createdTime": "Thời gian tạo"
+              },
+              "actions": {
+                  "view": "Xem",
+                  "approve": "Duyệt",
+                  "reject": "Từ chối"
+              },
+              "search": {
+                  "searchFor": "Tìm {field}",
+                  "search": "Tìm",
+                  "reset": "Đặt lại",
+                  "filter": "Lọc",
+                  "close": "Đóng"
+              },
+              "modal": {
+                  "title": "Chỉnh sửa thông tin người dùng",
+                  "cancel": "Hủy",
+                  "confirm": "Xác nhận",
+                  "rejectReason": "Lý do từ chối",
+                  "enterRejectReason": "Nhập lý do từ chối",
+                  "pleaseEnterReason": "Vui lòng nhập lý do từ chối"
+              },
+              "noData": "Không có dữ liệu"
+          }
+      },
+      "event": {
+          "title": {
+              "edit": "Chỉnh sửa Sự Kiện",
+              "create": "Tạo Sự Kiện mới",
+              "manage": "Quản lý Sự Kiện"
+          },
+          "form": {
+              "buttons": {
+                  "update": "Cập nhật",
+                  "create": "Tạo",
+                  "cancel": "Hủy",
+                  "add": "Thêm"
+              },
+              "fields": {
+                  "eventTitle": {
+                      "label": "Tên Sự Kiện",
+                      "required": "Vui lòng nhập tên sự kiện!"
+                  },
+                  "eventType": {
+                      "label": "Loại Sự Kiện",
+                      "placeholder": "Chọn loại sự kiện",
+                      "required": "Vui lòng chọn loại sự kiện!",
+                      "options": {
+                          "seminar": "Hội thảo",
+                          "conference": "Hội nghị",
+                          "workshop": "Hội thảo chuyên đề",
+                          "careerFair": "Hội chợ việc làm",
+                          "webinar": "Hội thảo trực tuyến"
+                      }
+                  },
+                  "eventDate": {
+                      "label": "Thời gian tổ chức",
+                      "placeholder": "Chọn thời gian tổ chức",
+                      "required": "Vui lòng chọn thời gian tổ chức!"
+                  },
+                  "maxParticipants": {
+                      "label": "Số lượng người tối đa",
+                      "required": "Vui lòng nhập số lượng người tối đa!"
+                  },
+                  "eventLocation": {
+                      "label": "Địa Điểm tổ chức",
+                      "required": "Vui lòng nhập địa điểm tổ chức!"
+                  },
+                  "eventDescription": {
+                      "label": "Mô Tả Sự Kiện",
+                      "required": "Vui lòng nhập mô tả sự kiện!"
+                  },
+                  "eventImage": {
+                      "label": "Hình Ảnh Sự Kiện",
+                      "tooltip": "Hình ảnh sự kiện sẽ được hiển thị trên trang chủ",
+                      "required": "Vui lòng chọn hình ảnh sự kiện!"
+                  },
+                  "timeline": {
+                      "label": "Danh mục sự kiện",
+                      "required": "Vui lòng thêm danh mục sự kiện!",
+                      "fields": {
+                          "title": {
+                              "label": "Tiêu đề",
+                              "required": "Vui lòng nhập tiêu đề!"
+                          },
+                          "description": {
+                              "label": "Mô tả",
+                              "required": "Vui lòng nhập mô tả!"
+                          },
+                          "time": {
+                              "label": "Thời gian",
+                              "required": "Vui lòng nhập thời gian!"
+                          }
+                      }
+                  }
+              }
+          },
+          "actions": {
+              "view": "Xem chi tiết",
+              "edit": "Chỉnh sửa",
+              "delete": "Xóa",
+              "create": "Tạo sự kiện mới"
+          },
+          "list": {
+              "empty": "Không tìm thấy sự kiện",
+              "eventDate": "Ngày tổ chức",
+              "location": "Địa điểm"
+          },
+          "modal": {
+              "deleteConfirm": {
+                  "title": "Xác nhận xóa",
+                  "content": "Bạn có chắc chắn muốn xóa sự kiện này không?",
+                  "okText": "Xóa"
+              }
+          },
+          "filter": {
+              "placeholder": "Lọc theo loại"
+          }
+      },
+      "employer": {
+        "title": "Quản lý doanh nghiệp",
+        "table": {
+          "columns": {
+            "registrationDate": "Ngày đăng ký",
+            "blockReason": "Lý do khóa",
+            "lastLoginDate": "Lần đăng nhập cuối"
+          }
+        },
+        "modal": {
+          "title": "Chỉnh sửa thông tin người dùng",
+          "buttons": {
+            "cancel": "Hủy",
+            "save": "Lưu thay đổi"
+          },
+          "form": {
+            "lastName": {
+              "label": "Họ"
+            },
+            "firstName": {
+              "label": "Tên"
+            },
+            "email": {
+              "label": "Email"
+            },
+            "phone": {
+              "label": "Số điện thoại"
+            },
+            "dob": {
+              "label": "Ngày sinh"
+            },
+            "status": {
+              "label": "Trạng thái",
+              "options": {
+                "active": "Hoạt động",
+                "blocked": "Khóa"
+              }
+            }
+          }
+        },
+        "messages": {
+          "updateSuccess": "Cập nhật thông tin người dùng thành công",
+          "updateError": "Cập nhật thông tin người dùng thất bại",
+          "validateError": "Vui lòng kiểm tra lại thông tin"
+        },
+        "sidebar": {
+          "dashboard": "Thống kê",
+          "account": {
+            "title": "Tài khoản",
+            "profile": "Thông tin cá nhân",
+            "changePassword": "Đổi mật khẩu"
+          },
+          "company": {
+            "title": "Công ty",
+            "info": "Thông tin công ty",
+            "certificate": "Giấy chứng nhận"
+          },
+          "postJob": "Đăng tuyển",
+          "applicant": "Ứng viên",
+          "manageJobs": "Việc làm",
+          "resumes": "Hồ sơ",
+          "orders": "Đơn hàng",
+          "messages": "Tin nhắn",
+          "services": "Gói dịch vụ",
+          "logout": "Đăng xuất"
+        },
+        "header": {
+          "cart": "Giỏ hàng",
+          "notifications": "Thông báo"
+        },
+        "register": {
+            "title": "Đăng ký",
+            "contact": "Liên lạc",
+            "company": "Công ty",
+            "gender": "Giới tính",
+            "male": "Nam",
+            "female": "Nữ",
+            "invalidFirstName": "Tên không hợp lệ",
+            "invalidLastName": "Họ không hợp lệ",
+            "invalidPhone": "Số điện thoại không hợp lệ",
+            "invalidEmail": "Email không hợp lệ",
+            "passwordMinLength": "Mật khẩu phải có ít nhất 8 ký tự",
+            "passwordUppercase": "Mật khẩu phải chứa ít nhất 1 chữ cái viết hoa",
+            "passwordNumber": "Mật khẩu phải chứa ít nhất 1 chữ số",
+            "passwordSpecial": "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt",
+            "passwordMismatch": "Mật khẩu xác nhận không khớp",
+            "companyName": "Tên công ty",
+            "companyNameRequired": "Vui lòng nhập tên công ty",
+            "companyEmail": "Email công ty",
+            "companyEmailRequired": "Vui lòng nhập email công ty",
+            "companyAddress": "Địa chỉ công ty",
+            "companyAddressRequired": "Vui lòng nhập địa chỉ công ty",
+            "companyWebsite": "Website công ty"
+        }
+      },
+      "student": {
+        "title": "Quản lý người tìm việc",
+        "table": {
+          "columns": {
+            "registrationDate": "Ngày đăng ký",
+            "blockReason": "Lý do khóa",
+            "lastLoginDate": "Lần đăng nhập cuối"
+          }
+        },
+        "modal": {
+          "title": "Chỉnh sửa thông tin người dùng",
+          "buttons": {
+            "cancel": "Hủy",
+            "save": "Lưu thay đổi"
+          },
+          "form": {
+            "lastName": {
+              "label": "Họ"
+            },
+            "firstName": {
+              "label": "Tên"
+            },
+            "email": {
+              "label": "Email"
+            },
+            "phone": {
+              "label": "Số điện thoại"
+            },
+            "address": {
+              "label": "Địa chỉ"
+            },
+            "dob": {
+              "label": "Ngày sinh"
+            },
+            "status": {
+              "label": "Trạng thái",
+              "options": {
+                "active": "Hoạt động",
+                "blocked": "Khóa"
+              }
+            }
+          },
+          "deleteConfirm": {
+            "title": "Xác nhận xóa",
+            "content": "Bạn có chắc chắn muốn xóa người dùng này không?",
+            "okText": "Xóa",
+            "cancelText": "Hủy"
+          }
+        },
+        "messages": {
+          "loadError": "Không thể tải thông tin người dùng",
+          "deleteSuccess": "Xóa người dùng thành công",
+          "deleteError": "Không thể xóa người dùng",
+          "updateSuccess": "Cập nhật thông tin người dùng thành công",
+          "updateError": "Cập nhật thông tin người dùng thất bại",
+          "validateError": "Vui lòng kiểm tra lại thông tin"
+        }
+      },
+      "userTable": {
+        "columns": {
+          "no": "No.",
+          "lastName": "Họ",
+          "firstName": "Tên",
+          "email": "Email",
+          "phone": "Số điện thoại",
+          "dob": "Ngày sinh",
+          "status": "Trạng thái",
+          "statusValues": {
+            "active": "Hoạt động",
+            "blocked": "Bị khóa"
+          }
+        },
+        "tooltips": {
+          "updateAccount": "Cập nhật tài khoản",
+          "viewCompany": "Xem công ty",
+          "deleteAccount": "Xóa tài khoản"
+        },
+        "search": {
+          "placeholder": "Tìm kiếm người dùng...",
+          "sort": "Sắp xếp",
+          "refresh": "Làm mới",
+          "totalUsers": "Tổng {total} người dùng"
+        },
+        "sort": {
+          "newest": "Người dùng mới nhất",
+          "oldest": "Người dùng cũ nhất",
+          "nameAZ": "Người dùng theo tên A-Z",
+          "nameZA": "Người dùng theo tên Z-A"
+        },
+        "export": {
+          "title": "Chọn định dạng xuất",
+          "excel": "Xuất Excel",
+          "pdf": "Xuất PDF",
+          "success": "Xuất PDF thành công!",
+          "error": "Lỗi khi xuất {type}. Vui lòng thử lại sau."
+        },
+        "noData": "Không có dữ liệu",
+        "loadError": "Không thể tải danh sách người dùng"
+      },
+      "servicePackage": {
+        "title": "Gói dịch vụ",
+        "createNew": "Tạo gói dịch vụ mới",
+        "modal": {
+          "editTitle": "Chỉnh sửa gói dịch vụ",
+          "createTitle": "Tạo gói dịch vụ mới",
+          "update": "Cập nhật",
+          "create": "Tạo",
+          "cancel": "Hủy",
+          "form": {
+            "packageName": {
+              "label": "Tên gói dịch vụ",
+              "required": "Vui lòng nhập tên gói dịch vụ!"
+            },
+            "price": {
+              "label": "Giá",
+              "required": "Vui lòng nhập giá!"
+            },
+            "duration": {
+              "label": "Thời hạn (tháng)",
+              "required": "Vui lòng nhập thời gian!"
+            },
+            "description": {
+              "label": "Mô tả",
+              "required": "Vui lòng nhập mô tả!"
+            },
+            "amount": {
+              "label": "Số lượng",
+              "required": "Vui lòng nhập số lượng!"
+            },
+            "feature": {
+              "label": "Tính năng",
+              "required": "Vui lòng chọn tính năng!",
+              "placeholder": "Vui lòng chọn tính năng",
+              "options": {
+                "unlimited": "Đăng tin tuyển dụng không giới hạn",
+                "priority": "Ưu tiên hiển thị tin tuyển dụng",
+                "notification": "Gửi thông báo ứng viên phù hợp",
+                "hotLabel": "Đăng tin tuyển dụng với nhãn hot",
+                "cvBank": "Truy cập vào ngân hàng CV",
+                "urgent": "Đăng tin tuyển dụng gấp"
+              }
+            }
+          }
+        },
+        "list": {
+          "empty": "Không tìm thấy gói dịch vụ",
+          "price": "Giá",
+          "feature": "Tính năng",
+          "description": "Mô tả",
+          "duration": "Thời hạn",
+          "postAmount": "Số lượng bài đăng",
+          "months": "tháng",
+          "actions": {
+            "edit": "Chỉnh sửa",
+            "delete": "Xóa"
+          },
+          "deleteConfirm": {
+            "title": "Xác nhận xóa",
+            "content": "Bạn có chắc chắn muốn xóa gói dịch vụ này?",
+            "okText": "Xóa"
+          }
+        },
+        "messages": {
+          "createSuccess": "Tạo gói dịch vụ thành công",
+          "createError": "Tạo gói dịch vụ thất bại",
+          "updateSuccess": "Cập nhật gói dịch vụ thành công",
+          "updateError": "Cập nhật gói dịch vụ thất bại",
+          "deleteSuccess": "Xóa gói dịch vụ thành công",
+          "deleteError": "Xóa gói dịch vụ thất bại"
+        }
+      }
     }
 }

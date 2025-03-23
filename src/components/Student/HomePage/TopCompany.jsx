@@ -2,6 +2,7 @@ import React from 'react';
 import './TopCompany.scss';
 import { Avatar, Button, Card, Flex, Typography } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 const { Title, Text } = Typography;
 const { Meta } = Card;
 // const companies = [
@@ -12,10 +13,11 @@ const { Meta } = Card;
 // ];
 
 const TopCompany = ({ companies }) => {
+  const {t} = useTranslation();
   const navigate = useNavigate();
   return (
     <div className="top-company">
-      <Title level={2}>Công ty hàng đầu</Title>
+      <Title level={2}>{t('top_Companies')}</Title>
       <Flex justify='space-between'>
         {companies.map((company) => (
           <Card
@@ -43,7 +45,7 @@ const TopCompany = ({ companies }) => {
               </div>
             } description={
               <div className="text-center">
-                <Button className='cursor-pointer' size='large' type="primary">Xem thêm</Button>
+                <Button className='cursor-pointer' size='large' type="primary">{t('seeMore')}</Button>
               </div>
             } />
 

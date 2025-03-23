@@ -27,7 +27,7 @@ const initialState = {
 };
 
 export const employerSlice = createSlice({
-    name: 'employer', //tên của reducer
+    name: 'employer',
     initialState,
     reducers: {
         setInfor: (state, action) => {

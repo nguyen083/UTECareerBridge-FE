@@ -16,12 +16,12 @@ const PaymentReturn = () => {
       
       message.success('Thanh toán thành công!');
     } else {
-      navigate('/payment-failed'); // Optional: redirect to a failure page
+      navigate('/payment-failed');
       message.error('Thanh toán không thành công');
     }
   }, [location, navigate]);
 
-  return null; // This component doesn't render anything
+  return null;
 };
 
 export default PaymentReturn;

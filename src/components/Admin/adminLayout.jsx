@@ -1,28 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import './adminLayout.scss';
-import NotificationPopover from './NotificationPopover';
 import Notification from '../Generate/Notification.jsx';
+import { useTranslation } from 'react-i18next';
 import {
     DashboardOutlined,
     UserOutlined,
-    SettingOutlined,
     LogoutOutlined,
-    BellOutlined,
     TeamOutlined,
     FileTextOutlined,
     DollarOutlined,
-    BarChartOutlined,
     GlobalOutlined,
-    QuestionCircleOutlined,
-    MessageOutlined,
-    SearchOutlined,
     MenuOutlined
 } from '@ant-design/icons';
 import { Layout, Menu, Avatar, Flex, Badge, Space, message } from 'antd';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut, removeToken } from '../../services/apiService';
-import { current, loading, stop } from '../../redux/action/webSlice';
+import { loading, stop } from '../../redux/action/webSlice';
 import { useRedux } from '../../utils/useRedux.jsx';
 
 const { Header, Content, Footer, Sider } = Layout;
@@ -38,86 +32,63 @@ const siderStyle = {
     scrollbarColor: '#f0f2f5',
 };
 
-const itemSider = [
-    {
-        key: '/admin/dashboard',
-        icon: <DashboardOutlined />,
-        label: 'Tổng quan',
-    },
-    {
-        key: '2',
-        icon: <TeamOutlined />,
-        label: 'Quản lý người dùng',
-        children: [
-            { key: '/admin/manage-students', label: 'Ứng viên' },
-            { key: '/admin/manage-employers', label: 'Nhà tuyển dụng' },
-        ]
-    },
-    {
-        key: '3',
-        icon: <FileTextOutlined />,
-        label: 'Quản lý công ty',
-        children: [
-            { key: '/admin/company-approval', label: 'Duyệt công ty' },
-            { key: '/admin/post-approval', label: 'Duyệt bài đăng' },
-        ]
-    },
-    {
-        key: '4',
-        icon: <DollarOutlined />,
-        label: 'Quản lý giao dịch',
-        children: [
-            { key: '/admin/service-packages', label: 'Gói dịch vụ' },
-            // { key: '/admin/transactions', label: 'Lịch sử giao dịch' },
-            // { key: '/admin/revenue', label: 'Báo cáo doanh thu' }
-            { key: '/admin/coupons', label: 'Mã giảm giá' }
-        ]
-    },
-
-    {
-        key: '6',
-        icon: <GlobalOutlined />,
-        label: 'Quản lý nội dung',
-        children: [
-            { key: '/admin/news-events', label: 'Tin tức & Sự kiện' },
-            // { key: '/admin/banners', label: 'Banner & Quảng cáo' },
-            // { key: '/admin/pages', label: 'Trang tĩnh' }
-        ]
-    },
-    { key: 'logout', icon: <LogoutOutlined />, label: 'Đăng xuất' },
-];
-
-
-
 const AdminLayout = () => {
+    const { t } = useTranslation();
     const location = useLocation();
     const { clearRedux } = useRedux();
     const dispatch = useDispatch();
     const [defaultImage, setDefaultImage] = useState(null);
     const navigate = useNavigate();
     const [collapsed, setCollapsed] = useState(false);
-
     const adminInfo = useSelector(state => state.admin);
     const name = `${adminInfo?.firstName || ''} ${adminInfo?.lastName || ''}`;
     const avatar = adminInfo?.avatar;
     const notifications = useSelector(state => state.notifications?.unread || 0);
     const messages = useSelector(state => state.messages?.unread || 0);
-    useEffect(() => {
-        // const fetchData = async () => {
-        //     let res = await getInfor();
-        //     //Lưu thông tin người dùng vào redux
-        //     dispatch(setInfor(res.data));
-        //     if (res.status !== 'OK') {
-        //         message.error('Có lỗi xảy ra');
-        //     }
-        // };
 
-        // if (!localStorage.getItem('accessToken')) {
-        //     navigate('/admin/login');
-        // } else {
-        //     fetchData();
-        // }
-    }, []);
+    const itemSider = [
+        {
+            key: '/admin/dashboard',
+            icon: <DashboardOutlined />,
+            label: t('admin.sidebar.overview'),
+        },
+        {
+            key: '2',
+            icon: <TeamOutlined />,
+            label: t('admin.sidebar.userManagement'),
+            children: [
+                { key: '/admin/manage-students', label: t('admin.sidebar.candidates') },
+                { key: '/admin/manage-employers', label: t('admin.sidebar.employers') },
+            ]
+        },
+        {
+            key: '3',
+            icon: <FileTextOutlined />,
+            label: t('admin.sidebar.companyManagement'),
+            children: [
+                { key: '/admin/company-approval', label: t('admin.sidebar.companyApproval') },
+                { key: '/admin/post-approval', label: t('admin.sidebar.postApproval') },
+            ]
+        },
+        {
+            key: '4',
+            icon: <DollarOutlined />,
+            label: t('admin.sidebar.transactionManagement'),
+            children: [
+                { key: '/admin/service-packages', label: t('admin.sidebar.servicePackages') },
+                { key: '/admin/coupons', label: t('admin.sidebar.coupons') }
+            ]
+        },
+        {
+            key: '6',
+            icon: <GlobalOutlined />,
+            label: t('admin.sidebar.contentManagement'),
+            children: [
+                { key: '/admin/news-events', label: t('admin.sidebar.newsAndEvents') },
+            ]
+        },
+        { key: 'logout', icon: <LogoutOutlined />, label: t('admin.sidebar.logout') },
+    ];
 
     const handleNavigation = async (key) => {
         if (key.key === 'logout') {
@@ -130,10 +101,10 @@ const AdminLayout = () => {
                     navigate('/');
                     message.success(res.message);
                 } else {
-                    message.error(res.message);
+                    message.error(t('admin.messages.error'));
                 }
             } catch (error) {
-                message.error(error.message);
+                message.error(t('admin.messages.error'));
             } finally {
                 dispatch(stop());
             }
@@ -179,21 +150,8 @@ const AdminLayout = () => {
                 <Header className="admin-header">
                     <Flex>
                         <MenuOutlined className='text-base' onClick={() => setCollapsed(!collapsed)} />
-                        {/* <div className='search-container'>
-                            <div>
-                                <SearchOutlined className='search-icon' />
-                            </div>
-                            <div className='search-bar'>
-                                <input type="text" placeholder="Tìm kiếm" className="search-input" />
-                            </div>
-
-                        </div> */}
                     </Flex>
                     <Space size={24}>
-                        {/* <Badge count={messages} overflowCount={10}>
-                            <MessageOutlined className="message-icon" />
-                        </Badge> */}
-                        {/* <NotificationPopover /> */}
                         <Notification userId={1} />
 
                         <Space>

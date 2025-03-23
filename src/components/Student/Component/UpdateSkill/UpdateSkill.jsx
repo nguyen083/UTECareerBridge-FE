@@ -42,7 +42,7 @@ const UpdateSkill = () => {
             fetchStudentSkill();
         });
     }
-    // hàm lấy danh sách kỹ năng của sinh viên
+   
     const fetchStudentSkill = () => {
         const skillMap = listSkill.reduce((map, skill) => {
             map[skill.skillId] = skill.skillName;
@@ -61,13 +61,13 @@ const UpdateSkill = () => {
     useEffect(() => {
         console.log(studentSkill);
     }, [studentSkill]);
-    // hàm lấy danh sách kỹ năng
+   
     const fetchSkill = () => {
         getAllSkills().then((res) => {
             setListSkill(res.data.filter((item) => item.active === true).map((item) => { return { skillName: item.skillName, skillId: item.skillId } }));
         });
     }
-    // lấy danh sách kỹ năng của sinh viên
+   
     useEffect(() => {
         fetchStudentSkill();
     }, [listSkill]);

@@ -37,7 +37,7 @@ const JobSearchPage = () => {
     return sanitized;
   };
   const handleSearch = () => {
-    //call API lấy dữ liệu
+   
     const params = {
       keyword,
       page: currentPage - 1,

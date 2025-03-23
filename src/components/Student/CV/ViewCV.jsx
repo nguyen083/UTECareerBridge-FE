@@ -105,12 +105,12 @@ const ViewCV = ({ setStudentId = null }) => {
     useEffect(() => {
         fetchData();
     }, [id]);
-    // useEffect(() => {
-    //     const add = async () => {
+   
+   
 
-    //     }
-    //     add();
-    // }, [cv]);
+   
+   
+   
 
     return (
         <div className={styles.view_cv}>

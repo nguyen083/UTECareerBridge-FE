@@ -15,21 +15,21 @@ const UploadAvatar = ({ src, setSrc }) => {
 
     const handleImageChange = async (file) => {
         if (!file) return;
-        setUploading(true); // Bắt đầu upload
-        setUploadProgress(0); // Đặt lại tiến trình về 0
+        setUploading(true);
+        setUploadProgress(0);
         try {
-            // Gọi hàm upload với callback để cập nhật tiến trình   ----> Department này là tạo thư mục trên cloud để biết ảnh ở thư mục nào á
+           
             const url = await uploadToCloudinary(file, "student", (progress) => {
                 setUploadProgress(progress);
             });
-            setSrc(url); // Lưu URL ảnh sau khi upload
+            setSrc(url);
             setUrlImage(url);
             message.success("Upload thành công!");
         } catch (error) {
             message.error("Upload thất bại. Vui lòng thử lại.");
             console.error(error);
         } finally {
-            setUploading(false); // Kết thúc upload
+            setUploading(false);
         }
     };
 
@@ -97,7 +97,7 @@ const UploadImage = ({ value, onChange, link = "admin/event" }) => {
             const url = await uploadToCloudinary(file, link, (progress) => {
                 setUploadProgress(progress);
             });
-            onChange(url); // Lưu URL ảnh sau khi upload
+            onChange(url);
             setUrlImage(url);
             message.success("Upload thành công!");
         } catch (error) {

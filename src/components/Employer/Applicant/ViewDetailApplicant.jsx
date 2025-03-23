@@ -107,7 +107,7 @@ export const ModalInterview = ({ open, setOpen, studentId }) => {
 
     }
     const disablePastDates = (current) => {
-        // Chỉ cho phép chọn các ngày từ hôm nay trở đi
+       
         return current && current < new Date().setHours(0, 0, 0, 0);
     };
     const onlineForm = (
@@ -202,12 +202,12 @@ export const ModalInterview = ({ open, setOpen, studentId }) => {
         ]}
     >
         <Form autoComplete="on" layout="vertical" required size="large" form={form} onFinish={handleSubmit}>
-            {/* <Form.Item label="Hình thức phỏng vấn">
+            <Form.Item label="Hình thức phỏng vấn">
                 <Radio.Group value={type} onChange={(e) => { form.resetFields(); setType(e.target.value) }}>
                     <Radio className="text-base" value="OFFLINE">Trực tiếp</Radio>
                     <Radio className="text-base" value="ONLINE">Trực tuyến</Radio>
                 </Radio.Group>
-            </Form.Item> */}
+            </Form.Item>
             {type === "ONLINE" ?
                 onlineForm
                 : offlineForm}

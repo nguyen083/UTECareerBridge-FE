@@ -34,7 +34,7 @@ const EmployerCompany = () => {
     }
     const handleSubmit = (values) => {
 
-        //map lại benefitDetails
+       
         const keyValueObject = {};
         values.benefitArray.forEach((item, index) => {
             keyValueObject[`benefitDetails[${index}].benefitId`] = item.benefitId;
@@ -48,7 +48,7 @@ const EmployerCompany = () => {
         updateEmployerCompanyProfile(values).then(res => {
             if (res.status === 'OK') {
                 message.success(res.message);
-                // cập nhật lại redux
+               
                 dispatch(setInfor(res.data));
             }
             else {
@@ -60,7 +60,7 @@ const EmployerCompany = () => {
             setLoading(false);
         })
 
-        // console.log(values);
+       
 
     }
 

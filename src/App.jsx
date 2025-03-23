@@ -1,11 +1,9 @@
 import './App.scss';
 import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
 import { ConfigProvider, Spin, App as AntApp } from 'antd';
-
 import { useSelector } from 'react-redux';
 import COLOR from './components/styles/_variables.jsx';
-import viVN from 'antd/lib/locale/vi_VN'; // Locale của Ant Design
-import './i18n.jsx';
+import viVN from 'antd/lib/locale/vi_VN'; 
 import { lazy, Suspense, useEffect } from "react"
 import { connectStomp, disconnectStomp } from './utils/stompConfig.js';
 
@@ -67,10 +65,9 @@ const PaymentReturn = lazy(() => import("./components/Employer/Order/PaymentRetu
 const ServicePackage = lazy(() => import("./components/Admin/ServicePackage/ServicePackage.jsx"));
 const PaymentSuccess = lazy(() => import("./components/User/PaymentSuccess.jsx"));
 const PaymentFail = lazy(() => import("./components/User/PaymentFail.jsx"));
-const Coupon = lazy(() => import("./components/Admin/Coupon.jsx/Coupon.jsx"));
+const Coupon = lazy(() => import("./components/Admin/Coupon/Coupon.jsx"));
 const DetailResume = lazy(() => import("./components/Employer/DetailResume/DetailResume.jsx"));
 const ChatLayout = lazy(() => import('./pages/Chat/ChatLayout.jsx'))
-// import from ''
 
 const App = () => {
   useEffect(() => {

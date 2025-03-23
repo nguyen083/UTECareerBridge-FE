@@ -51,7 +51,7 @@ const ServiceMarketplace = () => {
   }, []);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  // const currentServices = services.slice(startIndex, endIndex);
+ 
 
   const handlePageChange = (page) => {
     setCurrentPage(page);

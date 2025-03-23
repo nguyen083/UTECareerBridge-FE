@@ -20,7 +20,7 @@ const NotificationPopover = () => {
 
   const notificationSound = new Audio('/sounds/notification.mp3');
 
-  // Fetch initial notification count
+ 
   useEffect(() => {
     const fetchInitialNotificationCount = async () => {
       if (!userId) return;
@@ -77,7 +77,7 @@ const NotificationPopover = () => {
     });
   }, [dispatch, notificationCount, playNotificationSound]);
 
-  // Initialize Firebase notifications
+ 
   useEffect(() => {
     let messageUnsubscribe;
 
@@ -106,7 +106,7 @@ const NotificationPopover = () => {
     };
   }, [userId, isInitialized, handleNewMessage]);
 
-  // Fetch notifications when popover opens
+ 
   useEffect(() => {
     const fetchNotifications = async () => {
       if (!open || !userId) return;

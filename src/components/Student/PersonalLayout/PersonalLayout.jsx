@@ -22,28 +22,28 @@ const PersonalLayout = () => {
     const location = useLocation();
     const navigate = useNavigate();
 
-    // state để quản lý các danh sách
-    const [listResume, setListResume] = useState([]); // danh sách hồ sơ đã tải lên
+   
+    const [listResume, setListResume] = useState([]);
     const [willLoveJob, setWillLoveJob] = useState([]);
 
-    // state để quản lý các modal
+   
     const [modalResume, setModalResume] = useState(false);
-    // state để quản lý các thông tin cá nhân
+   
     const infor = useSelector((state) => state.student);
 
     const dispatch = useDispatch();
-    // state để quản lý các form
+   
     const [formResume] = Form.useForm();
-    // state để quản lý các giá trị
+   
     const [address, setAddress] = useState("");
     const [resumeIdActive, setResumeIdActive] = useState(0);
 
     const menuItems = [
-        // {
-        //     key: "/dashboard",
-        //     label: <div className="text-base">Tổng quan</div>,
-        //     icon: <DashboardOutlined />,
-        // },
+       
+       
+       
+       
+       
         {
             key: "/profile",
             label: <div className="text-base">Hồ sơ của tôi</div>,
@@ -68,7 +68,7 @@ const PersonalLayout = () => {
     const handleMenu = (key) => {
         navigate(key.key);
     }
-    // hàm lấy hồ sơ active
+   
     const getResumeActive = () => {
         listResume.length !== 0 && listResume.forEach((item) => {
             if (item.acvite === true) {
@@ -76,7 +76,7 @@ const PersonalLayout = () => {
             }
         });
     };
-    // hàm lấy danh sách hồ sơ đã tải lên
+   
     const fetchCV = () => {
         getAllCV().then((res) => {
             console.log(res);
@@ -94,21 +94,21 @@ const PersonalLayout = () => {
         });
     }
 
-    // lấy hồ sơ active
+   
     useEffect(() => {
         getResumeActive();
     }, [listResume]);
-    // lấy địa chỉ của sinh viên
+   
     useEffect(() => {
         apiService.getInforAddress(infor.address, infor.provinceId, infor.districtId, infor.wardId).then((res) => { console.log(res), setAddress(res) });
 
     }, [infor]);
-    // hàm reset url khi modal đóng
+   
 
-    // lấy danh sách Resume đã tải lên
+   
     useEffect(() => {
         fetchCV();
-        // lấy danh sách công việc sẽ thích dựa trên categoryId của user
+       
         getSimilarJob(infor.categoryId).then((res) => {
             if (res.status === 'OK' && res.data !== null) {
                 setWillLoveJob(res.data?.jobResponses);
@@ -116,12 +116,12 @@ const PersonalLayout = () => {
         });
 
 
-    }, []); // lấy danh sách hồ sơ đã tải lên từ server
+    }, []);
 
 
 
     const handleFindJob = () => {
-        //gọi API cập nhật hồ sơ active
+       
         updateResumeActive(formResume.getFieldValue('resumeId')).then((res) => {
             if (res.status === 'OK') {
                 message.success(res.message);
@@ -134,13 +134,13 @@ const PersonalLayout = () => {
             }
         });
     }
-    // hàm bật tìm kiếm hồ sơ
+   
     const switchFindjob = (status = null) => {
-        //gọi API bật tìm kiếm hồ sơ
+       
         const check = status === null ? !infor.findingJob : status;
         updateFindjob(check).then((res) => {
             if (res.status === 'OK') {
-                // message.success(res.message);
+               
                 dispatch(setFindJob(check));
             } else {
                 message.error(res.message);

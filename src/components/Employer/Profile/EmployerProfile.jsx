@@ -1,6 +1,6 @@
 import { Button, Divider, Flex, Form, Input, Radio, Space, DatePicker, message, Row, Col } from 'antd';
 import BoxContainer from '../../Generate/BoxContainer';
-import './EmployerProfile.scss';
+// import './EmployerProfile.scss';
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import dayjs from 'dayjs';

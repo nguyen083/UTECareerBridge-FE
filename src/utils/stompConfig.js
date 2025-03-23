@@ -2,8 +2,8 @@ import { Client } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
 let stompClient = null;
-let isConnected = false; // Kiểm tra trạng thái kết nối
-const subscriptions = new Map(); // Lưu danh sách các subscription
+let isConnected = false;
+const subscriptions = new Map();
 
 // ✅ Kết nối WebSocket (chỉ tạo một lần)
 export const connectStomp = (onConnected, onError) => {
@@ -61,25 +61,52 @@ export const disconnectStomp = () => {
 // ✅ Đăng ký nhận tin nhắn từ topic
 export const subscribeToTopic = (topic, callback) => {
     if (!stompClient || !isConnected) {
-        // console.warn('WebSocket chưa kết nối, vui lòng gọi connectStomp trước.');
-        return;
+        console.warn('WebSocket chưa kết nối, vui lòng gọi connectStomp trước.');
+        return null;
     }
 
-    if (!subscriptions.has(topic)) {
-        // console.log(`Đăng ký nhận tin từ topic: ${topic}`);
-        const subscription = stompClient.subscribe(topic, callback);
-        subscriptions.set(topic, callback);
-        return subscription;
-    } else {
-        console.log(`Topic đã được đăng ký trước đó: ${topic}`);
+    try {
+        if (!subscriptions.has(topic)) {
+            console.log(`Đăng ký nhận tin từ topic: ${topic}`);
+            const subscription = stompClient.subscribe(topic, callback);
+            // Lưu cả callback và subscription object
+            subscriptions.set(topic, {
+                callback,
+                subscription
+            });
+            return subscription;
+        } else {
+            console.log(`Topic đã được đăng ký trước đó: ${topic}`);
+            return subscriptions.get(topic).subscription;
+        }
+    } catch (error) {
+        console.error(`Lỗi khi đăng ký topic ${topic}:`, error);
+        return null;
     }
 };
 
 // ✅ Hủy đăng ký topic
 export const unsubscribeFromTopic = (topic) => {
-    if (subscriptions.has(topic)) {
-        console.log(`Hủy đăng ký topic: ${topic}`);
-        subscriptions.delete(topic);
+    if (!stompClient || !isConnected) {
+        console.warn('WebSocket chưa kết nối.');
+        return;
+    }
+
+    try {
+        if (subscriptions.has(topic)) {
+            const { subscription } = subscriptions.get(topic);
+            if (subscription) {
+                // Hủy đăng ký STOMP subscription
+                subscription.unsubscribe();
+                // Xóa khỏi Map theo dõi
+                subscriptions.delete(topic);
+                console.log(`Đã hủy đăng ký topic: ${topic}`);
+            }
+        } else {
+            console.warn(`Topic không tồn tại: ${topic}`);
+        }
+    } catch (error) {
+        console.error(`Lỗi khi hủy đăng ký topic ${topic}:`, error);
     }
 };
 

@@ -1,13 +1,13 @@
-import { Avatar, Col, Empty, Flex, Row, Space, Typography, Input, Button } from "antd";
-import { CardCompany, ListConversation } from "../../../pages/Chat/CardofChat";
+import { Col, Empty, Flex, Row, Space, Typography, Input, Button } from "antd";
+import { ListConversation } from "../../../pages/Chat/CardofChat";
 import { ReceiverChat, SenderChat } from "../../../pages/Chat/ContainerofChat";
 import { SendOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { useParams } from "react-router-dom";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import chat from "../../../services/api/chat";
 import { useSelector } from "react-redux";
-import { connectStomp, disconnectStomp, subscribeToTopic, unsubscribeFromTopic } from "../../../utils/stompConfig";
+import { connectStomp, subscribeToTopic, unsubscribeFromTopic } from "../../../utils/stompConfig";
 import { customScrollbarCSS } from "../../../constant/scrollbar";
 
 
@@ -29,31 +29,44 @@ const ChatEmployerLayout = () => {
         return parseInt(id1) < parseInt(id2) ? `${id1}-${id2}` : `${id2}-${id1}`;
     };
 
-    //load tin nhắn và tạo/ hủy subcribe khi recipientId thay đổi
+   
     useEffect(() => {
-        if (recipientId) {
-            chat.loadMessages({ user2Id: recipientId, user1Id: senderId }).then((res) => {
-                setMessages(res.data.content);
-            }
-            ).catch((err) => {
-                console.log(err);
-            });
+        let stompSubscription = null;
+
+        if (recipientId && senderId) {
+            // Tải tin nhắn cũ
+            chat.loadMessages({ user2Id: recipientId, user1Id: senderId })
+                .then((res) => {
+                    setMessages(res.data.content);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+
+            // Kết nối và đăng ký nhận tin nhắn mới
+            const conversationId = getConversationId(senderId, recipientId);
+            currentConversationRef.current = conversationId;
+            const topic = ConversationTopic + conversationId;
+
             connectStomp(() => {
-                // Lấy STOMP client sau khi kết nối (nếu cần)
-                const conversationId = getConversationId(senderId, recipientId);
-                currentConversationRef.current = conversationId;
-                subscribeToTopic(ConversationTopic + conversationId, (message) => {
+                stompSubscription = subscribeToTopic(topic, (message) => {
                     const receivedMessage = JSON.parse(message.body);
                     setMessages((prevMessages) => [...prevMessages, receivedMessage]);
                 });
             });
         }
-        return () => {
-            unsubscribeFromTopic(ConversationTopic + currentConversationRef.current);
-        };
-    }, [recipientId]);
 
-    //Tự động scroll khi cập nhật tin nhắn
+        // Cleanup function
+        return () => {
+            if (currentConversationRef.current) {
+                const topic = ConversationTopic + currentConversationRef.current;
+                unsubscribeFromTopic(topic);
+                currentConversationRef.current = null;
+            }
+        };
+    }, [recipientId, senderId]);
+
+   
     useEffect(() => {
         if (divRef !== null) {
             divRef.current?.scrollTo({
@@ -64,7 +77,7 @@ const ChatEmployerLayout = () => {
     }, [messages]);
 
 
-    //Hàm gửi tin nhắn
+   
     const sendMessage = () => {
         const message = {
             senderId: senderId,
@@ -83,12 +96,12 @@ const ChatEmployerLayout = () => {
                 <Col span={18} className="border border-x-gray-200 flex flex-col">
 
                     <Space direction="vertical" className="w-full py-3 px-2 border-b h-auto bg-card-color">
-                        <Text className="text-base font-bold ">Trò chuyện với sinh viên</Text>
+                        <Text className="text-base font-bold ">{t('employer.chat.title')}</Text>
                     </Space>
                     {recipientId ? <>
-                        <div className="w-full max-h-[703px] flex-1 overflow-y-auto flex flex-col px-2 gap-4 " ref={divRef}>
+                        <div className="w-full max-h-[703px] flex-1 overflow-y-auto flex flex-col p-2 gap-4 " ref={divRef}>
                             <style>{customScrollbarCSS}</style>
-                            <Empty className="mt-36" image={<Avatar src="https://randomuser.me/api/portraits/men/43.jpg" size={100} />} description={<Text className="text-base font-bold">Công ty ABC</Text>} />
+                            {messages.length === 0 &&<Empty className="mt-36"  description={t('no_message')} />}
                             {messages.map((message, index) => {
                                 if (message.senderId === senderId) {
                                     return <SenderChat key={index} message={message} />;

@@ -10,7 +10,7 @@ const { Title } = Typography;
 
 const RegisterPage = () => {
     const [form] = Form.useForm();
-    const gender = 0; // giới tính mặc định
+    const gender = 0;
     const [isChecked, setIsChecked] = useState(false);
     const [DoB, setDoB] = useState('');
     const navigate = useNavigate();
@@ -24,7 +24,7 @@ const RegisterPage = () => {
         setIsChecked(e.target.checked);
     };
     const handleLogin = async (values) => {
-        // Call API
+       
         console.log(values);
         let res = await studentRegister({ ...values, dob: DoB });
         if (res.status === "CREATED") {

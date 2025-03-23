@@ -1,0 +1,1 @@
+import{a1 as o}from"./apiService-CCDveQas.js";const r={loginGoogle:async a=>o.get(`users/auth/social-login?login_type=google&role=${a}`),sendCodeToBE:async a=>{const e=new URLSearchParams(a);return o.get(`users/auth/social/callback?${e}`)}};export{r as a};

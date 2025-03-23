@@ -20,13 +20,13 @@ const JobList = () => {
     total: 0
   });
 
-  // Simulated API call - replace with your actual API endpoint
+ 
   const fetchData = async (page, pageSize) => {
     setLoading(true);
     try {
       const params = {
-        page: page - 1,       // Trang hiện tại
-        limit: pageSize,         // Số bản ghi mỗi trang
+        page: page - 1,      
+        limit: pageSize,        
       };
       await getAllJobEmployer(id, params).then((res) => {
         console.log(res);
@@ -41,7 +41,7 @@ const JobList = () => {
               jobMaxSalary: item.jobMaxSalary,
               rejectionReason: item.rejectionReason,
               jobLocation: item.jobLocation,
-              // liked: item.liked,
+             
             };
           });
 
@@ -49,7 +49,7 @@ const JobList = () => {
           setPagination({
             current: page,
             pageSize: pageSize,
-            total: res.data.totalPages * pageSize // Replace with actual total from API
+            total: res.data.totalPages * pageSize
           });
           console.log(pagination);
         }
@@ -85,7 +85,7 @@ const JobList = () => {
   const handlePageSizeChange = (current, size) => {
     setPagination({
       ...pagination,
-      current: 1, // Reset to first page when changing page size
+      current: 1,
       pageSize: size
     });
   };
@@ -117,7 +117,7 @@ const JobList = () => {
             >
               <Flex onClick={() => handleClick(item.jobId)} align='center' className='cursor-pointer'>
                 <img
-                  src={item.logo} // Replace with the actual logo URL
+                  src={item.logo}
                   className='w-20 h-20 rounded mr-3'
                 />
                 <div className='w-full'>

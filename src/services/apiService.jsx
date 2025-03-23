@@ -91,7 +91,7 @@ const getJobsByStatus = async (values) => {
 };
 const putHideJob = async (id, status) => {
 
-  // const formData = objectToFormData({ jobStatus: status });
+ 
   return axios.put(`jobs/employer/job-posting/hide/${id}?jobStatus=${status}`);
 }
 const deleteJob = async (id) => {
@@ -211,7 +211,7 @@ const getSkillStudent = async () => {
 }
 const addSkillStudent = async (values) => {
 
-  // const formData = objectToFormData(values);
+ 
   const param = new URLSearchParams(values).toString();
   return axios.post(`students/skills/add?${param}`);
 }
@@ -328,7 +328,7 @@ const getJobsNewest = async () => {
   return axios.get(`jobs/search?keyword=&page=0&limit=30&sorting=newest`);
 }
 const updateQuantityPackage = async (values) => {
-  // const formData = objectToFormData(values);
+ 
   const param = new URLSearchParams(values).toString();
   return axios.post(`carts/add-to-cart${param}`)
 }
@@ -340,7 +340,7 @@ const createOrder = async (couponCode) => {
   return axios.post(`orders/create-order`, formData);
 }
 const createPayment = async (orderId) => {
-  // const formData = objectToFormData({ orderId });
+ 
   const param = new URLSearchParams({ orderId }).toString();
   return axios.post(`orders/create-payment${param}`);
 }
@@ -358,7 +358,7 @@ const getJobPackage = async () => {
 }
 const getAllEvent = async (params) => {
   if (!params.eventType) {
-    delete params.eventType; // Xóa eventType nếu không tồn tại
+    delete params.eventType;
   }
   const queryString = new URLSearchParams(params).toString();
   return axios.get(`admin/events/get-all?${queryString}`);

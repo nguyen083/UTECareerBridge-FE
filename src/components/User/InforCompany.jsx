@@ -167,13 +167,13 @@ const InforCompany = () => {
                             <Avatar
                                 preview={false}
                                 size={136}
-                                src={company.companyLogo ? company.companyLogo : 'https://images.vietnamworks.com/img/company-default-logo.svg'} // URL ảnh logo
+                                src={company.companyLogo ? company.companyLogo : 'https://images.vietnamworks.com/img/company-default-logo.svg'}
                                 style={{
                                     border: '1px solid gray',
                                     borderRadius: "10px",
                                     objectFit: 'cover',
                                     display: 'block',
-                                    margin: '0 auto' // Để logo nổi lên giữa
+                                    margin: '0 auto'
                                 }}
                             />
                             <Flex justify="space-between" style={{ width: "100%" }}>

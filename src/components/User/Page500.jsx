@@ -13,8 +13,8 @@ const Page500 = () => {
         <Result
             status="500"
             title="500"
-            subTitle="Xin lỗi, trang bạn đang truy cập hiện không hoạt động."
-            extra={<Button type="primary" onClick={() => navigate('/home')}>Back Home</Button>}
+            subTitle={t('errors.500')}
+            extra={<Button type="primary" onClick={() => navigate('/home')}>{t('errors.backToHome')}</Button>}
         />
     );
 }

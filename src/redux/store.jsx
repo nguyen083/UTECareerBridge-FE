@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage'; // Sử dụng localStorage làm storage engine mặc định
-import rootReducer from './reducers'; // Thay thế bằng reducer thực tế của bạn
+import storage from 'redux-persist/lib/storage';
+import rootReducer from './reducers';
 
 // Cấu hình redux-persist
 const persistConfig = {
-    key: 'root',          // key để xác định trạng thái gốc cần lưu
-    storage,              // Sử dụng localStorage làm engine
+    key: 'root',         
+    storage,             
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
@@ -15,7 +15,7 @@ export const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
-            serializableCheck: false, // ⚠️ Tắt kiểm tra serializable (cẩn thận khi dùng)
+            serializableCheck: false,
         }),
 });
 

@@ -23,7 +23,7 @@ const JobCardSmall = ({ job }) => {
                 onClick={() => handleClick(job.jobId)}
                 className='flex items-center w-full meta-description'
                 avatar={<img
-                    src={job.employerResponse.companyLogo} // Replace with the actual logo URL
+                    src={job.employerResponse.companyLogo}
                     className='h-20 !w-20 rounded mr-3 max-w-fit'
                 />}
                 description={<div>
@@ -78,7 +78,7 @@ const JobCardLarge = ({ job, disable = false }) => {
         >
             <Flex align='center' className='w-full'>
                 <img
-                    src={job.employerResponse.companyLogo} // Replace with the actual logo URL
+                    src={job.employerResponse.companyLogo}
                     style={{ width: 100, height: 100, borderRadius: 4, marginRight: 12 }}
                 />
                 <div className='w-full'>
@@ -90,13 +90,13 @@ const JobCardLarge = ({ job, disable = false }) => {
                     < Paragraph
                         className='flex items-center'
                         type='secondary'
-                    // style={{
-                    //     margin: 0,
-                    //     whiteSpace: 'nowrap',        // Keeps the text on a single line
-                    //     overflow: 'hidden',           // Hides any overflow
-                    //     textOverflow: 'ellipsis',     // Adds ellipsis for overflowed text
-                    //     maxWidth: 140                 // Optional: set max width to control where it cuts off
-                    // }}
+                   
+                   
+                   
+                   
+                   
+                   
+                   
                     ><IoIosBusiness /> &ensp;
                         {job.employerResponse.companyName}</Paragraph>
                     <Flex align='center' >
@@ -107,13 +107,13 @@ const JobCardLarge = ({ job, disable = false }) => {
                         <Divider type='vertical' />
                         < Text className='flex items-center'
                             type='secondary'
-                        // style={{
-                        //     margin: 0,
-                        //     whiteSpace: 'nowrap',        // Keeps the text on a single line
-                        //     overflow: 'hidden',           // Hides any overflow
-                        //     textOverflow: 'ellipsis',     // Adds ellipsis for overflowed text
-                        //     maxWidth: 140                 // Optional: set max width to control where it cuts off
-                        // }}
+                       
+                       
+                       
+                       
+                       
+                       
+                       
                         >
                             <FaMapLocationDot />&ensp;
                             {job.jobLocation}</Text>

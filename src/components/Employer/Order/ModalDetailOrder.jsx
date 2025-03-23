@@ -6,31 +6,31 @@ const { Title, Text } = Typography;
 
 
 const OrderDetailTable = ({ data }) => {
-    // Định nghĩa cột cho bảng
+   
     console.log(data);
     const columns = [
         {
             title: 'Tên gói',
-            dataIndex: 'packageName', // Truy cập đến packageName trong nested object
+            dataIndex: 'packageName',
             key: 'packageName',
         },
         {
             title: 'Số lượng',
-            dataIndex: 'amount', // Truy cập đến amount trong nested object
+            dataIndex: 'amount',
             key: 'amount',
         },
         {
             title: 'Giá',
-            dataIndex: 'price', // price là thuộc tính của đối tượng trong mảng
+            dataIndex: 'price',
             key: 'price',
-            render: (text) => text.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }), // Hiển thị giá dưới dạng tiền tệ
+            render: (text) => text.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }),
         },
     ];
 
-    // Chuyển đổi dữ liệu thành dạng phù hợp với Table
+   
     const tableData = data?.map((item) => ({
         key: item.detailId,
-        packageName: item.packageResponse.packageName, // Kết hợp thông tin từ packageResponse vào
+        packageName: item.packageResponse.packageName,
         amount: item.amount,
         price: item.price,
     }));

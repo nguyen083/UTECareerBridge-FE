@@ -13,7 +13,7 @@ const FilterPanel = ({ onValuesChange, filters = null }) => {
 
 
   const fetchData = () => {
-    // fetch data
+   
     getAllJobCategories().then((res) => {
       setListCategory(res.data.filter((item) => item.active === true).map((item) => ({
         label: item.jobCategoryName,

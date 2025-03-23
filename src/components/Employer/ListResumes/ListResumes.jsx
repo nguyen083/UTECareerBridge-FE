@@ -80,7 +80,7 @@ const ListResumes = () => {
     const [listCategory, setListCategory] = useState([]);
     const [categoryId, setCategoryId] = useState(useSelector(state => state.employer.categoryId));
     useEffect(() => {
-        // fetch data
+       
         getAllJobCategories().then((res) => {
             setListCategory(res.data.filter((item) => item.active === true).map((item) => ({
                 label: item.jobCategoryName,

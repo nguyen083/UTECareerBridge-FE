@@ -4,11 +4,12 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setToken, studentLogin } from '../../../services/apiService';
 import { loading, stop } from '../../../redux/action/webSlice';
-import './LoginPage.scss'; // Import file SCSS
+import './LoginPage.scss';
 import { useRedux } from '../../../utils/useRedux';
 import { FcGoogle } from "react-icons/fc";
 import path from '../../../constant/path';
 import auth from '../../../services/api/auth';
+import { useTranslation } from 'react-i18next';
 
 const { Title, Text } = Typography;
 
@@ -19,8 +20,7 @@ const LoginPage = () => {
     const phoneRegex = /^[0-9]{10,11}$/;
     const [form] = Form.useForm();
     const navigate = useNavigate();
-
-
+    const { t } = useTranslation();
 
     const checkUserName = (value) => {
         if (emailRegex.test(value)) {
@@ -31,7 +31,6 @@ const LoginPage = () => {
             return { "": value };
         }
     };
-
 
     const handleLogin = async (values) => {
         const { username, ...rest } = values;
@@ -45,8 +44,8 @@ const LoginPage = () => {
             if (res.status === 'OK') {
                 form.resetFields();
                 message.success(res.message);
-                await setToken(res.data.token, res.data.refresh_token); // set token
-                login(res); // set user info to redux
+                await setToken(res.data.token, res.data.refresh_token);
+                login(res);
                 if (res.data.roles.roleName === 'student') {
                     navigate('/home');
                 } else if (res.data.roles.roleName === 'admin') {
@@ -117,7 +116,7 @@ const LoginPage = () => {
                                     })]}
                                     validateFirst
                                 >
-                                    <Input size='large' className="input-field" placeholder="Nhập email/SĐT" />
+                                    <Input size='large' className="input-field" placeholder={t('auth.login.emailPlaceholder')} />
                                 </Form.Item>
 
                                 <Form.Item
@@ -126,7 +125,7 @@ const LoginPage = () => {
                                     rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
                                     validateFirst
                                 >
-                                    <Input.Password placeholder="Nhập mật khẩu" className="input-field" />
+                                    <Input.Password placeholder={t('auth.login.passwordPlaceholder')} className="input-field" />
                                 </Form.Item>
                                 <Form.Item className='p-0 mb-2'>
                                     <Flex justify='end' align='center'>

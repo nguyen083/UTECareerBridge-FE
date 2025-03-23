@@ -42,7 +42,7 @@ const GoogleAuthCallback = () => {
         }
 
     }, []);
-    return null; // Không hiển thị gì trên UI
+    return null;
 };
 
 export default GoogleAuthCallback;

@@ -49,8 +49,8 @@ const JobCategory = () => {
           ref={carouselRef}
           dots={false}
           slidesToShow={4}
-          slidesToScroll={4} // Cuộn đồng thời 4 card
-          infinite={true} // Dừng cuộn khi hết nội dung
+          slidesToScroll={4}
+          infinite={true}
           className="job-category__carousel"
           style={{ maxWidth: 1200, margin: "0 auto" }}
         >

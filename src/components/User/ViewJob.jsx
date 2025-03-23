@@ -39,7 +39,7 @@ const ViewJob = () => {
 
         setLoading(true);
         const status = location.state?.status;
-        // Gọi API để lấy thông tin công ty
+       
         getJobById(id, status).then((res) => {
             if (res.status === 'OK') {
                 const job = res.data;
@@ -62,14 +62,14 @@ const ViewJob = () => {
                     jobDescription: job.jobDescription,
                     jobRequirements: job.jobRequirements,
                     benefitDetails: company.benefitDetails,
-                    updatedAt: job.updatedAt, //ngày đăng
-                    jobCategory: job.jobCategory.jobCategoryName, //ngành nghề
-                    industry: company.industry.industryName, //Lĩnh vực công ty
-                    amount: job.amount, //Số lượng tuyển
-                    jobLevel: job.jobLevel.nameLevel, //Cấp bậc
+                    updatedAt: job.updatedAt,
+                    jobCategory: job.jobCategory.jobCategoryName,
+                    industry: company.industry.industryName,
+                    amount: job.amount,
+                    jobLevel: job.jobLevel.nameLevel,
                     jobCategoryId: job.jobCategory.jobCategoryId,
-                    jobSkills: job.jobSkills.map(skill => skill.skillName).join(', '), //kĩ năng
-                    // đã like hay chưa
+                    jobSkills: job.jobSkills.map(skill => skill.skillName).join(', '),
+                   
                 });
             }
             setLoading(false);
@@ -292,7 +292,7 @@ const ViewJob = () => {
                                         style={{
                                             backgroundImage: `url(${company.backgroundImage ? company.backgroundImage : 'https://www.vietnamworks.com/_next/image?url=https%3A%2F%2Fimages.vietnamworks.com%2Fcompany-assets%2Fimages%2Fbanner-default-company.png&w=1920&q=75'})`,
                                             backgroundSize: 'cover',
-                                            height: 120, // Chiều cao của banner
+                                            height: 120,
                                             display: 'flex',
                                             justifyContent: 'center',
                                             alignItems: 'center',
@@ -303,10 +303,10 @@ const ViewJob = () => {
                                 <Flex align='center' vertical style={{ marginTop: -50 }}>
                                     <Image
                                         preview={false}
-                                        src={company.companyLogo ? company.companyLogo : 'https://images.vietnamworks.com/img/company-default-logo.svg'} // URL ảnh logo
+                                        src={company.companyLogo ? company.companyLogo : 'https://images.vietnamworks.com/img/company-default-logo.svg'}
                                         height={80}
                                         width={80}
-                                        style={{ border: '6px solid white', borderRadius: "10px", textAlign: "center", objectFit: 'cover' }} // Để logo nổi lên giữa
+                                        style={{ border: '6px solid white', borderRadius: "10px", textAlign: "center", objectFit: 'cover' }}
                                     />
                                     <Space className='mt-2' direction="vertical" style={{ width: '100%' }}>
                                         <Text onClick={() => handleToCompany(company.id)} strong className='text-base hover-effect'>

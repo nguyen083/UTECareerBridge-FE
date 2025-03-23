@@ -38,7 +38,7 @@ export const initializeNotifications = async (userId) => {
 
 // Send notification functions
 export const sendNotification = {
-  // Gửi thông báo đến token cụ thể
+ 
   toToken: async ({ title, body, token = localStorage.getItem('fcmToken'), data = {} }) => {
     try {
       const response = await axios.post(
@@ -58,7 +58,7 @@ export const sendNotification = {
     }
   },
 
-  // Gửi thông báo đến topic
+ 
   toTopic: async ({ title, body, topic, data = {} }) => {
     try {
       const response = await axios.post(
@@ -78,7 +78,7 @@ export const sendNotification = {
     }
   },
 
-  // Gửi thông báo đến admin
+ 
   toAdmin: async ({ title, body, jobUrl }) => {
     try {
       const response = await axios.post(

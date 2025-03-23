@@ -1,0 +1,1 @@
+import{r as o,j as a}from"./index-BjGqDy_t.js";import{Y as r}from"./apiService-CCDveQas.js";const m=({userId:e=null})=>{const[c,i]=o.useState([]),[l,s]=o.useState(!1),n=async()=>{try{if(s(!0),e===null)return;const t=await r(e);i(t)}catch(t){console.log(t)}finally{setTimeout(()=>s(!1),500)}};return o.useEffect(()=>{n()},[]),a.jsx("div",{})};export{m as N};

@@ -66,8 +66,8 @@ const Chart = () => {
                 data={data}
                 margin={{
                     top: 5,
-                    // right: 30,
-                    // left: 20,
+                   
+                   
                     bottom: 5,
                 }}
             >
@@ -84,14 +84,14 @@ const Chart = () => {
 
 }
 const ListPackage = () => {
-    const [data, setData] = useState([]); // Dữ liệu gói dịch vụ
-    const [loading, setLoading] = useState(false); // Trạng thái loading
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false);
 
 
     const columns = [
         {
             title: 'Tên Gói Dịch Vụ',
-            dataIndex: 'packageName', // Tên trường dữ liệu
+            dataIndex: 'packageName',
             key: 'packageName',
         },
         {
@@ -108,7 +108,7 @@ const ListPackage = () => {
         },
     ];
 
-    // Hàm gọi API để lấy danh sách gói dịch vụ
+   
     const fetchData = async () => {
         setLoading(true);
         try {
@@ -118,7 +118,7 @@ const ListPackage = () => {
                     packageName: item.packageResponse.packageName,
                     amount: item.amount,
                     expiredAt: item?.expiredAt.split(' ')[0]
-                }))); // Cập nhật dữ liệu gói dịch vụ
+                })));
             } else {
                 message.error(response.message);
             }
@@ -129,7 +129,7 @@ const ListPackage = () => {
         }
     };
 
-    // Sử dụng useEffect để gọi API khi trang được tải lần đầu
+   
     useEffect(() => {
         fetchData();
     }, []);

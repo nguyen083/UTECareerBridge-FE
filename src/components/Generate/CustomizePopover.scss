@@ -38,15 +38,15 @@
 
 .notification-popover {
 
-    // Style cho danh sách thông báo
+   
     .notification-list {
         max-height        : 70vh;
         overflow          : auto;
-        scrollbar-width   : none; // Firefox
-        -ms-overflow-style: none; // IE/Edge
+        scrollbar-width   : none;
+        -ms-overflow-style: none;
 
         &::-webkit-scrollbar {
-            display: none; // Ẩn scrollbar cho Chrome, Safari
+            display: none;
         }
 
         .ant-list-item {
@@ -66,7 +66,7 @@
         }
     }
 
-    // Style cho các nút và tiêu đề
+   
     .btn-header {
         color       : $text-color;
         border-color: $text-color;
@@ -87,7 +87,7 @@
 
 
 
-    // Style cho nút đăng nhập
+   
     .login-button-notification {
 
         width     : fit-content;
@@ -100,7 +100,7 @@
 
     }
 
-    // Style cho text đăng nhập
+   
     .notification-login-text {
         font-size: 14px !important;
     }

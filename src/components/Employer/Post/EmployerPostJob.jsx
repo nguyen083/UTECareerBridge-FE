@@ -239,7 +239,7 @@ const EmployerPostJob = () => {
         window.scrollTo(0, 0);
         getAllJobCategories().then((res) => {
             const filteredOptions = res.data
-                .filter(item => item.active === true) // Lọc các mục có thuộc tính active là true
+                .filter(item => item.active === true)
                 .map(item => {
                     return { value: item.jobCategoryId, label: item.jobCategoryName };
                 });
@@ -247,7 +247,7 @@ const EmployerPostJob = () => {
         });
         getAllJobLevels().then((res) => {
             const filteredOptions = res.data
-                .filter(item => item.active === true) // Lọc các mục có thuộc tính active là true
+                .filter(item => item.active === true)
                 .map(item => {
                     return { value: item.jobLevelId, label: item.nameLevel };
                 });
@@ -255,7 +255,7 @@ const EmployerPostJob = () => {
         });
         getAllSkills().then((res) => {
             const filteredOptions = res.data
-                .filter(item => item.active === true) // Lọc các mục có thuộc tính active là true
+                .filter(item => item.active === true)
                 .map(item => {
                     return { value: item.skillId, label: item.skillName };
                 });

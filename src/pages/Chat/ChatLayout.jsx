@@ -1,35 +1,34 @@
-import { Avatar, Button, Col, Empty, Flex, Input, Row, Space, Typography } from "antd";
+import { Avatar, Button, Col, Empty, Flex, Image, Input, Row, Space, Typography } from "antd";
 import { useTranslation } from "react-i18next";
-import { SearchOutlined, SendOutlined } from "@ant-design/icons";
+import { SendOutlined } from "@ant-design/icons";
 import { CardCompany, ListConversation, ListJob } from "./CardofChat";
-import {  useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import assets from '../../constant/assets.json';
-import { IoMdChatboxes } from "react-icons/io";
 import { ReceiverChat, SenderChat } from "./ContainerofChat";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import chat from '../../services/api/chat';
 import { connectStomp, subscribeToTopic, unsubscribeFromTopic } from "../../utils/stompConfig";
 import { useSelector } from "react-redux";
+import company from './../../services/api/company';
+
 const { Text } = Typography
 const { TextArea } = Input;
 
 const ChatLayout = () => {
     const ConversationTopic = '/topic/conversation/';
     const { t } = useTranslation();
-    const [lang, setLang] = useState("en");
     const [newMessage, setNewMessage] = useState("");
     const [messages, setMessages] = useState([]);
     const { recipientId } = useParams();
     const senderId = useSelector((state) => state.user.userId);
     const divRef = useRef(null);
     const currentConversationRef = useRef(null);
+    const [companyInfor, setCompanyInfor] = useState({});
+    const navigate = useNavigate()
 
     const getConversationId = (id1, id2) => {
         return parseInt(id1) < parseInt(id2) ? `${id1}-${id2}` : `${id2}-${id1}`;
     };
-
-
-
 
     useEffect(() => {
         if (divRef !== null) {
@@ -41,20 +40,31 @@ const ChatLayout = () => {
     }, [messages]);
 
     useEffect(() => {
-        if (recipientId) {
-            chat.loadMessages({ user2Id: recipientId, user1Id: senderId }).then((res) => {
-                setMessages(res.data.content);
-            }
-            ).catch((err) => {
-                console.log(err);
-            })
-            connectStomp(() => {
+        let stompSubscription = null;
 
-                // Lấy STOMP client sau khi kết nối (nếu cần)
-                const conversationId = getConversationId(senderId, recipientId);
-                currentConversationRef.current = conversationId;
-                subscribeToTopic(ConversationTopic + conversationId, (message) => {
-                    console.log(message.body);
+        if (recipientId && senderId) {
+            company.getCompanyById(recipientId)
+                .then((res) => {
+                    setCompanyInfor(res.data);
+                })
+                .catch((err) => {
+                    console.error(err);
+                });
+
+            chat.loadMessages({ user2Id: recipientId, user1Id: senderId })
+                .then((res) => {
+                    setMessages(res.data.content);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+
+            const conversationId = getConversationId(senderId, recipientId);
+            currentConversationRef.current = conversationId;
+            const topic = ConversationTopic + conversationId;
+
+            connectStomp(() => {
+                stompSubscription = subscribeToTopic(topic, (message) => {
                     const receivedMessage = JSON.parse(message.body);
                     setMessages((prevMessages) => [...prevMessages, receivedMessage]);
                 });
@@ -62,9 +72,13 @@ const ChatLayout = () => {
         }
 
         return () => {
-            unsubscribeFromTopic(ConversationTopic + currentConversationRef.current);
+            if (currentConversationRef.current) {
+                const topic = ConversationTopic + currentConversationRef.current;
+                unsubscribeFromTopic(topic);
+                currentConversationRef.current = null;
+            }
         };
-    }, [recipientId]);
+    }, [recipientId, senderId]);
 
     const sendMessage = () => {
         if (messages.length > 0) {
@@ -82,21 +96,13 @@ const ChatLayout = () => {
         setNewMessage("");
     }
 
-
     return (
         <>
             <Row className="min-h-screen">
                 <Col span={6} className=" min-h-full p-4">
-                    <Space size={"small"} className=" w-full py-5" direction="vertical">
-                        <Flex gap={8} justify="space-between" align="center" className="w-full border-b">
-                            <Flex gap={8} align="center">
-                                <Avatar shape="square" src={assets.logo} size={75} />
-                                <Flex gap={4}>
-                                    <Text className="text-2xl font-bold text-blue-500">UTE Career Chat</Text>
-                                    <IoMdChatboxes className="text-blue-800" size={20} />
-                                </Flex>
-                            </Flex>
-                            
+                    <Space size={"small"} className=" w-full pb-5" direction="vertical">
+                        <Flex gap={8} justify="space-between" align="center" className="w-full border-b pb-4">
+                                <Image className="cursor-pointer" alt="website logo" src={assets.logo} preview={false} height={75} onClick={()=>{navigate('/')}}/>
                         </Flex>
                         <ListConversation />
                     </Space>
@@ -107,9 +113,9 @@ const ChatLayout = () => {
                     </Space>
 
                     {recipientId ? <>
-                        <CardCompany className="shadow-md rounded-t-none" />
+                        <CardCompany className="shadow-md rounded-t-none" company={companyInfor}/>
                         <div className="w-full flex-1 overflow-y-auto flex flex-col h-auto px-2 gap-4 " ref={divRef}>
-                            <Empty className="mt-36" image={<Avatar src="https://randomuser.me/api/portraits/men/43.jpg" size={100} />} description={<Text className="text-base font-bold">Công ty ABC</Text>} />
+                            {messages.length === 0 && <Empty className="mt-36" image={<Avatar src={companyInfor.companyLogo} size={100} />} description={<Text className="text-base font-bold">{companyInfor.companyName}</Text>} />}
                             {messages.map((message, index) => {
                                 if (message.senderId === senderId) {
                                     return <SenderChat key={index} message={message} />;

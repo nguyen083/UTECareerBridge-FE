@@ -13,7 +13,7 @@ const Banner = ({ ads }) => {
   return (
     <>
       <Carousel
-        // autoplay
+       
         arrows
         className="w-3/4 mx-auto "
       >

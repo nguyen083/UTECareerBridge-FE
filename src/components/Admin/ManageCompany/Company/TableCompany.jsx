@@ -4,12 +4,14 @@ import { CheckOutlined, CloseOutlined, EyeOutlined, SearchOutlined } from "@ant-
 import { Link } from "react-router-dom";
 import Highlighter from "react-highlight-words";
 import { approveCompany, getAllCompany, rejectCompany } from "../../../../services/apiService";
+import { useTranslation } from 'react-i18next';
 
 const TableCompany = ({ status }) => {
+    const { t } = useTranslation();
     const [data, setData] = useState([]);
-    const [total, setTotal] = useState(0);  // Tổng số bản ghi
-    const [pageSize, setPageSize] = useState(10);  // Số bản ghi trên mỗi trang
-    const [currentPage, setCurrentPage] = useState(1);  // Trang hiện tại
+    const [total, setTotal] = useState(0); 
+    const [pageSize, setPageSize] = useState(10); 
+    const [currentPage, setCurrentPage] = useState(1); 
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedCompany, setSelectedCompany] = useState(null);
     const [searchText, setSearchText] = useState('');
@@ -28,22 +30,14 @@ const TableCompany = ({ status }) => {
     };
     const getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-            <div
-                style={{
-                    padding: 8,
-                }}
-                onKeyDown={(e) => e.stopPropagation()}
-            >
+            <div className="p-2" onKeyDown={(e) => e.stopPropagation()}>
                 <Input
                     ref={searchInput}
-                    placeholder={`Tìm ${dataIndex}`}
+                    placeholder={t('admin.company.table.search.searchFor', { field: t(`admin.company.table.columns.${dataIndex}`) })}
                     value={selectedKeys[0]}
                     onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
                     onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                    style={{
-                        marginBottom: 8,
-                        display: 'block',
-                    }}
+                    className="mb-2 block"
                 />
                 <Space>
                     <Button
@@ -51,42 +45,34 @@ const TableCompany = ({ status }) => {
                         onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
                         icon={<SearchOutlined />}
                         size="small"
-                        style={{
-                            width: 90,
-                        }}
+                        className="w-[90px]"
                     >
-                        Tìm
+                        {t('admin.company.table.search.search')}
                     </Button>
                     <Button
                         onClick={() => clearFilters && handleReset(clearFilters)}
                         size="small"
-                        style={{
-                            width: 90,
-                        }}
+                        className="w-[90px]"
                     >
-                        Đặt lại
+                        {t('admin.company.table.search.reset')}
                     </Button>
                     <Button
                         type="link"
                         size="small"
                         onClick={() => {
-                            confirm({
-                                closeDropdown: false,
-                            });
+                            confirm({ closeDropdown: false });
                             setSearchText(selectedKeys[0]);
                             setSearchedColumn(dataIndex);
                         }}
                     >
-                        Lọc
+                        {t('admin.company.table.search.filter')}
                     </Button>
                     <Button
                         type="link"
                         size="small"
-                        onClick={() => {
-                            close();
-                        }}
+                        onClick={() => close()}
                     >
-                        Đóng
+                        {t('admin.company.table.search.close')}
                     </Button>
                 </Space>
             </div>
@@ -124,7 +110,7 @@ const TableCompany = ({ status }) => {
     });
 
 
-    // Lấy dữ liệu từ API
+   
     const fetchData = async () => {
         const params = {
             page: currentPage - 1,
@@ -132,7 +118,7 @@ const TableCompany = ({ status }) => {
             status: status,
         }
         try {
-            // call api lấy data    
+           
             const response = await getAllCompany(params);
             setData(response.data.employerResponses);
             setTotal(response.data.totalPages * pageSize);
@@ -148,7 +134,7 @@ const TableCompany = ({ status }) => {
 
     const columns = [
         {
-            title: 'Tên công ty',
+            title: t('admin.company.table.columns.companyName'),
             dataIndex: 'companyName',
             key: 'companyName',
             ...getColumnSearchProps('companyName'),
@@ -157,41 +143,42 @@ const TableCompany = ({ status }) => {
             width: "35%",
         },
         {
-            title: 'Địa chỉ',
+            title: t('admin.company.table.columns.address'),
             dataIndex: 'companyAddress',
             key: 'address',
             ...getColumnSearchProps('address'),
             width: "15%",
         },
         {
-            title: 'Email',
+            title: t('admin.company.table.columns.email'),
             dataIndex: 'companyEmail',
             key: 'companyEmail',
             width: "15%",
             ...getColumnSearchProps('companyEmail'),
         },
         {
-            title: 'Số điện thoại',
+            title: t('admin.company.table.columns.phone'),
             dataIndex: 'phoneNumber',
             key: 'phoneNumber',
             width: "10%",
             ...getColumnSearchProps('phoneNumber'),
         },
         {
-            title: 'Giấy chứng nhận',
+            title: t('admin.company.table.columns.certificate'),
             dataIndex: 'businessCertificate',
             key: 'businessCertificate',
             width: "10%",
             align: "center",
             render: (text, record) => (
-                record.businessCertificate ? <Typography.Link href={record.businessCertificate} target='_blank'>
-                    Xem
+                record.businessCertificate ? 
+                <Typography.Link href={record.businessCertificate} target='_blank'>
+                    {t('admin.company.table.actions.view')}
                 </Typography.Link> : null
             ),
         },
         ...(status === 'REJECTED' ? [{
             key: 'rejectedReason',
-            title: 'Lý do từ chối',
+            title: t('admin.company.table.columns.rejectedReason'),
             dataIndex: 'rejectedReason',
             width: "20%",
         }] : []),
@@ -202,7 +189,7 @@ const TableCompany = ({ status }) => {
             align: "center",
             render: (_, record) => (
                 <Space size="middle">
-                    <Tooltip title="Xem">
+                    <Tooltip title={t('admin.company.table.actions.view')}>
                         <Link to={`/view/company/${record.id}`} target='_blank'>
                             <Button
                                 className="btn btn-outline-primary"
@@ -211,7 +198,7 @@ const TableCompany = ({ status }) => {
                         </Link>
                     </Tooltip>
                     {status === 'PENDING' &&
-                        <Tooltip title="Duyệt">
+                        <Tooltip title={t('admin.company.table.actions.approve')}>
                             <Button
                                 className="btn btn-outline-success"
                                 icon={<CheckOutlined />}
@@ -221,8 +208,7 @@ const TableCompany = ({ status }) => {
                                             if (res.status === "OK") {
                                                 message.success(res.message);
                                                 fetchData();
-                                            }
-                                            else {
+                                            } else {
                                                 message.error(res.message);
                                             }
                                         })
@@ -232,16 +218,17 @@ const TableCompany = ({ status }) => {
                                 }}
                             />
                         </Tooltip>}
-                    {status === 'PENDING' && <Tooltip title="Từ chối">
-                        <Button
-                            danger
-                            onClick={() => {
-                                setSelectedCompany(record);
-                                setIsModalVisible(true);
-                            }}
-                            icon={<CloseOutlined />}
-                        />
-                    </Tooltip>}
+                    {status === 'PENDING' && 
+                        <Tooltip title={t('admin.company.table.actions.reject')}>
+                            <Button
+                                danger
+                                onClick={() => {
+                                    setSelectedCompany(record);
+                                    setIsModalVisible(true);
+                                }}
+                                icon={<CloseOutlined />}
+                            />
+                        </Tooltip>}
                 </Space>
             ),
         }
@@ -288,20 +275,25 @@ const TableCompany = ({ status }) => {
             />
             <Modal
                 centered
-                title="Chỉnh sửa thông tin người dùng"
+                title={t('admin.company.table.modal.title')}
                 open={isModalVisible}
                 onCancel={handleModalCancel}
                 footer={[
                     <Button onClick={handleModalCancel}>
-                        Hủy
+                        {t('admin.company.table.modal.cancel')}
                     </Button>,
                     <Button type="primary" onClick={() => form.submit()}>
-                        Xác nhận
+                        {t('admin.company.table.modal.confirm')}
                     </Button>,
                 ]}
             >
                 <Form form={form} onFinish={handleModalSubmit} size="large" layout="vertical">
-                    <Form.Item label="Lý do từ chối" name="reason" placeholder="Nhập lý do từ chối" rules={[{ required: true, message: 'Vui lòng nhập lý do từ chối' }]}>
+                    <Form.Item 
+                        label={t('admin.company.table.modal.rejectReason')} 
+                        name="reason" 
+                        placeholder={t('admin.company.table.modal.enterRejectReason')}
+                        rules={[{ required: true, message: t('admin.company.table.modal.pleaseEnterReason') }]}
+                    >
                         <Input.TextArea rows={4} allowClear />
                     </Form.Item>
                 </Form>

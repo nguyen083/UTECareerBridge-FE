@@ -12,7 +12,7 @@ const EventPage = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Lọc theo loại sự kiện
+ 
   const [eventType, setEventType] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(8);
@@ -28,10 +28,10 @@ const EventPage = () => {
         size: pageSize,
         eventType: eventType
       }
-      // Gọi API lấy dữ liệu sự kiện
+     
       await getAllEvent(params).then(res => {
         if (res.status === 'OK') {
-          // message.success(res.message);
+         
           setEvents(res.data.eventResponses);
           setTotal(res.data.totalPages);
         } else {

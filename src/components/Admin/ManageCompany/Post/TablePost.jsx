@@ -4,12 +4,15 @@ import { Button, Form, Input, message, Modal, Space, Table, Tooltip } from 'antd
 import Highlighter from 'react-highlight-words';
 import { approvePost, getAllPostByAdmin, rejectPost } from '../../../../services/apiService';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
 const TablePost = ({ status }) => {
+    const { t } = useTranslation();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
-    const [pageSize, setPageSize] = useState(10); // Số lượng bản ghi mỗi trang (mặc định 20)
-    const [totalRecords, setTotalRecords] = useState(0); // Tổng số bản ghi (lấy từ API)
+    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [totalRecords, setTotalRecords] = useState(0);
     const [searchText, setSearchText] = useState('');
     const [searchedColumn, setSearchedColumn] = useState('');
     const searchInput = useRef(null);
@@ -29,20 +32,16 @@ const TablePost = ({ status }) => {
         setSearchText('');
     };
 
-
-    // Hàm gọi API để lấy dữ liệu theo trang và limit
     const fetchData = async () => {
         try {
             setLoading(true);
             const params = {
-                status: status, // Truyền status từ props
-                page: currentPage - 1,       // Trang hiện tại
-                limit: pageSize,             // Số bản ghi mỗi trang
+                status: status,
+                page: currentPage - 1,      
+                limit: pageSize,            
             };
 
-
-            // gọi API mới
-            const res = await getAllPostByAdmin(params); // Gọi API
+            const res = await getAllPostByAdmin(params);
             if (res.status === 'OK' && res.data) {
                 const data = res.data.jobResponses.map((item, index) => {
                     return {
@@ -58,9 +57,7 @@ const TablePost = ({ status }) => {
                     };
                 });
                 setTotalRecords(res.data.totalPages * pageSize);
-                // Cập nhật dữ liệu và pagination từ API
                 setData(data);
-                // setTotalRecords(res.data.totalPages); // Tổng số bản ghi từ API
             }
             else
                 setData([]);
@@ -71,24 +68,21 @@ const TablePost = ({ status }) => {
         }
     };
 
-    // Gọi API khi component mount và khi pagination thay đổi
     useEffect(() => {
         fetchData();
-    }, [currentPage, pageSize, status]); // Mỗi khi status thay đổi, gọi lại API
+    }, [currentPage, pageSize, status]);
 
-    // Hàm xử lý khi thay đổi trang hoặc số lượng bản ghi mỗi trang
     const handleTableChange = (newPagination) => {
         setCurrentPage(newPagination.current);
         setPageSize(newPagination.pageSize);
     };
 
-    // Cấu hình cột cho bảng
     const getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
             <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
                 <Input
                     ref={searchInput}
-                    placeholder={`Tìm ${dataIndex}`}
+                    placeholder={t('admin.post.table.search.searchFor', { field: t(`admin.post.table.columns.${dataIndex}`) })}
                     value={selectedKeys[0]}
                     onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
                     onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
@@ -102,14 +96,14 @@ const TablePost = ({ status }) => {
                         size="small"
                         style={{ width: 70 }}
                     >
-                        Tìm
+                        {t('admin.post.table.search.search')}
                     </Button>
                     <Button
                         onClick={() => clearFilters && handleReset(clearFilters)}
                         size="small"
                         style={{ width: 70 }}
                     >
-                        Đặt lại
+                        {t('admin.post.table.search.reset')}
                     </Button>
                     <Button
                         type="link"
@@ -120,14 +114,14 @@ const TablePost = ({ status }) => {
                             setSearchedColumn(dataIndex);
                         }}
                     >
-                        Lọc
+                        {t('admin.post.table.search.filter')}
                     </Button>
                     <Button
                         type="link"
                         size="small"
                         onClick={() => close()}
                     >
-                        Đóng
+                        {t('admin.post.table.search.close')}
                     </Button>
                 </Space>
             </div>
@@ -158,37 +152,36 @@ const TablePost = ({ status }) => {
             ),
     });
 
-    // Định nghĩa các cột cho bảng
     const columns = [
         {
-            title: 'No.',
+            title: t('admin.post.table.columns.no'),
             dataIndex: 'index',
             key: 'index',
             width: '5%',
         },
         {
-            title: 'Tiêu đề',
+            title: t('admin.post.table.columns.title'),
             dataIndex: 'title',
             key: 'title',
             width: '25%',
             ...getColumnSearchProps('title'),
         },
         {
-            title: 'Lĩnh vực',
+            title: t('admin.post.table.columns.category'),
             dataIndex: 'category',
             key: 'category',
             width: '13%',
             ...getColumnSearchProps('category'),
         },
         {
-            title: 'Cấp bậc',
+            title: t('admin.post.table.columns.level'),
             dataIndex: 'level',
             key: 'level',
             width: '13%',
             ...getColumnSearchProps('level'),
         },
         {
-            title: 'Số lượng',
+            title: t('admin.post.table.columns.quantity'),
             dataIndex: 'quantity',
             key: 'quantity',
             width: '10%',
@@ -196,14 +189,14 @@ const TablePost = ({ status }) => {
         },
         status !== 'REJECTED' ?
             {
-                title: 'Thời hạn',
+                title: t('admin.post.table.columns.deadline'),
                 dataIndex: 'deadline',
                 key: 'deadline',
                 width: '10%',
                 ...getColumnSearchProps('deadline'),
             } :
             {
-                title: 'Lý do từ chối',
+                title: t('admin.post.table.columns.rejectedReason'),
                 dataIndex: 'rejectionReason',
                 key: 'rejectionReason',
                 ellipsis: true,
@@ -211,7 +204,7 @@ const TablePost = ({ status }) => {
                 width: '11%',
             },
         {
-            title: 'Thời gian tạo',
+            title: t('admin.post.table.columns.createdTime'),
             dataIndex: 'createdTime',
             key: 'createdTime',
             width: '11%',
@@ -223,12 +216,12 @@ const TablePost = ({ status }) => {
             width: '13%',
             render: (_, record) => (
                 <Space size="small">
-                    <Tooltip color='blue' title="Xem">
+                    <Tooltip color='blue' title={t('admin.post.table.actions.view')}>
                         <Button className="btn btn-outline-primary" onClick={() => {
                             navigate(`/view/job/${record.key}`, { state: { status: status } });
                         }} icon={<EyeOutlined />} />
                     </Tooltip>
-                    <Tooltip color='cyan' title="Duyệt">
+                    <Tooltip color='cyan' title={t('admin.post.table.actions.approve')}>
                         <Button hidden={status !== 'PENDING'}
                             className="btn btn-outline-success"
                             icon={<CheckOutlined />}
@@ -249,7 +242,7 @@ const TablePost = ({ status }) => {
                             }}
                         />
                     </Tooltip>
-                    <Tooltip color='red' title="Từ chối">
+                    <Tooltip color='red' title={t('admin.post.table.actions.reject')}>
                         <Button
                             hidden={status !== 'PENDING'}
                             danger
@@ -260,8 +253,7 @@ const TablePost = ({ status }) => {
                             icon={<CloseOutlined />}
                         />
                     </Tooltip>
-
-                </Space >
+                </Space>
             ),
         },
     ];
@@ -294,36 +286,41 @@ const TablePost = ({ status }) => {
             pagination={{
                 current: currentPage,
                 pageSize: pageSize,
-                total: totalRecords, // Tổng số bản ghi
-                showSizeChanger: true, // Hiển thị tùy chọn thay đổi số lượng bản ghi trên mỗi trang
+                total: totalRecords,
+                showSizeChanger: true,
             }}
             loading={loading}
-            onChange={handleTableChange} // Xử lý khi thay đổi trang hoặc pageSize
+            onChange={handleTableChange}
             locale={{
                 emptyText: (
                     <div className='p-5'>
                         <InboxOutlined style={{ fontSize: '50px', marginBottom: '8px' }} />
-                        <div>Không có dữ liệu</div>
+                        <div>{t('admin.post.table.noData')}</div>
                     </div>
                 ),
             }}
         />
         <Modal
             centered
-            title="Chỉnh sửa thông tin người dùng"
+            title={t('admin.post.table.modal.title')}
             open={isModalVisible}
             onCancel={handleModalCancel}
             footer={[
                 <Button onClick={handleModalCancel}>
-                    Hủy
+                    {t('admin.post.table.modal.cancel')}
                 </Button>,
                 <Button type="primary" onClick={() => form.submit()}>
-                    Xác nhận
+                    {t('admin.post.table.modal.confirm')}
                 </Button>,
             ]}
         >
             <Form form={form} onFinish={handleModalSubmit} size="large" layout="vertical">
-                <Form.Item label="Lý do từ chối" name="reason" placeholder="Nhập lý do từ chối" rules={[{ required: true, message: 'Vui lòng nhập lý do từ chối' }]}>
+                <Form.Item 
+                    label={t('admin.post.table.modal.rejectReason')} 
+                    name="reason" 
+                    placeholder={t('admin.post.table.modal.enterRejectReason')}
+                    rules={[{ required: true, message: t('admin.post.table.modal.pleaseEnterReason') }]}
+                >
                     <Input.TextArea rows={4} allowClear />
                 </Form.Item>
             </Form>
