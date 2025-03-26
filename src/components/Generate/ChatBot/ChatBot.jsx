@@ -1,4 +1,3 @@
-
 import React, { useCallback, useRef, useState, useEffect } from 'react';
 import { Card, Flex, FloatButton, Image, Popover, Input, Button } from 'antd';
 
@@ -91,8 +90,28 @@ const ChatBot = () => {
     return (
         <Card title={<Flex className='text-white' align='center' gap={6}><Image size={30} src='src\assets\chatbot.png' preview={false} /> ChatBot</Flex>}>
             <div className='flex flex-col h-fit'>
-                <div className='!min-h-96 !min-w-[400px] !max-h-[500px] !max-w-[400px] flex flex-col gap-4 overflow-x-auto' ref={divRef}>
-                    {/* <style>{customScrollbarCSS}</style> */}
+                <div className='chat-messages-container !min-h-[600px] !min-w-[500px] !max-h-[600px] !max-w-[500px] flex flex-col gap-4 overflow-x-auto px-4' ref={divRef}>
+                    <style>{`
+                        .chat-messages-container {
+                            margin: 0 -16px;
+                            padding: 0 16px;
+                        }
+                        .chat-messages-container::-webkit-scrollbar {
+                            width: 6px;
+                            margin-right: -6px;
+                        }
+                        .chat-messages-container::-webkit-scrollbar-track {
+                            background: #f1f1f1;
+                            border-radius: 3px;
+                        }
+                        .chat-messages-container::-webkit-scrollbar-thumb {
+                            background: #888;
+                            border-radius: 3px;
+                        }
+                        .chat-messages-container::-webkit-scrollbar-thumb:hover {
+                            background: #555;
+                        }
+                    `}</style>
                     {messages.map((message, index) => {
                         if (message.senderId === currentUserId) {
                             return <SenderChat key={index} message={message} />;

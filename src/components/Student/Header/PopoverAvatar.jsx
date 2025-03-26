@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import './PopoverAvatar.scss';
 import { current, loading, stop } from "../../../redux/action/webSlice.jsx";
 import { useDispatch, useSelector } from "react-redux";
-import { logOut, removeToken } from "../../../services/apiService.jsx";
+import { logOut, removeAllToken } from "../../../services/apiService.jsx";
 import { useNavigate } from "react-router-dom";
 import { useRedux } from "../../../utils/useRedux.jsx";
 import { IoIosBusiness } from "react-icons/io";
@@ -67,7 +67,7 @@ const PopoverAvatar = () => {
             dispatch(loading());
             const res = await logOut();
             if (res.status === 'OK') {
-                removeToken();
+                removeAllToken();
                 dispatch(stop());
                 clearRedux();
                 message.success(res.message);

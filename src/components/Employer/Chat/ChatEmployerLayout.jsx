@@ -93,7 +93,7 @@ const ChatEmployerLayout = () => {
                 <Col span={18} className="border border-x-gray-200 flex flex-col bg-white">
 
                     <Space direction="vertical" className="w-full py-3 px-2 border-b h-auto bg-card-color">
-                        <Text className="text-base font-bold ">{t('employer.chat.title')}</Text>
+                        <Text className="text-base text-text-color font-bold ">{t('employer.chat.title')}</Text>
                     </Space>
                     {recipientId ? <>
                         <div className="w-full max-h-[703px] flex-1 overflow-y-auto flex flex-col p-2 gap-4 " ref={divRef}>
@@ -107,7 +107,7 @@ const ChatEmployerLayout = () => {
                                 }
                             })}
                         </div>
-                        <Flex className=" p-2 w-full mb-4 border-t" gap={16} justify="center" align="flex-end">
+                        <Flex className=" p-2 w-full mb-4 border-t shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]" gap={16} justify="center" align="flex-end">
                             <TextArea className="rounded-3xl resize-none overflow-hidden h-auto" placeholder={t('enter_message')} size="large" autoSize={{ minRows: 1, maxRows: 4 }} value={newMessage} onChange={(e) => setNewMessage(e.target.value)}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' && !e.shiftKey) {
@@ -121,11 +121,14 @@ const ChatEmployerLayout = () => {
                         </Flex>
                     </> :
                         <div className="w-full h-full flex items-center justify-center">
-                            <Empty image={Empty.PRESENTED_IMAGE_DEFAULT} description={t('no_message')} />
+                            <Empty image={Empty.PRESENTED_IMAGE_DEFAULT} description={t('choose_conversation')} />
                         </div>}
 
                 </Col>
                 <Col span={6} className="min-h-full border-l bg-white">
+                <Space direction="vertical" className="w-full py-3 px-2 border-b h-auto shadow-sm">
+                        <Text className="text-base text-text-color font-bold ">{t('employer.chat.title')}</Text>
+                    </Space>
                     <ListConversation className="min-h-full" />
                 </Col>
             </Row >

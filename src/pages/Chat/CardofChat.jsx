@@ -81,7 +81,7 @@ const ListJob = ({ className = "" }) => {
                         <List.Item key={item.applicationId} >
                             <List.Item.Meta
                                 avatar={<Avatar size={50} src={item.companyLogo} />}
-                                title={<div className='max-w-52 truncate'>{item.jobTitle}</div>}
+                                title={<div className=' text-base max-w-52 truncate font-semibold'>{item.jobTitle}</div>}
                                 description={<div className='max-w-52 truncate'><Text type='secondary'>{item.companyName}</Text></div>}
                             />
                             <Button className='border-0 rounded-full text-blue-600 bg-blue-200 hover:scale-105 ease-in-out' type='text' onClick={() => navigate(`/chat/${item.companyId}`)}>{t('chat')}</Button>
@@ -98,14 +98,14 @@ const CardCompany = ({ className = "" , company}) => {
             <Flex gap={8}>
                 <Avatar size={50} src={company.companyLogo} />
                 <Flex vertical gap={4}>
-                    <Text>{company.companyName}</Text>
-                    <Text type="secondary">{company.companyAddress}</Text>
+                    <Text className='text-text-color-hover font-semibold'>{company.companyName}</Text>
+                    <Text type="secondary" className='truncate max-w-full'>{company.companyAddress}</Text>
                 </Flex>
             </Flex>
         </Card>
     )
 }
-const ListConversation = ({ className = "" }) => {
+const ListConversation = () => {
     const ListConversationTopic = '/topic/chat-list/';
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(0);
@@ -114,6 +114,7 @@ const ListConversation = ({ className = "" }) => {
     const role = useSelector((state) => state.user.role);
     const navigate = useNavigate();
     const senderId = useSelector((state) => state.user.userId);
+    const { t } = useTranslation();
    
 
     useEffect(() => {
@@ -187,7 +188,6 @@ const ListConversation = ({ className = "" }) => {
     }, []);
     return (
         <div
-            className={className}
             id="scrollableDiv"
             style={customScrollbarLisCompanyStyle}
         >
@@ -208,12 +208,13 @@ const ListConversation = ({ className = "" }) => {
                 scrollableTarget="scrollableDiv"
             >
                 <List
+                className='p-1'
                     split={true}
-                    locale={{ emptyText: loading ? <></> : <Empty description="Không có" /> }}
+                    locale={{ emptyText: loading ? <></> : <Empty  description={t('no_conversations_found')} /> }}
                     dataSource={data}
                     size='large'
                     renderItem={(item) => (
-                        <List.Item key={item.recipientId + item.messageId} className='cursor-pointer' onClick={() => ChooseItem(item)}>
+                        <List.Item key={item.recipientId + item.messageId} className='!p-4 cursor-pointer hover:-translate-y-px hover:shadow-md' onClick={() => ChooseItem(item)}>
                             <List.Item.Meta
                                 avatar={<Avatar size={50} src={item.avatar} />}
                                 title={<div className='max-w-72 truncate font-bold'><Text className='text-base'>{item.name}</Text></div>}

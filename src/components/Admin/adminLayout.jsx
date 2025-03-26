@@ -15,7 +15,7 @@ import {
 import { Layout, Menu, Avatar, Flex, Badge, Space, message } from 'antd';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { logOut, removeToken } from '../../services/apiService';
+import { logOut, removeAllToken } from '../../services/apiService';
 import { loading, stop } from '../../redux/action/webSlice';
 import { useRedux } from '../../utils/useRedux.jsx';
 
@@ -97,7 +97,7 @@ const AdminLayout = () => {
                 const res = await logOut();
                 if (res.status === 'OK') {
                     clearRedux();
-                    removeToken();
+                    removeAllToken();
                     navigate('/');
                     message.success(res.message);
                 } else {
@@ -147,12 +147,12 @@ const AdminLayout = () => {
                 />
             </Sider>
             <Layout className="site-layout">
-                <Header className="admin-header">
+                <Header className="admin-header !bg-card-color">
                     <Flex>
                         <MenuOutlined className='text-base' onClick={() => setCollapsed(!collapsed)} />
                     </Flex>
                     <Space size={24}>
-                        <Notification userId={1} />
+                        {/* <Notification userId={1} /> */}
 
                         <Space>
                             <Avatar

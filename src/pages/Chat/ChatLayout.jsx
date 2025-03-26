@@ -99,7 +99,7 @@ const ChatLayout = () => {
     return (
         <>
             <Row className="min-h-screen">
-                <Col span={6} className=" min-h-full p-4">
+                <Col span={6} className=" min-h-full p-4 ">
                     <Space size={"small"} className=" w-full pb-5" direction="vertical">
                         <Flex gap={8} justify="space-between" align="center" className="w-full border-b pb-4">
                                 <Image className="cursor-pointer" alt="website logo" src={assets.logo} preview={false} height={75} onClick={()=>{navigate('/')}}/>
@@ -107,15 +107,15 @@ const ChatLayout = () => {
                         <ListConversation />
                     </Space>
                 </Col>
-                <Col span={12} className="border border-x-gray-200 flex flex-col max-h-screen">
+                <Col span={12} className="border border-x-gray-200 flex flex-col max-h-screen bg-gray-50 bg-opacity-55">
                     <Space direction="vertical" className="w-full py-3 px-2 border-b h-auto bg-card-color">
-                        <Text className="text-base font-bold">{t('chat_with_employer')}</Text>
+                        <Text className="text-base text-text-color font-bold">{t('chat_with_employer')}</Text>
                     </Space>
 
                     {recipientId ? <>
                         <CardCompany className="shadow-md rounded-t-none" company={companyInfor}/>
                         <div className="w-full flex-1 overflow-y-auto flex flex-col h-auto p-2 gap-4 " ref={divRef}>
-                            {messages.length === 0 && <Empty className="mt-36" image={<Avatar src={companyInfor.companyLogo} size={100} />} description={<Text className="text-base font-bold">{companyInfor.companyName}</Text>} />}
+                            {messages.length === 0 && <Empty className="mt-36" image={<Avatar src={companyInfor.companyLogo} size={100} />} description={<Text className="text-text-color text-lg font-bold">{companyInfor.companyName}</Text>} />}
                             {messages.map((message, index) => {
                                 if (message.senderId === senderId) {
                                     return <SenderChat key={index} message={message} />;
@@ -124,7 +124,7 @@ const ChatLayout = () => {
                                 }
                             })}
                         </div>
-                        <Flex className=" p-2 w-full h-auto mb-4 border-t" gap={16} justify="center" align="flex-end">
+                        <Flex className="bg-white p-2 w-full h-auto mb-4 border-t shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)]" gap={16} justify="center" align="flex-end">
                             <TextArea className="rounded-3xl resize-none overflow-hidden h-auto" placeholder={t('enter_message')} size="large" autoSize={{ minRows: 1, maxRows: 4 }} value={newMessage} onChange={(e) => setNewMessage(e.target.value)}
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' && !e.shiftKey) {
@@ -138,12 +138,12 @@ const ChatLayout = () => {
                         </Flex>
                     </> :
                         <div className="w-full flex-1 overflow-y-auto flex flex-col justify-center">
-                            <Empty image={Empty.PRESENTED_IMAGE_DEFAULT} description={t('no_message')} />
+                            <Empty image={Empty.PRESENTED_IMAGE_DEFAULT} description={t('choose_conversation')} />
                         </div>}
                 </Col>
                 <Col span={6} className="min-h-full">
                     <Space size={"large"} className=" w-full py-5 ps-3" direction="vertical">
-                        <Text className="h-auto text-sm font-bold uppercase">{t('job_application_submitted')}</Text>
+                        <Text className="h-auto text-sm font-bold uppercase text-text-color">{t('job_application_submitted')}</Text>
                         <ListJob />
                     </Space>
                 </Col>

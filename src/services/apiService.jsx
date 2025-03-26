@@ -17,7 +17,7 @@ const objectToFormData = (obj) => {
 };
 
 
-const removeToken = () => {
+const removeAllToken = () => {
   localStorage.removeItem('accessToken');
   document.cookie = 'refreshToken=';
 }
@@ -408,7 +408,7 @@ const loginGoogle = async () => {
 export {
   uploadCV,
   setToken,
-  removeToken,
+  removeAllToken,
   studentLogin,
   studentRegister,
   getInfor,

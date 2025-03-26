@@ -1,5 +1,24 @@
 import axios from 'axios';
-// import {removeToken} from '../services/apiService';
+import { useDispatch } from 'react-redux';
+import { setInitEmployer } from '../redux/action/employerSlice';
+import { setInitStudent } from '../redux/action/studentSlice';
+import { setInitUser } from '../redux/action/userSlice';
+import {removeAllToken} from '../services/apiService';
+
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error = null) => {
+    failedQueue.forEach(prom => {
+        if (error) {
+            prom.reject(error);
+        } else {
+            prom.resolve();
+        }
+    });
+    failedQueue = [];
+};
+
 const instance = axios.create({
     baseURL: '/api',
     timeout: 10000,
@@ -59,18 +78,41 @@ instance.interceptors.response.use(
         // }
         // Handle 401 Unauthorized
         if (error.response?.status === 401 && !originalRequest._retry) {
+            if (isRefreshing) {
+                // Nếu đang refresh token, thêm request vào hàng đợi
+                return new Promise((resolve, reject) => {
+                    failedQueue.push({ resolve, reject });
+                })
+                    .then(() => {
+                        return instance(originalRequest);
+                    })
+                    .catch(err => {
+                        return Promise.reject(err);
+                    });
+            }
+
             originalRequest._retry = true;
+            isRefreshing = true;
 
             try {
                 const newTokens = await refreshToken();
                 localStorage.setItem('accessToken', newTokens.accessToken);
-                // document.cookie = `refreshToken=${refreshToken}`;
                 originalRequest.headers['Authorization'] = `Bearer ${newTokens.accessToken}`;
+                
+                // Xử lý các request trong hàng đợi
+                processQueue();
+                isRefreshing = false;
+                
                 return instance(originalRequest);
             } catch (refreshError) {
-                // Handle authentication failure
+                processQueue(refreshError);
+                isRefreshing = false;
                 console.error('Failed to refresh token. User may need to re-authenticate.');
-                // removeToken();
+                const dispatch = useDispatch();
+                dispatch(setInitEmployer());
+                dispatch(setInitStudent());
+                dispatch(setInitUser());
+                removeAllToken();
                 window.location = '/login';
                 return Promise.reject(refreshError);
             }

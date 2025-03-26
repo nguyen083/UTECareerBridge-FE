@@ -56,7 +56,7 @@ const EventPage = () => {
 
   return (
     <div className='p-6 bg-gray-100'>
-      {/* Tiêu đề và thanh lọc loại sự kiện */}
+
       <Flex className='mb-6' justify='space-between' align='center'>
 
         <BoxContainer width='100%'>
@@ -75,7 +75,6 @@ const EventPage = () => {
               <Select.Option value="WORKSHOP">Hội thảo chuyên đề</Select.Option>
               <Select.Option value="CAREER_FAIR">Hội chợ việc làm</Select.Option>
               <Select.Option value="WEBINAR">Hội thảo trực tuyến</Select.Option>
-              {/* Các loại sự kiện khác có thể thêm vào đây */}
             </Select>
           </Flex>
         </BoxContainer>
@@ -97,6 +96,8 @@ const EventPage = () => {
               {events.map(event => (
                 <Col key={event?.eventId} xs={24} sm={12} md={8} lg={6}>
                   <Card
+                  className='bg-blue-50 bg-opacity-50 border-2'
+                    bordered={true}
                     onClick={() => showEventDetails(event)}
                     hoverable
                     cover={
@@ -108,13 +109,13 @@ const EventPage = () => {
                     }
                   >
                     <Card.Meta
-                      title={event.eventTitle}
+                      title={<Text className='text-text-color'>{event.eventTitle}</Text>}
                       description={
                         <Space direction="vertical" className='w-full'>
-                          <Text>
+                          <Text className='text-gray-400'>
                             <CalendarOutlined /> {event.eventDate}
                           </Text>
-                          <Text>
+                          <Text className='text-primary'>
                             <EnvironmentOutlined /> {event.eventLocation}
                           </Text>
                           <Flex justify='space-between'>

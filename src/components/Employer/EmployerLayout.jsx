@@ -27,7 +27,7 @@ import {
     ShoppingCartOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu, Avatar, Flex, Badge, Button, Tooltip, message, Space, Typography } from 'antd';
-import { getInfor, logOut, removeToken } from '../../services/apiService.jsx';
+import { getInfor, logOut, removeAllToken } from '../../services/apiService.jsx';
 import { loading, stop } from '../../redux/action/webSlice.jsx';
 import COLOR from '../styles/_variables.jsx';
 import ChangeLanguageBtn from './../Generate/ChangeLanguageBtn';
@@ -130,7 +130,7 @@ const EmployerLayout = () => {
         try {
             const res = await logOut();
             if (res.status === 'OK') {
-                removeToken();
+                removeAllToken();
                 message.success(res.message);
                 navigate('login');
                 clearRedux();
