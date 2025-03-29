@@ -4,8 +4,9 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import CustomizeQuill from '../../Generate/CustomizeQuill';
 import { useEffect, useState } from 'react';
-import { getAllJobCategories, getAllJobLevels, getAllSkills, getJobById, postJob, putJob } from '../../../services/apiService';
+import { getAllJobCategories, getAllJobLevels, getAllSkills, getJobById, putJob } from '../../../services/apiService';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 
 const format = (value) => {
@@ -17,6 +18,7 @@ const format = (value) => {
 }
 
 const UpdateJob = () => {
+    const { t } = useTranslation();
     const [categories, setCategories] = useState([]);
     const [skills, setSkills] = useState([]);
     const [levels, setLevels] = useState([]);
@@ -48,45 +50,45 @@ const UpdateJob = () => {
                 }
             });
         }
-    }, [id]);
+    }, [id, form]);
 
     const form1 = (
         <BoxContaier>
             <Row gutter={[16]}>
                 <Col span={24}>
-                    <Form.Item name="jobTitle" label={<span>Tiêu đề <span className='text-red-500'> *</span></span>}
+                    <Form.Item name="jobTitle" label={<span>{t('employer.job.title')} <span className='text-red-500'> *</span></span>}
                         rules={[
-                            { required: true, message: 'Vui lòng nhập tiêu đề' },
+                            { required: true, message: t('employer.job.titleRequired') },
                         ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
                         <Input />
                     </Form.Item>
                 </Col>
                 <Col span={14}>
-                    <Form.Item name="jobLocation" label={<span>Địa điểm làm việc <span className='text-red-500'> *</span></span>}
+                    <Form.Item name="jobLocation" label={<span>{t('employer.job.location')} <span className='text-red-500'> *</span></span>}
                         rules={[
-                            { required: true, message: 'Vui lòng nhập địa điểm làm việc' },
+                            { required: true, message: t('employer.job.locationRequired') },
                         ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
                         <Input />
                     </Form.Item>
                 </Col>
                 <Col span={10}>
-                    <Form.Item name="jobCategoryId" label={<span>Lĩnh vực <span className='text-red-500'> *</span></span>}
+                    <Form.Item name="jobCategoryId" label={<span>{t('employer.job.category')} <span className='text-red-500'> *</span></span>}
                         rules={[
                             {
                                 required: true,
-                                message: 'Vui lòng chọn lĩnh vực của công ty',
+                                message: t('employer.job.categoryRequired'),
                             },
-                            ({ getFieldValue }) => ({
+                            () => ({
                                 validator(_, value) {
                                     if (value === 0) {
-                                        return Promise.reject(new Error('Vui lòng chọn lĩnh vực của công ty'));
+                                        return Promise.reject(new Error(t('employer.job.categoryRequired')));
                                     }
                                     return Promise.resolve();
                                 },
                             }),
                         ]} validateTrigger={['onChange', 'onBlur']}>
                         <Select defaultValue={0}>
-                            <Select.Option value={0}>Vui lòng chọn</Select.Option>
+                            <Select.Option value={0}>{t('employer.job.categoryPlaceholder')}</Select.Option>
                             {categories.map(category => (
                                 <Select.Option key={category.value} value={category.value}>
                                     {category.label}
@@ -97,9 +99,9 @@ const UpdateJob = () => {
                 </Col>
 
                 <Col span={8}>
-                    <Form.Item name="jobMinSalary" label={<span>Lương tối thiểu <span className='text-red-500'> *</span></span>}
+                    <Form.Item name="jobMinSalary" label={<span>{t('employer.job.minSalary')} <span className='text-red-500'> *</span></span>}
                         rules={[
-                            { required: true, message: 'Vui lòng nhập lương tối thiểu' },
+                            { required: true, message: t('employer.job.minSalaryRequired') },
                         ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
                         <InputNumber addonAfter="VNĐ" className='w-full'
                             formatter={value => format(value)}
@@ -107,15 +109,15 @@ const UpdateJob = () => {
                     </Form.Item>
                 </Col>
                 <Col span={8}>
-                    <Form.Item name="jobMaxSalary" label={<span>Lương tối đa <span className='text-red-500'> *</span></span>}
+                    <Form.Item name="jobMaxSalary" label={<span>{t('employer.job.maxSalary')} <span className='text-red-500'> *</span></span>}
                         rules={[
-                            { required: true, message: 'Vui lòng nhập lương tối đa' },
+                            { required: true, message: t('employer.job.maxSalaryRequired') },
                             ({ getFieldValue }) => ({
                                 validator(_, value) {
                                     if (!value || getFieldValue('jobMinSalary') <= value) {
                                         return Promise.resolve();
                                     }
-                                    return Promise.reject(new Error('Lương tối đa phải lớn hơn lương tối thiểu'));
+                                    return Promise.reject(new Error(t('employer.job.salaryError')));
                                 },
                             }),
                         ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
@@ -125,13 +127,13 @@ const UpdateJob = () => {
                     </Form.Item>
                 </Col>
                 <Col span={8}>
-                    <Form.Item name="jobDeadline" label={<span>Ngày hết hạn <span className='text-red-500'> *</span></span>} rules={[
+                    <Form.Item name="jobDeadline" label={<span>{t('employer.job.deadline')} <span className='text-red-500'> *</span></span>} rules={[
                         {
                             required: true,
-                            message: 'Vui lòng nhập thời gian hết hạn nộp hồ sơ',
+                            message: t('employer.job.deadlineRequired'),
                         },
                     ]} validateTrigger={['onChange']}>
-                        <DatePicker className='w-full' format={"DD/MM/YYYY"} placeholder='Vui lòng chọn ngày' />
+                        <DatePicker className='w-full' format={"DD/MM/YYYY"} placeholder={t('employer.job.deadlinePlaceholder')} />
                     </Form.Item>
 
                 </Col>
@@ -143,9 +145,9 @@ const UpdateJob = () => {
         <BoxContaier>
             <Row gutter={[16]}>
                 <Col span={6}>
-                    <Form.Item name="amount" label={<span>Số lượng tuyển dụng <span className='text-red-500'> *</span></span>}
+                    <Form.Item name="amount" label={<span>{t('employer.job.quantity')} <span className='text-red-500'> *</span></span>}
                         rules={[
-                            { required: true, message: 'Vui lòng nhập số lượng tuyển dụng' },
+                            { required: true, message: t('employer.job.quantityRequired') },
                         ]} validateFirst validateTrigger={['onChange', 'onBlur']}>
                         <InputNumber className='w-full'
                             formatter={value => format(value)}
@@ -153,44 +155,44 @@ const UpdateJob = () => {
                     </Form.Item>
                 </Col>
                 <Col span={18}>
-                    <Form.Item name="jobLevelId" label={<span>Cấp bậc <span className='text-red-500'> *</span></span>}
+                    <Form.Item name="jobLevelId" label={<span>{t('employer.job.level')} <span className='text-red-500'> *</span></span>}
                         rules={
-                            [({ getFieldValue }) => ({
+                            [() => ({
                                 validator(_, value) {
                                     if (value === 0) {
-                                        return Promise.reject(new Error('Vui lòng chọn cấp bậc cần tuyển dụng'));
+                                        return Promise.reject(new Error(t('employer.job.levelRequired')));
                                     }
                                     return Promise.resolve();
                                 },
                             }),]
                         }>
                         <Select defaultValue={0}>
-                            <Select.Option value={0}>Vui lòng chọn</Select.Option>
+                            <Select.Option value={0}>{t('employer.job.levelPlaceholder')}</Select.Option>
                             {levels.map(level => (<Select.Option key={level.value} value={level.value}>{level.label}</Select.Option>))}
                         </Select>
                     </Form.Item>
                 </Col>
                 <Col span={24}>
-                    <Form.Item name="skillIds" label="Kĩ năng yêu cầu"
+                    <Form.Item name="skillIds" label={t('employer.job.skills')}
                         rules={[
                             {
                                 required: true,
-                                message: 'Vui lòng chọn ít nhất một kĩ năng',
+                                message: t('employer.job.skillsRequired'),
                             },
                         ]} validateFirst validateTrigger={['onBlur', 'onChange']}>
                         <Select
                             mode="multiple"
                             size="large"
-                            placeholder="Vui lòng chọn kĩ năng"
+                            placeholder={t('employer.job.skillsPlaceholder')}
                             options={skills}
                             filterOption={(input, option) => option.label.toLowerCase().includes(input.toLowerCase())}
                         />
                     </Form.Item>
                 </Col>
-                <Form.Item name="jobRequirements" className="w-full mt-0 " label="Yêu cầu tuyển dụng">
+                <Form.Item name="jobRequirements" className="w-full mt-0 " label={t('employer.job.requirements')}>
                     <CustomizeQuill />
                 </Form.Item>
-                <Form.Item name="jobDescription" className="w-full mt-0 " label="Mô tả công việc">
+                <Form.Item name="jobDescription" className="w-full mt-0 " label={t('employer.job.description')}>
                     <CustomizeQuill />
                 </Form.Item>
             </Row>
@@ -199,13 +201,13 @@ const UpdateJob = () => {
     const itemsCollapse1 = [
         {
             key: '1',
-            label: <span className='title2 card-title'>Thông tin tuyển dụng</span>,
+            label: <span className='title2 card-title'>{t('employer.job.basicInfo')}</span>,
             children: form1,
         }];
     const itemsCollapse2 = [
         {
             key: '1',
-            label: <span className='title2 card-title'>Yêu cầu tuyển dụng</span>,
+            label: <span className='title2 card-title'>{t('employer.job.requirementsInfo')}</span>,
             children: form2,
         }];
     useEffect(() => {
@@ -253,18 +255,17 @@ const UpdateJob = () => {
         console.log(values);
         updateJob(values);
     }
-    const onFinishFailed = (errorInfo) => { };
+    const onFinishFailed = () => { };
     const onReset = () => {
         navigate('/employer/manage-list-jobs');
     };
     return (
         <>
             <BoxContaier>
-                <div className='title1'>Chỉnh sửa bài đăng</div>
+                <div className='title1'>{t('employer.job.editJob')}</div>
             </BoxContaier>
             <BoxContaier>
                 <Form
-
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                     onReset={onReset}
@@ -277,8 +278,8 @@ const UpdateJob = () => {
                         <Collapse collapsible='false' expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse1} bordered={false} />
                         <Collapse expandIconPosition='end' defaultActiveKey={['1']} items={itemsCollapse2} bordered={false} />
                         <Flex gap="middle" justify="end">
-                            <Button type="default" htmlType='reset'>Hủy</Button>
-                            <Button type="primary" htmlType="submit">Cập nhật</Button>
+                            <Button type="default" htmlType='reset'>{t('common.cancel')}</Button>
+                            <Button type="primary" htmlType="submit">{t('common.save')}</Button>
                         </Flex>
                     </Flex>
                 </Form>

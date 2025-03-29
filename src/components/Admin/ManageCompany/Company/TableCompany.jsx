@@ -37,7 +37,7 @@ const TableCompany = ({ status }) => {
                     value={selectedKeys[0]}
                     onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
                     onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                    className="mb-2 block"
+                    className="block mb-2"
                 />
                 <Space>
                     <Button
@@ -253,7 +253,7 @@ const TableCompany = ({ status }) => {
                 message.error(res.message);
             }
         }).catch(err => {
-            console.log(err);
+            console.error(err);
         }).finally(() => {
             handleModalCancel();
         })
@@ -279,10 +279,10 @@ const TableCompany = ({ status }) => {
                 open={isModalVisible}
                 onCancel={handleModalCancel}
                 footer={[
-                    <Button onClick={handleModalCancel}>
+                    <Button key="cancel" onClick={handleModalCancel}>
                         {t('admin.company.table.modal.cancel')}
                     </Button>,
-                    <Button type="primary" onClick={() => form.submit()}>
+                    <Button key="confirm" type="primary" onClick={() => form.submit()}>
                         {t('admin.company.table.modal.confirm')}
                     </Button>,
                 ]}

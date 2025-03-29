@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Col, Form, Input, Row, Space, message } from 'antd';
 import { useLocation } from 'react-router-dom';
 import "./ResetPassword.scss";
 import { userResetPassword } from "../../services/apiService";
 import COLOR from "../styles/_variables";
+import { useTranslation } from "react-i18next";
 
 
 const ResetPassword = () => {
-
+    const { t } = useTranslation();
     const [email, setEmail] = useState("");
     const [submit, setSubmit] = useState(false);
     const [form] = Form.useForm();
@@ -18,29 +19,29 @@ const ResetPassword = () => {
         const queryParams = new URLSearchParams(location.search);
         token = queryParams.get('token');
         setEmail(queryParams.get('email'));
-    }, []);
+    }, [location]);
 
     const onFinish = async (values) => {
         const res = await userResetPassword(token, values.password);
         if (res.status === 'OK') {
             setNotice(res.message);
-            message.success("Đặt lại mật khẩu thành công");
+            message.success(t('auth.resetPassword.success'));
             setSubmit(true);
         }
         else {
-            message.error("Đặt lại mật khẩu thất bại. Vui long thử lại sau");
+            message.error(t('auth.resetPassword.error'));
         }
     };
     return (
         <div className="form-change-password">
             <Card style={{ backgroundColor: COLOR.cardColor }} className="shadow">
                 <div className="title" style={{ color: COLOR.textColor }}>
-                    Đặt lại mật khẩu
+                    {t('auth.resetPassword.title')}
                 </div>
                 <div className={`${submit && "hidden"}`}>
 
                     <div className="description form-text">
-                        Hãy nhập mật khẩu mới cho người dùng: <span style={{ color: "blue" }}>{email}</span>
+                        {t('auth.resetPassword.description')}: <span style={{ color: "blue" }}>{email}</span>
                     </div>
                     <Form
                         size="large"
@@ -53,29 +54,29 @@ const ResetPassword = () => {
                         <Row gutter={16}>
                             <Col span={24}>
                                 <Form.Item
-                                    label={<span>Mật khẩu mới <span className='text-red-500'> *</span></span>}
+                                    label={<span>{t('profile.accountManagement.newPassword')} <span className='text-red-500'> *</span></span>}
                                     required
                                     name="password"
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Vui lòng nhập mật khẩu của bạn',
+                                            message: t('employer.changePassword.newPassword.required'),
                                         },
                                         {
                                             min: 8,
-                                            message: 'Mật khẩu phải có ít nhất 8 ký tự'
+                                            message: t('employer.changePassword.newPassword.minLength')
                                         },
                                         {
                                             pattern: new RegExp(/^(?=.*[A-Z])/),
-                                            message: 'Mật khẩu phải chứa ít nhất 1 chữ cái viết hoa'
+                                            message: t('employer.changePassword.newPassword.uppercase')
                                         },
                                         {
                                             pattern: new RegExp(/^(?=.*[0-9])/),
-                                            message: 'Mật khẩu phải chứa ít nhất 1 chữ số'
+                                            message: t('employer.changePassword.newPassword.number')
                                         },
                                         {
                                             pattern: new RegExp(/^(?=.*[!@#$%^&*(),.?":{}|<>])/),
-                                            message: 'Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt'
+                                            message: t('employer.changePassword.newPassword.special')
                                         }
                                     ]} validateFirst>
                                     <Input.Password />
@@ -84,20 +85,20 @@ const ResetPassword = () => {
 
                             <Col span={24}>
                                 <Form.Item
-                                    label={<span>Nhập lại mật khẩu <span className='text-red-500'> *</span></span>}
+                                    label={<span>{t('profile.accountManagement.confirmNewPassword')} <span className='text-red-500'> *</span></span>}
                                     required
                                     name="repassword"
                                     rules={[
                                         {
                                             required: true,
-                                            message: 'Vui lòng xác nhận lại mật khẩu của bạn',
+                                            message: t('employer.changePassword.confirmPassword.required'),
                                         },
                                         ({ getFieldValue }) => ({
                                             validator(_, value) {
                                                 if (!value || getFieldValue('password') === value) {
                                                     return Promise.resolve();
                                                 }
-                                                return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
+                                                return Promise.reject(new Error(t('employer.changePassword.confirmPassword.mismatch')));
                                             },
                                         }),
                                     ]} validateFirst>
@@ -107,7 +108,7 @@ const ResetPassword = () => {
                         </Row>
                         <Form.Item>
                             <Space className="flex justify-end mt-3">
-                                <Button className="text-base" type="primary" htmlType="submit">Tiếp tục</Button>
+                                <Button className="text-base" type="primary" htmlType="submit">{t('common.complete')}</Button>
                             </Space>
                         </Form.Item>
                     </Form>

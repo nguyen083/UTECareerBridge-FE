@@ -1,11 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { SearchOutlined, EditOutlined, DeleteOutlined, EyeOutlined, InboxOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import { useEffect, useRef, useState } from 'react';
+import { SearchOutlined, EditOutlined, DeleteOutlined, InboxOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { Button, Input, Modal, Space, Table, Tooltip } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { deleteJob, getJobsByStatus, putHideJob } from '../../../services/apiService';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const TableListJobs = (props) => {
+    const { t } = useTranslation();
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [pagination, setPagination] = useState({
@@ -29,8 +31,6 @@ const TableListJobs = (props) => {
         setSearchText('');
     };
 
-
-   
     const fetchData = async (currentPage, pageSize) => {
         setLoading(true);
         const params = {
@@ -81,17 +81,16 @@ const TableListJobs = (props) => {
             pageSize: newPagination.pageSize,
         });
     };
-    const handleView = (id) => {
-        navigate(`/employer/job/view/${id}`);
-    };
     const handleEdit = (id) => {
         navigate(`/employer/job/edit/${id}`);
     }
     const handleDelete = (id) => {
         Modal.confirm({
-            title: 'Xác nhận',
-            content: 'Bạn chắc chắn muốn xóa bài đăng này?',
+            title: t('common.notice'),
+            content: t('employer.manageJobs.deleteConfirm'),
             centered: true,
+            okText: t('common.ok'),
+            cancelText: t('common.cancel'),
             onOk() {
                 return new Promise((resolve, reject) => {
                     deleteJob(id).then((res) => {
@@ -116,8 +115,10 @@ const TableListJobs = (props) => {
     const handleHide = (id) => {
         props.status !== "INACTIVE" ?
             Modal.confirm({
-                title: 'Xác nhận',
-                content: 'Bạn chắc chắn muốn ẩn bài đăng này?',
+                title: t('common.notice'),
+                content: t('employer.manageJobs.hideConfirm'),
+                okText: t('common.ok'),
+                cancelText: t('common.cancel'),
                 centered: true,
                 onOk() {
                     return new Promise((resolve, reject) => {
@@ -140,8 +141,8 @@ const TableListJobs = (props) => {
                 )
             }) :
             Modal.confirm({
-                title: 'Xác nhận',
-                content: 'Bạn chắc chắn muốn hiện bài đăng này?',
+                title: t('common.notice'),
+                content: t('employer.manageJobs.showConfirm'),
                 centered: true,
                 onOk() {
                     return new Promise((resolve, reject) => {
@@ -164,14 +165,13 @@ const TableListJobs = (props) => {
                 )
             })
     }
-
    
     const getColumnSearchProps = (dataIndex) => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
             <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
                 <Input
                     ref={searchInput}
-                    placeholder={`Tìm ${dataIndex}`}
+                    placeholder={t('employer.manageJobs.search.placeholder', { field: dataIndex })}
                     value={selectedKeys[0]}
                     onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
                     onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
@@ -185,14 +185,14 @@ const TableListJobs = (props) => {
                         size="small"
                         style={{ width: 70 }}
                     >
-                        Tìm
+                        {t('employer.manageJobs.search.search')}
                     </Button>
                     <Button
                         onClick={() => clearFilters && handleReset(clearFilters)}
                         size="small"
                         style={{ width: 70 }}
                     >
-                        Đặt lại
+                        {t('employer.manageJobs.search.reset')}
                     </Button>
                     <Button
                         type="link"
@@ -203,14 +203,14 @@ const TableListJobs = (props) => {
                             setSearchedColumn(dataIndex);
                         }}
                     >
-                        Lọc
+                        {t('employer.manageJobs.search.filter')}
                     </Button>
                     <Button
                         type="link"
                         size="small"
                         onClick={() => close()}
                     >
-                        Đóng
+                        {t('employer.manageJobs.search.close')}
                     </Button>
                 </Space>
             </div>
@@ -244,34 +244,34 @@ const TableListJobs = (props) => {
    
     const columns = [
         {
-            title: 'No.',
+            title: t('admin.userTable.columns.no'),
             dataIndex: 'index',
             key: 'index',
             width: '5%',
         },
         {
-            title: 'Tiêu đề',
+            title: t('admin.post.table.columns.title'),
             dataIndex: 'title',
             key: 'title',
             width: '25%',
             ...getColumnSearchProps('title'),
         },
         {
-            title: 'Lĩnh vực',
+            title: t('admin.post.table.columns.category'),
             dataIndex: 'category',
             key: 'category',
             width: '13%',
             ...getColumnSearchProps('category'),
         },
         {
-            title: 'Cấp bậc',
+            title: t('admin.post.table.columns.level'),
             dataIndex: 'level',
             key: 'level',
             width: '13%',
             ...getColumnSearchProps('level'),
         },
         {
-            title: 'Số lượng',
+            title: t('admin.post.table.columns.quantity'),
             dataIndex: 'quantity',
             key: 'quantity',
             width: '10%',
@@ -279,14 +279,14 @@ const TableListJobs = (props) => {
         },
         props.status !== 'REJECTED' ?
             {
-                title: 'Thời hạn',
+                title: t('admin.post.table.columns.deadline'),
                 dataIndex: 'deadline',
                 key: 'deadline',
                 width: '10%',
                 ...getColumnSearchProps('deadline'),
             } :
             {
-                title: 'Lý do từ chối',
+                title: t('admin.post.table.columns.rejectedReason'),
                 dataIndex: 'rejectionReason',
                 key: 'rejectionReason',
                 ellipsis: true,
@@ -294,7 +294,7 @@ const TableListJobs = (props) => {
                 width: '11%',
             },
         {
-            title: 'Thời gian tạo',
+            title: t('admin.post.table.columns.createdTime'),
             dataIndex: 'createdTime',
             key: 'createdTime',
             width: '11%',
@@ -306,19 +306,17 @@ const TableListJobs = (props) => {
             width: '13%',
             render: (_, record) => (
                 <Space size="small">
-                    {/* <Tooltip color='blue' title="Xem">
-                        <Button onClick={() => handleView(record.key)} icon={<EyeOutlined />} />
-                    </Tooltip> */}
+
                     <div hidden={props.status === 'REJECTED'}>
-                        <Tooltip color='cyan' title="Chỉnh sửa">
+                        <Tooltip color='cyan' title={t('common.edit')}>
                             <Button onClick={() => handleEdit(record.key)} icon={<EditOutlined />} />
                         </Tooltip>
                     </div>
-                    <Tooltip color='red' title="Xóa">
+                    <Tooltip color='red' title={t('admin.coupon.delete')}>
                         <Button danger onClick={() => handleDelete(record.key)} icon={<DeleteOutlined />} />
                     </Tooltip>
                     <div hidden={props.status === 'PENDING' || props.status === 'REJECTED'}>
-                        <Tooltip title="Ẩn/Hiện">
+                        <Tooltip title={t('employer.manageJobs.hideShow')}>
                             <Button onClick={() => handleHide(record.key)}
                                 icon={<EyeInvisibleOutlined />} />
                         </Tooltip>
@@ -345,7 +343,7 @@ const TableListJobs = (props) => {
                 emptyText: (
                     <div className='p-5'>
                         <InboxOutlined style={{ fontSize: '50px', marginBottom: '8px' }} />
-                        <div>Không có dữ liệu</div>
+                        <div>{t('admin.post.table.noData')}</div>
                     </div>
                 ),
             }}

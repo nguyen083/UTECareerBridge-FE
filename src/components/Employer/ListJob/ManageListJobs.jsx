@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Tabs } from 'antd';
 import TableListJobs from './TableListJobs';
 import BoxContainer from '../../Generate/BoxContainer';
+import { useTranslation } from 'react-i18next';
 
 const { TabPane } = Tabs;
 
 const ManageListJobs = () => {
+    const { t } = useTranslation();
     const [activeKey, setActiveKey] = useState('ACTIVE');
 
     const handleTabChange = (key) => {
@@ -15,24 +17,24 @@ const ManageListJobs = () => {
     return (
         <>
             <BoxContainer className='shadow-md'>
-                <div className="title1">Danh sách bài đăng</div>
+                <div className="title1">{t('employer.manageJobs.listJobs')}</div>
             </BoxContainer>
             <BoxContainer className='shadow-md'>
                 <Tabs size='large' activeKey={activeKey} onChange={handleTabChange}>
                     <TabPane
-                        tab="Đang hiển thị"
+                        tab={t('employer.manageJobs.tabs.active')}
                         key="ACTIVE"
                     />
                     <TabPane
-                        tab="Đang ẩn"
+                        tab={t('employer.manageJobs.tabs.inactive')}
                         key="INACTIVE"
                     />
                     <TabPane
-                        tab="Chờ duyệt"
+                        tab={t('employer.manageJobs.tabs.pending')}
                         key="PENDING"
                     />
                     <TabPane
-                        tab="Bị từ chối"
+                        tab={t('employer.manageJobs.tabs.rejected')}
                         key="REJECTED"
                     />
                 </Tabs>

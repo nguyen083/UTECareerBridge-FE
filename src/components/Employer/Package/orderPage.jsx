@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Divider, Typography, Table, message, Flex, Card, Row, Col } from 'antd';
 import './orderPage.scss';
 import BoxContainer from '../../Generate/BoxContainer';
@@ -7,9 +7,11 @@ import { getCartByEmployer, removePackageFromCart, updateQuantityPackage, create
 import VoucherModal from './voucherModal';
 import ModalDetailOrder from '../Order/ModalDetailOrder';
 import { RiDiscountPercentLine } from 'react-icons/ri';
-const { Title, Text } = Typography;
+import { useTranslation } from 'react-i18next';
+const { Text } = Typography;
 
 const OrderPage = () => {
+  const { t } = useTranslation();
   const [cartItems, setCartItems] = useState([]);
   const [selectedVoucher, setSelectedVoucher] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -85,14 +87,13 @@ const OrderPage = () => {
   };
 
   const handleVoucherSelect = (couponCode) => {
-    console.log(couponCode);
     setSelectedVoucher(couponCode);
     setIsModalVisible(false);
   };
 
   const columns = [
     {
-      title: 'Tên dịch vụ',
+      title: t('employer.orders.packageName'),
       dataIndex: 'packageName',
       key: 'packageName',
       render: (text, record) => (
@@ -104,13 +105,13 @@ const OrderPage = () => {
       ),
     },
     {
-      title: 'Đơn giá',
+      title: t('employer.orders.price'),
       dataIndex: 'price',
       key: 'price',
       render: (text) => text.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }),
     },
     {
-      title: 'Số lượng',
+      title: t('employer.orders.amount'),
       dataIndex: 'quantity',
       key: 'quantity',
       render: (quantity, record) => (
@@ -132,7 +133,7 @@ const OrderPage = () => {
       ),
     },
     {
-      title: 'Số tiền (VND)',
+      title: t('employer.orders.total'),
       dataIndex: 'total',
       key: 'total',
       render: (_, record) => (
@@ -142,14 +143,13 @@ const OrderPage = () => {
       ),
     },
     {
-      title: 'Thao tác',
+      title: t('common.edit'),    
       dataIndex: '',
       key: 'x',
       width: '12%',
       align: 'center',
       render: (_, record) => (
         <Button
-
           danger
           icon={<DeleteOutlined />}
           onClick={() => handleDeleteItem(record.packageId)}
@@ -158,7 +158,7 @@ const OrderPage = () => {
     },
   ];
   const handleCreateOrder = () => {
-    createOrder(selectedVoucher.couponCode).then((res) => {
+    createOrder(selectedVoucher?.couponCode).then((res) => {
       if (res.status === 'CREATED') {
         message.success(res.message);
         setOrderId(res.data.orderId);
@@ -173,7 +173,7 @@ const OrderPage = () => {
       <BoxContainer>
         <Row gutter={16} justify="space-between">
           <Col span={14}>
-            <Card title={<Text className='f-20 card-title'>Chi tiết giỏ hàng</Text>} className='shadow-md detail-cart-card'>
+            <Card title={<Text className='f-20 card-title'>{t('employer.orders.packageList')}</Text>} className='shadow-md detail-cart-card'>
 
               <Table
                 columns={columns}
@@ -183,37 +183,33 @@ const OrderPage = () => {
               />
             </Card></Col>
           <Col span={10}>
-            <Card title={<Text className='f-20 card-title'>Thông tin đơn hàng</Text>} className='shadow-md'>
+            <Card title={<Text className='f-20 card-title'>{t('employer.orders.orderInfo')}</Text>} className='shadow-md'>
 
               <div className="info-item">
-                <Text className="text-base">Tổng giá trị đơn hàng</Text>
+                <Text className="text-base">{t('employer.orders.total')}</Text>
                 <Text className="text-base font-bold">{getTotalPrice().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
               </div>
               {selectedVoucher && <div className="info-item">
-                <Text className="text-base flex items-center"><RiDiscountPercentLine />&ensp;Giảm giá</Text>
+                <Text className="flex items-center text-base"><RiDiscountPercentLine />&ensp;{t('employer.orders.discount')}</Text>
                 <Text className="text-base font-bold">{selectedVoucher?.discount} %</Text>
               </div>}
-              {/* <div className="info-item">
-              <Text className="label">VAT (8%)</Text>
-              <Text className="value">{getTaxAmount().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
-            </div> */}
               <Divider />
-              <div className="voucher flex items-center justify-between">
-                <Button type="primary" onClick={() => setIsModalVisible(true)} className='voucher-button'>Chọn mã ưu đãi</Button>
+              <div className="flex items-center justify-between voucher">
+                <Button type="primary" onClick={() => setIsModalVisible(true)} className='voucher-button'>{t('employer.orders.couponCode')}</Button>
                 {selectedVoucher && <Flex align='center' gap={8}>
                   <Button danger type='text' icon={<CloseOutlined />} onClick={() => setSelectedVoucher(null)}></Button>
                   <Text className="selected-voucher">{selectedVoucher.code}</Text></Flex>
                 }
               </div>
-              <div className="info-item mt-5">
-                <Text className="text-base">Tổng thanh toán</Text>
+              <div className="mt-5 info-item">
+                <Text className="text-base">{t('employer.orders.total')}</Text>
                 <Flex gap={8}>
                   {selectedVoucher && <Text type='danger' className="text-base font-bold " delete>{getTotalPrice().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>}
                   <Text className="text-base font-bold">{getTotalWithTax().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
                 </Flex>
               </div>
               <div className="actions">
-                <Button className="btn-checkout" type="primary" onClick={handleCreateOrder}>Tạo đơn hàng</Button>
+                <Button className="btn-checkout" type="primary" onClick={handleCreateOrder}>{t('employer.orders.orderDetail')}</Button>
               </div>
             </Card>
           </Col>

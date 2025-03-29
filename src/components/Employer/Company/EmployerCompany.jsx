@@ -6,14 +6,13 @@ import { IoMdTrash } from "react-icons/io";
 import { getAllBenefit, getAllIndustry, updateEmployerCompanyProfile } from '../../../services/apiService';
 import { PlusCircleFilled } from '@ant-design/icons';
 import CustomizeQuill from '../../Generate/CustomizeQuill';
-import { PicturesWall } from '../../Generate/Upload';
 import { useSelector, useDispatch } from 'react-redux';
 import { setInfor } from '../../../redux/action/employerSlice';
-import React from 'react';
 import { UploadImage } from '../../Student/Component/UploadAvatar';
+import { useTranslation } from 'react-i18next';
 
 const EmployerCompany = () => {
-
+    const { t } = useTranslation();
     const [form] = Form.useForm();
     const [industries, setIndustries] = useState([]);
     const [benefits, setBenefits] = useState([]);
@@ -40,6 +39,7 @@ const EmployerCompany = () => {
             keyValueObject[`benefitDetails[${index}].benefitId`] = item.benefitId;
             keyValueObject[`benefitDetails[${index}].description`] = item.description;
         });
+        // eslint-disable-next-line
         const { benefitArray, ...rest } = values;
         values = { ...rest, ...keyValueObject };
 
@@ -55,7 +55,7 @@ const EmployerCompany = () => {
                 message.error(res.message);
             }
         }).catch(err => {
-            console.log(err);
+            console.error(err);
         }).finally(() => {
             setLoading(false);
         })
@@ -69,12 +69,12 @@ const EmployerCompany = () => {
         getAllIndustry().then(res => {
             setIndustries(res.data);
         }).catch(err => {
-            console.log(err);
+            console.error(err);
         })
         getAllBenefit().then(res => {
             setBenefits(res.data);
         }).catch(err => {
-            console.log(err);
+            console.error(err);
         })
     }, [])
     useEffect(() => {
@@ -84,7 +84,7 @@ const EmployerCompany = () => {
         <>
             <BoxContainer className='shadow-md'>
                 <div className="title1">
-                    Thông tin công ty
+                    {t('employer.company.info')}
                 </div>
             </BoxContainer>
             <BoxContainer className='shadow-md'>
@@ -92,32 +92,32 @@ const EmployerCompany = () => {
                     initialValues={infor}>
                     <Row className="div-form-company" gutter={16}>
                         <Col span={24}>
-                            <Form.Item name="companyName" label={<span>Tên công ty <span className='text-red-500'> *</span></span>}
+                            <Form.Item name="companyName" label={<span>{t('admin.employer.register.companyName')} <span className='text-red-500'> *</span></span>}
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Vui lòng nhập tên',
+                                        message: t('admin.employer.register.companyNameRequired'),
                                     },
                                 ]} validateTrigger={['onChange', 'onBlur']}>
                                 <Input allowClear />
                             </Form.Item>
                         </Col>
                         <Col span={{ span: 24 }} md={{ span: 14 }}>
-                            <Form.Item name="companyAddress" label={<span>Địa chỉ công ty <span className='text-red-500'> *</span></span>}
+                            <Form.Item name="companyAddress" label={<span>{t('admin.employer.register.companyAddress')} <span className='text-red-500'> *</span></span>}
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Vui lòng nhập địa chỉ',
+                                        message: t('admin.employer.register.companyAddressRequired'),
                                     },
                                 ]} validateTrigger={['onChange', 'onBlur']}>
-                                <Input allowClear placeholder='Ví dụ: 130 Sương Nguyệt Anh, Phường Bến Thành, Quận 1' />
+                                <Input allowClear placeholder={t('employer.company.addressPlaceholder')} />
                             </Form.Item>
                         </Col>
                         <Col span={{ span: 24 }} md={{ span: 10 }}>
-                            <Form.Item name="companySize" label="Quy mô công ty">
+                            <Form.Item name="companySize" label={t('employer.company.size')}>
                                 <Select>
-                                    <Select.Option value="">Vui lòng chọn</Select.Option>
-                                    <Select.Option value="Ít hơn 10"></Select.Option>
+                                    <Select.Option value="">{t('employer.company.sizePlaceholder')}</Select.Option>
+                                    <Select.Option value="Ít hơn 10">{t('employer.company.sizeLessThan10')}</Select.Option>
                                     <Select.Option value="10-24">10&#8722;24</Select.Option>
                                     <Select.Option value="25-99">25&#8722;99</Select.Option>
                                     <Select.Option value="100-499">100&#8722;499</Select.Option>
@@ -126,20 +126,20 @@ const EmployerCompany = () => {
                                     <Select.Option value="5.000-9.999">5.000&#8722;9.999</Select.Option>
                                     <Select.Option value="10.000-19.999">10.000&#8722;19.999</Select.Option>
                                     <Select.Option value="20.000-49.999">20.000&#8722;49.999</Select.Option>
-                                    <Select.Option value="Hơn 50.000">Hơn 50.000</Select.Option>
+                                    <Select.Option value="Hơn 50.000">{t('employer.company.sizeMoreThan50000')}</Select.Option>
                                 </Select>
                             </Form.Item>
                         </Col>
                         <Col span={{ span: 24 }} md={{ span: 14 }}>
-                            <Form.Item name="companyEmail" label={<span>Email <span className='text-red-500'> *</span></span>}
+                            <Form.Item name="companyEmail" label={<span>{t('auth.register.email')} <span className='text-red-500'> *</span></span>}
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Vui lòng nhập email của bạn',
+                                        message: t('auth.register.emailRequired'),
                                     },
                                     {
                                         type: 'email',
-                                        message: 'Email không hợp lệ',
+                                        message: t('admin.employer.register.invalidEmail'),
                                     }
                                 ]}
                                 validateTrigger={['onBlur']}>
@@ -147,25 +147,25 @@ const EmployerCompany = () => {
                             </Form.Item>
                         </Col>
                         <Col span={{ span: 24 }} md={{ span: 10 }}>
-                            <Form.Item name="industryId" label={<span>Lĩnh vực công ty <span className='text-red-500'> *</span></span>}
+                            <Form.Item name="industryId" label={<span>{t('employer.company.industry')} <span className='text-red-500'> *</span></span>}
                                 rules={[
                                     {
                                         required: true,
-                                        message: 'Vui lòng chọn lĩnh vực của công ty',
+                                        message: t('employer.company.industryRequired'),
                                     },
-                                    ({ getFieldValue }) => ({
+                                    () => ({
                                         validator(_, value) {
                                             if (value === 0) {
-                                                return Promise.reject(new Error('Vui lòng chọn lĩnh vực của công ty'));
+                                                return Promise.reject(new Error(t('employer.company.industryRequired')));
                                             }
                                             return Promise.resolve();
                                         },
                                     }),
                                 ]} validateTrigger={['onChange', 'onBlur']}>
                                 <Select>
-                                    <Select.Option value={0}>Vui lòng chọn</Select.Option>
+                                    <Select.Option value={0}>{t('employer.company.industryPlaceholder')}</Select.Option>
                                     {industries.map(industry => (
-                                        <Select.Option value={industry.industryId}>
+                                        <Select.Option key={industry.industryId} value={industry.industryId}>
                                             {industry.industryName}
                                         </Select.Option>
                                     ))}
@@ -173,16 +173,16 @@ const EmployerCompany = () => {
                             </Form.Item>
                         </Col>
                         <Col span={24}>
-                            <Form.Item label={<span>Phúc lợi công ty <span className='text-red-500'> *</span></span>}>
+                            <Form.Item label={<span>{t('employer.company.benefits')} <span className='text-red-500'> *</span></span>}>
                                 <Form.List name="benefitArray" >
                                     {(fields, { add, remove }) => (
                                         <div>
                                             {fields.map((field) => (
-                                                <Flex gap="middle">
+                                                <Flex key={field.name} gap="middle">
                                                     <Form.Item name={[field.name, 'benefitId']} className="w-1/3">
                                                         <Select>
                                                             {benefits.map(benefit => (
-                                                                <Select.Option value={benefit.benefitId}>
+                                                                <Select.Option key={benefit.benefitId} value={benefit.benefitId}>
                                                                     {benefit.benefitName}
                                                                 </Select.Option>
                                                             ))}
@@ -192,7 +192,7 @@ const EmployerCompany = () => {
                                                         <TextArea
                                                             rows={3}
                                                             allowClear
-                                                            placeholder='Nhập mô tả phúc lợi'
+                                                            placeholder={t('employer.company.benefitDescriptionPlaceholder')}
                                                         />
                                                     </Form.Item>
                                                     <Button size='middle' danger disabled={fields.length === 1} onClick={() => { remove(field.name); }}>
@@ -201,7 +201,7 @@ const EmployerCompany = () => {
                                                 </Flex>
                                             ))}
                                             <Button hidden={fields.length === 3} className='mt-3' onClick={() => add()} icon={<PlusCircleFilled style={{ color: "#4096FF" }} />} type='text'>
-                                                Thêm phúc lợi
+                                                {t('employer.company.addBenefit')}
                                             </Button>
                                         </div>
                                     )}
@@ -209,36 +209,34 @@ const EmployerCompany = () => {
                             </Form.Item>
                         </Col>
                         <Col span={24}>
-                            <Form.Item name="companyDescription" label="Mô tả công ty">
+                            <Form.Item name="companyDescription" label={t('employer.company.description')}>
                                 <CustomizeQuill key="description" />
                             </Form.Item>
                         </Col>
                         <Col span={24}>
-                            <Form.Item name="companyLogo" label="Logo công ty" tooltip="Kéo thả hoặc nhấp chọn để tải ảnh lên">
-                                {/* <PicturesWall listType={"text"} defaultImage={defaultLogo} /> */}
+                            <Form.Item name="companyLogo" label={t('employer.company.logo')} tooltip={t('employer.company.logoTooltip')}>
                                 <UploadImage />
                             </Form.Item>
                         </Col>
                         <Col span={24}>
-                            <Form.Item name="backgroundImage" label="Hình ảnh công ty" tooltip="Kéo thả hoặc nhấp chọn để tải ảnh lên">
-                                {/* <PicturesWall listType={"text"} defaultImage={defaultBackground} /> */}
+                            <Form.Item name="backgroundImage" label={t('employer.company.backgroundImage')} tooltip={t('employer.company.imageTooltip')}>
                                 <UploadImage />
                             </Form.Item>
                         </Col>
                         <Col span={24}>
-                            <Form.Item name="companyWebsite" label="Website công ty">
-                                <Input allowClear placeholder='Địa chỉ website công ty' />
+                            <Form.Item name="companyWebsite" label={t('admin.employer.register.companyWebsite')}>
+                                <Input allowClear placeholder={t('employer.company.websitePlaceholder')} />
                             </Form.Item>
                         </Col>
                         <Col span={24}>
-                            <Form.Item name="videoIntroduction" label="Video công ty">
-                                <Input allowClear placeholder='Sao chép và dán từ liên kết Youtube của bạn vào đây' />
+                            <Form.Item name="videoIntroduction" label={t('employer.company.video')}>
+                                <Input allowClear placeholder={t('employer.company.videoPlaceholder')} />
                             </Form.Item>
                         </Col>
                     </Row>
                     <Flex gap={"1rem"} align='center' justify='end'>
-                        <Button type='default' onClick={handleReset}>Hủy</Button>
-                        <Button type='primary' htmlType='submit' loading={loading}>Lưu</Button>
+                        <Button type='default' onClick={handleReset}>{t('common.cancel')}</Button>
+                        <Button type='primary' htmlType='submit' loading={loading}>{t('common.save')}</Button>
                     </Flex>
                 </Form>
             </BoxContainer>

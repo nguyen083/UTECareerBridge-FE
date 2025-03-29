@@ -6,7 +6,8 @@ import COLOR from './components/styles/_variables.jsx';
 import viVN from 'antd/lib/locale/vi_VN'; 
 import { lazy, Suspense, useEffect } from "react"
 import { connectStomp, disconnectStomp } from './utils/stompConfig.js';
-
+import RecommendJob from './components/Student/Recommend/RecommendJob.jsx';
+import InterviewList from './components/Employer/Interview/InterviewList.jsx';
 
 const GoogleAuthCallback = lazy(() => import("./components/Student/GoogleAuthCallback.jsx"));
 const ChatEmployerLayout = lazy(() => import('./components/Employer/Chat/ChatEmployerLayout.jsx'))
@@ -68,8 +69,10 @@ const PaymentFail = lazy(() => import("./components/User/PaymentFail.jsx"));
 const Coupon = lazy(() => import("./components/Admin/Coupon/Coupon.jsx"));
 const DetailResume = lazy(() => import("./components/Employer/DetailResume/DetailResume.jsx"));
 const ChatLayout = lazy(() => import('./pages/Chat/ChatLayout.jsx'))
+const Meeting = lazy(() => import("./components/Generate/Meeting/Meeting.jsx"))
 
 const App = () => {
+  
   useEffect(() => {
     connectStomp(() => { })
     return () => {
@@ -175,6 +178,7 @@ const App = () => {
           }>
             <Spin style={{ maxHeight: "100vh", height: "100%" }} size='large' spinning={useSelector(state => state.web.loading)}>
               <Routes>
+                <Route path='/meeting/:roomID' element={<Meeting />} />
                 <Route path='/chat' element={<ChatLayout />} />
                 <Route path='/chat/:recipientId' element={<ChatLayout />} />
                 <Route element={<StudentLayout />}>
@@ -187,6 +191,8 @@ const App = () => {
                   <Route element={<ViewLayout width='90%' />}>
                     <Route path='/event-detail/:id' element={<EventDetail />} />
                     <Route path='/search' element={<JobSearchPage />} />
+                    <Route path='/recommend-job' element={<RecommendJob />} />
+
                   </Route>
 
                   <Route element={<PersonalLayout />} >
@@ -217,6 +223,7 @@ const App = () => {
                   <Route path='change-password' element={<EmployerChangePassword />} />
                   <Route path='company' element={<EmployerCompany />} />
                   <Route path='list-resumes' element={<ListResumes />} />
+                  <Route path='interview' element={<InterviewList />} />
                   <Route path='list-order' element={<ListOrder />} />
                   <Route path='detail-resume' element={<DetailResume />} />
                   <Route path='applicant' element={<Applicant />} >
@@ -273,8 +280,6 @@ const App = () => {
         </BrowserRouter>
       </AntApp>
     </ConfigProvider >
-
-
   );
 }
 

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Layout, Row, Col, Card, Tag, Carousel, Select, List, Pagination, Radio, Flex, Empty } from 'antd';
+import { useEffect, useState } from 'react';
+import { Layout, Row, Col, List, Radio, Flex, Empty } from 'antd';
 import FilterPanel from './FilterPanel';
 import BoxContainer from '../../Generate/BoxContainer';
 import './JobPage.scss';
@@ -70,7 +70,7 @@ const JobSearchPage = () => {
       <Content>
         <Row gutter={24}>
           <Col span={18}>
-            <BoxContainer>
+            <BoxContainer className='shadow-lg'>
               <div>
                 <FilterPanel onValuesChange={setFilters} filters={location.state?.filters} />
               </div>

@@ -1,9 +1,8 @@
 import "react-quill/dist/quill.snow.css";
 import ReactQuill from 'react-quill';
 import './CustomizeQuill.scss';
-import { Row } from 'antd';
 import { useRef } from "react";
-
+import { useTranslation } from "react-i18next";
 const modules = {
     toolbar: [
 
@@ -50,6 +49,7 @@ const formats = [
 ];
 
 export default function CustomizeQuill(props) {
+    const { t } = useTranslation();
     const quillRef = useRef(null);
     const { value } = props;
     const onChange = (value) => {
@@ -63,7 +63,7 @@ export default function CustomizeQuill(props) {
                 theme="snow"
                 modules={modules}
                 formats={formats}
-                placeholder="Nhập mô tả ở đây..."
+                placeholder={t('employer.job.descriptionPlaceholder')}
                 value={value}
                 onChange={onChange}
                 key={props.key}

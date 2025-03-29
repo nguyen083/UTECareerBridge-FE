@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Upload, Avatar } from 'antd';
 import { InboxOutlined, UserOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 const { Dragger } = Upload;
 
 
 const PicturesWall = (props) => {
+    const { t } = useTranslation();
     const [defaultImage, setDefaultImage] = useState(props.defaultImage);
     const [fileList, setFileList] = useState([]);
     const handleUpload = (({ file, fileList }) => {
         setDefaultImage(null);
-        console.log('file', file);
         setFileList(fileList);
         props.onChange(file);
     });
 
-    const onRemove = (file) => {
-        console.log('onRemove', file);
+    const onRemove = () => {
         setFileList([]);
     }
-    const onDrop = (e) => {
-        console.log('onDrop', e.dataTransfer.files[0]);
-    }
+
     return (
         <Dragger
-            onChange={handleUpload} onDrop={onDrop} onRemove={onRemove}
+            onChange={handleUpload} 
+            // onDrop={onDrop} 
+            onRemove={onRemove}
             beforeUpload={() => false} maxCount={1}
             showUploadList={false}
             listType={props.listType} fileList={fileList}>
@@ -33,7 +33,7 @@ const PicturesWall = (props) => {
                         <InboxOutlined />
                     </p>
                     <p className="ant-upload-hint">
-                        Kéo thả hoặc nhấn vào đây để tải ảnh lên
+                        {t('common.dragAndDrop')}
                     </p>
                 </>
             ) : (
@@ -62,16 +62,12 @@ const AvatarUploader = (props) => {
         setDefaultImage(props.defaultImage || null);
     };
 
-    const onDrop = (e) => {
-        console.log('File dropped:', e.dataTransfer.files[0]);
-    };
-
     return (
-        <div className='items-center flex justify-center'>
+        <div className='flex items-center justify-center'>
 
             <Upload
                 onChange={handleUpload}
-                onDrop={onDrop}
+                // onDrop={onDrop}
                 onRemove={onRemove}
                 beforeUpload={() => false}
                 maxCount={1}

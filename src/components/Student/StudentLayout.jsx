@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import './StudentLayout.scss';
 import '../Generate/CustomizePopover.scss';
 import { Layout, Image, Button, Flex, Popover, Row, Col, Typography } from 'antd';
@@ -46,6 +46,9 @@ const PopoverCategory = () => {
                     <Button size='large' type="text" onClick={() => { infor.role === 'student' ? navigate('/my-job#job-applied') : navigate('login') }} >
                         {t('student.layout.myJobs.applied')}
                     </Button>
+                    <Button size='large' type="text" onClick={() => { infor.role === 'student' ? navigate('/recommend-job') : navigate('login') }} >
+                        {t('student.layout.myJobs.recommend')}
+                    </Button>
                 </Col>
                 <Col span={8}>
                     <Title level={5}>{t('student.layout.events.title')}</Title>
@@ -72,7 +75,7 @@ const StudentLayout = () => {
                     dispatch(setInforStudent(res.data));
                 }
             }).catch(err => {
-                console.log(err);
+                console.error(err);
             })
         }
     }, []);
@@ -112,8 +115,8 @@ const StudentLayout = () => {
                         <Button onClick={nagigateLogin} className='rounded-full btn-header' size='large'>
                             {t('role.employer')}
                         </Button>
-                        <Flex gap={"0.5rem"} className='border rounded-full p-1 border-text-color'>
-                            <Button icon={<BsChatLeftText />} shape='circle' onClick={() => { token ? navigate('/chat') : navigate('/login') }} className='rounded-full btn-header hover:scale-105 transform ease-out' size='large'/>
+                        <Flex gap={"0.5rem"} className='p-1 border rounded-full border-text-color'>
+                            <Button icon={<BsChatLeftText />} shape='circle' onClick={() => { token ? navigate('/chat') : navigate('/login') }} className='ease-out transform rounded-full btn-header hover:scale-105' size='large'/>
                             <Notification userId={useSelector(state => state.user.userId)} />
                             <ChangeLanguageBtn />
                             {infor.role !== 'student'

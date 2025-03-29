@@ -38,7 +38,7 @@ const ModalCreateServicePackage = ({ open, setOpen, setFetch, item = null }) => 
                     message.error(t('admin.servicePackage.messages.updateError'));
                 }
             }).catch((err) => {
-                console.log(err);
+                console.error(err);
                 message.error(t('admin.servicePackage.messages.updateError'));
             }).finally(() => {
                 handleCancel();
@@ -53,7 +53,7 @@ const ModalCreateServicePackage = ({ open, setOpen, setFetch, item = null }) => 
                     message.error(t('admin.servicePackage.messages.createError'));
                 }
             }).catch((err) => {
-                console.log(err);
+                console.error(err);
                 message.error(t('admin.servicePackage.messages.createError'));
             }).finally(() => {
                 handleCancel();
@@ -161,7 +161,7 @@ const ListServicePackage = ({ fetch, setFetch }) => {
             setData(res.data);
             setLoading(false);
         }).catch((err) => {
-            console.log(err);
+            console.error(err);
         }).finally(() => {
             setLoading(false);
             setFetch(false);
@@ -203,7 +203,7 @@ const ListServicePackage = ({ fetch, setFetch }) => {
                         message.error(t('admin.servicePackage.messages.deleteError'));
                     }
                 }).catch((err) => {
-                    console.log(err);
+                    console.error(err);
                     message.error(t('admin.servicePackage.messages.deleteError'));
                 });
             }

@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Card, Divider, Layout, Row, Col, Typography, Alert, Pagination, message, Flex } from 'antd';
 import BoxContainer from '../../Generate/BoxContainer';
 import './packageDashboard.scss';
 import { getAllPackages, addPackageToCart } from '../../../services/apiService';
 import { ShoppingCartOutlined } from '@ant-design/icons';
-import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+
 const { Header, Content } = Layout;
 const { Title, Text } = Typography;
+
 const ServiceMarketplace = () => {
+  const { t } = useTranslation();
   const [services, setServices] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 6
+  const itemsPerPage = 6;
   const navigate = useNavigate();
+
   const handleAddToCart = async (service) => {
     try {
       const values = {
@@ -25,19 +29,19 @@ const ServiceMarketplace = () => {
       if (response.status === 'OK') {
         message.success(response.message);
       } else {
-        message.error("Không thể thêm sản phẩm vào giỏ hàng.");
+        message.error(t('employer.services.addToCartError'));
       }
     } catch (error) {
       console.error("Error adding to cart:", error);
-      message.error("Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng.");
+      message.error(t('employer.services.addToCartErrorGeneric'));
     }
   };
 
   const handleCheckout = async (service) => {
     await handleAddToCart(service);
     navigate('/employer/cart');
-
   };
+
   const fetchPackages = async () => {
     try {
       const response = await getAllPackages();
@@ -46,26 +50,30 @@ const ServiceMarketplace = () => {
       console.log(error);
     }
   }
+
   useEffect(() => {
     fetchPackages();
   }, []);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
- 
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+
+  const currentServices = services.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (<>
     <BoxContainer className='shadow-md'>
-      <div className='title1'>Danh sách gói dịch vụ</div>
+      <div className='title1'>{t('employer.services.title')}</div>
     </BoxContainer>
     <BoxContainer className='shadow-md'>
       <Layout style={{ minHeight: '100vh' }}>
         <Header style={{ backgroundColor: '#E6F7FF', padding: '20px' }}>
           <Alert
-            message={<div style={{ fontWeight: 'bold' }}>Lưu ý quan trọng</div>}
-            description="Nhằm tránh rủi ro mạo danh và lừa đảo, chúng tôi khuyến nghị quý khách hàng không chuyển khoản vào bất cứ tài khoản cá nhân nào và chỉ thực hiện thanh toán vào các tài khoản chính thức của chúng tôi."
+            message={<div style={{ fontWeight: 'bold' }}>{t('employer.services.importantNotice')}</div>}
+            description={t('employer.services.noticeDescription')}
             type="info"
             showIcon
           />
@@ -74,27 +82,27 @@ const ServiceMarketplace = () => {
           <div style={{ padding: 24, backgroundColor: '#FFFFFF' }}>
             <Divider />
             <Row gutter={[24, 24]} style={{ marginTop: '20px' }}>
-              {services.map((service) => (
+              {currentServices.map((service) => (
                 <Col key={service.packageId} xs={24} sm={12} md={8}>
                   <Card
                     title={<Title level={5} style={{ color: '#52C41A' }}>{service.packageName}</Title>}
                     className='service-card'
                     actions={[
-                      <Flex justify='space-around' align='center'>
+                      <Flex key="actions" justify='space-around' align='center'>
                         <Button
                           type="default"
                           onClick={() => handleAddToCart(service)}
                           className='add-to-cart-btn'
                           icon={<ShoppingCartOutlined />}
                         >
-                          Thêm vào giỏ
+                          {t('employer.services.addToCart')}
                         </Button>
                         <Button
                           type="primary"
                           onClick={() => handleCheckout(service)}
                           className='buy-now-btn'
                         >
-                          Mua ngay
+                          {t('employer.services.buyNow')}
                         </Button>
                       </Flex>
                     ]}

@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState, useEffect } from 'react';
+import { useCallback, useRef, useState, useEffect } from 'react';
 import { Card, Flex, FloatButton, Image, Popover, Input, Button } from 'antd';
 
 import './ChatBot.scss'
@@ -6,10 +6,11 @@ import { ReceiverChat, SenderChat } from '../../../pages/Chat/ContainerofChat';
 import { connectStomp, disconnectStomp } from '../../../utils/stompConfig';
 import { SendOutlined } from '@ant-design/icons';
 import chat from '../../../services/api/chat';
-import { customScrollbarCSS } from '../../../constant/scrollbar';
+import { useTranslation } from 'react-i18next';
 
 const { TextArea } = Input;
 const ChatBot = () => {
+    const { t } = useTranslation();
     const [messages, setMessages] = useState([]);
     const [stompClient, setStompClient] = useState(null);
     const divRef = useRef(null);
@@ -120,8 +121,8 @@ const ChatBot = () => {
                         }
                     })}
                 </div>
-                <Flex className=" p-2 w-full h-auto" gap={2} justify="center" align="flex-end">
-                    <TextArea className="rounded-3xl resize-none overflow-hidden h-auto" placeholder="Nhập câu hỏi của bạn" size="large" autoSize={{ minRows: 1, maxRows: 4 }} value={newMessage} onChange={(e) => setNewMessage(e.target.value)}
+                <Flex className="w-full h-auto p-2 " gap={2} justify="center" align="flex-end">
+                    <TextArea className="h-auto overflow-hidden resize-none rounded-3xl" placeholder={t('chatbot.placeholderInput')} size="large" autoSize={{ minRows: 1, maxRows: 4 }} value={newMessage} onChange={(e) => setNewMessage(e.target.value)}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter' && !e.shiftKey) {
                                 e.preventDefault();

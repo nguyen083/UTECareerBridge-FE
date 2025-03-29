@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SearchOutlined, EyeOutlined, InboxOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons';
 import { Button, Form, Input, message, Modal, Space, Table, Tooltip } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { approvePost, getAllPostByAdmin, rejectPost } from '../../../../services/apiService';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 const TablePost = ({ status }) => {
@@ -273,7 +273,7 @@ const TablePost = ({ status }) => {
                 message.error(res.message);
             }
         }).catch(err => {
-            console.log(err);
+            console.error(err);
         }).finally(() => {
             handleModalCancel();
         })
@@ -306,10 +306,10 @@ const TablePost = ({ status }) => {
             open={isModalVisible}
             onCancel={handleModalCancel}
             footer={[
-                <Button onClick={handleModalCancel}>
+                <Button key="cancel" onClick={handleModalCancel}>
                     {t('admin.post.table.modal.cancel')}
                 </Button>,
-                <Button type="primary" onClick={() => form.submit()}>
+                <Button key="confirm" type="primary" onClick={() => form.submit()}>
                     {t('admin.post.table.modal.confirm')}
                 </Button>,
             ]}

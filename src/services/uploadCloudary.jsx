@@ -8,14 +8,12 @@ const CLOUDINARY_API_SECRET = "fVU7zJM9IoWYZAKumpfqyOazjbI";
 // Hàm tạo chữ ký (signature)
 const generateSignature = (timestamp, folder) => {
     const stringToSign = `folder=${folder}&timestamp=${timestamp}&upload_preset=${UPLOAD_PRESET}`; 
-    console.log("stringToSign:", stringToSign);
     return CryptoJS.SHA1(stringToSign + CLOUDINARY_API_SECRET).toString(CryptoJS.enc.Hex); 
 };
 // Hàm upload ảnh lên Cloudinary
 export const uploadToCloudinary = async (file, folder, onProgress) => {
     const timestamp = Math.floor(Date.now() / 1000);
     const signature = generateSignature(timestamp, folder); 
-    console.log("signature:", signature);
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", UPLOAD_PRESET);
@@ -37,7 +35,6 @@ export const uploadToCloudinary = async (file, folder, onProgress) => {
                 },
             }
         );
-        console.log("response:", response?.data);
         return response.data.secure_url; 
     } catch (error) {
         console.error("Error uploading to Cloudinary:", error.response?.data || error.message);
@@ -46,7 +43,6 @@ export const uploadToCloudinary = async (file, folder, onProgress) => {
 };
 export const deleteImageFromCloudinaryByLink = async (link, type = "image", folder = "student") => {
     const publicId = folder + "/" + link.split('/').pop().split('.')[0];
-    console.log("publicId:", publicId);
     const timestamp = Math.floor(Date.now() / 1000);
     const signature = generateSignatureDelete(publicId, timestamp);
     let endpoint;

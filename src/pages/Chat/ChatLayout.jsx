@@ -56,7 +56,7 @@ const ChatLayout = () => {
                     setMessages(res.data.content);
                 })
                 .catch((err) => {
-                    console.log(err);
+                    console.error(err);
                 });
 
             const conversationId = getConversationId(senderId, recipientId);

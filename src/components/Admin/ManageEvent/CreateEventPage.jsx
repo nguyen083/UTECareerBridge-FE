@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Input, DatePicker, TimePicker, InputNumber, Button, Select, Row, Col, Modal, message } from "antd";
 import { UploadImage } from "../../Student/Component/UploadAvatar";
 import { DeleteOutlined } from "@ant-design/icons";
@@ -61,12 +61,7 @@ const CreateEventPage = ({ open, setOpen, setIsFetching, item = null }) => {
             message.error(err.message);
         }) : updateEvent(eventDetail.eventId, formattedValues).then((res) => {
             if (res.status === 'OK') {
-
-                {
-                    eventDetail.eventImage !== formattedValues.eventImage && deleteImageFromCloudinaryByLink(eventDetail.eventImage, 'image', 'admin/event').then((res) => {
-                        console.log(res);
-                    });
-                }
+                eventDetail.eventImage !== formattedValues.eventImage && deleteImageFromCloudinaryByLink(eventDetail.eventImage, 'image', 'admin/event')
                 form.resetFields();
                 message.success(res.message);
                 setOpen(false);
@@ -191,8 +186,8 @@ const CreateEventPage = ({ open, setOpen, setIsFetching, item = null }) => {
                         rules={[{ required: true, message: t('admin.event.form.fields.timeline.required') }]}
                     >
                         {(fields, { add, remove }) => (
-                            <div className="border rounded-2 p-2">
-                                {fields.map(({ key, fieldKey, name, field }) => (
+                            <div className="p-2 border rounded-2">
+                                {fields.map(({ key, fieldKey, name }) => (
                                     <Row gutter={24} key={key} align="top" justify="space-between">
                                         <Col span={7}>
                                             <Form.Item

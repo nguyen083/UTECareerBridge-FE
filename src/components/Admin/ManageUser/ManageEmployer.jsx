@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import { Button, DatePicker, Form, Input, Modal, Select, Tabs, message } from 'antd';
-import { UserOutlined, LockOutlined, StopOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+import { Button, DatePicker, Form, Input, Modal, Select, message } from 'antd';
 import TableListUser from './TableListUser';
 import BoxContainer from '../../Generate/BoxContainer';
 import dayjs from 'dayjs';
@@ -8,50 +7,46 @@ import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { updateUser } from '../../../services/apiService';
 import { useTranslation } from 'react-i18next';
 
-const { TabPane } = Tabs;
 const { Option } = Select;
 
 const ManageListEmployer = () => {
     const { t } = useTranslation();
-    const [activeStatus, setActiveStatus] = useState('active');
     const [form] = Form.useForm();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [res, setRes] = useState(null);
 
-    const getAdditionalColumns = (status) => {
-        const columns = [];
+    // const getAdditionalColumns = (status) => {
+    //     const columns = [];
 
-        if (status === 'pending') {
-            columns.push({
-                title: t('admin.employer.table.columns.registrationDate'),
-                dataIndex: 'registrationDate',
-                key: 'registrationDate',
-            });
-        }
+    //     if (status === 'pending') {
+    //         columns.push({
+    //             title: t('admin.employer.table.columns.registrationDate'),
+    //             dataIndex: 'registrationDate',
+    //             key: 'registrationDate',
+    //         });
+    //     }
 
-        if (status === 'blocked') {
-            columns.push({
-                title: t('admin.employer.table.columns.blockReason'),
-                dataIndex: 'blockReason',
-                key: 'blockReason',
-            });
-        }
+    //     if (status === 'blocked') {
+    //         columns.push({
+    //             title: t('admin.employer.table.columns.blockReason'),
+    //             dataIndex: 'blockReason',
+    //             key: 'blockReason',
+    //         });
+    //     }
 
-        if (status === 'inactive') {
-            columns.push({
-                title: t('admin.employer.table.columns.lastLoginDate'),
-                dataIndex: 'lastLoginDate',
-                key: 'lastLoginDate',
-            });
-        }
+    //     if (status === 'inactive') {
+    //         columns.push({
+    //             title: t('admin.employer.table.columns.lastLoginDate'),
+    //             dataIndex: 'lastLoginDate',
+    //             key: 'lastLoginDate',
+    //         });
+    //     }
 
-        return columns;
-    };
+    //     return columns;
+    // };
 
-    const handleStatusChange = (newStatus) => {
-        setActiveStatus(newStatus);
-    };
+
 
     const handleEdit = async (record) => {
         form.setFieldsValue({
@@ -67,9 +62,6 @@ const ManageListEmployer = () => {
         setIsModalVisible(true);
     }
 
-    const handleDelete = async (userId) => {
-        console.log('Deleting user:', userId);
-    };
 
     const handleModalCancel = () => {
         form.resetFields();
@@ -91,6 +83,7 @@ const ManageListEmployer = () => {
             });
             handleModalCancel();
         } catch (error) {
+            console.log(error);
             message.error(t('admin.employer.messages.validateError'));
         }
     };
@@ -105,7 +98,6 @@ const ManageListEmployer = () => {
                     fetch={res}
                     userType="employer"
                     onEdit={handleEdit}
-                    onDelete={handleDelete}
                 />
             </BoxContainer>
             <Modal

@@ -1,10 +1,11 @@
 import { FaPhotoVideo } from "react-icons/fa";
 import { Flex, Typography } from 'antd';
-import React from 'react';
+import { useTranslation } from 'react-i18next';
 import BoxContainer from './BoxContainer';
 const { Text } = Typography;
 
 const YouTubeVideo = ({ link }) => {
+    const { t } = useTranslation();
     return (
         <Flex justify="center" align="center">
             {link !== null ?
@@ -23,7 +24,7 @@ const YouTubeVideo = ({ link }) => {
                 <BoxContainer background="#F6F8FB" padding="2rem" width="100%" >
                     <Flex vertical gap={1} justify='center' align='center' >
                         <FaPhotoVideo style={{ height: 80, width: 'auto', color: "#B2B4B6" }} />
-                        <Text type="secondary">Không có video giới thiệu</Text>
+                        <Text type="secondary">{t('student.layout.jobs.noVideo')}</Text>
                     </Flex>
                 </BoxContainer>
             }

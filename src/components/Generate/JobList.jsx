@@ -1,15 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { List, Card, Pagination, Select, Spin, Flex, Typography, Empty } from 'antd';
-import { EnvironmentOutlined, DollarOutlined, InboxOutlined } from '@ant-design/icons';
-import { Like } from './Like';
-import { getAllJobEmployer, getJobsByStatus } from '../../services/apiService';
+import { useState, useEffect } from 'react';
+import { List, Card, Flex, Typography, Empty } from 'antd';
+import { getAllJobEmployer } from '../../services/apiService';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IoIosBusiness } from 'react-icons/io';
 import { FaMapLocationDot } from 'react-icons/fa6';
 import { FaRegMoneyBillAlt } from 'react-icons/fa';
-
+import { useTranslation } from 'react-i18next';
 const { Title, Paragraph } = Typography;
 const JobList = () => {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
@@ -29,7 +28,7 @@ const JobList = () => {
         limit: pageSize,        
       };
       await getAllJobEmployer(id, params).then((res) => {
-        console.log(res);
+
         if (res.status === 'OK' && res.data) {
           const data = res.data.jobResponses.map((item) => {
             return {
@@ -51,11 +50,7 @@ const JobList = () => {
             pageSize: pageSize,
             total: res.data.totalPages * pageSize
           });
-          console.log(pagination);
         }
-
-
-
       });
 
 
@@ -82,16 +77,9 @@ const JobList = () => {
     navigate('/job/' + key);
 
   }
-  const handlePageSizeChange = (current, size) => {
-    setPagination({
-      ...pagination,
-      current: 1,
-      pageSize: size
-    });
-  };
-
+  
   return (
-    <div className="w-full mx-auto p-4">
+    <div className="w-full p-4 mx-auto">
       <List
         grid={{ gutter: 16, xs: 1, sm: 1, md: 1, lg: 1, xl: 1, xxl: 1 }}
         dataSource={data}
@@ -105,7 +93,7 @@ const JobList = () => {
         }}
         locale={{
           emptyText: (
-            <Empty description="Không có công việc"></Empty>
+            <Empty description={t('student.layout.jobs.noJob')}></Empty>
           ),
         }}
         renderItem={(item) => (
@@ -118,7 +106,7 @@ const JobList = () => {
               <Flex onClick={() => handleClick(item.jobId)} align='center' className='cursor-pointer'>
                 <img
                   src={item.logo}
-                  className='w-20 h-20 rounded mr-3'
+                  className='w-20 h-20 mr-3 rounded'
                 />
                 <div className='w-full'>
                   <Flex align='center' justify='space-between' >
@@ -137,8 +125,8 @@ const JobList = () => {
                   >
                     <IoIosBusiness />{item.company}
                   </Paragraph>
-                  <Flex align='center' className='text-red-500 text-sm my-2 mx-0 flex items-center gap-2'>
-                    <FaRegMoneyBillAlt /><div className='flex'>{item?.jobMinSalary?.toLocaleString('vi-VN')} - {item?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}  <div className='text-sm'>/tháng</div></div>
+                  <Flex align='center' className='flex items-center gap-2 mx-0 my-2 text-sm text-red-500'>
+                    <FaRegMoneyBillAlt /><div className='flex'>{item?.jobMinSalary?.toLocaleString('vi-VN')} - {item?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}  <div className='text-sm'>{t('common.month')}</div></div>
                   </Flex>
 
                   < Paragraph

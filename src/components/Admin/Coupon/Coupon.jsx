@@ -65,7 +65,7 @@ const CouponList = ({ fetch, setFetch }) => {
                 message.error(t('admin.coupon.deleteError'));
             }
         }).catch((err) => {
-            console.log(err);
+            console.error(err);
         }).finally(() => {
             setFetch(true);
         });
@@ -81,6 +81,7 @@ const CouponList = ({ fetch, setFetch }) => {
                         key={coupon.key}
                         actions={[
                             <Dropdown
+                                key={coupon.key}
                                 overlay={
                                     <Menu>
                                         <Menu.Item key="2" onClick={() => handleEditServicePackage(coupon)}>
@@ -112,7 +113,7 @@ const CouponList = ({ fetch, setFetch }) => {
                             }
                             description={
                                 <div className='ps-1'>
-                                    <p>{t('admin.coupon.code')} <Tag className="w-fit text-sm font-normal" color="orange">{coupon.code}</Tag></p>
+                                    <p>{t('admin.coupon.code')} <Tag className="text-sm font-normal w-fit" color="orange">{coupon.code}</Tag></p>
                                     <p>{coupon.description}</p>
                                     <Flex align="center">
                                         <p>{t('admin.coupon.remaining')} {coupon.amount}</p> <Divider type="vertical" />
@@ -145,7 +146,6 @@ const ModalCreateCoupon = ({ open, setOpen, setFetch, item = null }) => {
     };
     useEffect(() => {
         if (item) {
-            console.log(item);
             setCoupon(item);
             form.setFieldsValue(item);
         }
@@ -162,14 +162,13 @@ const ModalCreateCoupon = ({ open, setOpen, setFetch, item = null }) => {
                     message.error(res.message);
                 }
             }).catch((err) => {
-                console.log(err);
+                console.error(err);
             }).finally(() => {
                 handleCancel();
                 setFetch(true);
             });
 
         } else {
-            console.log(values);
             createCoupon(values).then((res) => {
                 if (res.status === 'OK') {
                     message.success(res.message);
@@ -178,7 +177,7 @@ const ModalCreateCoupon = ({ open, setOpen, setFetch, item = null }) => {
                     message.error(res.message);
                 }
             }).catch((err) => {
-                console.log(err);
+                console.error(err);
             }
             ).finally(() => {
                 handleCancel();

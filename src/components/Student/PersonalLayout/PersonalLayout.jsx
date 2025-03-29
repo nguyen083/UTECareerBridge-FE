@@ -1,10 +1,10 @@
 import { Col, List, Row, Typography, Flex, Card, Modal, Form, message, Switch, Radio, Menu, Button } from "antd";
 import styles from "./PersonalLayout.module.scss";
-import React, { useEffect, useState } from 'react';
-import { PaperClipOutlined, DashboardOutlined, SettingOutlined, SolutionOutlined } from '@ant-design/icons';
+import { useEffect, useState } from 'react';
+import { PaperClipOutlined, SettingOutlined, SolutionOutlined } from '@ant-design/icons';
 import { IoBriefcaseOutline } from "react-icons/io5";
+import { HiLightBulb } from "react-icons/hi";
 import { IoIosBusiness } from "react-icons/io";
-
 import BoxContainer from "../../Generate/BoxContainer";
 import { JobCardSmall } from "../../Generate/JobCard";
 import { getAllCV, getSimilarJob, updateFindjob, updateResumeActive } from "../../../services/apiService";
@@ -14,36 +14,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { apiService } from "../../../services/getAddressId";
 import { setFindJob } from "../../../redux/action/studentSlice";
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
-// import { renameFile } from "../../../services/cloudinary";
 const { Text, Link } = Typography;
 const { Meta } = Card;
 
 const PersonalLayout = () => {
     const location = useLocation();
     const navigate = useNavigate();
-
-   
     const [listResume, setListResume] = useState([]);
     const [willLoveJob, setWillLoveJob] = useState([]);
-
-   
     const [modalResume, setModalResume] = useState(false);
-   
     const infor = useSelector((state) => state.student);
-
     const dispatch = useDispatch();
-   
     const [formResume] = Form.useForm();
-   
     const [address, setAddress] = useState("");
     const [resumeIdActive, setResumeIdActive] = useState(0);
 
     const menuItems = [
-       
-       
-       
-       
-       
         {
             key: "/profile",
             label: <div className="text-base">Hồ sơ của tôi</div>,
@@ -58,6 +44,11 @@ const PersonalLayout = () => {
             key: "/my-job",
             label: <div className="text-base">Việc làm của tôi</div>,
             icon: <IoBriefcaseOutline />
+        },
+        {
+            key: "/recommend-job",
+            label: <div className="text-base">Đề xuất việc làm</div>,
+            icon: <HiLightBulb />
         },
         {
             key: "/account-management",
@@ -191,10 +182,10 @@ const PersonalLayout = () => {
 
             <Col span={6} className={`${styles.sol_r}`}>
                 {willLoveJob?.length > 0 &&
-                    <Card actions={[<Link onClick={() => { navigate('/search', { state: { filters: { categoryId: infor.categoryId } } }) }}>Xem thêm</Link>]} title={<div className='title2 p-3 text-start'>Việc làm bạn sẽ thích</div>}
+                    <Card actions={[<Link key={willLoveJob.jobId} onClick={() => { navigate('/search', { state: { filters: { categoryId: infor.categoryId } } }) }}>Xem thêm</Link>]} title={<div className='p-3 title2 text-start'>Việc làm bạn sẽ thích</div>}
                         style={{ width: "100%" }} size='small'>
                         <Flex gap={"0.5rem"} vertical>
-                            {willLoveJob.map((job) => <JobCardSmall job={job} />)}
+                            {willLoveJob.map((job) => <JobCardSmall key={job.jobId} job={job} />)}
                         </Flex>
                     </Card>}
             </Col>

@@ -35,8 +35,14 @@
         "seeMore": "See more",
         "learnMore": "Learn more",
         "or": "or",
+        "googleLogin": "Login with Google",
         "hot": "Hot",
-        "urgent": "Urgent"
+        "urgent": "Urgent",
+        "ok": "OK",
+        "loading": "Loading...",
+        "collapse": "Collapse",
+        "month": "month",
+        "dragAndDrop": "Drag and drop or click to upload image"
     },
     "role": {
         "admin": "Admin",
@@ -48,17 +54,24 @@
             "jobs": {
                 "title": "Jobs",
                 "newest": "Newest Jobs",
-                "search": "Search Jobs"
+                "search": "Search Jobs",
+                "noJob": "No job",
+                "noVideo": "No video"
             },
             "myJobs": {
                 "title": "My Jobs",
                 "saved": "Saved Jobs",
-                "applied": "Applied Jobs"
+                "applied": "Applied Jobs",
+                "recommend": "Recommend Jobs"
             },
             "events": {
                 "title": "Events",
                 "all": "All Events"
             }
+        },
+        "recommend": {
+            "title": "Recommend Jobs",
+            "description": "Recommend jobs for you based on your activity on the system. Please select a job to view details!"
         }
     },
     "employer":{
@@ -176,6 +189,25 @@
         "company": {
             "title": "Company",
             "info": "Company Information",
+            "size": "Company Size",
+            "sizePlaceholder": "Please select",
+            "sizeLessThan10": "Less than 10",
+            "sizeMoreThan50000": "More than 50,000",
+            "industry": "Company Industry",
+            "industryRequired": "Please select company industry",
+            "industryPlaceholder": "Please select",
+            "benefits": "Company Benefits",
+            "benefitDescriptionPlaceholder": "Enter benefit description",
+            "addBenefit": "Add benefit",
+            "description": "Company Description",
+            "logo": "Company Logo",
+            "logoTooltip": "Drag and drop or click to upload image",
+            "backgroundImage": "Company Image",
+            "imageTooltip": "Drag and drop or click to upload image",
+            "websitePlaceholder": "Company website URL",
+            "video": "Company Video",
+            "videoPlaceholder": "Copy and paste your YouTube link here",
+            "addressPlaceholder": "Example: 130 Suong Nguyet Anh, Ben Thanh Ward, District 1",
             "certificate": {
                 "title": "Business Certificate",
                 "uploadLabel": "Business Certificate Image",
@@ -221,6 +253,161 @@
                 "updateSuccess": "Profile updated successfully",
                 "updateError": "Failed to update profile"
             }
+        },
+        "interview": {
+            "title": "Interview List"
+        },
+        "manageJobs": {
+            "listJobs": "Job List",
+            "tabs": {
+                "active": "Active",
+                "inactive": "Hidden",
+                "pending": "Pending",
+                "rejected": "Rejected"
+            },
+            "deleteConfirm": "Are you sure you want to delete this job?",
+            "hideConfirm": "Are you sure you want to hide this job?",
+            "showConfirm": "Are you sure you want to show this job?",
+            "hideShow": "Hide/Show",
+            "search": {
+                "placeholder": "Search {field}",
+                "search": "Search",
+                "reset": "Reset",
+                "filter": "Filter",
+                "close": "Close"
+            }
+        },
+        "job": {
+            "title": "Title",
+            "titleRequired": "Please enter a title",
+            "location": "Work Location",
+            "locationRequired": "Please enter work location",
+            "category": "Category",
+            "categoryRequired": "Please select a category",
+            "categoryPlaceholder": "Please select",
+            "minSalary": "Minimum Salary",
+            "minSalaryRequired": "Please enter minimum salary",
+            "maxSalary": "Maximum Salary",
+            "maxSalaryRequired": "Please enter maximum salary",
+            "salaryError": "Maximum salary must be greater than minimum salary",
+            "deadline": "Deadline",
+            "deadlineRequired": "Please enter application deadline",
+            "deadlinePlaceholder": "Please select a date",
+            "quantity": "Number of Positions",
+            "quantityRequired": "Please enter the number of positions",
+            "level": "Level",
+            "levelRequired": "Please select a level",
+            "levelPlaceholder": "Please select",
+            "skills": "Required Skills",
+            "skillsRequired": "Please select at least one skill",
+            "skillsPlaceholder": "Please select skills",
+            "requirements": "Job Requirements",
+            "description": "Job Description",
+            "descriptionPlaceholder": "Enter job description",
+            "basicInfo": "Job Information",
+            "requirementsInfo": "Job Requirements",
+            "editJob": "Edit Job",
+            "postJob": "Post a Job",
+            "post": "Post",
+            "packagePlaceholder": "Please select service package",
+            "packageDetailTitle": "Service Package Details",
+            "packageRemainingAmount": "Remaining Amount",
+            "packageDuration": "Job Posting Duration",
+            "selectPackage": "Select Service Package",
+            "resume": "Resume",
+            "uploadedAt": "Uploaded at",
+            "updateResume": "Update resume",
+            "noResume": "No resume, please upload",
+            "forEmployer": "For Employer",
+            "searchResume": "Search Resume",
+            "contact": "Contact",
+            "aboutUteinTECH": "About Ute inTECH",
+            "termsOfUse": "Terms of Use",
+            "privacyPolicy": "Privacy Policy",
+            "jobsByIndustry": "Jobs by Industry",
+            "findJob": "Find Job",
+            "accounting": "Accounting",
+            "banking": "Banking",
+            "automotiveTechnology": "Automotive Technology",
+            "informationTechnology": "Information Technology",
+            "construction": "Construction",
+            "aboutUteCareerbridge": "About Ute Careerbridge",
+            "faq": "FAQ",
+            "search": {
+                "placeholder": "Search for jobs, skills...",
+                "noResults": "No jobs found"
+            },
+            "categories": {
+                "media": "Media/Broadcasting",
+                "mechanical": "Mechanical/Manufacturing/Automation",
+                "automotive": "Automotive Technology",
+                "it": "Information Technology",
+                "electrical": "Electrical/Electronics/HVAC",
+                "accounting": "Accounting/Auditing",
+                "hospitality": "Hotels/Restaurants",
+                "marketing": "Marketing/Communications/Advertising",
+                "banking": "Banking/Finance"
+            },
+            "apply": {
+                "success": "Application successful",
+                "alreadyApplied": "You have already applied",
+                "selectApplication": "Select application",
+                "title": "Apply for job",
+                "submit": "Apply"
+            },
+            "save": {
+                "saved": "Saved",
+                "saveJob": "Save job"
+            }
+        },
+        "resumes": {
+            "jobSeekerList": "List of job-seeking students",
+            "industry": "Industry",
+            "studentYear": "Year {{year}} student",
+            "major": "major in {{major}}",
+            "email": "Email",
+            "viewResume": "View resume"
+        },
+        "orders": {
+            "title": "Orders",
+            "orderId": "Order ID",
+            "orderDate": "Order Date",
+            "couponCode": "Coupon Code",
+            "total": "Total",
+            "status": "Status",
+            "actions": "View / Pay",
+            "pending": "Pending",
+            "paid": "Paid",
+            "pay": "Pay",
+            "view": "View details",
+            "loadError": "Error loading order list",
+            "orderDetail": "Order Details",
+            "orderInfo": "Order Information",
+            "company": "Company",
+            "discount": "Discount",
+            "paymentDate": "Payment Date",
+            "packageName": "Package Name",
+            "amount": "Amount",
+            "price": "Price",
+            "packageList": "Service Package List",
+            "paymentMethod": "Select Payment Method",
+            "vnpay": "VNPAY e-Wallet",
+            "paymentSuccess": "Payment successful!",
+            "paymentError": "Payment failed"
+        },
+        "services": {
+            "title": "Service Packages",
+            "importantNotice": "Important Notice",
+            "noticeDescription": "To avoid identity theft and fraud, we recommend that you do not transfer funds to any personal account and only make payments to our official accounts.",
+            "addToCart": "Add to Cart",
+            "buyNow": "Buy Now",
+            "addToCartError": "Cannot add product to cart.",
+            "addToCartErrorGeneric": "An error occurred while adding product to cart."
+        },
+        "voucher": {
+            "selectTitle": "Select voucher",
+            "useNow": "Use now",
+            "fetchError": "Error fetching coupons"
         }
     },
     "auth": {
@@ -233,6 +420,15 @@
             "emailPlaceholder": "Enter email/phone number",
             "passwordPlaceholder": "Enter password",
             "googleLogin": "Login with Google"
+        },
+        "forgotPassword": {
+            "title": "Forgot Password",
+            "description": "Create a new password and continue using",
+            "emailAddress": "Email Address",
+            "emailRequired": "Please enter your email address",
+            "invalidEmail": "Invalid email",
+            "confirm": "Confirm",
+            "userNotFound": "User information not found"
         },
         "register": {
             "title": "Register",
@@ -255,12 +451,13 @@
             "passwordRequired": "Enter your password",
             "confirmPasswordRequired": "Confirm your password",
             "terms": "You have read and agree to our terms and conditions"
-
         },
         "resetPassword": {
             "success": "Password reset successful",
             "error": "Password reset failed. Please try again later",
-            "userNotFound": "User information not found"
+            "userNotFound": "User information not found",
+            "title": "Reset Password",
+            "description": "Please enter a new password for user"
         }
     },
     "profile": {
@@ -268,6 +465,24 @@
             "currentPassword": "Current password",
             "newPassword": "New password",
             "confirmNewPassword": "Confirm new password"
+        }
+    },
+    "cv": {
+        "upload": {
+            "success": "Upload successful!",
+            "error": "Upload failed. Please try again.",
+            "deleteSuccess": "Resume deleted successfully!",
+            "deleteError": "Failed to delete resume",
+            "updateError": "Failed to update resume"
+        },
+        "form": {
+            "title": "Title",
+            "titleRequired": "Please enter a title!",
+            "description": "Description",
+            "descriptionRequired": "Please enter a description!",
+            "descriptionPlaceholder": "Enter resume description",
+            "level": "Level",
+            "levelRequired": "Please select a level!"
         }
     },
     "job": {
@@ -289,29 +504,13 @@
         "apply": {
             "success": "Application successful",
             "alreadyApplied": "You have already applied",
-            "selectApplication": "Select application"
+            "selectApplication": "Select application",
+            "title": "Apply for job",
+            "submit": "Apply"
         },
         "save": {
             "saved": "Saved",
             "saveJob": "Save job"
-        }
-    },
-    "cv": {
-        "upload": {
-            "success": "Upload successful!",
-            "error": "Upload failed. Please try again.",
-            "deleteSuccess": "Resume deleted successfully!",
-            "deleteError": "Failed to delete resume",
-            "updateError": "Failed to update resume"
-        },
-        "form": {
-            "title": "Title",
-            "titleRequired": "Please enter a title!",
-            "description": "Description",
-            "descriptionRequired": "Please enter a description!",
-            "descriptionPlaceholder": "Enter resume description",
-            "level": "Level",
-            "levelRequired": "Please select a level!"
         }
     },
     "errors": {
@@ -655,6 +854,7 @@
                 "applicant": "Candidates",
                 "manageJobs": "Jobs",
                 "resumes": "Resumes",
+                "interview": "Interview",
                 "orders": "Orders",
                 "messages": "Messages",
                 "services": "Service Packages",
@@ -860,5 +1060,8 @@
                 "deleteError": "Delete service package failed"
             }
         }
+    },
+    "chatbot": {
+        "placeholderInput": "Type your message here..."
     }
 }

@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card, Radio, Typography, Flex, Dropdown } from 'antd';
 import { PaperClipOutlined, MoreOutlined } from '@ant-design/icons';
 import { getAllCV } from '../../services/apiService';
+import { useTranslation } from 'react-i18next';
 
 const { Text, Link } = Typography;
 
 const FileGroup = ({ formData, setFormData }) => {
     const [data, setData] = useState([]);
+    const { t } = useTranslation();
 
     useEffect(() => {
         let isMounted = true;
-
         const fetchData = async () => {
             try {
                 const response = await getAllCV();
@@ -38,11 +39,6 @@ const FileGroup = ({ formData, setFormData }) => {
     };
 
     const dropdownItems = [
-       
-       
-       
-       
-       
     ];
 
     return (
@@ -67,7 +63,7 @@ const FileGroup = ({ formData, setFormData }) => {
                                     </Typography.Link>
                                     <br />
                                     <Text type="secondary">
-                                        <PaperClipOutlined /> Hồ sơ đính kèm • Tải lên lúc: {item.updatedAt}
+                                        <PaperClipOutlined /> {t('employer.job.resume')} • {t('employer.job.uploadedAt')}: {item.updatedAt}
                                     </Text>
                                 </div>
                                 <Dropdown
@@ -82,9 +78,9 @@ const FileGroup = ({ formData, setFormData }) => {
                 ) : (
                     <Flex align="center" justify="center">
                         <Text>
-                            Không có CV nào, Vui lòng{' '}
+                            {t('employer.job.noResume')}
                             <Link href="http://localhost:3000/profile" target="_blank">
-                                cập nhật CV của bạn
+                                {t('employer.job.updateResume')}
                             </Link>
                         </Text>
                     </Flex>

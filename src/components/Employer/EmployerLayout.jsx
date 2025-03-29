@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './EmployerLayout.scss';
 import { IoBusinessOutline } from "react-icons/io5";
 import { LiaBriefcaseSolid } from "react-icons/lia";
@@ -11,8 +11,8 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { setInfor } from '../../redux/action/employerSlice.jsx';
 import { useRedux } from '../../utils/useRedux.jsx';
-import FooterComponent from '../Generate/Footer.jsx';
 import { AiOutlinePayCircle } from "react-icons/ai";
+import { IoMdChatboxes } from "react-icons/io";
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -22,17 +22,15 @@ import {
     TeamOutlined,
     UploadOutlined,
     UserOutlined,
-    BellOutlined,
     MenuOutlined,
     ShoppingCartOutlined,
 } from '@ant-design/icons';
-import { Layout, Menu, Avatar, Flex, Badge, Button, Tooltip, message, Space, Typography } from 'antd';
+import { Layout, Menu, Avatar, Flex, Badge, Button, Tooltip, message } from 'antd';
 import { getInfor, logOut, removeAllToken } from '../../services/apiService.jsx';
 import { loading, stop } from '../../redux/action/webSlice.jsx';
 import COLOR from '../styles/_variables.jsx';
 import ChangeLanguageBtn from './../Generate/ChangeLanguageBtn';
-const { Header, Content, Footer, Sider } = Layout;
-const { Text } = Typography;
+const { Header, Content, Sider } = Layout;
 const siderStyle = {
     overflow: 'auto',
     height: '100vh',
@@ -96,9 +94,10 @@ const EmployerLayout = () => {
             ] 
         },
         { key: '/employer/post-job', icon: <UploadOutlined />, label: t('admin.employer.sidebar.postJob') },
-        { key: '/employer/applicant/list-job', icon: <TeamOutlined />, label: t('admin.employer.sidebar.applicant') },
         { key: '/employer/manage-list-jobs', icon: <LiaBriefcaseSolid />, label: t('admin.employer.sidebar.manageJobs') },
+        { key: '/employer/applicant/list-job', icon: <TeamOutlined />, label: t('admin.employer.sidebar.applicant') },
         { key: '/employer/list-resumes', icon: <SolutionOutlined />, label: t('admin.employer.sidebar.resumes') },
+        { key: '/employer/interview', icon: <IoMdChatboxes />, label: t('admin.employer.sidebar.interview') },
         { key: '/employer/list-order', icon: <AiOutlinePayCircle />, label: t('admin.employer.sidebar.orders') },
         { key: '/employer/chat', icon: <MdOutlineMessage />, label: t('admin.employer.sidebar.messages') },
         { key: '/employer/buy-service', icon: <BsTicketPerforated />, label: t('admin.employer.sidebar.services') },
@@ -195,14 +194,14 @@ const EmployerLayout = () => {
                         <Flex gap={20} align='center'>
                             <Tooltip title={t('employer.header.cart')} placement='bottom' color={COLOR.bgTooltipColor}>
                                 <Badge count={0}>
-                                    <Button onClick={() => navigate('/employer/cart')} className='btn-header rounded-full btn-bell' size='large' type="text">
+                                    <Button onClick={() => navigate('/employer/cart')} className='rounded-full btn-header btn-bell' size='large' type="text">
                                         <ShoppingCartOutlined />
                                     </Button>
                                 </Badge>
                             </Tooltip>
                             {/* <Tooltip title='Thông báo' placement='bottom' color={COLOR.bgTooltipColor}>
                                 <Badge count={0}>
-                                    <Button className='btn-header rounded-full btn-bell' size='large' type="text">
+                                    <Button className='rounded-full btn-header btn-bell' size='large' type="text">
                                         <BellOutlined />
                                     </Button>
                                 </Badge>

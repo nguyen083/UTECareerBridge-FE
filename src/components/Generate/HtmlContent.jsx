@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Typography } from 'antd';
-
+import { useTranslation } from 'react-i18next';
 const { Paragraph, Link } = Typography;
 
 const HtmlContent = ({ htmlString, className = 'text-base' }) => {
     const [expanded, setExpanded] = useState(false);
-
+    const { t } = useTranslation();
     return (
         <Paragraph
             ellipsis={{
                 expandable: true,
                 rows: 100,
-                symbol: "Xem thêm",
+                symbol: t('common.seeMore'),
                 onExpand: () => setExpanded(true),
                 expanded: expanded
             }}
@@ -22,7 +22,7 @@ const HtmlContent = ({ htmlString, className = 'text-base' }) => {
             />{expanded && (
                 <div className="mt-2">
                     <Link onClick={() => setExpanded(false)}>
-                        Thu gọn
+                        {t('common.collapse')}
                     </Link>
                 </div>
             )}

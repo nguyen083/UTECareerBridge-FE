@@ -7,9 +7,12 @@ import './ListApplicant.scss';
 import { getAllApplicantByCategoryId, getAllJobCategories } from "../../../services/apiService";
 import { FaFilter } from "react-icons/fa6";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const { Text } = Typography;
+const { Option } = Select;
 const ListApplicant = ({ categoryId }) => {
+    const { t } = useTranslation();
     const navigate = useNavigate();
     const [datasource, setDatasource] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -60,15 +63,15 @@ const ListApplicant = ({ categoryId }) => {
                             title={<Text className="text-base font-bold">{item?.lastName} {item?.firstName}</Text>}
                             description={
                                 <>
-                                    <Text className="text-base"> Sinh viên năm {item?.year}, chuyên ngành {item?.categoryName}</Text>
+                                    <Text className="text-base"> {t('employer.resumes.studentYear', { year: item?.year })}, {t('employer.resumes.major', { major: item?.categoryName })}</Text>
                                     <br />
-                                    <Text className="text-base"> <span className="font-bold">Email:</span> {item?.email}</Text>
+                                    <Text className="text-base"> <span className="font-bold">{t('employer.resumes.email')}:</span> {item?.email}</Text>
                                 </>
                             }
                         />
                         <Button onClick={() => {
                             navigate(`/employer/detail-resume`, { state: { datasource: item } });
-                        }} type="default" size="large">Xem hồ sơ</Button>
+                        }} type="default" size="large">{t('employer.resumes.viewResume')}</Button>
                     </List.Item>
                 )} />
         </>
@@ -77,6 +80,7 @@ const ListApplicant = ({ categoryId }) => {
 
 
 const ListResumes = () => {
+    const { t } = useTranslation();
     const [listCategory, setListCategory] = useState([]);
     const [categoryId, setCategoryId] = useState(useSelector(state => state.employer.categoryId));
     useEffect(() => {
@@ -91,13 +95,13 @@ const ListResumes = () => {
     return (
         <>
             <BoxContainer className="shadow-md">
-                <div className="title1">Danh sách sinh viên đang tìm việc</div>
+                <div className="title1">{t('employer.resumes.jobSeekerList')}</div>
             </BoxContainer>
             <BoxContainer className="shadow-md">
                 <Flex align="center" justify="end">
                     <Select
                         value={categoryId}
-                        placeholder='Ngành nghề'
+                        placeholder={t('employer.resumes.industry')}
                         size="large"
                         style={{ minWidth: 200 }}
                         allowClear

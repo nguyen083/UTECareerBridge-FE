@@ -6,16 +6,6 @@ const setToken = (accessToken, refreshToken) => {
   localStorage.setItem('accessToken', accessToken);
   document.cookie = `refreshToken=${refreshToken}`;
 }
-const objectToFormData = (obj) => {
-  const formData = new FormData();
-  for (const key in obj) {
-    if (obj.hasOwnProperty(key)) {
-      formData.append(key, obj[key]);
-    }
-  }
-  return formData;
-};
-
 
 const removeAllToken = () => {
   localStorage.removeItem('accessToken');
@@ -60,12 +50,10 @@ const updateEmployerProfile = async (values) => {
   return axios.post('employers/update-profile', values);
 }
 const updateEmployerCompanyProfile = async (values) => {
-  console.log("values: ", values);
   return axios.post('employers/update-company-profile', values);
 }
 
 const updateBusinessCertificate = async (values) => {
-  console.log("values: ", values);
   return axios.post('employers/legal-info', values);
 }
 const getAllJobCategories = async () => {
@@ -280,7 +268,6 @@ const getCVByEmployer = async (id) => {
 }
 const searchJob = async (values) => {
   const params = new URLSearchParams(values).toString();
-  console.log("params: ", params);
   return axios.get(`jobs/search?${params}`);
 }
 const followCompany = async (id) => {

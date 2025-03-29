@@ -1,6 +1,6 @@
-import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
-import { Input, Card, Typography, Flex, Empty } from "antd";
-import React, { useEffect, useState } from "react";
+import { CloseOutlined } from "@ant-design/icons";
+import { Card, Typography, Flex, Empty, message } from "antd";
+import { useEffect, useState } from "react";
 import Banner from "./Banner";
 import FeaturedJobs from "./FeaturedJobs";
 import "./HomePage.scss";
@@ -24,7 +24,7 @@ const HomePage = () => {
     getJobUrgent().then(res => {
       setJobsUrgent(res.data.jobResponses);
     }).catch(err => {
-      console.log(err);
+      console.error(err);
     });
   }
 
@@ -32,7 +32,7 @@ const HomePage = () => {
     getJobsNewest().then(res => {
       setJobsNewest(res.data.jobResponses);
     }).catch(err => {
-      console.log(err);
+      console.error(err);
     });
   }
   const fetchAds = async () => {
@@ -58,7 +58,7 @@ const HomePage = () => {
         <div>
           <div className="gradient-background">
             <Alert
-              className="rounded-none border-0 "
+              className="border-0 rounded-none "
               style={{ background: COLOR.textColor, color: COLOR.backgroundColor }}
               closable={{ closeIcon: <CloseOutlined style={{ color: COLOR.backgroundColor }} /> }}
              
