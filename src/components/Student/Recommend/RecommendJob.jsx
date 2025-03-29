@@ -13,7 +13,7 @@ const RecommendJob = () => {
     const userId = useSelector(state => state.user.userId);
     const fetchRecommendJob = async () => {
         const response = await job.getRecommendJob(userId);
-        const data = response.data.map(job => ({
+        const data = response.map(job => ({
             jobId: job.job_id,
             jobTitle: job.job_title,
             employerResponse: {
@@ -22,7 +22,7 @@ const RecommendJob = () => {
             },
             jobMinSalary: job.job_min_salary,
             jobMaxSalary: job.job_max_salary,
-            jobLocation: job?.job_location || '',
+            jobLocation: job.job_location ,
         })  );
         setRecommendJob(data);
     }

@@ -1,11 +1,13 @@
-import React, { useEffect } from 'react';
+import  { useEffect } from 'react';
 import { Button, Result } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { stop } from '../../redux/action/webSlice';
+import { useTranslation } from 'react-i18next';
 const Page500 = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { t } = useTranslation();
     useEffect(() => {
         dispatch(stop());
     }, []);
