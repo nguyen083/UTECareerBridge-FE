@@ -1,5 +1,4 @@
 import { Card, Typography, Flex } from "antd";
-import React from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { useMediaQuery } from "react-responsive";
@@ -61,7 +60,7 @@ const FeaturedJobs = ({ jobs }) => {
                       </div>
                       <div className="card-details">
                         <Flex justify='space-between' align="center" gap={3} className="mb-1">
-                          <Text className="font-bold text-base job-title">{job.jobTitle} </Text>
+                          <Text className="text-base font-bold job-title">{job.jobTitle} </Text>
                           {Lable(job.packageId)}
                         </Flex>
                         <Text className="text-sm company-name">{job.employerResponse?.companyName}</Text>

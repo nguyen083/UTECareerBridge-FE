@@ -1,25 +1,17 @@
-import { List, Tabs, message } from "antd";
+import { List, message } from "antd";
 import { useEffect, useState } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ApplicantCard from "../../Generate/ApplicantCard";
 import { getApplyJobByJobId } from "../../../services/apiService";
 import { useTranslation } from "react-i18next";
 
-const { TabPane } = Tabs;
-const ListApplicant = () => {
+const ListApplicant = ({activeKey, jobId : id}) => {
     const { t } = useTranslation();
     const [currentPage, setCurrentPage] = useState(1);
     const [totalApplicants, setTotalApplicants] = useState(0);
     const [pageSize, setPageSize] = useState(10);
-    const location = useLocation();
-    const navigate = useNavigate();
-    const activeKey = location.hash.replace('#', '') || 'PENDING';
     const [listApplicant, setListApplicant] = useState([]);
-    const { id } = useParams();
    
-    const handleTabChange = (key) => {
-        navigate(`#${key}`);
-    };
+
     const fetchData = async () => {
         const response = await getApplyJobByJobId(id, activeKey);
         if (response.status === "OK" && response.data) {
@@ -47,26 +39,11 @@ const ListApplicant = () => {
 
     return (
         <>
-            <Tabs size='large' activeKey={activeKey} onChange={handleTabChange}>
-                <TabPane
-                    tab={t('employer.applicant.tabs.pending')}
-                    key="PENDING"
-                />
-                <TabPane
-                    tab={t('employer.applicant.tabs.viewed')}
-                    key="VIEWED"
-                />
-                <TabPane
-                    tab={t('employer.applicant.tabs.approved')}
-                    key="APPROVED"
-                />
-                <TabPane
-                    tab={t('employer.applicant.tabs.rejected')}
-                    key="REJECTED"
-                />
-            </Tabs>
             <List
                 dataSource={listApplicant}
+                locale={{
+                    emptyText: t('employer.applicant.messages.empty')
+                }}
                 pagination={{
                     current: currentPage,
                     total: totalApplicants,

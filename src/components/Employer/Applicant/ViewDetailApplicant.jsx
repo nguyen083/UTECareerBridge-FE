@@ -1,9 +1,9 @@
-import { Affix, Button, Col, DatePicker, Flex, Form, Input, message, Modal, Radio, Row, Select, Space, Typography } from "antd";
+import { Affix, Button, Col, DatePicker, Flex, Form, Input, InputNumber, message, Modal, Radio, Row, Space, Typography } from "antd";
 import BoxContainer from "../../Generate/BoxContainer";
 import ViewCV from "../../Student/CV/ViewCV";
 import styles from "./ViewDetailApplicant.module.scss";
-import { CheckOutlined, CloseCircleOutlined, CloseOutlined } from "@ant-design/icons";
-import { useParams, useLocation, useSearchParams } from "react-router-dom";
+import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
+import { useParams, useLocation } from "react-router-dom";
 import { convertStatus, sendMailApprove } from "../../../services/apiService";
 import { useEffect, useState } from "react";
 import './ModalInterview.scss';
@@ -20,6 +20,8 @@ const ViewDetailApplicant = () => {
     const location = useLocation();
     const [open, setOpen] = useState(false);
     const [studentId, setStudentId] = useState(null);
+    const [resumeId, setResumeId] = useState(null);
+    const [email, setEmail] = useState(null);
 
     useEffect(() => {
         if (location.state?.status === "PENDING") {
@@ -48,13 +50,13 @@ const ViewDetailApplicant = () => {
                     </Flex>
                 </BoxContainer>
             </Affix>}
-            <ViewCV setStudentId={setStudentId} />
-            <ModalInterview open={open} setOpen={setOpen} studentId={studentId} />
+            <ViewCV setStudentId={setStudentId} setResumeId={setResumeId} setEmail={setEmail} />
+            <ModalInterview open={open} setOpen={setOpen} resumeId={resumeId} studentId={studentId} email={email} />
         </Flex >
     )
 }
 
-export const ModalInterview = ({ open, setOpen, studentId }) => {
+export const ModalInterview = ({ open, setOpen, studentId, resumeId, email }) => {
     const { t } = useTranslation();
     const { id } = useParams();
     const [form] = Form.useForm();
@@ -63,6 +65,11 @@ export const ModalInterview = ({ open, setOpen, studentId }) => {
     const location = useLocation();
     const dispatch = useDispatch();
     const load = useSelector(state => state.web.loading);
+
+    const generateLink = () => {
+        const link = window.location.protocol + '//' + window.location.host + '/meeting/' + Math.floor(100000 + Math.random() * 900000);
+        return link;
+    }
 
     const handleOk = () => {
         form.submit();
@@ -76,11 +83,19 @@ export const ModalInterview = ({ open, setOpen, studentId }) => {
     const handleSubmit = (values) => {
         values.studentId = studentId;
         if (type === "ONLINE") {
-            values.jobId = location.state?.jobId;
-            values.interviewDate = dayjs(values.interviewDate).format('YYYY-MM-DD HH:mm:ss');
-            values.interviewMethod = type;
+            const payload = {
+                jobId: location.state?.jobId,
+                resumeId: resumeId,
+                candidateEmail: email,
+                title: values.jobPosition,
+                description: values.description,
+                startTime: dayjs(values.interviewDate).toISOString(),
+                link: values.link,
+                durationMinutes: values.durationMinutes,
+                attendeeEmails: [email],
+            }
             dispatch(loading());
-            sendMailApprove(values).then((res) => {
+            sendMailApprove(payload).then((res) => {
                 if (res.status === "OK") {
                     message.success(res.message);
                 } else {
@@ -121,13 +136,16 @@ export const ModalInterview = ({ open, setOpen, studentId }) => {
             <Form.Item required label={t('employer.applicant.viewDetail.interview.time.label')} name='interviewDate' rules={[{ required: true, message: t('employer.applicant.viewDetail.interview.time.required') }]} >
                 <DatePicker placeholder={t('employer.applicant.viewDetail.interview.time.placeholder')} allowClear showTime className="w-full" format={'DD/MM/YYYY HH:mm:ss'} disabledDate={disablePastDates} />
             </Form.Item>
-            <Form.Item required name="interviewLocation" layout="vertical" label={t('employer.applicant.viewDetail.interview.location.online.label')} rules={[{ required: true, message: t('employer.applicant.viewDetail.interview.location.online.required') }]} >
-                <Input.TextArea allowClear rows={4} placeholder={t('employer.applicant.viewDetail.interview.location.online.placeholder')} />
+            <Form.Item required name="link" layout="vertical" label={t('employer.applicant.viewDetail.interview.location.online.label')} rules={[{ required: true, message: t('employer.applicant.viewDetail.interview.location.online.required') }]} >
+                <Input disabled />
             </Form.Item>
-            <Form.Item label={t('employer.applicant.viewDetail.interview.additionalInfo')} name='description' >
-                <CustomizeQuill />
+            <Form.Item label={t('employer.applicant.viewDetail.interview.additionalInfo.label')} name='description' >
+                <Input.TextArea allowClear rows={4} placeholder={t('employer.applicant.viewDetail.interview.additionalInfo.placeholder')} />
             </Form.Item>
-            <Form.Item required label={t('employer.applicant.viewDetail.interview.interviewer.label')} name='interviewer' rules={[{ required: true, message: t('employer.applicant.viewDetail.interview.interviewer.required') }]} >
+            <Form.Item className="w-full" required label={t('employer.applicant.viewDetail.interview.duration.label')} name='durationMinutes' rules={[{ required: true, message: t('employer.applicant.viewDetail.interview.duration.required') }]} >
+                <InputNumber min={1} className="w-full" placeholder={t('employer.applicant.viewDetail.interview.duration.placeholder')} />
+            </Form.Item>
+            {/* <Form.Item required label={t('employer.applicant.viewDetail.interview.interviewer.label')} name='interviewer' rules={[{ required: true, message: t('employer.applicant.viewDetail.interview.interviewer.required') }]} >
                 <Input allowClear placeholder={t('employer.applicant.viewDetail.interview.interviewer.placeholder')} />
             </Form.Item>
             <Form.Item name='contactEmail'
@@ -147,7 +165,7 @@ export const ModalInterview = ({ open, setOpen, studentId }) => {
                         message: t('employer.applicant.viewDetail.interview.contact.phone.invalid')
                     }]} validateFirst >
                 <Input allowClear placeholder={t('employer.applicant.viewDetail.interview.contact.phone.placeholder')} />
-            </Form.Item>
+            </Form.Item> */}
         </>
     )
 
@@ -205,7 +223,7 @@ export const ModalInterview = ({ open, setOpen, studentId }) => {
             <Button loading={load} size="large" key="submit" type="primary" onClick={handleOk}>{t('employer.applicant.viewDetail.interview.send')}</Button>,
         ]}
     >
-        <Form autoComplete="on" layout="vertical" required size="large" form={form} onFinish={handleSubmit}>
+        <Form autoComplete="on" layout="vertical" required size="large" form={form} onFinish={handleSubmit} initialValues={{ link: generateLink() }}>
             <Form.Item label={t('employer.applicant.viewDetail.interview.type.label')}>
                 <Radio.Group value={type} onChange={(e) => { form.resetFields(); setType(e.target.value) }}>
                     <Radio className="text-base" value="OFFLINE">{t('employer.applicant.viewDetail.interview.type.offline')}</Radio>

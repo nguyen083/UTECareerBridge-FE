@@ -10,7 +10,7 @@ import { getCVByEmployer, getCVById } from '../../../services/apiService';
 import { apiService } from '../../../services/getAddressId';
 import { useSelector } from 'react-redux';
 const { Text, Title } = Typography;
-const ViewCV = ({ setStudentId = null }) => {
+const ViewCV = ({ setStudentId = null, setResumeId = null, setEmail = null }) => {
     const user = useSelector(state => state.user);
     const { id } = useParams();
     const location = useLocation();
@@ -94,6 +94,8 @@ const ViewCV = ({ setStudentId = null }) => {
                     if (res.status === 'OK') {
                         setCv(res.data);
                         setStudentId(res.data.studentId);
+                        setResumeId(res.data.resumeId);
+                        setEmail(res.data.email);
                         apiService.getInforAddress(res.data.address, res.data.provinceId, res.data.districtId, res.data.wardId).then((res) => {
                             setAddress(res);
                         })
@@ -174,7 +176,7 @@ const ViewCV = ({ setStudentId = null }) => {
                     Thông tin chung
                 </Title>
                 <Divider className='my-0' />
-                <div className='my-4 mx-3'>
+                <div className='mx-3 my-4'>
                     <Descriptions layout='horizontal' column={2} items={items} />
                 </div>
                 <Title level={4}>

@@ -29,7 +29,6 @@ const ChatBot = () => {
         return newId;
     };
 
-
     const cleanMarkdownText = (text) => {
         if (!text) return '';
 
@@ -42,7 +41,7 @@ const ChatBot = () => {
         const newSessionId = generateSessionId();
         setSessionId(newSessionId);
         setStompClient(client);
-        client.subscribe('/chatbot/' + newSessionId, (response) => {
+        client.subscribe('/chatbot/' + newSessionId, (response) => { 
             const responseBody = JSON.parse(response.body);
             const botMessage = {
                 content: cleanMarkdownText(responseBody.message.content),

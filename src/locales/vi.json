@@ -123,7 +123,16 @@
                           "required": "Vui lòng nhập địa điểm phỏng vấn!"
                       }
                   },
-                  "additionalInfo": "Thông tin bổ sung",
+                  "duration": {
+                      "label": "Thời gian phỏng vấn",
+                      "placeholder": "Nhập thời gian phỏng vấn",
+                      "required": "Vui lòng nhập thời gian phỏng vấn!"
+                  },
+                  "additionalInfo": {
+                      "label": "Thông tin bổ sung",
+                      "placeholder": "Nhập thông tin bổ sung",
+                      "required": "Vui lòng nhập thông tin bổ sung!"
+                  },
                   "interviewer": {
                       "label": "Người phỏng vấn",
                       "placeholder": "Người phỏng vấn",

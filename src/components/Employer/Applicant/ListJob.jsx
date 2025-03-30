@@ -3,11 +3,13 @@ import { JobCardLargeApplicant } from "../../Generate/JobCard";
 import { useEffect, useState } from "react";
 import { getJobsByStatus } from "../../../services/apiService";
 import { useTranslation } from "react-i18next";
+import ListApplicantDrawer from "./ListApplicantDrawer";
 const { Text } = Typography;
 const ListJob = () => {
     const {t} = useTranslation();
     const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
+    // const [loading, setLoading] = useState(false);
+    const [selectedJob, setSelectedJob] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [totalRecords, setTotalRecords] = useState(0);
@@ -43,12 +45,12 @@ const ListJob = () => {
 
             <List
                 split={false}
-                loading={loading}
+                // loading={loading}
                 dataSource={data}
                 renderItem={job => (
                     <List.Item>
                         <div style={{ width: '100%' }}>
-                            <JobCardLargeApplicant job={job} />
+                            <JobCardLargeApplicant job={job} setSelectedJob={setSelectedJob} />
                         </div>
                     </List.Item>
                 )}
@@ -63,7 +65,7 @@ const ListJob = () => {
                     },
                 }}
             />
-
+            <ListApplicantDrawer open={selectedJob !== null} setSelectedJob={setSelectedJob} jobId={selectedJob} />
         </>
     )
 }

@@ -108,10 +108,9 @@ const JobCardLarge = ({ job, disable = false }) => {
     );
 };
 
-const JobCardLargeApplicant = ({ job }) => {
-    const navigate = useNavigate();
+const JobCardLargeApplicant = ({ job, setSelectedJob }) => {
     const handleClick = (key) => {
-        navigate('/employer/applicant/list-applicant-job/' + key);
+        setSelectedJob(key);
     };
     return <div style={{ cursor: 'pointer' }} onClick={() => handleClick(job.jobId)}>
         <div>
