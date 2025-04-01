@@ -1,6 +1,5 @@
-import { Avatar, Button, Flex, List, Tabs } from "antd";
+import { Flex, Tabs } from "antd";
 import BoxContainer from "../../../Generate/BoxContainer";
-import { Link } from "react-router-dom";
 import ListCompany from "./ListCompany";
 import { useTranslation } from "react-i18next";
 

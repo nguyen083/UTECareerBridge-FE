@@ -108,7 +108,7 @@ export const ModalInterview = ({ open, setOpen, studentId, resumeId, email }) =>
                 convertStatus(id, "APPROVED").then((response) => {
                     console.log(response);
                     if (response.status === "OK") {
-                        message.success(response.message);
+                        // message.success(response.message);
                         handleCancel();
                     }
                 }).catch((err) => {

@@ -19,6 +19,15 @@
     "my_company": "Công ty của tôi",
     "follow_company": "Theo dõi công ty",
     "marquee": "Khởi đầu sự nghiệp, tìm việc dễ dàng - Cơ hội nghề nghiệp dành cho bạn ngay hôm nay!",
+    "notification": {
+      "title": "Thông báo",
+      "system": "Hệ thống",
+      "personal": "Cá nhân",
+      "table":{
+        "title": "Tiêu đề",
+        "time": "Thời gian"
+      }
+    },
     "all_categories": {
         "title": "Tất cả danh mục"
     },

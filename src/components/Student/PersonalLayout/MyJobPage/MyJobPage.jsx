@@ -1,5 +1,5 @@
 import BoxContainer from "../../../Generate/BoxContainer";
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Table, Flex, Typography, Tabs, Alert } from 'antd';
 import { getApplyJobByStudent, getJobSaved } from '../../../../services/apiService';
 import Status from "../../../../constant/status";
@@ -52,7 +52,6 @@ const AppliedJob = () => {
             </Text></Link>,
             ellipsis: true,
             width: "39%"
-
         },
         {
             title: 'CV',
@@ -184,14 +183,14 @@ const MyJobPage = () => {
         navigate(`#${key}`);
     };
 
-    useEffect(() => {
+    // useEffect(() => {
        
-        const tabFromHash = location.hash.replace('#', '');
-        if (tabFromHash) {
+    //     const tabFromHash = location.hash.replace('#', '');
+    //     if (tabFromHash) {
            
            
-        }
-    }, [location.hash]);
+    //     }
+    // }, [location.hash]);
     return (<>
         <Flex vertical gap={8}>
             <BoxContainer width="100%">
@@ -204,7 +203,7 @@ const MyJobPage = () => {
                         <Flex vertical gap={16}>
                             <Alert
                                 message={<Text strong>Chú ý</Text>}
-                                description={<Text>Nếu đơn ứng tuyển có trạng thái <Text strong>"Đã duyệt"</Text>. Vui lòng kiểm tra email để xem thông báo phỏng vấn. </Text>}
+                                description={<Text>Nếu đơn ứng tuyển có trạng thái <Text className="text-text-color" >"Đã duyệt"</Text>. Vui lòng kiểm tra email để xem thông báo phỏng vấn. </Text>}
                                 type="info"
                                 showIcon
                             />

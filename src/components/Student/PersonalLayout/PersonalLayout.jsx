@@ -1,27 +1,25 @@
 import { Col, List, Row, Typography, Flex, Card, Modal, Form, message, Switch, Radio, Menu, Button } from "antd";
 import styles from "./PersonalLayout.module.scss";
 import { useEffect, useState } from 'react';
-import { PaperClipOutlined, SettingOutlined, SolutionOutlined } from '@ant-design/icons';
+import { NotificationOutlined, PaperClipOutlined, SettingOutlined, SolutionOutlined } from '@ant-design/icons';
 import { IoBriefcaseOutline } from "react-icons/io5";
 import { HiLightBulb } from "react-icons/hi";
 import { IoIosBusiness } from "react-icons/io";
 import BoxContainer from "../../Generate/BoxContainer";
-import { JobCardSmall } from "../../Generate/JobCard";
-import { getAllCV, getSimilarJob, updateFindjob, updateResumeActive } from "../../../services/apiService";
+import { getAllCV, updateFindjob, updateResumeActive } from "../../../services/apiService";
 
 
 import { useDispatch, useSelector } from "react-redux";
 import { apiService } from "../../../services/getAddressId";
 import { setFindJob } from "../../../redux/action/studentSlice";
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
-const { Text, Link } = Typography;
+const { Text } = Typography;
 const { Meta } = Card;
 
 const PersonalLayout = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [listResume, setListResume] = useState([]);
-    const [willLoveJob, setWillLoveJob] = useState([]);
     const [modalResume, setModalResume] = useState(false);
     const infor = useSelector((state) => state.student);
     const dispatch = useDispatch();
@@ -34,6 +32,11 @@ const PersonalLayout = () => {
             key: "/profile",
             label: <div className="text-base">Hồ sơ của tôi</div>,
             icon: <SolutionOutlined />,
+        },
+        {
+            key: "/notification",
+            label: <div className="text-base">Thông báo</div>,
+            icon: <NotificationOutlined />,
         },
         {
             key: "/my-company",
@@ -92,21 +95,12 @@ const PersonalLayout = () => {
    
     useEffect(() => {
         apiService.getInforAddress(infor.address, infor.provinceId, infor.districtId, infor.wardId).then((res) => { console.log(res), setAddress(res) });
-
     }, [infor]);
    
 
    
     useEffect(() => {
         fetchCV();
-       
-        getSimilarJob(infor.categoryId).then((res) => {
-            if (res.status === 'OK' && res.data !== null) {
-                setWillLoveJob(res.data?.jobResponses);
-            }
-        });
-
-
     }, []);
 
 
@@ -139,7 +133,7 @@ const PersonalLayout = () => {
         });
     }
     return (<>
-        <Row gutter={[16, 8]} className={styles["row"]}>
+        <Row gutter={[16, 8]} className="px-12 py-4">
             <Col span={5} className={styles["col_l"]}>
                 <Row justify="center" >
                     <Col span={24}>
@@ -176,18 +170,8 @@ const PersonalLayout = () => {
                 </Row>
             </Col>
 
-            <Col span={13} className={styles["col_c"]}>
+            <Col span={19} className={styles["col_c"]}>
                 <Outlet context={{ infor, address, listResume, fetchCV }} />
-            </Col>
-
-            <Col span={6} className={`${styles.sol_r}`}>
-                {willLoveJob?.length > 0 &&
-                    <Card actions={[<Link key={willLoveJob.jobId} onClick={() => { navigate('/search', { state: { filters: { categoryId: infor.categoryId } } }) }}>Xem thêm</Link>]} title={<div className='p-3 title2 text-start'>Việc làm bạn sẽ thích</div>}
-                        style={{ width: "100%" }} size='small'>
-                        <Flex gap={"0.5rem"} vertical>
-                            {willLoveJob.map((job) => <JobCardSmall key={job.jobId} job={job} />)}
-                        </Flex>
-                    </Card>}
             </Col>
         </Row >
 

@@ -1,6 +1,6 @@
 import { BellOutlined, SyncOutlined } from "@ant-design/icons";
 import { Badge, Button, Divider, Flex, List, Popover, Tag, Tooltip, Typography } from "antd";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import COLOR from "../styles/_variables";
 import "./Notification.scss"; // Import file SCSS
 import '../Generate/CustomizePopover.scss'; // Import file SCSS
@@ -72,8 +72,8 @@ const Notification = ({ userId = null }) => {
         try {
             setLoading(true);
             if (userId === null) return;
-            const response = await getAllNotificationById(userId);
-            setNotification(response);
+            // const response = await getAllNotificationById(userId);
+            // setNotification(response);
         } catch (error) {
             console.log(error);
         } finally {
@@ -105,7 +105,7 @@ const Notification = ({ userId = null }) => {
         >
             <Tooltip title="Thông báo" placement="bottom" color={COLOR.bgTooltipColor}>
                 <Badge count={notification.filter((item) => item.read === true).length}>
-                    <Button className="btn-header rounded-full btn-bell" size="large" type="text">
+                    <Button className="rounded-full btn-header btn-bell" size="large" type="text">
                         <BellOutlined />
                     </Button>
                 </Badge>

@@ -8,6 +8,7 @@ import { lazy, Suspense, useEffect } from "react"
 import { connectStomp, disconnectStomp } from './utils/stompConfig.js';
 import RecommendJob from './components/Student/Recommend/RecommendJob.jsx';
 import InterviewList from './components/Employer/Interview/InterviewList.jsx';
+import Notification from './components/Generate/Notification/Notification.jsx';
 
 const GoogleAuthCallback = lazy(() => import("./components/Student/GoogleAuthCallback.jsx"));
 const ChatEmployerLayout = lazy(() => import('./components/Employer/Chat/ChatEmployerLayout.jsx'))
@@ -199,6 +200,7 @@ const App = () => {
                     <Route path='/profile' element={<ProfilePage />} />
 
                     <Route path='/my-company' element={<MyCompanyPage />} />
+                    <Route path='/notification' element={<Notification />} />
                     <Route path='/my-job' element={<MyJobPage />} />
                     <Route path='/account-management' element={<AccountManagement />} />
                   </Route>

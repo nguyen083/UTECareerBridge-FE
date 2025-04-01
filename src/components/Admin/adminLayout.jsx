@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './adminLayout.scss';
-import Notification from '../Generate/Notification.jsx';
+// import Notification from '../Generate/Notification.jsx';
 import { useTranslation } from 'react-i18next';
 import {
     DashboardOutlined,
@@ -12,7 +12,7 @@ import {
     GlobalOutlined,
     MenuOutlined
 } from '@ant-design/icons';
-import { Layout, Menu, Avatar, Flex, Badge, Space, message } from 'antd';
+import { Layout, Menu, Avatar, Flex, Space, message } from 'antd';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logOut, removeAllToken } from '../../services/apiService';
@@ -43,8 +43,8 @@ const AdminLayout = () => {
     const adminInfo = useSelector(state => state.admin);
     const name = `${adminInfo?.firstName || ''} ${adminInfo?.lastName || ''}`;
     const avatar = adminInfo?.avatar;
-    const notifications = useSelector(state => state.notifications?.unread || 0);
-    const messages = useSelector(state => state.messages?.unread || 0);
+    // const notifications = useSelector(state => state.notifications?.unread || 0);
+    // const messages = useSelector(state => state.messages?.unread || 0);
 
     const itemSider = [
         {

@@ -19,6 +19,15 @@
     "build_your_branch": "Build your personal brand with UTE-Career",
     "follow_company": "Follow company",
     "marquee": "Kickstart your career, find a job with ease - Career opportunities await you today!",
+    "notification": {
+        "title": "Notification",
+        "system": "System",
+        "personal": "Personal",
+        "table":{
+            "title": "Title",
+            "time": "Time"
+        }
+    },
     "all_categories": {
         "title": "All Categories"
     },
