@@ -72,27 +72,24 @@ const ListNotification = ({ type = "system" }) => {
     const onConnected = useCallback((client) => {
         if (client) {
             // Đăng ký kênh nhận thông báo broadcast
-            client.subscribe('/notifications/broadcast/' + id, (response) => { 
-                // Sử dụng messageData để ghi log và có thể hiển thị thông báo
+            client.subscribe('/notifications/broadcast', (response) => { 
                 try {
                     const messageData = JSON.parse(response.body);
                     console.log('Broadcast notification received:', messageData);
-                    
-                    // Tự động refresh dữ liệu khi có thông báo mới
-                    getNotification();
+                    setNotifications((prevNotifications) => [messageData, ...prevNotifications]);
+                    setTotal(prevTotal => prevTotal + 1);
                 } catch (error) {
                     console.error('Lỗi khi xử lý dữ liệu từ WebSocket:', error);
                 }
             });
             
-            // Đăng ký kênh nhận thông báo cá nhân
             client.subscribe('/user/' + id + '/notifications/personal', (response) => { 
                 try {
                     const messageData = JSON.parse(response.body);
                     console.log('Personal notification received:', messageData);
                     
-                    // Tự động refresh dữ liệu khi có thông báo mới
-                    getNotification();
+                    setNotifications((prevNotifications) => [messageData, ...prevNotifications]);
+                    setTotal(prevTotal => prevTotal + 1);
                 } catch (error) {
                     console.error('Lỗi khi xử lý dữ liệu từ WebSocket:', error);
                 }
