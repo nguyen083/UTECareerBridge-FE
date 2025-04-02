@@ -13,18 +13,37 @@ export const connectStomp = (onConnected, onError) => {
         return stompClient;
     }
 
+    // Lấy token từ localStorage
+    const accessToken = localStorage.getItem('accessToken');
+    
+    // Kiểm tra token có tồn tại không
+    if (!accessToken) {
+        console.error('Không tìm thấy access token. Không thể kết nối WebSocket.');
+        if (onError) onError(new Error('Không tìm thấy access token'));
+        return null;
+    }
+
+    console.log('Kết nối WebSocket với token:', accessToken.substring(0, 10) + '...');
+
+    // Tạo instance mới của SockJS với endpoint /ws
+    const socket = new SockJS('/ws');
+
     stompClient = new Client({
-        webSocketFactory: () => new SockJS('/ws'),
+        webSocketFactory: () => socket,
         connectHeaders: {
-            'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+            'Authorization': 'Bearer ' + accessToken
         },
-        // debug: (str) => console.log(str),
+        debug: (str) => {
+            if (str.includes('Connect headers')) {
+                console.log('STOMP connect headers sent:', str);
+            }
+        },
         reconnectDelay: 5000,
         heartbeatIncoming: 4000,
         heartbeatOutgoing: 4000,
 
         onConnect: () => {
-            // console.log('WebSocket đã kết nối.');
+            console.log('WebSocket đã kết nối thành công.');
             isConnected = true;
             if (onConnected) onConnected(stompClient);
 
@@ -40,11 +59,17 @@ export const connectStomp = (onConnected, onError) => {
         },
 
         onWebSocketClose: () => {
-            // console.log('WebSocket đã đóng.');
+            console.log('WebSocket đã đóng kết nối.');
             isConnected = false;
         }
     });
 
+    // Kiểm tra và log trực tiếp headers trước khi kết nối
+    if (stompClient._connectHeaders) {
+        console.log('Client connect headers trước khi activate:', stompClient._connectHeaders);
+    }
+
+    // Kích hoạt kết nối
     stompClient.activate();
     return stompClient;
 };
@@ -112,3 +137,22 @@ export const unsubscribeFromTopic = (topic) => {
 
 // ✅ Lấy STOMP client hiện tại
 export const getStompClient = () => stompClient;
+
+// ✅ Tái kết nối WebSocket với token mới
+export const reconnectWithNewToken = () => {
+    // Ngắt kết nối cũ
+    if (stompClient) {
+        try {
+            stompClient.deactivate();
+        } catch (error) {
+            console.error('Lỗi khi đóng kết nối WebSocket cũ:', error);
+        }
+    }
+    
+    // Reset trạng thái
+    stompClient = null;
+    isConnected = false;
+    
+    // Kết nối lại
+    return connectStomp();
+};

@@ -548,48 +548,51 @@
             }
         },
         "dashboard": {
-          "title": "Overview",
-          "filters": {
-            "allMonths": "All months",
-            "month": "Month {month}",
-            "allYears": "All years"
-          },
-          "stats": {
-            "currentMonthRevenue": "Current Month Revenue",
-            "totalCandidates": "Total Candidates",
-            "totalEmployers": "Total Employers",
-            "conversionRate": "Conversion Rate"
-          },
-          "charts": {
-            "monthlyRevenue": "Monthly Revenue",
-            "revenue": "Revenue (VND)",
-            "packageCount": "Package Count",
-            "topPackages": "Top Selling Packages",
-            "jobsByCategory": "Jobs by Category",
-            "packages": "{value} packages - {percentage}%",
-            "jobs": "{value} jobs - {percentage}%"
-          },
-          "errors": {
-            "loadData": "Error loading data"
-          }
+            "title": "Overview",
+            "filters": {
+                "allMonths": "All months",
+                "month": "Month {month}",
+                "allYears": "All years"
+            },
+            "stats": {
+                "currentMonthRevenue": "Current Month Revenue",
+                "totalCandidates": "Total Candidates",
+                "totalEmployers": "Total Employers",
+                "conversionRate": "Conversion Rate"
+            },
+            "charts": {
+                "monthlyRevenue": "Monthly Revenue",
+                "revenue": "Revenue (VND)",
+                "packageCount": "Package Count",
+                "topPackages": "Top Selling Packages",
+                "jobsByCategory": "Jobs by Category",
+                "packages": "{value} packages - {percentage}%",
+                "jobs": "{value} jobs - {percentage}%"
+            },
+            "errors": {
+                "loadData": "Error loading data"
+            }
         },
         "sidebar": {
-        "overview": "Overview",
-        "userManagement": "User Management",
-        "candidates": "Candidates",
-        "employers": "Employers",
-        "companyManagement": "Company Management",
-        "companyApproval": "Company Approval",
-        "postApproval": "Post Approval",
-        "transactionManagement": "Transaction Management",
-        "servicePackages": "Service Packages",
-        "coupons": "Coupons",
-        "contentManagement": "Content Management",
-        "newsAndEvents": "News & Events",
-        "logout": "Logout"
+            "overview": "Overview",
+            "userManagement": "User Management",
+            "candidates": "Candidates",
+            "employers": "Employers",
+            "companyManagement": "Company Management",
+            "companyApproval": "Company Approval",
+            "postApproval": "Post Approval",
+            "transactionManagement": "Transaction Management",
+            "servicePackages": "Service Packages",
+            "coupons": "Coupons",
+            "contentManagement": "Content Management",
+            "newsAndEvents": "News & Events",
+            "notification": "Notification",
+            "createNotification": "Create Notification",
+            "notificationList": "Notification List",
+            "logout": "Logout"
         },
         "messages": {
-        "error": "An error occurred"
+            "error": "An error occurred"
         },
         "coupon": {
             "title": "Coupons",
@@ -606,42 +609,42 @@
             "remaining": "Remaining:",
             "expireDate": "Expire Date:",
             "form": {
-              "code": {
-                "label": "Coupon Code",
-                "placeholder": "Enter coupon code",
-                "required": "Please enter coupon code!"
-              },
-              "amount": {
-                "label": "Amount",
-                "required": "Please enter amount!"
-              },
-              "discount": {
-                "label": "Discount",
-                "required": "Please enter discount!"
-              },
-              "maxUsage": {
-                "label": "Maximum Usage",
-                "required": "Please enter maximum usage!"
-              },
-              "expiredAt": {
-                "label": "Expiry Date",
-                "required": "Please select expiry date!"
-              },
-              "description": {
-                "label": "Description",
-                "required": "Please enter description!"
-              },
-              "status": {
-                "label": "Status",
-                "placeholder": "Select status",
-                "active": "Active",
-                "inactive": "Inactive"
-              },
-              "buttons": {
-                "update": "Update",
-                "create": "Create",
-                "cancel": "Cancel"
-              }
+                "code": {
+                    "label": "Coupon Code",
+                    "placeholder": "Enter coupon code",
+                    "required": "Please enter coupon code!"
+                },
+                "amount": {
+                    "label": "Amount",
+                    "required": "Please enter amount!"
+                },
+                "discount": {
+                    "label": "Discount",
+                    "required": "Please enter discount!"
+                },
+                "maxUsage": {
+                    "label": "Maximum Usage",
+                    "required": "Please enter maximum usage!"
+                },
+                "expiredAt": {
+                    "label": "Expiry Date",
+                    "required": "Please select expiry date!"
+                },
+                "description": {
+                    "label": "Description",
+                    "required": "Please enter description!"
+                },
+                "status": {
+                    "label": "Status",
+                    "placeholder": "Select status",
+                    "active": "Active",
+                    "inactive": "Inactive"
+                },
+                "buttons": {
+                    "update": "Update",
+                    "create": "Create",
+                    "cancel": "Cancel"
+                }
             }
         },
         "company": {
@@ -1078,6 +1081,21 @@
                 "updateError": "Update service package failed",
                 "deleteSuccess": "Delete service package successfully",
                 "deleteError": "Delete service package failed"
+            }
+        },
+        "notification": {
+            "title": "Notification",
+            "create": "Create Notification",
+            "list": "Notification List",
+            "form": {
+                "title": "Title",
+                "titleRequired": "Please enter title!",
+                "description": "Description",
+                "descriptionRequired": "Please enter description!"
+            },
+            "messages": {
+                "createSuccess": "Notification created successfully",
+                "createError": "Notification creation failed"
             }
         }
     },

@@ -10,7 +10,8 @@ import {
     FileTextOutlined,
     DollarOutlined,
     GlobalOutlined,
-    MenuOutlined
+    MenuOutlined,
+    NotificationOutlined
 } from '@ant-design/icons';
 import { Layout, Menu, Avatar, Flex, Space, message } from 'antd';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
@@ -87,6 +88,15 @@ const AdminLayout = () => {
                 { key: '/admin/news-events', label: t('admin.sidebar.newsAndEvents') },
             ]
         },
+        {
+            key: '7',
+            icon: <NotificationOutlined />,
+            label: t('admin.sidebar.notification'),
+            children: [
+                { key: '/admin/create-notification', label: t('admin.sidebar.createNotification') },
+                { key: '/admin/notification-list', label: t('admin.sidebar.notificationList') },
+            ]
+        },
         { key: 'logout', icon: <LogoutOutlined />, label: t('admin.sidebar.logout') },
     ];
 
@@ -103,7 +113,7 @@ const AdminLayout = () => {
                 } else {
                     message.error(t('admin.messages.error'));
                 }
-            } catch (error) {
+            } catch {
                 message.error(t('admin.messages.error'));
             } finally {
                 dispatch(stop());

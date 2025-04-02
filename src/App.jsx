@@ -9,7 +9,8 @@ import { connectStomp, disconnectStomp } from './utils/stompConfig.js';
 import RecommendJob from './components/Student/Recommend/RecommendJob.jsx';
 import InterviewList from './components/Employer/Interview/InterviewList.jsx';
 import Notification from './components/Generate/Notification/Notification.jsx';
-
+import CreateNotification from './components/Admin/Notification/CreateNotification.jsx';
+import NotificationList from './components/Admin/Notification/NotificationList.jsx';
 const GoogleAuthCallback = lazy(() => import("./components/Student/GoogleAuthCallback.jsx"));
 const ChatEmployerLayout = lazy(() => import('./components/Employer/Chat/ChatEmployerLayout.jsx'))
 const HomePage = lazy(() => import("./components/Student/HomePage/HomePage.jsx"));
@@ -256,6 +257,8 @@ const App = () => {
                   <Route path='post-approval' element={<PostApproval />} />
                   <Route path='news-events' element={<ListEvent />} />
                   <Route path='coupons' element={<Coupon />} />
+                  <Route path='create-notification' element={<CreateNotification />} />
+                  <Route path='notification-list' element={<NotificationList />} />
                 </Route>
 
                 <Route path='forgot-password' element={<BackgroundAndForm />}>

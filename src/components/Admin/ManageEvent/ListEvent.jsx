@@ -6,7 +6,7 @@ import { DeleteOutlined, EditOutlined, EyeOutlined, MoreOutlined, PlusOutlined }
 import { FaFilter } from "react-icons/fa";
 import './ListEvent.scss';
 import { getAllEvent, deleteEvent } from "../../../services/apiService";
-import { deleteImageFromCloudinary, deleteImageFromCloudinaryByLink } from "../../../services/uploadCloudary";
+import {  deleteImageFromCloudinaryByLink } from "../../../services/uploadCloudary";
 import { useTranslation } from 'react-i18next';
 
 const { Text, Title } = Typography;
@@ -97,11 +97,12 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
                 renderItem={(item) => (
                     <Card
                         size="small"
-                        className="card-event shadow">
+                        className="shadow card-event">
                         <List.Item
                             className="!py-0"
                             actions={[
                                 <Dropdown
+                                    key={item.eventId}
                                     overlay={
                                         <Menu>
                                             <Menu.Item key="1" onClick={() => { window.open(`/event-detail/${item.eventId}`, '_blank') }}>
@@ -140,7 +141,7 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
                                     <br />
                                     <Text className="font-bold">{t('admin.event.list.location')}: </Text> <Text>{item.eventLocation}</Text>
                                     <br />
-                                    <Tag className="w-fit text-sm font-normal" color="blue">{item.eventType}</Tag>
+                                    <Tag className="text-sm font-normal w-fit" color="blue">{item.eventType}</Tag>
                                 </>
                                 }
                             />
@@ -154,6 +155,7 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
 };
 
 const ListEvent = () => {
+    const { t } = useTranslation();
     const [open, setOpen] = useState(false);
     const [isFetching, setIsFetching] = useState(false);
     const [eventType, setEventType] = useState(null);

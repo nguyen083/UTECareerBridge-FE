@@ -556,6 +556,9 @@
       "coupons": "Mã giảm giá",
       "contentManagement": "Quản lý nội dung",
       "newsAndEvents": "Tin tức & Sự kiện",
+      "notification": "Thông báo",
+      "createNotification": "Tạo thông báo",
+      "notificationList": "Danh sách thông báo",
       "logout": "Đăng xuất"
       },
       "messages": {
@@ -1048,6 +1051,21 @@
           "updateError": "Cập nhật gói dịch vụ thất bại",
           "deleteSuccess": "Xóa gói dịch vụ thành công",
           "deleteError": "Xóa gói dịch vụ thất bại"
+        }
+      },
+      "notification": {
+        "title": "Thông báo",
+        "create": "Tạo thông báo",
+        "list": "Danh sách thông báo",
+        "form": {
+          "title": "Tiêu đề",
+          "titleRequired": "Vui lòng nhập tiêu đề thông báo!",
+          "description": "Mô tả",
+          "descriptionRequired": "Vui lòng nhập mô tả thông báo!"
+        },
+        "messages": {
+          "createSuccess": "Thông báo đã được tạo thành công!",
+          "createError": "Thông báo đã tạo thất bại!"
         }
       }
     },
