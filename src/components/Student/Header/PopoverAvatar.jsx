@@ -1,6 +1,6 @@
-import { DashboardOutlined, LogoutOutlined, SettingOutlined, SolutionOutlined, UserOutlined } from "@ant-design/icons";
+import { BellOutlined, LogoutOutlined, SettingOutlined, SolutionOutlined, UserOutlined } from "@ant-design/icons";
 import { Avatar, Button, Divider, Flex, Menu, Popover, Typography, message } from "antd";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import './PopoverAvatar.scss';
 import { current, loading, stop } from "../../../redux/action/webSlice.jsx";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,16 +12,18 @@ import { IoBriefcaseOutline } from "react-icons/io5";
 const menuItems = [
    
     { key: '2', icon: <SolutionOutlined />, label: 'Hồ Sơ Của Tôi' },
-    { key: '3', icon: <IoIosBusiness />, label: 'Công Ty Của Tôi' },
-    { key: '4', icon: <IoBriefcaseOutline />, label: 'Việc Làm Của Tôi' },
+    { key: '3', icon: <BellOutlined />, label: 'Thông báo' },
+    { key: '4', icon: <IoIosBusiness />, label: 'Công Ty Của Tôi' },
+    { key: '5', icon: <IoBriefcaseOutline />, label: 'Việc Làm Của Tôi' },
     { key: '6', icon: <SettingOutlined />, label: 'Đổi mật khẩu' },
     { key: '7', icon: <LogoutOutlined />, label: 'Đăng xuất' },
 ];
 const navigationMap = {
     '1': '/dashboard',
     '2': '/profile',
-    '3': '/my-company',
-    '4': '/my-job',
+    '3': '/notification',
+    '4': '/my-company',
+    '5': '/my-job',
     '6': '/account-management',
     '7': 'logout'
 };

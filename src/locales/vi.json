@@ -833,6 +833,7 @@
         },
         "sidebar": {
           "dashboard": "Thống kê",
+          "notification": "Thông báo",
           "account": {
             "title": "Tài khoản",
             "profile": "Thông tin cá nhân",

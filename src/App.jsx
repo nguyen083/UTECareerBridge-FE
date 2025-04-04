@@ -221,6 +221,7 @@ const App = () => {
                 <Route path='employer' element={<EmployerLayout />} >
                   <Route path="" element={<Navigate to="dashboard" replace />} />
                   <Route index path='dashboard' element={<DashBoard />} />
+                  <Route path='notification' element={<Notification />} />
                   <Route path='infor-company/:id' element={<InforCompany />} />
                   <Route path='profile' element={<EmployerProfile />} />
                   <Route path='change-password' element={<EmployerChangePassword />} />

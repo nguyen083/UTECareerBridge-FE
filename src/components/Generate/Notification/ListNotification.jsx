@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom";
 import { connectStomp, disconnectStomp } from "../../../utils/stompConfig";
 const { Text } = Typography;
 
+
 const ListNotification = ({ type = "system" }) => {
     const [notifications, setNotifications] = useState([]);
-    // const [stompClient, setStompClient] = useState(null);
     const id = useSelector(state => state.user.userId);
     const [loading, setLoading] = useState(false);
     const [page, setPage] = useState(1);
@@ -18,7 +18,6 @@ const ListNotification = ({ type = "system" }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     
-    // Reset trang khi loại thông báo thay đổi
     useEffect(() => {
         setPage(1);
     }, [type]);
@@ -38,7 +37,7 @@ const ListNotification = ({ type = "system" }) => {
           title: t('notification.table.time'),
           dataIndex: 'notificationDate',
           key: 'notificationDate',
-          width: '20%',
+          width: '10%',
           render: text => <p className="text-sm text-gray-500">{new Date(text).toLocaleString()}</p>,
         },
     ]
@@ -71,44 +70,54 @@ const ListNotification = ({ type = "system" }) => {
 
     const onConnected = useCallback((client) => {
         if (client) {
-            // Đăng ký kênh nhận thông báo broadcast
-            client.subscribe('/notifications/broadcast', (response) => { 
-                try {
-                    const messageData = JSON.parse(response.body);
-                    console.log('Broadcast notification received:', messageData);
-                    setNotifications((prevNotifications) => [messageData, ...prevNotifications]);
-                    setTotal(prevTotal => prevTotal + 1);
-                } catch (error) {
-                    console.error('Lỗi khi xử lý dữ liệu từ WebSocket:', error);
-                }
-            });
+            let subscription = null;
             
-            client.subscribe('/user/' + id + '/notifications/personal', (response) => { 
-                try {
-                    const messageData = JSON.parse(response.body);
-                    console.log('Personal notification received:', messageData);
-                    
-                    setNotifications((prevNotifications) => [messageData, ...prevNotifications]);
-                    setTotal(prevTotal => prevTotal + 1);
-                } catch (error) {
-                    console.error('Lỗi khi xử lý dữ liệu từ WebSocket:', error);
-                }
-            });
-        }
-    }, [id, getNotification]);
+            if (type === "system") {
+                subscription = client.subscribe('/notifications/broadcast', (response) => { 
+                    try {
+                        const messageData = JSON.parse(response.body);
+                        setNotifications((prevNotifications) => [messageData, ...prevNotifications]);
+                        setTotal(prevTotal => prevTotal + 1);
+                    } catch (error) {
+                        console.error('Lỗi khi xử lý dữ liệu từ WebSocket:', error);
+                    }
+                });
+            } else {
+                subscription = client.subscribe('/user/' + id + '/notifications/personal', (response) => { 
+                    try {
+                        const messageData = JSON.parse(response.body);
+                        console.log('Personal notification received:', messageData);
+                        
+                        setNotifications((prevNotifications) => [messageData, ...prevNotifications]);
+                        setTotal(prevTotal => prevTotal + 1);
+                    } catch (error) {
+                        console.error('Lỗi khi xử lý dữ liệu từ WebSocket:', error);
+                    }
+                });
+            }
 
-    // Gọi API khi component mount hoặc khi các dependency thay đổi
+            return subscription;
+        }
+        return null;
+    }, [id, type]);
+
     useEffect(() => {
         getNotification();
     }, [getNotification]);
     
-    // Thiết lập kết nối WebSocket
     useEffect(() => {
-        connectStomp(onConnected, (error) => {
+        let subscription = null;
+        
+        connectStomp((client) => {
+            subscription = onConnected(client);
+        }, (error) => {
             console.error('Lỗi kết nối:', error);
         });
         
         return () => {
+            if (subscription) {
+                subscription.unsubscribe();
+            }
             disconnectStomp();
         };
     }, [onConnected]);
@@ -119,6 +128,7 @@ const ListNotification = ({ type = "system" }) => {
             dataSource={notifications} 
             loading={loading} 
             rowKey="id"
+            rowClassName={(record, index) => index % 2 === 0 ? '' : 'bg-gray-50'}
             pagination={{ 
                 current: page, 
                 pageSize: size, 

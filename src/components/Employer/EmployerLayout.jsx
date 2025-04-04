@@ -24,6 +24,7 @@ import {
     UserOutlined,
     MenuOutlined,
     ShoppingCartOutlined,
+    BellOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu, Avatar, Flex, Badge, Button, Tooltip, message } from 'antd';
 import { getInfor, logOut, removeAllToken } from '../../services/apiService.jsx';
@@ -59,6 +60,11 @@ const EmployerLayout = () => {
 
     const itemSider = [
         { key: '/employer/dashboard', icon: <BarChartOutlined />, label: t('admin.employer.sidebar.dashboard') },
+        {
+            key: '/employer/notification',
+            icon: <BellOutlined />,
+            label: t('admin.employer.sidebar.notification'),
+        },
         { 
             key: '2', 
             icon: <UserOutlined />, 

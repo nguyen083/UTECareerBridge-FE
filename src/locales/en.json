@@ -863,6 +863,7 @@
             },
             "sidebar": {
                 "dashboard": "Statistics",
+                "notification": "Notification",
                 "account": {
                     "title": "Account",
                     "profile": "Personal Information",
