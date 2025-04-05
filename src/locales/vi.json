@@ -16,11 +16,12 @@
     "newest_jobs": "Việc làm mới nhất",
     "urgent_jobs": "Việc làm tuyển gấp",
     "build_your_branch": "Cùng UTE-Career xây dựng thương hiệu cá nhân",
-    "my_company": "Công ty của tôi",
     "follow_company": "Theo dõi công ty",
+    "my_company": "Công ty của tôi",
     "marquee": "Khởi đầu sự nghiệp, tìm việc dễ dàng - Cơ hội nghề nghiệp dành cho bạn ngay hôm nay!",
     "notification": {
       "title": "Thông báo",
+      "titleDetail": "Chi tiết thông báo",
       "system": "Hệ thống",
       "personal": "Cá nhân",
       "table":{
@@ -51,7 +52,10 @@
         "loading": "Đang tải...",
         "collapse": "Thu gọn",
         "month": "tháng",
-        "dragAndDrop": "Kéo thả hoặc nhấp để tải ảnh lên"
+        "dragAndDrop": "Kéo thả hoặc nhấp để tải ảnh lên",
+        "view": "Xem",
+        "of": "của",
+        "item": "mục"
     },
     "role": {
         "student": "Người tìm việc",

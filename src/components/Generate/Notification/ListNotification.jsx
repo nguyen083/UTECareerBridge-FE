@@ -1,11 +1,12 @@
-import { Table, Typography } from "antd";
+import { Drawer, Table, Typography } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import notification from "../../../services/api/notification";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
 import { connectStomp, disconnectStomp } from "../../../utils/stompConfig";
-const { Text } = Typography;
+import HtmlContent from "../HtmlContent";
+import { ArrowRightOutlined } from "@ant-design/icons";
+const { Text, Title } = Typography;
 
 
 const ListNotification = ({ type = "system" }) => {
@@ -16,8 +17,9 @@ const ListNotification = ({ type = "system" }) => {
     const [size, setSize] = useState(10);
     const [total, setTotal] = useState(0);
     const { t } = useTranslation();
-    const navigate = useNavigate();
-    
+    const [openDrawer, setOpenDrawer] = useState(false);
+    const [selectedNotification, setSelectedNotification] = useState(null);
+
     useEffect(() => {
         setPage(1);
     }, [type]);
@@ -29,15 +31,13 @@ const ListNotification = ({ type = "system" }) => {
           key: 'title',
           ellipsis: true,
           width: '80%',
-          render: text => <Text className="cursor-pointer hover:underline hover:text-text-color-hover" onClick={() => {
-            navigate(`/notification/${id}`);
-          }}>{text}</Text>,
+          render: text => <Text className=" hover:underline hover:text-text-color-hover">{text}</Text>,
         },
         {
           title: t('notification.table.time'),
           dataIndex: 'notificationDate',
           key: 'notificationDate',
-          width: '10%',
+          width: '12%',
           render: text => <p className="text-sm text-gray-500">{new Date(text).toLocaleString()}</p>,
         },
     ]
@@ -76,6 +76,7 @@ const ListNotification = ({ type = "system" }) => {
                 subscription = client.subscribe('/notifications/broadcast', (response) => { 
                     try {
                         const messageData = JSON.parse(response.body);
+                        console.log('Broadcast notification received:', messageData);
                         setNotifications((prevNotifications) => [messageData, ...prevNotifications]);
                         setTotal(prevTotal => prevTotal + 1);
                     } catch (error) {
@@ -123,25 +124,52 @@ const ListNotification = ({ type = "system" }) => {
     }, [onConnected]);
     
     return (
+        <>
         <Table
             columns={columns} 
             dataSource={notifications} 
             loading={loading} 
-            rowKey="id"
-            rowClassName={(record, index) => index % 2 === 0 ? '' : 'bg-gray-50'}
+            rowKey="notificationId"
+            rowClassName={(record, index) => (index % 2 === 0 ? '' : 'bg-gray-50') + ' cursor-pointer' }
+            onRow={(record) => {
+                return {
+                    onClick: () => {
+                        setOpenDrawer(true);
+                        setSelectedNotification(record);
+                    }
+                }
+            }}
             pagination={{ 
                 current: page, 
                 pageSize: size, 
                 total,
-                showTotal: (total, range) => `${range[0]}-${range[1]} của ${total} mục`,
-                showSizeChanger: true, 
+                showSizeChanger: true,
+                showTotal: (total, range) => `${range[0]}-${range[1]} ${t('common.of')} ${total} ${t('common.item')}`,
                 onChange: (page, pageSize) => {
                     setPage(page);
                     setSize(pageSize);
                 },
-                pageSizeOptions: ['5', '10', '15', '20'],
+                pageSizeOptions: [10, 20, 50, 100],
             }} 
         />
+          <Drawer
+                    width={800}
+                    title={<Title className="!mb-0 !text-text-color" level={5}>{t('notification.titleDetail')}</Title>}
+                    open={openDrawer}
+                    onClose={() => setOpenDrawer(false)}
+                >
+                    <div className="flex flex-col gap-4">
+                        <div className="flex flex-col gap-2">
+                            <span className="text-lg font-bold text-text-color">{selectedNotification?.title}</span>
+                            <span className="text-sm text-gray-500">{new Date(selectedNotification?.notificationDate).toLocaleString()}</span>
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <HtmlContent htmlString={selectedNotification?.content} />
+                            {selectedNotification?.url && <a href={selectedNotification.url} target="_blank" className="text-blue-500 hover:text-blue-700">{t('common.view')} <ArrowRightOutlined /></a>}
+                        </div>
+                    </div>
+                </Drawer>
+        </>
     )
 }
 

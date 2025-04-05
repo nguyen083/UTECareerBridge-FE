@@ -3,7 +3,9 @@ import { Route, Routes, Navigate, BrowserRouter } from "react-router-dom";
 import { ConfigProvider, Spin, App as AntApp } from 'antd';
 import { useSelector } from 'react-redux';
 import COLOR from './components/styles/_variables.jsx';
-import viVN from 'antd/lib/locale/vi_VN'; 
+import viVN from 'antd/lib/locale/vi_VN';
+import enUS from 'antd/locale/en_US';
+import I18nInitializer from './i18n';
 import { lazy, Suspense, useEffect } from "react"
 import { connectStomp, disconnectStomp } from './utils/stompConfig.js';
 import RecommendJob from './components/Student/Recommend/RecommendJob.jsx';
@@ -74,7 +76,7 @@ const ChatLayout = lazy(() => import('./pages/Chat/ChatLayout.jsx'))
 const Meeting = lazy(() => import("./components/Generate/Meeting/Meeting.jsx"))
 
 const App = () => {
-  
+  const lang = useSelector(state => state.web.lang)
   useEffect(() => {
     connectStomp(() => { })
     return () => {
@@ -82,7 +84,7 @@ const App = () => {
     }
   }, [])
   return (
-    <ConfigProvider locale={viVN}
+    <ConfigProvider locale={lang === 'vi' ? viVN : enUS}
       theme={{
         token: {
           colorPrimary: COLOR.textColor,
@@ -175,6 +177,7 @@ const App = () => {
         }
       }}>
       <AntApp>
+        <I18nInitializer />
         <BrowserRouter>
           <Suspense fallback={<div className='!h-screen w-full flex items-center justify-center'><Spin size='large' spinning={true}></Spin></div>
           }>

@@ -22,7 +22,6 @@ const Notification = () => {
     };
     
     const renderTabContent = () => {
-        // Tạo mới component khi tab thay đổi để đảm bảo useEffect được gọi lại
         return <ListNotification type={currentTab} key={currentTab} />;
     };
     

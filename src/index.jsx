@@ -1,10 +1,8 @@
-import React from 'react';
 import ReactDOM from 'react-dom/client';
 import reportWebVitals from './reportWebVitals.jsx';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { store, persistor } from './redux/store.jsx';
-import './i18n';
 import './index.css';
 import App from './App.jsx';
 

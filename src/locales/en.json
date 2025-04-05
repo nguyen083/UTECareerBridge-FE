@@ -18,9 +18,11 @@
     "urgent_jobs": "Urgent jobs",
     "build_your_branch": "Build your personal brand with UTE-Career",
     "follow_company": "Follow company",
+    "my_company": "My company",
     "marquee": "Kickstart your career, find a job with ease - Career opportunities await you today!",
     "notification": {
         "title": "Notification",
+        "titleDetail": "Notification Detail",
         "system": "System",
         "personal": "Personal",
         "table":{
@@ -51,7 +53,10 @@
         "loading": "Loading...",
         "collapse": "Collapse",
         "month": "month",
-        "dragAndDrop": "Drag and drop or click to upload image"
+        "dragAndDrop": "Drag and drop or click to upload image",
+        "view": "View",
+        "of": "of",
+        "item": "item"
     },
     "role": {
         "admin": "Admin",
