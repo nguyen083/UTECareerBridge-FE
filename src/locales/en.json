@@ -443,7 +443,9 @@
             "forgotPassword": "Forgot password?",
             "emailPlaceholder": "Enter email/phone number",
             "passwordPlaceholder": "Enter password",
-            "googleLogin": "Login with Google"
+            "googleLogin": "Login with Google",
+            "loginSuccess": "Login successful",
+            "loginError": "Login failed"
         },
         "forgotPassword": {
             "title": "Forgot Password",

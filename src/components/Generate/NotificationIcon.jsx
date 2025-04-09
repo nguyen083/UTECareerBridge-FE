@@ -64,7 +64,7 @@ const ListNotification = ({ notification, userId }) => {
     );
 };
 
-const Notification = ({ userId = null }) => {
+const NotificationIcon = ({ userId = null }) => {
     const [notification, setNotification] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -91,13 +91,10 @@ const Notification = ({ userId = null }) => {
             arrow={false}
             placement="bottom"
             title={
-                <Flex justify="space-between">
+                <Flex>
                     <Typography.Title className="notification-title-header" level={5}>
                         Thông báo
                     </Typography.Title>
-                    <Tooltip color={COLOR.bgTooltipColor} title="Làm mới">
-                        <SyncOutlined className="me-2" spin={loading} onClick={handleRefresh} />
-                    </Tooltip>
                 </Flex>
             }
             content={<ListNotification notification={notification} userId={userId} />}
@@ -115,4 +112,4 @@ const Notification = ({ userId = null }) => {
     );
 };
 
-export default Notification;
+export default NotificationIcon;

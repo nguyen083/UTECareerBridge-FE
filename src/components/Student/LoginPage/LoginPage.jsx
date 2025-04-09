@@ -1,4 +1,3 @@
-import React from 'react';
 import { Form, Input, Button, Typography, Row, Col, Flex, Image, Divider, Card, message } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -10,6 +9,7 @@ import { FcGoogle } from "react-icons/fc";
 import path from '../../../constant/path';
 import auth from '../../../services/api/auth';
 import { useTranslation } from 'react-i18next';
+// import auth from './../../../services/api/auth';
 
 const { Title, Text } = Typography;
 
@@ -55,6 +55,7 @@ const LoginPage = () => {
                 message.error(res.message);
             }
         } catch (err) {
+            console.error(err)
             message.error('Đã có lỗi xảy ra, vui lòng thử lại sau');
         }
         finally {
@@ -82,8 +83,8 @@ const LoginPage = () => {
                         onClick={() => navigate('/home')}
                     />
                     <Card
-                        title={<Title level={3} className='mt-5 text-center card-title '>Đăng nhập</Title>}
-                        className="bg-card-color w-2/4 shadow-lg">
+                        title={<Title level={3} className='mt-5 text-center card-title '>{t('auth.login.title')}</Title>}
+                        className="w-2/4 shadow-lg bg-card-color">
                         <Flex>
                             <Form
                                 form={form}
@@ -98,9 +99,9 @@ const LoginPage = () => {
                             >
                                 <Form.Item
                                     name="username"
-                                    label={<div className="form-label">Email/ SĐT</div>}
+                                    label={<div className="form-label">{t('auth.login.email/phone')}</div>}
                                     rules={[{ required: true, message: 'Vui lòng nhập email hoặc số điện thoại của bạn' },
-                                    ({ getFieldValue }) => ({
+                                    () => ({
                                         validator(_, value) {
                                             if (!value) {
                                                 return Promise.reject('Vui lòng nhập email hoặc số điện thoại của bạn');
@@ -121,7 +122,7 @@ const LoginPage = () => {
 
                                 <Form.Item
                                     name="password"
-                                    label={<div className="form-label">Mật khẩu</div>}
+                                    label={<div className="form-label">{t('auth.login.password')}</div>}
                                     rules={[{ required: true, message: 'Vui lòng nhập mật khẩu!' }]}
                                     validateFirst
                                 >
@@ -129,22 +130,21 @@ const LoginPage = () => {
                                 </Form.Item>
                                 <Form.Item className='p-0 mb-2'>
                                     <Flex justify='end' align='center'>
-                                        {/* <Link className='text-decoration-none link-text' to="/home"><IoIosArrowRoundBack className='fs-4' /> Trở về trang chủ</Link> */}
-                                        <Link className='text-decoration-none link-text' to="/forgot-password" target='_blank'>Quên mật khẩu?</Link>
+                                        <Link className='text-decoration-none link-text' to="/forgot-password" target='_blank'>{t('auth.login.forgotPassword')}</Link>
                                     </Flex>
                                 </Form.Item>
                                 <Form.Item >
                                     <Button className='w-full login-button' type="primary" htmlType="submit">
-                                        Đăng nhập
+                                        {t('auth.login.title')}
                                     </Button>
                                 </Form.Item>
-                                <Divider className='mb-3'><div className='text-gray-500'>Hoặc</div></Divider>
+                                <Divider className='mb-3'><div className='text-gray-500'>{t('common.or')}</div></Divider>
                                 <Form.Item >
                                     <Button className='w-full' type="default" onClick={handleLoginWithGoogle}>
-                                        <FcGoogle size={24} className='me-1' />Đăng nhập với Google
+                                        <FcGoogle size={24} className='me-1' />{t('common.googleLogin')}
                                     </Button>
                                 </Form.Item>
-                                <Text className='text-center'>Bạn chưa có tài khoản? <Button className='p-0 text-sm' type='link' onClick={() => navigate('/register')}>Đăng ký ngay</Button></Text>
+                                <Text className='text-center'>{t('auth.login.dont_have_an_account')} <Button className='p-0 text-sm' type='link' onClick={() => navigate('/register')}>{t('auth.register.title')}</Button></Text>
 
                             </Form>
                         </Flex>

@@ -42,13 +42,13 @@ const LoginPage = () => {
         try {
             const res = await employerLogin(updatedValues);
             if (res.status === 'OK') {
-                message.success(res.message);
+                message.success(t('auth.login.loginSuccess'));
                 setToken(res.data.token, res.data.refreshToken);
                 dispatch(setInfor({ userId: res.data.id, role: res.data.roles.roleName, email: res.data.username }));
                 navigate('/employer');
 
             } else {
-                message.error(res.message);
+                message.error(t('auth.login.loginError'));
             }
 
 
@@ -66,9 +66,9 @@ const LoginPage = () => {
         });
     }
     return (
-        <div className="login-page flex">
-            <div className="image lg:w-5/12 hidden lg:block"></div>
-            <div className="w-full sm:p-5 p-0 lg:w-7/12 h-screen flex flex-col items-center justify-center">
+        <div className="flex login-page">
+            <div className="hidden image lg:w-5/12 lg:block"></div>
+            <div className="flex flex-col items-center justify-center w-full h-screen p-0 sm:p-5 lg:w-7/12">
                 <Link to='/home' className='flex items-center'>
                     <Image
                         className='logo'
@@ -79,9 +79,9 @@ const LoginPage = () => {
                         onClick={() => navigate('/home')}
                     />
                 </Link>
-                <div className="login-form p-5 h-fit mt-10 shadow-2xl lg:w-7/12 ">
+                <div className="p-5 mt-10 shadow-2xl login-form h-fit lg:w-7/12 ">
                     <span className="flex justify-center title">{t('auth.login.title')}</span>
-                    <div className="md:w-full form-group mt-5 mb-4">
+                    <div className="mt-5 mb-4 md:w-full form-group">
                         <Form
                             size='large'
                             requiredMark={false}
@@ -97,7 +97,7 @@ const LoginPage = () => {
                                     required: true,
                                     message: t('auth.register.emailRequired'),
                                 },
-                                ({ getFieldValue }) => ({
+                                () => ({
                                     validator(_, value) {
                                         if (!value) {
                                             return Promise.reject(t('auth.register.emailRequired'));

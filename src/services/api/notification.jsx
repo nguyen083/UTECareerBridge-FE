@@ -1,6 +1,9 @@
 import axios from "../../utils/axiosCustomize.jsx";
 
 const notification = {
+    getNotification: (id) => {
+        return axios.get(`/notifications/${id}`);
+    },
     getNotificationPersonal: (id, params) => {
         return axios.get(`/notifications/user/${id}`, { params });
     },

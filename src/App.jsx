@@ -205,6 +205,7 @@ const App = () => {
 
                     <Route path='/my-company' element={<MyCompanyPage />} />
                     <Route path='/notification' element={<Notification />} />
+                    <Route path='/notification/:id' element={<Notification />} />
                     <Route path='/my-job' element={<MyJobPage />} />
                     <Route path='/account-management' element={<AccountManagement />} />
                   </Route>

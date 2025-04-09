@@ -6,7 +6,7 @@ import { MenuOutlined } from '@ant-design/icons';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { FaUser } from 'react-icons/fa6';
 import FooterComponent from '../Generate/Footer.jsx';
-import Notification from '../Generate/Notification.jsx';
+import NotificationIcon from '../Generate/NotificationIcon.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import PopoverAvatar from './Header/PopoverAvatar.jsx';
 import { setInforStudent } from '../../redux/action/studentSlice.jsx';
@@ -117,7 +117,7 @@ const StudentLayout = () => {
                         </Button>
                         <Flex gap={"0.5rem"} className='p-1 border rounded-full border-text-color'>
                             <Button icon={<BsChatLeftText />} shape='circle' onClick={() => { token ? navigate('/chat') : navigate('/login') }} className='ease-out transform rounded-full btn-header hover:scale-105' size='large'/>
-                            <Notification userId={useSelector(state => state.user.userId)} />
+                            <NotificationIcon userId={useSelector(state => state.user.userId)} />
                             <ChangeLanguageBtn />
                             {infor.role !== 'student'
                                 ? <Button

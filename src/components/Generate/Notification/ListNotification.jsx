@@ -1,12 +1,12 @@
-import { Drawer, Table, Typography } from "antd";
+import { Table, Typography } from "antd";
 import { useCallback, useEffect, useState } from "react";
 import notification from "../../../services/api/notification";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { connectStomp, disconnectStomp } from "../../../utils/stompConfig";
-import HtmlContent from "../HtmlContent";
-import { ArrowRightOutlined } from "@ant-design/icons";
-const { Text, Title } = Typography;
+
+import { useNavigate } from "react-router-dom";
+const { Text } = Typography;
 
 
 const ListNotification = ({ type = "system" }) => {
@@ -17,9 +17,8 @@ const ListNotification = ({ type = "system" }) => {
     const [size, setSize] = useState(10);
     const [total, setTotal] = useState(0);
     const { t } = useTranslation();
-    const [openDrawer, setOpenDrawer] = useState(false);
-    const [selectedNotification, setSelectedNotification] = useState(null);
 
+    const navigate = useNavigate();
     useEffect(() => {
         setPage(1);
     }, [type]);
@@ -134,8 +133,7 @@ const ListNotification = ({ type = "system" }) => {
             onRow={(record) => {
                 return {
                     onClick: () => {
-                        setOpenDrawer(true);
-                        setSelectedNotification(record);
+                        navigate(`/notification/${record.notificationId}`);
                     }
                 }
             }}
@@ -152,23 +150,6 @@ const ListNotification = ({ type = "system" }) => {
                 pageSizeOptions: [10, 20, 50, 100],
             }} 
         />
-          <Drawer
-                    width={800}
-                    title={<Title className="!mb-0 !text-text-color" level={5}>{t('notification.titleDetail')}</Title>}
-                    open={openDrawer}
-                    onClose={() => setOpenDrawer(false)}
-                >
-                    <div className="flex flex-col gap-4">
-                        <div className="flex flex-col gap-2">
-                            <span className="text-lg font-bold text-text-color">{selectedNotification?.title}</span>
-                            <span className="text-sm text-gray-500">{new Date(selectedNotification?.notificationDate).toLocaleString()}</span>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <HtmlContent htmlString={selectedNotification?.content} />
-                            {selectedNotification?.url && <a href={selectedNotification.url} target="_blank" className="text-blue-500 hover:text-blue-700">{t('common.view')} <ArrowRightOutlined /></a>}
-                        </div>
-                    </div>
-                </Drawer>
         </>
     )
 }

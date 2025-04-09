@@ -412,7 +412,9 @@
             "dont_have_an_account": "Chưa có tài khoản?",
             "forgotPassword": "Quên mật khẩu?",
             "emailPlaceholder": "Nhập email/SĐT",
-            "passwordPlaceholder": "Nhập mật khẩu"
+            "passwordPlaceholder": "Nhập mật khẩu",
+            "loginSuccess": "Đăng nhập thành công",
+            "loginError": "Đăng nhập thất bại"
         },
         "forgotPassword": {
             "title": "Quên mật khẩu",
