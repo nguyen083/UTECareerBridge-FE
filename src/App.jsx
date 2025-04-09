@@ -74,6 +74,7 @@ const Coupon = lazy(() => import("./components/Admin/Coupon/Coupon.jsx"));
 const DetailResume = lazy(() => import("./components/Employer/DetailResume/DetailResume.jsx"));
 const ChatLayout = lazy(() => import('./pages/Chat/ChatLayout.jsx'))
 const Meeting = lazy(() => import("./components/Generate/Meeting/Meeting.jsx"))
+const DetailNotification = lazy(() => import("./components/Generate/Notification/DetailNotification.jsx"))
 
 const App = () => {
   const lang = useSelector(state => state.web.lang)
@@ -205,7 +206,7 @@ const App = () => {
 
                     <Route path='/my-company' element={<MyCompanyPage />} />
                     <Route path='/notification' element={<Notification />} />
-                    <Route path='/notification/:id' element={<Notification />} />
+                    <Route path='/notification/:id' element={<DetailNotification />} />
                     <Route path='/my-job' element={<MyJobPage />} />
                     <Route path='/account-management' element={<AccountManagement />} />
                   </Route>
