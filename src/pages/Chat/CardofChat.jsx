@@ -1,14 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Avatar, Badge, Button, Card, Divider, Empty, Flex, List, Skeleton, Typography, message } from 'antd';
+import { useEffect, useState } from 'react';
+import { Avatar, Badge, Button, Card, Divider, Empty, Flex, List, Skeleton, Typography } from 'antd';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useTranslation } from 'react-i18next';
 import { getApplyJobByStudent } from '../../services/apiService';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { customScrollbarCSS } from '../../constant/scrollbar';
 import chat from '../../services/api/chat';
 import { useSelector } from 'react-redux';
 import { connectStomp, subscribeToTopic, unsubscribeFromTopic } from '../../utils/stompConfig';
-import company from './../../services/api/company';
 
 const { Text } = Typography;
 const customScrollbarStyle = {
@@ -81,10 +80,10 @@ const ListJob = ({ className = "" }) => {
                         <List.Item key={item.applicationId} >
                             <List.Item.Meta
                                 avatar={<Avatar size={50} src={item.companyLogo} />}
-                                title={<div className=' text-base max-w-52 truncate font-semibold'>{item.jobTitle}</div>}
-                                description={<div className='max-w-52 truncate'><Text type='secondary'>{item.companyName}</Text></div>}
+                                title={<div className='text-base font-semibold truncate  max-w-52'>{item.jobTitle}</div>}
+                                description={<div className='truncate max-w-52'><Text type='secondary'>{item.companyName}</Text></div>}
                             />
-                            <Button className='border-0 rounded-full text-blue-600 bg-blue-200 hover:scale-105 ease-in-out' type='text' onClick={() => navigate(`/chat/${item.companyId}`)}>{t('chat')}</Button>
+                            <Button className='text-blue-600 ease-in-out bg-blue-200 border-0 rounded-full hover:scale-105' type='text' onClick={() => navigate(`/chat/${item.companyId}`)}>{t('chat')}</Button>
                         </List.Item>
                     )}
                 />
@@ -98,8 +97,8 @@ const CardCompany = ({ className = "" , company}) => {
             <Flex gap={8}>
                 <Avatar size={50} src={company.companyLogo} />
                 <Flex vertical gap={4}>
-                    <Text className='text-text-color-hover font-semibold'>{company.companyName}</Text>
-                    <Text type="secondary" className='truncate max-w-full'>{company.companyAddress}</Text>
+                    <Text className='font-semibold text-text-color-hover'>{company.companyName}</Text>
+                    <Text type="secondary" className='max-w-full truncate'>{company.companyAddress}</Text>
                 </Flex>
             </Flex>
         </Card>
@@ -217,10 +216,10 @@ const ListConversation = () => {
                         <List.Item key={item.recipientId + item.messageId} className='!p-4 cursor-pointer hover:-translate-y-px hover:shadow-md' onClick={() => ChooseItem(item)}>
                             <List.Item.Meta
                                 avatar={<Avatar size={50} src={item.avatar} />}
-                                title={<div className='max-w-72 truncate font-bold'><Text className='text-base'>{item.name}</Text></div>}
-                                description={<Flex align='center' gap={4}><div className='max-w-64 truncate'><Text className={`${!item.read && !item.lastSenderId && 'font-bold'} text-black`}>{item.lastSenderId && 'Bạn: '} {item.lastMessage} </Text></div> {item.createdAt}</Flex>}
+                                title={<div className='font-bold truncate max-w-72'><Text className='text-base'>{item.name}</Text></div>}
+                                description={<Flex align='center' gap={4}><div className='truncate max-w-64'><Text className={`${!item.read && !item.lastSenderId && 'font-bold'} text-black`}>{item.lastSenderId && 'Bạn: '} {item.lastMessage} </Text></div> {item.createdAt}</Flex>}
                             />
-                            {!item.read && !item.lastSenderId && <div className='h-full flex items-stretch'>
+                            {!item.read && !item.lastSenderId && <div className='flex items-stretch h-full'>
                                 <Badge status='processing' />
                             </div>}
                         </List.Item>

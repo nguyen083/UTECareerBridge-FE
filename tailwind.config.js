@@ -23,6 +23,28 @@ export default {
 
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        ".scrollbar-thin":{
+          scrollbarWidth: "thin",
+          scrollbarColor: "#1677ff transparent",
+        },
+        "scrollbar-webkit":{
+          "&::-webkit-scrollbar":{
+            width: "2px",
+        },
+        "&::-webkit-scrollbar-track":{
+          background: "transparent",
+        },
+        "&::-webkit-scrollbar-thumb":{
+          background: "#1677ff",
+          borderRadius: "20px",
+        },
+    }
+  }
+  addUtilities(newUtilities, ['responsive', 'hover'])
+}
+  ],
 }
 

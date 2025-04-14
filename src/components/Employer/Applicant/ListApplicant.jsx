@@ -1,17 +1,16 @@
 import { List, message } from "antd";
-import { useEffect, useState } from "react";
+import { useEffect, useState, forwardRef, useImperativeHandle } from "react";
 import ApplicantCard from "../../Generate/ApplicantCard";
 import { getApplyJobByJobId } from "../../../services/apiService";
 import { useTranslation } from "react-i18next";
 
-const ListApplicant = ({activeKey, jobId : id}) => {
+const ListApplicant = forwardRef(({activeKey, jobId : id}, ref) => {
     const { t } = useTranslation();
     const [currentPage, setCurrentPage] = useState(1);
     const [totalApplicants, setTotalApplicants] = useState(0);
     const [pageSize, setPageSize] = useState(10);
     const [listApplicant, setListApplicant] = useState([]);
    
-
     const fetchData = async () => {
         const response = await getApplyJobByJobId(id, activeKey);
         if (response.status === "OK" && response.data) {
@@ -23,6 +22,12 @@ const ListApplicant = ({activeKey, jobId : id}) => {
             setListApplicant([]);
         }
     }
+    
+    // Cung cấp phương thức fetchData thông qua ref
+    useImperativeHandle(ref, () => ({
+        fetchData
+    }));
+
     useEffect(() => {
         fetchData();
     }, [activeKey, currentPage]);
@@ -62,5 +67,8 @@ const ListApplicant = ({activeKey, jobId : id}) => {
             />
         </>
     )
-}
+});
+
+ListApplicant.displayName = 'ListApplicant';
+
 export default ListApplicant;

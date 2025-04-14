@@ -4,7 +4,7 @@ import ViewCV from "../../Student/CV/ViewCV";
 import styles from "./ViewDetailApplicant.module.scss";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { useParams, useLocation } from "react-router-dom";
-import { convertStatus, sendMailApprove } from "../../../services/apiService";
+import { convertStatus,  } from "../../../services/apiService";
 import { useEffect, useState } from "react";
 import './ModalInterview.scss';
 import CustomizeQuill from './../../Generate/CustomizeQuill';
@@ -12,6 +12,7 @@ import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
 import { loading, stop } from "../../../redux/action/webSlice";
 import { useTranslation } from "react-i18next";
+import interview from "../../../services/api/interview";
 
 const { Text } = Typography;
 const ViewDetailApplicant = () => {
@@ -58,13 +59,13 @@ const ViewDetailApplicant = () => {
 
 export const ModalInterview = ({ open, setOpen, studentId, resumeId, email }) => {
     const { t } = useTranslation();
-    const { id } = useParams();
     const [form] = Form.useForm();
+    const location = useLocation();
     const [type, setType] = useState("ONLINE");
     const employerId = useSelector(state => state.employer.id);
-    const location = useLocation();
     const dispatch = useDispatch();
     const load = useSelector(state => state.web.loading);
+    const { id } = useParams();
 
     const generateLink = () => {
         const link = window.location.protocol + '//' + window.location.host + '/meeting/' + Math.floor(100000 + Math.random() * 900000);
@@ -95,20 +96,19 @@ export const ModalInterview = ({ open, setOpen, studentId, resumeId, email }) =>
                 attendeeEmails: [email],
             }
             dispatch(loading());
-            sendMailApprove(payload).then((res) => {
+            interview.createInterview(payload).then((res) => {
                 if (res.status === "OK") {
-                    message.success(res.message);
-                } else {
-                    message.error(res.message);
+                    message.success(t('employer.interview.create.message.success'));
+                }else if (res.status === "UNAUTHORIZED") {
+                    window.open(res.data.url, "_blank");
                 }
             }).catch((err) => {
-                message.error(err.message);
+                console.error(err);
+                message.error(t('employer.interview.create.message.error'));
             }
             ).finally(() => {
                 convertStatus(id, "APPROVED").then((response) => {
-                    console.log(response);
                     if (response.status === "OK") {
-                        // message.success(response.message);
                         handleCancel();
                     }
                 }).catch((err) => {

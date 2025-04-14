@@ -1,6 +1,6 @@
 // import { useEffect, useState } from "react";
 import "./RegisterPage.scss";
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Form, Input, Space, Button, DatePicker, Checkbox, Radio, Typography, Row, Col, message, Image, Flex } from 'antd';
 import { studentRegister } from "../../services/apiService";
 import { Link, useNavigate } from "react-router-dom";
@@ -29,6 +29,7 @@ const RegisterPage = () => {
         let res = await studentRegister({ ...values, dob: DoB });
         if (res.status === "CREATED") {
             message.success(res.message);
+            navigate('/login');
         } else {
             message.error(res.message);
         }
@@ -36,9 +37,9 @@ const RegisterPage = () => {
 
     return (
         <div className="flex">
-            <div className="image lg:w-5/12 hidden lg:block">
+            <div className="hidden image lg:w-5/12 lg:block">
             </div>
-            <div className="lg:w-7/12 w-full parent-register-form my-auto  min-h-screen flex">
+            <div className="flex w-full min-h-screen my-auto lg:w-7/12 parent-register-form">
                 <Flex gap={18} vertical justify="center" align="center" className="my-auto">
                     <Link to='/home' className='flex items-center'>
                         <Image
@@ -50,9 +51,9 @@ const RegisterPage = () => {
                             onClick={() => navigate('/home')}
                         />
                     </Link>
-                    <div className="block mx-auto md:p-5 p-2 shadow-lg register-form">
-                        <div className="title block">
-                            <Title level={3} className="title block text-center mb-4">Đăng Ký Tài Khoản</Title>
+                    <div className="block p-2 mx-auto shadow-lg md:p-5 register-form">
+                        <div className="block title">
+                            <Title level={3} className="block mb-4 text-center title">Đăng Ký Tài Khoản</Title>
                         </div>
                         <div>
                             <Form requiredMark={false} size="large" form={form} name="validateOnlyform2" layout="vertical" autoComplete="off" onFinish={handleLogin} initialValues={{ gender: gender }}>
@@ -165,7 +166,7 @@ const RegisterPage = () => {
                                                 }
                                             ]} validateFirst
                                             validateTrigger={['onBlur']}>
-                                            <Input.Password className="form-control flex" placeholder="Nhập mật khẩu của bạn" />
+                                            <Input.Password className="flex form-control" placeholder="Nhập mật khẩu của bạn" />
                                         </Form.Item>
                                     </Col>
                                     <Col span={24}>
@@ -184,7 +185,7 @@ const RegisterPage = () => {
                                                     },
                                                 }),
                                             ]} validateTrigger={['onBlur']}>
-                                            <Input.Password className="form-control flex" placeholder="Nhập mật khẩu xác nhận" />
+                                            <Input.Password className="flex form-control" placeholder="Nhập mật khẩu xác nhận" />
                                         </Form.Item>
                                     </Col>
                                 </Row>
@@ -200,7 +201,7 @@ const RegisterPage = () => {
                                     </Checkbox>
                                 </Form.Item>
                                 <Form.Item>
-                                    <Button className=" py-3 flex" disabled={!isChecked} style={{ width: "100%", fontSize: "1rem" }} type="primary" htmlType="submit">Đăng ký</Button>
+                                    <Button className="flex py-3 " disabled={!isChecked} style={{ width: "100%", fontSize: "1rem" }} type="primary" htmlType="submit">Đăng ký</Button>
                                 </Form.Item>
                             </Form>
                         </div>

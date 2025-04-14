@@ -1,1 +1,0 @@
-import{a as r,D as o,r as i,E as c,j as s,B as p}from"./index-BjGqDy_t.js";import{R as u}from"./index-fEXYcRYj.js";const x=()=>{const a=r(),e=o();return i.useEffect(()=>{e(c())},[]),s.jsx(u,{status:"500",title:"500",subTitle:t("errors.500"),extra:s.jsx(p,{type:"primary",onClick:()=>a("/home"),children:t("errors.backToHome")})})};export{x as default};

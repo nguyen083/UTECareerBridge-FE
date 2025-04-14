@@ -4,3 +4,11 @@
 .notification-title-header {
     color: $text-color !important;
 }
+.notification-list {
+    .ant-list-item {
+        padding-bottom: 0;
+    }
+    .ant-list-footer {
+        padding-bottom: 0;
+    }
+}

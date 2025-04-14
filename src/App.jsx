@@ -9,11 +9,15 @@ import I18nInitializer from './i18n';
 import { lazy, Suspense, useEffect } from "react"
 import { connectStomp, disconnectStomp } from './utils/stompConfig.js';
 import RecommendJob from './components/Student/Recommend/RecommendJob.jsx';
-import InterviewList from './components/Employer/Interview/InterviewList.jsx';
+import InterviewList from './components/Employer/Interview/InterviewPage.jsx';
 import Notification from './components/Generate/Notification/Notification.jsx';
 import CreateNotification from './components/Admin/Notification/CreateNotification.jsx';
 import NotificationList from './components/Admin/Notification/NotificationList.jsx';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+
 const GoogleAuthCallback = lazy(() => import("./components/Student/GoogleAuthCallback.jsx"));
+const GoogleCalendarCallback = lazy(() => import("./components/Employer/GoogleCalendarCallback.jsx"));
 const ChatEmployerLayout = lazy(() => import('./components/Employer/Chat/ChatEmployerLayout.jsx'))
 const HomePage = lazy(() => import("./components/Student/HomePage/HomePage.jsx"));
 const Page404 = lazy(() => import("./components/User/Page404.jsx"));
@@ -76,8 +80,11 @@ const ChatLayout = lazy(() => import('./pages/Chat/ChatLayout.jsx'))
 const Meeting = lazy(() => import("./components/Generate/Meeting/Meeting.jsx"))
 const DetailNotification = lazy(() => import("./components/Generate/Notification/DetailNotification.jsx"))
 
+
 const App = () => {
-  const lang = useSelector(state => state.web.lang)
+  const lang = useSelector(state => state.web.lang || 'en')
+  const queryClient = new QueryClient()
+
   useEffect(() => {
     connectStomp(() => { })
     return () => {
@@ -85,6 +92,7 @@ const App = () => {
     }
   }, [])
   return (
+    <QueryClientProvider client={queryClient}>
     <ConfigProvider locale={lang === 'vi' ? viVN : enUS}
       theme={{
         token: {
@@ -193,17 +201,13 @@ const App = () => {
                   <Route path='/event' element={<EventPage />}>
                   </Route>
                   <Route path='/vnpay-payment-return' element={<PaymentReturn />} />
-
                   <Route element={<ViewLayout width='90%' />}>
                     <Route path='/event-detail/:id' element={<EventDetail />} />
                     <Route path='/search' element={<JobSearchPage />} />
                     <Route path='/recommend-job' element={<RecommendJob />} />
-
                   </Route>
-
                   <Route element={<PersonalLayout />} >
                     <Route path='/profile' element={<ProfilePage />} />
-
                     <Route path='/my-company' element={<MyCompanyPage />} />
                     <Route path='/notification' element={<Notification />} />
                     <Route path='/notification/:id' element={<DetailNotification />} />
@@ -284,6 +288,7 @@ const App = () => {
                 <Route path='favorite' element={<FavoritePage />} />
                 <Route path='register' element={<RegisterPage />} />
                 <Route path="/auth/google/callback" element={<GoogleAuthCallback />} />
+                <Route path="/auth/google-calendar/callback" element={<GoogleCalendarCallback />} />
                 <Route path='*' element={<Page404 />} />
               </Routes>
             </Spin>
@@ -291,6 +296,7 @@ const App = () => {
         </BrowserRouter>
       </AntApp>
     </ConfigProvider >
+    </QueryClientProvider>
   );
 }
 

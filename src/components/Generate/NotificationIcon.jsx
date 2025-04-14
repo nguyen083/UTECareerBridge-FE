@@ -1,35 +1,43 @@
-import { BellOutlined, SyncOutlined } from "@ant-design/icons";
+import { BellOutlined } from "@ant-design/icons";
 import { Badge, Button, Divider, Flex, List, Popover, Tag, Tooltip, Typography } from "antd";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import COLOR from "../styles/_variables";
-import "./Notification.scss"; // Import file SCSS
-import '../Generate/CustomizePopover.scss'; // Import file SCSS
-import { getAllNotificationById } from "../../services/apiService";
+import "./Notification.scss";
+import '../Generate/CustomizePopover.scss';
 import { useNavigate } from "react-router-dom";
+import { useNotification, useNotificationCount, useNotificationReadAll } from "../../composables/notification";
+import { useTranslation } from "react-i18next";
+import { connectStomp } from "../../utils/stompConfig";
+import { useQueryClient } from "@tanstack/react-query";
+import sound from '../../assets/sounds/notification.mp3'
+import icon from '../../assets/bell-ringing.png'
+import { CheckCheck } from "lucide-react";
 
 const ListNotification = ({ notification, userId }) => {
     const navigate = useNavigate();
+    const {t} = useTranslation();
     return (
         <List
+            split={false}
             locale={{
                 emptyText: !userId ? (
                     <Flex vertical justify="center" align="center" gap={8}>
                         <Typography.Text className="notification-login-text" type="secondary">
-                            Đăng nhập để xem thông báo
+                            {t('notification.loginToSeeNotification')}
                         </Typography.Text>
                         <Button className="login-button-notification" type="primary" onClick={() => navigate("/login")}>
-                            Đăng nhập
+                            {t('common.login')}
                         </Button>
                     </Flex>
                 ) : (
-                    <Typography.Text type="secondary">Không có thông báo mới</Typography.Text>
+                    <Typography.Text type="secondary">{t('notification.noNewNotification')}</Typography.Text>
                 ),
             }}
             className="notification-list"
             itemLayout="horizontal"
             dataSource={notification}
             renderItem={(item) => (
-                <List.Item>
+                <List.Item onClick={() => navigate(`/notification/${item.notificationId}`)} className="cursor-pointer hover:bg-gray-50">
                     <List.Item.Meta
                         title={
                             <Flex justify="space-between">
@@ -37,19 +45,15 @@ const ListNotification = ({ notification, userId }) => {
                                     className="fs-6 notification-title"
                                     strong
                                     ellipsis={{ tooltip: item.title }}
-                                    onClick={() => window.open(item.url, '_blank')}
                                 >
                                     {item.title}
                                 </Typography.Text>
-                                {item.read === true && <Tag color="red">Mới</Tag>}
+                                {item.read === false && <Tag className="py-px" color="red">New</Tag>}
                             </Flex>
                         }
                         description={
                             <>
-                                <Typography.Paragraph ellipsis={{ rows: 3 }}>
-                                    {item.content}
-                                </Typography.Paragraph>
-                                <Divider />
+                                <Divider className="text-gray-200" />
                                 <Flex justify="end">
                                     <Typography.Text type="secondary">
                                         {new Date(item.notificationDate).toLocaleString('vi-VN')}
@@ -60,30 +64,130 @@ const ListNotification = ({ notification, userId }) => {
                     />
                 </List.Item>
             )}
+            footer={
+                <Button variant="outlined" type="text" className="w-full" onClick={() => navigate('/notification')}>
+                    {t('common.seeMore')}
+                </Button>
+            }
         />
     );
 };
 
 const NotificationIcon = ({ userId = null }) => {
-    const [notification, setNotification] = useState([]);
-    const [loading, setLoading] = useState(false);
-
-    const handleRefresh = async () => {
+    const { data: notificationCount, refetch: refetchNotificationCount } = useNotificationCount(userId);
+    const { data: notificationList } = useNotification(userId);
+    const markAllAsRead = useNotificationReadAll();
+    const queryClient = useQueryClient();
+    const {t} = useTranslation();
+    
+    const playNotificationSound = () => {
+        const audio = new Audio(sound);
+        audio.play();
+    };
+    useEffect(()=>{
+        if (Notification.permission === "default") {
+            Notification.requestPermission().then((permission) => {
+                if (permission === "granted") {
+                    return true;
+                }
+            });
+        }
+        
         try {
-            setLoading(true);
-            if (userId === null) return;
-            // const response = await getAllNotificationById(userId);
-            // setNotification(response);
-        } catch (error) {
-            console.log(error);
-        } finally {
-            setTimeout(() => setLoading(false), 500);
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioContext.state === 'suspended') {
+                const resumeAudio = () => {
+                    audioContext.resume().then(() => {
+                        document.removeEventListener('click', resumeAudio);
+                    });
+                };
+                document.addEventListener('click', resumeAudio);
+            }
+            
+            const oscillator = audioContext.createOscillator();
+            oscillator.frequency.setValueAtTime(0, audioContext.currentTime);
+            oscillator.connect(audioContext.destination);
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.001);
+            
+        } catch (e) {
+            console.error('Không thể khởi tạo AudioContext:', e);
+        }
+    },[])
+    const sendNotification = (title) => {
+        if (Notification.permission === "granted") {
+            new Notification("New Notification", {
+                body: title,
+                icon: icon,
+                silent: true,
+            });
+            playNotificationSound();
+
+        } else if (Notification.permission === "default") {
+            Notification.requestPermission().then((permission) => {
+                if (permission === "granted") {
+                    sendNotification();
+                }
+            });
         }
     };
 
+    const onConnected = useCallback((client) => {
+        if (client && userId) {
+            let subscription = null;
+                subscription = client.subscribe('/notifications/broadcast', (response) => { 
+                    try {
+                        const messageData = JSON.parse(response.body);
+                        sendNotification(messageData.title);
+                        queryClient.setQueryData(['notificationCount', userId], (old) => {
+                            return {data: old.data + 1};
+                        });
+                        queryClient.setQueryData(['notificationList', userId], (old) => {
+                            const newData = { ...old, data: {...old.data, content: [messageData, ...old.data.content]} };
+                            return newData;
+                        });
+                        
+                        queryClient.invalidateQueries({ queryKey: ["notificationBroadcast"] });
+                    } catch (error) {
+                        console.error('Lỗi khi xử lý dữ liệu từ WebSocket:', error);
+                    }
+                });
+                subscription = client.subscribe('/user/' + userId + '/notifications/personal', (response) => { 
+                    try {
+                        const messageData = JSON.parse(response.body);
+                        sendNotification(messageData.title);
+                        refetchNotificationCount();
+                        queryClient.setQueryData(['notificationList', userId], (old) => {
+                            const newData = { ...old, data: {...old.data, content: [messageData, ...old.data.content]} };
+                            return newData;
+                        });
+                        
+                        queryClient.invalidateQueries({ queryKey: ["notificationPersonal", userId] });
+                    } catch (error) {
+                        console.error('Lỗi khi xử lý dữ liệu từ WebSocket:', error);
+                    }
+                });
+
+            return subscription;
+        }
+        return null;
+    }, [userId, queryClient]);
+
     useEffect(() => {
-        handleRefresh();
-    }, []);
+        let subscription = null;
+        
+        connectStomp((client) => {
+            subscription = onConnected(client);
+        }, (error) => {
+            console.error('Lỗi kết nối:', error);
+        });
+        
+        return () => {
+            if (subscription) {
+                subscription.unsubscribe();
+            }
+        };
+    }, [onConnected]);
 
     return (
         <Popover
@@ -91,17 +195,20 @@ const NotificationIcon = ({ userId = null }) => {
             arrow={false}
             placement="bottom"
             title={
-                <Flex>
+                <Flex justify="space-between">
                     <Typography.Title className="notification-title-header" level={5}>
-                        Thông báo
+                        {t('notification.title')}
                     </Typography.Title>
+                    <Tooltip title={t('notification.markAllAsRead')}>
+                        <Button type="text" icon={<CheckCheck/>} onClick={() => markAllAsRead.mutate(userId)}/>
+                    </Tooltip>
                 </Flex>
             }
-            content={<ListNotification notification={notification} userId={userId} />}
+            content={<ListNotification notification={notificationList} userId={userId} />}
             trigger={['click']}
         >
             <Tooltip title="Thông báo" placement="bottom" color={COLOR.bgTooltipColor}>
-                <Badge count={notification.filter((item) => item.read === true).length}>
+                <Badge count={notificationCount}>
                     <Button className="rounded-full btn-header btn-bell" size="large" type="text">
                         <BellOutlined />
                     </Button>

@@ -1,0 +1,16 @@
+.interview-calendar {
+    .ant-picker-calendar-date-content {
+        min-height: 200px;
+    }    
+    .ant-picker-month-panel {
+        .ant-picker-calendar-date-content {
+            height: fit-content
+        }
+    }
+    
+    .interview-card {
+        .ant-card-body {
+            padding: 8px 12px;
+        }
+    }
+}

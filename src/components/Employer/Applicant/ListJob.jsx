@@ -8,7 +8,6 @@ const { Text } = Typography;
 const ListJob = () => {
     const {t} = useTranslation();
     const [data, setData] = useState([]);
-    // const [loading, setLoading] = useState(false);
     const [selectedJob, setSelectedJob] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);

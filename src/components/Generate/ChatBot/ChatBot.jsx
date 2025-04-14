@@ -3,7 +3,7 @@ import { Card, Flex, FloatButton, Image, Popover, Input, Button } from 'antd';
 
 import './ChatBot.scss'
 import { ReceiverChat, SenderChat } from '../../../pages/Chat/ContainerofChat';
-import { connectStomp, disconnectStomp } from '../../../utils/stompConfig';
+import { connectStomp } from '../../../utils/stompConfig';
 import { SendOutlined } from '@ant-design/icons';
 import chat from '../../../services/api/chat';
 import { useTranslation } from 'react-i18next';
@@ -63,7 +63,6 @@ const ChatBot = () => {
             console.error('Lỗi kết nối:', error);
         });
         return () => {
-            disconnectStomp();
         };
     }, [onConnected]);
 

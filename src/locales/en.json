@@ -25,6 +25,10 @@
         "titleDetail": "Notification Detail",
         "system": "System",
         "personal": "Personal",
+        "markAllAsRead": "Mark all as read",
+        "noNewNotification": "No new notification",
+        "new": "New",
+        "loginToSeeNotification": "Login to see notification",
         "table":{
             "title": "Title",
             "time": "Time"
@@ -279,7 +283,20 @@
             }
         },
         "interview": {
-            "title": "Interview List"
+            "title": "Interview Calendar",
+            "create": {
+                "title": "Create Interview",
+                "description": "Create an interview to reach the candidate",
+                "jobPosition": "Job Position",
+                "interviewDate": "Interview Date",
+                "interviewTime": "Interview Time",
+                "interviewLocation": "Interview Location",
+                "meetingLink": "Meeting Link",
+                "message": {
+                    "success": "Interview created successfully",
+                    "error": "Interview creation failed"
+                }
+          }
         },
         "manageJobs": {
             "listJobs": "Job List",
@@ -1109,5 +1126,14 @@
     },
     "chatbot": {
         "placeholderInput": "Type your message here..."
+    },
+    "meeting": {
+        "permissions_granted": "Camera and microphone access granted",
+        "permission_error": "Error requesting permissions:",
+        "permission_alert": "Please grant camera and microphone access to join the meeting!",
+        "join_link": "Join Meeting link",
+        "permission_required": "Permission Required",
+        "permission_instruction": "Please grant camera and microphone access to join the meeting",
+        "try_again": "Try Again"
     }
 }

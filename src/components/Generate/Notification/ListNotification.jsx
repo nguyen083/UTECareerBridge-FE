@@ -3,7 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import notification from "../../../services/api/notification";
 import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
-import { connectStomp, disconnectStomp } from "../../../utils/stompConfig";
+import { connectStomp } from "../../../utils/stompConfig";
 
 import { useNavigate } from "react-router-dom";
 const { Text } = Typography;
@@ -36,7 +36,7 @@ const ListNotification = ({ type = "system" }) => {
           title: t('notification.table.time'),
           dataIndex: 'notificationDate',
           key: 'notificationDate',
-          width: '12%',
+          width: '13%',
           render: text => <p className="text-sm text-gray-500">{new Date(text).toLocaleString()}</p>,
         },
     ]
@@ -70,7 +70,6 @@ const ListNotification = ({ type = "system" }) => {
     const onConnected = useCallback((client) => {
         if (client) {
             let subscription = null;
-            
             if (type === "system") {
                 subscription = client.subscribe('/notifications/broadcast', (response) => { 
                     try {
@@ -106,19 +105,15 @@ const ListNotification = ({ type = "system" }) => {
     }, [getNotification]);
     
     useEffect(() => {
-        let subscription = null;
         
         connectStomp((client) => {
-            subscription = onConnected(client);
+            onConnected(client);
         }, (error) => {
             console.error('Lỗi kết nối:', error);
         });
         
         return () => {
-            if (subscription) {
-                subscription.unsubscribe();
-            }
-            disconnectStomp();
+            
         };
     }, [onConnected]);
     

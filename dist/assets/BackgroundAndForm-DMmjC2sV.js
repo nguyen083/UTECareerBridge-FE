@@ -1,1 +1,0 @@
-import{j as s,Z as o}from"./index-BjGqDy_t.js";import{R as t,C as a}from"./row-Di9mOLBK.js";import"./responsiveObserver-B6L3gGd0.js";const m=()=>s.jsxs(t,{className:"layout-container",children:[s.jsx(a,{span:12,className:"sticky-top"}),s.jsx(a,{span:12,children:s.jsx(o,{})})]});export{m as default};

@@ -24,6 +24,10 @@
       "titleDetail": "Chi tiết thông báo",
       "system": "Hệ thống",
       "personal": "Cá nhân",
+      "markAllAsRead": "Đánh dấu tất cả đã đọc",
+      "noNewNotification": "Không có thông báo mới",
+      "new": "Mới",
+      "loginToSeeNotification": "Đăng nhập để xem thông báo",
       "table":{
         "title": "Tiêu đề",
         "time": "Thời gian"
@@ -103,7 +107,7 @@
           },
           "viewDetail": {
               "title": "Hồ sơ chi tiết",
-              "approve": "Đồng ý",
+              "approve": "Duyệt",
               "reject": "Từ chối",
               "interview": {
                   "title": "Thông báo phỏng vấn",
@@ -277,7 +281,20 @@
           }
       },
       "interview": {
-          "title": "Danh sách phỏng vấn"
+          "title": "Lịch phỏng vấn",
+          "create": {
+            "title": "Tạo cuộc phỏng vấn",
+            "description": "Tạo cuộc phỏng vấn để tiếp cận ứng viên",
+            "jobPosition": "Vị trí công việc",
+            "interviewDate": "Ngày phỏng vấn",
+            "interviewTime": "Thời gian phỏng vấn",
+            "interviewLocation": "Địa điểm phỏng vấn",
+            "meetingLink": "Link cuộc phỏng vấn",
+            "message": {
+              "success": "Cuộc phỏng vấn đã được tạo thành công",
+              "error": "Cuộc phỏng vấn đã tạo thất bại"
+            }
+          }
       },
       "manageJobs": {
           "listJobs": "Danh sách bài đăng",
@@ -1078,5 +1095,14 @@
     },
     "chatbot": {
         "placeholderInput": "Nhập tin nhắn của bạn ở đây..."
+    },
+    "meeting": {
+        "permissions_granted": "Đã được cấp quyền truy cập camera và microphone",
+        "permission_error": "Lỗi khi yêu cầu quyền truy cập:",
+        "permission_alert": "Vui lòng cấp quyền truy cập camera và microphone để tham gia cuộc họp!",
+        "join_link": "Liên kết tham gia cuộc họp",
+        "permission_required": "Yêu cầu cấp quyền",
+        "permission_instruction": "Vui lòng cấp quyền truy cập camera và microphone để tham gia cuộc họp",
+        "try_again": "Thử lại"
     }
 }

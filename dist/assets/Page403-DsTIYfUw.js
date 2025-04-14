@@ -1,1 +1,0 @@
-import{a as e,j as s,B as a}from"./index-BjGqDy_t.js";import{u as o}from"./useTranslation-y0VBGOVq.js";import{R as i}from"./index-fEXYcRYj.js";const l=()=>{const r=e(),{t}=o();return s.jsx(i,{status:"403",title:"403",subTitle:t("errors.403"),extra:s.jsx(a,{onClick:()=>r("/home"),size:"large",type:"primary",children:t("errors.backToHome")})})};export{l as default};

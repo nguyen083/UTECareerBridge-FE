@@ -1,4 +1,3 @@
-import React from 'react';
 import { useState } from 'react';
 import { Button, Form, Input, Space, DatePicker, Steps, Radio, Card, message, Col, Row, Flex, Image } from 'antd';
 import './EmployerRegister.scss';
@@ -54,10 +53,8 @@ const EmployerRegister = () => {
         form1.resetFields();
         form2.resetFields();
         navigate('/employer/login');
-      } else {
-        message.error(t('common.error'));
       }
-    }).catch(err => {
+    }).catch(() => {
       message.error(t('common.error'));
     });
    
@@ -73,9 +70,9 @@ const EmployerRegister = () => {
           width={200}
           onClick={() => navigate('/home')}
         />
-        <Card style={{ backgroundColor: COLOR.cardColor }} className='shadow-lg w-3/4 mx-auto'>
-          <span className='title flex justify-center' style={{ color: COLOR.textColor }}>{t('auth.register.title')}</span>
-          <Steps className='p-5 w-3/4 mx-auto' current={current} items={items} />
+        <Card style={{ backgroundColor: COLOR.cardColor }} className='w-3/4 mx-auto shadow-lg'>
+          <span className='flex justify-center title' style={{ color: COLOR.textColor }}>{t('auth.register.title')}</span>
+          <Steps className='w-3/4 p-5 mx-auto' current={current} items={items} />
           <Form form={form1} onFinish={onFinish} name="validateOnlyform1" requiredMark={false} layout="vertical" autoComplete="off" size='large'>
             {steps[current].content === '1' && <div className='w-full mt-3'>
 

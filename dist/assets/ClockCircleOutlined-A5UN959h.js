@@ -1,1 +1,0 @@
-import{r,_ as t}from"./index-BjGqDy_t.js";import{C as c}from"./ClockCircleOutlined-CELcQ7Uv.js";import{I as i}from"./AntdIcon-BxYTvCTn.js";var n=function(e,o){return r.createElement(i,t({},e,{ref:o,icon:c}))},s=r.forwardRef(n);export{s as R};

@@ -6,7 +6,7 @@ let isConnected = false;
 const subscriptions = new Map();
 
 // ✅ Kết nối WebSocket (chỉ tạo một lần)
-export const connectStomp = (onConnected, onError) => {
+export const connectStomp = (onConnected, onError, requireToken = true) => {
     if (stompClient && isConnected) {
         // console.log('WebSocket đã kết nối, không tạo lại.');
         if (onConnected) onConnected(stompClient);
@@ -16,23 +16,25 @@ export const connectStomp = (onConnected, onError) => {
     // Lấy token từ localStorage
     const accessToken = localStorage.getItem('accessToken');
     
-    // Kiểm tra token có tồn tại không
-    if (!accessToken) {
-        console.error('Không tìm thấy access token. Không thể kết nối WebSocket.');
+    // Kiểm tra token nếu mode yêu cầu token được bật
+    if (requireToken && !accessToken) {
+        console.error('Không tìm thấy access token khi mode yêu cầu token được bật.');
         if (onError) onError(new Error('Không tìm thấy access token'));
         return null;
     }
 
-    console.log('Kết nối WebSocket với token:', accessToken.substring(0, 10) + '...');
-
     // Tạo instance mới của SockJS với endpoint /ws
     const socket = new SockJS('/ws');
 
+    // Chuẩn bị headers dựa vào việc có yêu cầu token hay không
+    const connectHeaders = {};
+    if (requireToken && accessToken) {
+        connectHeaders['Authorization'] = 'Bearer ' + accessToken;
+    }
+
     stompClient = new Client({
         webSocketFactory: () => socket,
-        connectHeaders: {
-            'Authorization': 'Bearer ' + accessToken
-        },
+        connectHeaders: connectHeaders,
         debug: (str) => {
             if (str.includes('Connect headers')) {
                 console.log('STOMP connect headers sent:', str);
@@ -138,8 +140,8 @@ export const unsubscribeFromTopic = (topic) => {
 // ✅ Lấy STOMP client hiện tại
 export const getStompClient = () => stompClient;
 
-// ✅ Tái kết nối WebSocket với token mới
-export const reconnectWithNewToken = () => {
+// ✅ Tái kết nối WebSocket với token mới hoặc không có token
+export const reconnectWithNewToken = (requireToken = true) => {
     // Ngắt kết nối cũ
     if (stompClient) {
         try {
@@ -153,6 +155,6 @@ export const reconnectWithNewToken = () => {
     stompClient = null;
     isConnected = false;
     
-    // Kết nối lại
-    return connectStomp();
+    // Kết nối lại với cấu hình token tương ứng
+    return connectStomp(null, null, requireToken);
 };

@@ -1,1 +1,0 @@
-import{D as e,ad as s,ae as i,af as n,ag as o,ah as r,ai as d,aa as u}from"./index-BjGqDy_t.js";const I=()=>{const a=e();return{login:t=>{a(u({userId:t.data.id,role:t.data.roles.roleName,email:t.data.username}))},clearRedux:async()=>{await s.purge(),a(i()),a(n()),a(o()),a(r()),a(d())}}};export{I as u};

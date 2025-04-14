@@ -86,7 +86,7 @@ const StudentLayout = () => {
 
     return (
         <Layout className='layout-student'>
-            <Header className='header-student'>
+            <Header className='py-1 header-student'>
                 <Flex align='center' justify='space-between' className='w-full'>
                     <Image
                         style={{ cursor: 'pointer' }}

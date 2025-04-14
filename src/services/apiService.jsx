@@ -375,7 +375,8 @@ const updateServicePackage = (id, values) => {
   return axios.put(`packages/update-package/${id}`, values);
 }
 const sendMailApprove = async (values) => {
-  return axios.post(`employers/send-mail-reply-accept-interview`, values);
+  console.log(values);
+  // return axios.post(`employers/send-mail-reply-accept-interview`, values);
 }
 const createCoupon = async (values) => {
   return axios.post(`coupons`, values);

@@ -16,9 +16,9 @@ const checkThoiHan = ({ dateInput }) => {
     };
     const daysDifference = tinhKhoangCach(dateInput);
     if (daysDifference >= 0) {
-        return <Tag className='w-fit' icon={<CloseCircleOutlined />} color="error"> Hết hạn</Tag>
+        return <Tag className='!mx-auto w-fit' icon={<CloseCircleOutlined />} color="error"> Hết hạn</Tag>
     }
-    return <Tag className='w-fit' icon={<ClockCircleOutlined />} color="success">Còn hiệu lực</Tag>
+    return <Tag className='!mx-auto w-fit' icon={<ClockCircleOutlined />} color="success">Còn hiệu lực</Tag>
 }
 
 

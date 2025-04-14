@@ -78,6 +78,13 @@ instance.interceptors.response.use(
         }
         // Handle 401 Unauthorized
         if (error.response?.status === 401 && !originalRequest._retry) {
+            // Loại trừ trường hợp từ endpoint interviews/schedule
+            if (originalRequest.url.includes('interviews/schedule')) {
+                return error?.response?.data
+                    ? error.response.data
+                    : Promise.reject(error);
+            }
+            
             if (isRefreshing) {
                 // Nếu đang refresh token, thêm request vào hàng đợi
                 return new Promise((resolve, reject) => {
