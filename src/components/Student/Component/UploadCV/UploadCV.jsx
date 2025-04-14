@@ -1,17 +1,19 @@
-import { DeleteOutlined, EllipsisOutlined, InboxOutlined, PaperClipOutlined } from '@ant-design/icons';
+import { DeleteOutlined, MoreOutlined, InboxOutlined, PaperClipOutlined } from '@ant-design/icons';
 import { Tabs, List, Card, Typography, Button, Dropdown, Upload, message, Form, Modal, Input, Select } from 'antd';
 import styles from './UploadCV.module.scss';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { loading, stop } from '../../../../redux/action/webSlice';
 import { useEffect, useState } from 'react';
-import { deleteCV, getAllJobLevels, uploadCV } from '../../../../services/apiService';
+import { deleteCV, getAllJobLevels } from '../../../../services/apiService';
 import { deleteImageFromCloudinaryByLink, uploadToCloudinary } from '../../../../services/uploadCloudary';
 import { useTranslation } from 'react-i18next';
+import { useUploadResume } from '../../../../composables/resume';
 const { Dragger } = Upload;
 const { Text } = Typography;
 const { Option } = Select;
 const UploadCV = ({ listResume, fetchCV }) => {
+    const resumeMutate = useUploadResume();
     const dispatch = useDispatch();
     const [url, setUrl] = useState("");
     const [visible, setVisible] = useState(false);
@@ -45,7 +47,7 @@ const UploadCV = ({ listResume, fetchCV }) => {
     const handleUpload = async (file) => {
         try {
             dispatch(loading());
-            const url = await uploadToCloudinary(file, "student", (progress) => {
+            const url = await uploadToCloudinary(file, "student", () => {
             });
             setUrl(url);
             message.success(t('cv.upload.success'));
@@ -77,22 +79,37 @@ const UploadCV = ({ listResume, fetchCV }) => {
     }
     const handleSubmit = (values) => {
         console.log({ ...values, resumeFile: url });
-        uploadCV({ ...values, resumeFile: url }).then((res) => {
-            if (res.status === 'OK') {
-                message.success(res.message);
-                fetchCV();
-            } else {
-                message.error(res.message);
+        resumeMutate.mutate({ ...values, resumeFile: url },{
+            onSuccess: (res) => {
+                if (res.status === 'OK') {
+                    message.success(res.message);
+                    fetchCV();
+                } else {
+                    message.error(res.message);
+                }
+            },
+            onError: (err) => {
+                message.error("Cập nhật hồ sơ thất bại, ", err);
             }
-        }).catch((err) => {
-            message.error("Cập nhật hồ sơ thất bại, ", err);
-        }).finally(() => {
-            setVisible(false);
-            form.resetFields();
         });
+        setVisible(false);
+        form.resetFields();
+        // uploadCV({ ...values, resumeFile: url }).then((res) => {
+        //     if (res.status === 'OK') {
+        //         message.success(res.message);
+        //         fetchCV();
+        //     } else {
+        //         message.error(res.message);
+        //     }
+        // }).catch((err) => {
+        //     message.error("Cập nhật hồ sơ thất bại, ", err);
+        // }).finally(() => {
+        //     setVisible(false);
+        //     form.resetFields();
+        // });
     }
     const handleCancel = () => {
-        deleteImageFromCloudinaryByLink(url).then((status) => {
+        deleteImageFromCloudinaryByLink(url).then(() => {
             form.resetFields();
             setVisible(false);
         })
@@ -109,7 +126,7 @@ const UploadCV = ({ listResume, fetchCV }) => {
                                     maxCount={1}
                                     showUploadList={false}
                                     accept=".doc,.docx,.pdf"
-                                    customRequest={({ file, onSuccess, onError }) => {
+                                    customRequest={({ file, onError }) => {
                                         const isDocOrPdf = file.type === 'application/pdf' ||
                                             file.type === 'application/msword' ||
                                             file.type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
@@ -149,6 +166,7 @@ const UploadCV = ({ listResume, fetchCV }) => {
                                                 <List.Item
                                                     key={item.id}
                                                     actions={[<Dropdown
+                                                        key={item.id}
                                                         menu={{
                                                             items: items.map((i) => ({
                                                                 ...i,
@@ -157,8 +175,8 @@ const UploadCV = ({ listResume, fetchCV }) => {
                                                         }}
                                                         trigger={['click']}
                                                     >
-                                                        <Button type="text" style={{ padding: "5 5 " }}>
-                                                            <EllipsisOutlined style={{ fontSize: 20, padding: 0 }} /></Button>
+                                                        <Button className='p-0' type="text">
+                                                            <MoreOutlined style={{ fontSize: 20, padding: 0 }} /></Button>
                                                     </Dropdown>]}>
                                                     <List.Item.Meta
 

@@ -135,7 +135,6 @@ const getAllJobEmployer = (id, filter) => {
   return axios.get(`jobs/employers/${id}/all-jobs?${params}`);
 }
 const getAllCV = async () => {
-
   return axios.get(`students/resumes`);
 }
 const applyJob = async (values) => {

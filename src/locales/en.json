@@ -60,7 +60,8 @@
         "dragAndDrop": "Drag and drop or click to upload image",
         "view": "View",
         "of": "of",
-        "item": "item"
+        "item": "item",
+        "login": "Login"
     },
     "role": {
         "admin": "Admin",
@@ -358,7 +359,7 @@
             "resume": "Resume",
             "uploadedAt": "Uploaded at",
             "updateResume": "Update resume",
-            "noResume": "No resume, please upload",
+            "noResume": "No resume, please upload ",
             "forEmployer": "For Employer",
             "searchResume": "Search Resume",
             "contact": "Contact",

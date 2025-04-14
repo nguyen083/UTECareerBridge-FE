@@ -59,7 +59,8 @@
         "dragAndDrop": "Kéo thả hoặc nhấp để tải ảnh lên",
         "view": "Xem",
         "of": "của",
-        "item": "mục"
+        "item": "mục",
+        "login": "Đăng nhập"
     },
     "role": {
         "student": "Người tìm việc",
@@ -356,7 +357,7 @@
           "resume": "Hồ sơ",
           "uploadedAt": "Tải lên lúc",
           "updateResume": "Cập nhật hồ sơ",
-          "noResume": "Không có hồ sơ, vui lòng tải lên",
+          "noResume": "Không có hồ sơ, vui lòng tải lên ",
           "forEmployer": "Dành cho Nhà tuyển dụng",
           "searchResume": "Tìm kiếm hồ sơ",
           "contact": "Liên hệ",

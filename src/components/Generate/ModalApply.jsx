@@ -63,7 +63,7 @@ export const ModalApply = ({ show, setShow, company, job }) => {
                                 <Flex vertical>
                                     <Title level={5}>{job.jobTitle}</Title>
                                     <Flex align="center" gap={3}><FaRegMoneyBillAlt size={16} /> <div className='salary'>{job?.jobMinSalary?.toLocaleString('vi-VN')} - {job?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })} /{t('common.month')}</div></Flex>
-                                    <Flex align="center" gap={3}><FaMapLocationDot size={16} /> <Text>{job?.jobLocation}</Text></Flex>
+                                    <Flex align="center" gap={3}><FaMapLocationDot size={16} className="flex-shrink-0"/> <Text className="text-sm">{job?.jobLocation}</Text></Flex>
                                 </Flex>
                             </BoxContainer>
                         </Flex>

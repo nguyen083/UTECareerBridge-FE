@@ -1,45 +1,35 @@
 import { useEffect, useState } from 'react';
-import { Card, Radio, Typography, Flex, Dropdown } from 'antd';
+import { Card, Radio, Typography, Flex } from 'antd';
 import { PaperClipOutlined, MoreOutlined } from '@ant-design/icons';
-import { getAllCV } from '../../services/apiService';
 import { useTranslation } from 'react-i18next';
-
+import { useResume } from '../../composables/resume';
 const { Text, Link } = Typography;
 
 const FileGroup = ({ formData, setFormData }) => {
+    const { data: resumeData } = useResume();
     const [data, setData] = useState([]);
     const { t } = useTranslation();
-
+    
     useEffect(() => {
         let isMounted = true;
         const fetchData = async () => {
-            try {
-                const response = await getAllCV();
-                if (isMounted) {
-                    setData(response.data);
-                    if (response.data.length > 0) {
-                        setFormData(prev => ({ ...prev, resumeId: response.data[0].resumeId }));
+                if (isMounted && resumeData?.data) {
+                    setData(resumeData.data);
+                    if (resumeData.data.length > 0) {
+                        setFormData(prev => ({ ...prev, resumeId: resumeData.data[0].resumeId }));
                     }
                 }
-            } catch (error) {
-                console.error('Error fetching CV data:', error);
             }
-        };
-
         fetchData();
-
-       
         return () => {
             isMounted = false;
         };
-    }, []);
+    }, [resumeData]);
 
     const handleChange = (event) => {
         setFormData(prev => ({ ...prev, resumeId: event.target.value }));
     };
 
-    const dropdownItems = [
-    ];
 
     return (
         <Radio.Group
@@ -66,12 +56,8 @@ const FileGroup = ({ formData, setFormData }) => {
                                         <PaperClipOutlined /> {t('employer.job.resume')} • {t('employer.job.uploadedAt')}: {item.updatedAt}
                                     </Text>
                                 </div>
-                                <Dropdown
-                                    menu={{ items: dropdownItems }}
-                                    trigger={['click']}
-                                >
+                               
                                     <MoreOutlined className="text-lg text-gray-500" />
-                                </Dropdown>
                             </Flex>
                         </Card>
                     ))
