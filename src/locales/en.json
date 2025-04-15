@@ -69,6 +69,17 @@
         "student": "Student"
     },
     "student":{
+        "year": "Student year {{year}}",
+        "allowSearch": "Allow search resume",
+        "setupResume": "Setup resume",
+        "menu":{
+            "myResume": "My Resume",
+            "notification": "Notification",
+            "myCompany": "My Company",
+            "myJob": "My Job",
+            "recommend": "Recommend Jobs",
+            "changePassword": "Change Password"
+        },
         "layout": {
             "jobs": {
                 "title": "Jobs",
@@ -511,7 +522,8 @@
             "confirmNewPassword": "Confirm new password"
         }
     },
-    "cv": {
+    "cv": { 
+        "chooseResume": "Please choose a resume",
         "upload": {
             "success": "Upload successful!",
             "error": "Upload failed. Please try again.",

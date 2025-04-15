@@ -94,19 +94,6 @@ const UploadCV = ({ listResume, fetchCV }) => {
         });
         setVisible(false);
         form.resetFields();
-        // uploadCV({ ...values, resumeFile: url }).then((res) => {
-        //     if (res.status === 'OK') {
-        //         message.success(res.message);
-        //         fetchCV();
-        //     } else {
-        //         message.error(res.message);
-        //     }
-        // }).catch((err) => {
-        //     message.error("Cập nhật hồ sơ thất bại, ", err);
-        // }).finally(() => {
-        //     setVisible(false);
-        //     form.resetFields();
-        // });
     }
     const handleCancel = () => {
         deleteImageFromCloudinaryByLink(url).then(() => {
@@ -161,7 +148,7 @@ const UploadCV = ({ listResume, fetchCV }) => {
                                     itemLayout="horizontal"
                                     dataSource={listResume}
                                     renderItem={(item) => (
-                                        <List.Item className={styles.list_CV}>
+                                        <List.Item className="!px-0">
                                             <Card className="w-full" size="small">
                                                 <List.Item
                                                     key={item.id}

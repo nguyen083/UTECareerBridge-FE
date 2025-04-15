@@ -46,7 +46,6 @@ export const ModalApply = ({ show, setShow, company, job }) => {
                 <Button key="apply" size="large" type="primary" onClick={handleApply} loading={loading}>{t('job.apply.submit')}</Button>
             ]}
         >
-
             <Row gutter={[8, 8]}>
                 <Col span={9} color="#F8F9FA">
                     <BoxContainer className="shadow" background="#F8F9FA" borderRadius="0" padding="1rem">

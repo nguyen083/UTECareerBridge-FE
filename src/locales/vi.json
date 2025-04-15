@@ -68,6 +68,17 @@
         "admin": "Quản trị viên"
     },
     "student":{
+      "year": "Sinh viên năm thứ {{year}}",
+      "allowSearch": "Cho phép tìm kiếm hồ sơ",
+      "setupResume": "Thiết lập hồ sơ",
+      "menu":{
+        "myResume": "Hồ sơ của tôi",
+        "notification": "Thông báo",
+        "myCompany": "Công ty của tôi",
+        "myJob": "Việc làm của tôi",
+        "recommend": "Việc được đề xuất",
+        "changePassword": "Đổi mật khẩu"
+      },
       "layout": {
             "jobs": {
                 "title": "Việc làm",
@@ -86,11 +97,11 @@
                 "title": "Sự kiện",
                 "all": "Tất cả sự kiện"
             }
-        },
-        "recommend": {
-            "title": "Việc được đề xuất",
-            "description": "Việc làm được đề xuất cho bạn dựa trên các hoạt động của bạn trên hệ thống. Vui lòng chọn việc làm để xem chi tiết!"
-        }
+      },
+      "recommend": {
+          "title": "Việc được đề xuất",
+          "description": "Việc làm được đề xuất cho bạn dựa trên các hoạt động của bạn trên hệ thống. Vui lòng chọn việc làm để xem chi tiết!"
+      }
     },
     "employer":{
       "applicant":{
@@ -481,22 +492,23 @@
         }
     },
     "cv": {
-        "upload": {
-            "success": "Tải lên thành công!",
-            "error": "Tải lên thất bại. Vui lòng thử lại.",
-            "deleteSuccess": "Xóa hồ sơ thành công!",
-            "deleteError": "Xóa hồ sơ thất bại",
-            "updateError": "Cập nhật hồ sơ thất bại"
-        },
-        "form": {
-            "title": "Tiêu đề",
-            "titleRequired": "Vui lòng nhập tiêu đề!",
-            "description": "Mô tả",
-            "descriptionRequired": "Vui lòng nhập mô tả!",
-            "descriptionPlaceholder": "Nhập mô tả resume",
-            "level": "Cấp độ",
-            "levelRequired": "Vui lòng chọn cấp độ!"
-        }
+      "chooseResume": "Vui lòng chọn hồ sơ",
+      "upload": {
+          "success": "Tải lên thành công!",
+          "error": "Tải lên thất bại. Vui lòng thử lại.",
+          "deleteSuccess": "Xóa hồ sơ thành công!",
+          "deleteError": "Xóa hồ sơ thất bại",
+          "updateError": "Cập nhật hồ sơ thất bại" 
+      },
+      "form": {
+          "title": "Tiêu đề",
+          "titleRequired": "Vui lòng nhập tiêu đề!",
+          "description": "Mô tả",
+          "descriptionRequired": "Vui lòng nhập mô tả!",
+          "descriptionPlaceholder": "Nhập mô tả resume",
+          "level": "Cấp độ",
+          "levelRequired": "Vui lòng chọn cấp độ!"
+      }
     },
     "job": {
         "search": {

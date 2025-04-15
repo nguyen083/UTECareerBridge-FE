@@ -54,3 +54,13 @@ export const useNotificationReadAll = () => {
         },
     });
 };
+export const useDetailNotification = (id) => {
+    return useQuery({
+        queryKey: ["notification", id],
+        queryFn: () => notification.getNotificationById(id),
+        enabled: !!id,
+        select: (data) => data.data,
+    });
+};
+
+

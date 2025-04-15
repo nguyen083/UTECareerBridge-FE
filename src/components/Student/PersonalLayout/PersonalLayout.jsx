@@ -13,10 +13,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { apiService } from "../../../services/getAddressId";
 import { setFindJob } from "../../../redux/action/studentSlice";
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 const { Text } = Typography;
 const { Meta } = Card;
 
 const PersonalLayout = () => {
+    const {t} = useTranslation();
     const location = useLocation();
     const navigate = useNavigate();
     const [listResume, setListResume] = useState([]);
@@ -30,32 +32,32 @@ const PersonalLayout = () => {
     const menuItems = [
         {
             key: "/profile",
-            label: <div className="text-base">Hồ sơ của tôi</div>,
+            label: <div className="text-base">{t('student.menu.myResume')}</div>,
             icon: <SolutionOutlined />,
         },
         {
             key: "/notification",
-            label: <div className="text-base">Thông báo</div>,
+            label: <div className="text-base">{t('student.menu.notification')}</div>,
             icon: <NotificationOutlined />,
         },
         {
             key: "/my-company",
-            label: <div className="text-base">Công ty của tôi</div>,
+            label: <div className="text-base">{t('student.menu.myCompany')}</div>,
             icon: <IoIosBusiness />,
         },
         {
             key: "/my-job",
-            label: <div className="text-base">Việc làm của tôi</div>,
+            label: <div className="text-base">{t('student.menu.myJob')}</div>,
             icon: <IoBriefcaseOutline />
         },
         {
             key: "/recommend-job",
-            label: <div className="text-base">Đề xuất việc làm</div>,
+            label: <div className="text-base">{t('student.menu.recommend')}</div>,
             icon: <HiLightBulb />
         },
         {
             key: "/account-management",
-            label: <div className="text-base">Đổi mật khẩu</div>,
+            label: <div className="text-base">{t('student.menu.changePassword')}</div>,
             icon: <SettingOutlined />,
         }
     ];
@@ -125,10 +127,10 @@ const PersonalLayout = () => {
         const check = status === null ? !infor.findingJob : status;
         updateFindjob(check).then((res) => {
             if (res.status === 'OK') {
-               
                 dispatch(setFindJob(check));
             } else {
-                message.error(res.message);
+                message.error(t('cv.chooseResume'));
+                setModalResume(true);
             }
         });
     }
@@ -142,15 +144,15 @@ const PersonalLayout = () => {
                             className={styles.card}
                         >
                             <Meta
-                                title={infor.lastName + " " + infor.firstName}
-                                description={"Sinh viên năm thứ " + infor.year}
+                                title={<div className="text-text-color">{infor.lastName + " " + infor.firstName}</div>}
+                                description={t('student.year', { year: infor?.year || 1 })}
                             />
                             <div className={styles.div}>
                                 <Flex gap={16} justify="space-between" align="center">
-                                    <Text className="text-base" strong >Cho phép tìm kiếm hồ sơ</Text>
+                                    <Text className="text-base text-text-color" strong >{t('student.allowSearch')}</Text>
                                     <Switch checked={infor.findingJob} onChange={() => switchFindjob()} />
                                 </Flex>
-                                <Button onClick={() => setModalResume(true)} type="link">Thiết lập hồ sơ</Button>
+                                <Button onClick={() => setModalResume(true)} type="link">{t('student.setupResume')}</Button>
                             </div>
                         </Card>
                     </Col>

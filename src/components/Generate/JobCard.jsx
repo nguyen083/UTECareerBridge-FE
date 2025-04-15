@@ -15,7 +15,7 @@ const JobCardSmall = ({ job }) => {
     }
     const { t } = useTranslation();
     return (
-        <div className='job-card-small !border'>
+        <div className='job-card-small'>
         <List.Item className='flex items-start justify-between max-w-full p-3 overflow-hidden rounded-md shadow item-company' >
             <List.Item.Meta
                 style={{ cursor: 'pointer' }}
