@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Tabs, Modal, Form, Input, DatePicker, Select, Space, Button, message } from 'antd';
-import { UserOutlined, LockOutlined, StopOutlined } from '@ant-design/icons';
+import { Modal, Form, Input, DatePicker, Select, Button, message } from 'antd';
 import TableListUser from './TableListUser';
 import BoxContainer from '../../Generate/BoxContainer';
 import { getUserByUserId, updateUser } from '../../../services/apiService';
@@ -8,7 +7,6 @@ import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { useTranslation } from 'react-i18next';
 
-const { TabPane } = Tabs;
 const { Option } = Select;
 
 const ManageListUser = () => {

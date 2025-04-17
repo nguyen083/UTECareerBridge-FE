@@ -4,7 +4,7 @@ import './EmployerRegister.scss';
 import SubmitButton from '../Generate/SubmitButton';
 import COLOR from '../styles/_variables'
 import { registerEmployer } from '../../services/apiService';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import path from '../../constant/path';
 import { useTranslation } from 'react-i18next';
 
@@ -215,9 +215,10 @@ const EmployerRegister = () => {
                     </Form.Item>
                   </Col>
                 </Row>
-                <Flex justify='end'>
+                <Flex justify='space-between' align='center'>
+                  <Link to="/login" className="text-blue-500">{t('auth.register.haveAccount')}</Link>
                   {current < steps.length - 1 && (
-                    <SubmitButton form={form2} onClick={next}>{t('common.complete')}</SubmitButton>
+                    <SubmitButton form={form2} onClick={next}>{t('common.continue')}</SubmitButton>
                   )}
                 </Flex>
               </Form>
@@ -271,8 +272,9 @@ const EmployerRegister = () => {
                 </Col>
               </Row>
             </div>}
-
-            <div className='flex justify-end mt-4'>
+            <Flex justify='space-between' align='center'>
+              {current > 0 && <Link to="/login" className="text-blue-500">{t('auth.register.haveAccount')}</Link>}
+              <div className='flex justify-between mt-4'>
               {current > 0 && (
                 <Button className='mx-2' onClick={() => prev()}>
                   {t('common.cancel')}
@@ -283,6 +285,7 @@ const EmployerRegister = () => {
                 <SubmitButton type="primary" form={form1} onClick={() => { }}>{t('common.save')}</SubmitButton>
               )}
             </div>
+            </Flex>
           </Form>
         </Card>
       </Flex>

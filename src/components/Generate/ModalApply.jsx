@@ -39,7 +39,8 @@ export const ModalApply = ({ show, setShow, company, job }) => {
     return (
         <Modal title={<><Title level={4}>{t('job.apply.title')}</Title> <Divider className="m-0" /></>}
             open={show}
-            onCancel={() => setShow(false)} width={900}
+            onCancel={() => setShow(false)} 
+            width={1100}
             centered
             maskClosable={false}
             footer={[

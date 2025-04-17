@@ -61,8 +61,8 @@ const PersonalLayout = () => {
             icon: <SettingOutlined />,
         }
     ];
-    const handleMenu = (key) => {
-        navigate(key.key);
+    const handleMenu = (menuItem) => {
+        navigate(menuItem.key);
     }
    
     const getResumeActive = () => {
@@ -81,6 +81,7 @@ const PersonalLayout = () => {
                     key: item.resumeId,
                     id: item.resumeId,
                     title: item.resumeTitle || "",
+                    description: item.resumeDescription || "",
                     lastUpdated: item.updatedAt || 0,
                     link: item.resumeFile || "",
                     acvite: item.isActive

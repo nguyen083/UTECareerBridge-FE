@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Card, Radio, Typography, Flex, Upload, message, Modal, Form, Input, Select } from 'antd';
+import { Card, Radio, Typography, Flex, Upload, message, Modal, Form, Input, Select, Progress } from 'antd';
 import { PaperClipOutlined, MoreOutlined, InboxOutlined } from '@ant-design/icons';
 import { useTranslation } from 'react-i18next';
 import { useResume, useUploadResume } from '../../composables/resume';
 import { deleteImageFromCloudinaryByLink, uploadToCloudinary } from '../../services/uploadCloudary';
 import { getAllJobLevels } from '../../services/apiService';
+
 
 const { Text } = Typography;
 const { Dragger } = Upload;
@@ -18,7 +19,8 @@ const FileGroup = ({ formData, setFormData }) => {
     const [form] = Form.useForm();
     const [visible, setVisible] = useState(false);
     const [levelOptions, setLevelOptions] = useState([]);
-
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [uploading, setUploading] = useState(false);
 
     useEffect(() => {
         getAllJobLevels().then((res) => {
@@ -40,7 +42,9 @@ const FileGroup = ({ formData, setFormData }) => {
 
     const handleUpload = async (file) => {
         try {
-            const url = await uploadToCloudinary(file, "student", () => {
+            setUploading(true);
+            const url = await uploadToCloudinary(file, "student", (progress) => {
+                setUploadProgress(progress);
             });
             setUrl(url);
             message.success(t('cv.upload.success'));
@@ -49,11 +53,13 @@ const FileGroup = ({ formData, setFormData }) => {
         } catch (error) {
             message.error(t('cv.upload.error'));
             console.error(error);
-        } 
+        }finally {
+            setUploading(false);
+            setUploadProgress(0);
+        }
     }
 
     const handleSubmit = (values) => {
-        console.log({ ...values, resumeFile: url });
         resumeMutate.mutate({ ...values, resumeFile: url },{
             onSuccess: (res) => {
                 if (res.status === 'OK') {
@@ -95,13 +101,14 @@ const FileGroup = ({ formData, setFormData }) => {
             isMounted = false;
         };
     }, [resumeData]);
-    
+
     return (
         <Flex vertical gap={16}>
         {data.length < 3 && <Dragger
             maxCount={1}
             showUploadList={false}
             accept=".doc,.docx,.pdf"
+            disabled={uploading}
             customRequest={({ file, onError }) => {
                 const isDocOrPdf = file.type === 'application/pdf' ||
                     file.type === 'application/msword' ||
@@ -109,12 +116,12 @@ const FileGroup = ({ formData, setFormData }) => {
                 const isSizeValid = file.size / 1024 / 1024 < 5;
 
                 if (!isDocOrPdf) {
-                    message.error('Chỉ hỗ trợ định dạng .doc, .docx, .pdf');
+                    message.error(t('cv.upload.fileType'));
                     onError('Invalid file type');
                     return;
                 }
                 if (!isSizeValid) {
-                    message.error('Kích thước tệp vượt quá 5MB');
+                    message.error(t('cv.upload.fileMax'));
                     onError('File size exceeds limit');
                     return;
                 }
@@ -124,8 +131,9 @@ const FileGroup = ({ formData, setFormData }) => {
             <p className="ant-upload-drag-icon">
                 <InboxOutlined />
             </p>
-            <p>Chọn hoặc kéo thả hồ sơ từ máy của bạn</p>
-            <p>Hỗ trợ định dạng .doc, .docx, .pdf có kích thước dưới 5MB</p>
+            <p>{t('cv.upload.fileChoose')}</p>
+            <p>{t('cv.upload.fileSupport')}</p>
+            {uploading && <Progress percent={uploadProgress} />}
         </Dragger>}
         <Radio.Group
             onChange={handleChange}
@@ -137,36 +145,28 @@ const FileGroup = ({ formData, setFormData }) => {
                         <Card
                             key={item.resumeId}
                             size="small"
-                            bordered
-                            className="rounded-lg"
+                            className="rounded-lg cursor-pointer"
+                            onClick={() => {
+                                setFormData(prev => ({ ...prev, resumeId: item.resumeId }));
+                            }}
                         >
                             <Flex justify="space-between">
                                 <Radio value={item.resumeId} />
                                 <div className="flex-grow">
-                                    <Typography.Link>
+                                    <Typography.Text className="text-base text-text-color-hover">
                                         {item.resumeTitle}
-                                    </Typography.Link>
+                                    </Typography.Text>
                                     <br />
                                     <Text type="secondary">
                                         <PaperClipOutlined /> {t('employer.job.resume')} • {t('employer.job.uploadedAt')}: {item.updatedAt}
                                     </Text>
                                 </div>
                                
-                                    <MoreOutlined className="text-lg text-gray-500" />
+                                <MoreOutlined className="text-lg text-gray-500" />
                             </Flex>
                         </Card>
                     ))
                 ) 
-                // : (
-                //     <Flex align="center" justify="center">
-                //         <Text>
-                //             {t('employer.job.noResume')}
-                //             <Link href="http://localhost:3000/profile" target="_blank">
-                //                 {t('employer.job.updateResume')}
-                //             </Link>
-                //         </Text>
-                //     </Flex>
-                // )
                 }
             </Flex>
         </Radio.Group>

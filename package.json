@@ -29,6 +29,7 @@
     "cloudinary": "^2.5.1",
     "crypto-js": "^4.2.0",
     "dayjs": "^1.11.13",
+    "emoji-picker-react": "^4.12.2",
     "firebase": "^11.0.1",
     "html-react-parser": "^5.1.18",
     "i18next": "^24.2.2",

@@ -19,12 +19,14 @@
     "follow_company": "Theo dõi công ty",
     "my_company": "Công ty của tôi",
     "marquee": "Khởi đầu sự nghiệp, tìm việc dễ dàng - Cơ hội nghề nghiệp dành cho bạn ngay hôm nay!",
+
     "notification": {
       "title": "Thông báo",
       "titleDetail": "Chi tiết thông báo",
       "system": "Hệ thống",
       "personal": "Cá nhân",
-      "markAllAsRead": "Đánh dấu tất cả đã đọc",
+      "markAllAsRead": "Đánh dấu tất cả là đã đọc",
+      "markAsRead": "Đánh dấu là đã đọc",
       "noNewNotification": "Không có thông báo mới",
       "new": "Mới",
       "loginToSeeNotification": "Đăng nhập để xem thông báo",
@@ -60,7 +62,8 @@
         "view": "Xem",
         "of": "của",
         "item": "mục",
-        "login": "Đăng nhập"
+        "login": "Đăng nhập",
+        "continue": "Tiếp tục"
     },
     "role": {
         "student": "Người tìm việc",
@@ -474,7 +477,8 @@
             "emailRequired": "Nhập email của bạn",
             "passwordRequired": "Nhập mật khẩu của bạn",
             "confirmPasswordRequired": "Nhập mật khẩu xác nhận",
-            "terms": "Bạn đã đọc và đồng ý với các điều khoản và điều kiện của chúng tôi"
+            "terms": "Bạn đã đọc và đồng ý với các điều khoản và điều kiện của chúng tôi",
+            "haveAccount": "Đã có tài khoản? Đăng nhập ngay"
         },
         "resetPassword": {
             "success": "Đặt lại mật khẩu thành công",
@@ -498,7 +502,11 @@
           "error": "Tải lên thất bại. Vui lòng thử lại.",
           "deleteSuccess": "Xóa hồ sơ thành công!",
           "deleteError": "Xóa hồ sơ thất bại",
-          "updateError": "Cập nhật hồ sơ thất bại" 
+          "updateError": "Cập nhật hồ sơ thất bại",
+          "fileChoose": "Chọn hoặc kéo thả hồ sơ từ máy của bạn",
+          "fileSupport": "Chỉ hỗ trợ định dạng .doc, .docx, .pdf có kích thước dưới 5MB",
+          "fileType": "Chỉ hỗ trợ định dạng .doc, .docx, .pdf",
+          "fileMax": "Kích thước tệp vượt quá 5MB"
       },
       "form": {
           "title": "Tiêu đề",
@@ -508,6 +516,12 @@
           "descriptionPlaceholder": "Nhập mô tả resume",
           "level": "Cấp độ",
           "levelRequired": "Vui lòng chọn cấp độ!"
+      },
+      "confirmModal": {
+        "title": "Xác nhận",
+        "content": "Bạn chắc chắn muốn xóa hồ sơ này?",
+        "okText": "Xóa",
+        "cancelText": "Hủy"
       }
     },
     "job": {

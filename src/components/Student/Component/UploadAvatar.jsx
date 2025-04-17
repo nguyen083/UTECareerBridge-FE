@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import './UploadAvatar.scss';
 import { Avatar, Image, Progress, Upload, message, Typography } from "antd";
 import { UploadOutlined, UserOutlined } from "@ant-design/icons";
@@ -11,7 +11,6 @@ const UploadAvatar = ({ src, setSrc }) => {
     const [uploadProgress, setUploadProgress] = useState(0);
     const [uploading, setUploading] = useState(false);
     let [urlImage, setUrlImage] = useState(src);
-    const uploadRef = useRef(null);
 
     const handleImageChange = async (file) => {
         if (!file) return;

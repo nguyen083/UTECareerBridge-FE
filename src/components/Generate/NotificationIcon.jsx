@@ -1,19 +1,21 @@
 import { BellOutlined } from "@ant-design/icons";
-import { Badge, Button, Divider, Flex, List, Popover, Tag, Tooltip, Typography } from "antd";
+import { Badge, Button, Flex, List, Popover, Tag, Tooltip, Typography } from "antd";
 import { useCallback, useEffect } from "react";
 import COLOR from "../styles/_variables";
 import "./Notification.scss";
 import '../Generate/CustomizePopover.scss';
 import { useNavigate } from "react-router-dom";
-import { useNotification, useNotificationCount, useNotificationReadAll } from "../../composables/notification";
+import { useNotification, useNotificationCount, useNotificationRead, useNotificationReadAll } from "../../composables/notification";
 import { useTranslation } from "react-i18next";
 import { connectStomp } from "../../utils/stompConfig";
 import { useQueryClient } from "@tanstack/react-query";
 import sound from '../../assets/sounds/notification.mp3'
 import icon from '../../assets/bell-ringing.png'
-import { CheckCheck } from "lucide-react";
+import { Check } from "lucide-react";
 
+const {Text} = Typography;
 const ListNotification = ({ notification, userId }) => {
+    const notificationMutation = useNotificationRead();
     const navigate = useNavigate();
     const {t} = useTranslation();
     return (
@@ -37,12 +39,13 @@ const ListNotification = ({ notification, userId }) => {
             itemLayout="horizontal"
             dataSource={notification}
             renderItem={(item) => (
-                <List.Item onClick={() => navigate(`/notification/${item.notificationId}`)} className="cursor-pointer hover:bg-gray-50">
+                <List.Item className="group !px-1">
                     <List.Item.Meta
                         title={
                             <Flex justify="space-between">
                                 <Typography.Text
-                                    className="fs-6 notification-title"
+                                    onClick={() => navigate(`/notification/${item.notificationId}`)} 
+                                    className="!text-base cursor-pointer group-hover:text-text-color-hover notification-title"
                                     strong
                                     ellipsis={{ tooltip: item.title }}
                                 >
@@ -53,11 +56,13 @@ const ListNotification = ({ notification, userId }) => {
                         }
                         description={
                             <>
-                                <Divider className="text-gray-200" />
-                                <Flex justify="end">
+                                <Flex justify="space-between">
                                     <Typography.Text type="secondary">
                                         {new Date(item.notificationDate).toLocaleString('vi-VN')}
                                     </Typography.Text>
+                                    <Tooltip placement="topRight" title={t('notification.markAsRead')}>
+                                        <Check className="invisible cursor-pointer group-hover:visible group-hover:text-text-color-hover" size={16} onClick={() => notificationMutation.mutate(item.notificationId)}/>
+                                    </Tooltip>
                                 </Flex>
                             </>
                         }
@@ -199,9 +204,7 @@ const NotificationIcon = ({ userId = null }) => {
                     <Typography.Title className="notification-title-header" level={5}>
                         {t('notification.title')}
                     </Typography.Title>
-                    <Tooltip title={t('notification.markAllAsRead')}>
-                        <Button type="text" icon={<CheckCheck/>} onClick={() => markAllAsRead.mutate(userId)}/>
-                    </Tooltip>
+                        <Text className="text-sm font-medium cursor-pointer hover:text-text-color-hover hover:underline" type="text" onClick={() => markAllAsRead.mutate(userId)}>{t('notification.markAllAsRead')}</Text>
                 </Flex>
             }
             content={<ListNotification notification={notificationList} userId={userId} />}

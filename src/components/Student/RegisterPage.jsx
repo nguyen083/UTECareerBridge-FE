@@ -5,6 +5,7 @@ import { Form, Input, Space, Button, DatePicker, Checkbox, Radio, Typography, Ro
 import { studentRegister } from "../../services/apiService";
 import { Link, useNavigate } from "react-router-dom";
 import path from "../../constant/path";
+import { useTranslation } from "react-i18next";
 
 const { Title } = Typography;
 
@@ -14,6 +15,7 @@ const RegisterPage = () => {
     const [isChecked, setIsChecked] = useState(false);
     const [DoB, setDoB] = useState('');
     const navigate = useNavigate();
+    const {t} = useTranslation();
 
 
     const onChange = (date, dateString) => {
@@ -205,7 +207,9 @@ const RegisterPage = () => {
                                 </Form.Item>
                             </Form>
                         </div>
-
+                        <div className="flex justify-center">
+                            <Link to="/login" className="text-blue-500">{t('auth.register.haveAccount')}</Link>
+                        </div>
                     </div>
                 </Flex>
 

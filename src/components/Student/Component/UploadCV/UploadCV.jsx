@@ -1,9 +1,7 @@
-import { DeleteOutlined, MoreOutlined, InboxOutlined, PaperClipOutlined } from '@ant-design/icons';
-import { Tabs, List, Card, Typography, Button, Dropdown, Upload, message, Form, Modal, Input, Select } from 'antd';
+import { DeleteOutlined, MoreOutlined, InboxOutlined, PaperClipOutlined, ExclamationCircleOutlined } from '@ant-design/icons';
+import { Tabs, List, Card, Typography, Button, Dropdown, Upload, message, Form, Modal, Input, Select, Progress, Tooltip } from 'antd';
 import styles from './UploadCV.module.scss';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { loading, stop } from '../../../../redux/action/webSlice';
 import { useEffect, useState } from 'react';
 import { deleteCV, getAllJobLevels } from '../../../../services/apiService';
 import { deleteImageFromCloudinaryByLink, uploadToCloudinary } from '../../../../services/uploadCloudary';
@@ -14,20 +12,32 @@ const { Text } = Typography;
 const { Option } = Select;
 const UploadCV = ({ listResume, fetchCV }) => {
     const resumeMutate = useUploadResume();
-    const dispatch = useDispatch();
     const [url, setUrl] = useState("");
     const [visible, setVisible] = useState(false);
     const [form] = Form.useForm();
     const [levelOptions, setLevelOptions] = useState([]);
     const { t } = useTranslation();
+    const [uploadProgress, setUploadProgress] = useState(0);
+    const [uploading, setUploading]= useState(false);
     const items = [
         {
             label: <Text type="danger"><DeleteOutlined /> &ensp;Xóa</Text>,
             key: '1',
-            onClick: (e) => handleDelete(e), 
+            onClick: (e) => {
+                Modal.confirm({
+                    centered: true,
+                    title: <span className='text-lg'>{t('cv.confirmModal.title')}</span>,
+                    icon: <ExclamationCircleOutlined />,
+                    content: <span className='text-base'>{t('cv.confirmModal.content')}</span>,
+                    okText: <span className='text-base'>{t('cv.confirmModal.okText')}</span>,
+                    onOk: () => handleDelete(e),
+                    cancelText: <span className='text-base'>{t('cv.confirmModal.cancelText')}</span>,
+                })
+            }
         },
     ];
 
+    console.log("listResume: ", listResume);
     useEffect(() => {
         getAllJobLevels().then((res) => {
             setLevelOptions(res.data
@@ -44,10 +54,13 @@ const UploadCV = ({ listResume, fetchCV }) => {
     useEffect(() => {
         visible === false && setUrl("")
     }, [visible]);
+
+
     const handleUpload = async (file) => {
         try {
-            dispatch(loading());
-            const url = await uploadToCloudinary(file, "student", () => {
+            setUploading(true);
+            const url = await uploadToCloudinary(file, "student", (progress) => {
+                setUploadProgress(progress);
             });
             setUrl(url);
             message.success(t('cv.upload.success'));
@@ -56,9 +69,10 @@ const UploadCV = ({ listResume, fetchCV }) => {
         } catch (error) {
             message.error(t('cv.upload.error'));
             console.error(error);
-        } finally {
-            dispatch(stop());
-        };
+        }finally {
+            setUploading(false);
+            setUploadProgress(0);
+        }
 
     }
     const handleDelete = async (item) => {
@@ -78,7 +92,6 @@ const UploadCV = ({ listResume, fetchCV }) => {
         });
     }
     const handleSubmit = (values) => {
-        console.log({ ...values, resumeFile: url });
         resumeMutate.mutate({ ...values, resumeFile: url },{
             onSuccess: (res) => {
                 if (res.status === 'OK') {
@@ -113,6 +126,7 @@ const UploadCV = ({ listResume, fetchCV }) => {
                                     maxCount={1}
                                     showUploadList={false}
                                     accept=".doc,.docx,.pdf"
+                                    disabled={uploading}
                                     customRequest={({ file, onError }) => {
                                         const isDocOrPdf = file.type === 'application/pdf' ||
                                             file.type === 'application/msword' ||
@@ -140,6 +154,7 @@ const UploadCV = ({ listResume, fetchCV }) => {
                                     </p>
                                     <p>Chọn hoặc kéo thả hồ sơ từ máy của bạn</p>
                                     <p>Hỗ trợ định dạng .doc, .docx, .pdf có kích thước dưới 5MB</p>
+                                    {uploading && <Progress percent={uploadProgress} />}
                                 </Dragger>}
                             {listResume.length !== 0 &&
                                 <List
@@ -149,9 +164,10 @@ const UploadCV = ({ listResume, fetchCV }) => {
                                     dataSource={listResume}
                                     renderItem={(item) => (
                                         <List.Item className="!px-0">
-                                            <Card className="w-full" size="small">
-                                                <List.Item
-                                                    key={item.id}
+                                            <Tooltip title={item.description}>
+                                                <Card className="w-full" size="small">
+                                                    <List.Item
+                                                        key={item.id}
                                                     actions={[<Dropdown
                                                         key={item.id}
                                                         menu={{
@@ -168,7 +184,9 @@ const UploadCV = ({ listResume, fetchCV }) => {
                                                     <List.Item.Meta
 
                                                         avatar={<PaperClipOutlined style={{ fontSize: '17px', marginTop: '5px' }} />}
-                                                        title={<Typography.Link className="text-decoration-none" href={item.link} target="_blank" ><Text strong ellipsis={{ row: 1 }}>{item.title}</Text></Typography.Link>}
+                                                        title={
+                                                                <Typography.Link className="text-decoration-none" href={item.link} target="_blank" ><Text strong ellipsis={{ row: 1 }}>{item.title}</Text></Typography.Link>
+                                                    }
                                                         description={
                                                             <>
                                                                 <Text type="secondary">Cập nhật lần cuối: {item.lastUpdated}</Text>
@@ -178,7 +196,8 @@ const UploadCV = ({ listResume, fetchCV }) => {
                                                         }
                                                     />
                                                 </List.Item>
-                                            </Card>
+                                                </Card>
+                                            </Tooltip>
                                         </List.Item>
                                     )}
                                 />}

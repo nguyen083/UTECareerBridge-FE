@@ -14,6 +14,8 @@ import Notification from './components/Generate/Notification/Notification.jsx';
 import CreateNotification from './components/Admin/Notification/CreateNotification.jsx';
 import NotificationList from './components/Admin/Notification/NotificationList.jsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import ForumPage from './pages/Forum/ForumPage.jsx';
+// import CreatePostPage from './pages/Forum/create/CreatePostPage.jsx';
 
 
 const GoogleAuthCallback = lazy(() => import("./components/Student/GoogleAuthCallback.jsx"));
@@ -98,7 +100,7 @@ const App = () => {
         token: {
           colorPrimary: COLOR.textColor,
           colorPrimaryHover: COLOR.textColorHover,
-          fontFamily: "'Inter', sans-serif",
+          fontFamily: "Be Vietnam Pro",
           inputFontSize: '1rem',
         },
         components: {
@@ -218,6 +220,8 @@ const App = () => {
                     <Route path='/job/:id' element={<ViewJob />} />
                     <Route path="/company/:id" element={<InforCompany />} />
                     <Route path='/resume/view/:id' element={<ViewCV />} />
+                    <Route path='/forum' element={<ForumPage />} />
+                    {/* <Route path='/forum/create' element={<CreatePostPage />} /> */}
                   </Route>
                 </Route>
                 <Route element={<ViewLayout />} >

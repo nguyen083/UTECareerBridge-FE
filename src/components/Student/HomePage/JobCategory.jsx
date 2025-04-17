@@ -1,6 +1,6 @@
 
 import { Button, Card, Carousel } from "antd";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import "./JobCategory.scss";
 import { FaNewspaper, FaMicrochip } from "react-icons/fa6";
 import { FaCogs, FaCar, FaCalculator, FaHotel, FaRoute, FaBullhorn, FaLaptopCode, } from "react-icons/fa";
@@ -61,11 +61,11 @@ const JobCategory = () => {
               key={index}
               onClick={() => handleCategoryClick(category.key)}
               hoverable
-              className="job-category__item shadow"
+              className="shadow job-category__item"
               style={{ textAlign: "center" }}
             >
               <div className="job-category__icon">{category.icon}</div>
-              <div className="job-category__name">{category.name}</div>
+              <div className="text-base font-medium job-category__name">{category.name}</div>
 
             </Card>
           ))}

@@ -36,7 +36,7 @@ const ListNotification = ({ type = "system" }) => {
           title: t('notification.table.time'),
           dataIndex: 'notificationDate',
           key: 'notificationDate',
-          width: '13%',
+          width: '15%',
           render: text => <p className="text-sm text-gray-500">{new Date(text).toLocaleString()}</p>,
         },
     ]

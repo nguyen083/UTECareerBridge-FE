@@ -1,5 +1,4 @@
 import { Avatar, Button, Card, Carousel, Flex, Image, Typography } from "antd";
-import React from "react";
 import "./Banner.scss";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -17,7 +16,7 @@ const Banner = ({ ads }) => {
       <Carousel
        
         arrows
-        className="w-3/4 mx-auto "
+        className="w-3/4 mx-auto carousel-banner"
       >
         {ads.map((ad) => (
           <Card
