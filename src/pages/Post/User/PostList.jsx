@@ -1,6 +1,4 @@
-"use client"
-
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef } from "react";
 import {
   Card,
   Typography,
@@ -19,14 +17,10 @@ import {
   Drawer,
   List,
   Tabs,
-} from "antd"
+} from "antd";
 import {
   HomeOutlined,
   MessageOutlined,
-  LikeOutlined,
-  DislikeOutlined,
-  SmileOutlined,
-  HeartOutlined,
   ShareAltOutlined,
   BookOutlined,
   EyeOutlined,
@@ -37,33 +31,32 @@ import {
   MenuOutlined,
   InfoCircleOutlined,
   StarFilled,
-  FlagOutlined,
-} from "@ant-design/icons"
-import { useParams, Link } from "react-router-dom"
-import ReactQuill from "react-quill"
-import "react-quill/dist/quill.snow.css"
-import ReactionPicker from './../../../components/Generate/ReactionPicker';
+} from "@ant-design/icons";
+import { useParams, Link } from "react-router-dom";
+import ReactionPicker from "./../../../components/Generate/ReactionPicker";
+import "react-quill/dist/quill.snow.css";
+import ReactQuill from "react-quill";
 
-const { Title, Text, Paragraph } = Typography
-const { TabPane } = Tabs
+const { Title, Text, Paragraph } = Typography;
+const { TabPane } = Tabs;
 
 const UserPostList = () => {
-  const { forumId, topicId } = useParams()
-  const [posts, setPosts] = useState([])
-  const [topic, setTopic] = useState(null)
-  const [forum, setForum] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [isReplyModalVisible, setIsReplyModalVisible] = useState(false)
-  const [replyContent, setReplyContent] = useState("")
-  const [currentPage, setCurrentPage] = useState(1)
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false)
-  const [isInfoDrawerVisible, setIsInfoDrawerVisible] = useState(false)
-  const [isBookmarked, setIsBookmarked] = useState(false)
-  const [isSubscribed, setIsSubscribed] = useState(false)
-  const [relatedTopics, setRelatedTopics] = useState([])
-  const [activeUsers, setActiveUsers] = useState([])
-  const topRef = useRef(null)
-  const pageSize = 5
+  const { forumId, topicId } = useParams();
+  const [posts, setPosts] = useState([]);
+  const [topic, setTopic] = useState(null);
+  const [forum, setForum] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [isReplyModalVisible, setIsReplyModalVisible] = useState(false);
+  const [replyContent, setReplyContent] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+  const [isInfoDrawerVisible, setIsInfoDrawerVisible] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [relatedTopics, setRelatedTopics] = useState([]);
+  const [activeUsers, setActiveUsers] = useState([]);
+  const topRef = useRef(null);
+  const pageSize = 5;
 
   // Cấu hình Quill
   const modules = {
@@ -74,9 +67,18 @@ const UserPostList = () => {
       ["link", "image"],
       ["clean"],
     ],
-  }
+  };
 
-  const formats = ["header", "bold", "italic", "underline", "list", "bullet", "link", "image"]
+  const formats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "link",
+    "image",
+  ];
 
   // Giả lập dữ liệu
   useEffect(() => {
@@ -85,10 +87,11 @@ const UserPostList = () => {
       setForum({
         forum_id: Number.parseInt(forumId),
         name: "Công nghệ",
-        description: "Thảo luận về công nghệ, phần mềm, phần cứng và các xu hướng mới",
+        description:
+          "Thảo luận về công nghệ, phần mềm, phần cứng và các xu hướng mới",
         is_active: true,
         created_at: "2023-01-15T08:30:00Z",
-      })
+      });
 
       setTopic({
         topic_id: Number.parseInt(topicId),
@@ -106,7 +109,7 @@ const UserPostList = () => {
         updated_at: "2023-05-15T10:45:00Z",
         status: "active",
         tags: ["React", "Frontend", "JavaScript"],
-      })
+      });
 
       setPosts([
         {
@@ -218,7 +221,7 @@ const UserPostList = () => {
             { user_id: 104, reaction_type: "heart" },
           ],
         },
-      ])
+      ]);
 
       setRelatedTopics([
         {
@@ -239,33 +242,58 @@ const UserPostList = () => {
           post_count: 9,
           view_count: 789,
         },
-      ])
+      ]);
 
       setActiveUsers([
-        { user_id: 101, username: "nguyenvan", avatar: "/placeholder.svg?height=40&width=40", post_count: 1250 },
-        { user_id: 105, username: "hoangnam", avatar: "/placeholder.svg?height=40&width=40", post_count: 789 },
-        { user_id: 103, username: "phamtuan", avatar: "/placeholder.svg?height=40&width=40", post_count: 342 },
-        { user_id: 102, username: "lethihong", avatar: "/placeholder.svg?height=40&width=40", post_count: 87 },
-        { user_id: 104, username: "tranminh", avatar: "/placeholder.svg?height=40&width=40", post_count: 56 },
-      ])
+        {
+          user_id: 101,
+          username: "nguyenvan",
+          avatar: "/placeholder.svg?height=40&width=40",
+          post_count: 1250,
+        },
+        {
+          user_id: 105,
+          username: "hoangnam",
+          avatar: "/placeholder.svg?height=40&width=40",
+          post_count: 789,
+        },
+        {
+          user_id: 103,
+          username: "phamtuan",
+          avatar: "/placeholder.svg?height=40&width=40",
+          post_count: 342,
+        },
+        {
+          user_id: 102,
+          username: "lethihong",
+          avatar: "/placeholder.svg?height=40&width=40",
+          post_count: 87,
+        },
+        {
+          user_id: 104,
+          username: "tranminh",
+          avatar: "/placeholder.svg?height=40&width=40",
+          post_count: 56,
+        },
+      ]);
 
-      setLoading(false)
-    }, 1000)
-  }, [forumId, topicId])
+      setLoading(false);
+    }, 1000);
+  }, [forumId, topicId]);
 
   const handleReply = () => {
-    setReplyContent("")
-    setIsReplyModalVisible(true)
-  }
+    setReplyContent("");
+    setIsReplyModalVisible(true);
+  };
 
   const handleReplyCancel = () => {
-    setIsReplyModalVisible(false)
-  }
+    setIsReplyModalVisible(false);
+  };
 
   const handleReplySubmit = () => {
     if (!replyContent.trim()) {
-      message.error("Vui lòng nhập nội dung bài viết!")
-      return
+      message.error("Vui lòng nhập nội dung bài viết!");
+      return;
     }
 
     const newPost = {
@@ -281,98 +309,59 @@ const UserPostList = () => {
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       reactions: [],
-    }
-    setPosts([...posts, newPost])
-    setIsReplyModalVisible(false)
-    message.success("Đã đăng bài viết thành công!")
-  }
-
-  const handleReaction = (postId, reactionType) => {
-    const userId = 101 // Giả sử user_id của người dùng hiện tại
-
-    const updatedPosts = posts.map((post) => {
-      if (post.post_id === postId) {
-        // Kiểm tra xem người dùng đã reaction chưa
-        const existingReactionIndex = post.reactions.findIndex((r) => r.user_id === userId)
-
-        if (existingReactionIndex !== -1) {
-          // Nếu đã reaction với cùng loại, xóa reaction
-          if (post.reactions[existingReactionIndex].reaction_type === reactionType) {
-            return {
-              ...post,
-              reactions: post.reactions.filter((_, index) => index !== existingReactionIndex),
-            }
-          }
-          // Nếu đã reaction với loại khác, cập nhật loại
-          else {
-            const newReactions = [...post.reactions]
-            newReactions[existingReactionIndex] = { user_id: userId, reaction_type: reactionType }
-            return {
-              ...post,
-              reactions: newReactions,
-            }
-          }
-        }
-        // Nếu chưa reaction, thêm mới
-        else {
-          return {
-            ...post,
-            reactions: [...post.reactions, { user_id: userId, reaction_type: reactionType }],
-          }
-        }
-      }
-      return post
-    })
-
-    setPosts(updatedPosts)
-  }
+    };
+    setPosts([...posts, newPost]);
+    setIsReplyModalVisible(false);
+    message.success("Đã đăng bài viết thành công!");
+  };
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString)
+    const date = new Date(dateString);
     return date.toLocaleDateString("vi-VN", {
       year: "numeric",
       month: "short",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-    })
-  }
+    });
+  };
 
-  const getReactionCount = (reactions, type) => {
-    return reactions.filter((r) => r.reaction_type === type).length
-  }
-
-  const hasUserReacted = (reactions, type) => {
-    const userId = 101 // Giả sử user_id của người dùng hiện tại
-    return reactions.some((r) => r.user_id === userId && r.reaction_type === type)
-  }
-
-  const paginatedPosts = posts.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  const paginatedPosts = posts.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   const handlePageChange = (page) => {
-    setCurrentPage(page)
-    window.scrollTo(0, 0)
-  }
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
 
   const scrollToTop = () => {
-    topRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
+    topRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const toggleBookmark = () => {
-    setIsBookmarked(!isBookmarked)
-    message.success(isBookmarked ? "Đã xóa khỏi danh sách đánh dấu" : "Đã thêm vào danh sách đánh dấu")
-  }
+    setIsBookmarked(!isBookmarked);
+    message.success(
+      isBookmarked
+        ? "Đã xóa khỏi danh sách đánh dấu"
+        : "Đã thêm vào danh sách đánh dấu"
+    );
+  };
 
   const toggleSubscribe = () => {
-    setIsSubscribed(!isSubscribed)
-    message.success(isSubscribed ? "Đã hủy đăng ký nhận thông báo" : "Đã đăng ký nhận thông báo khi có bài viết mới")
-  }
+    setIsSubscribed(!isSubscribed);
+    message.success(
+      isSubscribed
+        ? "Đã hủy đăng ký nhận thông báo"
+        : "Đã đăng ký nhận thông báo khi có bài viết mới"
+    );
+  };
 
   const handleShare = () => {
     // Trong thực tế, bạn sẽ triển khai chức năng chia sẻ
-    message.success("Đã sao chép liên kết vào clipboard")
-  }
-
+    message.success("Đã sao chép liên kết vào clipboard");
+  };
 
   return (
     <div className="min-h-screen bg-gray-50" ref={topRef}>
@@ -385,16 +374,20 @@ const UserPostList = () => {
                 <HomeOutlined />
               </Breadcrumb.Item>
               <Breadcrumb.Item href="/forums">Diễn đàn</Breadcrumb.Item>
-              <Breadcrumb.Item href={`/forums/${forumId}/topics`}>{forum?.name || "Đang tải..."}</Breadcrumb.Item>
+              <Breadcrumb.Item href={`/forums/${forumId}/topics`}>
+                {forum?.name || "Đang tải..."}
+              </Breadcrumb.Item>
               <Breadcrumb.Item>{topic?.title || "Đang tải..."}</Breadcrumb.Item>
             </Breadcrumb>
             <div className="flex items-center gap-2 md:hidden">
-              <Button icon={<MenuOutlined />} onClick={() => setIsSidebarVisible(true)} />
+              <Button
+                icon={<MenuOutlined />}
+                onClick={() => setIsSidebarVisible(true)}
+              />
             </div>
           </div>
         </div>
       </div>
-
       <div className="container px-4 py-6 mx-auto">
         <div className="flex flex-col gap-6 md:flex-row">
           {/* Main content */}
@@ -418,10 +411,12 @@ const UserPostList = () => {
                       <div className="text-sm text-gray-500">
                         <Space wrap>
                           <span>
-                            <Avatar src={topic.avatar} size="small" /> <Text strong>{topic.username}</Text>
+                            <Avatar src={topic.avatar} size="small" />{" "}
+                            <Text strong>{topic.username}</Text>
                           </span>
                           <span>
-                            <ClockCircleOutlined /> {formatDate(topic.created_at)}
+                            <ClockCircleOutlined />{" "}
+                            {formatDate(topic.created_at)}
                           </span>
                           <span>
                             <EyeOutlined /> {topic.view_count} lượt xem
@@ -433,22 +428,46 @@ const UserPostList = () => {
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <Tooltip title={isBookmarked ? "Bỏ đánh dấu" : "Đánh dấu"}>
+                      <Tooltip
+                        title={isBookmarked ? "Bỏ đánh dấu" : "Đánh dấu"}
+                      >
                         <Button
                           type="text"
-                          icon={isBookmarked ? <BookOutlined className="text-blue-500" /> : <BookOutlined />}
+                          icon={
+                            isBookmarked ? (
+                              <BookOutlined className="text-blue-500" />
+                            ) : (
+                              <BookOutlined />
+                            )
+                          }
                           onClick={toggleBookmark}
                         />
                       </Tooltip>
-                      <Tooltip title={isSubscribed ? "Hủy đăng ký" : "Đăng ký nhận thông báo"}>
+                      <Tooltip
+                        title={
+                          isSubscribed
+                            ? "Hủy đăng ký"
+                            : "Đăng ký nhận thông báo"
+                        }
+                      >
                         <Button
                           type="text"
-                          icon={isSubscribed ? <BellOutlined className="text-blue-500" /> : <BellOutlined />}
+                          icon={
+                            isSubscribed ? (
+                              <BellOutlined className="text-blue-500" />
+                            ) : (
+                              <BellOutlined />
+                            )
+                          }
                           onClick={toggleSubscribe}
                         />
                       </Tooltip>
                       <Tooltip title="Chia sẻ">
-                        <Button type="text" icon={<ShareAltOutlined />} onClick={handleShare} />
+                        <Button
+                          type="text"
+                          icon={<ShareAltOutlined />}
+                          onClick={handleShare}
+                        />
                       </Tooltip>
                       <Tooltip title="Thông tin chủ đề">
                         <Button
@@ -464,7 +483,12 @@ const UserPostList = () => {
             </Skeleton>
 
             {/* Posts */}
-            <Skeleton loading={loading} active paragraph={{ rows: 10 }} className="mb-4">
+            <Skeleton
+              loading={loading}
+              active
+              paragraph={{ rows: 10 }}
+              className="mb-4"
+            >
               {paginatedPosts.map((post, index) => (
                 <Card
                   key={post.post_id}
@@ -488,7 +512,12 @@ const UserPostList = () => {
                         </div>
                         <div className="hidden mt-3 text-xs text-center text-gray-500 md:block">
                           <div>Bài viết: {post.post_count}</div>
-                          <div>Tham gia: {new Date(post.join_date).toLocaleDateString("vi-VN")}</div>
+                          <div>
+                            Tham gia:{" "}
+                            {new Date(post.join_date).toLocaleDateString(
+                              "vi-VN"
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -500,7 +529,11 @@ const UserPostList = () => {
                           <ClockCircleOutlined className="mr-1" />
                           {formatDate(post.created_at)}
                           {post.updated_at !== post.created_at && (
-                            <Tooltip title={`Cập nhật lần cuối: ${formatDate(post.updated_at)}`}>
+                            <Tooltip
+                              title={`Cập nhật lần cuối: ${formatDate(
+                                post.updated_at
+                              )}`}
+                            >
                               <span className="ml-2">(đã chỉnh sửa)</span>
                             </Tooltip>
                           )}
@@ -516,16 +549,18 @@ const UserPostList = () => {
                           </Text>
                         </div>
                       </div>
-                      <Link to={`/forums/${forumId}/topics/${topicId}/posts/${post.post_id}`}>
-                      <div
-                        className="mb-4 post-content quill-content"
-                        dangerouslySetInnerHTML={{ __html: post.content }}
+                      <Link
+                        to={`/forums/${forumId}/topics/${topicId}/posts/${post.post_id}`}
+                      >
+                        <div
+                          className="mb-4 post-content quill-content"
+                          dangerouslySetInnerHTML={{ __html: post.content }}
                         ></div>
                       </Link>
                       <Divider className="my-2" />
 
                       <div className="flex items-center justify-between">
-                        <ReactionPicker/>
+                        <ReactionPicker />
                       </div>
                     </div>
                   </div>
@@ -547,7 +582,12 @@ const UserPostList = () => {
             {/* Reply button */}
             {!topic?.is_close && (
               <div className="mt-6 text-center">
-                <Button type="primary" size="large" onClick={handleReply} icon={<MessageOutlined />}>
+                <Button
+                  type="primary"
+                  size="large"
+                  onClick={handleReply}
+                  icon={<MessageOutlined />}
+                >
                   Trả lời chủ đề này
                 </Button>
               </div>
@@ -555,7 +595,6 @@ const UserPostList = () => {
           </div>
 
           {/* Sidebar - Desktop */}
-          
         </div>
       </div>
 
@@ -580,19 +619,33 @@ const UserPostList = () => {
               </div>
               <div className="flex justify-between">
                 <Text>Tạo ngày:</Text>
-                <Text strong>{topic ? formatDate(topic.created_at).split(",")[0] : ""}</Text>
+                <Text strong>
+                  {topic ? formatDate(topic.created_at).split(",")[0] : ""}
+                </Text>
               </div>
               <div className="flex justify-between">
                 <Text>Cập nhật:</Text>
-                <Text strong>{topic ? formatDate(topic.updated_at).split(",")[0] : ""}</Text>
+                <Text strong>
+                  {topic ? formatDate(topic.updated_at).split(",")[0] : ""}
+                </Text>
               </div>
             </div>
             <Divider className="my-3" />
             <div className="flex justify-between">
-              <Button type="primary" ghost onClick={toggleBookmark} icon={<BookOutlined />}>
+              <Button
+                type="primary"
+                ghost
+                onClick={toggleBookmark}
+                icon={<BookOutlined />}
+              >
                 {isBookmarked ? "Bỏ đánh dấu" : "Đánh dấu"}
               </Button>
-              <Button type="primary" ghost onClick={toggleSubscribe} icon={<BellOutlined />}>
+              <Button
+                type="primary"
+                ghost
+                onClick={toggleSubscribe}
+                icon={<BellOutlined />}
+              >
                 {isSubscribed ? "Hủy đăng ký" : "Đăng ký"}
               </Button>
             </div>
@@ -604,7 +657,13 @@ const UserPostList = () => {
               renderItem={(item) => (
                 <List.Item>
                   <List.Item.Meta
-                    title={<Link to={`/forums/${forumId}/topics/${item.topic_id}/posts`}>{item.title}</Link>}
+                    title={
+                      <Link
+                        to={`/forums/${forumId}/topics/${item.topic_id}/posts`}
+                      >
+                        {item.title}
+                      </Link>
+                    }
                     description={
                       <Space>
                         <span>
@@ -628,7 +687,9 @@ const UserPostList = () => {
                 <List.Item>
                   <List.Item.Meta
                     avatar={<Avatar src={item.avatar} />}
-                    title={<Link to={`/users/${item.user_id}`}>{item.username}</Link>}
+                    title={
+                      <Link to={`/users/${item.user_id}`}>{item.username}</Link>
+                    }
                     description={`${item.post_count} bài viết`}
                   />
                 </List.Item>
@@ -800,7 +861,7 @@ const UserPostList = () => {
         }
       `}</style>
     </div>
-  )
-}
+  );
+};
 
-export default UserPostList
+export default UserPostList;
