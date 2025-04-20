@@ -1,10 +1,25 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { Badge, Popover, List, Typography, Button, Space, Tag, Spin, notification } from 'antd';
-import { BellOutlined, CheckCircleOutlined } from '@ant-design/icons';
-import { useSelector, useDispatch } from 'react-redux';
-import { initializeNotifications, setupMessageListener, markAllNotificationsAsRead, markNotificationAsRead } from '../../services/firebaseService';
-import { getAllNotificationById } from '../../services/apiService';
-import { setNotificationCount } from '../../redux/action/notificationSlice';
+import { useState, useEffect, useCallback } from "react";
+import {
+  Badge,
+  Popover,
+  List,
+  Typography,
+  Button,
+  Space,
+  Tag,
+  Spin,
+  notification,
+} from "antd";
+import { BellOutlined, CheckCircleOutlined } from "@ant-design/icons";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  initializeNotifications,
+  setupMessageListener,
+  markAllNotificationsAsRead,
+  markNotificationAsRead,
+} from "../../services/firebaseService";
+import { getAllNotificationById } from "../../services/apiService";
+import { setNotificationCount } from "../../redux/action/notificationSlice";
 
 const { Text, Paragraph } = Typography;
 
@@ -15,23 +30,23 @@ const NotificationPopover = () => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   const dispatch = useDispatch();
-  const userId = useSelector(state => state.auth?.user?.id) || 1;
-  const notificationCount = useSelector(state => state.notification?.unread || 0);
+  const userId = useSelector((state) => state.auth?.user?.id) || 1;
+  const notificationCount = useSelector(
+    (state) => state.notification?.unread || 0
+  );
 
-  const notificationSound = new Audio('/sounds/notification.mp3');
+  const notificationSound = new Audio("/sounds/notification.mp3");
 
- 
   useEffect(() => {
     const fetchInitialNotificationCount = async () => {
       if (!userId) return;
 
       try {
         const response = await getAllNotificationById(userId);
-        const unreadCount = response.filter(n => !n.isRead).length;
+        const unreadCount = response.filter((n) => !n.isRead).length;
         dispatch(setNotificationCount(unreadCount));
-
       } catch (error) {
-        console.error('Error fetching initial notification count:', error);
+        console.error("Error fetching initial notification count:", error);
       }
     };
 
@@ -43,41 +58,42 @@ const NotificationPopover = () => {
       notificationSound.currentTime = 0;
       notificationSound.play().catch(console.error);
     } catch (error) {
-      console.error('Error playing notification sound:', error);
+      console.error("Error playing notification sound:", error);
     }
   }, []);
 
-  const handleNewMessage = useCallback((payload) => {
-    playNotificationSound();
+  const handleNewMessage = useCallback(
+    (payload) => {
+      playNotificationSound();
 
-    const newNotification = {
-      id: Date.now(),
-      title: payload.notification.title,
-      content: payload.notification.body,
-      notificationDate: new Date().toISOString(),
-      isRead: false,
-      url: payload.data?.url
-    };
+      const newNotification = {
+        id: Date.now(),
+        title: payload.notification.title,
+        content: payload.notification.body,
+        notificationDate: new Date().toISOString(),
+        isRead: false,
+        url: payload.data?.url,
+      };
 
-    setNotifications(prev => [newNotification, ...prev]);
+      setNotifications((prev) => [newNotification, ...prev]);
 
-    dispatch(setNotificationCount(notificationCount + 1));
+      dispatch(setNotificationCount(notificationCount + 1));
 
+      notification.info({
+        message: payload.notification.title,
+        description: payload.notification.body,
+        placement: "topRight",
+        duration: 4,
+        onClick: () => {
+          if (payload.data?.url) {
+            window.open(payload.data.url, "_blank");
+          }
+        },
+      });
+    },
+    [dispatch, notificationCount, playNotificationSound]
+  );
 
-    notification.info({
-      message: payload.notification.title,
-      description: payload.notification.body,
-      placement: 'topRight',
-      duration: 4,
-      onClick: () => {
-        if (payload.data?.url) {
-          window.open(payload.data.url, '_blank');
-        }
-      }
-    });
-  }, [dispatch, notificationCount, playNotificationSound]);
-
- 
   useEffect(() => {
     let messageUnsubscribe;
 
@@ -89,10 +105,10 @@ const NotificationPopover = () => {
         messageUnsubscribe = setupMessageListener(handleNewMessage);
         setIsInitialized(true);
       } catch (error) {
-        console.error('Error setting up notifications:', error);
+        console.error("Error setting up notifications:", error);
         notification.error({
-          message: 'Lỗi Thông Báo',
-          description: 'Không thể khởi tạo thông báo. Vui lòng thử lại.',
+          message: "Lỗi Thông Báo",
+          description: "Không thể khởi tạo thông báo. Vui lòng thử lại.",
         });
       }
     };
@@ -106,7 +122,6 @@ const NotificationPopover = () => {
     };
   }, [userId, isInitialized, handleNewMessage]);
 
- 
   useEffect(() => {
     const fetchNotifications = async () => {
       if (!open || !userId) return;
@@ -116,14 +131,13 @@ const NotificationPopover = () => {
         const response = await getAllNotificationById(userId);
         setNotifications(response);
 
-        const unreadCount = response.filter(n => !n.isRead).length;
+        const unreadCount = response.filter((n) => !n.isRead).length;
         dispatch(setNotificationCount(unreadCount));
-
       } catch (error) {
-        console.error('Error fetching notifications:', error);
+        console.error("Error fetching notifications:", error);
         notification.error({
-          message: 'Lỗi',
-          description: 'Không thể tải thông báo. Vui lòng thử lại.',
+          message: "Lỗi",
+          description: "Không thể tải thông báo. Vui lòng thử lại.",
         });
       } finally {
         setLoading(false);
@@ -137,20 +151,21 @@ const NotificationPopover = () => {
     try {
       await markNotificationAsRead(notificationId);
 
-      setNotifications(prev =>
-        prev.map(notif =>
+      setNotifications((prev) =>
+        prev.map((notif) =>
           notif.id === notificationId ? { ...notif, isRead: true } : notif
         )
       );
 
-      const newUnreadCount = notifications.filter(n => !n.isRead && n.id !== notificationId).length;
+      const newUnreadCount = notifications.filter(
+        (n) => !n.isRead && n.id !== notificationId
+      ).length;
       dispatch(setNotificationCount(newUnreadCount));
-
     } catch (error) {
-      console.error('Error marking notification as read:', error);
+      console.error("Error marking notification as read:", error);
       notification.error({
-        message: 'Lỗi',
-        description: 'Không thể đánh dấu đã đọc. Vui lòng thử lại.',
+        message: "Lỗi",
+        description: "Không thể đánh dấu đã đọc. Vui lòng thử lại.",
       });
     }
   };
@@ -158,25 +173,27 @@ const NotificationPopover = () => {
   const handleMarkAllRead = async () => {
     try {
       await markAllNotificationsAsRead(userId);
-      setNotifications(prev => prev.map(notif => ({ ...notif, isRead: true })));
+      setNotifications((prev) =>
+        prev.map((notif) => ({ ...notif, isRead: true }))
+      );
       dispatch(setNotificationCount(0));
     } catch (error) {
-      console.error('Error marking all as read:', error);
+      console.error("Error marking all as read:", error);
       notification.error({
-        message: 'Lỗi',
-        description: 'Không thể đánh dấu tất cả đã đọc. Vui lòng thử lại.',
+        message: "Lỗi",
+        description: "Không thể đánh dấu tất cả đã đọc. Vui lòng thử lại.",
       });
     }
   };
 
   const notificationContent = (
-    <div className="w-80 max-w-sm">
-      <div className="flex justify-between items-center mb-4 px-4 pt-2">
+    <div className="max-w-sm w-80">
+      <div className="flex items-center justify-between px-4 pt-2 mb-4">
         <Text strong>Thông báo</Text>
         <Button
           type="link"
           onClick={handleMarkAllRead}
-          disabled={!notifications.some(n => !n.isRead)}
+          disabled={!notifications.some((n) => !n.isRead)}
           className="text-sm"
         >
           <Space>
@@ -185,25 +202,31 @@ const NotificationPopover = () => {
           </Space>
         </Button>
       </div>
-      <div className="max-h-96 overflow-y-auto">
+      <div className="overflow-y-auto max-h-96">
         <Spin spinning={loading}>
           <List
             dataSource={notifications}
-            renderItem={notification => (
+            renderItem={(notification) => (
               <List.Item
-                className={`cursor-pointer transition-colors hover:bg-gray-50 ${!notification.isRead ? 'bg-blue-50' : ''}`}
+                className={`cursor-pointer transition-colors hover:bg-gray-50 ${
+                  !notification.isRead ? "bg-blue-50" : ""
+                }`}
                 onClick={() => {
                   handleReadNotification(notification.id);
                   if (notification.url) {
-                    window.open(notification.url, '_blank');
+                    window.open(notification.url, "_blank");
                   }
                 }}
               >
                 <List.Item.Meta
                   title={
-                    <Space className="w-full justify-between">
+                    <Space className="justify-between w-full">
                       <Text strong>{notification.title}</Text>
-                      {!notification.isRead && <Tag className="w-fit text-sm font-normal" color="blue">Mới</Tag>}
+                      {!notification.isRead && (
+                        <Tag className="text-sm font-normal w-fit" color="blue">
+                          Mới
+                        </Tag>
+                      )}
                     </Space>
                   }
                   description={
@@ -212,14 +235,16 @@ const NotificationPopover = () => {
                         {notification.content}
                       </Paragraph>
                       <Text className="text-xs text-gray-400">
-                        {new Date(notification.notificationDate).toLocaleString('vi-VN')}
+                        {new Date(notification.notificationDate).toLocaleString(
+                          "vi-VN"
+                        )}
                       </Text>
                     </>
                   }
                 />
               </List.Item>
             )}
-            locale={{ emptyText: 'Không có thông báo mới' }}
+            locale={{ emptyText: "Không có thông báo mới" }}
           />
         </Spin>
       </div>
@@ -236,7 +261,7 @@ const NotificationPopover = () => {
       arrow={false}
     >
       <Badge count={notificationCount} overflowCount={99}>
-        <BellOutlined className="notification-icon text-lg cursor-pointer" />
+        <BellOutlined className="text-lg cursor-pointer notification-icon" />
       </Badge>
     </Popover>
   );

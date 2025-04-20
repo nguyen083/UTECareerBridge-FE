@@ -1,9 +1,8 @@
-import React from 'react';
-import './TopCompany.scss';
-import { Avatar, Button, Card, Flex, Typography } from 'antd';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-const { Title, Text } = Typography;
+import "./TopCompany.scss";
+import { Avatar, Button, Card, Flex, Typography } from "antd";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+const { Title } = Typography;
 const { Meta } = Card;
 // const companies = [
 //   { id: 1, name: 'FPT Software', logo: 'https://res.cloudinary.com/utejobhub/image/upload/v1726158727/company/FPT_Software_logo.png' },
@@ -13,22 +12,22 @@ const { Meta } = Card;
 // ];
 
 const TopCompany = ({ companies }) => {
-  const {t} = useTranslation();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   return (
     <div className="top-company">
-      <Title level={2}>{t('top_companies')}</Title>
-      <Flex justify='space-between'>
+      <Title level={2}>{t("top_companies")}</Title>
+      <Flex justify="space-between">
         {companies.map((company) => (
           <Card
             key={company?.employerResponse?.id}
             onClick={() => {
-              navigate(`/company/${company?.employerResponse?.id}`)
+              navigate(`/company/${company?.employerResponse?.id}`);
             }}
-            className='p-2 card-company shadow w-fit'
+            className="p-2 shadow card-company w-fit"
             hoverable
             cover={
-              <div className='text-center'>
+              <div className="text-center">
                 <Avatar
                   size={200}
                   shape="square"
@@ -39,17 +38,28 @@ const TopCompany = ({ companies }) => {
               </div>
             }
           >
-            <Meta title={
-              <div className='text-center' style={{ width: 200 }}>
-                <span className='company-name'>{company?.employerResponse?.companyName}</span>
-              </div>
-            } description={
-              <div className="text-center">
-                <Button className='cursor-pointer' size='large' type="primary">{t('common.seeMore')}</Button>
-              </div>
-            } />
-
-          </Card>))}
+            <Meta
+              title={
+                <div className="text-center" style={{ width: 200 }}>
+                  <span className="company-name">
+                    {company?.employerResponse?.companyName}
+                  </span>
+                </div>
+              }
+              description={
+                <div className="text-center">
+                  <Button
+                    className="cursor-pointer"
+                    size="large"
+                    type="primary"
+                  >
+                    {t("common.seeMore")}
+                  </Button>
+                </div>
+              }
+            />
+          </Card>
+        ))}
       </Flex>
     </div>
   );

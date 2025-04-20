@@ -1,140 +1,138 @@
-import React, { useState, useEffect } from 'react';
-import './TableListUser.scss';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import "./TableListUser.scss";
+import { Link } from "react-router-dom";
 import {
   Table,
   Button,
   Input,
   Space,
-  Popconfirm,
   message,
   Tag,
   Tooltip,
   Modal,
   Dropdown,
   Empty,
-} from 'antd';
+} from "antd";
 import {
   EditOutlined,
-  DeleteOutlined,
   ReloadOutlined,
-  InboxOutlined,
   DownOutlined,
-  SearchOutlined,
   PrinterOutlined,
   EyeOutlined,
   FileExcelOutlined,
-  FilePdfOutlined
-} from '@ant-design/icons';
-import { getAllUsers, exportUserToPdf } from '../../../services/apiService';
-import { useTranslation } from 'react-i18next';
+  FilePdfOutlined,
+} from "@ant-design/icons";
+import { getAllUsers, exportUserToPdf } from "../../../services/apiService";
+import { useTranslation } from "react-i18next";
 const { Search } = Input;
 
-const TableListUser = ({
-  fetch,
-  userType,
-  additionalColumns = [],
-  onEdit,
-  onDelete
-}) => {
+const TableListUser = ({ fetch, userType, additionalColumns = [], onEdit }) => {
   const { t } = useTranslation();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searchText, setSearchText] = useState('');
-  const [sorting, setSorting] = useState('');
-  const [sortField, setSortField] = useState('');
+  const [searchText, setSearchText] = useState("");
+  const [sorting, setSorting] = useState("");
+  const [sortField, setSortField] = useState("");
   const [isPrintModalVisible, setIsPrintModalVisible] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
-    total: 0
+    total: 0,
   });
 
   const statusColors = {
-    ACTIVE: 'success',
-    INACTIVE: 'error',
-    PENDING: 'warning',
-    BLOCKED: 'error'
+    ACTIVE: "success",
+    INACTIVE: "error",
+    PENDING: "warning",
+    BLOCKED: "error",
   };
 
   const baseColumns = [
     {
-      title: t('admin.userTable.columns.no'),
-      dataIndex: 'index',
-      key: 'index',
-      width: '5%',
-      align: 'center'
+      title: t("admin.userTable.columns.no"),
+      dataIndex: "index",
+      key: "index",
+      width: "5%",
+      align: "center",
     },
     {
-      title: t('admin.userTable.columns.lastName'),
-      dataIndex: 'lastName',
-      key: 'lastName',
-      width: '10%',
-      align: 'center'
+      title: t("admin.userTable.columns.lastName"),
+      dataIndex: "lastName",
+      key: "lastName",
+      width: "10%",
+      align: "center",
     },
     {
-      title: t('admin.userTable.columns.firstName'),
-      dataIndex: 'firstName',
-      key: 'firstName',
-      width: '10%',
+      title: t("admin.userTable.columns.firstName"),
+      dataIndex: "firstName",
+      key: "firstName",
+      width: "10%",
       sorter: true,
-      align: 'center',
-      sortDirections: ['ascend', 'descend']
+      align: "center",
+      sortDirections: ["ascend", "descend"],
     },
     {
-      title: t('admin.userTable.columns.email'),
-      dataIndex: 'email',
-      key: 'email',
-      align: 'center',
-      width: '20%'
+      title: t("admin.userTable.columns.email"),
+      dataIndex: "email",
+      key: "email",
+      align: "center",
+      width: "20%",
     },
     {
-      title: t('admin.userTable.columns.phone'),
-      dataIndex: 'phone',
-      key: 'phone',
-      align: 'center'
+      title: t("admin.userTable.columns.phone"),
+      dataIndex: "phone",
+      key: "phone",
+      align: "center",
     },
     {
-      title: t('admin.userTable.columns.dob'),
-      dataIndex: 'dob',
-      key: 'dob',
-      align: 'center'
+      title: t("admin.userTable.columns.dob"),
+      dataIndex: "dob",
+      key: "dob",
+      align: "center",
     },
     {
-      title: t('admin.userTable.columns.status'),
-      dataIndex: 'active',
-      key: 'active',
-      align: 'center',
+      title: t("admin.userTable.columns.status"),
+      dataIndex: "active",
+      key: "active",
+      align: "center",
       width: "10%",
       render: (active) => {
-        const displayStatus = active ? t('admin.userTable.columns.statusValues.active') : t('admin.userTable.columns.statusValues.blocked');
-        const statusKey = active ? 'ACTIVE' : 'BLOCKED';
+        const displayStatus = active
+          ? t("admin.userTable.columns.statusValues.active")
+          : t("admin.userTable.columns.statusValues.blocked");
+        const statusKey = active ? "ACTIVE" : "BLOCKED";
         return (
-          <div className='w-full flex justify-center items-center'>
-            <Tag className="w-fit text-sm font-normal" color={statusColors[statusKey]}>
+          <div className="flex items-center justify-center w-full">
+            <Tag
+              className="text-sm font-normal w-fit"
+              color={statusColors[statusKey]}
+            >
               {displayStatus}
             </Tag>
           </div>
         );
-      }
+      },
     },
     {
-      key: 'actions',
-      fixed: 'right',
-      align: 'center',
-      width: '10%',
+      key: "actions",
+      fixed: "right",
+      align: "center",
+      width: "10%",
       render: (_, record) => (
         <Space size="middle">
-          <Tooltip title={t('admin.userTable.tooltips.updateAccount')} color='cyan'>
-            <Button
-              icon={<EditOutlined />}
-              onClick={() => onEdit(record)}
-            />
+          <Tooltip
+            title={t("admin.userTable.tooltips.updateAccount")}
+            color="cyan"
+          >
+            <Button icon={<EditOutlined />} onClick={() => onEdit(record)} />
           </Tooltip>
-          {userType === 'employer' && (
-            <Tooltip title={t('admin.userTable.tooltips.viewCompany')} color='blue'>
-              <Link to={`/company/${record.key}`} target='_blank'>
+          {userType === "employer" && (
+            <Tooltip
+              title={t("admin.userTable.tooltips.viewCompany")}
+              color="blue"
+            >
+              <Link to={`/company/${record.key}`} target="_blank">
                 <Button icon={<EyeOutlined />} />
               </Link>
             </Tooltip>
@@ -144,24 +142,28 @@ const TableListUser = ({
     },
   ];
 
-  const columns = [...baseColumns.slice(0, 2), ...additionalColumns, ...baseColumns.slice(2)];
+  const columns = [
+    ...baseColumns.slice(0, 2),
+    ...additionalColumns,
+    ...baseColumns.slice(2),
+  ];
 
   const items = [
     {
-      label: t('admin.userTable.sort.newest'),
-      key: 'newest',
+      label: t("admin.userTable.sort.newest"),
+      key: "newest",
     },
     {
-      label: t('admin.userTable.sort.oldest'),
-      key: 'lastest',
+      label: t("admin.userTable.sort.oldest"),
+      key: "lastest",
     },
     {
-      label: t('admin.userTable.sort.nameAZ'),
-      key: 'ascName'
+      label: t("admin.userTable.sort.nameAZ"),
+      key: "ascName",
     },
     {
-      label: t('admin.userTable.sort.nameZA'),
-      key: 'descName',
+      label: t("admin.userTable.sort.nameZA"),
+      key: "descName",
     },
   ];
 
@@ -173,7 +175,7 @@ const TableListUser = ({
     fetchUsers({
       page: pagination.current - 1,
       pageSize: pagination.pageSize,
-      sorting: `${newSortField}`
+      sorting: `${newSortField}`,
     });
   };
 
@@ -185,18 +187,20 @@ const TableListUser = ({
         role: userType,
         page: params.page || pagination.current - 1,
         size: params.pageSize || pagination.pageSize,
-        sorting: params.sorting || (sortField && sorting ? `${sortField},${sorting}` : ''),
+        sorting:
+          params.sorting ||
+          (sortField && sorting ? `${sortField},${sorting}` : ""),
         keyword: params.keyword || searchText,
         ...params.additionalParams,
       };
 
       const response = await getAllUsers(queryParams);
 
-      if (response.status === 'OK') {
+      if (response.status === "OK") {
         const dataWithIndex = response.data.userResponses.map((user, idx) => ({
           ...user,
           key: user.userId,
-          index: (queryParams.page * queryParams.size) + idx + 1
+          index: queryParams.page * queryParams.size + idx + 1,
         }));
         setUsers(dataWithIndex);
         setPagination({
@@ -205,10 +209,10 @@ const TableListUser = ({
           current: params.page || pagination.current,
         });
       } else {
-        message.error(t('admin.userTable.loadError'));
+        message.error(t("admin.userTable.loadError"));
       }
-    } catch (error) {
-      message.error(t('admin.userTable.loadError'));
+    } catch {
+      message.error(t("admin.userTable.loadError"));
     } finally {
       setLoading(false);
     }
@@ -223,7 +227,7 @@ const TableListUser = ({
   }, [pagination.current, pagination.pageSize, userType]);
 
   const handleTableChange = (newPagination, filters, sorter) => {
-    const newSorting = sorter.order === 'ascend' ? 'asc' : 'desc';
+    const newSorting = sorter.order === "ascend" ? "asc" : "desc";
     setSorting(newSorting);
 
     fetchUsers({
@@ -231,8 +235,8 @@ const TableListUser = ({
       pageSize: newPagination.pageSize,
       sorting: newSorting,
       additionalParams: {
-        ...filters
-      }
+        ...filters,
+      },
     });
   };
 
@@ -242,7 +246,7 @@ const TableListUser = ({
 
     fetchUsers({
       keyword: value,
-      page: 0
+      page: 0,
     });
   };
 
@@ -252,7 +256,7 @@ const TableListUser = ({
 
   const PrintModal = () => (
     <Modal
-      title={t('admin.userTable.export.title')}
+      title={t("admin.userTable.export.title")}
       open={isPrintModalVisible}
       onCancel={() => setIsPrintModalVisible(false)}
       footer={null}
@@ -261,23 +265,23 @@ const TableListUser = ({
       <div className="flex flex-col gap-4 p-4">
         <Button
           icon={<FileExcelOutlined />}
-          onClick={() => handleExport('excel')}
+          onClick={() => handleExport("excel")}
           loading={exportLoading}
           block
           size="large"
           className="mb-3"
         >
-          {t('admin.userTable.export.excel')}
+          {t("admin.userTable.export.excel")}
         </Button>
         <Button
           icon={<FilePdfOutlined />}
-          onClick={() => handleExport('pdf')}
+          onClick={() => handleExport("pdf")}
           loading={exportLoading}
           block
           size="large"
           type="primary"
         >
-          {t('admin.userTable.export.pdf')}
+          {t("admin.userTable.export.pdf")}
         </Button>
       </div>
     </Modal>
@@ -291,24 +295,27 @@ const TableListUser = ({
         role: userType,
         page: pagination.current - 1,
         size: pagination.pageSize,
-        sorting: sortField && sorting ? `${sortField},${sorting}` : 'createdAt',
-        keyword: searchText || ''
+        sorting: sortField && sorting ? `${sortField},${sorting}` : "createdAt",
+        keyword: searchText || "",
       };
 
-      if (type === 'pdf') {
+      if (type === "pdf") {
         const response = await exportUserToPdf(queryParams);
-        const blob = response instanceof Blob ? response : new Blob([response], { type: 'application/pdf' });
-        
+        const blob =
+          response instanceof Blob
+            ? response
+            : new Blob([response], { type: "application/pdf" });
+
         if (blob.size === 0) {
-          throw new Error('Empty PDF file');
+          throw new Error("Empty PDF file");
         }
 
         const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = url;
-        link.setAttribute('download', `users-${new Date().getTime()}.pdf`);
+        link.setAttribute("download", `users-${new Date().getTime()}.pdf`);
 
-        window.open(url, '_blank');
+        window.open(url, "_blank");
 
         document.body.appendChild(link);
         link.click();
@@ -318,11 +325,15 @@ const TableListUser = ({
           window.URL.revokeObjectURL(url);
         }, 100);
 
-        message.success(t('admin.userTable.export.success'));
+        message.success(t("admin.userTable.export.success"));
       }
     } catch (error) {
       console.error(`Error exporting ${type}:`, error);
-      message.error(t('admin.userTable.export.error', { type: type === 'excel' ? 'Excel' : 'PDF' }));
+      message.error(
+        t("admin.userTable.export.error", {
+          type: type === "excel" ? "Excel" : "PDF",
+        })
+      );
     } finally {
       setExportLoading(false);
       setIsPrintModalVisible(false);
@@ -335,7 +346,7 @@ const TableListUser = ({
         <Space style={{ marginBottom: 16 }}>
           <Search
             size="large"
-            placeholder={t('admin.userTable.search.placeholder')}
+            placeholder={t("admin.userTable.search.placeholder")}
             allowClear
             onSearch={handleSearch}
             style={{ width: "400px" }}
@@ -348,8 +359,8 @@ const TableListUser = ({
             }}
             trigger={["click"]}
           >
-            <Button size='large'>
-              {t('admin.userTable.search.sort')} <DownOutlined />
+            <Button size="large">
+              {t("admin.userTable.search.sort")} <DownOutlined />
             </Button>
           </Dropdown>
           <Button
@@ -357,12 +368,9 @@ const TableListUser = ({
             size="large"
             onClick={handleRefresh}
           >
-            {t('admin.userTable.search.refresh')}
+            {t("admin.userTable.search.refresh")}
           </Button>
-          <Button
-            size="large"
-            onClick={() => setIsPrintModalVisible(true)}
-          >
+          <Button size="large" onClick={() => setIsPrintModalVisible(true)}>
             <PrinterOutlined />
           </Button>
         </Space>
@@ -376,14 +384,13 @@ const TableListUser = ({
         pagination={{
           ...pagination,
           showSizeChanger: true,
-          showTotal: (total) => t('admin.userTable.search.totalUsers', { total }),
+          showTotal: (total) =>
+            t("admin.userTable.search.totalUsers", { total }),
         }}
         onChange={handleTableChange}
         scroll={{ x: 1000 }}
         locale={{
-          emptyText: (
-            <Empty description={t('admin.userTable.noData')} />
-          ),
+          emptyText: <Empty description={t("admin.userTable.noData")} />,
         }}
       />
       <PrintModal />
