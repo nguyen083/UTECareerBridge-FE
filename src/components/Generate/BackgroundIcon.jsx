@@ -1,6 +1,4 @@
-import React from 'react';
-
-const BackgroundIcon = ({ children, lable }) => {
+const BackgroundIcon = ({ children, lable, Bgcolor = '#f0f0f0' }) => {
     return (
         <>
             <div style={{
@@ -10,7 +8,7 @@ const BackgroundIcon = ({ children, lable }) => {
                 width: 25,
                 height: 25,
                 borderRadius: '50%',
-                backgroundColor: '#f0f0f0'
+                backgroundColor: Bgcolor
             }}>
                 {children}
             </div>

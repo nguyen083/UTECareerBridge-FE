@@ -1,336 +1,233 @@
 "use client"
 
-import { useState } from "react"
-import { Layout, Typography, Button, Input, Tabs, Badge, Card, Avatar, Space, Tag, Row, Col, Menu, Select } from "antd"
-import { SearchOutlined, PlusOutlined, EyeOutlined, MessageOutlined, UserOutlined } from "@ant-design/icons"
+import { useState, useEffect } from "react"
+import { Card, List, Typography, Tag, Skeleton, Button, Input, Modal, Form, message } from "antd"
+import { PlusOutlined, SearchOutlined, EditOutlined, DeleteOutlined } from "@ant-design/icons"
 import { Link } from "react-router-dom"
-import ReactionPicker from "../../components/Generate/ReactionPicker"
 
-const { Content } = Layout
-const { Title, Text, Paragraph } = Typography
-const { TabPane } = Tabs
-const { Option } = Select
+const { Title, Paragraph, Text } = Typography
 
-const ForumPage = () => {
-  const [activeTab, setActiveTab] = useState("newest")
+const ForumList = () => {
+  const [forums, setForums] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [searchText, setSearchText] = useState("")
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [form] = Form.useForm()
+  const [editingForum, setEditingForum] = useState(null)
 
-  return (
-    <Layout className="min-h-screen bg-white">
+  // Giả lập dữ liệu
+  useEffect(() => {
+    // Trong thực tế, bạn sẽ gọi API để lấy dữ liệu
+    setTimeout(() => {
+      setForums([
+        {
+          forum_id: 1,
+          name: "Công nghệ",
+          description: "Thảo luận về công nghệ, phần mềm, phần cứng và các xu hướng mới",
+          is_active: true,
+          created_at: "2023-01-15T08:30:00Z",
+          topic_count: 125,
+          post_count: 1250,
+        },
+        {
+          forum_id: 2,
+          name: "Giáo dục",
+          description: "Chia sẻ kiến thức, tài liệu học tập và phương pháp giảng dạy",
+          is_active: true,
+          created_at: "2023-01-20T10:15:00Z",
+          topic_count: 87,
+          post_count: 932,
+        },
+        {
+          forum_id: 3,
+          name: "Giải trí",
+          description: "Thảo luận về phim ảnh, âm nhạc, game và các hoạt động giải trí khác",
+          is_active: true,
+          created_at: "2023-02-05T14:45:00Z",
+          topic_count: 210,
+          post_count: 1876,
+        },
+        {
+          forum_id: 4,
+          name: "Sức khỏe",
+          description: "Chia sẻ kiến thức về sức khỏe, dinh dưỡng và lối sống lành mạnh",
+          is_active: true,
+          created_at: "2023-02-10T09:20:00Z",
+          topic_count: 65,
+          post_count: 723,
+        },
+        {
+          forum_id: 5,
+          name: "Du lịch",
+          description: "Chia sẻ kinh nghiệm du lịch, địa điểm thú vị và mẹo tiết kiệm chi phí",
+          is_active: false,
+          created_at: "2023-03-01T11:30:00Z",
+          topic_count: 92,
+          post_count: 845,
+        },
+      ])
+      setLoading(false)
+    }, 1000)
+  }, [])
 
-
-      <Content className="py-6 mx-10">
-        <Space direction="vertical" size="large" style={{ width: "100%" }}>
-          <Row justify="space-between" align="middle" wrap>
-            <Title className="!text-text-color" level={2} style={{ margin: 0 }}>
-              UTE Career Forum
-            </Title>
-            <Button type="primary" icon={<PlusOutlined />} size="large">
-              Tạo bài viết mới
-            </Button>
-          </Row>
-
-          <Input prefix={<SearchOutlined />} placeholder="Tìm kiếm bài viết, người viết, tag..." size="large" />
-
-          <Row gutter={24}>
-            <Col xs={24} lg={6}>
-              <Space direction="vertical" style={{ width: "100%" }} size="large">
-                <div>
-                  <Title level={5}>Loại bài viết</Title>
-                  <Menu mode="vertical" style={{ border: "none" }} defaultSelectedKeys={["all"]}>
-                    <Menu.Item key="all">Tất cả</Menu.Item>
-                    <Menu.Item key="blog">Blog</Menu.Item>
-                    <Menu.Item key="question">Hỏi đáp</Menu.Item>
-                    <Menu.Item key="discussion">Thảo luận</Menu.Item>
-                    <Menu.Item key="job">Chia sẻ cơ hội việc làm</Menu.Item>
-                  </Menu>
-                </div>
-
-                <div>
-                  <Title level={5}>Lĩnh vực/Ngành nghề</Title>
-                  <Select style={{ width: "100%" }} placeholder="Chọn ngành nghề" defaultValue="all">
-                    <Option value="all">Tất cả</Option>
-                    <Option value="it">Công nghệ thông tin</Option>
-                    <Option value="marketing">Marketing</Option>
-                    <Option value="accounting">Kế toán</Option>
-                    <Option value="finance">Tài chính</Option>
-                    <Option value="hr">Nhân sự</Option>
-                  </Select>
-                </div>
-
-                <div>
-                  <Title level={5}>Đối tượng viết bài</Title>
-                  <Menu mode="vertical" style={{ border: "none" }} defaultSelectedKeys={["all"]}>
-                    <Menu.Item key="all">Tất cả</Menu.Item>
-                    <Menu.Item key="student">Sinh viên</Menu.Item>
-                    <Menu.Item key="employer">Nhà tuyển dụng</Menu.Item>
-                  </Menu>
-                </div>
-              </Space>
-            </Col>
-
-            <Col xs={24} lg={18}>
-              <Tabs activeKey={activeTab} onChange={setActiveTab} type="card" size="large">
-                <TabPane tab="Mới nhất" key="newest">
-                  <Space direction="vertical" size="middle" className="w-full mt-4">
-                    {posts.map((post) => (
-                      <PostCard key={post.id} post={post} />
-                    ))}
-                  </Space>
-                </TabPane>
-                <TabPane tab="Hot" key="hot">
-                  <Space direction="vertical" size="middle" className="w-full mt-4">
-                    {hotPosts.map((post) => (
-                      <PostCard key={post.id} post={post} />
-                    ))}
-                  </Space>
-                </TabPane>
-                <TabPane tab="Theo ngành" key="field">
-                  <Space direction="vertical" size="middle" className="w-full mt-4">
-                    {fieldPosts.map((post) => (
-                      <PostCard key={post.id} post={post} />
-                    ))}
-                  </Space>
-                </TabPane>
-              </Tabs>
-            </Col>
-          </Row>
-        </Space>
-      </Content>
-    </Layout>
+  const filteredForums = forums.filter(
+    (forum) =>
+      forum.name.toLowerCase().includes(searchText.toLowerCase()) ||
+      forum.description.toLowerCase().includes(searchText.toLowerCase()),
   )
-}
 
-function PostCard({ post }) {
-  const getTagColor = (type) => {
-    switch (type) {
-      case "Blog":
-        return "blue"
-      case "Hỏi đáp":
-        return "green"
-      case "Thảo luận":
-        return "purple"
-      case "Chia sẻ cơ hội việc làm":
-        return "red"
-      default:
-        return "default"
+  const handleSearch = (e) => {
+    setSearchText(e.target.value)
+  }
+
+  const showModal = (forum = null) => {
+    setEditingForum(forum)
+    if (forum) {
+      form.setFieldsValue({
+        name: forum.name,
+        description: forum.description,
+        is_active: forum.is_active,
+      })
+    } else {
+      form.resetFields()
     }
+    setIsModalVisible(true)
+  }
+
+  const handleCancel = () => {
+    setIsModalVisible(false)
+    form.resetFields()
+  }
+
+  const handleSubmit = (values) => {
+    if (editingForum) {
+      // Cập nhật forum
+      const updatedForums = forums.map((forum) =>
+        forum.forum_id === editingForum.forum_id ? { ...forum, ...values } : forum,
+      )
+      setForums(updatedForums)
+      message.success("Cập nhật diễn đàn thành công!")
+    } else {
+      // Thêm forum mới
+      const newForum = {
+        forum_id: forums.length + 1,
+        ...values,
+        created_at: new Date().toISOString(),
+        topic_count: 0,
+        post_count: 0,
+      }
+      setForums([...forums, newForum])
+      message.success("Tạo diễn đàn mới thành công!")
+    }
+    setIsModalVisible(false)
+  }
+
+  const handleDelete = (forumId) => {
+    Modal.confirm({
+      title: "Xác nhận xóa",
+      content: "Bạn có chắc chắn muốn xóa diễn đàn này không?",
+      onOk() {
+        const updatedForums = forums.filter((forum) => forum.forum_id !== forumId)
+        setForums(updatedForums)
+        message.success("Xóa diễn đàn thành công!")
+      },
+    })
+  }
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString("vi-VN", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    })
   }
 
   return (
-    <Card hoverable className="w-full">
-      <Space direction="vertical" size="middle" className="w-full">
-        <Row justify="space-between" align="top">
-          <Space>
-            <Avatar src={post.author.avatar || undefined} icon={!post.author.avatar && <UserOutlined />} size="large" />
-            <div>
-              <Text strong>{post.author.name}</Text>
-              <br />
-              <Text type="secondary" style={{ fontSize: "12px" }}>
-                {post.author.role} • {post.date}
-              </Text>
-            </div>
-          </Space>
-          <Badge
-            count={post.type}
-            style={{
-              backgroundColor: getTagColor(post.type) === "default" ? "#f0f0f0" : undefined,
-              color: getTagColor(post.type) === "default" ? "#000" : undefined,
-            }}
-            color={getTagColor(post.type)}
-          />
-        </Row>
+    <div className="container px-4 py-8 mx-auto">
+      <div className="flex items-center justify-between mb-6">
+        <Title level={2} className="mb-0">
+          Danh sách diễn đàn
+        </Title>
+        <div className="flex gap-4">
+          <Input placeholder="Tìm kiếm diễn đàn" prefix={<SearchOutlined />} onChange={handleSearch} className="w-64" />
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => showModal()}>
+            Tạo diễn đàn
+          </Button>
+        </div>
+      </div>
 
-        <Link to={`/posts/${post.id}`} style={{ color: "inherit" }}>
-          <Title level={4} style={{ marginTop: 0, marginBottom: 8 }}>
-            {post.title}
-          </Title>
-        </Link>
+      <Skeleton loading={loading} active paragraph={{ rows: 10 }}>
+        <List
+          grid={{ gutter: 16, xs: 1, sm: 1, md: 2, lg: 3, xl: 3, xxl: 3 }}
+          dataSource={filteredForums}
+          renderItem={(forum) => (
+            <List.Item key={forum.forum_id}>
+              <Card
+                hoverable
+                className="h-full"
+                actions={[
+                  <Button key={forum.forum_id} type="text" icon={<EditOutlined />} onClick={() => showModal(forum)}>
+                    Sửa
+                  </Button>,
+                  <Button key={forum.forum_id} type="text" danger icon={<DeleteOutlined />} onClick={() => handleDelete(forum.forum_id)}>
+                    Xóa
+                  </Button>,
+                ]}
+                extra={forum.is_active ? <Tag color="green">Hoạt động</Tag> : <Tag color="red">Tạm khóa</Tag>}
+              >
+                <Link to={`/forums/${forum.forum_id}/topics`}>
+                  <Title level={4}>{forum.name}</Title>
+                </Link>
+                <Paragraph className="mb-4 text-gray-600">{forum.description}</Paragraph>
+                <div className="flex justify-between text-sm text-gray-500">
+                  <div>
+                    <Text strong>{forum.topic_count}</Text> chủ đề | <Text strong>{forum.post_count}</Text> bài viết
+                  </div>
+                  <div>Tạo ngày: {formatDate(forum.created_at)}</div>
+                </div>
+              </Card>
+            </List.Item>
+          )}
+        />
+      </Skeleton>
 
-        <Paragraph ellipsis={{ rows: 2 }} style={{ color: "rgba(0, 0, 0, 0.45)" }}>
-          {post.excerpt}
-        </Paragraph>
-
-        <Row justify="space-between" align="middle">
-          <Space wrap>
-            {post.tags.map((tag) => (
-              <Tag key={tag} color="default" className="px-2 rounded-full">
-                {tag}
-              </Tag>
-            ))}
-          </Space>
-
-          <Space>
-            <Space>
-              <ReactionPicker />
-            </Space>
-            <Space>
-              <EyeOutlined />
-              <Text type="secondary">{post.views}</Text>
-            </Space>
-            <Space>
-              <MessageOutlined />
-              <Text type="secondary">{post.comments}</Text>
-            </Space>
-          </Space>
-        </Row>
-      </Space>
-    </Card>
+      <Modal
+        title={editingForum ? "Chỉnh sửa diễn đàn" : "Tạo diễn đàn mới"}
+        open={isModalVisible}
+        onCancel={handleCancel}
+        footer={null}
+      >
+        <Form form={form} layout="vertical" onFinish={handleSubmit} initialValues={{ is_active: true }}>
+          <Form.Item
+            name="name"
+            label="Tên diễn đàn"
+            rules={[{ required: true, message: "Vui lòng nhập tên diễn đàn!" }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="description"
+            label="Mô tả"
+            rules={[{ required: true, message: "Vui lòng nhập mô tả diễn đàn!" }]}
+          >
+            <Input.TextArea rows={4} />
+          </Form.Item>
+          <Form.Item name="is_active" valuePropName="checked">
+            <Tag.CheckableTag checked={form.getFieldValue("is_active")}>Hoạt động</Tag.CheckableTag>
+          </Form.Item>
+          <Form.Item className="mb-0 text-right">
+            <Button onClick={handleCancel} className="mr-2">
+              Hủy
+            </Button>
+            <Button type="primary" htmlType="submit">
+              {editingForum ? "Cập nhật" : "Tạo mới"}
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
+    </div>
   )
 }
 
-export default ForumPage;
-// Dữ liệu mẫu
-const posts = [
-  {
-    id: 1,
-    title: "Kinh nghiệm phỏng vấn tại các công ty công nghệ lớn",
-    excerpt:
-      "Chia sẻ kinh nghiệm và các mẹo khi phỏng vấn tại các công ty công nghệ hàng đầu như Google, Facebook, và Amazon.",
-    author: {
-      name: "Nguyễn Văn A",
-      avatar: "/placeholder.svg?height=40&width=40",
-      role: "Sinh viên",
-    },
-    date: "2 giờ trước",
-    type: "Blog",
-    tags: ["Phỏng vấn", "IT", "Kinh nghiệm"],
-    views: 245,
-    comments: 18,
-  },
-  {
-    id: 2,
-    title: "Làm thế nào để xây dựng CV nổi bật cho sinh viên mới ra trường?",
-    excerpt: "Hướng dẫn chi tiết cách tạo một CV ấn tượng dù bạn chưa có nhiều kinh nghiệm làm việc thực tế.",
-    author: {
-      name: "Trần Thị B",
-      avatar: "/placeholder.svg?height=40&width=40",
-      role: "Nhà tuyển dụng",
-    },
-    date: "Hôm qua",
-    type: "Thảo luận",
-    tags: ["CV", "Tìm việc", "Sinh viên mới ra trường"],
-    views: 532,
-    comments: 47,
-  },
-  {
-    id: 3,
-    title: "Tuyển dụng vị trí Marketing Executive - Lương 15-20 triệu",
-    excerpt:
-      "Công ty ABC đang tìm kiếm ứng viên cho vị trí Marketing Executive với mức lương hấp dẫn và nhiều cơ hội thăng tiến.",
-    author: {
-      name: "Công ty ABC",
-      avatar: "/placeholder.svg?height=40&width=40",
-      role: "Nhà tuyển dụng",
-    },
-    date: "3 ngày trước",
-    type: "Chia sẻ cơ hội việc làm",
-    tags: ["Marketing", "Tuyển dụng", "Full-time"],
-    views: 789,
-    comments: 12,
-  },
-  {
-    id: 4,
-    title: "Nên học thêm kỹ năng gì để tăng cơ hội việc làm trong ngành IT?",
-    excerpt:
-      "Mình đang là sinh viên năm 3 ngành CNTT và muốn biết nên tập trung vào những kỹ năng nào để dễ xin việc sau khi ra trường.",
-    author: {
-      name: "Lê Văn C",
-      avatar: "/placeholder.svg?height=40&width=40",
-      role: "Sinh viên",
-    },
-    date: "1 tuần trước",
-    type: "Hỏi đáp",
-    tags: ["IT", "Kỹ năng", "Lộ trình học tập"],
-    views: 1024,
-    comments: 86,
-  },
-  {
-    id: 5,
-    title: "5 xu hướng nghề nghiệp hot nhất năm 2023",
-    excerpt: "Phân tích chi tiết về các ngành nghề đang có nhu cầu cao và triển vọng phát triển trong tương lai gần.",
-    author: {
-      name: "Phạm Thị D",
-      avatar: "/placeholder.svg?height=40&width=40",
-      role: "Nhà tuyển dụng",
-    },
-    date: "2 tuần trước",
-    type: "Blog",
-    tags: ["Xu hướng", "Nghề nghiệp", "2023"],
-    views: 1567,
-    comments: 34,
-  },
-]
-
-const hotPosts = [
-  {
-    id: 6,
-    title: "10 câu hỏi phỏng vấn thường gặp và cách trả lời hiệu quả",
-    excerpt:
-      "Tổng hợp những câu hỏi phỏng vấn phổ biến nhất và hướng dẫn cách trả lời để gây ấn tượng với nhà tuyển dụng.",
-    author: {
-      name: "Hoàng Văn E",
-      avatar: "/placeholder.svg?height=40&width=40",
-      role: "Nhà tuyển dụng",
-    },
-    date: "1 tháng trước",
-    type: "Blog",
-    tags: ["Phỏng vấn", "Kỹ năng", "Tìm việc"],
-    views: 5432,
-    comments: 127,
-  },
-  {
-    id: 7,
-    title: "Kinh nghiệm làm việc remote cho các công ty nước ngoài",
-    excerpt: "Chia sẻ về quá trình tìm việc, phỏng vấn và làm việc từ xa cho các công ty ở Mỹ và châu Âu.",
-    author: {
-      name: "Nguyễn Thị F",
-      avatar: "/placeholder.svg?height=40&width=40",
-      role: "Sinh viên",
-    },
-    date: "3 tuần trước",
-    type: "Thảo luận",
-    tags: ["Remote", "Freelance", "Quốc tế"],
-    views: 4321,
-    comments: 98,
-  },
-  posts[3],
-  posts[1],
-  posts[4],
-]
-
-const fieldPosts = [
-  posts[0],
-  posts[3],
-  {
-    id: 8,
-    title: "Tuyển dụng Kế toán tổng hợp - Kinh nghiệm 2 năm",
-    excerpt: "Công ty XYZ cần tuyển kế toán tổng hợp có kinh nghiệm làm việc tối thiểu 2 năm trong lĩnh vực sản xuất.",
-    author: {
-      name: "Công ty XYZ",
-      avatar: "/placeholder.svg?height=40&width=40",
-      role: "Nhà tuyển dụng",
-    },
-    date: "5 ngày trước",
-    type: "Chia sẻ cơ hội việc làm",
-    tags: ["Kế toán", "Tuyển dụng", "Full-time"],
-    views: 678,
-    comments: 9,
-  },
-  {
-    id: 9,
-    title: "Kinh nghiệm thực tập tại Big4 ngành Kiểm toán",
-    excerpt:
-      "Chia sẻ quá trình ứng tuyển, phỏng vấn và làm việc tại một trong những công ty kiểm toán hàng đầu thế giới.",
-    author: {
-      name: "Trần Văn G",
-      avatar: "/placeholder.svg?height=40&width=40",
-      role: "Sinh viên",
-    },
-    date: "2 tuần trước",
-    type: "Blog",
-    tags: ["Kiểm toán", "Thực tập", "Big4"],
-    views: 890,
-    comments: 23,
-  },
-  posts[2],
-]
+export default ForumList

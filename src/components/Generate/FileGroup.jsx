@@ -145,7 +145,7 @@ const FileGroup = ({ formData, setFormData }) => {
                         <Card
                             key={item.resumeId}
                             size="small"
-                            className="rounded-lg cursor-pointer"
+                            className={`rounded-lg cursor-pointer ${formData.resumeId === item.resumeId ? 'border-text-color-hover' : ''}`}
                             onClick={() => {
                                 setFormData(prev => ({ ...prev, resumeId: item.resumeId }));
                             }}

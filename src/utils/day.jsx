@@ -21,5 +21,14 @@ const checkThoiHan = ({ dateInput }) => {
     return <Tag className='!mx-auto w-fit' icon={<ClockCircleOutlined />} color="success">Còn hiệu lực</Tag>
 }
 
+const formatDate = (dateString) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString("vi-VN", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    })
+  }
 
-export { checkThoiHan };
+
+export { checkThoiHan, formatDate };

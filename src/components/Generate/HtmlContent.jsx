@@ -3,7 +3,7 @@ import { Typography } from 'antd';
 import { useTranslation } from 'react-i18next';
 const { Paragraph, Link } = Typography;
 
-const HtmlContent = ({ htmlString, className = 'text-base' }) => {
+const HtmlContent = ({ htmlString}) => {
     const [expanded, setExpanded] = useState(false);
     const { t } = useTranslation();
     return (
@@ -17,7 +17,6 @@ const HtmlContent = ({ htmlString, className = 'text-base' }) => {
             }}
         >
             <div
-                className={className}
                 dangerouslySetInnerHTML={{ __html: htmlString }}
             />{expanded && (
                 <div className="mt-2">

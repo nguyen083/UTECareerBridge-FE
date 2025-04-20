@@ -39,11 +39,11 @@ const ReactionPicker = () => {
       }
     >
       <Button
-      type="text"
+        type="text"
         onClick={() => setSelected(selected ? null : "👍")}
-        className="transition-all bg-gray-100 border rounded-full hover:bg-gray-200"
+        className="p-2 transition-all bg-gray-100 border rounded-full hover:bg-gray-200"
       >
-        {selected ? selected : <LikeOutlined />}
+        {selected ? selected : <LikeOutlined className="text-base" />}
       </Button>
     </Popover>
   );

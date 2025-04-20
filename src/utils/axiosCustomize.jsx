@@ -39,7 +39,7 @@ instance.interceptors.request.use(function (config) {
     return Promise.reject(error);
 });
 
-const refreshToken = async () => {
+export const refreshToken = async () => {
     try {
         const response = await axios.post(
             'http://localhost:8080/api/v1/auth/refresh',

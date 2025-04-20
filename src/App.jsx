@@ -15,6 +15,13 @@ import CreateNotification from './components/Admin/Notification/CreateNotificati
 import NotificationList from './components/Admin/Notification/NotificationList.jsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import ForumPage from './pages/Forum/ForumPage.jsx';
+import TopicListAdmin from './pages/Topic/Admin/TopicPage.jsx';
+import PostList from './pages/Post/User/PostList.jsx';
+import PostListAdmin from './pages/Post/Admin/PostList.jsx';
+import TopicList from './pages/Topic/User/TopicList.jsx';
+import PostDetail from './pages/Post/PostDetail.jsx';
+import AboutPage from './pages/About/AboutPage.jsx';
+import { refreshToken } from './utils/axiosCustomize.jsx';
 // import CreatePostPage from './pages/Forum/create/CreatePostPage.jsx';
 
 
@@ -86,8 +93,22 @@ const DetailNotification = lazy(() => import("./components/Generate/Notification
 const App = () => {
   const lang = useSelector(state => state.web.lang || 'en')
   const queryClient = new QueryClient()
-
+const isTokenExpired = (token) => {
+      if (!token) return true;
+      
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        return payload.exp * 1000 < Date.now();
+      } catch (e) {
+        console.log(e);
+        return true;
+      }
+    };
   useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (isTokenExpired(token) === true) {
+      refreshToken()
+    }
     connectStomp(() => { })
     return () => {
       disconnectStomp()
@@ -194,6 +215,7 @@ const App = () => {
           }>
             <Spin style={{ maxHeight: "100vh", height: "100%" }} size='large' spinning={useSelector(state => state.web.loading)}>
               <Routes>
+                <Route path='/about' element={<AboutPage />} />
                 <Route path='/meeting/:roomID' element={<Meeting />} />
                 <Route path='/chat' element={<ChatLayout />} />
                 <Route path='/chat/:recipientId' element={<ChatLayout />} />
@@ -220,7 +242,12 @@ const App = () => {
                     <Route path='/job/:id' element={<ViewJob />} />
                     <Route path="/company/:id" element={<InforCompany />} />
                     <Route path='/resume/view/:id' element={<ViewCV />} />
-                    <Route path='/forum' element={<ForumPage />} />
+                    <Route path='/forums' element={<ForumPage />} />
+                    <Route path='/admin/forums/:forumId/topics' element={<TopicListAdmin />} />
+                    <Route path='/forums/:forumId/topics' element={<TopicList />} />
+                    <Route path='admin/forums/:forumId/topics/:topicId/posts' element={<PostListAdmin />} />
+                    <Route path='/forums/:forumId/topics/:topicId/posts' element={<PostList />} />
+                    <Route path='/forums/:forumId/topics/:topicId/posts/:postId' element={<PostDetail />} />
                     {/* <Route path='/forum/create' element={<CreatePostPage />} /> */}
                   </Route>
                 </Route>

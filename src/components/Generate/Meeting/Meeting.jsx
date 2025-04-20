@@ -1,37 +1,37 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 const VideoCall = () => {
   const rootRef = useRef(null);
   const { roomID } = useParams();
-  const [permissionGranted, setPermissionGranted] = useState(false);
+  // const [permissionGranted, setPermissionGranted] = useState(false);
   const { t } = useTranslation();
   
-  useEffect(()=>{
-    const requestMediaPermissions = async () => {
-      try {
-        const stream = await navigator.mediaDevices.getUserMedia({ 
-          video: true, 
-          audio: true 
-        });
+  // useEffect(()=>{
+  //   const requestMediaPermissions = async () => {
+  //     try {
+  //       const stream = await navigator.mediaDevices.getUserMedia({ 
+  //         video: true, 
+  //         audio: true 
+  //       });
         
-        setPermissionGranted(true);
+  //       setPermissionGranted(true);
         
-        stream.getTracks().forEach(track => track.stop());
+  //       stream.getTracks().forEach(track => track.stop());
         
-        console.log(t('meeting.permissions_granted'));
-      } catch (error) {
-        console.error(t('meeting.permission_error'), error);
-        alert(t('meeting.permission_alert'));
-      }
-    };
+  //       console.log(t('meeting.permissions_granted'));
+  //     } catch (error) {
+  //       console.error(t('meeting.permission_error'), error);
+  //       alert(t('meeting.permission_alert'));
+  //     }
+  //   };
     
-    requestMediaPermissions();
-  },[t])
+  //   requestMediaPermissions();
+  // },[t])
   
   useEffect(() => {
-    if (!permissionGranted) return;
+    // if (!permissionGranted) return;
     
     const userID = Math.floor(Math.random() * 10000).toString();
     const userName = 'userName' + userID;
@@ -66,11 +66,11 @@ const VideoCall = () => {
     return () => {
       zp.leaveRoom();
     };
-  }, [roomID, permissionGranted, t]);
+  }, [roomID, t]);
 
   return (
     <>
-      {!permissionGranted ? (
+      {/* {!permissionGranted ? (
         <div style={{ 
           width: '100vw', 
           height: '100vh', 
@@ -97,9 +97,9 @@ const VideoCall = () => {
             {t('meeting.try_again')}
           </button>
         </div>
-      ) : (
+      ) : ( */}
         <div ref={rootRef} style={{ width: '100vw', height: '100vh' }} />
-      )}
+      {/* )} */}
     </>
   );
 };

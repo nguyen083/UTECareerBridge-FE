@@ -13,7 +13,7 @@ const FooterComponent = () => {
                 <Col xs={24} sm={12} md={8}>
                     <Title level={5} style={{ color: '#1E4F94' }}>Ute Careerbridge</Title>
                     <Space direction="vertical">
-                        <Link href="#" className='link-footer'>{t('employer.job.aboutUteCareerbridge')}</Link>
+                        <Link href="/about" className='link-footer'>{t('employer.job.aboutUteCareerbridge')}</Link>
                         <Link href="#" className='link-footer'>{t('employer.job.aboutUteinTECH')}</Link>
                         <Link href="#" className='link-footer'>{t('employer.job.contact')}</Link>
                         <Link href="#" className='link-footer'>{t('employer.job.faq')}</Link>
