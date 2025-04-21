@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
+import { useState, useEffect } from "react";
 import {
   Card,
   Typography,
@@ -16,7 +16,7 @@ import {
   Menu,
   Tooltip,
   Pagination,
-} from "antd"
+} from "antd";
 import {
   UserOutlined,
   HomeOutlined,
@@ -32,25 +32,25 @@ import {
   ClockCircleOutlined,
   CommentOutlined,
   FileTextOutlined,
-} from "@ant-design/icons"
-import { useParams } from "react-router-dom"
-import ReactQuill from "react-quill"
-import "react-quill/dist/quill.snow.css"
+} from "@ant-design/icons";
+import { useParams } from "react-router-dom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
-const { Title, Text, Paragraph } = Typography
+const { Title, Text, Paragraph } = Typography;
 
 const PostList = () => {
-  const { forumId, topicId } = useParams()
-  const [posts, setPosts] = useState([])
-  const [topic, setTopic] = useState(null)
-  const [forum, setForum] = useState(null)
-  const [isReplyModalVisible, setIsReplyModalVisible] = useState(false)
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false)
-  const [editingPost, setEditingPost] = useState(null)
-  const [replyContent, setReplyContent] = useState("")
-  const [editContent, setEditContent] = useState("")
-  const [currentPage, setCurrentPage] = useState(1)
-  const pageSize = 10
+  const { forumId, topicId } = useParams();
+  const [posts, setPosts] = useState([]);
+  const [topic, setTopic] = useState(null);
+  const [forum, setForum] = useState(null);
+  const [isReplyModalVisible, setIsReplyModalVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [editingPost, setEditingPost] = useState(null);
+  const [replyContent, setReplyContent] = useState("");
+  const [editContent, setEditContent] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
 
   // Cấu hình Quill
   const modules = {
@@ -62,7 +62,7 @@ const PostList = () => {
       ["link", "image", "video"],
       ["clean"],
     ],
-  }
+  };
 
   const formats = [
     "header",
@@ -77,7 +77,7 @@ const PostList = () => {
     "video",
     "color",
     "background",
-  ]
+  ];
 
   // Giả lập dữ liệu
   useEffect(() => {
@@ -86,10 +86,11 @@ const PostList = () => {
       setForum({
         forum_id: Number.parseInt(forumId),
         name: "Công nghệ",
-        description: "Thảo luận về công nghệ, phần mềm, phần cứng và các xu hướng mới",
+        description:
+          "Thảo luận về công nghệ, phần mềm, phần cứng và các xu hướng mới",
         is_active: true,
         created_at: "2023-01-15T08:30:00Z",
-      })
+      });
 
       setTopic({
         topic_id: Number.parseInt(topicId),
@@ -106,7 +107,7 @@ const PostList = () => {
         updated_at: "2023-05-15T10:45:00Z",
         status: "active",
         tags: ["React", "Frontend", "JavaScript"],
-      })
+      });
 
       setPosts([
         {
@@ -201,23 +202,23 @@ const PostList = () => {
             { user_id: 104, reaction_type: "heart" },
           ],
         },
-      ])
-    }, 1000)
-  }, [forumId, topicId])
+      ]);
+    }, 1000);
+  }, [forumId, topicId]);
 
   const handleReply = () => {
-    setReplyContent("")
-    setIsReplyModalVisible(true)
-  }
+    setReplyContent("");
+    setIsReplyModalVisible(true);
+  };
 
   const handleReplyCancel = () => {
-    setIsReplyModalVisible(false)
-  }
+    setIsReplyModalVisible(false);
+  };
 
   const handleReplySubmit = () => {
     if (!replyContent.trim()) {
-      message.error("Vui lòng nhập nội dung bài viết!")
-      return
+      message.error("Vui lòng nhập nội dung bài viết!");
+      return;
     }
 
     const newPost = {
@@ -230,26 +231,26 @@ const PostList = () => {
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
       reactions: [],
-    }
-    setPosts([...posts, newPost])
-    setIsReplyModalVisible(false)
-    message.success("Đã đăng bài viết thành công!")
-  }
+    };
+    setPosts([...posts, newPost]);
+    setIsReplyModalVisible(false);
+    message.success("Đã đăng bài viết thành công!");
+  };
 
   const handleEdit = (post) => {
-    setEditingPost(post)
-    setEditContent(post.content)
-    setIsEditModalVisible(true)
-  }
+    setEditingPost(post);
+    setEditContent(post.content);
+    setIsEditModalVisible(true);
+  };
 
   const handleEditCancel = () => {
-    setIsEditModalVisible(false)
-  }
+    setIsEditModalVisible(false);
+  };
 
   const handleEditSubmit = () => {
     if (!editContent.trim()) {
-      message.error("Vui lòng nhập nội dung bài viết!")
-      return
+      message.error("Vui lòng nhập nội dung bài viết!");
+      return;
     }
 
     const updatedPosts = posts.map((post) =>
@@ -259,91 +260,108 @@ const PostList = () => {
             content: editContent,
             updated_at: new Date().toISOString(),
           }
-        : post,
-    )
-    setPosts(updatedPosts)
-    setIsEditModalVisible(false)
-    message.success("Cập nhật bài viết thành công!")
-  }
+        : post
+    );
+    setPosts(updatedPosts);
+    setIsEditModalVisible(false);
+    message.success("Cập nhật bài viết thành công!");
+  };
 
   const handleDelete = (postId) => {
     Modal.confirm({
       title: "Xác nhận xóa",
       content: "Bạn có chắc chắn muốn xóa bài viết này không?",
       onOk() {
-        const updatedPosts = posts.filter((post) => post.post_id !== postId)
-        setPosts(updatedPosts)
-        message.success("Xóa bài viết thành công!")
+        const updatedPosts = posts.filter((post) => post.post_id !== postId);
+        setPosts(updatedPosts);
+        message.success("Xóa bài viết thành công!");
       },
-    })
-  }
+    });
+  };
 
   const handleReaction = (postId, reactionType) => {
-    const userId = 101 // Giả sử user_id của người dùng hiện tại
+    const userId = 101; // Giả sử user_id của người dùng hiện tại
 
     const updatedPosts = posts.map((post) => {
       if (post.post_id === postId) {
         // Kiểm tra xem người dùng đã reaction chưa
-        const existingReactionIndex = post.reactions.findIndex((r) => r.user_id === userId)
+        const existingReactionIndex = post.reactions.findIndex(
+          (r) => r.user_id === userId
+        );
 
         if (existingReactionIndex !== -1) {
           // Nếu đã reaction với cùng loại, xóa reaction
-          if (post.reactions[existingReactionIndex].reaction_type === reactionType) {
+          if (
+            post.reactions[existingReactionIndex].reaction_type === reactionType
+          ) {
             return {
               ...post,
-              reactions: post.reactions.filter((_, index) => index !== existingReactionIndex),
-            }
+              reactions: post.reactions.filter(
+                (_, index) => index !== existingReactionIndex
+              ),
+            };
           }
           // Nếu đã reaction với loại khác, cập nhật loại
           else {
-            const newReactions = [...post.reactions]
-            newReactions[existingReactionIndex] = { user_id: userId, reaction_type: reactionType }
+            const newReactions = [...post.reactions];
+            newReactions[existingReactionIndex] = {
+              user_id: userId,
+              reaction_type: reactionType,
+            };
             return {
               ...post,
               reactions: newReactions,
-            }
+            };
           }
         }
         // Nếu chưa reaction, thêm mới
         else {
           return {
             ...post,
-            reactions: [...post.reactions, { user_id: userId, reaction_type: reactionType }],
-          }
+            reactions: [
+              ...post.reactions,
+              { user_id: userId, reaction_type: reactionType },
+            ],
+          };
         }
       }
-      return post
-    })
+      return post;
+    });
 
-    setPosts(updatedPosts)
-  }
+    setPosts(updatedPosts);
+  };
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString)
+    const date = new Date(dateString);
     return date.toLocaleDateString("vi-VN", {
       year: "numeric",
       month: "short",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-    })
-  }
+    });
+  };
 
   const getReactionCount = (reactions, type) => {
-    return reactions.filter((r) => r.reaction_type === type).length
-  }
+    return reactions.filter((r) => r.reaction_type === type).length;
+  };
 
   const hasUserReacted = (reactions, type) => {
-    const userId = 101 // Giả sử user_id của người dùng hiện tại
-    return reactions.some((r) => r.user_id === userId && r.reaction_type === type)
-  }
+    const userId = 101; // Giả sử user_id của người dùng hiện tại
+    return reactions.some(
+      (r) => r.user_id === userId && r.reaction_type === type
+    );
+  };
 
-  const paginatedPosts = posts.slice((currentPage - 1) * pageSize, currentPage * pageSize)
+  const paginatedPosts = posts.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   const handlePageChange = (page) => {
-    setCurrentPage(page)
-    window.scrollTo(0, 0)
-  }
+    setCurrentPage(page);
+    window.scrollTo(0, 0);
+  };
 
   return (
     <div className="container px-4 py-8 mx-auto">
@@ -352,7 +370,9 @@ const PostList = () => {
           <HomeOutlined />
         </Breadcrumb.Item>
         <Breadcrumb.Item href="/forums">Diễn đàn</Breadcrumb.Item>
-        <Breadcrumb.Item href={`/forums/${forumId}/topics`}>{forum?.name || "Đang tải..."}</Breadcrumb.Item>
+        <Breadcrumb.Item href={`/forums/${forumId}/topics`}>
+          {forum?.name || "Đang tải..."}
+        </Breadcrumb.Item>
         <Breadcrumb.Item>{topic?.title || "Đang tải..."}</Breadcrumb.Item>
       </Breadcrumb>
 
@@ -406,7 +426,9 @@ const PostList = () => {
                 <Text type="secondary" className="text-xs">
                   Thành viên
                 </Text>
-                <div className="mt-2 text-xs text-gray-500">Tham gia: {formatDate(post.created_at).split(",")[0]}</div>
+                <div className="mt-2 text-xs text-gray-500">
+                  Tham gia: {formatDate(post.created_at).split(",")[0]}
+                </div>
               </div>
             </div>
             <div className="flex-grow pl-4">
@@ -415,7 +437,11 @@ const PostList = () => {
                   <ClockCircleOutlined className="mr-1" />
                   {formatDate(post.created_at)}
                   {post.updated_at !== post.created_at && (
-                    <Tooltip title={`Cập nhật lần cuối: ${formatDate(post.updated_at)}`}>
+                    <Tooltip
+                      title={`Cập nhật lần cuối: ${formatDate(
+                        post.updated_at
+                      )}`}
+                    >
                       <span className="ml-2">(đã chỉnh sửa)</span>
                     </Tooltip>
                   )}
@@ -426,10 +452,17 @@ const PostList = () => {
                       <Menu>
                         {post.user_id === 101 && ( // Giả sử user_id của người dùng hiện tại
                           <>
-                            <Menu.Item key="edit" onClick={() => handleEdit(post)}>
+                            <Menu.Item
+                              key="edit"
+                              onClick={() => handleEdit(post)}
+                            >
                               <EditOutlined /> Chỉnh sửa
                             </Menu.Item>
-                            <Menu.Item key="delete" danger onClick={() => handleDelete(post.post_id)}>
+                            <Menu.Item
+                              key="delete"
+                              danger
+                              onClick={() => handleDelete(post.post_id)}
+                            >
                               <DeleteOutlined /> Xóa
                             </Menu.Item>
                           </>
@@ -445,7 +478,10 @@ const PostList = () => {
                   </Dropdown>
                 </div>
               </div>
-              <div className="mb-4 post-content quill-content" dangerouslySetInnerHTML={{ __html: post.content }}></div>
+              <div
+                className="mb-4 post-content quill-content"
+                dangerouslySetInnerHTML={{ __html: post.content }}
+              ></div>
               <Divider className="my-2" />
               <div className="flex items-center justify-between">
                 <div className="flex gap-2">
@@ -453,40 +489,60 @@ const PostList = () => {
                     <Button
                       type="text"
                       icon={<LikeOutlined />}
-                      className={hasUserReacted(post.reactions, "like") ? "text-blue-500" : ""}
+                      className={
+                        hasUserReacted(post.reactions, "like")
+                          ? "text-blue-500"
+                          : ""
+                      }
                       onClick={() => handleReaction(post.post_id, "like")}
                     >
-                      {getReactionCount(post.reactions, "like") > 0 && getReactionCount(post.reactions, "like")}
+                      {getReactionCount(post.reactions, "like") > 0 &&
+                        getReactionCount(post.reactions, "like")}
                     </Button>
                   </Tooltip>
                   <Tooltip title="Không thích">
                     <Button
                       type="text"
                       icon={<DislikeOutlined />}
-                      className={hasUserReacted(post.reactions, "dislike") ? "text-red-500" : ""}
+                      className={
+                        hasUserReacted(post.reactions, "dislike")
+                          ? "text-red-500"
+                          : ""
+                      }
                       onClick={() => handleReaction(post.post_id, "dislike")}
                     >
-                      {getReactionCount(post.reactions, "dislike") > 0 && getReactionCount(post.reactions, "dislike")}
+                      {getReactionCount(post.reactions, "dislike") > 0 &&
+                        getReactionCount(post.reactions, "dislike")}
                     </Button>
                   </Tooltip>
                   <Tooltip title="Cười">
                     <Button
                       type="text"
                       icon={<SmileOutlined />}
-                      className={hasUserReacted(post.reactions, "smile") ? "text-yellow-500" : ""}
+                      className={
+                        hasUserReacted(post.reactions, "smile")
+                          ? "text-yellow-500"
+                          : ""
+                      }
                       onClick={() => handleReaction(post.post_id, "smile")}
                     >
-                      {getReactionCount(post.reactions, "smile") > 0 && getReactionCount(post.reactions, "smile")}
+                      {getReactionCount(post.reactions, "smile") > 0 &&
+                        getReactionCount(post.reactions, "smile")}
                     </Button>
                   </Tooltip>
                   <Tooltip title="Yêu thích">
                     <Button
                       type="text"
                       icon={<HeartOutlined />}
-                      className={hasUserReacted(post.reactions, "heart") ? "text-pink-500" : ""}
+                      className={
+                        hasUserReacted(post.reactions, "heart")
+                          ? "text-pink-500"
+                          : ""
+                      }
                       onClick={() => handleReaction(post.post_id, "heart")}
                     >
-                      {getReactionCount(post.reactions, "heart") > 0 && getReactionCount(post.reactions, "heart")}
+                      {getReactionCount(post.reactions, "heart") > 0 &&
+                        getReactionCount(post.reactions, "heart")}
                     </Button>
                   </Tooltip>
                 </div>
@@ -560,65 +616,8 @@ const PostList = () => {
           />
         </div>
       </Modal>
-
-      <style>{`
-        .quill-content h1 {
-          font-size: 2em;
-          margin-top: 0.67em;
-          margin-bottom: 0.67em;
-        }
-        .quill-content h2 {
-          font-size: 1.5em;
-          margin-top: 0.83em;
-          margin-bottom: 0.83em;
-        }
-        .quill-content h3 {
-          font-size: 1.17em;
-          margin-top: 1em;
-          margin-bottom: 1em;
-        }
-        .quill-content h4 {
-          font-size: 1em;
-          margin-top: 1.33em;
-          margin-bottom: 1.33em;
-        }
-        .quill-content ul, .quill-content ol {
-          padding-left: 2em;
-          margin-top: 1em;
-          margin-bottom: 1em;
-        }
-        .quill-content ul {
-          list-style-type: disc;
-        }
-        .quill-content ol {
-          list-style-type: decimal;
-        }
-        .quill-content p {
-          margin-top: 1em;
-          margin-bottom: 1em;
-        }
-        .quill-content img {
-          max-width: 100%;
-        }
-        .quill-content blockquote {
-          border-left: 4px solid #ccc;
-          padding-left: 16px;
-          margin: 1em 0;
-        }
-        .quill-content pre {
-          background-color: #f0f0f0;
-          padding: 8px;
-          border-radius: 4px;
-          overflow-x: auto;
-        }
-        .quill-content code {
-          background-color: #f0f0f0;
-          padding: 2px 4px;
-          border-radius: 4px;
-        }
-      `}</style>
     </div>
-  )
-}
+  );
+};
 
-export default PostList
+export default PostList;

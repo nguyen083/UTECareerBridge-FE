@@ -15,47 +15,58 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-.font-size{
+
+.font-size {
   font-size: 1rem;
 }
-.font-size-small{
+
+.font-size-small {
   font-size: 0.875rem;
 }
-.username{
+
+.username {
   font-size: 1rem;
   font-weight: 550;
   color: #1E4F94;
+
   @media screen and (max-width: 1025px) {
     display: none;
-    
+
   }
 }
+
 .title {
-  font-size    : 2rem;
+  font-size: 2rem;
   color: #555555;
 }
-.title1{
-@apply text-2xl font-medium leading-4 text-gray-700;
+
+.title1 {
+  @apply text-2xl font-medium leading-4 text-gray-700;
 }
-.title2{
+
+.title2 {
   @apply text-lg font-[550] text-[#333] leading-4;
 }
-html{
-  font-family:  Be Vietnam Pro;
+
+html {
+  font-family: Be Vietnam Pro;
   font-size: 16px;
+
   @media (max-width: 320px) {
-    font-size: 11px;  
+    font-size: 11px;
   }
 }
+
 /* .size{
   font-size: 1rem !important;
   padding: 1rem 0.75rem !important;
   align-content: center;
 } */
-.salary{
-  @apply text-base text-[orange] ;
+.salary {
+  @apply text-base text-[orange];
 }
-.icon-small{
+
+.icon-small {
   @apply text-xs text-[#646464];
 }
 
@@ -68,6 +79,7 @@ html{
 .ant-carousel .slick-dots li.slick-active button {
   @apply bg-[#838383];
 }
+
 .hover-effect {
   /* cursor: pointer;
   transition: color 0.3s; */
@@ -78,6 +90,7 @@ html{
   /* color: #1890ff; */
   @apply text-[#1890ff];
 }
+
 .custom-anchor .ant-anchor-link {
   /* margin-right: 1rem; */
   @apply mr-4;
@@ -93,12 +106,14 @@ html{
   font-size: 16px !important;
 } */
 
-.f-20{
+.f-20 {
   font-size: 20px !important;
 }
-.f-24{
+
+.f-24 {
   font-size: 24px !important;
 }
+
 /* .box_shadow {
   box-shadow: 5px 5px 5px #ebebeb;
 } */
@@ -118,26 +133,23 @@ html{
 .ql-size-huge {
   font-size: 28px !important;
 }
-.ql-editor{
-  font-size: 16px !important;
-  font-family: Be Vietnam Pro;
-}
+
 .slick-arrow {
   color: #1890ff !important;
 }
-.ql-container{
-  min-height: 100px;
-}
-.cursor-pointer{
+
+.cursor-pointer {
   cursor: pointer !important;
 }
-.ant-tag
-{
+
+.ant-tag {
   @apply flex items-center;
 }
-.ant-menu-vertical{
+
+.ant-menu-vertical {
   border-inline-end: none !important;
 }
-.ant-menu-inline{
+
+.ant-menu-inline {
   border-inline-end: none !important;
 }

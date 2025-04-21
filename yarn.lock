@@ -3925,6 +3925,11 @@ html-react-parser@^5.1.18:
     react-property "2.0.2"
     style-to-js "1.1.16"
 
+html-truncate@^1.2.2:
+  version "1.2.2"
+  resolved "https://registry.yarnpkg.com/html-truncate/-/html-truncate-1.2.2.tgz#db2e331dcf1cba0bd432a507d16e988609f2575f"
+  integrity sha512-oiXb65RDxSYY8eXJKJiKHHpI7LyQbMG8LbSuvvWLLxAKNywJ7aaq0M1ynj2QJs0odQNggEEg/dTFVtH3lG0ClQ==
+
 htmlparser2@9.1.0:
   version "9.1.0"
   resolved "https://registry.npmjs.org/htmlparser2/-/htmlparser2-9.1.0.tgz"
