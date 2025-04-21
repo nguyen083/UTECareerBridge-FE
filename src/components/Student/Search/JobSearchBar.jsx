@@ -1,10 +1,10 @@
 import { Input } from "antd";
-import './JobSearchBar.scss';
+import "./JobSearchBar.scss";
 import { setKeyword } from "../../../redux/action/webSlice";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SearchOutlined } from "@ant-design/icons";
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from "react-i18next";
 
 const JobSearchBar = () => {
   const dispatch = useDispatch();
@@ -28,12 +28,12 @@ const JobSearchBar = () => {
   return (
     <div className="flex search-input">
       <Input.Search
-        placeholder={t('job.search.placeholder')}
+        placeholder={t("job.search.placeholder")}
         allowClear
         enterButton={<SearchOutlined />}
         size="large"
         onSearch={(value) => handleSearch(value)}
-        style={{ width: '500px' }}
+        style={{ width: "500px" }}
         onChange={(e) => handleChange(e)}
       />
     </div>

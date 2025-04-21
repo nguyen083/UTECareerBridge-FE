@@ -1,92 +1,51 @@
-"use client"
-
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef } from "react";
 import {
   Card,
   Typography,
   Button,
-  Space,
   Avatar,
   Divider,
   Tag,
-  Modal,
   message,
   Breadcrumb,
   Tooltip,
-  Dropdown,
-  Menu,
   Skeleton,
   Input,
   Drawer,
-  List,
-  Affix,
   Tabs,
-  Progress,
-  Radio,
-} from "antd"
+  FloatButton,
+  Flex,
+} from "antd";
 import {
   HomeOutlined,
   MessageOutlined,
-  LikeOutlined,
-  DislikeOutlined,
-  SmileOutlined,
-  HeartOutlined,
   ShareAltOutlined,
-  BookOutlined,
-  BellOutlined,
-  MoreOutlined,
   EyeOutlined,
   ClockCircleOutlined,
   CommentOutlined,
-  UserOutlined,
   ArrowUpOutlined,
-  ArrowLeftOutlined,
-  ArrowRightOutlined,
-  LinkOutlined,
-  FlagOutlined,
-  StarOutlined,
   MenuOutlined,
-} from "@ant-design/icons"
-import { Link, useParams } from "react-router-dom"
-import ReactQuill from "react-quill"
-import "react-quill/dist/quill.snow.css"
+} from "@ant-design/icons";
+import { Link, useParams } from "react-router-dom";
+import ReactionPicker from "../../components/Generate/ReactionPicker";
+import HtmlContent from "./../../components/Generate/HtmlContent";
 
-const { Title, Text, Paragraph } = Typography
-const { TabPane } = Tabs
-const { TextArea } = Input
+const { Title, Text, Paragraph } = Typography;
+const { TabPane } = Tabs;
+const { TextArea } = Input;
 
 const PostDetail = () => {
-  const { forumId, topicId, postId } = useParams()
-  const [post, setPost] = useState(null)
-  const [topic, setTopic] = useState(null)
-  const [forum, setForum] = useState(null)
-  const [comments, setComments] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [isReplyModalVisible, setIsReplyModalVisible] = useState(false)
-  const [replyContent, setReplyContent] = useState("")
-  const [commentText, setCommentText] = useState("")
-  const [isSidebarVisible, setIsSidebarVisible] = useState(false)
-  const [isBookmarked, setIsBookmarked] = useState(false)
-  const [isSubscribed, setIsSubscribed] = useState(false)
-  const [relatedPosts, setRelatedPosts] = useState([])
-  const [activeUsers, setActiveUsers] = useState([])
-  const [reactionStats, setReactionStats] = useState({})
-  const [userReaction, setUserReaction] = useState(null)
-  const topRef = useRef(null)
-  const commentInputRef = useRef(null)
-
-  // Cấu hình Quill
-  const modules = {
-    toolbar: [
-      [{ header: [1, 2, 3, false] }],
-      ["bold", "italic", "underline"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["link", "image"],
-      ["clean"],
-    ],
-  }
-
-  const formats = ["header", "bold", "italic", "underline", "list", "bullet", "link", "image"]
+  const { forumId, topicId, postId } = useParams();
+  const [post, setPost] = useState(null);
+  const [topic, setTopic] = useState(null);
+  const [forum, setForum] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [commentText, setCommentText] = useState("");
+  const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+  const [userReaction, setUserReaction] = useState(null);
+  const topRef = useRef(null);
+  const commentInputRef = useRef(null);
 
   // Giả lập dữ liệu
   useEffect(() => {
@@ -95,10 +54,11 @@ const PostDetail = () => {
       setForum({
         forum_id: Number.parseInt(forumId),
         name: "Công nghệ",
-        description: "Thảo luận về công nghệ, phần mềm, phần cứng và các xu hướng mới",
+        description:
+          "Thảo luận về công nghệ, phần mềm, phần cứng và các xu hướng mới",
         is_active: true,
         created_at: "2023-01-15T08:30:00Z",
-      })
+      });
 
       setTopic({
         topic_id: Number.parseInt(topicId),
@@ -116,7 +76,7 @@ const PostDetail = () => {
         updated_at: "2023-05-15T10:45:00Z",
         status: "active",
         tags: ["React", "Frontend", "JavaScript"],
-      })
+      });
 
       setPost({
         post_id: Number.parseInt(postId || "1"),
@@ -127,32 +87,90 @@ const PostDetail = () => {
         role: "Quản trị viên",
         post_count: 1250,
         join_date: "2022-01-10",
-        content: `<h1>React là gì?</h1>
-<p>React là một thư viện JavaScript để xây dựng giao diện người dùng. Nó được phát triển bởi Facebook và được sử dụng rộng rãi trong ngành công nghiệp phần mềm.</p>
-<h2>Ưu điểm của React</h2>
-<ul>
-  <li><strong>Component-Based</strong>: React cho phép bạn xây dựng UI từ các component độc lập, có thể tái sử dụng.</li>
-  <li><strong>Virtual DOM</strong>: React sử dụng Virtual DOM để tối ưu hóa việc render, giúp ứng dụng chạy nhanh hơn.</li>
-  <li><strong>One-way Data Binding</strong>: React sử dụng luồng dữ liệu một chiều, giúp code dễ hiểu và dễ debug hơn.</li>
-</ul>
-<h2>Các thư viện UI phổ biến cho React</h2>
-<ol>
-  <li><strong>Ant Design</strong>: Một hệ thống thiết kế và thư viện UI cho React, được phát triển bởi Alibaba.</li>
-  <li><strong>Material-UI</strong>: Thư viện UI dựa trên Material Design của Google.</li>
-  <li><strong>Tailwind CSS</strong>: Framework CSS tiện ích, giúp xây dựng UI nhanh chóng mà không cần viết CSS tùy chỉnh.</li>
-</ol>
-<p><img src="/placeholder.svg?height=300&width=600" alt="React ecosystem" /></p>
-<h2>Ví dụ đơn giản về React Component</h2>
-<pre><code>import React from 'react';
+        content: `<body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px;">
+    
+    <!-- Post Header -->
+    <header style="margin-bottom: 30px;">
+        <h1 style="color: #2c3e50; font-size: 2.5rem; margin-bottom: 10px;">The Art of Inline CSS Styling</h1>
+        <div style="display: flex; align-items: center; margin-bottom: 20px;">
+            <img src="/placeholder.svg?height=50&width=50" alt="Author Avatar" style="width: 50px; height: 50px; border-radius: 50%; margin-right: 15px;">
+            <div>
+                <p style="margin: 0; font-weight: bold; color: #2c3e50;">John Doe</p>
+                <p style="margin: 0; color: #7f8c8d; font-size: 0.9rem;">Published on May 15, 2023 • 5 min read</p>
+            </div>
+        </div>
+        <div style="height: 300px; background-color: #f5f5f5; display: flex; justify-content: center; align-items: center; margin-bottom: 20px; border-radius: 8px; overflow: hidden;">
+            <img src="/placeholder.svg?height=300&width=800" alt="Featured Image" style="width: 100%; height: 100%; object-fit: cover;">
+        </div>
+    </header>
 
-function Welcome(props) {
-  return &lt;h1&gt;Hello, {props.name}&lt;/h1&gt;;
-}
+    <!-- Post Content -->
+    <main style="margin-bottom: 40px;">
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 20px;">
+            Inline CSS is a method of applying CSS styling directly within HTML elements using the style attribute. While it's generally recommended to separate content (HTML) from presentation (CSS), inline styles can be useful in certain scenarios.
+        </p>
 
-export default Welcome;</code></pre>
-<p>Đây là một component đơn giản trong React, nó nhận vào một prop là "name" và hiển thị một thông điệp chào mừng.</p>
-<h2>Kết luận</h2>
-<p>React là một công cụ mạnh mẽ cho việc xây dựng giao diện người dùng. Kết hợp với các thư viện UI phổ biến, nó giúp các nhà phát triển xây dựng ứng dụng web hiện đại một cách nhanh chóng và hiệu quả.</p>`,
+        <h2 style="color: #2c3e50; font-size: 1.8rem; margin: 30px 0 15px 0; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px;">When to Use Inline CSS</h2>
+        
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 20px;">
+            Inline CSS can be particularly useful in the following situations:
+        </p>
+
+        <ul style="margin-bottom: 20px; padding-left: 20px;">
+            <li style="margin-bottom: 10px;">When you need to apply styles to a single element</li>
+            <li style="margin-bottom: 10px;">For HTML emails where external stylesheets aren't fully supported</li>
+            <li style="margin-bottom: 10px;">When quickly prototyping or testing styles</li>
+            <li style="margin-bottom: 10px;">In situations where you can't modify external stylesheets</li>
+        </ul>
+
+        <h2 style="color: #2c3e50; font-size: 1.8rem; margin: 30px 0 15px 0; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px;">Advantages of Inline CSS</h2>
+
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 20px;">
+            Inline styles have several advantages in specific contexts:
+        </p>
+
+        <div style="background-color: #f8f9fa; border-left: 4px solid #3498db; padding: 15px; margin-bottom: 20px; border-radius: 0 8px 8px 0;">
+            <p style="margin: 0; font-style: italic;">
+                "Inline CSS can improve page load performance by eliminating the need for an external CSS file, which reduces HTTP requests."
+            </p>
+        </div>
+
+        <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 20px;">
+            Additionally, inline styles have the highest specificity in the CSS cascade, meaning they will override styles defined in external stylesheets or style tags.
+        </p>
+
+        <h2 style="color: #2c3e50; font-size: 1.8rem; margin: 30px 0 15px 0; border-bottom: 2px solid #ecf0f1; padding-bottom: 10px;">Code Example</h2>
+
+        <div style="background-color: #f5f5f5; padding: 20px; border-radius: 8px; margin-bottom: 20px; overflow-x: auto;">
+            <code style="font-family: monospace; color: #333;">
+                &lt;div style="color: blue; font-size: 18px; margin: 20px;"&gt;<br>
+                &nbsp;&nbsp;This text is styled using inline CSS.<br>
+                &lt;/div&gt;
+            </code>
+        </div>
+    </main>
+
+    <!-- Post Footer -->
+    <footer style="border-top: 1px solid #ecf0f1; padding-top: 20px;">
+        <div style="margin-bottom: 20px;">
+            <span style="font-weight: bold; margin-right: 10px;">Tags:</span>
+            <span style="background-color: #e0f7fa; color: #00838f; padding: 5px 10px; border-radius: 20px; font-size: 0.9rem; margin-right: 10px;">HTML</span>
+            <span style="background-color: #e0f7fa; color: #00838f; padding: 5px 10px; border-radius: 20px; font-size: 0.9rem; margin-right: 10px;">CSS</span>
+            <span style="background-color: #e0f7fa; color: #00838f; padding: 5px 10px; border-radius: 20px; font-size: 0.9rem;">Web Development</span>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <span style="font-weight: bold; margin-right: 10px;">Share:</span>
+                <a href="#" style="text-decoration: none; color: #3b5998; margin-right: 15px; font-size: 1.2rem;">Facebook</a>
+                <a href="#" style="text-decoration: none; color: #1da1f2; margin-right: 15px; font-size: 1.2rem;">Twitter</a>
+                <a href="#" style="text-decoration: none; color: #0077b5; font-size: 1.2rem;">LinkedIn</a>
+            </div>
+            <button style="background-color: #2ecc71; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold;">Like Post</button>
+        </div>
+    </footer>
+    
+</body>`,
         created_at: "2023-05-10T08:30:00Z",
         updated_at: "2023-05-10T08:30:00Z",
         reactions: {
@@ -162,8 +180,7 @@ export default Welcome;</code></pre>
           smile: 5,
         },
         view_count: 324,
-        is_best_answer: true,
-      })
+      });
 
       setComments([
         {
@@ -172,7 +189,8 @@ export default Welcome;</code></pre>
           user_id: 102,
           username: "lethihong",
           avatar: "/placeholder.svg?height=40&width=40",
-          content: "Bài viết rất hay và chi tiết. Tôi đặc biệt thích phần so sánh giữa các thư viện UI.",
+          content:
+            "Bài viết rất hay và chi tiết. Tôi đặc biệt thích phần so sánh giữa các thư viện UI.",
           created_at: "2023-05-10T09:15:00Z",
           updated_at: "2023-05-10T09:15:00Z",
           reactions: {
@@ -223,102 +241,17 @@ export default Welcome;</code></pre>
             like: 4,
             heart: 2,
           },
-          is_author: true,
         },
-      ])
+      ]);
 
-      setRelatedPosts([
-        {
-          post_id: 2,
-          topic_id: Number.parseInt(topicId),
-          title: "So sánh Next.js và Gatsby cho các dự án React",
-          username: "lethihong",
-          avatar: "/placeholder.svg?height=40&width=40",
-          created_at: "2023-05-12T09:15:00Z",
-          view_count: 876,
-          comment_count: 18,
-        },
-        {
-          post_id: 3,
-          topic_id: Number.parseInt(topicId),
-          title: "Tailwind CSS: Ưu và nhược điểm",
-          username: "phamtuan",
-          avatar: "/placeholder.svg?height=40&width=40",
-          created_at: "2023-05-15T10:45:00Z",
-          view_count: 654,
-          comment_count: 12,
-        },
-        {
-          post_id: 4,
-          topic_id: Number.parseInt(topicId),
-          title: "Ant Design vs Material-UI: Nên chọn thư viện UI nào?",
-          username: "tranminh",
-          avatar: "/placeholder.svg?height=40&width=40",
-          created_at: "2023-05-18T14:20:00Z",
-          view_count: 789,
-          comment_count: 9,
-        },
-      ])
-
-      setActiveUsers([
-        { user_id: 101, username: "nguyenvan", avatar: "/placeholder.svg?height=40&width=40", post_count: 1250 },
-        { user_id: 105, username: "hoangnam", avatar: "/placeholder.svg?height=40&width=40", post_count: 789 },
-        { user_id: 103, username: "phamtuan", avatar: "/placeholder.svg?height=40&width=40", post_count: 342 },
-        { user_id: 102, username: "lethihong", avatar: "/placeholder.svg?height=40&width=40", post_count: 87 },
-        { user_id: 104, username: "tranminh", avatar: "/placeholder.svg?height=40&width=40", post_count: 56 },
-      ])
-
-      setReactionStats({
-        like: 15,
-        dislike: 2,
-        heart: 8,
-        smile: 5,
-      })
-
-      setUserReaction("like")
-      setIsBookmarked(true)
-      setIsSubscribed(true)
-
-      setLoading(false)
-    }, 1000)
-  }, [forumId, topicId, postId])
-
-  const handleReply = () => {
-    setReplyContent("")
-    setIsReplyModalVisible(true)
-  }
-
-  const handleReplyCancel = () => {
-    setIsReplyModalVisible(false)
-  }
-
-  const handleReplySubmit = () => {
-    if (!replyContent.trim()) {
-      message.error("Vui lòng nhập nội dung bình luận!")
-      return
-    }
-
-    const newComment = {
-      comment_id: comments.length + 1,
-      post_id: Number.parseInt(postId || "1"),
-      user_id: 101, // Giả sử user_id của người dùng hiện tại
-      username: "nguyenvan", // Giả sử username của người dùng hiện tại
-      avatar: "/placeholder.svg?height=40&width=40",
-      content: replyContent,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      reactions: {},
-      is_author: true,
-    }
-    setComments([...comments, newComment])
-    setIsReplyModalVisible(false)
-    message.success("Đã đăng bình luận thành công!")
-  }
+      setLoading(false);
+    }, 1000);
+  }, [forumId, topicId, postId]);
 
   const handleCommentSubmit = () => {
     if (!commentText.trim()) {
-      message.error("Vui lòng nhập nội dung bình luận!")
-      return
+      message.error("Vui lòng nhập nội dung bình luận!");
+      return;
     }
 
     const newComment = {
@@ -332,151 +265,57 @@ export default Welcome;</code></pre>
       updated_at: new Date().toISOString(),
       reactions: {},
       is_author: true,
-    }
-    setComments([...comments, newComment])
-    setCommentText("")
-    message.success("Đã đăng bình luận thành công!")
-  }
-
-  const handleReaction = (type) => {
-    if (userReaction === type) {
-      // Bỏ reaction
-      setUserReaction(null)
-      setReactionStats({
-        ...reactionStats,
-        [type]: reactionStats[type] - 1,
-      })
-    } else {
-      // Thay đổi reaction
-      if (userReaction) {
-        setReactionStats({
-          ...reactionStats,
-          [userReaction]: reactionStats[userReaction] - 1,
-          [type]: (reactionStats[type] || 0) + 1,
-        })
-      } else {
-        setReactionStats({
-          ...reactionStats,
-          [type]: (reactionStats[type] || 0) + 1,
-        })
-      }
-      setUserReaction(type)
-    }
-  }
-
-  const handleCommentReaction = (commentId, type) => {
-    const updatedComments = comments.map((comment) => {
-      if (comment.comment_id === commentId) {
-        const currentReactions = { ...comment.reactions }
-        if (currentReactions[type]) {
-          currentReactions[type] += 1
-        } else {
-          currentReactions[type] = 1
-        }
-        return { ...comment, reactions: currentReactions }
-      }
-      return comment
-    })
-    setComments(updatedComments)
-  }
-
-  const toggleBookmark = () => {
-    setIsBookmarked(!isBookmarked)
-    message.success(isBookmarked ? "Đã xóa khỏi danh sách đánh dấu" : "Đã thêm vào danh sách đánh dấu")
-  }
-
-  const toggleSubscribe = () => {
-    setIsSubscribed(!isSubscribed)
-    message.success(isSubscribed ? "Đã hủy đăng ký nhận thông báo" : "Đã đăng ký nhận thông báo khi có bài viết mới")
-  }
+    };
+    setComments([...comments, newComment]);
+    setCommentText("");
+    message.success("Đã đăng bình luận thành công!");
+  };
 
   const handleShare = () => {
-    // Trong thực tế, bạn sẽ triển khai chức năng chia sẻ
-    message.success("Đã sao chép liên kết vào clipboard")
-  }
-
-  const handleReport = () => {
-    // Trong thực tế, bạn sẽ triển khai chức năng báo cáo
-    Modal.confirm({
-      title: "Báo cáo bài viết",
-      content: (
-        <div>
-          <p>Vui lòng chọn lý do báo cáo:</p>
-          <Radio.Group>
-            <Space direction="vertical">
-              <Radio value="spam">Spam</Radio>
-              <Radio value="inappropriate">Nội dung không phù hợp</Radio>
-              <Radio value="offensive">Nội dung xúc phạm</Radio>
-              <Radio value="copyright">Vi phạm bản quyền</Radio>
-              <Radio value="other">Khác</Radio>
-            </Space>
-          </Radio.Group>
-          <TextArea placeholder="Mô tả chi tiết..." rows={4} className="mt-4" />
-        </div>
-      ),
-      okText: "Báo cáo",
-      cancelText: "Hủy",
-      onOk() {
-        message.success("Đã gửi báo cáo của bạn")
-      },
-    })
-  }
+    message.success("Đã sao chép liên kết vào clipboard");
+  };
 
   const scrollToTop = () => {
-    topRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
-
-  const scrollToComments = () => {
-    commentInputRef.current?.scrollIntoView({ behavior: "smooth" })
-    setTimeout(() => {
-      const input = commentInputRef.current?.querySelector("textarea")
-      if (input) {
-        input.focus()
-      }
-    }, 500)
-  }
+    topRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   const formatDate = (dateString) => {
-    const date = new Date(dateString)
+    const date = new Date(dateString);
     return date.toLocaleDateString("vi-VN", {
       year: "numeric",
       month: "short",
       day: "numeric",
-    })
-  }
+    });
+  };
 
   const formatDateTime = (dateString) => {
-    const date = new Date(dateString)
+    const date = new Date(dateString);
     return date.toLocaleDateString("vi-VN", {
       year: "numeric",
       month: "short",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-    })
-  }
+    });
+  };
 
   const getTimeDifference = (dateString) => {
-    const now = new Date()
-    const date = new Date(dateString)
-    const diffInSeconds = Math.floor((now - date) / 1000)
+    const now = new Date();
+    const date = new Date(dateString);
+    const diffInSeconds = Math.floor((now - date) / 1000);
 
     if (diffInSeconds < 60) {
-      return `${diffInSeconds} giây trước`
+      return `${diffInSeconds} giây trước`;
     } else if (diffInSeconds < 3600) {
-      return `${Math.floor(diffInSeconds / 60)} phút trước`
+      return `${Math.floor(diffInSeconds / 60)} phút trước`;
     } else if (diffInSeconds < 86400) {
-      return `${Math.floor(diffInSeconds / 3600)} giờ trước`
+      return `${Math.floor(diffInSeconds / 3600)} giờ trước`;
     } else if (diffInSeconds < 604800) {
-      return `${Math.floor(diffInSeconds / 86400)} ngày trước`
+      return `${Math.floor(diffInSeconds / 86400)} ngày trước`;
     } else {
-      return formatDate(dateString)
+      return formatDate(dateString);
     }
-  }
-
-  const getTotalReactions = () => {
-    return Object.values(reactionStats).reduce((sum, count) => sum + count, 0)
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gray-50" ref={topRef}>
@@ -489,14 +328,21 @@ export default Welcome;</code></pre>
                 <HomeOutlined />
               </Breadcrumb.Item>
               <Breadcrumb.Item href="/forums">Diễn đàn</Breadcrumb.Item>
-              <Breadcrumb.Item href={`/forums/${forumId}/topics`}>{forum?.name || "Đang tải..."}</Breadcrumb.Item>
-              <Breadcrumb.Item href={`/forums/${forumId}/topics/${topicId}/posts`}>
+              <Breadcrumb.Item href={`/forums/${forumId}/topics`}>
+                {forum?.name || "Đang tải..."}
+              </Breadcrumb.Item>
+              <Breadcrumb.Item
+                href={`/forums/${forumId}/topics/${topicId}/posts`}
+              >
                 {topic?.title || "Đang tải..."}
               </Breadcrumb.Item>
               <Breadcrumb.Item>Bài viết</Breadcrumb.Item>
             </Breadcrumb>
             <div className="flex items-center gap-2 md:hidden">
-              <Button icon={<MenuOutlined />} onClick={() => setIsSidebarVisible(true)} />
+              <Button
+                icon={<MenuOutlined />}
+                onClick={() => setIsSidebarVisible(true)}
+              />
             </div>
           </div>
         </div>
@@ -507,7 +353,12 @@ export default Welcome;</code></pre>
           {/* Main content */}
           <div className="flex-grow">
             {/* Post */}
-            <Skeleton loading={loading} active paragraph={{ rows: 15 }} className="mb-4">
+            <Skeleton
+              loading={loading}
+              active
+              paragraph={{ rows: 15 }}
+              className="mb-4"
+            >
               {post && (
                 <Card className="mb-6 shadow-sm">
                   {/* Post header */}
@@ -520,17 +371,16 @@ export default Welcome;</code></pre>
                             {post.username}
                           </Text>
                           <Tag color="blue">{post.role}</Tag>
-                          {post.is_best_answer && (
-                            <Tag color="green">
-                              <StarOutlined /> Bài viết hay
-                            </Tag>
-                          )}
                         </div>
                         <div className="text-sm text-gray-500">
                           <ClockCircleOutlined className="mr-1" />
                           {formatDateTime(post.created_at)}
                           {post.updated_at !== post.created_at && (
-                            <Tooltip title={`Cập nhật lần cuối: ${formatDateTime(post.updated_at)}`}>
+                            <Tooltip
+                              title={`Cập nhật lần cuối: ${formatDateTime(
+                                post.updated_at
+                              )}`}
+                            >
                               <span className="ml-2">(đã chỉnh sửa)</span>
                             </Tooltip>
                           )}
@@ -538,144 +388,40 @@ export default Welcome;</code></pre>
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <Tooltip title={isBookmarked ? "Bỏ đánh dấu" : "Đánh dấu"}>
-                        <Button
-                          type="text"
-                          icon={isBookmarked ? <BookOutlined className="text-blue-500" /> : <BookOutlined />}
-                          onClick={toggleBookmark}
-                        />
-                      </Tooltip>
-                      <Tooltip title="Chia sẻ">
-                        <Button type="text" icon={<ShareAltOutlined />} onClick={handleShare} />
-                      </Tooltip>
-                      <Dropdown
-                        overlay={
-                          <Menu>
-                            <Menu.Item key="copy" icon={<LinkOutlined />} onClick={handleShare}>
-                              Sao chép liên kết
-                            </Menu.Item>
-                            <Menu.Item key="report" icon={<FlagOutlined />} onClick={handleReport}>
-                              Báo cáo bài viết
-                            </Menu.Item>
-                          </Menu>
-                        }
-                        trigger={["click"]}
+                      <Button
+                        type="text"
+                        className="hover:!bg-transparent"
+                        icon={<ShareAltOutlined />}
+                        onClick={handleShare}
                       >
-                        <Button type="text" icon={<MoreOutlined />} />
-                      </Dropdown>
+                        Chia sẻ
+                      </Button>
                     </div>
                   </div>
 
                   {/* Post content */}
-                  <div
-                    className="mb-6 post-content quill-content"
-                    dangerouslySetInnerHTML={{ __html: post.content }}
-                  ></div>
+                  <HtmlContent htmlString={post.content} />
 
                   {/* Post footer */}
                   <div className="pt-4 border-t">
                     <div className="flex flex-wrap items-center justify-between">
                       <div className="flex gap-3">
-                        <Tooltip title="Thích">
-                          <Button
-                            type={userReaction === "like" ? "primary" : "default"}
-                            icon={<LikeOutlined />}
-                            onClick={() => handleReaction("like")}
-                          >
-                            {reactionStats.like > 0 && reactionStats.like}
-                          </Button>
-                        </Tooltip>
-                        <Tooltip title="Không thích">
-                          <Button
-                            type={userReaction === "dislike" ? "primary" : "default"}
-                            icon={<DislikeOutlined />}
-                            onClick={() => handleReaction("dislike")}
-                          >
-                            {reactionStats.dislike > 0 && reactionStats.dislike}
-                          </Button>
-                        </Tooltip>
-                        <Tooltip title="Yêu thích">
-                          <Button
-                            type={userReaction === "heart" ? "primary" : "default"}
-                            icon={<HeartOutlined />}
-                            onClick={() => handleReaction("heart")}
-                            danger={userReaction === "heart"}
-                          >
-                            {reactionStats.heart > 0 && reactionStats.heart}
-                          </Button>
-                        </Tooltip>
-                        <Tooltip title="Cười">
-                          <Button
-                            type={userReaction === "smile" ? "primary" : "default"}
-                            icon={<SmileOutlined />}
-                            onClick={() => handleReaction("smile")}
-                          >
-                            {reactionStats.smile > 0 && reactionStats.smile}
-                          </Button>
-                        </Tooltip>
+                        <ReactionPicker
+                          selected={userReaction}
+                          setSelected={setUserReaction}
+                          classNameIcon="text-xl"
+                        />
                       </div>
                       <div className="flex gap-2 mt-2 sm:mt-0">
-                        <Button icon={<EyeOutlined />}>{post.view_count} lượt xem</Button>
-                        <Button icon={<CommentOutlined />} onClick={scrollToComments}>
-                          {comments.length} bình luận
+                        <Button
+                          icon={<EyeOutlined />}
+                          className="hover:!bg-transparent cursor-auto"
+                          type="text"
+                        >
+                          {post.view_count} lượt xem
                         </Button>
                       </div>
                     </div>
-
-                    {getTotalReactions() > 0 && (
-                      <div className="mt-4">
-                        <Text type="secondary">Phản ứng của người đọc:</Text>
-                        <div className="flex gap-4 mt-2">
-                          {reactionStats.like > 0 && (
-                            <div className="flex flex-col items-center">
-                              <Progress
-                                type="circle"
-                                percent={Math.round((reactionStats.like / getTotalReactions()) * 100)}
-                                width={40}
-                                format={() => <LikeOutlined />}
-                              />
-                              <Text className="mt-1">{reactionStats.like}</Text>
-                            </div>
-                          )}
-                          {reactionStats.heart > 0 && (
-                            <div className="flex flex-col items-center">
-                              <Progress
-                                type="circle"
-                                percent={Math.round((reactionStats.heart / getTotalReactions()) * 100)}
-                                width={40}
-                                format={() => <HeartOutlined />}
-                                strokeColor="#ff4d4f"
-                              />
-                              <Text className="mt-1">{reactionStats.heart}</Text>
-                            </div>
-                          )}
-                          {reactionStats.smile > 0 && (
-                            <div className="flex flex-col items-center">
-                              <Progress
-                                type="circle"
-                                percent={Math.round((reactionStats.smile / getTotalReactions()) * 100)}
-                                width={40}
-                                format={() => <SmileOutlined />}
-                                strokeColor="#faad14"
-                              />
-                              <Text className="mt-1">{reactionStats.smile}</Text>
-                            </div>
-                          )}
-                          {reactionStats.dislike > 0 && (
-                            <div className="flex flex-col items-center">
-                              <Progress
-                                type="circle"
-                                percent={Math.round((reactionStats.dislike / getTotalReactions()) * 100)}
-                                width={40}
-                                format={() => <DislikeOutlined />}
-                                strokeColor="#bfbfbf"
-                              />
-                              <Text className="mt-1">{reactionStats.dislike}</Text>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    )}
                   </div>
                 </Card>
               )}
@@ -688,36 +434,47 @@ export default Welcome;</code></pre>
                   Bình luận ({comments.length})
                 </Title>
               </div>
-               {/* Add comment */}
-            <Card className="mb-6 shadow-sm" ref={commentInputRef}>
-              <Title level={5} className="mb-4">
-                Thêm bình luận
-              </Title>
-              <div className="flex">
-                <Avatar src="/placeholder.svg?height=40&width=40" className="flex-shrink-0 mr-3" />
-                <div className="flex-grow">
-                  <TextArea
-                    rows={4}
-                    placeholder="Viết bình luận của bạn..."
-                    value={commentText}
-                    onChange={(e) => setCommentText(e.target.value)}
-                    className="mb-3"
+              {/* Add comment */}
+              <Card className="mb-6 shadow-sm" ref={commentInputRef}>
+                <Title level={5} className="mb-4">
+                  Thêm bình luận
+                </Title>
+                <div className="flex">
+                  <Avatar
+                    src="/placeholder.svg?height=40&width=40"
+                    className="flex-shrink-0 mr-3"
                   />
-                  <div className="flex justify-end">
-                    <Button type="primary" onClick={handleCommentSubmit}>
-                      Đăng bình luận
-                    </Button>
+                  <div className="flex-grow">
+                    <TextArea
+                      rows={4}
+                      placeholder="Viết bình luận của bạn..."
+                      value={commentText}
+                      onChange={(e) => setCommentText(e.target.value)}
+                      className="mb-3"
+                    />
+                    <div className="flex justify-end">
+                      <Button type="primary" onClick={handleCommentSubmit}>
+                        Đăng bình luận
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </Card>
-              <Skeleton loading={loading} active paragraph={{ rows: 3 }} className="mb-4">
+              </Card>
+              <Skeleton
+                loading={loading}
+                active
+                paragraph={{ rows: 3 }}
+                className="mb-4"
+              >
                 {comments.length > 0 ? (
                   <div className="space-y-4">
                     {comments.map((comment) => (
                       <Card key={comment.comment_id} className="shadow-sm">
                         <div className="flex">
-                          <Avatar src={comment.avatar} className="flex-shrink-0 mr-3" />
+                          <Avatar
+                            src={comment.avatar}
+                            className="flex-shrink-0 mr-3"
+                          />
                           <div className="flex-grow">
                             <div className="flex items-start justify-between">
                               <div>
@@ -732,44 +489,19 @@ export default Welcome;</code></pre>
                                   {getTimeDifference(comment.created_at)}
                                 </div>
                               </div>
-                              <Dropdown
-                                overlay={
-                                  <Menu>
-                                    <Menu.Item key="reply" icon={<CommentOutlined />} onClick={handleReply}>
-                                      Trả lời
-                                    </Menu.Item>
-                                    <Menu.Item key="report" icon={<FlagOutlined />} onClick={handleReport}>
-                                      Báo cáo
-                                    </Menu.Item>
-                                  </Menu>
-                                }
-                                trigger={["click"]}
-                              >
-                                <Button type="text" icon={<MoreOutlined />} />
-                              </Dropdown>
                             </div>
-                            <Paragraph className="mt-2">{comment.content}</Paragraph>
-                            <div className="flex gap-2 mt-2">
+                            <Paragraph className="mt-2">
+                              {comment.content}
+                            </Paragraph>
+                            <Flex justify="end">
                               <Button
                                 type="text"
                                 size="small"
-                                icon={<LikeOutlined />}
-                                onClick={() => handleCommentReaction(comment.comment_id, "like")}
+                                icon={<CommentOutlined />}
                               >
-                                {comment.reactions.like > 0 && comment.reactions.like}
-                              </Button>
-                              <Button
-                                type="text"
-                                size="small"
-                                icon={<HeartOutlined />}
-                                onClick={() => handleCommentReaction(comment.comment_id, "heart")}
-                              >
-                                {comment.reactions.heart > 0 && comment.reactions.heart}
-                              </Button>
-                              <Button type="text" size="small" icon={<CommentOutlined />} onClick={handleReply}>
                                 Trả lời
                               </Button>
-                            </div>
+                            </Flex>
                           </div>
                         </div>
                       </Card>
@@ -777,120 +509,20 @@ export default Welcome;</code></pre>
                   </div>
                 ) : (
                   <Card className="py-8 text-center">
-                    <MessageOutlined style={{ fontSize: 48 }} className="mb-4 text-gray-300" />
-                    <Paragraph>Chưa có bình luận nào. Hãy là người đầu tiên bình luận!</Paragraph>
+                    <MessageOutlined
+                      style={{ fontSize: 48 }}
+                      className="mb-4 text-gray-300"
+                    />
+                    <Paragraph>
+                      Chưa có bình luận nào. Hãy là người đầu tiên bình luận!
+                    </Paragraph>
                   </Card>
                 )}
               </Skeleton>
             </div>
 
-           
-
             {/* Navigation */}
-            <div className="flex justify-between mb-6">
-              <Button icon={<ArrowLeftOutlined />}>Bài viết trước</Button>
-              <Button type="primary" onClick={scrollToTop}>
-                <ArrowUpOutlined /> Lên đầu trang
-              </Button>
-              <Button icon={<ArrowRightOutlined />}>Bài viết tiếp theo</Button>
-            </div>
-          </div>
-
-          {/* Sidebar - Desktop */}
-          <div className="flex-shrink-0 hidden md:block w-80">
-            <div className="space-y-4">
-              {/* Topic info */}
-              <Card title="Thông tin chủ đề" className="shadow-sm">
-                <div className="mb-3">
-                  <Link
-                    to={`/forums/${forumId}/topics/${topicId}/posts`}
-                    className="text-lg font-medium hover:text-blue-600"
-                  >
-                    {topic?.title}
-                  </Link>
-                </div>
-                <div className="flex flex-wrap gap-1 mb-3">
-                  {topic?.tags.map((tag) => (
-                    <Tag key={tag} color="blue" className="cursor-pointer hover:opacity-80">
-                      {tag}
-                    </Tag>
-                  ))}
-                </div>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <Text>Tác giả:</Text>
-                    <Text strong>{topic?.username}</Text>
-                  </div>
-                  <div className="flex justify-between">
-                    <Text>Ngày tạo:</Text>
-                    <Text>{topic ? formatDate(topic.created_at) : ""}</Text>
-                  </div>
-                  <div className="flex justify-between">
-                    <Text>Lượt xem:</Text>
-                    <Text>{topic?.view_count}</Text>
-                  </div>
-                </div>
-                <Divider className="my-3" />
-                <div className="flex justify-between">
-                  <Button type="primary" ghost onClick={toggleBookmark} icon={<BookOutlined />}>
-                    {isBookmarked ? "Bỏ đánh dấu" : "Đánh dấu"}
-                  </Button>
-                  <Button type="primary" ghost onClick={toggleSubscribe} icon={<BellOutlined />}>
-                    {isSubscribed ? "Hủy đăng ký" : "Đăng ký"}
-                  </Button>
-                </div>
-              </Card>
-
-              {/* Related posts */}
-              <Card title="Bài viết liên quan" className="shadow-sm">
-                <List
-                  itemLayout="horizontal"
-                  dataSource={relatedPosts}
-                  renderItem={(item) => (
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={item.avatar} />}
-                        title={
-                          <Link to={`/forums/${forumId}/topics/${item.topic_id}/posts/${item.post_id}`}>
-                            {item.title}
-                          </Link>
-                        }
-                        description={
-                          <Space>
-                            <span>
-                              <UserOutlined /> {item.username}
-                            </span>
-                            <span>
-                              <EyeOutlined /> {item.view_count}
-                            </span>
-                            <span>
-                              <CommentOutlined /> {item.comment_count}
-                            </span>
-                          </Space>
-                        }
-                      />
-                    </List.Item>
-                  )}
-                />
-              </Card>
-
-              {/* Active users */}
-              <Card title="Thành viên tích cực" className="shadow-sm">
-                <List
-                  itemLayout="horizontal"
-                  dataSource={activeUsers}
-                  renderItem={(item) => (
-                    <List.Item>
-                      <List.Item.Meta
-                        avatar={<Avatar src={item.avatar} />}
-                        title={<Link to={`/users/${item.user_id}`}>{item.username}</Link>}
-                        description={`${item.post_count} bài viết`}
-                      />
-                    </List.Item>
-                  )}
-                />
-              </Card>
-            </div>
+            <div className="flex justify-between mb-6"></div>
           </div>
         </div>
       </div>
@@ -915,7 +547,11 @@ export default Welcome;</code></pre>
             </div>
             <div className="flex flex-wrap gap-1 mb-3">
               {topic?.tags.map((tag) => (
-                <Tag key={tag} color="blue" className="cursor-pointer hover:opacity-80">
+                <Tag
+                  key={tag}
+                  color="blue"
+                  className="cursor-pointer hover:opacity-80"
+                >
                   {tag}
                 </Tag>
               ))}
@@ -935,83 +571,12 @@ export default Welcome;</code></pre>
               </div>
             </div>
             <Divider className="my-3" />
-            <div className="flex justify-between">
-              <Button type="primary" ghost onClick={toggleBookmark} icon={<BookOutlined />}>
-                {isBookmarked ? "Bỏ đánh dấu" : "Đánh dấu"}
-              </Button>
-              <Button type="primary" ghost onClick={toggleSubscribe} icon={<BellOutlined />}>
-                {isSubscribed ? "Hủy đăng ký" : "Đăng ký"}
-              </Button>
-            </div>
-          </TabPane>
-          <TabPane tab="Bài viết liên quan" key="2">
-            <List
-              itemLayout="horizontal"
-              dataSource={relatedPosts}
-              renderItem={(item) => (
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={<Avatar src={item.avatar} />}
-                    title={
-                      <Link to={`/forums/${forumId}/topics/${item.topic_id}/posts/${item.post_id}`}>{item.title}</Link>
-                    }
-                    description={
-                      <Space>
-                        <span>
-                          <UserOutlined /> {item.username}
-                        </span>
-                        <span>
-                          <EyeOutlined /> {item.view_count}
-                        </span>
-                      </Space>
-                    }
-                  />
-                </List.Item>
-              )}
-            />
-          </TabPane>
-          <TabPane tab="Thành viên" key="3">
-            <List
-              itemLayout="horizontal"
-              dataSource={activeUsers}
-              renderItem={(item) => (
-                <List.Item>
-                  <List.Item.Meta
-                    avatar={<Avatar src={item.avatar} />}
-                    title={<Link to={`/users/${item.user_id}`}>{item.username}</Link>}
-                    description={`${item.post_count} bài viết`}
-                  />
-                </List.Item>
-              )}
-            />
           </TabPane>
         </Tabs>
       </Drawer>
 
-      {/* Reply modal */}
-      <Modal
-        title="Thêm bình luận"
-        open={isReplyModalVisible}
-        onCancel={handleReplyCancel}
-        onOk={handleReplySubmit}
-        width={700}
-        okText="Đăng bình luận"
-        cancelText="Hủy"
-      >
-        <div className="mb-4">
-          <ReactQuill
-            theme="snow"
-            value={replyContent}
-            onChange={setReplyContent}
-            modules={modules}
-            formats={formats}
-            style={{ height: "200px", marginBottom: "40px" }}
-          />
-        </div>
-      </Modal>
-
       {/* Back to top button */}
-      <Affix style={{ position: "fixed", bottom: 50, right: 50 }}>
+      <FloatButton>
         <Button
           type="primary"
           shape="circle"
@@ -1020,77 +585,9 @@ export default Welcome;</code></pre>
           onClick={scrollToTop}
           className="shadow-lg"
         />
-      </Affix>
-
-      <style>{`
-        .quill-content h1 {
-          font-size: 2em;
-          margin-top: 0.67em;
-          margin-bottom: 0.67em;
-        }
-        .quill-content h2 {
-          font-size: 1.5em;
-          margin-top: 0.83em;
-          margin-bottom: 0.83em;
-        }
-        .quill-content h3 {
-          font-size: 1.17em;
-          margin-top: 1em;
-          margin-bottom: 1em;
-        }
-        .quill-content h4 {
-          font-size: 1em;
-          margin-top: 1.33em;
-          margin-bottom: 1.33em;
-        }
-        .quill-content ul, .quill-content ol {
-          padding-left: 2em;
-          margin-top: 1em;
-          margin-bottom: 1em;
-        }
-        .quill-content ul {
-          list-style-type: disc;
-        }
-        .quill-content ol {
-          list-style-type: decimal;
-        }
-        .quill-content p {
-          margin-top: 1em;
-          margin-bottom: 1em;
-        }
-        .quill-content img {
-          max-width: 100%;
-          height: auto;
-          border-radius: 4px;
-        }
-        .quill-content blockquote {
-          border-left: 4px solid #ccc;
-          padding-left: 16px;
-          margin: 1em 0;
-          color: #666;
-        }
-        .quill-content pre {
-          background-color: #f0f0f0;
-          padding: 8px;
-          border-radius: 4px;
-          overflow-x: auto;
-        }
-        .quill-content code {
-          background-color: #f0f0f0;
-          padding: 2px 4px;
-          border-radius: 4px;
-          font-family: monospace;
-        }
-        
-        @media (max-width: 768px) {
-          .quill-content img {
-            width: 100%;
-            height: auto;
-          }
-        }
-      `}</style>
+      </FloatButton>
     </div>
-  )
-}
+  );
+};
 
-export default PostDetail
+export default PostDetail;

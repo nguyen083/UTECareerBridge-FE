@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import truncate from "html-truncate";
 import {
   Card,
   Typography,
@@ -13,15 +14,15 @@ import {
   Tooltip,
   Pagination,
   Skeleton,
-  Affix,
   Drawer,
   List,
   Tabs,
+  Flex,
+  FloatButton,
 } from "antd";
 import {
   HomeOutlined,
   MessageOutlined,
-  ShareAltOutlined,
   BookOutlined,
   EyeOutlined,
   ClockCircleOutlined,
@@ -30,12 +31,14 @@ import {
   ArrowUpOutlined,
   MenuOutlined,
   InfoCircleOutlined,
-  StarFilled,
+  PushpinOutlined,
 } from "@ant-design/icons";
 import { useParams, Link } from "react-router-dom";
 import ReactionPicker from "./../../../components/Generate/ReactionPicker";
+import CustomizeQuill from "../../../components/Generate/CustomizeQuill";
 import "react-quill/dist/quill.snow.css";
-import ReactQuill from "react-quill";
+import HtmlContent from "../../../components/Generate/HtmlContent";
+import { Newspaper } from "lucide-react";
 
 const { Title, Text, Paragraph } = Typography;
 const { TabPane } = Tabs;
@@ -58,28 +61,6 @@ const UserPostList = () => {
   const topRef = useRef(null);
   const pageSize = 5;
 
-  // Cấu hình Quill
-  const modules = {
-    toolbar: [
-      [{ header: [1, 2, 3, false] }],
-      ["bold", "italic", "underline"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["link", "image"],
-      ["clean"],
-    ],
-  };
-
-  const formats = [
-    "header",
-    "bold",
-    "italic",
-    "underline",
-    "list",
-    "bullet",
-    "link",
-    "image",
-  ];
-
   // Giả lập dữ liệu
   useEffect(() => {
     // Trong thực tế, bạn sẽ gọi API để lấy dữ liệu
@@ -101,7 +82,7 @@ const UserPostList = () => {
         avatar: "/placeholder.svg?height=40&width=40",
         title: "Tổng quan về React và các thư viện UI phổ biến",
         content:
-          "React là một thư viện JavaScript phổ biến để xây dựng giao diện người dùng. Bài viết này sẽ giới thiệu về React và các thư viện UI phổ biến như Ant Design, Material-UI, và Tailwind CSS.",
+          "<p>React là một thư viện JavaScript phổ biến để xây dựng giao diện người dùng. Bài viết này sẽ giới thiệu về React và các thư viện UI phổ biến như Ant Design, Material-UI, và Tailwind CSS.</p>",
         view_count: 1250,
         is_pinned: true,
         is_close: false,
@@ -121,15 +102,15 @@ const UserPostList = () => {
           role: "Quản trị viên",
           post_count: 1250,
           join_date: "2022-01-10",
-          content: `<h1>React là gì?</h1>
+          content: `<h4>React là gì?</h4>
 <p>React là một thư viện JavaScript để xây dựng giao diện người dùng. Nó được phát triển bởi Facebook và được sử dụng rộng rãi trong ngành công nghiệp phần mềm.</p>
-<h2>Ưu điểm của React</h2>
+<h4>Ưu điểm của React</h4>
 <ul>
   <li><strong>Component-Based</strong>: React cho phép bạn xây dựng UI từ các component độc lập, có thể tái sử dụng.</li>
   <li><strong>Virtual DOM</strong>: React sử dụng Virtual DOM để tối ưu hóa việc render, giúp ứng dụng chạy nhanh hơn.</li>
   <li><strong>One-way Data Binding</strong>: React sử dụng luồng dữ liệu một chiều, giúp code dễ hiểu và dễ debug hơn.</li>
 </ul>
-<h2>Các thư viện UI phổ biến cho React</h2>
+<h4>Các thư viện UI phổ biến cho React</h4>
 <ol>
   <li><strong>Ant Design</strong>: Một hệ thống thiết kế và thư viện UI cho React, được phát triển bởi Alibaba.</li>
   <li><strong>Material-UI</strong>: Thư viện UI dựa trên Material Design của Google.</li>
@@ -143,7 +124,6 @@ const UserPostList = () => {
             { user_id: 103, reaction_type: "like" },
             { user_id: 104, reaction_type: "heart" },
           ],
-          is_best_answer: true,
         },
         {
           post_id: 2,
@@ -151,7 +131,7 @@ const UserPostList = () => {
           user_id: 102,
           username: "lethihong",
           avatar: "/placeholder.svg?height=40&width=40",
-          role: "Thành viên",
+          role: "Nhà tuyển dụng",
           post_count: 87,
           join_date: "2022-03-15",
           content:
@@ -169,7 +149,7 @@ const UserPostList = () => {
           user_id: 103,
           username: "phamtuan",
           avatar: "/placeholder.svg?height=40&width=40",
-          role: "Thành viên tích cực",
+          role: "Sinh viên",
           post_count: 342,
           join_date: "2022-02-20",
           content:
@@ -189,7 +169,7 @@ const UserPostList = () => {
           user_id: 104,
           username: "tranminh",
           avatar: "/placeholder.svg?height=40&width=40",
-          role: "Thành viên",
+          role: "Sinh viên",
           post_count: 56,
           join_date: "2022-05-05",
           content:
@@ -207,7 +187,7 @@ const UserPostList = () => {
           user_id: 105,
           username: "hoangnam",
           avatar: "/placeholder.svg?height=40&width=40",
-          role: "Chuyên gia",
+          role: "Nhà tuyển dụng",
           post_count: 789,
           join_date: "2021-11-10",
           content:
@@ -358,11 +338,6 @@ const UserPostList = () => {
     );
   };
 
-  const handleShare = () => {
-    // Trong thực tế, bạn sẽ triển khai chức năng chia sẻ
-    message.success("Đã sao chép liên kết vào clipboard");
-  };
-
   return (
     <div className="min-h-screen bg-gray-50" ref={topRef}>
       {/* Header */}
@@ -396,79 +371,16 @@ const UserPostList = () => {
             <Skeleton loading={loading} active paragraph={{ rows: 3 }}>
               {topic && (
                 <Card className="mb-6 shadow-sm">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <Title level={2} className="mb-1">
-                        {topic.title}
-                      </Title>
-                      <div className="flex flex-wrap gap-1 mb-2">
-                        {topic.tags.map((tag) => (
-                          <Tag key={tag} color="blue">
-                            {tag}
-                          </Tag>
-                        ))}
-                      </div>
-                      <div className="text-sm text-gray-500">
-                        <Space wrap>
-                          <span>
-                            <Avatar src={topic.avatar} size="small" />{" "}
-                            <Text strong>{topic.username}</Text>
-                          </span>
-                          <span>
-                            <ClockCircleOutlined />{" "}
-                            {formatDate(topic.created_at)}
-                          </span>
-                          <span>
-                            <EyeOutlined /> {topic.view_count} lượt xem
-                          </span>
-                          <span>
-                            <CommentOutlined /> {posts.length} bài viết
-                          </span>
-                        </Space>
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <Tooltip
-                        title={isBookmarked ? "Bỏ đánh dấu" : "Đánh dấu"}
-                      >
-                        <Button
-                          type="text"
-                          icon={
-                            isBookmarked ? (
-                              <BookOutlined className="text-blue-500" />
-                            ) : (
-                              <BookOutlined />
-                            )
-                          }
-                          onClick={toggleBookmark}
-                        />
-                      </Tooltip>
-                      <Tooltip
-                        title={
-                          isSubscribed
-                            ? "Hủy đăng ký"
-                            : "Đăng ký nhận thông báo"
-                        }
-                      >
-                        <Button
-                          type="text"
-                          icon={
-                            isSubscribed ? (
-                              <BellOutlined className="text-blue-500" />
-                            ) : (
-                              <BellOutlined />
-                            )
-                          }
-                          onClick={toggleSubscribe}
-                        />
-                      </Tooltip>
-                      <Tooltip title="Chia sẻ">
-                        <Button
-                          type="text"
-                          icon={<ShareAltOutlined />}
-                          onClick={handleShare}
-                        />
-                      </Tooltip>
+                  <div>
+                    <Flex justify="space-between">
+                      <Flex align="center" gap={32}>
+                        <Title level={2} className="mb-1 !text-text-color">
+                          {topic.title}
+                        </Title>
+                        {topic?.is_pinned && (
+                          <PushpinOutlined className="mb-[15px] text-red-500 text-3xl" />
+                        )}
+                      </Flex>
                       <Tooltip title="Thông tin chủ đề">
                         <Button
                           type="text"
@@ -476,6 +388,37 @@ const UserPostList = () => {
                           onClick={() => setIsInfoDrawerVisible(true)}
                         />
                       </Tooltip>
+                    </Flex>
+                    <div className="flex justify-end w-full gap-1 mb-2">
+                      {topic.tags.map((tag) => (
+                        <Tag key={tag} color="blue">
+                          {tag}
+                        </Tag>
+                      ))}
+                    </div>
+                    <div className="text-sm text-gray-500">
+                      <Space wrap>
+                        <Flex align="center" gap={16}>
+                          <Avatar src={topic.avatar} size="default" />
+                          <Text className="leading-none !text-text-color">
+                            {topic.username}
+                          </Text>
+                        </Flex>
+                        <div className="flex items-center gap-1">
+                          <Newspaper className="w-4 h-4 text-text-color-hover" />
+                          <Text className="text-sm text-text-color" strong>
+                            {posts.length} bài viết
+                          </Text>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Text className="text-sm text-text-color-hover">
+                            Ngày tạo:
+                          </Text>
+                          <Text className="text-sm text-text-color" strong>
+                            {topic ? formatDate(topic.created_at) : "N/A"}
+                          </Text>
+                        </div>
+                      </Space>
                     </div>
                   </div>
                 </Card>
@@ -495,7 +438,7 @@ const UserPostList = () => {
                   id={`post-${post.post_id}`}
                   className="mb-4 transition-shadow duration-300 shadow-sm hover:shadow-md"
                 >
-                  <div className="flex flex-col md:flex-row">
+                  <div className="flex flex-row">
                     {/* User info */}
                     <div className="mb-4 md:w-48 md:flex-shrink-0 md:pr-4 md:border-r md:mb-0">
                       <div className="flex items-center md:flex-col md:items-center">
@@ -510,10 +453,13 @@ const UserPostList = () => {
                             </Tag>
                           </div>
                         </div>
-                        <div className="hidden mt-3 text-xs text-center text-gray-500 md:block">
-                          <div>Bài viết: {post.post_count}</div>
-                          <div>
-                            Tham gia:{" "}
+                        <div className="hidden mt-3 text-sm text-center text-gray-500 md:block">
+                          <div className="flex items-center gap-1">
+                            <span>Số bài viết:</span>
+                            <span>{post.post_count}</span>
+                          </div>
+                          <div className="flex items-center gap-1">
+                            <span>Tham gia:</span>
                             {new Date(post.join_date).toLocaleDateString(
                               "vi-VN"
                             )}
@@ -521,46 +467,44 @@ const UserPostList = () => {
                         </div>
                       </div>
                     </div>
-
                     {/* Post content */}
-                    <div className="flex-grow md:pl-4">
-                      <div className="flex items-center justify-between mb-2">
-                        <div className="text-sm text-gray-500">
-                          <ClockCircleOutlined className="mr-1" />
-                          {formatDate(post.created_at)}
-                          {post.updated_at !== post.created_at && (
-                            <Tooltip
-                              title={`Cập nhật lần cuối: ${formatDate(
-                                post.updated_at
-                              )}`}
-                            >
-                              <span className="ml-2">(đã chỉnh sửa)</span>
-                            </Tooltip>
-                          )}
-                        </div>
-                        <div className="flex items-center">
-                          {post.is_best_answer && (
-                            <Tag color="green" className="mr-2">
-                              <StarFilled /> Câu trả lời hay nhất
-                            </Tag>
-                          )}
+                    <div className="flex flex-col justify-between flex-1 md:pl-4">
+                      <div className="flex flex-col">
+                        <div className="flex justify-end">
                           <Text type="secondary" className="text-xs">
                             #{index + 1 + (currentPage - 1) * pageSize}
                           </Text>
                         </div>
+                        <Link
+                          to={`/forums/${forumId}/topics/${topicId}/posts/${post.post_id}`}
+                        >
+                          <HtmlContent
+                            htmlString={truncate(post.content, 300)}
+                          />
+                        </Link>
                       </div>
-                      <Link
-                        to={`/forums/${forumId}/topics/${topicId}/posts/${post.post_id}`}
-                      >
-                        <div
-                          className="mb-4 post-content quill-content"
-                          dangerouslySetInnerHTML={{ __html: post.content }}
-                        ></div>
-                      </Link>
-                      <Divider className="my-2" />
 
-                      <div className="flex items-center justify-between">
-                        <ReactionPicker />
+                      <div>
+                        <Divider className="my-2" />
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            <ReactionPicker />
+                            <div className="flex items-center gap-1 p-1 bg-gray-100 rounded-full">
+                              <div className="flex items-center ">
+                                <span className="z-30 text-lg">👍</span>
+                                <span className="z-20 -ml-3 text-lg">😆</span>
+                                <span className="z-10 -ml-3 text-lg">🩷</span>
+                              </div>
+                              <div>
+                                <span>12+</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div>
+                            <ClockCircleOutlined className="mr-1" />
+                            {formatDate(post.created_at)}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -705,22 +649,33 @@ const UserPostList = () => {
         placement="right"
         onClose={() => setIsInfoDrawerVisible(false)}
         open={isInfoDrawerVisible}
-        width={400}
+        width={500}
       >
         <div className="space-y-4">
           <div>
-            <Title level={4}>Chủ đề</Title>
+            <Flex align="center" gap={16}>
+              <Title level={4} className="!text-text-color">
+                Chủ đề
+              </Title>
+              {topic?.is_pinned && (
+                <PushpinOutlined className="mb-[10px] text-red-500 text-xl" />
+              )}
+            </Flex>
             <Paragraph>{topic?.title}</Paragraph>
           </div>
           <div>
-            <Title level={4}>Mô tả</Title>
-            <Paragraph>{topic?.content}</Paragraph>
+            <Title level={4} className="!text-text-color">
+              Mô tả
+            </Title>
+            <HtmlContent htmlString={topic?.content} />
           </div>
           <div>
-            <Title level={4}>Thẻ</Title>
-            <div>
+            <Title level={4} className="!text-text-color">
+              Thẻ
+            </Title>
+            <div className="flex flex-wrap gap-1">
               {topic?.tags.map((tag) => (
-                <Tag key={tag} color="blue" className="mb-1">
+                <Tag key={tag} color="blue" className="w-fit">
                   {tag}
                 </Tag>
               ))}
@@ -728,12 +683,10 @@ const UserPostList = () => {
           </div>
           <Divider />
           <div>
-            <Title level={4}>Thống kê</Title>
+            <Title level={4} className="!text-text-color">
+              Thống kê
+            </Title>
             <div className="space-y-2">
-              <div className="flex justify-between">
-                <Text>Lượt xem:</Text>
-                <Text strong>{topic?.view_count || 0}</Text>
-              </div>
               <div className="flex justify-between">
                 <Text>Bài viết:</Text>
                 <Text strong>{posts.length}</Text>
@@ -745,14 +698,6 @@ const UserPostList = () => {
               <div className="flex justify-between">
                 <Text>Cập nhật:</Text>
                 <Text strong>{topic ? formatDate(topic.updated_at) : ""}</Text>
-              </div>
-              <div className="flex justify-between">
-                <Text>Trạng thái:</Text>
-                <Text strong>{topic?.is_close ? "Đã khóa" : "Đang mở"}</Text>
-              </div>
-              <div className="flex justify-between">
-                <Text>Ghim:</Text>
-                <Text strong>{topic?.is_pinned ? "Có" : "Không"}</Text>
               </div>
             </div>
           </div>
@@ -770,19 +715,12 @@ const UserPostList = () => {
         cancelText="Hủy"
       >
         <div className="mb-4">
-          <ReactQuill
-            theme="snow"
-            value={replyContent}
-            onChange={setReplyContent}
-            modules={modules}
-            formats={formats}
-            style={{ height: "300px", marginBottom: "40px" }}
-          />
+          <CustomizeQuill link="forums" />
         </div>
       </Modal>
 
       {/* Back to top button */}
-      <Affix style={{ position: "fixed", bottom: 50, right: 50 }}>
+      <FloatButton>
         <Button
           type="primary"
           shape="circle"
@@ -791,75 +729,7 @@ const UserPostList = () => {
           onClick={scrollToTop}
           className="shadow-lg"
         />
-      </Affix>
-
-      <style>{`
-        .quill-content h1 {
-          font-size: 2em;
-          margin-top: 0.67em;
-          margin-bottom: 0.67em;
-        }
-        .quill-content h2 {
-          font-size: 1.5em;
-          margin-top: 0.83em;
-          margin-bottom: 0.83em;
-        }
-        .quill-content h3 {
-          font-size: 1.17em;
-          margin-top: 1em;
-          margin-bottom: 1em;
-        }
-        .quill-content h4 {
-          font-size: 1em;
-          margin-top: 1.33em;
-          margin-bottom: 1.33em;
-        }
-        .quill-content ul, .quill-content ol {
-          padding-left: 2em;
-          margin-top: 1em;
-          margin-bottom: 1em;
-        }
-        .quill-content ul {
-          list-style-type: disc;
-        }
-        .quill-content ol {
-          list-style-type: decimal;
-        }
-        .quill-content p {
-          margin-top: 1em;
-          margin-bottom: 1em;
-        }
-        .quill-content img {
-          max-width: 100%;
-          height: auto;
-          border-radius: 4px;
-        }
-        .quill-content blockquote {
-          border-left: 4px solid #ccc;
-          padding-left: 16px;
-          margin: 1em 0;
-          color: #666;
-        }
-        .quill-content pre {
-          background-color: #f0f0f0;
-          padding: 8px;
-          border-radius: 4px;
-          overflow-x: auto;
-        }
-        .quill-content code {
-          background-color: #f0f0f0;
-          padding: 2px 4px;
-          border-radius: 4px;
-          font-family: monospace;
-        }
-        
-        @media (max-width: 768px) {
-          .quill-content img {
-            width: 100%;
-            height: auto;
-          }
-        }
-      `}</style>
+      </FloatButton>
     </div>
   );
 };

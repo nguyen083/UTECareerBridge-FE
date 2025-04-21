@@ -32,6 +32,7 @@
     "emoji-picker-react": "^4.12.2",
     "firebase": "^11.0.1",
     "html-react-parser": "^5.1.18",
+    "html-truncate": "^1.2.2",
     "i18next": "^24.2.2",
     "lucide-react": "^0.453.0",
     "pdfjs-dist": "3.4.120",

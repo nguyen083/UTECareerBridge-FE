@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import clsx from "clsx";
 import { Popover, Button } from "antd";
 import { LikeOutlined } from "@ant-design/icons";
@@ -12,14 +12,17 @@ const reactions = [
   { emoji: "😢", label: "Sad" },
 ];
 
-const ReactionPicker = () => {
-  const [selected, setSelected] = useState(null);
+const ReactionPicker = ({
+  classNameIcon = "text-base",
+  selected = null,
+  setSelected = () => {},
+}) => {
   useEffect(() => {
     selected !== null && console.log(selected);
   }, [selected]);
   return (
     <Popover
-    placement="topLeft"
+      placement="topLeft"
       content={
         <div className="flex items-center justify-between w-full">
           {reactions.map((r) => (
@@ -41,12 +44,12 @@ const ReactionPicker = () => {
       <Button
         type="text"
         onClick={() => setSelected(selected ? null : "👍")}
-        className="p-2 transition-all bg-gray-100 border rounded-full hover:bg-gray-200"
+        className={`p-2 transition-all bg-gray-100 border rounded-full hover:bg-gray-200 ${classNameIcon}`}
       >
-        {selected ? selected : <LikeOutlined className="text-base" />}
+        {selected ? selected : <LikeOutlined className={classNameIcon} />}
       </Button>
     </Popover>
   );
-}
+};
 
 export default ReactionPicker;
