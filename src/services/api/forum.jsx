@@ -2,16 +2,25 @@ import axios from "../../utils/axiosCustomize.jsx";
 
 const forum = {
   getAllForumActive: async (params) => {
-    const response = await axios.get("forums/active", { params });
-    return response;
+    return axios.get("forums/active", { params });
   },
   getAllForum: async (params) => {
-    const response = await axios.get("forums", { params });
-    return response;
+    return axios.get("forums", { params });
   },
   searchForum: async (params) => {
-    const response = await axios.get("forums/search", { params });
-    return response;
+    return axios.get("forums/search", { params });
+  },
+  getDetailById: async (id) => {
+    return axios.get(`forums/${id}`);
+  },
+  createForum: async (params) => {
+    return axios.post("forums", params);
+  },
+  updateForum: async (id, params) => {
+    return axios.put(`forums/${id}`, params);
+  },
+  deleteForum: async (id) => {
+    return axios.delete(`forums/${id}`);
   },
 };
 export default forum;

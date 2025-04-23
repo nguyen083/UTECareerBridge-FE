@@ -1,5 +1,5 @@
-import { Client } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
+import { Client } from "@stomp/stompjs";
+import SockJS from "sockjs-client";
 
 let stompClient = null;
 let isConnected = false;
@@ -7,134 +7,139 @@ const subscriptions = new Map();
 
 // ✅ Kết nối WebSocket (chỉ tạo một lần)
 export const connectStomp = (onConnected, onError, requireToken = true) => {
-    if (stompClient && isConnected) {
-        // console.log('WebSocket đã kết nối, không tạo lại.');
-        if (onConnected) onConnected(stompClient);
-        return stompClient;
-    }
-
-    // Lấy token từ localStorage
-    const accessToken = localStorage.getItem('accessToken');
-    
-    // Kiểm tra token nếu mode yêu cầu token được bật
-    if (requireToken && !accessToken) {
-        console.error('Không tìm thấy access token khi mode yêu cầu token được bật.');
-        if (onError) onError(new Error('Không tìm thấy access token'));
-        return null;
-    }
-
-    // Tạo instance mới của SockJS với endpoint /ws
-    const socket = new SockJS('/ws');
-
-    // Chuẩn bị headers dựa vào việc có yêu cầu token hay không
-    const connectHeaders = {};
-    if (requireToken && accessToken) {
-        connectHeaders['Authorization'] = 'Bearer ' + accessToken;
-    }
-
-    stompClient = new Client({
-        webSocketFactory: () => socket,
-        connectHeaders: connectHeaders,
-        debug: (str) => {
-            if (str.includes('Connect headers')) {
-                console.log('STOMP connect headers sent:', str);
-            }
-        },
-        reconnectDelay: 5000,
-        heartbeatIncoming: 4000,
-        heartbeatOutgoing: 4000,
-
-        onConnect: () => {
-            console.log('WebSocket đã kết nối thành công.');
-            isConnected = true;
-            if (onConnected) onConnected(stompClient);
-
-            // Tự động đăng ký lại tất cả các topic đã sub trước đó
-            subscriptions.forEach((callback, topic) => {
-                stompClient.subscribe(topic, callback);
-            });
-        },
-
-        onStompError: (frame) => {
-            console.error('STOMP error:', frame);
-            if (onError) onError(frame);
-        },
-
-        onWebSocketClose: () => {
-            console.log('WebSocket đã đóng kết nối.');
-            isConnected = false;
-        }
-    });
-
-    // Kiểm tra và log trực tiếp headers trước khi kết nối
-    if (stompClient._connectHeaders) {
-        console.log('Client connect headers trước khi activate:', stompClient._connectHeaders);
-    }
-
-    // Kích hoạt kết nối
-    stompClient.activate();
+  if (stompClient && isConnected) {
+    console.log("WebSocket đã kết nối, không tạo lại.");
+    if (onConnected) onConnected(stompClient);
     return stompClient;
+  }
+
+  // Lấy token từ localStorage
+  const accessToken = localStorage.getItem("accessToken");
+
+  // Kiểm tra token nếu mode yêu cầu token được bật
+  if (requireToken && !accessToken) {
+    console.error(
+      "Không tìm thấy access token khi mode yêu cầu token được bật."
+    );
+    if (onError) onError(new Error("Không tìm thấy access token"));
+    return null;
+  }
+
+  // Tạo instance mới của SockJS với endpoint /ws
+  const socket = new SockJS("/ws");
+
+  // Chuẩn bị headers dựa vào việc có yêu cầu token hay không
+  const connectHeaders = {};
+  if (requireToken && accessToken) {
+    connectHeaders["Authorization"] = "Bearer " + accessToken;
+  }
+
+  stompClient = new Client({
+    webSocketFactory: () => socket,
+    connectHeaders: connectHeaders,
+    debug: (str) => {
+      if (str.includes("Connect headers")) {
+        console.log("STOMP connect headers sent:", str);
+      }
+    },
+    reconnectDelay: 5000,
+    heartbeatIncoming: 4000,
+    heartbeatOutgoing: 4000,
+
+    onConnect: () => {
+      console.log("WebSocket đã kết nối thành công.");
+      isConnected = true;
+      if (onConnected) onConnected(stompClient);
+
+      // Tự động đăng ký lại tất cả các topic đã sub trước đó
+      subscriptions.forEach((callback, topic) => {
+        stompClient.subscribe(topic, callback);
+      });
+    },
+
+    onStompError: (frame) => {
+      console.error("STOMP error:", frame);
+      if (onError) onError(frame);
+    },
+
+    onWebSocketClose: () => {
+      console.log("WebSocket đã đóng kết nối.");
+      isConnected = false;
+    },
+  });
+
+  // Kiểm tra và log trực tiếp headers trước khi kết nối
+  if (stompClient._connectHeaders) {
+    console.log(
+      "Client connect headers trước khi activate:",
+      stompClient._connectHeaders
+    );
+  }
+
+  // Kích hoạt kết nối
+  stompClient.activate();
+  return stompClient;
 };
 
 // ✅ Ngắt kết nối
 export const disconnectStomp = () => {
-    if (stompClient) {
-        stompClient.deactivate();
-        isConnected = false;
-        subscriptions.clear();
-    }
+  if (stompClient) {
+    stompClient.deactivate();
+    isConnected = false;
+    subscriptions.clear();
+  }
 };
 
 // ✅ Đăng ký nhận tin nhắn từ topic
 export const subscribeToTopic = (topic, callback) => {
-    if (!stompClient || !isConnected) {
-        console.warn('WebSocket chưa kết nối, vui lòng gọi connectStomp trước.');
-        return null;
-    }
+  if (!stompClient || !isConnected) {
+    console.warn("WebSocket chưa kết nối, vui lòng gọi connectStomp trước.");
+    return null;
+  }
 
-    try {
-        if (!subscriptions.has(topic)) {
-            console.log(`Đăng ký nhận tin từ topic: ${topic}`);
-            const subscription = stompClient.subscribe(topic, callback);
-            // Lưu cả callback và subscription object
-            subscriptions.set(topic, {
-                callback,
-                subscription
-            });
-            return subscription;
-        } else {
-            console.log(`Topic đã được đăng ký trước đó: ${topic}`);
-            return subscriptions.get(topic).subscription;
-        }
-    } catch (error) {
-        console.error(`Lỗi khi đăng ký topic ${topic}:`, error);
-        return null;
+  try {
+    if (!subscriptions.has(topic)) {
+      console.log(`Đăng ký nhận tin từ topic: ${topic}`);
+      const subscription = stompClient.subscribe(topic, callback);
+      // Lưu cả callback và subscription object
+      subscriptions.set(topic, {
+        callback,
+        subscription,
+      });
+      return subscription;
+    } else {
+      console.log(`Topic đã được đăng ký trước đó: ${topic}`);
+      return subscriptions.get(topic).subscription;
     }
+  } catch (error) {
+    console.error(`Lỗi khi đăng ký topic ${topic}:`, error);
+    return null;
+  }
 };
 
 // ✅ Hủy đăng ký topic
 export const unsubscribeFromTopic = (topic) => {
-    if (!stompClient || !isConnected) {
-        console.warn('WebSocket chưa kết nối.');
-        return;
-    }
+  if (!stompClient || !isConnected) {
+    console.warn("WebSocket chưa kết nối.");
+    return;
+  }
 
-    try {
-        if (subscriptions.has(topic)) {
-            const { subscription } = subscriptions.get(topic);
-            if (subscription) {
-                // Hủy đăng ký STOMP subscription
-                subscription.unsubscribe();
-                // Xóa khỏi Map theo dõi
-                subscriptions.delete(topic);
-                console.log(`Đã hủy đăng ký topic: ${topic}`);
-            }
-        } else {
-            console.warn(`Topic không tồn tại: ${topic}`);
-        }
-    } catch (error) {
-        console.error(`Lỗi khi hủy đăng ký topic ${topic}:`, error);
+  try {
+    if (subscriptions.has(topic)) {
+      const { subscription } = subscriptions.get(topic);
+      if (subscription) {
+        // Hủy đăng ký STOMP subscription
+        subscription.unsubscribe();
+        // Xóa khỏi Map theo dõi
+        subscriptions.delete(topic);
+        console.log(`Đã hủy đăng ký topic: ${topic}`);
+      }
+    } else {
+      console.warn(`Topic không tồn tại: ${topic}`);
     }
+  } catch (error) {
+    console.error(`Lỗi khi hủy đăng ký topic ${topic}:`, error);
+  }
 };
 
 // ✅ Lấy STOMP client hiện tại
@@ -142,19 +147,19 @@ export const getStompClient = () => stompClient;
 
 // ✅ Tái kết nối WebSocket với token mới hoặc không có token
 export const reconnectWithNewToken = (requireToken = true) => {
-    // Ngắt kết nối cũ
-    if (stompClient) {
-        try {
-            stompClient.deactivate();
-        } catch (error) {
-            console.error('Lỗi khi đóng kết nối WebSocket cũ:', error);
-        }
+  // Ngắt kết nối cũ
+  if (stompClient) {
+    try {
+      stompClient.deactivate();
+    } catch (error) {
+      console.error("Lỗi khi đóng kết nối WebSocket cũ:", error);
     }
-    
-    // Reset trạng thái
-    stompClient = null;
-    isConnected = false;
-    
-    // Kết nối lại với cấu hình token tương ứng
-    return connectStomp(null, null, requireToken);
+  }
+
+  // Reset trạng thái
+  stompClient = null;
+  isConnected = false;
+
+  // Kết nối lại với cấu hình token tương ứng
+  return connectStomp(null, null, requireToken);
 };

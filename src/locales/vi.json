@@ -1143,5 +1143,10 @@
       "delete": "Xóa diễn đàn",
       "createDate": "Ngày tạo"
     }
+  },
+  "topic": {
+    "ADMIN": "Quản trị viên",
+    "STUDENT": "Sinh viên",
+    "EMPLOYER": "Nhà tuyển dụng"
   }
 }

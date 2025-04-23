@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   Card,
   Typography,
@@ -9,7 +9,6 @@ import {
   Avatar,
   Form,
   Select,
-  message,
   Breadcrumb,
   Empty,
   Skeleton,
@@ -18,6 +17,7 @@ import {
   Radio,
   Drawer,
   Flex,
+  Pagination,
 } from "antd";
 import {
   PlusOutlined,
@@ -34,268 +34,50 @@ import {
   CalendarOutlined,
   FilterOutlined,
 } from "@ant-design/icons";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { formatDate } from "../../../utils/day";
 import CustomizeQuill from "../../../components/Generate/CustomizeQuill";
 import { Newspaper } from "lucide-react";
-
+import { useForumDetail } from "../../../composables/forum";
+import { useTranslation } from "react-i18next";
+import {
+  useAllTopicByForumId,
+  useCreateTopicMutation,
+} from "../../../composables/topic";
+import { useAllTag } from "../../../composables/tag";
+import { useSelector } from "react-redux";
 const { Title, Paragraph, Text } = Typography;
 
 const TopicList = () => {
   const { forumId } = useParams();
-  const [topics, setTopics] = useState([]);
-  const [forum, setForum] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [searchText, setSearchText] = useState("");
+  const { data: forum } = useForumDetail(forumId);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = searchParams.get("page") || 1;
+  const userId = useSelector((state) => state.user.userId);
+  const [sortBy, setSortBy] = useState(
+    searchParams.get("sortBy") || "createdAtDesc"
+  );
+  const { mutate: createTopic, isPending: isPendingCreateTopic } =
+    useCreateTopicMutation();
+  const [selectedTags, setSelectedTags] = useState(() => {
+    const tagsParam = searchParams.get("tags");
+    return tagsParam ? tagsParam.split(",").map((tag) => Number(tag)) : [];
+  });
+  const { data: tags } = useAllTag();
+  //dùng api search để tìm kiếm chủ đề
+  const { data: topics, isPending: isPendingGetTopic } = useAllTopicByForumId(
+    forumId,
+    {
+      page: page - 1,
+      size: 10,
+    }
+  );
+
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
-  const [viewMode, setViewMode] = useState("card"); // card or list
-  const [sortBy, setSortBy] = useState("latest");
+  const [viewMode, setViewMode] = useState("card");
   const [isFilterDrawerVisible, setIsFilterDrawerVisible] = useState(false);
-  const [popularTags, setPopularTags] = useState([]);
-
-  // Giả lập dữ liệu
-  useEffect(() => {
-    // Trong thực tế, bạn sẽ gọi API để lấy dữ liệu
-    setTimeout(() => {
-      setForum({
-        forum_id: Number.parseInt(forumId),
-        name: "Công nghệ",
-        description:
-          "Thảo luận về công nghệ, phần mềm, phần cứng và các xu hướng mới",
-        is_active: true,
-        created_at: "2023-01-15T08:30:00Z",
-        topic_count: 125,
-        post_count: 1250,
-        subscriber_count: 450,
-        is_subscribed: true,
-      });
-
-      setTopics([
-        {
-          topic_id: 1,
-          forum_id: Number.parseInt(forumId),
-          user_id: 101,
-          username: "nguyenvan",
-          avatar: "/placeholder.svg?height=40&width=40",
-          title: "Tổng quan về React và các thư viện UI phổ biến",
-          content:
-            "React là một thư viện JavaScript phổ biến để xây dựng giao diện người dùng...",
-          view_count: 1250,
-          is_pinned: true,
-          is_close: false,
-          created_at: "2023-05-10T08:30:00Z",
-          updated_at: "2023-05-15T10:45:00Z",
-          status: "active",
-          post_count: 24,
-          last_post_at: "2023-05-20T14:30:00Z",
-          last_post_by: "tranminh",
-          last_post_avatar: "/placeholder.svg?height=40&width=40",
-          tags: ["React", "Frontend", "JavaScript"],
-        },
-        {
-          topic_id: 2,
-          forum_id: Number.parseInt(forumId),
-          user_id: 102,
-          username: "lethihong",
-          avatar: "/placeholder.svg?height=40&width=40",
-          title: "So sánh Next.js và Gatsby cho các dự án React",
-          content:
-            "Next.js và Gatsby là hai framework phổ biến dựa trên React...",
-          view_count: 876,
-          is_pinned: false,
-          is_close: false,
-          created_at: "2023-05-12T09:15:00Z",
-          updated_at: "2023-05-14T11:20:00Z",
-          status: "active",
-          post_count: 18,
-          last_post_at: "2023-05-19T16:45:00Z",
-          last_post_by: "phamtuan",
-          last_post_avatar: "/placeholder.svg?height=40&width=40",
-          tags: ["Next.js", "Gatsby", "React", "SSR"],
-        },
-        {
-          topic_id: 3,
-          forum_id: Number.parseInt(forumId),
-          user_id: 103,
-          username: "phamtuan",
-          avatar: "/placeholder.svg?height=40&width=40",
-          title: "Tailwind CSS: Ưu và nhược điểm",
-          content: "Tailwind CSS là một framework CSS tiện ích...",
-          view_count: 654,
-          is_pinned: false,
-          is_close: true,
-          created_at: "2023-05-15T10:45:00Z",
-          updated_at: "2023-05-16T14:30:00Z",
-          status: "active",
-          post_count: 12,
-          last_post_at: "2023-05-18T09:30:00Z",
-          last_post_by: "nguyenvan",
-          last_post_avatar: "/placeholder.svg?height=40&width=40",
-          tags: ["CSS", "Tailwind", "Frontend"],
-        },
-        {
-          topic_id: 4,
-          forum_id: Number.parseInt(forumId),
-          user_id: 104,
-          username: "tranminh",
-          avatar: "/placeholder.svg?height=40&width=40",
-          title: "Ant Design vs Material-UI: Nên chọn thư viện UI nào?",
-          content: "So sánh hai thư viện UI phổ biến cho React...",
-          view_count: 789,
-          is_pinned: false,
-          is_close: false,
-          created_at: "2023-05-18T14:20:00Z",
-          updated_at: "2023-05-19T08:15:00Z",
-          status: "active",
-          post_count: 9,
-          last_post_at: "2023-05-21T11:45:00Z",
-          last_post_by: "lethihong",
-          last_post_avatar: "/placeholder.svg?height=40&width=40",
-          tags: ["Ant Design", "Material-UI", "UI Library"],
-        },
-        {
-          topic_id: 5,
-          forum_id: Number.parseInt(forumId),
-          user_id: 105,
-          username: "hoangnam",
-          avatar: "/placeholder.svg?height=40&width=40",
-          title: "Tối ưu hiệu suất cho ứng dụng React",
-          content:
-            "Các kỹ thuật và công cụ để tối ưu hiệu suất cho ứng dụng React...",
-          view_count: 567,
-          is_pinned: true,
-          is_close: false,
-          created_at: "2023-05-20T11:30:00Z",
-          updated_at: "2023-05-21T09:45:00Z",
-          status: "active",
-          post_count: 7,
-          last_post_at: "2023-05-22T15:30:00Z",
-          last_post_by: "hoangnam",
-          last_post_avatar: "/placeholder.svg?height=40&width=40",
-          tags: ["Performance", "React", "Optimization"],
-        },
-        {
-          topic_id: 6,
-          forum_id: Number.parseInt(forumId),
-          user_id: 106,
-          username: "thuhuong",
-          avatar: "/placeholder.svg?height=40&width=40",
-          title: "Hướng dẫn sử dụng React Hooks toàn tập",
-          content:
-            "Tìm hiểu về các hooks phổ biến trong React và cách sử dụng chúng...",
-          view_count: 1120,
-          is_pinned: false,
-          is_close: false,
-          created_at: "2023-05-22T08:45:00Z",
-          updated_at: "2023-05-22T08:45:00Z",
-          status: "active",
-          post_count: 15,
-          last_post_at: "2023-05-23T10:15:00Z",
-          last_post_by: "nguyenvan",
-          last_post_avatar: "/placeholder.svg?height=40&width=40",
-          tags: ["React", "Hooks", "Frontend", "JavaScript"],
-        },
-        {
-          topic_id: 7,
-          forum_id: Number.parseInt(forumId),
-          user_id: 107,
-          username: "ducmanh",
-          avatar: "/placeholder.svg?height=40&width=40",
-          title: "Xây dựng ứng dụng React Native với Expo",
-          content:
-            "Hướng dẫn từng bước để xây dựng ứng dụng di động với React Native và Expo...",
-          view_count: 678,
-          is_pinned: false,
-          is_close: false,
-          created_at: "2023-05-23T09:30:00Z",
-          updated_at: "2023-05-23T09:30:00Z",
-          status: "active",
-          post_count: 8,
-          last_post_at: "2023-05-24T14:20:00Z",
-          last_post_by: "thuhuong",
-          last_post_avatar: "/placeholder.svg?height=40&width=40",
-          tags: ["React Native", "Expo", "Mobile", "JavaScript"],
-        },
-        {
-          topic_id: 8,
-          forum_id: Number.parseInt(forumId),
-          user_id: 108,
-          username: "thanhbinh",
-          avatar: "/placeholder.svg?height=40&width=40",
-          title: "GraphQL vs REST API: So sánh và ứng dụng",
-          content:
-            "Phân tích ưu nhược điểm của GraphQL và REST API trong các ứng dụng web hiện đại...",
-          view_count: 542,
-          is_pinned: false,
-          is_close: false,
-          created_at: "2023-05-24T10:15:00Z",
-          updated_at: "2023-05-24T10:15:00Z",
-          status: "active",
-          post_count: 11,
-          last_post_at: "2023-05-25T11:30:00Z",
-          last_post_by: "ducmanh",
-          last_post_avatar: "/placeholder.svg?height=40&width=40",
-          tags: ["GraphQL", "REST API", "Backend", "API"],
-        },
-      ]);
-
-      setPopularTags([
-        { name: "React", count: 42 },
-        { name: "JavaScript", count: 38 },
-        { name: "Frontend", count: 35 },
-        { name: "CSS", count: 28 },
-        { name: "Next.js", count: 24 },
-        { name: "Tailwind", count: 22 },
-        { name: "TypeScript", count: 20 },
-        { name: "Node.js", count: 18 },
-        { name: "API", count: 15 },
-        { name: "Performance", count: 12 },
-      ]);
-
-      setLoading(false);
-    }, 1000);
-  }, [forumId]);
-
-  const handleSearch = (e) => {
-    setSearchText(e.target.value);
-  };
-
-  // Lọc chủ đề dựa trên tìm kiếm, tab, bộ lọc và sắp xếp
-  const getFilteredTopics = () => {
-    let filtered = [...topics];
-
-    // Lọc theo tìm kiếm
-    if (searchText) {
-      const searchLower = searchText.toLowerCase();
-      filtered = filtered.filter(
-        (topic) =>
-          topic.title.toLowerCase().includes(searchLower) ||
-          topic.content.toLowerCase().includes(searchLower) ||
-          topic.username.toLowerCase().includes(searchLower) ||
-          topic.tags.some((tag) => tag.toLowerCase().includes(searchLower))
-      );
-    }
-
-    // Sắp xếp
-    if (sortBy === "latest") {
-      filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-    } else if (sortBy === "oldest") {
-      filtered.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
-    } else if (sortBy === "most_viewed") {
-      filtered.sort((a, b) => b.view_count - a.view_count);
-    } else if (sortBy === "most_replied") {
-      filtered.sort((a, b) => b.post_count - a.post_count);
-    } else if (sortBy === "recently_updated") {
-      filtered.sort(
-        (a, b) => new Date(b.last_post_at) - new Date(a.last_post_at)
-      );
-    }
-
-    return filtered;
-  };
-
-  const filteredTopics = getFilteredTopics();
+  const { t } = useTranslation();
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -306,266 +88,104 @@ const TopicList = () => {
     setIsModalVisible(false);
   };
 
-  const handleSubmit = (values) => {
-    // Trong thực tế, bạn sẽ gọi API để tạo chủ đề mới
-    const newTopic = {
-      topic_id: topics.length + 1,
-      forum_id: Number.parseInt(forumId),
-      user_id: 101, // Giả sử user_id của người dùng hiện tại
-      username: "nguyenvan", // Giả sử username của người dùng hiện tại
-      avatar: "/placeholder.svg?height=40&width=40",
-      ...values,
-      view_count: 0,
-      is_pinned: false,
-      is_close: false,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      status: "active",
-      post_count: 1,
-      last_post_at: new Date().toISOString(),
-      last_post_by: "nguyenvan",
-      last_post_avatar: "/placeholder.svg?height=40&width=40",
-    };
-    setTopics([newTopic, ...topics]);
-    setIsModalVisible(false);
-    message.success("Tạo chủ đề mới thành công!");
-  };
-
-  const getTimeDifference = (dateString) => {
-    const now = new Date();
-    const date = new Date(dateString);
-    const diffInSeconds = Math.floor((now - date) / 1000);
-
-    if (diffInSeconds < 60) {
-      return `${diffInSeconds} giây trước`;
-    } else if (diffInSeconds < 3600) {
-      return `${Math.floor(diffInSeconds / 60)} phút trước`;
-    } else if (diffInSeconds < 86400) {
-      return `${Math.floor(diffInSeconds / 3600)} giờ trước`;
-    } else if (diffInSeconds < 604800) {
-      return `${Math.floor(diffInSeconds / 86400)} ngày trước`;
-    } else {
-      return formatDate(dateString);
-    }
-  };
-
-  const renderTopicCard = (topic) => (
-    <Card
-      key={topic.topic_id}
-      className="mb-4 transition-shadow duration-300 hover:shadow-md"
-      bodyStyle={{ padding: "16px" }}
-    >
-      <div className="flex items-start">
-        <div className="flex flex-col items-center gap-2 mr-4 w-28 ">
-          <Avatar icon={<UserOutlined />} src={topic.avatar} size={60} />
-          {Math.random() > 0.5 ? (
-            <Tag className="text-sm !mr-0" color="blue">
-              {"nhà tuyển dụng"}
-            </Tag>
-          ) : (
-            <Tag className="text-sm !mr-0" color="blue">
-              {"Quản trị viên"}
-            </Tag>
-          )}
-        </div>
-        <div className="flex-grow">
-          <div className="flex items-center gap-2 mb-1">
-            {topic.is_pinned && (
-              <Tooltip title="Chủ đề ghim">
-                <PushpinOutlined className="text-red-500" />
-              </Tooltip>
-            )}
-            {topic.is_close && (
-              <Tooltip title="Chủ đề đã khóa">
-                <LockOutlined className="text-gray-500" />
-              </Tooltip>
-            )}
-            <Link
-              to={`/forums/${forumId}/topics/${topic.topic_id}/posts`}
-              className="text-lg font-medium hover:text-text-color-hover text-text-color"
-            >
-              {topic.title}
-            </Link>
-          </div>
-          <div className="flex flex-wrap justify-end gap-1 mb-2">
-            {topic.tags.map((tag) => (
-              <Tag
-                key={tag}
-                color="blue"
-                className="cursor-pointer hover:opacity-80"
-              >
-                {tag}
-              </Tag>
-            ))}
-          </div>
-          <Paragraph
-            ellipsis={{ rows: 2 }}
-            className="mb-2 text-sm text-text-color-hover"
-            title={topic.content}
-          >
-            {topic.content}
-          </Paragraph>
-          <div className="flex flex-wrap items-center justify-between text-xs text-gray-500">
-            <div className="flex items-center gap-4">
-              <span>
-                <UserOutlined className="mr-1" /> {topic.username}
-              </span>
-              <span>
-                <ClockCircleOutlined className="mr-1" />{" "}
-                {getTimeDifference(topic.created_at)}
-              </span>
-            </div>
-            <div className="flex items-center gap-4">
-              <Tooltip title="Số bài viết">
-                <span className="flex items-center gap-2">
-                  <Newspaper className="w-4 h-4" /> {topic.post_count}
-                </span>
-              </Tooltip>
-            </div>
-          </div>
-        </div>
-      </div>
-    </Card>
-  );
-
-  const renderTopicListItem = (topic) => (
-    <div
-      key={topic.topic_id}
-      className="px-2 py-3 transition-colors duration-300 border-b last:border-b-0 hover:bg-gray-50"
-    >
-      <div className="flex items-start">
-        <div className="hidden mr-4 sm:block">
-          <Avatar icon={<UserOutlined />} src={topic?.user?.avatar} size={40} />
-        </div>
-        <div className="flex-grow">
-          <div className="flex items-center gap-2 mb-1">
-            {topic.is_pinned && (
-              <Tooltip title="Chủ đề ghim">
-                <PushpinOutlined className="text-red-500" />
-              </Tooltip>
-            )}
-            {topic.is_close && (
-              <Tooltip title="Chủ đề đã khóa">
-                <LockOutlined className="text-gray-500" />
-              </Tooltip>
-            )}
-
-            <Link
-              to={`/forums/${forumId}/topics/${topic.topic_id}/posts`}
-              className="text-base font-medium text-text-color hover:text-text-color-hover"
-            >
-              {topic.title}
-            </Link>
-          </div>
-          <div className="flex flex-wrap justify-end gap-1 mb-2">
-            {topic.tags.slice(0, 5).map((tag) => (
-              <Tag
-                key={tag}
-                color="blue"
-                className="cursor-pointer hover:opacity-80"
-              >
-                {tag}
-              </Tag>
-            ))}
-            {topic.tags.length > 5 && (
-              <Tag color="blue" className="cursor-pointer hover:opacity-80">
-                +{topic.tags.length - 5}
-              </Tag>
-            )}
-          </div>
-          <div className="flex flex-wrap items-center justify-between text-xs text-gray-500">
-            <div className="flex items-center gap-2 sm:gap-4">
-              <span>
-                <UserOutlined className="mr-1" /> {topic.username}
-              </span>
-              <span>
-                <ClockCircleOutlined className="mr-1" />{" "}
-                {getTimeDifference(topic.created_at)}
-              </span>
-            </div>
-            <div className="flex items-center gap-2 sm:gap-4">
-              <Tooltip title="Số bài viết">
-                <span className="flex items-center gap-2">
-                  <Newspaper className="w-4 h-4" /> {topic.post_count}
-                </span>
-              </Tooltip>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-
   const sortOptions = [
-    { label: "Mới nhất", value: "latest", icon: <ClockCircleOutlined /> },
-    { label: "Cũ nhất", value: "oldest", icon: <CalendarOutlined /> },
+    {
+      label: "Mới nhất",
+      value: "createdAtDesc",
+      icon: <ClockCircleOutlined />,
+    },
+    { label: "Cũ nhất", value: "createdAtAsc", icon: <CalendarOutlined /> },
     {
       label: "Cập nhật gần đây",
-      value: "recently_updated",
+      value: "updatedAtDesc",
       icon: <RiseOutlined />,
     },
   ];
+
+  const handleApplyFilter = () => {
+    setIsFilterDrawerVisible(false);
+    searchParams.set("page", 1);
+    searchParams.set("sortBy", sortBy);
+    searchParams.set("tags", selectedTags.join(","));
+    setSearchParams(searchParams);
+  };
+
+  const handleResetFilter = () => {
+    setIsFilterDrawerVisible(false);
+    searchParams.delete("page");
+    searchParams.delete("sortBy");
+    searchParams.delete("tags");
+    setSortBy("createdAtDesc");
+    setSelectedTags([]);
+    setSearchParams(searchParams);
+  };
+
+  const handleCreateTopic = (values) => {
+    console.log(values);
+    createTopic({
+      forumId,
+      userId,
+      title: values.title,
+      content: values.content,
+      tags: values.tags,
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="sticky top-0 z-10 py-4 bg-white shadow-sm">
-        <div className="container px-4 mx-auto">
+        <div className="container mx-auto">
           <div className="flex items-center justify-between">
             <Breadcrumb className="mb-0">
               <Breadcrumb.Item href="/">
                 <HomeOutlined />
               </Breadcrumb.Item>
               <Breadcrumb.Item href="/forums">Diễn đàn</Breadcrumb.Item>
-              <Breadcrumb.Item>{forum?.name || "Đang tải..."}</Breadcrumb.Item>
+              <Breadcrumb.Item>
+                {forum?.data?.name || "Đang tải..."}
+              </Breadcrumb.Item>
             </Breadcrumb>
             <div className="flex items-center gap-2 md:hidden">
               <Button
                 icon={<MenuOutlined />}
-                onClick={() => setIsFilterDrawerVisible(true)}
+                // onClick={() => setIsFilterDrawerVisible(true)}
               />
             </div>
           </div>
         </div>
       </div>
 
-      <div className="container px-4 py-6 mx-auto">
+      <div className="px-2 py-6 mx-auto ">
         <div className="flex flex-col gap-6">
           {/* Main content */}
           <div className="flex-grow">
             {/* Forum header */}
-            <Skeleton loading={loading} active paragraph={{ rows: 2 }}>
+            <Skeleton
+              loading={isPendingGetTopic}
+              active
+              paragraph={{ rows: 2 }}
+            >
               {forum && (
                 <Card className="mb-6 shadow-sm">
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <Title level={2} className="mb-1 !text-text-color">
-                        {forum.name}
+                  <div className="flex items-start justify-between ">
+                    <div className="w-full">
+                      <Title
+                        level={2}
+                        className="mb-1 !text-text-color truncate"
+                      >
+                        {forum?.data?.name}
                       </Title>
                       <Paragraph className="mb-2 text-text-color-hover">
-                        {forum.description}
+                        {forum?.data?.description}
                       </Paragraph>
-                      <div className="flex flex-wrap gap-4 text-text-color-hover">
-                        <span>
-                          <AppstoreOutlined className="mr-1" />{" "}
-                          <Text className="text-text-color" strong>
-                            {forum.topic_count}
-                          </Text>{" "}
-                          chủ đề
-                        </span>
+                      <div className="flex items-center justify-end text-text-color-hover">
                         <span className="flex items-center gap-1">
-                          <Newspaper className="w-4 h-4" />
-                          <Text className="text-text-color" strong>
-                            {forum.post_count}
-                          </Text>{" "}
-                          bài viết
-                        </span>
-                        <span>
                           <Text className="text-sm text-text-color-hover">
-                            Ngày tạo:{" "}
+                            {t("forum.listForum.createDate")}:
                           </Text>
                           <Text className="text-sm text-text-color" strong>
-                            {forum ? formatDate(forum.created_at) : "N/A"}
+                            {forum ? formatDate(forum?.data?.createdAt) : "N/A"}
                           </Text>
                         </span>
                       </div>
@@ -582,7 +202,7 @@ const TopicList = () => {
                   size="large"
                   placeholder="Tìm kiếm chủ đề"
                   prefix={<SearchOutlined />}
-                  onChange={handleSearch}
+                  // onChange={handleSearch}
                   className="w-full sm:w-96"
                   allowClear
                 />
@@ -634,7 +254,7 @@ const TopicList = () => {
                   size="large"
                   form={form}
                   layout="vertical"
-                  onFinish={handleSubmit}
+                  onFinish={handleCreateTopic}
                   initialValues={{
                     tags: [],
                   }}
@@ -656,8 +276,8 @@ const TopicList = () => {
                       mode="tags"
                       style={{ width: "100%" }}
                       placeholder="Thêm thẻ"
-                      options={popularTags.map((tag) => ({
-                        value: tag.name,
+                      options={tags?.data?.content?.map((tag) => ({
+                        value: tag.tagId,
                         label: tag.name,
                       }))}
                     />
@@ -679,7 +299,11 @@ const TopicList = () => {
                     <Button onClick={handleCancel} className="mr-2">
                       Hủy
                     </Button>
-                    <Button type="primary" htmlType="submit">
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      loading={isPendingCreateTopic}
+                    >
                       Tạo chủ đề
                     </Button>
                   </Form.Item>
@@ -689,12 +313,12 @@ const TopicList = () => {
 
             {/* Topics list */}
             <Skeleton
-              loading={loading}
+              loading={isPendingGetTopic}
               active
               paragraph={{ rows: 10 }}
               className="mb-4"
             >
-              {filteredTopics.length > 0 ? (
+              {topics?.data?.content?.length > 0 ? (
                 <div
                   className={
                     viewMode === "card"
@@ -703,20 +327,33 @@ const TopicList = () => {
                   }
                 >
                   {viewMode === "card"
-                    ? filteredTopics.map(renderTopicCard)
-                    : filteredTopics.map(renderTopicListItem)}
+                    ? topics?.data?.content?.map((topic) => (
+                        <TopicCard key={topic.id} topic={topic} />
+                      ))
+                    : topics?.data?.content?.map((topic) => (
+                        <TopicListItem key={topic.id} topic={topic} />
+                      ))}
                 </div>
               ) : (
                 <Empty
                   description={
                     <span>
                       Không tìm thấy chủ đề nào
-                      {searchText && ` phù hợp với từ khóa "${searchText}"`}
+                      {/* {searchText && ` phù hợp với từ khóa "${searchText}"`} */}
                     </span>
                   }
                 />
               )}
             </Skeleton>
+            <Pagination
+              total={topics?.data?.totalElements}
+              pageSize={10}
+              current={page}
+              onChange={(page) => {
+                searchParams.set("page", page);
+                setSearchParams(searchParams);
+              }}
+            />
           </div>
         </div>
       </div>
@@ -735,16 +372,13 @@ const TopicList = () => {
         footer={
           <Flex gap={16}>
             {" "}
-            <Button
-              className="w-full"
-              onClick={() => setIsFilterDrawerVisible(false)}
-            >
+            <Button className="w-full" onClick={handleResetFilter}>
               Đặt lại
             </Button>
             <Button
               className="w-full"
               type="primary"
-              onClick={() => setIsFilterDrawerVisible(false)}
+              onClick={handleApplyFilter}
             >
               Áp dụng
             </Button>
@@ -783,15 +417,12 @@ const TopicList = () => {
               placeholder="Chọn thẻ để lọc"
               maxTagCount="responsive"
               allowClear
+              value={selectedTags}
               onChange={(values) => {
-                if (values.length > 0) {
-                  setSearchText(values.join(" "));
-                } else {
-                  setSearchText("");
-                }
+                setSelectedTags(values);
               }}
-              options={popularTags.map((tag) => ({
-                value: tag.name,
+              options={tags?.data?.content?.map((tag) => ({
+                value: tag.tagId,
                 label: tag.name,
               }))}
               className="mb-4"
@@ -799,6 +430,152 @@ const TopicList = () => {
           </div>
         </div>
       </Drawer>
+    </div>
+  );
+};
+
+const TopicCard = ({ topic }) => {
+  const { t } = useTranslation();
+  const { forumId } = useParams();
+  return (
+    <Card
+      key={topic?.topicId}
+      className="mb-4 transition-shadow duration-300 hover:shadow-md"
+      bodyStyle={{ padding: "16px" }}
+    >
+      <div className="flex items-start">
+        <div className="flex flex-col items-center gap-2 mr-4 !min-w-28 ">
+          <Avatar icon={<UserOutlined />} src={topic.avatar} size={60} />
+          <Tag className="text-sm !mr-0" color="blue">
+            {t(`topic.${topic?.roleName}`)}
+          </Tag>
+        </div>
+        <div className="flex-grow">
+          <div className="flex items-center gap-2 mb-1">
+            {topic?.pinned && (
+              <Tooltip title="Chủ đề ghim">
+                <PushpinOutlined className="text-red-500" />
+              </Tooltip>
+            )}
+            {topic?.close && (
+              <Tooltip title="Chủ đề đã khóa">
+                <LockOutlined className="text-gray-500" />
+              </Tooltip>
+            )}
+            <Link
+              to={`/forums/${forumId}/topics/${topic?.topicId}/posts`}
+              className="text-lg font-medium hover:text-text-color-hover text-text-color"
+            >
+              {topic?.title}
+            </Link>
+          </div>
+          <div className="flex flex-wrap justify-end gap-1 mb-2">
+            {topic?.tags.map((tag) => (
+              <Tag
+                key={tag.tagId}
+                color="blue"
+                className="cursor-pointer hover:opacity-80"
+              >
+                {tag.name}
+              </Tag>
+            ))}
+          </div>
+          <Paragraph
+            ellipsis={{ rows: 2 }}
+            className="mb-2 text-sm text-text-color-hover"
+            title={topic?.content}
+          >
+            {topic?.content}
+          </Paragraph>
+          <div className="flex flex-wrap items-center justify-between text-xs text-gray-500">
+            <div className="flex items-center gap-4">
+              <span>
+                <UserOutlined className="mr-1" /> {topic?.userName}
+              </span>
+              <span>
+                <ClockCircleOutlined className="mr-1" /> {topic?.createdAt}
+              </span>
+            </div>
+            <div className="flex items-center gap-4">
+              <Tooltip title="Số bài viết">
+                <span className="flex items-center gap-2">
+                  <Newspaper className="w-4 h-4" /> {topic?.postCount || 0}
+                </span>
+              </Tooltip>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Card>
+  );
+};
+
+const TopicListItem = ({ topic }) => {
+  const { forumId } = useParams();
+  return (
+    <div
+      key={topic?.topicId}
+      className="px-2 py-3 transition-colors duration-300 border-b last:border-b-0 hover:bg-gray-50"
+    >
+      <div className="flex items-start">
+        <div className="hidden mr-4 sm:block">
+          <Avatar icon={<UserOutlined />} src={topic?.avatar} size={40} />
+        </div>
+        <div className="flex-grow">
+          <div className="flex items-center gap-2 mb-1">
+            {topic?.pinned && (
+              <Tooltip title="Chủ đề ghim">
+                <PushpinOutlined className="text-red-500" />
+              </Tooltip>
+            )}
+            {topic?.close && (
+              <Tooltip title="Chủ đề đã khóa">
+                <LockOutlined className="text-gray-500" />
+              </Tooltip>
+            )}
+
+            <Link
+              to={`/forums/${forumId}/topics/${topic?.topicId}/posts`}
+              className="text-base font-medium text-text-color hover:text-text-color-hover"
+            >
+              {topic?.title}
+            </Link>
+          </div>
+          <div className="flex flex-wrap justify-end gap-1 mb-2">
+            {topic?.tags?.slice(0, 5).map((tag) => (
+              <Tag
+                key={tag.tagId}
+                color="blue"
+                className="cursor-pointer hover:opacity-80"
+              >
+                {tag.name}
+              </Tag>
+            ))}
+            {topic?.tags?.length > 5 && (
+              <Tag color="blue" className="cursor-pointer hover:opacity-80">
+                +{topic?.tags?.length - 5}
+              </Tag>
+            )}
+          </div>
+          <div className="flex flex-wrap items-center justify-between text-xs text-gray-500">
+            <div className="flex items-center gap-2 sm:gap-4">
+              <span>
+                <UserOutlined className="mr-1" /> {topic?.userName}
+              </span>
+              <span>
+                <ClockCircleOutlined className="mr-1" /> {topic?.createdAt}
+              </span>
+            </div>
+            <div className="flex items-center gap-2 sm:gap-4">
+              <Tooltip title="Số bài viết">
+                <span className="flex items-center gap-2">
+                  <Newspaper className="w-4 h-4" /> {topic?.postCount || 0}
+                </span>
+              </Tooltip>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
