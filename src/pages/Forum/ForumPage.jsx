@@ -42,7 +42,7 @@ const ForumList = () => {
   return (
     <div className="mx-auto ">
       <div className="flex flex-col items-start mb-6">
-        <BoxContainer className="w-full mb-6">
+        <BoxContainer className="w-full mb-6 shadow-md">
           <Title level={2} className="!mb-0 !text-text-color">
             {t("forum.listForum.title")}
           </Title>

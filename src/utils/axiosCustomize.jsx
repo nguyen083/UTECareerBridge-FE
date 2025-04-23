@@ -9,35 +9,38 @@ let isRefreshing = false;
 let failedQueue = [];
 
 const processQueue = (error = null) => {
-    failedQueue.forEach(prom => {
-        if (error) {
-            prom.reject(error);
-        } else {
-            prom.resolve();
-        }
-    });
-    failedQueue = [];
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve();
+    }
+  });
+  failedQueue = [];
 };
 
 const instance = axios.create({
-    baseURL: '/api',
-    timeout: 10000,
-    headers: { 
-        'Content-Type': 'application/json',
-        'Accept-Language': localStorage.getItem('lang') || 'en'
-    },
-    withCredentials: true,
+  baseURL: "/api",
+  timeout: 10000,
+  headers: {
+    "Content-Type": "application/json",
+    "Accept-Language": localStorage.getItem("lang") || "en",
+  },
+  withCredentials: true,
 });
 
-instance.interceptors.request.use(function (config) {
-    const token = localStorage.getItem('accessToken');
+instance.interceptors.request.use(
+  function (config) {
+    const token = localStorage.getItem("accessToken");
     if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers["Authorization"] = `Bearer ${token}`;
     }
     return config;
-}, function (error) {
+  },
+  function (error) {
     return Promise.reject(error);
-});
+  }
+);
 
 export const refreshToken = async () => {
     try {
@@ -70,49 +73,46 @@ export const refreshToken = async () => {
 };
 
 instance.interceptors.response.use(
-    (response) => response && response.data ? response.data : response,
-    async (error) => {
-        const originalRequest = error.config;
+  (response) => (response && response.data ? response.data : response),
+  async (error) => {
+    const originalRequest = error.config;
 
-        // Handle 403 Forbidden
-        if (error.response?.status === 403) {
-            // Redirect to forbidden/unauthorized page
-            window.location = '/forbidden'; // or '/unauthorized', depending on your route setup
-            return Promise.reject(error);
-        }
-        // if (error.response?.status === 500) {
-        //     // Redirect to not found page
-        //     window.location = '/user/500';
-        //     return Promise.reject(error);
-        // }
-        // if (error.response?.status === 404) {
-        //     window.location = '/user/404';
-        //     return Promise.reject(error);
-        // }
-        // Handle 401 Unauthorized
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            // Loại trừ trường hợp từ endpoint interviews/schedule
-            if (originalRequest.url.includes('interviews/schedule')) {
-                return error?.response?.data
-                    ? error.response.data
-                    : Promise.reject(error);
-            }
-            
-            if (isRefreshing) {
-                // Nếu đang refresh token, thêm request vào hàng đợi
-                return new Promise((resolve, reject) => {
-                    failedQueue.push({ resolve, reject });
-                })
-                    .then(() => {
-                        return instance(originalRequest);
-                    })
-                    .catch(err => {
-                        return Promise.reject(err);
-                    });
-            }
+    // Handle 403 Forbidden
+    if (error.response?.status === 403) {
+      // Redirect to forbidden/unauthorized page
+      window.location = "/forbidden"; // or '/unauthorized', depending on your route setup
+      return Promise.reject(error);
+    }
+    // if (error.response?.status === 500) {
+    //   // Redirect to not found page
+    //   window.location = "/user/500";
+    //   return Promise.reject(error);
+    // }
+    if (error.response?.status === 404) {
+      window.location = "/user/404";
+      return Promise.reject(error);
+    }
+    // Handle 401 Unauthorized
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      // Loại trừ trường hợp từ endpoint interviews/schedule
+      if (originalRequest.url.includes("interviews/schedule")) {
+        return error?.response?.data
+          ? error.response.data
+          : Promise.reject(error);
+      }
 
-            originalRequest._retry = true;
-            isRefreshing = true;
+      if (isRefreshing) {
+        // Nếu đang refresh token, thêm request vào hàng đợi
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        })
+          .then(() => {
+            return instance(originalRequest);
+          })
+          .catch((err) => {
+            return Promise.reject(err);
+          });
+      }
 
             try {
                 const newTokens = await refreshToken();
@@ -137,10 +137,36 @@ instance.interceptors.response.use(
             }
         }
 
-        return error?.response?.data
-            ? error.response.data
-            : Promise.reject(error);
+      try {
+        const newTokens = await refreshToken();
+        localStorage.setItem("accessToken", newTokens.accessToken);
+        originalRequest.headers[
+          "Authorization"
+        ] = `Bearer ${newTokens.accessToken}`;
+
+        // Xử lý các request trong hàng đợi
+        processQueue();
+        isRefreshing = false;
+
+        return instance(originalRequest);
+      } catch (refreshError) {
+        processQueue(refreshError);
+        isRefreshing = false;
+        console.error(
+          "Failed to refresh token. User may need to re-authenticate."
+        );
+        const dispatch = useDispatch();
+        dispatch(setInitEmployer());
+        dispatch(setInitStudent());
+        dispatch(setInitUser());
+        removeAllToken();
+        window.location = "/login";
+        return Promise.reject(refreshError);
+      }
     }
+
+    return error?.response?.data ? error.response.data : Promise.reject(error);
+  }
 );
 
 export default instance;

@@ -1283,5 +1283,10 @@
       "delete": "Delete forum",
       "createDate": "Created at"
     }
+  },
+  "topic": {
+    "ADMIN": "Admin",
+    "STUDENT": "Student",
+    "EMPLOYER": "Employer"
   }
 }

@@ -387,6 +387,10 @@ const App = () => {
                       <Route path="/resume/view/:id" element={<ViewCV />} />
                       <Route path="/forums" element={<ForumPage />} />
                       <Route
+                        path="/forums/:forumId/topics"
+                        element={<TopicList />}
+                      />
+                      <Route
                         path="/admin/forums/:forumId/topics"
                         element={<TopicListAdmin />}
                       />
@@ -397,10 +401,6 @@ const App = () => {
                       {/* <Route path='/forum/create' element={<CreatePostPage />} /> */}
                     </Route>
                     <Route element={<ViewLayout width="100%" />}>
-                      <Route
-                        path="/forums/:forumId/topics"
-                        element={<TopicList />}
-                      />
                       <Route
                         path="/forums/:forumId/topics/:topicId/posts"
                         element={<PostList />}
