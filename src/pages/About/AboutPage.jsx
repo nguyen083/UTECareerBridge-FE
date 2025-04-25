@@ -1,4 +1,15 @@
-import { Layout, Typography, Button, Row, Col, Card, List, Statistic, Space, Image } from "antd"
+import {
+  Layout,
+  Typography,
+  Button,
+  Row,
+  Col,
+  Card,
+  List,
+  Statistic,
+  Space,
+  Image,
+} from "antd";
 import {
   CalendarOutlined,
   EnvironmentOutlined,
@@ -18,11 +29,11 @@ import {
   ShopOutlined,
   BulbOutlined,
   RightOutlined,
-} from "@ant-design/icons"
-import { Link } from "react-router-dom"
+} from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
-const { Content } = Layout
-const { Title, Text, Paragraph } = Typography
+const { Content } = Layout;
+const { Title, Text, Paragraph } = Typography;
 
 export default function AboutPage() {
   return (
@@ -30,14 +41,14 @@ export default function AboutPage() {
       <Content>
         {/* Hero Section */}
         <div className="relative py-32 text-center text-white bg-gradient-to-r from-blue-300 to-blue-400">
-          <div className="absolute inset-0 opacity-20">
-          </div>
+          <div className="absolute inset-0 opacity-20"></div>
           <div className="relative z-10 max-w-3xl px-4 mx-auto">
             <Title level={1} className="mb-6 !text-white">
               Về UTE Career
             </Title>
             <Paragraph className="mb-8 text-xl text-white">
-              Kết nối sinh viên Đại học Sư phạm Kỹ thuật TP.HCM với cơ hội nghề nghiệp tốt nhất
+              Kết nối sinh viên Đại học Sư phạm Kỹ thuật TP.HCM với cơ hội nghề
+              nghiệp tốt nhất
             </Paragraph>
           </div>
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
@@ -52,9 +63,11 @@ export default function AboutPage() {
                   Nền tảng kết nối sinh viên và nhà tuyển dụng
                 </Title>
                 <Paragraph className="mb-6 text-lg text-gray-600">
-                  UTE Career là nền tảng kết nối sinh viên, cựu sinh viên trường Đại học Sư phạm Kỹ thuật TP.HCM với các
-                  nhà tuyển dụng. Chúng tôi cung cấp các dịch vụ hỗ trợ toàn diện để giúp sinh viên tìm kiếm cơ hội việc
-                  làm phù hợp và hỗ trợ doanh nghiệp tìm kiếm ứng viên tiềm năng.
+                  UTE Career là nền tảng kết nối sinh viên, cựu sinh viên trường
+                  Đại học Sư phạm Kỹ thuật TP.HCM với các nhà tuyển dụng. Chúng
+                  tôi cung cấp các dịch vụ hỗ trợ toàn diện để giúp sinh viên
+                  tìm kiếm cơ hội việc làm phù hợp và hỗ trợ doanh nghiệp tìm
+                  kiếm ứng viên tiềm năng.
                 </Paragraph>
                 <Row gutter={[16, 16]}>
                   <Col xs={12}>
@@ -129,19 +142,25 @@ export default function AboutPage() {
                 Dịch vụ của chúng tôi
               </Title>
               <Paragraph className="max-w-2xl mx-auto text-gray-600">
-                UTE Career cung cấp các dịch vụ toàn diện cho cả sinh viên và nhà tuyển dụng
+                UTE Career cung cấp các dịch vụ toàn diện cho cả sinh viên và
+                nhà tuyển dụng
               </Paragraph>
             </div>
 
             <Row gutter={[32, 32]}>
               {/* For Students */}
               <Col xs={24} md={12}>
-                <Card className="h-full overflow-hidden shadow-md rounded-xl" bodyStyle={{ padding: 0 }}>
+                <Card
+                  className="h-full overflow-hidden shadow-md rounded-xl"
+                  bodyStyle={{ padding: 0 }}
+                >
                   <div className="p-6 text-white bg-blue-500">
                     <Title level={3} className="m-0 !text-white">
                       Dành cho sinh viên & cựu sinh viên
                     </Title>
-                    <Text className="text-white">Hỗ trợ toàn diện cho hành trình nghề nghiệp của bạn</Text>
+                    <Text className="text-white">
+                      Hỗ trợ toàn diện cho hành trình nghề nghiệp của bạn
+                    </Text>
                   </div>
                   <div className="p-6">
                     <List
@@ -150,7 +169,8 @@ export default function AboutPage() {
                         {
                           icon: <SearchOutlined />,
                           title: "Tìm kiếm việc làm",
-                          description: "Tiếp cận hàng nghìn cơ hội việc làm phù hợp với chuyên ngành của bạn",
+                          description:
+                            "Tiếp cận hàng nghìn cơ hội việc làm phù hợp với chuyên ngành của bạn",
                         },
                         {
                           icon: <MessageOutlined />,
@@ -161,18 +181,24 @@ export default function AboutPage() {
                         {
                           icon: <FileTextOutlined />,
                           title: "Hỗ trợ CV",
-                          description: "Được hỗ trợ xây dựng và hoàn thiện CV chuyên nghiệp",
+                          description:
+                            "Được hỗ trợ xây dựng và hoàn thiện CV chuyên nghiệp",
                         },
                         {
                           icon: <BarChartOutlined />,
                           title: "Đánh giá năng lực",
-                          description: "Tham gia các bài đánh giá để hiểu rõ điểm mạnh và cơ hội phát triển",
+                          description:
+                            "Tham gia các bài đánh giá để hiểu rõ điểm mạnh và cơ hội phát triển",
                         },
                       ]}
                       renderItem={(item) => (
                         <List.Item>
                           <List.Item.Meta
-                            avatar={<div className="p-2 mr-4 text-blue-500 bg-blue-100 rounded-full">{item.icon}</div>}
+                            avatar={
+                              <div className="p-2 mr-4 text-blue-500 bg-blue-100 rounded-full">
+                                {item.icon}
+                              </div>
+                            }
                             title={<Text strong>{item.title}</Text>}
                             description={item.description}
                           />
@@ -185,12 +211,17 @@ export default function AboutPage() {
 
               {/* For Employers */}
               <Col xs={24} md={12}>
-                <Card className="h-full overflow-hidden shadow-md rounded-xl" bodyStyle={{ padding: 0 }}>
+                <Card
+                  className="h-full overflow-hidden shadow-md rounded-xl"
+                  bodyStyle={{ padding: 0 }}
+                >
                   <div className="p-6 text-white bg-indigo-600">
                     <Title level={3} className="m-0 !text-white">
                       Dành cho nhà tuyển dụng
                     </Title>
-                    <Text className="text-white">Tiếp cận nguồn ứng viên chất lượng từ HCMUTE</Text>
+                    <Text className="text-white">
+                      Tiếp cận nguồn ứng viên chất lượng từ HCMUTE
+                    </Text>
                   </div>
                   <div className="p-6">
                     <List
@@ -199,29 +230,35 @@ export default function AboutPage() {
                         {
                           icon: <EditOutlined />,
                           title: "Đăng tin tuyển dụng",
-                          description: "Đăng tin tuyển dụng và tiếp cận hàng nghìn sinh viên và cựu sinh viên",
+                          description:
+                            "Đăng tin tuyển dụng và tiếp cận hàng nghìn sinh viên và cựu sinh viên",
                         },
                         {
                           icon: <TeamOutlined />,
                           title: "Tìm kiếm ứng viên",
-                          description: "Tìm kiếm ứng viên tiềm năng phù hợp với nhu cầu tuyển dụng của doanh nghiệp",
+                          description:
+                            "Tìm kiếm ứng viên tiềm năng phù hợp với nhu cầu tuyển dụng của doanh nghiệp",
                         },
                         {
                           icon: <ShopOutlined />,
                           title: "Tổ chức tuyển dụng tại trường",
-                          description: "Tham gia các sự kiện tuyển dụng trực tiếp tại trường để gặp gỡ ứng viên",
+                          description:
+                            "Tham gia các sự kiện tuyển dụng trực tiếp tại trường để gặp gỡ ứng viên",
                         },
                         {
                           icon: <BulbOutlined />,
                           title: "Xây dựng thương hiệu",
-                          description: "Quảng bá thương hiệu nhà tuyển dụng đến sinh viên và cựu sinh viên",
+                          description:
+                            "Quảng bá thương hiệu nhà tuyển dụng đến sinh viên và cựu sinh viên",
                         },
                       ]}
                       renderItem={(item) => (
                         <List.Item>
                           <List.Item.Meta
                             avatar={
-                              <div className="p-2 mr-4 text-indigo-600 bg-indigo-100 rounded-full">{item.icon}</div>
+                              <div className="p-2 mr-4 text-indigo-600 bg-indigo-100 rounded-full">
+                                {item.icon}
+                              </div>
                             }
                             title={<Text strong>{item.title}</Text>}
                             description={item.description}
@@ -244,7 +281,8 @@ export default function AboutPage() {
                 Sự kiện thường xuyên
               </Title>
               <Paragraph className="max-w-2xl mx-auto text-gray-600">
-                UTE Career tổ chức nhiều sự kiện để kết nối sinh viên với cơ hội nghề nghiệp
+                UTE Career tổ chức nhiều sự kiện để kết nối sinh viên với cơ hội
+                nghề nghiệp
               </Paragraph>
             </div>
 
@@ -259,7 +297,6 @@ export default function AboutPage() {
                       <Image
                         src="/placeholder.svg?height=400&width=600"
                         alt="UTE Job Fair"
-                        
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                       <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 to-transparent">
@@ -278,8 +315,8 @@ export default function AboutPage() {
                       <Text>Tháng 4 và tháng 10 hàng năm</Text>
                     </div>
                     <Paragraph className="mb-4 text-gray-600">
-                      Sự kiện tuyển dụng lớn nhất trong năm với sự tham gia của hơn 50 doanh nghiệp và hàng nghìn cơ hội
-                      việc làm.
+                      Sự kiện tuyển dụng lớn nhất trong năm với sự tham gia của
+                      hơn 50 doanh nghiệp và hàng nghìn cơ hội việc làm.
                     </Paragraph>
                     <Link
                       to="/events/job-fair"
@@ -301,7 +338,6 @@ export default function AboutPage() {
                       <Image
                         src="/placeholder.svg?height=400&width=600"
                         alt="Workshop kỹ năng"
-                        
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                       <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 to-transparent">
@@ -320,8 +356,8 @@ export default function AboutPage() {
                       <Text>Hàng tháng</Text>
                     </div>
                     <Paragraph className="mb-4 text-gray-600">
-                      Các buổi workshop về kỹ năng mềm và chuyên môn giúp sinh viên chuẩn bị tốt nhất cho hành trình
-                      nghề nghiệp.
+                      Các buổi workshop về kỹ năng mềm và chuyên môn giúp sinh
+                      viên chuẩn bị tốt nhất cho hành trình nghề nghiệp.
                     </Paragraph>
                     <Link
                       to="/events/workshops"
@@ -343,7 +379,6 @@ export default function AboutPage() {
                       <Image
                         src="/placeholder.svg?height=400&width=600"
                         alt="Hội thảo doanh nghiệp"
-                        
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
                       <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 to-transparent">
@@ -362,7 +397,8 @@ export default function AboutPage() {
                       <Text>Thường xuyên</Text>
                     </div>
                     <Paragraph className="mb-4 text-gray-600">
-                      Cơ hội gặp gỡ và tìm hiểu về cơ hội thực tập và việc làm từ các doanh nghiệp đối tác hàng đầu.
+                      Cơ hội gặp gỡ và tìm hiểu về cơ hội thực tập và việc làm
+                      từ các doanh nghiệp đối tác hàng đầu.
                     </Paragraph>
                     <Link
                       to="/events/seminars"
@@ -403,22 +439,26 @@ export default function AboutPage() {
                       {
                         step: 1,
                         title: "Đăng ký tài khoản",
-                        description: "Đăng ký tài khoản trên website với email trường (@student.hcmute.edu.vn)",
+                        description:
+                          "Đăng ký tài khoản trên website với email trường (@student.hcmute.edu.vn)",
                       },
                       {
                         step: 2,
                         title: "Hoàn thiện hồ sơ",
-                        description: "Cập nhật thông tin cá nhân, học vấn, kỹ năng và kinh nghiệm",
+                        description:
+                          "Cập nhật thông tin cá nhân, học vấn, kỹ năng và kinh nghiệm",
                       },
                       {
                         step: 3,
                         title: "Tìm kiếm việc làm",
-                        description: "Tìm kiếm việc làm phù hợp với chuyên ngành và kỹ năng của bạn",
+                        description:
+                          "Tìm kiếm việc làm phù hợp với chuyên ngành và kỹ năng của bạn",
                       },
                       {
                         step: 4,
                         title: "Ứng tuyển",
-                        description: "Ứng tuyển vào các vị trí phù hợp và theo dõi trạng thái ứng tuyển",
+                        description:
+                          "Ứng tuyển vào các vị trí phù hợp và theo dõi trạng thái ứng tuyển",
                       },
                     ].map((item) => (
                       <div className="flex" key={item.step}>
@@ -429,7 +469,9 @@ export default function AboutPage() {
                           <Text strong className="block mb-2">
                             {item.title}
                           </Text>
-                          <Text className="text-gray-600">{item.description}</Text>
+                          <Text className="text-gray-600">
+                            {item.description}
+                          </Text>
                         </div>
                       </div>
                     ))}
@@ -460,22 +502,26 @@ export default function AboutPage() {
                       {
                         step: 1,
                         title: "Đăng ký tài khoản doanh nghiệp",
-                        description: "Đăng ký tài khoản doanh nghiệp trên website với thông tin chính xác",
+                        description:
+                          "Đăng ký tài khoản doanh nghiệp trên website với thông tin chính xác",
                       },
                       {
                         step: 2,
                         title: "Xác minh tài khoản",
-                        description: "Tài khoản doanh nghiệp sẽ được xác minh bởi quản trị viên",
+                        description:
+                          "Tài khoản doanh nghiệp sẽ được xác minh bởi quản trị viên",
                       },
                       {
                         step: 3,
                         title: "Hoàn thiện thông tin doanh nghiệp",
-                        description: "Cập nhật thông tin chi tiết về doanh nghiệp và lĩnh vực hoạt động",
+                        description:
+                          "Cập nhật thông tin chi tiết về doanh nghiệp và lĩnh vực hoạt động",
                       },
                       {
                         step: 4,
                         title: "Đăng tin tuyển dụng",
-                        description: "Đăng tin tuyển dụng và quản lý ứng viên trên hệ thống",
+                        description:
+                          "Đăng tin tuyển dụng và quản lý ứng viên trên hệ thống",
                       },
                     ].map((item) => (
                       <div className="flex" key={item.step}>
@@ -486,7 +532,9 @@ export default function AboutPage() {
                           <Text strong className="block mb-2">
                             {item.title}
                           </Text>
-                          <Text className="text-gray-600">{item.description}</Text>
+                          <Text className="text-gray-600">
+                            {item.description}
+                          </Text>
                         </div>
                       </div>
                     ))}
@@ -510,7 +558,10 @@ export default function AboutPage() {
         {/* Contact Section */}
         <div className="py-16">
           <div className="container px-4 mx-auto max-w-7xl">
-            <Card className="overflow-hidden shadow-lg rounded-xl" bodyStyle={{ padding: 0 }}>
+            <Card
+              className="overflow-hidden shadow-lg rounded-xl"
+              bodyStyle={{ padding: 0 }}
+            >
               <Row>
                 <Col xs={24} md={12}>
                   <div className="p-8 md:p-12">
@@ -518,8 +569,8 @@ export default function AboutPage() {
                       Liên hệ với chúng tôi
                     </Title>
                     <Paragraph className="mb-8 text-gray-600">
-                      Nếu bạn có bất kỳ câu hỏi nào, đừng ngần ngại liên hệ với chúng tôi. Đội ngũ UTE Career luôn sẵn
-                      sàng hỗ trợ bạn.
+                      Nếu bạn có bất kỳ câu hỏi nào, đừng ngần ngại liên hệ với
+                      chúng tôi. Đội ngũ UTE Career luôn sẵn sàng hỗ trợ bạn.
                     </Paragraph>
 
                     <div className="space-y-6">
@@ -532,7 +583,8 @@ export default function AboutPage() {
                             Địa chỉ
                           </Text>
                           <Text className="text-gray-600">
-                            Phòng A1-805, số 1 Võ Văn Ngân, P. Linh Chiểu, TP. Thủ Đức, TP.HCM
+                            Phòng A1-805, số 1 Võ Văn Ngân, P. Linh Chiểu, TP.
+                            Thủ Đức, TP.HCM
                           </Text>
                         </div>
                       </div>
@@ -545,7 +597,9 @@ export default function AboutPage() {
                           <Text strong className="block mb-1">
                             Email
                           </Text>
-                          <Text className="text-gray-600">support@utecareer.edu.vn</Text>
+                          <Text className="text-gray-600">
+                            support@utecareer.edu.vn
+                          </Text>
                         </div>
                       </div>
 
@@ -579,7 +633,7 @@ export default function AboutPage() {
                     </div>
 
                     <div className="mt-8">
-                      <Button
+                      {/* <Button
                         type="primary"
                         size="large"
                         className="border-blue-500 bg-card-color0 hover:bg-blue-600 hover:border-blue-600"
@@ -588,18 +642,21 @@ export default function AboutPage() {
                           Gửi tin nhắn
                           <MessageOutlined className="ml-2" />
                         </Link>
-                      </Button>
+                      </Button> */}
                     </div>
                   </div>
                 </Col>
                 <Col xs={24} md={12}>
-                  <div className="relative h-96 md:h-auto">
-                    <Image
-                      src="/placeholder.svg?height=600&width=800"
-                      alt="UTE Career Office"
-                      
-                      className="object-cover"
-                    />
+                  <div className="relative h-full p-8">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5473.913274920506!2d106.76892685683791!3d10.850066035708144!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752763f23816ab%3A0x282f711441b6916f!2sHCMC%20University%20of%20Technology%20and%20Education!5e0!3m2!1sen!2s!4v1745585767265!5m2!1sen!2s"
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      allowFullScreen
+                      loading="lazy"
+                      referrerPolicy="no-referrer-when-downgrade"
+                    ></iframe>
                   </div>
                 </Col>
               </Row>
@@ -608,5 +665,5 @@ export default function AboutPage() {
         </div>
       </Content>
     </Layout>
-  )
+  );
 }

@@ -1,5 +1,18 @@
-import { useState, useEffect } from "react"
-import { Table, Typography, Button, Input, Space, Tag, Avatar, Modal, Form, Select, message, Breadcrumb } from "antd"
+import { useState, useEffect } from "react";
+import {
+  Table,
+  Typography,
+  Button,
+  Input,
+  Space,
+  Tag,
+  Avatar,
+  Modal,
+  Form,
+  Select,
+  message,
+  Breadcrumb,
+} from "antd";
 import {
   PlusOutlined,
   SearchOutlined,
@@ -11,20 +24,22 @@ import {
   DeleteOutlined,
   UserOutlined,
   HomeOutlined,
-} from "@ant-design/icons"
-import { Link, useParams } from "react-router-dom"
+} from "@ant-design/icons";
+import { Link, useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
-const { Title, Text } = Typography
+const { Title, Text } = Typography;
 
 const TopicList = () => {
-  const { forumId } = useParams()
-  const [topics, setTopics] = useState([])
-  const [forum, setForum] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [searchText, setSearchText] = useState("")
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  const [form] = Form.useForm()
-  const [editingTopic, setEditingTopic] = useState(null)
+  const { forumId } = useParams();
+  const [topics, setTopics] = useState([]);
+  const [forum, setForum] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [searchText, setSearchText] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [form] = Form.useForm();
+  const [editingTopic, setEditingTopic] = useState(null);
+  const { t } = useTranslation();
 
   // Giả lập dữ liệu
   useEffect(() => {
@@ -33,10 +48,11 @@ const TopicList = () => {
       setForum({
         forum_id: Number.parseInt(forumId),
         name: "Công nghệ",
-        description: "Thảo luận về công nghệ, phần mềm, phần cứng và các xu hướng mới",
+        description:
+          "Thảo luận về công nghệ, phần mềm, phần cứng và các xu hướng mới",
         is_active: true,
         created_at: "2023-01-15T08:30:00Z",
-      })
+      });
 
       setTopics([
         {
@@ -45,7 +61,8 @@ const TopicList = () => {
           user_id: 101,
           username: "nguyenvan",
           title: "Tổng quan về React và các thư viện UI phổ biến",
-          content: "React là một thư viện JavaScript phổ biến để xây dựng giao diện người dùng...",
+          content:
+            "React là một thư viện JavaScript phổ biến để xây dựng giao diện người dùng...",
           view_count: 1250,
           is_pinned: true,
           is_close: false,
@@ -63,7 +80,8 @@ const TopicList = () => {
           user_id: 102,
           username: "lethihong",
           title: "So sánh Next.js và Gatsby cho các dự án React",
-          content: "Next.js và Gatsby là hai framework phổ biến dựa trên React...",
+          content:
+            "Next.js và Gatsby là hai framework phổ biến dựa trên React...",
           view_count: 876,
           is_pinned: false,
           is_close: false,
@@ -117,7 +135,8 @@ const TopicList = () => {
           user_id: 105,
           username: "hoangnam",
           title: "Tối ưu hiệu suất cho ứng dụng React",
-          content: "Các kỹ thuật và công cụ để tối ưu hiệu suất cho ứng dụng React...",
+          content:
+            "Các kỹ thuật và công cụ để tối ưu hiệu suất cho ứng dụng React...",
           view_count: 567,
           is_pinned: true,
           is_close: false,
@@ -129,25 +148,27 @@ const TopicList = () => {
           last_post_by: "hoangnam",
           tags: ["Performance", "React", "Optimization"],
         },
-      ])
-      setLoading(false)
-    }, 1000)
-  }, [forumId])
+      ]);
+      setLoading(false);
+    }, 1000);
+  }, [forumId]);
 
   const handleSearch = (e) => {
-    setSearchText(e.target.value)
-  }
+    setSearchText(e.target.value);
+  };
 
   const filteredTopics = topics.filter(
     (topic) =>
       topic.title.toLowerCase().includes(searchText.toLowerCase()) ||
       topic.content.toLowerCase().includes(searchText.toLowerCase()) ||
       topic.username.toLowerCase().includes(searchText.toLowerCase()) ||
-      topic.tags.some((tag) => tag.toLowerCase().includes(searchText.toLowerCase())),
-  )
+      topic.tags.some((tag) =>
+        tag.toLowerCase().includes(searchText.toLowerCase())
+      )
+  );
 
   const showModal = (topic = null) => {
-    setEditingTopic(topic)
+    setEditingTopic(topic);
     if (topic) {
       form.setFieldsValue({
         title: topic.title,
@@ -155,17 +176,17 @@ const TopicList = () => {
         tags: topic.tags,
         is_pinned: topic.is_pinned,
         is_close: topic.is_close,
-      })
+      });
     } else {
-      form.resetFields()
+      form.resetFields();
     }
-    setIsModalVisible(true)
-  }
+    setIsModalVisible(true);
+  };
 
   const handleCancel = () => {
-    setIsModalVisible(false)
-    form.resetFields()
-  }
+    setIsModalVisible(false);
+    form.resetFields();
+  };
 
   const handleSubmit = (values) => {
     if (editingTopic) {
@@ -177,10 +198,10 @@ const TopicList = () => {
               ...values,
               updated_at: new Date().toISOString(),
             }
-          : topic,
-      )
-      setTopics(updatedTopics)
-      message.success("Cập nhật chủ đề thành công!")
+          : topic
+      );
+      setTopics(updatedTopics);
+      message.success("Cập nhật chủ đề thành công!");
     } else {
       // Thêm topic mới
       const newTopic = {
@@ -196,52 +217,58 @@ const TopicList = () => {
         post_count: 0,
         last_post_at: null,
         last_post_by: null,
-      }
-      setTopics([...topics, newTopic])
-      message.success("Tạo chủ đề mới thành công!")
+      };
+      setTopics([...topics, newTopic]);
+      message.success("Tạo chủ đề mới thành công!");
     }
-    setIsModalVisible(false)
-  }
+    setIsModalVisible(false);
+  };
 
   const handleDelete = (topicId) => {
     Modal.confirm({
       title: "Xác nhận xóa",
       content: "Bạn có chắc chắn muốn xóa chủ đề này không?",
       onOk() {
-        const updatedTopics = topics.filter((topic) => topic.topic_id !== topicId)
-        setTopics(updatedTopics)
-        message.success("Xóa chủ đề thành công!")
+        const updatedTopics = topics.filter(
+          (topic) => topic.topic_id !== topicId
+        );
+        setTopics(updatedTopics);
+        message.success("Xóa chủ đề thành công!");
       },
-    })
-  }
+    });
+  };
 
   const togglePin = (topicId) => {
     const updatedTopics = topics.map((topic) =>
-      topic.topic_id === topicId ? { ...topic, is_pinned: !topic.is_pinned } : topic,
-    )
-    setTopics(updatedTopics)
-    message.success("Cập nhật trạng thái ghim thành công!")
-  }
+      topic.topic_id === topicId
+        ? { ...topic, is_pinned: !topic.is_pinned }
+        : topic
+    );
+    setTopics(updatedTopics);
+    message.success("Cập nhật trạng thái ghim thành công!");
+  };
 
   const toggleClose = (topicId) => {
     const updatedTopics = topics.map((topic) =>
-      topic.topic_id === topicId ? { ...topic, is_close: !topic.is_close } : topic,
-    )
-    setTopics(updatedTopics)
-    message.success("Cập nhật trạng thái khóa thành công!")
-  }
+      topic.topic_id === topicId
+        ? { ...topic, is_close: !topic.is_close }
+        : topic
+    );
+    setTopics(updatedTopics);
+    message.success("Cập nhật trạng thái khóa thành công!");
+  };
 
   const formatDate = (dateString) => {
-    if (!dateString) return "N/A"
-    const date = new Date(dateString)
+    if (!dateString) return "N/A";
+    const date = new Date(dateString);
     return date.toLocaleDateString("vi-VN", {
       year: "numeric",
       month: "short",
       day: "numeric",
       hour: "2-digit",
       minute: "2-digit",
-    })
-  }
+    });
+  };
 
   const columns = [
     {
@@ -316,10 +343,20 @@ const TopicList = () => {
       width: 150,
       render: (_, record) => (
         <Space size="small">
-          <Button type="text" icon={<EditOutlined />} onClick={() => showModal(record)} />
           <Button
             type="text"
-            icon={record.is_pinned ? <PushpinOutlined className="text-red-500" /> : <PushpinOutlined />}
+            icon={<EditOutlined />}
+            onClick={() => showModal(record)}
+          />
+          <Button
+            type="text"
+            icon={
+              record.is_pinned ? (
+                <PushpinOutlined className="text-red-500" />
+              ) : (
+                <PushpinOutlined />
+              )
+            }
             onClick={() => togglePin(record.topic_id)}
           />
           <Button
@@ -327,21 +364,37 @@ const TopicList = () => {
             icon={record.is_close ? <UnlockOutlined /> : <LockOutlined />}
             onClick={() => toggleClose(record.topic_id)}
           />
-          <Button type="text" danger icon={<DeleteOutlined />} onClick={() => handleDelete(record.topic_id)} />
+          <Button
+            type="text"
+            danger
+            icon={<DeleteOutlined />}
+            onClick={() => handleDelete(record.topic_id)}
+          />
         </Space>
       ),
     },
-  ]
+  ];
 
   return (
     <div className="container px-4 py-8 mx-auto">
-      <Breadcrumb className="mb-4">
-        <Breadcrumb.Item href="/">
-          <HomeOutlined />
-        </Breadcrumb.Item>
-        <Breadcrumb.Item href="/forums">Diễn đàn</Breadcrumb.Item>
-        <Breadcrumb.Item>{forum?.name || "Đang tải..."}</Breadcrumb.Item>
-      </Breadcrumb>
+      <Breadcrumb
+        className="mb-4"
+        items={[
+          {
+            title: (
+              <Link to="/">
+                <HomeOutlined />
+              </Link>
+            ),
+          },
+          {
+            title: <Link to="/forums">{t("forum.title") || "Diễn đàn"}</Link>,
+          },
+          {
+            title: forum?.name || t("common.loading") || "Đang tải...",
+          },
+        ]}
+      />
 
       <div className="flex items-center justify-between mb-6">
         <div>
@@ -351,8 +404,17 @@ const TopicList = () => {
           <Text type="secondary">{forum?.description}</Text>
         </div>
         <div className="flex gap-4">
-          <Input placeholder="Tìm kiếm chủ đề" prefix={<SearchOutlined />} onChange={handleSearch} className="w-64" />
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => showModal()}>
+          <Input
+            placeholder="Tìm kiếm chủ đề"
+            prefix={<SearchOutlined />}
+            onChange={handleSearch}
+            className="w-64"
+          />
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => showModal()}
+          >
             Tạo chủ đề
           </Button>
         </div>
@@ -390,14 +452,18 @@ const TopicList = () => {
           <Form.Item
             name="title"
             label="Tiêu đề"
-            rules={[{ required: true, message: "Vui lòng nhập tiêu đề chủ đề!" }]}
+            rules={[
+              { required: true, message: "Vui lòng nhập tiêu đề chủ đề!" },
+            ]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name="content"
             label="Nội dung"
-            rules={[{ required: true, message: "Vui lòng nhập nội dung chủ đề!" }]}
+            rules={[
+              { required: true, message: "Vui lòng nhập nội dung chủ đề!" },
+            ]}
           >
             <Input.TextArea rows={6} />
           </Form.Item>
@@ -419,7 +485,11 @@ const TopicList = () => {
             />
           </Form.Item>
           <div className="flex gap-4 mb-4">
-            <Form.Item name="is_pinned" valuePropName="checked" className="mb-0">
+            <Form.Item
+              name="is_pinned"
+              valuePropName="checked"
+              className="mb-0"
+            >
               <Tag.CheckableTag checked={form.getFieldValue("is_pinned")}>
                 <PushpinOutlined /> Ghim chủ đề
               </Tag.CheckableTag>
@@ -441,8 +511,7 @@ const TopicList = () => {
         </Form>
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default TopicList
-
+export default TopicList;

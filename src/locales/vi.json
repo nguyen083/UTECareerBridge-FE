@@ -1135,6 +1135,7 @@
     "try_again": "Thử lại"
   },
   "forum": {
+    "title": "Diễn đàn",
     "listForum": {
       "title": "Danh sách diễn đàn",
       "search": "Tìm kiếm diễn đàn",
@@ -1160,7 +1161,7 @@
     "statistic": "Thống kê",
     "createdAt": "Ngày tạo",
     "updatedAt": "Ngày cập nhật",
-    "post": "bài viết",
+    "post": "Bài viết",
     "viewCount": "Số lượt xem",
     "inforTopic": "Thông tin chủ đề",
     "inforPost": "Thông tin bài viết",
@@ -1173,5 +1174,12 @@
   "comment": {
     "reply": "Trả lời",
     "login": "Đăng nhập để bình luận"
+  },
+  "tag": {
+    "create": "Tạo thẻ",
+    "edit": "Chỉnh sửa thẻ",
+    "delete": "Xóa thẻ",
+    "createSuccess": "Tạo thẻ thành công",
+    "createError": "Tạo thẻ thất bại"
   }
 }

@@ -9,6 +9,7 @@ import {
   useGetCommentChildrenByCommentId,
 } from "../../../composables/comment";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const { Text, Paragraph } = Typography;
 const { TextArea } = Input;
@@ -42,7 +43,7 @@ const CommentList = ({
               type="text"
               className="font-medium text-blue-500 hover:text-blue-700"
             >
-              Xem thêm bình luận
+              {t("common.seeMore")}
             </Button>
           )}
         </div>
@@ -75,6 +76,8 @@ const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
     isFetching: isFetchingCommentChild,
     refetch: refetchCommentChild,
   } = useGetCommentChildrenByCommentId(childComment.commentId, page);
+  const student = useSelector((state) => state.student);
+  const employer = useSelector((state) => state.employer);
 
   const handleCommentSubmit = () => {
     createComment(
@@ -222,6 +225,7 @@ const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
         <div className="pl-8 mt-2">
           <div className="flex items-center gap-2">
             <Avatar
+              src={student.profileImage || employer.companyLogo}
               icon={<UserOutlined />}
               className="flex-shrink-0 mr-2"
               size={28}
@@ -271,6 +275,8 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
     useState(false);
   const [commentChild, setCommentChild] = useState([]);
   const { t } = useTranslation();
+  const student = useSelector((state) => state.student);
+  const employer = useSelector((state) => state.employer);
   const handleCommentSubmit = () => {
     createComment(
       {
@@ -402,6 +408,7 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
         <div className="pl-12 mt-2">
           <div className="flex items-center gap-2 ">
             <Avatar
+              src={student.profileImage || employer.companyLogo}
               icon={<UserOutlined />}
               className="flex-shrink-0 mr-2"
               size={32}

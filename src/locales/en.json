@@ -1165,6 +1165,7 @@
     "try_again": "Try Again"
   },
   "forum": {
+    "title": "Forum",
     "listForum": {
       "title": "A list of forums",
       "search": "Search forum",
@@ -1190,7 +1191,7 @@
     "statistic": "Statistic",
     "createdAt": "Published at",
     "updatedAt": "Updated at",
-    "post": "post",
+    "post": "Post",
     "viewCount": "View count",
     "inforTopic": "Topic information",
     "inforPost": "Post information",
@@ -1203,5 +1204,12 @@
   "comment": {
     "reply": "Reply",
     "login": "Login to comment"
+  },
+  "tag": {
+    "create": "Create tag",
+    "edit": "Edit tag",
+    "delete": "Delete tag",
+    "createSuccess": "Create tag successfully",
+    "createError": "Create tag failed"
   }
 }

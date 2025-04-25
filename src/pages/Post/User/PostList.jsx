@@ -1,19 +1,16 @@
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import truncate from "html-truncate";
 import {
   Card,
   Typography,
   Button,
-  Space,
   Avatar,
   Divider,
   Tag,
-  message,
   Breadcrumb,
   Pagination,
   Skeleton,
   Drawer,
-  List,
   Tabs,
   Flex,
   FloatButton,
@@ -22,12 +19,7 @@ import {
 } from "antd";
 import {
   HomeOutlined,
-  // MessageOutlined,
-  BookOutlined,
-  EyeOutlined,
   ClockCircleOutlined,
-  CommentOutlined,
-  BellOutlined,
   ArrowUpOutlined,
   MenuOutlined,
   InfoCircleOutlined,
@@ -76,23 +68,28 @@ const UserPostList = () => {
               className="mb-0"
               items={[
                 {
-                  href: "/",
                   title: (
-                    <>
+                    <Link to="/">
                       <HomeOutlined />
-                    </>
+                    </Link>
                   ),
                 },
                 {
-                  href: "/forums",
-                  title: "Diễn đàn",
+                  title: <Link to="/forums">{t("forum.title")}</Link>,
                 },
                 {
-                  href: `/forums/${forumId}/topics`,
-                  title: forum?.data?.name || "Đang tải...",
+                  title: (
+                    <Link to={`/forums/${forumId}/topics`}>
+                      {forum?.data?.name || t("common.loading")}
+                    </Link>
+                  ),
                 },
                 {
-                  title: topic?.data?.title || "Đang tải...",
+                  title: (
+                    <Link to={`/forums/${forumId}/topics/${topicId}/posts`}>
+                      {topic?.data?.title || t("common.loading")}
+                    </Link>
+                  ),
                 },
               ]}
             />
@@ -304,7 +301,6 @@ const PostItem = ({ post }) => {
   );
 };
 const ReactionModal = ({ modal, setModal, reactions, reactionsData }) => {
-  const { t } = useTranslation();
   const items = useMemo(
     () =>
       reactions.map((reaction) => ({
@@ -324,10 +320,8 @@ const ReactionModal = ({ modal, setModal, reactions, reactionsData }) => {
     [reactionsData]
   );
 
-  // Đảm bảo cập nhật dữ liệu khi đóng modal
   const handleClose = () => {
     setModal(false);
-    // Có thể thêm hàm để refresh dữ liệu ở đây nếu cần
   };
 
   return (
@@ -380,7 +374,7 @@ const TopicHeader = ({ topic }) => {
               <div className="flex gap-4">
                 <div className="flex items-center gap-1">
                   <Newspaper className="w-4 h-4 text-text-color-hover" />
-                  <Text className="text-sm text-text-color" strong>
+                  <Text className="text-sm lowercase text-text-color" strong>
                     {topic?.postCount || 0} {t("post.post")}
                   </Text>
                 </div>
