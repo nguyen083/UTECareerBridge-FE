@@ -1201,6 +1201,7 @@
     "noComment": "No comments yet. Be the first to comment!"
   },
   "comment": {
-    "reply": "Reply"
+    "reply": "Reply",
+    "login": "Login to comment"
   }
 }
