@@ -1309,5 +1309,8 @@
     "comment": "Comment",
     "writeComment": "Write a comment",
     "noComment": "No comments yet. Be the first to comment!"
+  },
+  "comment": {
+    "reply": "Reply"
   }
 }
