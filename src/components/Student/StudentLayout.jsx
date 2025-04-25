@@ -168,7 +168,7 @@ const StudentLayout = () => {
               className="rounded-full btn-header"
               size="large"
             >
-              {t("role.employer")}
+              {t("role.EMPLOYER")}
             </Button>
             <Flex
               gap={"0.5rem"}

@@ -67,9 +67,9 @@
     "viewDetail": "View detail"
   },
   "role": {
-    "admin": "Admin",
-    "employer": "Employer",
-    "student": "Student"
+    "STUDENT": "Student",
+    "EMPLOYER": "Employer",
+    "ADMIN": "Admin"
   },
   "student": {
     "year": "Student year {{year}}",
@@ -1171,12 +1171,33 @@
       "create": "Create forum",
       "edit": "Edit forum",
       "delete": "Delete forum",
-      "createDate": "Created at"
+      "createDate": "Published at"
     }
   },
   "topic": {
     "ADMIN": "Admin",
     "STUDENT": "Student",
-    "EMPLOYER": "Employer"
+    "EMPLOYER": "Employer",
+    "search": "Search topic",
+    "addTopic": "Create topic",
+    "filter": "Filter topic"
+  },
+  "post": {
+    "topic": "Topic",
+    "description": "Description",
+    "content": "Content",
+    "tags": "Tags",
+    "statistic": "Statistic",
+    "createdAt": "Published at",
+    "updatedAt": "Updated at",
+    "post": "post",
+    "viewCount": "View count",
+    "inforTopic": "Topic information",
+    "inforPost": "Post information",
+    "lastUpdate": "Last updated",
+    "share": "Share",
+    "comment": "Comment",
+    "writeComment": "Write a comment",
+    "noComment": "No comments yet. Be the first to comment!"
   }
 }

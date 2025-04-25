@@ -4,12 +4,12 @@ import { Popover, Button } from "antd";
 import { LikeOutlined } from "@ant-design/icons";
 
 const reactions = [
-  { emoji: "👍", label: "Like" },
-  { emoji: "👎", label: "Dislike" },
-  { emoji: "😆", label: "Haha" },
-  { emoji: "❤️", label: "Love" },
-  { emoji: "😮", label: "Wow" },
-  { emoji: "😢", label: "Sad" },
+  { emoji: "👍", label: "LIKE" },
+  { emoji: "👎", label: "DISLIKE" },
+  { emoji: "😆", label: "HAHA" },
+  { emoji: "❤️", label: "LOVE" },
+  { emoji: "😮", label: "WOW" },
+  { emoji: "😢", label: "SAD" },
 ];
 
 const ReactionPicker = ({

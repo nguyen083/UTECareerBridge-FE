@@ -7,20 +7,30 @@ import viVN from "antd/lib/locale/vi_VN";
 import enUS from "antd/locale/en_US";
 import I18nInitializer from "./i18n";
 import { lazy, Suspense, useEffect } from "react";
-import { connectStomp, disconnectStomp } from "./utils/stompConfig.js";
-import RecommendJob from "./components/Student/Recommend/RecommendJob.jsx";
-import InterviewList from "./components/Employer/Interview/InterviewPage.jsx";
-import Notification from "./components/Generate/Notification/Notification.jsx";
-import CreateNotification from "./components/Admin/Notification/CreateNotification.jsx";
-import NotificationList from "./components/Admin/Notification/NotificationList.jsx";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import ForumPage from "./pages/Forum/ForumPage.jsx";
-import TopicListAdmin from "./pages/Topic/Admin/TopicPage.jsx";
-import PostList from "./pages/Post/User/PostList.jsx";
-import PostListAdmin from "./pages/Post/Admin/PostList.jsx";
-import TopicList from "./pages/Topic/User/TopicList.jsx";
-import PostDetail from "./pages/Post/PostDetail.jsx";
-import AboutPage from "./pages/About/AboutPage.jsx";
+import { connectStomp, disconnectStomp } from "./utils/stompConfig.js";
+const RecommendJob = lazy(() =>
+  import("./components/Student/Recommend/RecommendJob.jsx")
+);
+const InterviewList = lazy(() =>
+  import("./components/Employer/Interview/InterviewPage.jsx")
+);
+const Notification = lazy(() =>
+  import("./components/Generate/Notification/Notification.jsx")
+);
+const CreateNotification = lazy(() =>
+  import("./components/Admin/Notification/CreateNotification.jsx")
+);
+const NotificationList = lazy(() =>
+  import("./components/Admin/Notification/NotificationList.jsx")
+);
+const ForumPage = lazy(() => import("./pages/Forum/ForumPage.jsx"));
+const TopicListAdmin = lazy(() => import("./pages/Topic/Admin/TopicPage.jsx"));
+const PostList = lazy(() => import("./pages/Post/User/PostList.jsx"));
+const PostListAdmin = lazy(() => import("./pages/Post/Admin/PostList.jsx"));
+const TopicList = lazy(() => import("./pages/Topic/User/TopicList.jsx"));
+const PostDetail = lazy(() => import("./pages/Post/PostDetail.jsx"));
+const AboutPage = lazy(() => import("./pages/About/AboutPage.jsx"));
 import { refreshToken } from "./utils/axiosCustomize.jsx";
 // import CreatePostPage from './pages/Forum/create/CreatePostPage.jsx';
 
