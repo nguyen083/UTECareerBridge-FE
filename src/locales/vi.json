@@ -1169,5 +1169,8 @@
     "comment": "Bình luận",
     "writeComment": "Viết bình luận",
     "noComment": "Chưa có bình luận nào. Hãy là người đầu tiên bình luận!"
+  },
+  "comment": {
+    "reply": "Trả lời"
   }
 }

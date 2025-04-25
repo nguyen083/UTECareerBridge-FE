@@ -5,7 +5,7 @@ const comment = {
     return axios.get(`comments/post/${postId}/root`, { params });
   },
   getCommentChildrenByCommentId: async (commentId, params) => {
-    return axios.get(`comments/${commentId}/children`, { params });
+    return axios.get(`comments/parent/${commentId}/child`, { params });
   },
   createComment: async (comment) => {
     return axios.post(`/comments`, comment);

@@ -5,18 +5,23 @@ export const useGetCommentRootByPostId = (postId, page) => {
   return useQuery({
     queryKey: ["commentsRoot", postId, page],
     queryFn: () =>
-      comment.getCommentsRootByPostId(postId, { page: page - 1, size: 5 }),
+      comment.getCommentsRootByPostId(postId, { page: page - 1, size: 10 }),
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
   });
 };
 
-export const useGetCommentChildrenByCommentId = (commentId, params) => {
+export const useGetCommentChildrenByCommentId = (commentId, page) => {
   return useQuery({
-    queryKey: ["commentsChildren", commentId],
-    queryFn: () => comment.getCommentChildrenByCommentId(commentId, params),
+    queryKey: ["commentsChildren", commentId, page],
+    queryFn: () =>
+      comment.getCommentChildrenByCommentId(commentId, {
+        page: page - 1,
+        size: 10,
+      }),
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
+    enabled: false,
   });
 };
 
