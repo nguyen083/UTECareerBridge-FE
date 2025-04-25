@@ -22,7 +22,7 @@ import {
   UserOutlined,
   SendOutlined,
 } from "@ant-design/icons";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ReactionPicker from "../../components/Generate/ReactionPicker";
 import HtmlContent from "./../../components/Generate/HtmlContent";
 import { useForumDetail } from "../../composables/forum";
@@ -59,6 +59,7 @@ const PostDetail = () => {
   const commentInputRef = useRef(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (commentsData?.data && page === 1) {
@@ -114,7 +115,8 @@ const PostDetail = () => {
           setCommentText("");
         },
         onError: () => {
-          message.error("Lỗi khi đăng bình luận!");
+          message.error(t("comment.login"));
+          navigate("/login");
         },
       }
     );
@@ -144,7 +146,7 @@ const PostDetail = () => {
     }
   }, [commentsData]);
   return (
-    <div className="min-h-screen bg-gray-50" ref={topRef}>
+    <div className=" bg-gray-50" ref={topRef}>
       {/* Header */}
       <div className="sticky top-0 z-10 py-4 bg-white shadow-sm">
         <div className="container px-4 mx-auto">
@@ -181,10 +183,10 @@ const PostDetail = () => {
         </div>
       </div>
 
-      <div className="container px-4 py-6 mx-auto">
+      <div className="px-2 pt-6 mx-auto ">
         <div className="flex flex-col gap-6 md:flex-row">
           {/* Main content */}
-          <div className="flex-grow">
+          <div className="w-full">
             {/* Post */}
             <Skeleton
               loading={loading}
@@ -250,6 +252,7 @@ const PostDetail = () => {
                         onClick={() => setIsModalVisible(!isModalVisible)}
                       >
                         {t("post.comment")}
+                        {` (${commentsData?.data.totalElements})`}
                       </Button>
                     </div>
                     <div className="flex justify-center flex-1">

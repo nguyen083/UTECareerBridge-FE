@@ -406,15 +406,15 @@ const App = () => {
                         element={<PostListAdmin />}
                       />
                       {/* <Route path='/forum/create' element={<CreatePostPage />} /> */}
+                      <Route
+                        path="/forums/:forumId/topics/:topicId/posts/:postId"
+                        element={<PostDetail />}
+                      />
                     </Route>
                     <Route element={<ViewLayout width="100%" />}>
                       <Route
                         path="/forums/:forumId/topics/:topicId/posts"
                         element={<PostList />}
-                      />
-                      <Route
-                        path="/forums/:forumId/topics/:topicId/posts/:postId"
-                        element={<PostDetail />}
                       />
                     </Route>
                   </Route>

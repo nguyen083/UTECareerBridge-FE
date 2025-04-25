@@ -8,11 +8,13 @@ import {
   useCreateComment,
   useGetCommentChildrenByCommentId,
 } from "../../../composables/comment";
+import { useNavigate } from "react-router-dom";
 
 const { Text, Paragraph } = Typography;
 const { TextArea } = Input;
 
 const CommentList = ({
+  isOpenModal,
   comments = [],
   page,
   setPage,
@@ -27,6 +29,7 @@ const CommentList = ({
         <div className="space-y-3">
           {comments.map((comment) => (
             <CommentItem
+              isOpenModal={isOpenModal}
               key={comment.commentId}
               comment={comment}
               post={post}
@@ -57,13 +60,14 @@ const CommentList = ({
 };
 
 // Component for rendering a child comment with its own replies
-const ChildCommentItem = ({ childComment, post }) => {
+const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
   const [isReply, setIsReply] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [replyComments, setReplyComments] = useState([]);
   const [replyCount, setReplyCount] = useState(childComment.replyCount || 0);
   const [page, setPage] = useState(0);
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { mutate: createComment, isPending: isCreatingComment } =
     useCreateComment();
   const {
@@ -87,12 +91,18 @@ const ChildCommentItem = ({ childComment, post }) => {
           setIsReply(false);
         },
         onError: () => {
-          message.error("Lỗi khi đăng bình luận!");
+          message.error(t("comment.login"));
+          navigate("/login");
         },
       }
     );
   };
-
+  useEffect(() => {
+    if (!isOpenModal) {
+      setCommentText("");
+      setIsReply(false);
+    }
+  }, [isOpenModal]);
   useEffect(() => {
     if (commentChildData?.data && page === 1) {
       setReplyComments(commentChildData.data.comments);
@@ -242,11 +252,12 @@ const ChildCommentItem = ({ childComment, post }) => {
   );
 };
 
-const CommentItem = ({ comment, post }) => {
+const CommentItem = ({ comment, post, isOpenModal }) => {
   const [replyCommentCount, setReplyCommentCount] = useState(
     comment.replyCount
   );
   const [page, setPage] = useState(0);
+  const navigate = useNavigate();
   const { mutate: createComment, isPending: isCreatingComment } =
     useCreateComment();
   const [isReply, setIsReply] = useState(false);
@@ -275,12 +286,18 @@ const CommentItem = ({ comment, post }) => {
           setIsReply(false);
         },
         onError: () => {
-          message.error("Lỗi khi đăng bình luận!");
+          message.error(t("comment.login"));
+          navigate("/login");
         },
       }
     );
   };
-
+  useEffect(() => {
+    if (!isOpenModal) {
+      setCommentText("");
+      setIsReply(false);
+    }
+  }, [isOpenModal]);
   useEffect(() => {
     if (commentChildData?.data && page === 1) {
       setCommentChild(commentChildData.data.comments);
@@ -363,6 +380,7 @@ const CommentItem = ({ comment, post }) => {
               key={childComment.commentId}
               childComment={childComment}
               post={post}
+              isOpenModal={isOpenModal}
             />
           ))}
 

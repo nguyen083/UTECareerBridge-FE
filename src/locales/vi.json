@@ -1171,6 +1171,7 @@
     "noComment": "Chưa có bình luận nào. Hãy là người đầu tiên bình luận!"
   },
   "comment": {
-    "reply": "Trả lời"
+    "reply": "Trả lời",
+    "login": "Đăng nhập để bình luận"
   }
 }
