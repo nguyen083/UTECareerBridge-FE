@@ -11,6 +11,7 @@ import {
   Skeleton,
   Input,
   FloatButton,
+  Modal,
 } from "antd";
 import {
   HomeOutlined,
@@ -18,6 +19,8 @@ import {
   ClockCircleOutlined,
   CommentOutlined,
   ArrowUpOutlined,
+  UserOutlined,
+  SendOutlined,
 } from "@ant-design/icons";
 import { useParams } from "react-router-dom";
 import ReactionPicker from "../../components/Generate/ReactionPicker";
@@ -34,7 +37,7 @@ import {
 import CommentList from "./User/CommentList";
 import { useQueryClient } from "@tanstack/react-query";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 const { TextArea } = Input;
 
 const PostDetail = () => {
@@ -71,6 +74,15 @@ const PostDetail = () => {
     }
   }, [isFetchingComments]);
 
+  // Auto focus TextArea when modal is opened
+  useEffect(() => {
+    if (isModalVisible && commentInputRef.current) {
+      setTimeout(() => {
+        commentInputRef.current?.focus();
+      }, 100);
+    }
+  }, [isModalVisible]);
+
   const handleCommentSubmit = () => {
     if (!commentText.trim()) {
       message.error("Vui lòng nhập nội dung bình luận!");
@@ -100,7 +112,6 @@ const PostDetail = () => {
           );
           setComments([response.data, ...comments]);
           setCommentText("");
-          setIsModalVisible(false);
         },
         onError: () => {
           message.error("Lỗi khi đăng bình luận!");
@@ -258,55 +269,63 @@ const PostDetail = () => {
             </Skeleton>
 
             {/* Comments */}
-            <div className="mb-6">
-              <div className="flex items-center justify-between mb-4">
-                <Title level={4} className="mb-0 !text-text-color">
-                  {t("post.comment")} ({commentsData?.data.totalElements || 0})
-                </Title>
-              </div>
-              {/* Add comment */}
-              <Card
-                className={` shadow-sm transition-all duration-500 ease-in-out  origin-top ${
-                  isModalVisible
-                    ? "max-h-screen scale-y-100 opacity-100 !mb-6"
-                    : "max-h-0 scale-y-0 opacity-0 !mb-0"
-                } `}
-                ref={commentInputRef}
-              >
-                <Title level={5} className="!mb-4 flex items-center">
-                  <CommentOutlined className="mr-2 text-2xl" />
-                  {t("post.comment")}
-                </Title>
-                <div className="flex">
-                  <div className="flex-grow">
-                    <TextArea
-                      rows={4}
-                      placeholder={t("post.writeComment")}
-                      value={commentText}
-                      onChange={(e) => setCommentText(e.target.value)}
-                      className="mb-3"
+            <Modal
+              open={isModalVisible}
+              className="w-full"
+              width={800}
+              centered
+              onCancel={() => setIsModalVisible(false)}
+              footer={
+                <div className="mt-2">
+                  <div className="flex items-center gap-3">
+                    <Avatar
+                      icon={<UserOutlined />}
+                      className="flex-shrink-0 mr-2"
+                      size={32}
                     />
-                    <div className="flex justify-end">
-                      <Button
-                        loading={isCreatingComment}
-                        type="primary"
-                        onClick={handleCommentSubmit}
-                      >
-                        {t("post.comment")}
-                      </Button>
+                    <div className="flex-grow">
+                      <TextArea
+                        ref={commentInputRef}
+                        rows={1}
+                        placeholder={t("post.writeComment")}
+                        value={commentText}
+                        onChange={(e) => setCommentText(e.target.value)}
+                        className="bg-gray-100 resize-none rounded-3xl scrollbar-webkit scrollbar-thin"
+                        autoSize={{ minRows: 1, maxRows: 3 }}
+                        onPressEnter={(e) => {
+                          if (!e.shiftKey) {
+                            e.preventDefault();
+                            handleCommentSubmit();
+                          }
+                        }}
+                      />
                     </div>
+                    <Button
+                      loading={isCreatingComment}
+                      type="text"
+                      onClick={handleCommentSubmit}
+                      size="small"
+                      className="rounded-full"
+                      disabled={!commentText.trim()}
+                      icon={
+                        <SendOutlined className="!text-2xl text-text-color" />
+                      }
+                    ></Button>
                   </div>
                 </div>
-              </Card>
+              }
+            >
               <CommentList
+                post={post}
                 comments={comments}
+                isOpenModal={isModalVisible}
                 setComments={setComments}
                 page={page}
                 setPage={setPage}
                 totalPage={commentsData?.data.totalPages}
                 isPendingComments={isLoadingComments}
               />
-            </div>
+            </Modal>
           </div>
         </div>
       </div>
