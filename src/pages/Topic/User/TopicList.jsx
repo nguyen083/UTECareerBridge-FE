@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Card,
   Typography,
@@ -46,6 +46,8 @@ import {
 } from "../../../composables/topic";
 import { useAllTag } from "../../../composables/tag";
 import { useSelector } from "react-redux";
+import HtmlContent from "../../../components/Generate/HtmlContent";
+import truncate from "html-truncate";
 const { Title, Paragraph, Text } = Typography;
 
 const TopicList = () => {
@@ -53,6 +55,7 @@ const TopicList = () => {
   const { data: forum } = useForumDetail(forumId);
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page") || 1;
+  const pageSize = 10;
   const userId = useSelector((state) => state.user.userId);
   const [sortBy, setSortBy] = useState(
     searchParams.get("sortBy") || "createdAtDesc"
@@ -131,6 +134,9 @@ const TopicList = () => {
     });
   };
 
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [topics]);
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -200,7 +206,7 @@ const TopicList = () => {
               <div className="w-full sm:w-auto">
                 <Input
                   size="large"
-                  placeholder="Tìm kiếm chủ đề"
+                  placeholder={t("topic.search")}
                   prefix={<SearchOutlined />}
                   // onChange={handleSearch}
                   className="w-full sm:w-96"
@@ -213,7 +219,7 @@ const TopicList = () => {
                     icon={<FilterOutlined />}
                     onClick={() => setIsFilterDrawerVisible(true)}
                   >
-                    Lọc chủ đề
+                    {t("topic.filter")}
                   </Button>
                 </div>
                 <div className="flex gap-2">
@@ -232,7 +238,9 @@ const TopicList = () => {
                     icon={<PlusOutlined />}
                     onClick={showModal}
                   >
-                    <span className="hidden sm:inline">Tạo chủ đề</span>
+                    <span className="hidden sm:inline">
+                      {t("topic.addTopic")}
+                    </span>
                   </Button>
                 </div>
               </div>
@@ -345,15 +353,17 @@ const TopicList = () => {
                 />
               )}
             </Skeleton>
-            <Pagination
-              total={topics?.data?.totalElements}
-              pageSize={10}
-              current={page}
-              onChange={(page) => {
-                searchParams.set("page", page);
-                setSearchParams(searchParams);
-              }}
-            />
+            {topics?.data?.totalElements > pageSize && (
+              <Pagination
+                total={topics?.data?.totalElements}
+                pageSize={pageSize}
+                current={page}
+                onChange={(page) => {
+                  searchParams.set("page", page);
+                  setSearchParams(searchParams);
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
@@ -457,11 +467,6 @@ const TopicCard = ({ topic }) => {
                 <PushpinOutlined className="text-red-500" />
               </Tooltip>
             )}
-            {topic?.close && (
-              <Tooltip title="Chủ đề đã khóa">
-                <LockOutlined className="text-gray-500" />
-              </Tooltip>
-            )}
             <Link
               to={`/forums/${forumId}/topics/${topic?.topicId}/posts`}
               className="text-lg font-medium hover:text-text-color-hover text-text-color"
@@ -480,13 +485,7 @@ const TopicCard = ({ topic }) => {
               </Tag>
             ))}
           </div>
-          <Paragraph
-            ellipsis={{ rows: 2 }}
-            className="mb-2 text-sm text-text-color-hover"
-            title={topic?.content}
-          >
-            {topic?.content}
-          </Paragraph>
+          <HtmlContent htmlString={truncate(topic?.content, 300)} />
           <div className="flex flex-wrap items-center justify-between text-xs text-gray-500">
             <div className="flex items-center gap-4">
               <span>

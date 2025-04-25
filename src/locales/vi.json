@@ -67,9 +67,9 @@
     "viewDetail": "Xem chi tiết"
   },
   "role": {
-    "student": "Người tìm việc",
-    "employer": "Nhà tuyển dụng",
-    "admin": "Quản trị viên"
+    "STUDENT": "Sinh viên",
+    "EMPLOYER": "Nhà tuyển dụng",
+    "ADMIN": "Quản trị viên"
   },
   "student": {
     "year": "Sinh viên năm thứ {{year}}",
@@ -1147,6 +1147,27 @@
   "topic": {
     "ADMIN": "Quản trị viên",
     "STUDENT": "Sinh viên",
-    "EMPLOYER": "Nhà tuyển dụng"
+    "EMPLOYER": "Nhà tuyển dụng",
+    "search": "Tìm kiếm chủ đề",
+    "addTopic": "Tạo chủ đề",
+    "filter": "Lọc chủ đề"
+  },
+  "post": {
+    "topic": "Chủ đề",
+    "description": "Mô tả",
+    "content": "Nội dung",
+    "tags": "Thẻ",
+    "statistic": "Thống kê",
+    "createdAt": "Ngày tạo",
+    "updatedAt": "Ngày cập nhật",
+    "post": "bài viết",
+    "viewCount": "Số lượt xem",
+    "inforTopic": "Thông tin chủ đề",
+    "inforPost": "Thông tin bài viết",
+    "lastUpdate": "Cập nhật lần cuối",
+    "share": "Chia sẻ",
+    "comment": "Bình luận",
+    "writeComment": "Viết bình luận",
+    "noComment": "Chưa có bình luận nào. Hãy là người đầu tiên bình luận!"
   }
 }
