@@ -22,7 +22,7 @@ import {
   UserOutlined,
   SendOutlined,
 } from "@ant-design/icons";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import ReactionPicker from "../../components/Generate/ReactionPicker";
 import HtmlContent from "./../../components/Generate/HtmlContent";
 import { useForumDetail } from "../../composables/forum";
@@ -36,6 +36,7 @@ import {
 } from "./../../composables/comment";
 import CommentList from "./User/CommentList";
 import { useQueryClient } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
 
 const { Text } = Typography;
 const { TextArea } = Input;
@@ -60,6 +61,8 @@ const PostDetail = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const student = useSelector((state) => state.student);
+  const employer = useSelector((state) => state.employer);
 
   useEffect(() => {
     if (commentsData?.data && page === 1) {
@@ -83,6 +86,10 @@ const PostDetail = () => {
       }, 100);
     }
   }, [isModalVisible]);
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   const handleCommentSubmit = () => {
     if (!commentText.trim()) {
@@ -155,27 +162,31 @@ const PostDetail = () => {
               className="mb-0"
               items={[
                 {
-                  href: "/",
                   title: (
-                    <>
+                    <Link to="/">
                       <HomeOutlined />
-                    </>
+                    </Link>
                   ),
                 },
                 {
-                  href: "/forums",
-                  title: "Diễn đàn",
+                  title: <Link to="/forums">{t("forum.title")}</Link>,
                 },
                 {
-                  href: `/forums/${forumId}/topics`,
-                  title: forum?.data?.name || "Đang tải...",
+                  title: (
+                    <Link to={`/forums/${forumId}/topics`}>
+                      {forum?.data?.name || t("common.loading")}
+                    </Link>
+                  ),
                 },
                 {
-                  href: `/forums/${forumId}/topics/${topicId}/posts`,
-                  title: topic?.data?.title || "Đang tải...",
+                  title: (
+                    <Link to={`/forums/${forumId}/topics/${topicId}/posts`}>
+                      {topic?.data?.title || t("common.loading")}
+                    </Link>
+                  ),
                 },
                 {
-                  title: "Bài viết",
+                  title: t("post.post"),
                 },
               ]}
             />
@@ -282,6 +293,7 @@ const PostDetail = () => {
                 <div className="mt-2">
                   <div className="flex items-center gap-3">
                     <Avatar
+                      src={student.profileImage || employer.companyLogo}
                       icon={<UserOutlined />}
                       className="flex-shrink-0 mr-2"
                       size={32}

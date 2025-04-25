@@ -18,6 +18,7 @@ import {
   Drawer,
   Flex,
   Pagination,
+  message,
 } from "antd";
 import {
   PlusOutlined,
@@ -44,7 +45,7 @@ import {
   useAllTopicByForumId,
   useCreateTopicMutation,
 } from "../../../composables/topic";
-import { useAllTag } from "../../../composables/tag";
+import { useAllTag, useCreateTag } from "../../../composables/tag";
 import { useSelector } from "react-redux";
 import HtmlContent from "../../../components/Generate/HtmlContent";
 import truncate from "html-truncate";
@@ -78,9 +79,11 @@ const TopicList = () => {
 
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm();
+  const [formTag] = Form.useForm();
   const [viewMode, setViewMode] = useState("card");
   const [isFilterDrawerVisible, setIsFilterDrawerVisible] = useState(false);
   const { t } = useTranslation();
+  const { mutate: createTag, isPending: isPendingCreateTag } = useCreateTag();
 
   const showModal = () => {
     setIsModalVisible(true);
@@ -134,6 +137,23 @@ const TopicList = () => {
     });
   };
 
+  const handleAddTag = (values) => {
+    createTag(
+      {
+        name: values.name,
+        description: "",
+      },
+      {
+        onSuccess: () => {
+          formTag.resetFields();
+        },
+        onError: () => {
+          message.error(t("tag.createError"));
+        },
+      }
+    );
+  };
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [topics]);
@@ -143,15 +163,28 @@ const TopicList = () => {
       <div className="sticky top-0 z-10 py-4 bg-white shadow-sm">
         <div className="container mx-auto">
           <div className="flex items-center justify-between">
-            <Breadcrumb className="mb-0">
-              <Breadcrumb.Item href="/">
-                <HomeOutlined />
-              </Breadcrumb.Item>
-              <Breadcrumb.Item href="/forums">Diễn đàn</Breadcrumb.Item>
-              <Breadcrumb.Item>
-                {forum?.data?.name || "Đang tải..."}
-              </Breadcrumb.Item>
-            </Breadcrumb>
+            <Breadcrumb
+              className="mb-0"
+              items={[
+                {
+                  title: (
+                    <Link to="/">
+                      <HomeOutlined />
+                    </Link>
+                  ),
+                },
+                {
+                  title: (
+                    <Link to="/forums">
+                      {t("forum.title") || t("forum.title")}
+                    </Link>
+                  ),
+                },
+                {
+                  title: forum?.data?.name || t("common.loading"),
+                },
+              ]}
+            />
             <div className="flex items-center gap-2 md:hidden">
               <Button
                 icon={<MenuOutlined />}
@@ -283,9 +316,39 @@ const TopicList = () => {
                     <Select
                       mode="tags"
                       style={{ width: "100%" }}
-                      placeholder="Thêm thẻ"
+                      dropdownRender={(menu) => (
+                        <>
+                          {menu}
+                          <Divider style={{ margin: "8px 0" }} />
+                          <Form
+                            size="middle"
+                            form={formTag}
+                            onFinish={handleAddTag}
+                            className="flex gap-2"
+                          >
+                            <Form.Item name="name" className="flex-1">
+                              <Input
+                                className="w-full"
+                                placeholder="Nhập tên thẻ"
+                                onKeyDown={(e) => e.stopPropagation()}
+                              />
+                            </Form.Item>
+                            <Form.Item>
+                              <Button
+                                loading={isPendingCreateTag}
+                                type="text"
+                                icon={<PlusOutlined />}
+                                htmlType="submit"
+                              >
+                                {t("tag.create")}
+                              </Button>
+                            </Form.Item>
+                          </Form>
+                        </>
+                      )}
+                      placeholder="Chọn thẻ"
                       options={tags?.data?.content?.map((tag) => ({
-                        value: tag.tagId,
+                        value: String(tag.tagId),
                         label: tag.name,
                       }))}
                     />
@@ -353,7 +416,7 @@ const TopicList = () => {
                 />
               )}
             </Skeleton>
-            {topics?.data?.totalElements > pageSize && (
+            <Flex justify="center">
               <Pagination
                 total={topics?.data?.totalElements}
                 pageSize={pageSize}
@@ -363,7 +426,7 @@ const TopicList = () => {
                   setSearchParams(searchParams);
                 }}
               />
-            )}
+            </Flex>
           </div>
         </div>
       </div>
@@ -475,7 +538,7 @@ const TopicCard = ({ topic }) => {
             </Link>
           </div>
           <div className="flex flex-wrap justify-end gap-1 mb-2">
-            {topic?.tags.map((tag) => (
+            {topic?.tags?.map((tag) => (
               <Tag
                 key={tag.tagId}
                 color="blue"

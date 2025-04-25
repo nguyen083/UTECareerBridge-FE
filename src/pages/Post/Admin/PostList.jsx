@@ -33,9 +33,10 @@ import {
   CommentOutlined,
   FileTextOutlined,
 } from "@ant-design/icons";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { useTranslation } from "react-i18next";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -51,6 +52,7 @@ const PostList = () => {
   const [editContent, setEditContent] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 10;
+  const { t } = useTranslation();
 
   // Cấu hình Quill
   const modules = {
@@ -365,16 +367,35 @@ const PostList = () => {
 
   return (
     <div className="container px-4 py-8 mx-auto">
-      <Breadcrumb className="mb-4">
-        <Breadcrumb.Item href="/">
-          <HomeOutlined />
-        </Breadcrumb.Item>
-        <Breadcrumb.Item href="/forums">Diễn đàn</Breadcrumb.Item>
-        <Breadcrumb.Item href={`/forums/${forumId}/topics`}>
-          {forum?.name || "Đang tải..."}
-        </Breadcrumb.Item>
-        <Breadcrumb.Item>{topic?.title || "Đang tải..."}</Breadcrumb.Item>
-      </Breadcrumb>
+      <Breadcrumb
+        className="mb-4"
+        items={[
+          {
+            title: (
+              <Link to="/">
+                <HomeOutlined />
+              </Link>
+            ),
+          },
+          {
+            title: <Link to="/forums">{t("forum.title") || ""}</Link>,
+          },
+          {
+            title: (
+              <Link to={`/forums/${forumId}/topics`}>
+                {forum?.name || t("common.loading") || "Đang tải..."}
+              </Link>
+            ),
+          },
+          {
+            title: (
+              <Link to={`/forums/${forumId}/topics/${topicId}/posts`}>
+                {topic?.title || t("common.loading") || "Đang tải..."}
+              </Link>
+            ),
+          },
+        ]}
+      />
 
       {topic && (
         <Card className="mb-6">
