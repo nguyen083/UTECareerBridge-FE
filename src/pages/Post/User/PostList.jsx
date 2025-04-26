@@ -86,7 +86,6 @@ const UserPostList = () => {
   const handleCreatePost = (values) => {
     const data = {
       content: values.content,
-      userId: 15,
       topicId: +topicId,
     };
     createPost(data, {
