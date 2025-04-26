@@ -43,7 +43,7 @@ export const useSearchPost = (params) => {
 export const useCreatePost = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (post) => post.createPost(post),
+    mutationFn: (params) => post.createPost(params),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["posts", "postsByTopicId", "searchPosts"],
