@@ -3,7 +3,7 @@ import reaction from "../services/api/reaction";
 
 export const useGetReactionByPostId = (postId) => {
   return useQuery({
-    queryKey: ["reaction", postId],
+    queryKey: ["reactionPostId", postId],
     queryFn: () => reaction.getReactionByPostId(postId),
     placeholderData: keepPreviousData,
     enabled: false,
@@ -12,9 +12,10 @@ export const useGetReactionByPostId = (postId) => {
 
 export const useGetCountReactionByPostId = (postId) => {
   return useQuery({
-    queryKey: ["reaction", postId],
+    queryKey: ["reactionCount", postId],
     queryFn: () => reaction.getCountReactionByPostId(postId),
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
+    enabled: !!postId,
   });
 };
