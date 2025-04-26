@@ -6,7 +6,7 @@ let isConnected = false;
 const subscriptions = new Map();
 
 // ✅ Kết nối WebSocket (chỉ tạo một lần)
-export const connectStomp = (onConnected, onError, requireToken = true) => {
+export const connectStomp = (onConnected, onError, requireToken = false) => {
   if (stompClient && isConnected) {
     console.log("WebSocket đã kết nối, không tạo lại.");
     if (onConnected) onConnected(stompClient);
@@ -149,7 +149,7 @@ export const unsubscribeFromTopic = (topic) => {
 export const getStompClient = () => stompClient;
 
 // ✅ Tái kết nối WebSocket với token mới hoặc không có token
-export const reconnectWithNewToken = (requireToken = true) => {
+export const reconnectWithNewToken = (requireToken = false) => {
   // Ngắt kết nối cũ
   if (stompClient) {
     try {

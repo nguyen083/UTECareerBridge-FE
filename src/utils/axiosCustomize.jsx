@@ -1,9 +1,10 @@
-import axios from 'axios';
-import { store } from '../redux/store';
-import { setInitEmployer } from '../redux/action/employerSlice';
-import { setInitStudent } from '../redux/action/studentSlice';
-import { setInitUser } from '../redux/action/userSlice';
-import {removeAllToken} from '../services/apiService';
+import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setInitEmployer } from "../redux/action/employerSlice";
+import { setInitStudent } from "../redux/action/studentSlice";
+import { setInitUser } from "../redux/action/userSlice";
+import { removeAllToken } from "../services/apiService";
+import { setInitWeb } from "../redux/action/webSlice";
 
 let isRefreshing = false;
 let failedQueue = [];
@@ -152,13 +153,11 @@ instance.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError);
         isRefreshing = false;
-        console.error(
-          "Failed to refresh token. User may need to re-authenticate."
-        );
         const dispatch = useDispatch();
         dispatch(setInitEmployer());
         dispatch(setInitStudent());
         dispatch(setInitUser());
+        dispatch(setInitWeb());
         removeAllToken();
         window.location = "/login";
         return Promise.reject(refreshError);
