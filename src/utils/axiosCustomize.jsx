@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { store } from '../redux/store';
 import { setInitEmployer } from '../redux/action/employerSlice';
 import { setInitStudent } from '../redux/action/studentSlice';
 import { setInitUser } from '../redux/action/userSlice';
@@ -41,6 +41,7 @@ instance.interceptors.request.use(function (config) {
 
 export const refreshToken = async () => {
     try {
+        console.log('Refreshing token...');
         const response = await axios.post(
             'http://localhost:8080/api/v1/auth/refresh',
             {},
@@ -51,7 +52,19 @@ export const refreshToken = async () => {
         );
         return response.data;
     } catch (error) {
-        console.error('Error refreshing token:', error);
+        console.log('Error refreshing token - redirecting to login');
+        // Import store directly to ensure it's available
+        const { store } = require('../redux/store');
+        // Reset all user data
+        store.dispatch(require('../redux/action/employerSlice').setInitEmployer());
+        store.dispatch(require('../redux/action/studentSlice').setInitStudent());
+        store.dispatch(require('../redux/action/userSlice').setInitUser());
+        // Remove tokens
+        require('../services/apiService').removeAllToken();
+        // Redirect to login - using setTimeout to ensure this runs after the current execution context
+        setTimeout(() => {
+            window.location = '/login';
+        }, 100);
         throw error;
     }
 };
@@ -114,11 +127,10 @@ instance.interceptors.response.use(
             } catch (refreshError) {
                 processQueue(refreshError);
                 isRefreshing = false;
-                console.error('Failed to refresh token. User may need to re-authenticate.');
-                const dispatch = useDispatch();
-                dispatch(setInitEmployer());
-                dispatch(setInitStudent());
-                dispatch(setInitUser());
+                // Directly redirect to login without showing error message
+                store.dispatch(setInitEmployer());
+                store.dispatch(setInitStudent());
+                store.dispatch(setInitUser());
                 removeAllToken();
                 window.location = '/login';
                 return Promise.reject(refreshError);

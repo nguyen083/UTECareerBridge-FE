@@ -25,6 +25,22 @@ const notification = {
     },
     countNotification: (id) => {
         return axios.get(`/notifications/user/${id}/count`);
+    },
+    // JobAlert APIs
+    createJobAlert: (data) => {
+        return axios.post(`/job-alerts`, data);
+    },
+    getJobAlerts: (userId) => {
+        return axios.get(`/job-alerts/user/${userId}`);
+    },
+    getJobAlertById: (alertId) => {
+        return axios.get(`/job-alerts/${alertId}`);
+    },
+    updateJobAlert: (alertId, data) => {
+        return axios.put(`/job-alerts/${alertId}`, data);
+    },
+    deleteJobAlert: (alertId) => {
+        return axios.delete(`/job-alerts/${alertId}`);
     }
 }
 

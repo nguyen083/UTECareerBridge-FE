@@ -13,6 +13,9 @@ import InterviewList from './components/Employer/Interview/InterviewPage.jsx';
 import Notification from './components/Generate/Notification/Notification.jsx';
 import CreateNotification from './components/Admin/Notification/CreateNotification.jsx';
 import NotificationList from './components/Admin/Notification/NotificationList.jsx';
+import CreateJobAlert from './components/Student/JobAlert/CreateJobAlert.jsx';
+import ManageJobAlerts from './components/Student/JobAlert/ManageJobAlerts.jsx';
+import EditJobAlert from './components/Student/JobAlert/EditJobAlert.jsx';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import ForumPage from './pages/Forum/ForumPage.jsx';
 import TopicListAdmin from './pages/Topic/Admin/TopicPage.jsx';
@@ -106,12 +109,32 @@ const isTokenExpired = (token) => {
     };
   useEffect(() => {
     const token = localStorage.getItem('accessToken');
-    if (isTokenExpired(token) === true) {
+    
+    // Only try to refresh if there's actually a token to refresh
+    if (token && isTokenExpired(token)) {
       refreshToken()
+        .then(() => {
+          // Successfully refreshed, connect WebSocket
+          connectStomp(() => {
+            console.log('WebSocket connected after token refresh');
+          });
+        })
+        .catch(error => {
+          console.log('Token refresh failed, redirecting to login');
+          // Don't try to connect WebSocket with invalid tokens
+          // Just redirect to login page
+          window.location = '/login';
+        });
+    } else if (token) {
+      // Token exists and is valid, connect WebSocket
+      connectStomp(() => {});
+    } else {
+      // No token, don't try to connect WebSocket that requires auth
+      console.log('No token available, skipping authenticated WebSocket connection');
     }
-    connectStomp(() => { })
+    
     return () => {
-      disconnectStomp()
+      disconnectStomp();
     }
   }, [])
   return (
@@ -237,6 +260,9 @@ const isTokenExpired = (token) => {
                     <Route path='/notification/:id' element={<DetailNotification />} />
                     <Route path='/my-job' element={<MyJobPage />} />
                     <Route path='/account-management' element={<AccountManagement />} />
+                    <Route path='/student/job-alerts' element={<ManageJobAlerts />} />
+                    <Route path='/student/job-alerts/create' element={<CreateJobAlert />} />
+                    <Route path='/student/job-alerts/edit/:id' element={<EditJobAlert />} />
                   </Route>
                   <Route element={<ViewLayout width='90%' />}>
                     <Route path='/job/:id' element={<ViewJob />} />

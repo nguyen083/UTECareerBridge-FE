@@ -79,6 +79,7 @@
             "notification": "Notification",
             "myCompany": "My Company",
             "myJob": "My Job",
+            "jobAlerts": "Job Alerts",
             "recommend": "Recommend Jobs",
             "changePassword": "Change Password"
         },
@@ -99,6 +100,54 @@
             "events": {
                 "title": "Events",
                 "all": "All Events"
+            }
+        },
+        "jobAlerts": {
+            "title": "Job Alerts",
+            "create": "Create Job Alert",
+            "edit": "Edit Job Alert",
+            "manage": "Manage Job Alerts",
+            "frequency": {
+                "daily": "Daily",
+                "weekly": "Weekly",
+                "monthly": "Monthly"
+            },
+            "notificationMethods": {
+                "email": "Email",
+                "app": "App"
+            },
+            "form": {
+                "jobTitle": "Job Title",
+                "jobTitlePlaceholder": "Enter job title you want to receive alerts for",
+                "location": "Location",
+                "locationPlaceholder": "Enter work location",
+                "jobCategory": "Job Category",
+                "jobCategoryRequired": "Please select at least one job category",
+                "minSalary": "Minimum Salary",
+                "level": "Level",
+                "companyField": "Company Field",
+                "frequency": "Notification Frequency",
+                "frequencyRequired": "Please select notification frequency",
+                "notifyByEmail": "Notify by Email",
+                "notifyByApp": "Notify by App",
+                "searchCriteria": "Search Criteria",
+                "notificationOptions": "Notification Options"
+            },
+            "messages": {
+                "createSuccess": "Job alert created successfully",
+                "createError": "Failed to create job alert",
+                "updateSuccess": "Job alert updated successfully",
+                "updateError": "Failed to update job alert",
+                "deleteSuccess": "Job alert deleted successfully",
+                "deleteError": "Failed to delete job alert",
+                "confirmDelete": "Are you sure you want to delete this job alert?"
+            },
+            "help": {
+                "title": "Job Alert Help",
+                "jobTitle": "Enter job titles to receive alerts for positions with similar titles.",
+                "minSalary": "Enter minimum salary to filter jobs that meet your salary requirements.",
+                "level": "Select levels appropriate to your experience and skills.",
+                "notification": "Choose how you want to receive notifications (email, app or both)."
             }
         },
         "recommend": {

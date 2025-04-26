@@ -28,9 +28,7 @@ export const connectStomp = (onConnected, onError, requireToken = true) => {
 
     // Chuẩn bị headers dựa vào việc có yêu cầu token hay không
     const connectHeaders = {};
-    if (requireToken && accessToken) {
-        connectHeaders['Authorization'] = 'Bearer ' + accessToken;
-    }
+   
 
     stompClient = new Client({
         webSocketFactory: () => socket,

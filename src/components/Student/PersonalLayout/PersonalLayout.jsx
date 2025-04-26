@@ -51,6 +51,11 @@ const PersonalLayout = () => {
             icon: <IoBriefcaseOutline />
         },
         {
+            key: "/student/job-alerts",
+            label: <div className="text-base">{t('student.menu.jobAlerts')}</div>,
+            icon: <HiLightBulb />
+        },
+        {
             key: "/recommend-job",
             label: <div className="text-base">{t('student.menu.recommend')}</div>,
             icon: <HiLightBulb />
