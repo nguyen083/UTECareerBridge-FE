@@ -39,8 +39,11 @@ import { useCreatePost, usePostByTopicId } from "../../../composables/post";
 import { formatDateTime } from "../../../utils/day";
 import ReactionPicker from "../../../components/Generate/ReactionPicker";
 import {
+  useCreateReaction,
+  useDeleteReaction,
   useGetCountReactionByPostId,
   useGetReactionByPostId,
+  useGetReactionByUserId,
 } from "../../../composables/reaction";
 import CustomizeQuill from "../../../components/Generate/CustomizeQuill";
 const { Title, Text, Paragraph } = Typography;
@@ -233,8 +236,13 @@ const UserPostList = () => {
 const PostItem = ({ post }) => {
   const { forumId, topicId } = useParams();
   const { t } = useTranslation();
-  const { data: reactionCount } = useGetCountReactionByPostId(post.postId);
-
+  const { data: reactionByUserId, refetch: refetchUserReaction } =
+    useGetReactionByUserId(post.postId);
+  const { data: reactionCount, refetch: refetchReactionCount } =
+    useGetCountReactionByPostId(post.postId);
+  const { mutate: createReaction } = useCreateReaction();
+  const { mutate: deleteReaction } = useDeleteReaction();
+  const [currentReaction, setCurrentReaction] = useState(null);
   const {
     data: reactionsData,
     refetch: refetchReactions,
@@ -244,6 +252,7 @@ const PostItem = ({ post }) => {
   const [sortedReactions, setSortedReactions] = useState([]);
   const [modal, setModal] = useState(false);
 
+  // Reaction emoji mapping
   const mapReaction = {
     LIKE: "👍",
     DISLIKE: "👎",
@@ -254,6 +263,25 @@ const PostItem = ({ post }) => {
     ANGRY: "😡",
   };
 
+  // Reverse mapping (emoji to reaction type)
+  const emojiToReactionType = useMemo(() => {
+    const mapping = {};
+    Object.entries(mapReaction).forEach(([type, emoji]) => {
+      mapping[emoji] = type;
+    });
+    return mapping;
+  }, []);
+
+  // Initialize current reaction from user data
+  useEffect(() => {
+    if (reactionByUserId?.data?.type) {
+      setCurrentReaction(mapReaction[reactionByUserId.data.type]);
+    } else {
+      setCurrentReaction(null);
+    }
+  }, [reactionByUserId]);
+
+  // Process reaction count data
   useEffect(() => {
     if (reactionCount?.data) {
       const reactions = {
@@ -265,6 +293,7 @@ const PostItem = ({ post }) => {
         SAD: reactionCount.data.sadCount,
         ANGRY: reactionCount.data.angryCount,
       };
+
       const result = Object.entries(reactions)
         .filter(([, count]) => count > 0)
         .sort(([, a], [, b]) => b - a)
@@ -273,14 +302,95 @@ const PostItem = ({ post }) => {
           mapReaction: mapReaction[key],
           value,
         }));
+
       setSortedReactions(result);
     }
   }, [reactionCount]);
 
-  // Xử lý lấy chi tiết reaction khi mở modal
+  // Handle direct button click (like/unlike toggle)
+  const handleDirectButtonClick = () => {
+    if (currentReaction) {
+      // If already has a reaction, remove it
+      deleteReaction(post.postId, {
+        onSuccess: () => {
+          setCurrentReaction(null);
+          refetchReactionCount();
+          refetchReactions();
+          refetchUserReaction();
+        },
+      });
+    } else {
+      // If no reaction, add default like
+      createReaction(
+        { postId: post.postId, reactionType: "LIKE" },
+        {
+          onSuccess: () => {
+            setCurrentReaction("👍");
+            refetchReactionCount();
+            refetchReactions();
+            refetchUserReaction();
+          },
+        }
+      );
+    }
+  };
+
+  // Handle choosing a specific reaction from the picker
+  const handleReactionPick = (newEmoji) => {
+    // If clicking the same reaction, remove it
+    if (newEmoji === currentReaction) {
+      // Remove reaction
+      deleteReaction(post.postId, {
+        onSuccess: () => {
+          setCurrentReaction(null);
+          refetchReactionCount();
+          refetchReactions();
+          refetchUserReaction();
+        },
+      });
+    } else {
+      // Get the reaction type from emoji
+      const newReactionType = emojiToReactionType[newEmoji];
+
+      // If user already has a reaction, we need to replace it
+      if (currentReaction) {
+        // Delete existing reaction first
+        deleteReaction(post.postId, {
+          onSuccess: () => {
+            // Then create the new reaction
+            createReaction(
+              { postId: post.postId, reactionType: newReactionType },
+              {
+                onSuccess: () => {
+                  setCurrentReaction(newEmoji);
+                  refetchReactionCount();
+                  refetchReactions();
+                  refetchUserReaction();
+                },
+              }
+            );
+          },
+        });
+      } else {
+        // Create new reaction directly
+        createReaction(
+          { postId: post.postId, reactionType: newReactionType },
+          {
+            onSuccess: () => {
+              setCurrentReaction(newEmoji);
+              refetchReactionCount();
+              refetchReactions();
+              refetchUserReaction();
+            },
+          }
+        );
+      }
+    }
+  };
+
+  // Handle opening modal
   const handleOpenModal = () => {
     setModal(true);
-    // Chỉ fetch dữ liệu khi mở modal
     refetchReactions();
   };
 
@@ -291,6 +401,7 @@ const PostItem = ({ post }) => {
         id={`post-${post.postId}`}
         className="mb-4 transition-shadow duration-300 shadow-sm hover:shadow-md"
       >
+        {/* Rest of the Card component structure */}
         <div className="flex flex-row">
           {/* User info */}
           <div className="mb-4 md:w-48 md:flex-shrink-0 md:pr-4 md:border-r md:mb-0">
@@ -321,7 +432,12 @@ const PostItem = ({ post }) => {
               <Divider className="my-2" />
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  <ReactionPicker />
+                  {/* Updated ReactionPicker with separate handlers */}
+                  <ReactionPicker
+                    selected={currentReaction}
+                    onEmojiClick={handleReactionPick}
+                    onButtonClick={handleDirectButtonClick}
+                  />
                   {sortedReactions.length > 0 && (
                     <div
                       className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full cursor-pointer"

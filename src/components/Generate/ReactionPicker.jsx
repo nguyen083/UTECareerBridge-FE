@@ -1,21 +1,22 @@
-import clsx from "clsx";
-import { Popover, Button } from "antd";
 import { LikeOutlined } from "@ant-design/icons";
-
-const reactions = [
-  { emoji: "👍", label: "LIKE" },
-  { emoji: "👎", label: "DISLIKE" },
-  { emoji: "😆", label: "HAHA" },
-  { emoji: "❤️", label: "LOVE" },
-  { emoji: "😮", label: "WOW" },
-  { emoji: "😢", label: "SAD" },
-];
+import { Button, Popover } from "antd";
+import { clsx } from "clsx";
 
 const ReactionPicker = ({
   classNameIcon = "text-base",
   selected = null,
-  setSelected = () => {},
+  onEmojiClick,
+  onButtonClick,
 }) => {
+  const reactions = [
+    { emoji: "👍", label: "LIKE" },
+    { emoji: "👎", label: "DISLIKE" },
+    { emoji: "😆", label: "HAHA" },
+    { emoji: "❤️", label: "LOVE" },
+    { emoji: "😮", label: "WOW" },
+    { emoji: "😢", label: "SAD" },
+  ];
+
   return (
     <Popover
       placement="topLeft"
@@ -29,7 +30,7 @@ const ReactionPicker = ({
                 selected === r.emoji && "scale-110"
               )}
               title={r.label}
-              onClick={() => setSelected(r.emoji)}
+              onClick={() => onEmojiClick(r.emoji)}
             >
               {r.emoji}
             </button>
@@ -39,7 +40,7 @@ const ReactionPicker = ({
     >
       <Button
         type="text"
-        onClick={() => setSelected(selected ? null : "👍")}
+        onClick={onButtonClick}
         className={`p-2 transition-all bg-gray-100 border rounded-full hover:bg-gray-200 ${classNameIcon}`}
       >
         {selected ? selected : <LikeOutlined className={classNameIcon} />}
