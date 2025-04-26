@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import clsx from "clsx";
 import { Popover, Button } from "antd";
 import { LikeOutlined } from "@ant-design/icons";
@@ -17,9 +16,6 @@ const ReactionPicker = ({
   selected = null,
   setSelected = () => {},
 }) => {
-  useEffect(() => {
-    selected !== null && console.log(selected);
-  }, [selected]);
   return (
     <Popover
       placement="topLeft"
