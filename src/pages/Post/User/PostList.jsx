@@ -9,13 +9,13 @@ import {
   Tag,
   Breadcrumb,
   Pagination,
-  Skeleton,
   Drawer,
   Tabs,
   Flex,
   FloatButton,
   Empty,
   Modal,
+  Spin,
 } from "antd";
 import {
   HomeOutlined,
@@ -40,10 +40,8 @@ import {
   useGetReactionByPostId,
 } from "../../../composables/reaction";
 const { Title, Text, Paragraph } = Typography;
-
 const UserPostList = () => {
   const { forumId, topicId } = useParams();
-  const { data: posts } = usePostByTopicId(topicId);
   const { data: forum } = useForumDetail(forumId);
   const { data: topic, isPending: isPendingGetTopic } = useTopicDetail(topicId);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -51,6 +49,14 @@ const UserPostList = () => {
   const topRef = useRef(null);
   const pageSize = 10;
   const { t } = useTranslation();
+  const {
+    data: posts,
+    refetch: refetchPosts,
+    isFetching: isFetchingGetPosts,
+  } = usePostByTopicId(topicId, {
+    page: page - 1,
+    size: pageSize,
+  });
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -58,6 +64,11 @@ const UserPostList = () => {
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [posts]);
+
+  useEffect(() => {
+    refetchPosts();
+  }, [searchParams]);
+
   return (
     <div className="min-h-screen bg-gray-50" ref={topRef}>
       {/* Header */}
@@ -103,24 +114,19 @@ const UserPostList = () => {
         <div className="flex flex-col gap-6 md:flex-row">
           {/* Main content */}
           <div className="flex-grow">
-            {/* Topic header */}
-            <Skeleton
-              loading={isPendingGetTopic}
+            <Spin
+              spinning={isFetchingGetPosts || isPendingGetTopic}
               active
-              paragraph={{ rows: 3 }}
+              className="min-h-screen py-auto"
             >
+              {/* Topic header */}
+
               {topic?.data?.content !== undefined && (
                 <TopicHeader topic={topic?.data} />
               )}
-            </Skeleton>
 
-            {/* Posts */}
-            <Skeleton
-              loading={isPendingGetTopic}
-              active
-              paragraph={{ rows: 10 }}
-              className="mb-4"
-            >
+              {/* Posts */}
+
               {posts?.data?.content?.map((post) => (
                 <PostItem key={post.postId} post={post} />
               ))}
@@ -129,11 +135,9 @@ const UserPostList = () => {
                   <Empty description="Không có bài viết" />
                 </div>
               )}
-            </Skeleton>
 
-            {/* Pagination */}
-            <div className="flex justify-center mt-6">
-              {posts?.data?.totalElements > pageSize && (
+              {/* Pagination */}
+              <div className="flex justify-center mt-6">
                 <Pagination
                   current={page}
                   total={posts?.data?.totalElements}
@@ -144,8 +148,8 @@ const UserPostList = () => {
                   }}
                   showSizeChanger={false}
                 />
-              )}
-            </div>
+              </div>
+            </Spin>
           </div>
         </div>
       </div>
@@ -306,16 +310,7 @@ const ReactionModal = ({ modal, setModal, reactions, reactionsData }) => {
       reactions.map((reaction) => ({
         key: reaction.mapReaction,
         label: <div className="px-4 text-xl">{reaction.mapReaction}</div>,
-        children: (
-          <div>
-            {reactionsData.map((reaction) => (
-              <div key={reaction.reactionId}>
-                {reaction.reactionId}
-                {reaction.reactionId}
-              </div>
-            ))}
-          </div>
-        ),
+        children: reaction.mapReaction,
       })),
     [reactionsData]
   );

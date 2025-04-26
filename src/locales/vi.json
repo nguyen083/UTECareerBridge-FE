@@ -1151,7 +1151,8 @@
     "EMPLOYER": "Nhà tuyển dụng",
     "search": "Tìm kiếm chủ đề",
     "addTopic": "Tạo chủ đề",
-    "filter": "Lọc chủ đề"
+    "filter": "Lọc chủ đề",
+    "createError": "Tạo chủ đề thất bại"
   },
   "post": {
     "topic": "Chủ đề",
