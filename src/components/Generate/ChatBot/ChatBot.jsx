@@ -34,78 +34,68 @@ const ChatBot = () => {
   const cleanMarkdownText = (text) => {
     if (!text) return "";
 
-        // First check if the text already contains HTML <a> tags - if so, preserve them
-        if (text.includes('<a href=')) {
-            // Convert markdown list items to HTML list items
-            return text
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .replace(/__(.*?)__/g, '<strong>$1</strong>')
-                .replace(/~~(.*?)~~/g, '<del>$1</del>')
-                .replace(/`(.*?)`/g, '<code>$1</code>')
-                .replace(/!\[(.*?)\]\((.*?)\)/g, '<img alt="$1" src="$2" />')
-                .replace(/\*\s+(.*?)(\n|$)/g, '<li>$1</li>')
-                .replace(/# (.*?)(\n|$)/g, '<h1>$1</h1>')
-                .replace(/## (.*?)(\n|$)/g, '<h2>$1</h2>')
-                .replace(/### (.*?)(\n|$)/g, '<h3>$1</h3>')
-                .replace(/#### (.*?)(\n|$)/g, '<h4>$1</h4>')
-                .replace(/##### (.*?)(\n|$)/g, '<h5>$1</h5>')
-                .replace(/###### (.*?)(\n|$)/g, '<h6>$1</h6>')
-                .replace(/>\s*(.*?)(\n|$)/g, '<blockquote>$1</blockquote>')
-                .replace(/\n\n/g, '<br><br>')
-                .replace(/\n/g, '<br>')
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .replace(/\*(.*?)\*/g, '<em>$1</em>');
-        }
-        
-        // If no HTML tags, process markdown including converting markdown links to HTML
-        return text
-            .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-            .replace(/__(.*?)__/g, '<strong>$1</strong>')
-            .replace(/~~(.*?)~~/g, '<del>$1</del>')
-            .replace(/`(.*?)`/g, '<code>$1</code>')
-            .replace(/!\[(.*?)\]\((.*?)\)/g, '<img alt="$1" src="$2" />')
-            .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>')
-            .replace(/\*\s+(.*?)(\n|$)/g, '<li>$1</li>')
-            .replace(/# (.*?)(\n|$)/g, '<h1>$1</h1>')
-            .replace(/## (.*?)(\n|$)/g, '<h2>$1</h2>')
-            .replace(/### (.*?)(\n|$)/g, '<h3>$1</h3>')
-            .replace(/#### (.*?)(\n|$)/g, '<h4>$1</h4>')
-            .replace(/##### (.*?)(\n|$)/g, '<h5>$1</h5>')
-            .replace(/###### (.*?)(\n|$)/g, '<h6>$1</h6>')
-            .replace(/>\s*(.*?)(\n|$)/g, '<blockquote>$1</blockquote>')
-            .replace(/\n\n/g, '<br><br>')
-            .replace(/\n/g, '<br>');
-    };
+    // First check if the text already contains HTML <a> tags - if so, preserve them
+    if (text.includes("<a href=")) {
+      // Convert markdown list items to HTML list items
+      return text
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        .replace(/__(.*?)__/g, "<strong>$1</strong>")
+        .replace(/~~(.*?)~~/g, "<del>$1</del>")
+        .replace(/`(.*?)`/g, "<code>$1</code>")
+        .replace(/!\[(.*?)\]\((.*?)\)/g, '<img alt="$1" src="$2" />')
+        .replace(/\*\s+(.*?)(\n|$)/g, "<li>$1</li>")
+        .replace(/# (.*?)(\n|$)/g, "<h1>$1</h1>")
+        .replace(/## (.*?)(\n|$)/g, "<h2>$1</h2>")
+        .replace(/### (.*?)(\n|$)/g, "<h3>$1</h3>")
+        .replace(/#### (.*?)(\n|$)/g, "<h4>$1</h4>")
+        .replace(/##### (.*?)(\n|$)/g, "<h5>$1</h5>")
+        .replace(/###### (.*?)(\n|$)/g, "<h6>$1</h6>")
+        .replace(/\n\n/g, "<br><br>")
+        .replace(/\n/g, "<br>")
+        .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+        .replace(/\*(.*?)\*/g, "<em>$1</em>");
+    }
 
-    const onConnected = useCallback((client) => {
-        console.log('Connected to STOMP broker');
-        const newSessionId = generateSessionId();
-        setSessionId(newSessionId);
-        setStompClient(client);
-        client.subscribe('/chatbot/' + newSessionId, (response) => { 
-            console.log('Received message from server:');
-            const responseBody = JSON.parse(response.body);
-            console.log('Received message:', responseBody);
-            
-            // Debug the exact structure
-            console.log('Message structure:', responseBody.message);
-            
-            // Check if the content is actually there or nested differently
-            const messageContent = responseBody.message.content;
-            console.log('Message content:', messageContent);
-            
-            if (messageContent) {
-                const botMessage = {
-                    content: cleanMarkdownText(messageContent),
-                    senderId: 'chatbot',
-                    timestamp: new Date().toISOString()
-                };
-                setMessages(prevMessages => [...prevMessages, botMessage]);
-            } else {
-                console.error('No message content found in response:', responseBody);
-            }
-        });
-    }, []);
+    // If no HTML tags, process markdown including converting markdown links to HTML
+    return text
+      .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
+      .replace(/__(.*?)__/g, "<strong>$1</strong>")
+      .replace(/~~(.*?)~~/g, "<del>$1</del>")
+      .replace(/`(.*?)`/g, "<code>$1</code>")
+      .replace(/!\[(.*?)\]\((.*?)\)/g, '<img alt="$1" src="$2" />')
+      .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" target="_blank">$1</a>')
+      .replace(/\*\s+(.*?)(\n|$)/g, "<li>$1</li>")
+      .replace(/# (.*?)(\n|$)/g, "<h1>$1</h1>")
+      .replace(/## (.*?)(\n|$)/g, "<h2>$1</h2>")
+      .replace(/### (.*?)(\n|$)/g, "<h3>$1</h3>")
+      .replace(/#### (.*?)(\n|$)/g, "<h4>$1</h4>")
+      .replace(/##### (.*?)(\n|$)/g, "<h5>$1</h5>")
+      .replace(/###### (.*?)(\n|$)/g, "<h6>$1</h6>")
+      .replace(/\n\n/g, "<br><br>")
+      .replace(/\n/g, "<br>");
+  };
+
+  const onConnected = useCallback((client) => {
+    const newSessionId = generateSessionId();
+    setSessionId(newSessionId);
+    setStompClient(client);
+    client.subscribe("/chatbot/" + newSessionId, (response) => {
+      const responseBody = JSON.parse(response.body);
+      const messageContent = responseBody.message.content;
+      console.log("Message content:", cleanMarkdownText(messageContent));
+
+      if (messageContent) {
+        const botMessage = {
+          content: cleanMarkdownText(messageContent),
+          senderId: "chatbot",
+          timestamp: new Date().toISOString(),
+        };
+        setMessages((prevMessages) => [...prevMessages, botMessage]);
+      } else {
+        console.error("No message content found in response:", responseBody);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     if (divRef.current) {
