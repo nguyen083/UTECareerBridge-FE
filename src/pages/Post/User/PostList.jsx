@@ -24,6 +24,7 @@ import {
   MenuOutlined,
   InfoCircleOutlined,
   PushpinOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
 import { useParams, Link, useSearchParams } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
@@ -170,8 +171,7 @@ const UserPostList = () => {
 const PostItem = ({ post }) => {
   const { forumId, topicId } = useParams();
   const { t } = useTranslation();
-  const { data: reactionCount, refetch: refetchCount } =
-    useGetCountReactionByPostId(post.postId);
+  const { data: reactionCount } = useGetCountReactionByPostId(post.postId);
 
   const {
     data: reactionsData,
@@ -181,6 +181,7 @@ const PostItem = ({ post }) => {
 
   const [sortedReactions, setSortedReactions] = useState([]);
   const [modal, setModal] = useState(false);
+
   const mapReaction = {
     LIKE: "👍",
     DISLIKE: "👎",
@@ -188,16 +189,12 @@ const PostItem = ({ post }) => {
     LOVE: "❤️",
     WOW: "😮",
     SAD: "😢",
+    ANGRY: "😡",
   };
-  useEffect(() => {
-    if (modal) {
-      refetchReactions();
-      refetchCount();
-    }
-  }, [modal]);
 
   useEffect(() => {
-    if (reactionCount) {
+    console.log(`reactionCount: ${post.postId}`, reactionCount);
+    if (reactionCount?.data) {
       const reactions = {
         LIKE: reactionCount.data.likeCount,
         DISLIKE: reactionCount.data.dislikeCount,
@@ -210,19 +207,22 @@ const PostItem = ({ post }) => {
       const result = Object.entries(reactions)
         .filter(([, count]) => count > 0)
         .sort(([, a], [, b]) => b - a)
-        .map(([key, value]) => ({ mapReaction: mapReaction[key], value }));
+        .map(([key, value]) => ({
+          type: key,
+          mapReaction: mapReaction[key],
+          value,
+        }));
       setSortedReactions(result);
     }
   }, [reactionCount]);
 
-  useEffect(() => {
-    if (reactionCount?.data) {
-      console.log(
-        `reactionCount: ${post.postId}`,
-        reactionCount?.data?.totalCount
-      );
-    }
-  }, [reactionCount, post.postId]);
+  // Xử lý lấy chi tiết reaction khi mở modal
+  const handleOpenModal = () => {
+    setModal(true);
+    // Chỉ fetch dữ liệu khi mở modal
+    refetchReactions();
+  };
+
   return (
     <>
       <Card
@@ -264,12 +264,12 @@ const PostItem = ({ post }) => {
                   {sortedReactions.length > 0 && (
                     <div
                       className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full cursor-pointer"
-                      onClick={() => setModal(true)}
+                      onClick={handleOpenModal}
                     >
-                      <div className="flex items-center ">
+                      <div className="flex">
                         {sortedReactions.slice(0, 3).map((reaction, index) => (
                           <span
-                            key={reaction.mapReaction}
+                            key={reaction.type}
                             className={`z-${30 - index * 10} text-lg`}
                           >
                             {reaction.mapReaction}
@@ -297,23 +297,68 @@ const PostItem = ({ post }) => {
       <ReactionModal
         modal={modal}
         setModal={setModal}
-        reactions={sortedReactions}
-        reactionsData={reactionsData?.data?.content}
-        // isPendingGetReactions={isPendingGetReactions}
+        reactionsData={reactionsData}
+        isPendingGetReactions={isPendingGetReactions}
+        mapReaction={mapReaction}
       />
     </>
   );
 };
-const ReactionModal = ({ modal, setModal, reactions, reactionsData }) => {
-  const items = useMemo(
-    () =>
-      reactions.map((reaction) => ({
-        key: reaction.mapReaction,
-        label: <div className="px-4 text-xl">{reaction.mapReaction}</div>,
-        children: reaction.mapReaction,
-      })),
-    [reactionsData]
-  );
+
+const ReactionModal = ({
+  modal,
+  setModal,
+  reactionsData,
+  isPendingGetReactions,
+  mapReaction,
+}) => {
+  const items = useMemo(() => {
+    if (
+      !reactionsData?.data?.content ||
+      reactionsData.data.content.length === 0
+    ) {
+      return [];
+    }
+
+    // Tạo object để lưu reactions theo loại
+    const reactionsByType = {};
+
+    // Nhóm các reaction theo loại
+    reactionsData.data.content.forEach((reaction) => {
+      if (!reactionsByType[reaction.type]) {
+        reactionsByType[reaction.type] = [];
+      }
+      reactionsByType[reaction.type].push(reaction);
+    });
+
+    // Tạo items cho Tabs component
+    return Object.keys(reactionsByType).map((type) => ({
+      key: type,
+      label: (
+        <div className="px-4 text-xl">
+          {mapReaction[type]} {reactionsByType[type].length}
+        </div>
+      ),
+      children: (
+        <div className="p-2 overflow-y-auto max-h-60">
+          {reactionsByType[type].map((reaction) => (
+            <div
+              key={reaction.reactionId}
+              className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-50"
+            >
+              <Avatar icon={<UserOutlined />} src={reaction.avatar} />
+              <div>
+                <div className="font-medium">{reaction.userName}</div>
+                <div className="text-xs text-gray-500">
+                  {reaction.createdAt}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ),
+    }));
+  }, [reactionsData, mapReaction]);
 
   const handleClose = () => {
     setModal(false);
@@ -321,10 +366,21 @@ const ReactionModal = ({ modal, setModal, reactions, reactionsData }) => {
 
   return (
     <Modal footer={null} open={modal} onCancel={handleClose} centered>
-      <Tabs defaultActiveKey="1" items={items} />
+      <div className="pt-2">
+        {isPendingGetReactions ? (
+          <div className="flex justify-center p-6">
+            <Spin />
+          </div>
+        ) : items.length > 0 ? (
+          <Tabs defaultActiveKey={items[0]?.key} items={items} />
+        ) : (
+          <Empty description="Không có dữ liệu reaction" />
+        )}
+      </div>
     </Modal>
   );
 };
+
 const TopicHeader = ({ topic }) => {
   const [isInfoDrawerVisible, setIsInfoDrawerVisible] = useState(false);
   const { t } = useTranslation();
