@@ -26,7 +26,7 @@ export const useAllTopicByForumId = (id, params) => {
 
 export const useSearchTopic = (params) => {
   return useQuery({
-    queryKey: ["searchTopics", params],
+    queryKey: ["searchTopics"],
     queryFn: () => topic.searchTopic(params),
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
