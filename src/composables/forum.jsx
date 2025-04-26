@@ -19,6 +19,7 @@ export const useAllForum = () => {
     queryKey: ["forums"],
     queryFn: () => forum.getAllForum(),
     placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -27,6 +28,7 @@ export const useSearchForum = (params) => {
     queryKey: ["searchForums", params],
     queryFn: () => forum.searchForum(params),
     placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
   });
 };
 export const useForumDetail = (id) => {
@@ -34,6 +36,7 @@ export const useForumDetail = (id) => {
     queryKey: ["forumDetail", id],
     queryFn: () => forum.getDetailById(id),
     placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
   });
 };
 export const useCreateForumMutation = () => {

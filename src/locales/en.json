@@ -1291,7 +1291,8 @@
     "EMPLOYER": "Employer",
     "search": "Search topic",
     "addTopic": "Create topic",
-    "filter": "Filter topic"
+    "filter": "Filter topic",
+    "createError": "Create topic failed"
   },
   "post": {
     "topic": "Topic",

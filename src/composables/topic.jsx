@@ -11,6 +11,7 @@ export const useAllTopic = () => {
     queryKey: ["topics"],
     queryFn: () => topic.getAllTopic(),
     placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -19,6 +20,7 @@ export const useAllTopicByForumId = (id, params) => {
     queryKey: ["topicsByForumId", id, params],
     queryFn: () => topic.getByForumId(id, params),
     placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -27,18 +29,21 @@ export const useSearchTopic = (params) => {
     queryKey: ["searchTopics", params],
     queryFn: () => topic.searchTopic(params),
     placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
   });
 };
 export const useTopicDetail = (id) => {
   return useQuery({
     queryKey: ["topicDetail", id],
     queryFn: () => topic.getDetailById(id),
+    refetchOnWindowFocus: false,
   });
 };
 export const useTopicByUserId = (id) => {
   return useQuery({
     queryKey: ["topicByUserId", id],
     queryFn: () => topic.getByUserId(id),
+    refetchOnWindowFocus: false,
   });
 };
 export const useCreateTopicMutation = () => {
