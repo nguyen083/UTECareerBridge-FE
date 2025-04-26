@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import {
   Card,
   Typography,
@@ -12,6 +12,9 @@ import {
   Input,
   FloatButton,
   Modal,
+  Empty,
+  Spin,
+  Tabs,
 } from "antd";
 import {
   HomeOutlined,
@@ -37,6 +40,13 @@ import {
 import CommentList from "./User/CommentList";
 import { useQueryClient } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
+import {
+  useCreateReaction,
+  useDeleteReaction,
+  useGetCountReactionByPostId,
+  useGetReactionByPostId,
+  useGetReactionByUserId,
+} from "../../composables/reaction";
 
 const { Text } = Typography;
 const { TextArea } = Input;
@@ -55,7 +65,6 @@ const PostDetail = () => {
     useCreateComment();
   const [loading, setLoading] = useState(true);
   const [commentText, setCommentText] = useState("");
-  const [userReaction, setUserReaction] = useState(null);
   const topRef = useRef(null);
   const commentInputRef = useRef(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -63,6 +72,159 @@ const PostDetail = () => {
   const navigate = useNavigate();
   const student = useSelector((state) => state.student);
   const employer = useSelector((state) => state.employer);
+
+  // Reaction states and queries
+  const [currentReaction, setCurrentReaction] = useState(null);
+  const [reactionModal, setReactionModal] = useState(false);
+  const [sortedReactions, setSortedReactions] = useState([]);
+
+  const { data: reactionByUserId, refetch: refetchUserReaction } =
+    useGetReactionByUserId(postId);
+  const { data: reactionCount, refetch: refetchReactionCount } =
+    useGetCountReactionByPostId(postId);
+  const { mutate: createReaction } = useCreateReaction();
+  const { mutate: deleteReaction } = useDeleteReaction();
+  const {
+    data: reactionsData,
+    refetch: refetchReactions,
+    isPending: isPendingGetReactions,
+  } = useGetReactionByPostId(postId);
+
+  // Reaction emoji mapping
+  const mapReaction = {
+    LIKE: "👍",
+    DISLIKE: "👎",
+    HAHA: "😆",
+    LOVE: "❤️",
+    WOW: "😮",
+    SAD: "😢",
+    ANGRY: "😡",
+  };
+
+  // Reverse mapping (emoji to reaction type)
+  const emojiToReactionType = useMemo(() => {
+    const mapping = {};
+    Object.entries(mapReaction).forEach(([type, emoji]) => {
+      mapping[emoji] = type;
+    });
+    return mapping;
+  }, []);
+
+  // Initialize current reaction from user data
+  useEffect(() => {
+    if (reactionByUserId?.data?.type) {
+      setCurrentReaction(mapReaction[reactionByUserId.data.type]);
+    } else {
+      setCurrentReaction(null);
+    }
+  }, [reactionByUserId]);
+
+  // Process reaction count data
+  useEffect(() => {
+    if (reactionCount?.data) {
+      const reactions = {
+        LIKE: reactionCount.data.likeCount,
+        DISLIKE: reactionCount.data.dislikeCount,
+        LOVE: reactionCount.data.loveCount,
+        HAHA: reactionCount.data.hahaCount,
+        WOW: reactionCount.data.wowCount,
+        SAD: reactionCount.data.sadCount,
+        ANGRY: reactionCount.data.angryCount,
+      };
+
+      const result = Object.entries(reactions)
+        .filter(([, count]) => count > 0)
+        .sort(([, a], [, b]) => b - a)
+        .map(([key, value]) => ({
+          type: key,
+          mapReaction: mapReaction[key],
+          value,
+        }));
+
+      setSortedReactions(result);
+    }
+  }, [reactionCount]);
+
+  // Handle direct button click (like/unlike toggle)
+  const handleDirectButtonClick = () => {
+    if (currentReaction) {
+      // If already has a reaction, remove it
+      deleteReaction(postId, {
+        onSuccess: () => {
+          setCurrentReaction(null);
+          refetchReactionCount();
+          refetchReactions();
+          refetchUserReaction();
+        },
+      });
+    } else {
+      // If no reaction, add default like
+      createReaction(
+        { postId: postId, reactionType: "LIKE" },
+        {
+          onSuccess: () => {
+            setCurrentReaction("👍");
+            refetchReactionCount();
+            refetchReactions();
+            refetchUserReaction();
+          },
+        }
+      );
+    }
+  };
+
+  // Handle choosing a specific reaction from the picker
+  const handleReactionPick = (newEmoji) => {
+    // If clicking the same reaction, remove it
+    if (newEmoji === currentReaction) {
+      // Remove reaction
+      deleteReaction(postId, {
+        onSuccess: () => {
+          setCurrentReaction(null);
+          refetchReactionCount();
+          refetchReactions();
+          refetchUserReaction();
+        },
+      });
+    } else {
+      // Get the reaction type from emoji
+      const newReactionType = emojiToReactionType[newEmoji];
+
+      // If user already has a reaction, we need to replace it
+      if (currentReaction) {
+        // Delete existing reaction first
+        deleteReaction(postId, {
+          onSuccess: () => {
+            // Then create the new reaction
+            createReaction(
+              { postId: postId, reactionType: newReactionType },
+              {
+                onSuccess: () => {
+                  setCurrentReaction(newEmoji);
+                  refetchReactionCount();
+                  refetchReactions();
+                  refetchUserReaction();
+                },
+              }
+            );
+          },
+        });
+      } else {
+        // Create new reaction directly
+        createReaction(
+          { postId: postId, reactionType: newReactionType },
+          {
+            onSuccess: () => {
+              setCurrentReaction(newEmoji);
+              refetchReactionCount();
+              refetchReactions();
+              refetchUserReaction();
+            },
+          }
+        );
+      }
+    }
+  };
 
   useEffect(() => {
     if (commentsData?.data && page === 1) {
@@ -145,6 +307,12 @@ const PostDetail = () => {
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  // Handle opening reaction modal
+  const handleOpenReactionModal = () => {
+    setReactionModal(true);
+    refetchReactions();
   };
 
   useEffect(() => {
@@ -248,11 +416,39 @@ const PostDetail = () => {
                   {/* Post footer */}
                   <div className="flex justify-between pt-4 border-t">
                     <div className="flex flex-wrap items-center justify-center flex-1">
-                      <ReactionPicker
-                        selected={userReaction}
-                        setSelected={setUserReaction}
-                        classNameIcon="text-xl"
-                      />
+                      <div className="flex items-center gap-4">
+                        <ReactionPicker
+                          selected={currentReaction}
+                          onEmojiClick={handleReactionPick}
+                          onButtonClick={handleDirectButtonClick}
+                          classNameIcon="text-xl"
+                        />
+                        {sortedReactions.length > 0 && (
+                          <div
+                            className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full cursor-pointer"
+                            onClick={handleOpenReactionModal}
+                          >
+                            <div className="flex">
+                              {sortedReactions
+                                .slice(0, 3)
+                                .map((reaction, index) => (
+                                  <span
+                                    key={reaction.type}
+                                    className={`z-${30 - index * 10} text-lg`}
+                                  >
+                                    {reaction.mapReaction}
+                                  </span>
+                                ))}
+                            </div>
+                            <div>
+                              <span className="text-sm font-semibold">
+                                {reactionCount?.data?.totalCount > 0 &&
+                                  reactionCount?.data?.totalCount}
+                              </span>
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
                     <div className="flex justify-center flex-1 w-full border-x">
                       <Button
@@ -263,7 +459,7 @@ const PostDetail = () => {
                         onClick={() => setIsModalVisible(!isModalVisible)}
                       >
                         {t("post.comment")}
-                        {` (${commentsData?.data.totalElements})`}
+                        {` (${commentsData?.data?.totalElements || 0})`}
                       </Button>
                     </div>
                     <div className="flex justify-center flex-1">
@@ -337,10 +533,19 @@ const PostDetail = () => {
                 setComments={setComments}
                 page={page}
                 setPage={setPage}
-                totalPage={commentsData?.data.totalPages}
+                totalPage={commentsData?.data?.totalPages}
                 isPendingComments={isLoadingComments}
               />
             </Modal>
+
+            {/* Reactions Modal */}
+            <ReactionModal
+              modal={reactionModal}
+              setModal={setReactionModal}
+              reactionsData={reactionsData}
+              isPendingGetReactions={isPendingGetReactions}
+              mapReaction={mapReaction}
+            />
           </div>
         </div>
       </div>
@@ -354,6 +559,83 @@ const PostDetail = () => {
         size="large"
       />
     </div>
+  );
+};
+
+// Reaction Modal Component
+const ReactionModal = ({
+  modal,
+  setModal,
+  reactionsData,
+  isPendingGetReactions,
+  mapReaction,
+}) => {
+  const items = useMemo(() => {
+    if (
+      !reactionsData?.data?.content ||
+      reactionsData.data.content.length === 0
+    ) {
+      return [];
+    }
+
+    // Tạo object để lưu reactions theo loại
+    const reactionsByType = {};
+
+    // Nhóm các reaction theo loại
+    reactionsData.data.content.forEach((reaction) => {
+      if (!reactionsByType[reaction.type]) {
+        reactionsByType[reaction.type] = [];
+      }
+      reactionsByType[reaction.type].push(reaction);
+    });
+
+    // Tạo items cho Tabs component
+    return Object.keys(reactionsByType).map((type) => ({
+      key: type,
+      label: (
+        <div className="px-4 text-xl">
+          {mapReaction[type]} {reactionsByType[type].length}
+        </div>
+      ),
+      children: (
+        <div className="p-2 overflow-y-auto max-h-60">
+          {reactionsByType[type].map((reaction) => (
+            <div
+              key={reaction.reactionId}
+              className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-50"
+            >
+              <Avatar icon={<UserOutlined />} src={reaction.avatar} />
+              <div>
+                <div className="font-medium">{reaction.userName}</div>
+                <div className="text-xs text-gray-500">
+                  {reaction.createdAt}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ),
+    }));
+  }, [reactionsData, mapReaction]);
+
+  const handleClose = () => {
+    setModal(false);
+  };
+
+  return (
+    <Modal footer={null} open={modal} onCancel={handleClose} centered>
+      <div className="pt-2">
+        {isPendingGetReactions ? (
+          <div className="flex justify-center p-6">
+            <Spin />
+          </div>
+        ) : items.length > 0 ? (
+          <Tabs defaultActiveKey={items[0]?.key} items={items} />
+        ) : (
+          <Empty description="Không có dữ liệu reaction" />
+        )}
+      </div>
+    </Modal>
   );
 };
 

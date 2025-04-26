@@ -32,7 +32,7 @@ export const useCreateReaction = () => {
       reaction.createReaction(postId, { reactionType }),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["reactionPostId", "reactionCount"],
+        queryKey: ["reactionPostId", "reactionCount", "reactionUserId"],
       });
     },
   });
@@ -44,7 +44,7 @@ export const useDeleteReaction = () => {
     mutationFn: (postId) => reaction.deleteReaction(postId),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["reactionPostId", "reactionCount"],
+        queryKey: ["reactionPostId", "reactionCount", "reactionUserId"],
       });
     },
   });
@@ -57,5 +57,6 @@ export const useGetReactionByUserId = (postId) => {
     placeholderData: keepPreviousData,
     retry: false,
     refetchOnWindowFocus: false,
+    refetchOnMount: true,
   });
 };
