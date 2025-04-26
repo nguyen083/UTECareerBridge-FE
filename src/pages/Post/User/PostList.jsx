@@ -16,6 +16,7 @@ import {
   Empty,
   Modal,
   Spin,
+  Form,
 } from "antd";
 import {
   HomeOutlined,
@@ -25,6 +26,7 @@ import {
   InfoCircleOutlined,
   PushpinOutlined,
   UserOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
 import { useParams, Link, useSearchParams } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
@@ -33,13 +35,14 @@ import { Newspaper } from "lucide-react";
 import { useTopicDetail } from "../../../composables/topic";
 import { useForumDetail } from "../../../composables/forum";
 import { useTranslation } from "react-i18next";
-import { usePostByTopicId } from "../../../composables/post";
+import { useCreatePost, usePostByTopicId } from "../../../composables/post";
 import { formatDateTime } from "../../../utils/day";
 import ReactionPicker from "../../../components/Generate/ReactionPicker";
 import {
   useGetCountReactionByPostId,
   useGetReactionByPostId,
 } from "../../../composables/reaction";
+import CustomizeQuill from "../../../components/Generate/CustomizeQuill";
 const { Title, Text, Paragraph } = Typography;
 const UserPostList = () => {
   const { forumId, topicId } = useParams();
@@ -58,6 +61,10 @@ const UserPostList = () => {
     page: page - 1,
     size: pageSize,
   });
+  const { mutate: createPost, isPending: isPendingCreatePost } =
+    useCreatePost();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [form] = Form.useForm();
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -69,6 +76,29 @@ const UserPostList = () => {
   useEffect(() => {
     refetchPosts();
   }, [searchParams]);
+
+  useEffect(() => {
+    if (isModalVisible) {
+      form.resetFields();
+    }
+  }, [isModalVisible]);
+
+  const handleCreatePost = (values) => {
+    const data = {
+      content: values.content,
+      userId: 15,
+      topicId: +topicId,
+    };
+    createPost(data, {
+      onSuccess: () => {
+        setIsModalVisible(false);
+        refetchPosts();
+      },
+      onError: (error) => {
+        console.log(error);
+      },
+    });
+  };
 
   return (
     <div className="min-h-screen bg-gray-50" ref={topRef}>
@@ -111,21 +141,33 @@ const UserPostList = () => {
           </div>
         </div>
       </div>
-      <div className="container px-4 py-6 mx-auto">
+
+      <div className="px-2 py-6 mx-auto">
         <div className="flex flex-col gap-6 md:flex-row">
           {/* Main content */}
           <div className="flex-grow">
             <Spin
               spinning={isFetchingGetPosts || isPendingGetTopic}
               active
-              className="min-h-screen py-auto"
+              className="flex flex-col min-h-screen gap-4 py-auto"
             >
               {/* Topic header */}
 
               {topic?.data?.content !== undefined && (
                 <TopicHeader topic={topic?.data} />
               )}
-
+              <Flex className="justify-end">
+                <Button
+                  icon={<PlusOutlined />}
+                  className="my-3"
+                  type="primary"
+                  onClick={() => {
+                    setIsModalVisible(!isModalVisible);
+                  }}
+                >
+                  Tạo bài viết
+                </Button>
+              </Flex>
               {/* Posts */}
 
               {posts?.data?.content?.map((post) => (
@@ -164,6 +206,27 @@ const UserPostList = () => {
         onClick={scrollToTop}
         className="shadow-lg"
       />
+      <Modal
+        width={1000}
+        centered
+        open={isModalVisible}
+        onCancel={() => setIsModalVisible(false)}
+        footer={
+          <Button
+            loading={isPendingCreatePost}
+            type="primary"
+            onClick={() => form.submit()}
+          >
+            Tạo bài viết
+          </Button>
+        }
+      >
+        <Form form={form} layout="vertical" onFinish={handleCreatePost}>
+          <Form.Item name="content" label="Bài viết">
+            <CustomizeQuill />
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   );
 };
@@ -193,7 +256,6 @@ const PostItem = ({ post }) => {
   };
 
   useEffect(() => {
-    console.log(`reactionCount: ${post.postId}`, reactionCount);
     if (reactionCount?.data) {
       const reactions = {
         LIKE: reactionCount.data.likeCount,
@@ -387,7 +449,7 @@ const TopicHeader = ({ topic }) => {
 
   return (
     <>
-      <Card className="mb-6 shadow-sm">
+      <Card className="shadow-sm">
         <div>
           <Flex justify="space-between">
             <Flex align="center" gap={32}>

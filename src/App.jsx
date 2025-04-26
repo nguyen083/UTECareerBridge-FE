@@ -410,8 +410,6 @@ const App = () => {
                         path="/forums/:forumId/topics/:topicId/posts/:postId"
                         element={<PostDetail />}
                       />
-                    </Route>
-                    <Route element={<ViewLayout width="100%" />}>
                       <Route
                         path="/forums/:forumId/topics/:topicId/posts"
                         element={<PostList />}
