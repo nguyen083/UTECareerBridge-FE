@@ -32,6 +32,9 @@ const TopicList = lazy(() => import("./pages/Topic/User/TopicList.jsx"));
 const PostDetail = lazy(() => import("./pages/Post/PostDetail.jsx"));
 const AboutPage = lazy(() => import("./pages/About/AboutPage.jsx"));
 import { refreshToken } from "./utils/axiosCustomize.jsx";
+import CreateJobAlert from "./components/Student/JobAlert/CreateJobAlert.jsx";
+import ManageJobAlerts from "./components/Student/JobAlert/ManageJobAlerts.jsx";
+import EditJobAlert from "./components/Student/JobAlert/EditJobAlert.jsx";
 // import CreatePostPage from './pages/Forum/create/CreatePostPage.jsx';
 
 const GoogleAuthCallback = lazy(() =>
@@ -215,35 +218,37 @@ const App = () => {
     }
   };
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    
+    const token = localStorage.getItem("accessToken");
+
     // Only try to refresh if there's actually a token to refresh
     if (token && isTokenExpired(token)) {
       refreshToken()
         .then(() => {
           // Successfully refreshed, connect WebSocket
           connectStomp(() => {
-            console.log('WebSocket connected after token refresh');
+            console.log("WebSocket connected after token refresh");
           });
         })
-        .catch(error => {
-          console.log('Token refresh failed, redirecting to login');
+        .catch(() => {
+          console.log("Token refresh failed, redirecting to login");
           // Don't try to connect WebSocket with invalid tokens
           // Just redirect to login page
-          window.location = '/login';
+          window.location = "/login";
         });
     } else if (token) {
       // Token exists and is valid, connect WebSocket
       connectStomp(() => {});
     } else {
       // No token, don't try to connect WebSocket that requires auth
-      console.log('No token available, skipping authenticated WebSocket connection');
+      console.log(
+        "No token available, skipping authenticated WebSocket connection"
+      );
     }
-    
+
     return () => {
       disconnectStomp();
-    }
-  }, [])
+    };
+  }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <ConfigProvider
@@ -420,16 +425,31 @@ const App = () => {
                     <Route path="view/company/:id" element={<InforCompany />} />
                     <Route path="view/job/:id" element={<ViewJob />} />
                   </Route>
-                  <Route element={<PersonalLayout />} >
-                    <Route path='/profile' element={<ProfilePage />} />
-                    <Route path='/my-company' element={<MyCompanyPage />} />
-                    <Route path='/notification' element={<Notification />} />
-                    <Route path='/notification/:id' element={<DetailNotification />} />
-                    <Route path='/my-job' element={<MyJobPage />} />
-                    <Route path='/account-management' element={<AccountManagement />} />
-                    <Route path='/student/job-alerts' element={<ManageJobAlerts />} />
-                    <Route path='/student/job-alerts/create' element={<CreateJobAlert />} />
-                    <Route path='/student/job-alerts/edit/:id' element={<EditJobAlert />} />
+                  <Route element={<PersonalLayout />}>
+                    <Route path="/profile" element={<ProfilePage />} />
+                    <Route path="/my-company" element={<MyCompanyPage />} />
+                    <Route path="/notification" element={<Notification />} />
+                    <Route
+                      path="/notification/:id"
+                      element={<DetailNotification />}
+                    />
+                    <Route path="/my-job" element={<MyJobPage />} />
+                    <Route
+                      path="/account-management"
+                      element={<AccountManagement />}
+                    />
+                    <Route
+                      path="/student/job-alerts"
+                      element={<ManageJobAlerts />}
+                    />
+                    <Route
+                      path="/student/job-alerts/create"
+                      element={<CreateJobAlert />}
+                    />
+                    <Route
+                      path="/student/job-alerts/edit/:id"
+                      element={<EditJobAlert />}
+                    />
                   </Route>
                   <Route path="employer" element={<EmployerLayout />}>
                     <Route

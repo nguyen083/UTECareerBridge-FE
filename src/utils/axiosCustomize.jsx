@@ -44,33 +44,25 @@ instance.interceptors.request.use(
 );
 
 export const refreshToken = async () => {
-    try {
-        console.log('Refreshing token...');
-        const response = await axios.post(
-            'http://localhost:8080/api/v1/auth/refresh',
-            {},
-            {
-                withCredentials: true,
-                timeout: 5000,
-            }
-        );
-        return response.data;
-    } catch (error) {
-        console.log('Error refreshing token - redirecting to login');
-        // Import store directly to ensure it's available
-        const { store } = require('../redux/store');
-        // Reset all user data
-        store.dispatch(require('../redux/action/employerSlice').setInitEmployer());
-        store.dispatch(require('../redux/action/studentSlice').setInitStudent());
-        store.dispatch(require('../redux/action/userSlice').setInitUser());
-        // Remove tokens
-        require('../services/apiService').removeAllToken();
-        // Redirect to login - using setTimeout to ensure this runs after the current execution context
-        setTimeout(() => {
-            window.location = '/login';
-        }, 100);
-        throw error;
-    }
+  try {
+    console.log("Refreshing token...");
+    const response = await axios.post(
+      "http://localhost:8080/api/v1/auth/refresh",
+      {},
+      {
+        withCredentials: true,
+        timeout: 5000,
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Error refreshing token - redirecting to login");
+
+    setTimeout(() => {
+      window.location = "/login";
+    }, 100);
+    throw error;
+  }
 };
 
 instance.interceptors.response.use(
@@ -84,15 +76,15 @@ instance.interceptors.response.use(
       window.location = "/forbidden"; // or '/unauthorized', depending on your route setup
       return Promise.reject(error);
     }
-    if (error.response?.status === 500) {
-      // Redirect to not found page
-      // window.location = "/user/500";
-      return Promise.reject(error);
-    }
-    if (error.response?.status === 404) {
-      window.location = "/user/404";
-      return Promise.reject(error);
-    }
+    // if (error.response?.status === 500) {
+    //     // Redirect to not found page
+    //     window.location = '/user/500';
+    //     return Promise.reject(error);
+    // }
+    // if (error.response?.status === 404) {
+    //     window.location = '/user/404';
+    //     return Promise.reject(error);
+    // }
     // Handle 401 Unauthorized
     if (error.response?.status === 401 && !originalRequest._retry) {
       // Loại trừ trường hợp từ endpoint interviews/schedule
@@ -115,29 +107,9 @@ instance.interceptors.response.use(
           });
       }
 
-            try {
-                const newTokens = await refreshToken();
-                localStorage.setItem('accessToken', newTokens.accessToken);
-                originalRequest.headers['Authorization'] = `Bearer ${newTokens.accessToken}`;
-                
-                // Xử lý các request trong hàng đợi
-                processQueue();
-                isRefreshing = false;
-                
-                return instance(originalRequest);
-            } catch (refreshError) {
-                processQueue(refreshError);
-                isRefreshing = false;
-                // Directly redirect to login without showing error message
-                store.dispatch(setInitEmployer());
-                store.dispatch(setInitStudent());
-                store.dispatch(setInitUser());
-                removeAllToken();
-                window.location = '/login';
-                return Promise.reject(refreshError);
-            }
-        }
-
+      originalRequest._retry = true;
+      isRefreshing = true;
+      const dispatch = useDispatch();
       try {
         const newTokens = await refreshToken();
         localStorage.setItem("accessToken", newTokens.accessToken);
@@ -153,12 +125,12 @@ instance.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError);
         isRefreshing = false;
-        const dispatch = useDispatch();
+        // Directly redirect to login without showing error message
         dispatch(setInitEmployer());
         dispatch(setInitStudent());
         dispatch(setInitUser());
-        dispatch(setInitWeb());
         removeAllToken();
+        dispatch(setInitWeb());
         window.location = "/login";
         return Promise.reject(refreshError);
       }

@@ -63,13 +63,12 @@
     "of": "of",
     "item": "item",
     "login": "Login",
-    "continue": "Continue",
-    "viewDetail": "View detail"
+    "continue": "Continue"
   },
   "role": {
-    "STUDENT": "Student",
-    "EMPLOYER": "Employer",
-    "ADMIN": "Admin"
+    "admin": "Admin",
+    "employer": "Employer",
+    "student": "Student"
   },
   "student": {
     "year": "Student year {{year}}",
@@ -80,11 +79,11 @@
       "notification": "Notification",
       "myCompany": "My Company",
       "myJob": "My Job",
+      "jobAlerts": "Job Alerts",
       "recommend": "Recommend Jobs",
       "changePassword": "Change Password"
     },
     "layout": {
-      "forum": "Forum",
       "jobs": {
         "title": "Jobs",
         "newest": "Newest Jobs",
@@ -103,58 +102,54 @@
         "all": "All Events"
       }
     },
-    "common": {
-        "save": "Save",
-        "cancel": "Cancel",
-        "edit": "Edit",
-        "complete": "Complete",
-        "error": "Error",
-        "success": "Success",
-        "notice": "Notice",
-        "empty": "Empty",
-        "copy": "Copy to clipboard",
-        "seeMore": "See more",
-        "learnMore": "Learn more",
-        "or": "or",
-        "googleLogin": "Login with Google",
-        "hot": "Hot",
-        "urgent": "Urgent",
-        "ok": "OK",
-        "loading": "Loading...",
-        "collapse": "Collapse",
-        "month": "month",
-        "dragAndDrop": "Drag and drop or click to upload image",
-        "view": "View",
-        "of": "of",
-        "item": "item",
-        "login": "Login",
-        "continue": "Continue"
+    "jobAlerts": {
+      "title": "Job Alerts",
+      "create": "Create Job Alert",
+      "edit": "Edit Job Alert",
+      "manage": "Manage Job Alerts",
+      "frequency": {
+        "daily": "Daily",
+        "weekly": "Weekly",
+        "monthly": "Monthly"
+      },
+      "notificationMethods": {
+        "email": "Email",
+        "app": "App"
+      },
+      "form": {
+        "jobTitle": "Job Title",
+        "jobTitlePlaceholder": "Enter job title you want to receive alerts for",
+        "location": "Location",
+        "locationPlaceholder": "Enter work location",
+        "jobCategory": "Job Category",
+        "jobCategoryRequired": "Please select at least one job category",
+        "minSalary": "Minimum Salary",
+        "level": "Level",
+        "companyField": "Company Field",
+        "frequency": "Notification Frequency",
+        "frequencyRequired": "Please select notification frequency",
+        "notifyByEmail": "Notify by Email",
+        "notifyByApp": "Notify by App",
+        "searchCriteria": "Search Criteria",
+        "notificationOptions": "Notification Options"
+      },
+      "messages": {
+        "createSuccess": "Job alert created successfully",
+        "createError": "Failed to create job alert",
+        "updateSuccess": "Job alert updated successfully",
+        "updateError": "Failed to update job alert",
+        "deleteSuccess": "Job alert deleted successfully",
+        "deleteError": "Failed to delete job alert",
+        "confirmDelete": "Are you sure you want to delete this job alert?"
+      },
+      "help": {
+        "title": "Job Alert Help",
+        "jobTitle": "Enter job titles to receive alerts for positions with similar titles.",
+        "minSalary": "Enter minimum salary to filter jobs that meet your salary requirements.",
+        "level": "Select levels appropriate to your experience and skills.",
+        "notification": "Choose how you want to receive notifications (email, app or both)."
+      }
     },
-    "role": {
-        "admin": "Admin",
-        "employer": "Employer",
-        "student": "Student"
-    },
-    "student":{
-        "year": "Student year {{year}}",
-        "allowSearch": "Allow search resume",
-        "setupResume": "Setup resume",
-        "menu":{
-            "myResume": "My Resume",
-            "notification": "Notification",
-            "myCompany": "My Company",
-            "myJob": "My Job",
-            "jobAlerts": "Job Alerts",
-            "recommend": "Recommend Jobs",
-            "changePassword": "Change Password"
-        },
-        "layout": {
-            "jobs": {
-                "title": "Jobs",
-                "newest": "Newest Jobs",
-                "search": "Search Jobs",
-                "noJob": "No job",
-                "noVideo": "No video"
     "recommend": {
       "title": "Recommend Jobs",
       "description": "Recommend jobs for you based on your activity on the system. Please select a job to view details!"
@@ -214,64 +209,6 @@
               "placeholder": "Enter interview location",
               "required": "Please enter interview location!"
             }
-        },
-        "jobAlerts": {
-            "title": "Job Alerts",
-            "create": "Create Job Alert",
-            "edit": "Edit Job Alert",
-            "manage": "Manage Job Alerts",
-            "frequency": {
-                "daily": "Daily",
-                "weekly": "Weekly",
-                "monthly": "Monthly"
-            },
-            "notificationMethods": {
-                "email": "Email",
-                "app": "App"
-            },
-            "form": {
-                "jobTitle": "Job Title",
-                "jobTitlePlaceholder": "Enter job title you want to receive alerts for",
-                "location": "Location",
-                "locationPlaceholder": "Enter work location",
-                "jobCategory": "Job Category",
-                "jobCategoryRequired": "Please select at least one job category",
-                "minSalary": "Minimum Salary",
-                "level": "Level",
-                "companyField": "Company Field",
-                "frequency": "Notification Frequency",
-                "frequencyRequired": "Please select notification frequency",
-                "notifyByEmail": "Notify by Email",
-                "notifyByApp": "Notify by App",
-                "searchCriteria": "Search Criteria",
-                "notificationOptions": "Notification Options"
-            },
-            "messages": {
-                "createSuccess": "Job alert created successfully",
-                "createError": "Failed to create job alert",
-                "updateSuccess": "Job alert updated successfully",
-                "updateError": "Failed to update job alert",
-                "deleteSuccess": "Job alert deleted successfully",
-                "deleteError": "Failed to delete job alert",
-                "confirmDelete": "Are you sure you want to delete this job alert?"
-            },
-            "help": {
-                "title": "Job Alert Help",
-                "jobTitle": "Enter job titles to receive alerts for positions with similar titles.",
-                "minSalary": "Enter minimum salary to filter jobs that meet your salary requirements.",
-                "level": "Select levels appropriate to your experience and skills.",
-                "notification": "Choose how you want to receive notifications (email, app or both)."
-            }
-        },
-        "recommend": {
-            "title": "Recommend Jobs",
-            "description": "Recommend jobs for you based on your activity on the system. Please select a job to view details!"
-        }
-    },
-    "employer":{
-        "applicant":{
-            "listJob": {
-                "notice": "Please post a job to view applicants"
           },
           "additionalInfo": {
             "label": "Additional Information",
@@ -1273,64 +1210,5 @@
     "permission_required": "Permission Required",
     "permission_instruction": "Please grant camera and microphone access to join the meeting",
     "try_again": "Try Again"
-  },
-  "forum": {
-    "title": "Forum",
-    "listForum": {
-      "title": "A list of forums",
-      "search": "Search forum",
-      "create": "Create forum",
-      "edit": "Edit forum",
-      "delete": "Delete forum",
-      "createDate": "Published at"
-    }
-  },
-  "topic": {
-    "ADMIN": "Admin",
-    "STUDENT": "Student",
-    "EMPLOYER": "Employer",
-    "search": "Search topic",
-    "addTopic": "Create topic",
-    "filter": "Filter topic",
-    "createError": "Create topic failed"
-  },
-  "post": {
-    "create": "Create post",
-    "placeholder": "Enter your post content here...",
-    "update": "Update post",
-    "updateError": "Update post failed",
-    "delete": "Delete post",
-    "deleteConfirm": "Are you sure you want to delete this post?",
-    "deleteError": "Delete post failed",
-    "topic": "Topic",
-    "description": "Description",
-    "content": "Content",
-    "tags": "Tags",
-    "statistic": "Statistic",
-    "createdAt": "Published at",
-    "updatedAt": "Updated at",
-    "post": "Post",
-    "viewCount": "View count",
-    "inforTopic": "Topic information",
-    "inforPost": "Post information",
-    "lastUpdate": "Last updated",
-    "share": "Share",
-    "comment": "Comment",
-    "writeComment": "Write a comment",
-    "noComment": "No comments yet. Be the first to comment!"
-  },
-  "comment": {
-    "delete": "Delete comment",
-    "deleteConfirm": "Are you sure you want to delete this comment?",
-    "deleteError": "Delete comment failed",
-    "reply": "Reply",
-    "login": "Login to comment"
-  },
-  "tag": {
-    "create": "Create tag",
-    "edit": "Edit tag",
-    "delete": "Delete tag",
-    "createSuccess": "Create tag successfully",
-    "createError": "Create tag failed"
   }
 }
