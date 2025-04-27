@@ -30,7 +30,7 @@ const ReactionPicker = ({
                 selected === r.emoji && "scale-110"
               )}
               title={r.label}
-              onClick={() => onEmojiClick(r.emoji)}
+              onClick={(e) => onEmojiClick(r.emoji, e)}
             >
               {r.emoji}
             </button>
@@ -40,7 +40,7 @@ const ReactionPicker = ({
     >
       <Button
         type="text"
-        onClick={onButtonClick}
+        onClick={(e) => onButtonClick(e)}
         className={`p-2 transition-all bg-gray-100 border rounded-full hover:bg-gray-200 ${classNameIcon}`}
       >
         {selected ? selected : <LikeOutlined className={classNameIcon} />}

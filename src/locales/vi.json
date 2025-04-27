@@ -1155,6 +1155,13 @@
     "createError": "Tạo chủ đề thất bại"
   },
   "post": {
+    "create": "Tạo bài viết",
+    "placeholder": "Nhập nội dung bài viết của bạn ở đây...",
+    "update": "Cập nhật bài viết",
+    "updateError": "Cập nhật bài viết thất bại",
+    "delete": "Xóa bài viết",
+    "deleteConfirm": "Bạn có chắc chắn muốn xóa bài viết này?",
+    "deleteError": "Xóa bài viết thất bại",
     "topic": "Chủ đề",
     "description": "Mô tả",
     "content": "Nội dung",
@@ -1174,7 +1181,11 @@
   },
   "comment": {
     "reply": "Trả lời",
-    "login": "Đăng nhập để bình luận"
+    "login": "Đăng nhập để bình luận",
+    "delete": "Xóa bình luận",
+    "deleteConfirm": "Bạn có chắc chắn muốn xóa bình luận này?",
+    "deleteError": "Xóa bình luận thất bại",
+    "deleteSuccess": "Xóa bình luận thành công"
   },
   "tag": {
     "create": "Tạo thẻ",

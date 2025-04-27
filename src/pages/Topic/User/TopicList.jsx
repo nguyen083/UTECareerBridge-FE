@@ -19,6 +19,8 @@ import {
   Pagination,
   message,
   Spin,
+  Row,
+  Col,
 } from "antd";
 import {
   PlusOutlined,
@@ -35,7 +37,12 @@ import {
   CalendarOutlined,
   FilterOutlined,
 } from "@ant-design/icons";
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import {
+  Link,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import { formatDate } from "../../../utils/day";
 import CustomizeQuill from "../../../components/Generate/CustomizeQuill";
 import { Newspaper } from "lucide-react";
@@ -208,10 +215,7 @@ const TopicList = () => {
               ]}
             />
             <div className="flex items-center gap-2 md:hidden">
-              <Button
-                icon={<MenuOutlined />}
-                // onClick={() => setIsFilterDrawerVisible(true)}
-              />
+              <Button icon={<MenuOutlined />} />
             </div>
           </div>
         </div>
@@ -534,10 +538,14 @@ const TopicList = () => {
 const TopicCard = ({ topic }) => {
   const { t } = useTranslation();
   const { forumId } = useParams();
+  const navigate = useNavigate();
   return (
     <Card
       key={topic?.topicId}
-      className="mb-4 transition-shadow duration-300 hover:shadow-md"
+      onClick={() => {
+        navigate(`/forums/${forumId}/topics/${topic?.topicId}/posts`);
+      }}
+      className="mb-4 transition-shadow duration-300 cursor-pointer hover:shadow-md"
       bodyStyle={{ padding: "16px" }}
     >
       <div className="flex items-start">
@@ -548,30 +556,33 @@ const TopicCard = ({ topic }) => {
           </Tag>
         </div>
         <div className="flex-grow">
-          <div className="flex items-center gap-2 mb-1">
-            {topic?.pinned && (
-              <Tooltip title="Chủ đề ghim">
-                <PushpinOutlined className="text-red-500" />
-              </Tooltip>
-            )}
-            <Link
-              to={`/forums/${forumId}/topics/${topic?.topicId}/posts`}
-              className="text-lg font-medium hover:text-text-color-hover text-text-color"
-            >
-              {topic?.title}
-            </Link>
-          </div>
-          <div className="flex flex-wrap justify-end gap-1 mb-2">
-            {topic?.tags?.map((tag) => (
-              <Tag
-                key={tag.tagId}
-                color="blue"
-                className="cursor-pointer hover:opacity-80"
-              >
-                {tag.name}
-              </Tag>
-            ))}
-          </div>
+          <Row>
+            <Col span={18}>
+              <div className="flex items-center gap-2 mb-1">
+                {topic?.pinned && (
+                  <Tooltip title="Chủ đề ghim">
+                    <PushpinOutlined className="text-red-500" />
+                  </Tooltip>
+                )}
+                <span className="text-lg font-medium hover:text-text-color-hover text-text-color">
+                  {topic?.title}
+                </span>
+              </div>
+            </Col>
+            <Col span={6}>
+              <div className="flex flex-wrap justify-end gap-1 mb-2">
+                {topic?.tags?.map((tag) => (
+                  <Tag
+                    key={tag.tagId}
+                    color="blue"
+                    className="cursor-pointer hover:opacity-80"
+                  >
+                    {tag.name}
+                  </Tag>
+                ))}
+              </div>
+            </Col>
+          </Row>
           <HtmlContent htmlString={truncate(topic?.content, 300)} />
           <div className="flex flex-wrap items-center justify-between text-xs text-gray-500">
             <div className="flex items-center gap-4">

@@ -22,13 +22,17 @@ import {
   HomeOutlined,
   ClockCircleOutlined,
   ArrowUpOutlined,
-  MenuOutlined,
   InfoCircleOutlined,
   PushpinOutlined,
   UserOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
-import { useParams, Link, useSearchParams } from "react-router-dom";
+import {
+  useParams,
+  Link,
+  useSearchParams,
+  useNavigate,
+} from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import HtmlContent from "../../../components/Generate/HtmlContent";
 import { Newspaper } from "lucide-react";
@@ -137,9 +141,6 @@ const UserPostList = () => {
                 },
               ]}
             />
-            <div className="flex items-center gap-2 md:hidden">
-              <Button icon={<MenuOutlined />} onClick={() => {}} />
-            </div>
           </div>
         </div>
       </div>
@@ -167,7 +168,7 @@ const UserPostList = () => {
                     setIsModalVisible(!isModalVisible);
                   }}
                 >
-                  Tạo bài viết
+                  {t("post.create")}
                 </Button>
               </Flex>
               {/* Posts */}
@@ -219,13 +220,18 @@ const UserPostList = () => {
             type="primary"
             onClick={() => form.submit()}
           >
-            Tạo bài viết
+            {t("post.create")}
           </Button>
         }
       >
-        <Form form={form} layout="vertical" onFinish={handleCreatePost}>
-          <Form.Item name="content" label="Bài viết">
-            <CustomizeQuill />
+        <Form
+          className="m-4"
+          form={form}
+          layout="vertical"
+          onFinish={handleCreatePost}
+        >
+          <Form.Item name="content" label={t("post.content")}>
+            <CustomizeQuill placeholder={t("post.placeholder")} />
           </Form.Item>
         </Form>
       </Modal>
@@ -236,6 +242,7 @@ const UserPostList = () => {
 const PostItem = ({ post }) => {
   const { forumId, topicId } = useParams();
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { data: reactionByUserId, refetch: refetchUserReaction } =
     useGetReactionByUserId(post.postId);
   const { data: reactionCount, refetch: refetchReactionCount } =
@@ -308,7 +315,8 @@ const PostItem = ({ post }) => {
   }, [reactionCount]);
 
   // Handle direct button click (like/unlike toggle)
-  const handleDirectButtonClick = () => {
+  const handleDirectButtonClick = (e) => {
+    e.stopPropagation();
     if (currentReaction) {
       // If already has a reaction, remove it
       deleteReaction(post.postId, {
@@ -336,7 +344,8 @@ const PostItem = ({ post }) => {
   };
 
   // Handle choosing a specific reaction from the picker
-  const handleReactionPick = (newEmoji) => {
+  const handleReactionPick = (newEmoji, e) => {
+    e.stopPropagation();
     // If clicking the same reaction, remove it
     if (newEmoji === currentReaction) {
       // Remove reaction
@@ -389,7 +398,8 @@ const PostItem = ({ post }) => {
   };
 
   // Handle opening modal
-  const handleOpenModal = () => {
+  const handleOpenModal = (e) => {
+    e.stopPropagation();
     setModal(true);
     refetchReactions();
   };
@@ -399,7 +409,10 @@ const PostItem = ({ post }) => {
       <Card
         key={post.postId}
         id={`post-${post.postId}`}
-        className="mb-4 transition-shadow duration-300 shadow-sm hover:shadow-md"
+        className="mb-4 transition-shadow duration-300 shadow-sm cursor-pointer hover:shadow-md"
+        onClick={() => {
+          navigate(`/forums/${forumId}/topics/${topicId}/posts/${post.postId}`);
+        }}
       >
         {/* Rest of the Card component structure */}
         <div className="flex flex-row">
@@ -422,11 +435,11 @@ const PostItem = ({ post }) => {
           </div>
           {/* Post content */}
           <div className="flex flex-col justify-between flex-1 md:pl-4">
-            <Link
+            <div
               to={`/forums/${forumId}/topics/${topicId}/posts/${post.postId}`}
             >
               <HtmlContent htmlString={truncate(post.content, 300)} />
-            </Link>
+            </div>
 
             <div>
               <Divider className="my-2" />
@@ -567,13 +580,13 @@ const TopicHeader = ({ topic }) => {
       <Card className="shadow-sm">
         <div>
           <Flex justify="space-between">
-            <Flex align="center" gap={32}>
-              <Title level={2} className="mb-1 !text-text-color">
-                {topic?.title}
-              </Title>
+            <Flex align="center" gap={16}>
               {topic?.pinned && (
                 <PushpinOutlined className="mb-[15px] text-red-500 text-3xl" />
               )}
+              <Title level={2} className="mb-1 !text-text-color">
+                {topic?.title}
+              </Title>
             </Flex>
             <Button
               type="text"

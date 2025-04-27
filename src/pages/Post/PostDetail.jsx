@@ -15,6 +15,8 @@ import {
   Empty,
   Spin,
   Tabs,
+  Flex,
+  Form,
 } from "antd";
 import {
   HomeOutlined,
@@ -24,13 +26,19 @@ import {
   ArrowUpOutlined,
   UserOutlined,
   SendOutlined,
+  EditOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import ReactionPicker from "../../components/Generate/ReactionPicker";
 import HtmlContent from "./../../components/Generate/HtmlContent";
 import { useForumDetail } from "../../composables/forum";
 import { useTopicDetail } from "../../composables/topic";
-import { usePostDetail } from "../../composables/post";
+import {
+  useDeletePost,
+  usePostDetail,
+  useUpdatePost,
+} from "../../composables/post";
 import { t } from "i18next";
 import { formatDateTime } from "../../utils/day";
 import {
@@ -47,6 +55,7 @@ import {
   useGetReactionByPostId,
   useGetReactionByUserId,
 } from "../../composables/reaction";
+import CustomizeQuill from "../../components/Generate/CustomizeQuill";
 
 const { Text } = Typography;
 const { TextArea } = Input;
@@ -89,7 +98,13 @@ const PostDetail = () => {
     refetch: refetchReactions,
     isPending: isPendingGetReactions,
   } = useGetReactionByPostId(postId);
-
+  const user = useSelector((state) => state.user);
+  const [isUpdatePostModalVisible, setIsUpdatePostModalVisible] =
+    useState(false);
+  const [form] = Form.useForm();
+  const { mutate: updatePost, isPending: isPendingUpdatePost } =
+    useUpdatePost();
+  const { mutate: deletePost } = useDeletePost();
   // Reaction emoji mapping
   const mapReaction = {
     LIKE: "👍",
@@ -119,6 +134,14 @@ const PostDetail = () => {
     }
   }, [reactionByUserId]);
 
+  useEffect(() => {
+    if (isUpdatePostModalVisible) {
+      form.setFieldsValue({
+        content: post?.data?.content,
+      });
+    }
+  }, [isUpdatePostModalVisible]);
+
   // Process reaction count data
   useEffect(() => {
     if (reactionCount?.data) {
@@ -146,7 +169,8 @@ const PostDetail = () => {
   }, [reactionCount]);
 
   // Handle direct button click (like/unlike toggle)
-  const handleDirectButtonClick = () => {
+  const handleDirectButtonClick = (e) => {
+    e.stopPropagation();
     if (currentReaction) {
       // If already has a reaction, remove it
       deleteReaction(postId, {
@@ -174,7 +198,8 @@ const PostDetail = () => {
   };
 
   // Handle choosing a specific reaction from the picker
-  const handleReactionPick = (newEmoji) => {
+  const handleReactionPick = (newEmoji, e) => {
+    e.stopPropagation();
     // If clicking the same reaction, remove it
     if (newEmoji === currentReaction) {
       // Remove reaction
@@ -315,6 +340,42 @@ const PostDetail = () => {
     refetchReactions();
   };
 
+  const handleUpdatePost = (values) => {
+    updatePost(
+      {
+        id: postId,
+        params: {
+          content: values.content,
+          topicId: +topicId,
+        },
+      },
+      {
+        onSuccess: () => {
+          setIsUpdatePostModalVisible(false);
+          queryClient.refetchQueries({
+            queryKey: ["post", postId],
+          });
+        },
+        onError: () => {
+          message.error(t("post.updateError"));
+        },
+      }
+    );
+  };
+
+  const handleDeletePost = () => {
+    Modal.confirm({
+      title: t("post.delete"),
+      content: t("post.deleteConfirm"),
+      centered: true,
+      onOk: () => {
+        deletePost(postId, {
+          onSuccess: () => {},
+        });
+      },
+    });
+  };
+
   useEffect(() => {
     if (commentsData?.data && page !== 1) {
       setComments([...comments, ...commentsData.data.content]);
@@ -376,8 +437,8 @@ const PostDetail = () => {
               {post && (
                 <Card className="mb-6 shadow-sm">
                   {/* Post header */}
-                  <div className="flex items-start justify-between mb-6">
-                    <div className="flex items-start">
+                  <div className="flex items-start justify-between w-full mb-6">
+                    <div className="flex items-center w-full">
                       <div className="flex flex-col items-center gap-2">
                         <Avatar
                           src={post.data?.avatar}
@@ -388,7 +449,7 @@ const PostDetail = () => {
                           {t(`role.${post.data?.roleName}`)}
                         </Tag>
                       </div>
-                      <div>
+                      <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <Text strong className="text-lg">
                             {post.data?.userName}
@@ -407,11 +468,26 @@ const PostDetail = () => {
                           )}
                         </div>
                       </div>
+                      {post.data.userId === user.userId && (
+                        <Flex className="gap-2 justify-self-end">
+                          <Button
+                            type="text"
+                            icon={<EditOutlined />}
+                            onClick={() => setIsUpdatePostModalVisible(true)}
+                          />
+                          <Button
+                            type="text"
+                            danger
+                            icon={<DeleteOutlined />}
+                            onClick={handleDeletePost}
+                          />
+                        </Flex>
+                      )}
                     </div>
                   </div>
 
                   {/* Post content */}
-                  <HtmlContent htmlString={post.data?.content} />
+                  <HtmlContent htmlString={post?.data?.content} />
 
                   {/* Post footer */}
                   <div className="flex justify-between pt-4 border-t">
@@ -477,7 +553,33 @@ const PostDetail = () => {
                 </Card>
               )}
             </Skeleton>
-
+            {/* Update post */}
+            <Modal
+              width={1000}
+              centered
+              open={isUpdatePostModalVisible}
+              onCancel={() => setIsUpdatePostModalVisible(false)}
+              footer={
+                <Button
+                  loading={isPendingUpdatePost}
+                  type="primary"
+                  onClick={() => form.submit()}
+                >
+                  {t("post.update")}
+                </Button>
+              }
+            >
+              <Form
+                className="m-4"
+                form={form}
+                layout="vertical"
+                onFinish={handleUpdatePost}
+              >
+                <Form.Item name="content" label={t("post.content")}>
+                  <CustomizeQuill placeholder={t("post.placeholder")} />
+                </Form.Item>
+              </Form>
+            </Modal>
             {/* Comments */}
             <Modal
               open={isModalVisible}

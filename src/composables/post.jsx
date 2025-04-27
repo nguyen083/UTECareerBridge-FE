@@ -55,10 +55,17 @@ export const useCreatePost = () => {
 export const useUpdatePost = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (post) => post.updatePost(post),
-    onSuccess: () => {
+    mutationFn: ({ id, params }) => post.updatePost(id, params),
+    onSuccess: (_, { id }) => {
       queryClient.invalidateQueries({
-        queryKey: ["posts", "postsByTopicId", "searchPosts"],
+        queryKey: ["post", id],
+      });
+
+      queryClient.invalidateQueries({
+        predicate: (query) =>
+          query.queryKey[0] === "posts" ||
+          query.queryKey[0] === "postsByTopicId" ||
+          query.queryKey[0] === "searchPosts",
       });
     },
   });

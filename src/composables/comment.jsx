@@ -1,4 +1,9 @@
-import { useMutation, useQuery, keepPreviousData } from "@tanstack/react-query";
+import {
+  useMutation,
+  useQuery,
+  keepPreviousData,
+  useQueryClient,
+} from "@tanstack/react-query";
 import comment from "../services/api/comment";
 
 export const useGetCommentRootByPostId = (postId, page) => {
@@ -28,5 +33,31 @@ export const useGetCommentChildrenByCommentId = (commentId, page) => {
 export const useCreateComment = () => {
   return useMutation({
     mutationFn: (params) => comment.createComment(params),
+  });
+};
+
+export const useUpdateComment = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ commentId, data }) => comment.updateComment(commentId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["commentsRoot"],
+        exact: false,
+      });
+    },
+  });
+};
+
+export const useDeleteComment = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ commentId }) => comment.deleteComment(commentId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["commentsRoot"],
+        exact: false,
+      });
+    },
   });
 };

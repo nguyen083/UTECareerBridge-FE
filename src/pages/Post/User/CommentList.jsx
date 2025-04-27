@@ -1,11 +1,17 @@
 "use client";
 
-import { Avatar, Typography, Button, Input, message } from "antd";
-import { MessageOutlined, SendOutlined, UserOutlined } from "@ant-design/icons";
+import { Avatar, Typography, Button, Input, message, Modal } from "antd";
+import {
+  DeleteOutlined,
+  MessageOutlined,
+  SendOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { useEffect, useState } from "react";
 import {
   useCreateComment,
+  useDeleteComment,
   useGetCommentChildrenByCommentId,
 } from "../../../composables/comment";
 import { useNavigate } from "react-router-dom";
@@ -62,6 +68,7 @@ const CommentList = ({
 
 // Component for rendering a child comment with its own replies
 const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
+  const user = useSelector((state) => state.user);
   const [isReply, setIsReply] = useState(false);
   const [commentText, setCommentText] = useState("");
   const [replyComments, setReplyComments] = useState([]);
@@ -78,7 +85,8 @@ const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
   } = useGetCommentChildrenByCommentId(childComment.commentId, page);
   const student = useSelector((state) => state.student);
   const employer = useSelector((state) => state.employer);
-
+  const { mutate: deleteComment, isPending: isDeletingComment } =
+    useDeleteComment();
   const handleCommentSubmit = () => {
     createComment(
       {
@@ -124,9 +132,29 @@ const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
     }
   }, [page]);
 
+  const handleDeleteComment = (commentId) => {
+    Modal.confirm({
+      title: t("comment.delete"),
+      content: t("comment.deleteConfirm"),
+      centered: true,
+      onOk: () => {
+        deleteComment(
+          { commentId },
+          {
+            onSuccess: () => {
+              message.success(t("comment.deleteSuccess"));
+            },
+            onError: () => {
+              message.error(t("comment.deleteError"));
+            },
+          }
+        );
+      },
+    });
+  };
   return (
     <div className="mb-2">
-      <div className="flex items-start">
+      <div className="flex items-start gap-2">
         <Avatar
           src={childComment.avatar}
           icon={<UserOutlined />}
@@ -175,6 +203,18 @@ const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
             </div>
           )}
         </div>
+        {(user.userId === childComment.userId ||
+          user.userId === post.data.userId ||
+          user.role === "admin") && (
+          <Button
+            type="text"
+            size="small"
+            onClick={() => handleDeleteComment(childComment.commentId)}
+            loading={isDeletingComment}
+            icon={<DeleteOutlined />}
+            className="text-xs text-gray-500"
+          ></Button>
+        )}
       </div>
 
       {/* Third level replies */}
@@ -203,6 +243,18 @@ const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
                   </span>
                 </div>
               </div>
+              {(user.userId === replyComment.userId ||
+                user.userId === post.data.userId ||
+                user.role === "admin") && (
+                <Button
+                  type="text"
+                  size="small"
+                  onClick={() => handleDeleteComment(replyComment.commentId)}
+                  loading={isDeletingComment}
+                  icon={<DeleteOutlined />}
+                  className="text-xs text-gray-500"
+                ></Button>
+              )}
             </div>
           ))}
 
@@ -257,6 +309,7 @@ const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
 };
 
 const CommentItem = ({ comment, post, isOpenModal }) => {
+  const user = useSelector((state) => state.user);
   const [replyCommentCount, setReplyCommentCount] = useState(
     comment.replyCount
   );
@@ -271,6 +324,8 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
     isFetching: isFetchingCommentChild,
     refetch: refetchCommentChild,
   } = useGetCommentChildrenByCommentId(comment.commentId, page);
+  const { mutate: deleteComment, isPending: isDeletingComment } =
+    useDeleteComment();
   const [isFetchingMoreCommentChild, setIsFetchingMoreCommentChild] =
     useState(false);
   const [commentChild, setCommentChild] = useState([]);
@@ -297,6 +352,26 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
         },
       }
     );
+  };
+  const handleDeleteComment = (commentId) => {
+    Modal.confirm({
+      title: t("comment.delete"),
+      content: t("comment.deleteConfirm"),
+      centered: true,
+      onOk: () => {
+        deleteComment(
+          { commentId },
+          {
+            onSuccess: () => {
+              message.success(t("comment.deleteSuccess"));
+            },
+            onError: () => {
+              message.error(t("comment.deleteError"));
+            },
+          }
+        );
+      },
+    });
   };
   useEffect(() => {
     if (!isOpenModal) {
@@ -328,7 +403,7 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
   }, [isFetchingCommentChild]);
   return (
     <div className="mb-3">
-      <div className="flex items-start">
+      <div className="flex items-start gap-2">
         <Avatar
           src={comment.avatar}
           icon={<UserOutlined />}
@@ -377,6 +452,18 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
             </div>
           )}
         </div>
+        {(user.userId === comment.userId ||
+          user.userId === post.data.userId ||
+          user.role === "admin") && (
+          <Button
+            type="text"
+            size="small"
+            onClick={() => handleDeleteComment(comment.commentId)}
+            loading={isDeletingComment}
+            icon={<DeleteOutlined />}
+            className="text-xs text-gray-500"
+          ></Button>
+        )}
       </div>
 
       {commentChild.length > 0 && (
