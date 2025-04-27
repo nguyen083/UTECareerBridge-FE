@@ -41,6 +41,7 @@
   "common": {
     "save": "Lưu",
     "edit": "Chỉnh sửa",
+    "delete": "Xóa",
     "cancel": "Hủy",
     "complete": "Hoàn tất",
     "error": "Lỗi",
@@ -113,8 +114,8 @@
     },
     "jobAlerts": {
       "title": "Thông báo việc làm",
-      "create": "Tạo thông báo việc làm",
-      "edit": "Chỉnh sửa thông báo việc làm",
+      "create": "Tạo thông báo",
+      "edit": "Chỉnh sửa thông báo",
       "manage": "Quản lý thông báo việc làm",
       "frequency": {
         "daily": "Hàng ngày",

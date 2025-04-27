@@ -392,6 +392,18 @@ const App = () => {
                         path="/account-management"
                         element={<AccountManagement />}
                       />
+                      <Route
+                        path="/student/job-alerts"
+                        element={<ManageJobAlerts />}
+                      />
+                      <Route
+                        path="/student/job-alerts/create"
+                        element={<CreateJobAlert />}
+                      />
+                      <Route
+                        path="/student/job-alerts/edit/:id"
+                        element={<EditJobAlert />}
+                      />
                     </Route>
                     <Route element={<ViewLayout width="90%" />}>
                       <Route path="/job/:id" element={<ViewJob />} />
@@ -432,32 +444,7 @@ const App = () => {
                   >
                     <Route index element={<EmployerRegister />} />
                   </Route>
-                  <Route element={<PersonalLayout />}>
-                    <Route path="/profile" element={<ProfilePage />} />
-                    <Route path="/my-company" element={<MyCompanyPage />} />
-                    <Route path="/notification" element={<Notification />} />
-                    <Route
-                      path="/notification/:id"
-                      element={<DetailNotification />}
-                    />
-                    <Route path="/my-job" element={<MyJobPage />} />
-                    <Route
-                      path="/account-management"
-                      element={<AccountManagement />}
-                    />
-                    <Route
-                      path="/student/job-alerts"
-                      element={<ManageJobAlerts />}
-                    />
-                    <Route
-                      path="/student/job-alerts/create"
-                      element={<CreateJobAlert />}
-                    />
-                    <Route
-                      path="/student/job-alerts/edit/:id"
-                      element={<EditJobAlert />}
-                    />
-                  </Route>
+
                   <Route path="employer" element={<EmployerLayout />}>
                     <Route
                       path=""

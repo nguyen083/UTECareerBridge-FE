@@ -7,7 +7,6 @@ import Lable from "../../../constant/Lable";
 import { useNavigate } from "react-router-dom";
 const { Text } = Typography;
 const FeaturedJobs = ({ jobs }) => {
-
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
 
@@ -45,38 +44,58 @@ const FeaturedJobs = ({ jobs }) => {
         >
           {Array.from({ length: Math.ceil(jobs.length / 9) }, (_, i) => (
             <div key={i} className="carousel-grid">
-              {jobs.length > 0 && jobs.slice(i * 9, i * 9 + 9).map((job, index) => (
-                <div key={index}>
-                  <Card
-
-                    bordered={false}
-                    className="featured-jobs__item border-[#c0c0c069] border flex items-stretch "
-                    hoverable
-                    onClick={() => handleJobClick(job.jobId)}
-                  >
-                    <div className="card-body ">
-                      <div className="card-logo">
-                        <img src={job?.employerResponse?.companyLogo} alt={job?.employerResponse?.companyName} />
+              {jobs.length > 0 &&
+                jobs.slice(i * 9, i * 9 + 9).map((job, index) => (
+                  <div key={index}>
+                    <Card
+                      bordered={false}
+                      className="featured-jobs__item border-[#c0c0c069] border flex items-stretch "
+                      hoverable
+                      onClick={() => handleJobClick(job.jobId)}
+                    >
+                      <div className="card-body ">
+                        <div className="card-logo">
+                          <img
+                            src={job?.employerResponse?.companyLogo}
+                            alt={job?.employerResponse?.companyName}
+                          />
+                        </div>
+                        <div className="card-details">
+                          <Flex
+                            justify="space-between"
+                            align="center"
+                            gap={3}
+                            className="mb-1"
+                          >
+                            <Text className="text-base font-bold job-title">
+                              {job.jobTitle}{" "}
+                            </Text>
+                            {Lable(job.packageId)}
+                          </Flex>
+                          <Text className="text-sm company-name">
+                            {job.employerResponse?.companyName}
+                          </Text>
+                          <Flex
+                            align="center"
+                            gap={3}
+                            style={{
+                              color: "#ff4d4f",
+                              fontSize: 14,
+                              margin: "8px 0",
+                            }}
+                          >
+                            {job.jobMinSalary} - {job.jobMaxSalary}
+                          </Flex>
+                        </div>
                       </div>
-                      <div className="card-details">
-                        <Flex justify='space-between' align="center" gap={3} className="mb-1">
-                          <Text className="text-base font-bold job-title">{job.jobTitle} </Text>
-                          {Lable(job.packageId)}
-                        </Flex>
-                        <Text className="text-sm company-name">{job.employerResponse?.companyName}</Text>
-                        <Flex align='center' gap={3} style={{ color: '#ff4d4f', fontSize: 14, margin: '8px 0' }}>
-                          {job.jobMinSalary.toLocaleString('vi-VN')} - {job.jobMaxSalary.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}  <div style={{ fontSize: 14 }}>/tháng</div>
-                        </Flex>
-                      </div>
-                    </div>
-                  </Card>
-                </div>
-              ))}
+                    </Card>
+                  </div>
+                ))}
             </div>
           ))}
         </Carousel>
-      </div >
-    </section >
+      </div>
+    </section>
   );
 };
 

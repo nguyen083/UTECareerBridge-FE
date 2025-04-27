@@ -64,3 +64,47 @@ export const useDetailNotification = (id) => {
     select: (data) => data.data,
   });
 };
+
+export const useJobAlertByUserId = (params) => {
+  return useQuery({
+    queryKey: ["jobAlertByUserId"],
+    queryFn: () => notification.getJobAlerts(params),
+  });
+};
+
+export const useJobAlertById = (id) => {
+  return useQuery({
+    queryKey: ["jobAlertById", id],
+    queryFn: () => notification.getJobAlertById(id),
+    enabled: false,
+  });
+};
+export const useJobAlertCreate = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => notification.createJobAlert(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["jobAlertByUserId"] });
+    },
+  });
+};
+
+export const useJobAlertUpdate = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (data) => notification.updateJobAlert(data.id, data.values),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["jobAlertByUserId"] });
+    },
+  });
+};
+
+export const useJobAlertDelete = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (id) => notification.deleteJobAlert(id),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["jobAlertByUserId"] });
+    },
+  });
+};

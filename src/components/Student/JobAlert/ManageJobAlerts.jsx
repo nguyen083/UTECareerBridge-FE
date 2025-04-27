@@ -1,254 +1,322 @@
-import { useState, useEffect } from 'react';
-import { Table, Button, Space, Tag, Typography, Modal, message, Switch, Badge, Tooltip } from 'antd';
-import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import BoxContainer from '../../Generate/BoxContainer';
-import notification from '../../../services/api/notification';
-import { getAllJobCategories, getAllJobLevels, getAllIndustry } from '../../../services/apiService';
-import { MdNotificationsActive } from 'react-icons/md';
+import { useState, useEffect } from "react";
+import {
+  Card,
+  Button,
+  Typography,
+  Modal,
+  message,
+  Flex,
+  Row,
+  Col,
+  Pagination,
+  Spin,
+  Empty,
+  Tooltip,
+  Badge,
+  Divider,
+} from "antd";
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ExclamationCircleOutlined,
+  PlusOutlined,
+  DollarOutlined,
+  BankOutlined,
+  TagsOutlined,
+  BellOutlined,
+} from "@ant-design/icons";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import BoxContainer from "../../Generate/BoxContainer";
+import { getAllJobLevels, getAllIndustry } from "../../../services/apiService";
+import { MdNotificationsActive } from "react-icons/md";
+import { clsx } from "clsx";
+import {
+  useJobAlertByUserId,
+  useJobAlertDelete,
+} from "../../../composables/notification";
 
-const { Title, Text } = Typography;
+const { Text } = Typography;
 const { confirm } = Modal;
 
 const ManageJobAlerts = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [jobAlerts, setJobAlerts] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState({});
   const [levels, setLevels] = useState({});
   const [industries, setIndustries] = useState({});
-  const userId = useSelector(state => state.user.userId);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = searchParams.get("page") || 1;
+  const size = searchParams.get("size") || 10;
+  const {
+    data: jobAlerts,
+    isLoading: isLoadingJobAlerts,
+    refetch: refetchJobAlerts,
+  } = useJobAlertByUserId({ page: page - 1, size: size });
+  const { mutate: deleteJobAlert } = useJobAlertDelete();
 
-  // Fetch job alerts
-  const fetchJobAlerts = async () => {
-    setLoading(true);
-    try {
-      const response = await notification.getJobAlerts(userId);
-      if (response.status === 'OK') {
-        setJobAlerts(response.data);
-      } else {
-        message.error('Không thể tải thông báo việc làm');
-      }
-    } catch (error) {
-      console.error('Error fetching job alerts:', error);
-      message.error('Đã xảy ra lỗi khi tải thông báo việc làm');
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Fetch reference data (categories, levels, industries)
-  const fetchReferenceData = async () => {
-    try {
-      // Fetch categories and convert to object for easy lookup
-      const categoriesRes = await getAllJobCategories();
-      const categoriesMap = {};
-      categoriesRes.data.forEach(category => {
-        categoriesMap[category.jobCategoryId] = category.jobCategoryName;
-      });
-      setCategories(categoriesMap);
-
-      // Fetch levels and convert to object for easy lookup
-      const levelsRes = await getAllJobLevels();
+  const fetchReferenceData = () => {
+    getAllJobLevels().then((levelsRes) => {
       const levelsMap = {};
-      levelsRes.data.forEach(level => {
+      levelsRes.data.forEach((level) => {
         levelsMap[level.jobLevelId] = level.nameLevel;
       });
       setLevels(levelsMap);
+    });
 
-      // Fetch industries and convert to object for easy lookup
-      const industriesRes = await getAllIndustry();
+    // Fetch industries and convert to object for easy lookup
+    getAllIndustry().then((industriesRes) => {
       const industriesMap = {};
-      industriesRes.data.forEach(industry => {
+      industriesRes.data.forEach((industry) => {
         industriesMap[industry.industryId] = industry.industryName;
       });
       setIndustries(industriesMap);
-    } catch (error) {
-      console.error('Error fetching reference data:', error);
-    }
+    });
   };
 
-  useEffect(() => {
-    fetchJobAlerts();
-    fetchReferenceData();
-  }, [userId]);
-
-  // Handle delete job alert
   const handleDelete = (alertId) => {
     confirm({
-      title: 'Bạn có chắc chắn muốn xóa thông báo việc làm này?',
+      centered: true,
+      title: t("student.jobAlerts.messages.delete"),
       icon: <ExclamationCircleOutlined />,
-      content: 'Thao tác này không thể hoàn tác.',
-      okText: 'Xóa',
-      okType: 'danger',
-      cancelText: 'Hủy',
+      content: t("student.jobAlerts.messages.deleteConfirm"),
+      okText: t("student.jobAlerts.messages.delete"),
+      okType: "danger",
+      cancelText: t("common.cancel"),
       onOk: async () => {
-        try {
-          const response = await notification.deleteJobAlert(alertId);
-          if (response.status === 'OK') {
-            message.success('Xóa thông báo việc làm thành công');
-            fetchJobAlerts(); // Refresh the list
-          } else {
-            message.error('Không thể xóa thông báo việc làm');
-          }
-        } catch (error) {
-          console.error('Error deleting job alert:', error);
-          message.error('Đã xảy ra lỗi khi xóa thông báo việc làm');
-        }
+        deleteJobAlert(alertId, {
+          onSuccess: () => {
+            message.success(t("student.jobAlerts.messages.deleteSuccess"));
+          },
+          onError: () => {
+            message.error(t("student.jobAlerts.messages.deleteError"));
+          },
+        });
       },
     });
   };
 
-  // Handle edit job alert - navigate to edit page
   const handleEdit = (alertId) => {
     navigate(`/student/job-alerts/edit/${alertId}`);
   };
-  
-  // Handle add new job alert - navigate to create page
+
   const handleAdd = () => {
-    navigate('/student/job-alerts/create');
+    navigate("/student/job-alerts/create");
   };
 
-  // Format frequency for display
   const formatFrequency = (frequency) => {
     const frequencyMap = {
-      'DAILY': 'Mỗi ngày',
-      'WEEKLY': 'Mỗi tuần',
-      'MONTHLY': 'Mỗi tháng'
+      DAILY: "Hàng ngày",
+      WEEKLY: "Hàng tuần",
     };
     return frequencyMap[frequency] || frequency;
   };
 
-  // Format notification methods for display
+  const getFrequencyColor = (frequency) => {
+    const colorMap = {
+      DAILY: "volcano",
+      WEEKLY: "purple",
+    };
+    return colorMap[frequency] || "blue";
+  };
+
   const getNotificationMethods = (alert) => {
     const methods = [];
-    if (alert.notifyByEmail) methods.push('Email');
-    if (alert.notifyByApp) methods.push('Ứng dụng');
-    return methods.join(', ');
+    if (alert.notifyByEmail) methods.push("Email");
+    if (alert.notifyByApp) methods.push("Ứng dụng");
+    return methods.join(", ");
   };
 
-  // Get level names from IDs
   const getLevelNames = (levelIds) => {
-    if (!levelIds || levelIds.length === 0) return 'Tất cả cấp bậc';
-    return levelIds.map(id => levels[id] || `Cấp bậc ${id}`).join(', ');
+    if (!levelIds || levelIds.length === 0) return "Tất cả cấp bậc";
+    if (!Array.isArray(levelIds)) return "Cấp bậc không hợp lệ";
+    return levelIds.map((id) => levels[id] || `Cấp bậc ${id}`).join(", ");
   };
 
-  // Get industry names from IDs
   const getIndustryNames = (industryIds) => {
-    if (!industryIds || industryIds.length === 0) return 'Tất cả lĩnh vực';
-    return industryIds.map(id => industries[id] || `Lĩnh vực ${id}`).join(', ');
+    if (!industryIds || industryIds.length === 0) return "Tất cả lĩnh vực";
+    if (!Array.isArray(industryIds)) return "Lĩnh vực không hợp lệ";
+    return industryIds
+      .map((id) => industries[id] || `Lĩnh vực ${id}`)
+      .join(", ");
   };
 
-  // Table columns
-  const columns = [
-    {
-      title: 'Tiêu chí tìm kiếm',
-      dataIndex: 'jobTitle',
-      key: 'jobTitle',
-      render: (text, record) => (
-        <div>
-          <Text strong>{text || 'Tất cả công việc'}</Text>
-          <div>
-            <Text type="secondary">
-              {categories[record.jobCategoryId] || 'Chưa chọn ngành nghề'}
-            </Text>
-          </div>
-          {record.location && (
-            <Tag color="blue">{record.location}</Tag>
-          )}
-        </div>
-      ),
-    },
-    {
-      title: 'Cấp bậc',
-      dataIndex: 'level',
-      key: 'level',
-      render: (levelIds) => getLevelNames(levelIds),
-    },
-    {
-      title: 'Lương tối thiểu',
-      dataIndex: 'minSalary',
-      key: 'minSalary',
-      render: (salary) => salary ? `${salary.toLocaleString('vi-VN')} VND` : 'Không giới hạn',
-    },
-    {
-      title: 'Lĩnh vực công ty',
-      dataIndex: 'companyField',
-      key: 'companyField',
-      render: (industryIds) => getIndustryNames(industryIds),
-      ellipsis: true,
-    },
-    {
-      title: 'Tần suất',
-      dataIndex: 'frequency',
-      key: 'frequency',
-      render: (frequency) => formatFrequency(frequency),
-    },
-    {
-      title: 'Nhận thông báo qua',
-      key: 'notificationMethods',
-      render: (_, record) => getNotificationMethods(record),
-    },
-    {
-      title: 'Thao tác',
-      key: 'action',
-      render: (_, record) => (
-        <Space size="middle">
-          <Button 
-            icon={<EditOutlined />} 
-            onClick={() => handleEdit(record.id)}
-            type="primary"
-            ghost
-          />
-          <Button 
-            icon={<DeleteOutlined />} 
-            onClick={() => handleDelete(record.id)}
-            type="primary" 
-            danger
-          />
-        </Space>
-      ),
-    },
-  ];
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    fetchReferenceData();
+  }, []);
+
+  useEffect(() => {
+    refetchJobAlerts();
+  }, [searchParams]);
+
+  const handlePageChange = (page, pageSize) => {
+    searchParams.set("page", page);
+    searchParams.set("size", pageSize);
+    setSearchParams(searchParams);
+  };
 
   return (
-    <>
+    <Flex vertical gap={16}>
       <BoxContainer width="100%" className="shadow-md">
-        <div className="title1 flex items-center justify-between">
-          <div className="flex items-center">
-            <MdNotificationsActive size={24} className="mr-2" />
-            Quản lý thông báo việc làm
+        <div className="flex items-center justify-between mb-12 title1">
+          <div className="flex items-center text-text-color">
+            <MdNotificationsActive size={24} className="mr-2 text-text-color" />
+            {t("student.jobAlerts.manage")}
           </div>
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={handleAdd}
-          >
-            Tạo mới
+          <Button type="primary" icon={<PlusOutlined />} onClick={handleAdd}>
+            {t("student.jobAlerts.create")}
           </Button>
         </div>
-      </BoxContainer>
+        {isLoadingJobAlerts ? (
+          <div className="flex items-center justify-center py-16">
+            <Spin size="large" />
+          </div>
+        ) : !jobAlerts?.data?.content || jobAlerts.data.content.length === 0 ? (
+          <Empty
+            description={t("student.jobAlerts.messages.emptyText")}
+            className="py-8"
+          />
+        ) : (
+          <>
+            <Row gutter={[16, 16]} className="pb-6">
+              {jobAlerts.data.content.map((alert) => (
+                <Col xs={24} key={alert.id}>
+                  <Badge.Ribbon
+                    text={formatFrequency(alert.frequency)}
+                    color={getFrequencyColor(alert.frequency)}
+                  >
+                    <Card
+                      hoverable
+                      className={clsx(
+                        `relative overflow-hidden transition-all duration-300 border-l-4 group hover:shadow-lg border-l-text-color-hover`
+                      )}
+                    >
+                      <div className="absolute flex gap-2 space-x-1 transition-opacity duration-200 opacity-70 bottom-4 right-2 group-hover:opacity-100">
+                        {/* Chỉnh sửa */}
+                        <Tooltip title={t("common.edit")}>
+                          <Button
+                            type="text"
+                            size="small"
+                            icon={<EditOutlined className="text-blue-500" />}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleEdit(alert.id);
+                            }}
+                          />
+                        </Tooltip>
+                        {/* Xóa */}
+                        <Tooltip title={t("common.delete")}>
+                          <Button
+                            type="text"
+                            size="small"
+                            icon={<DeleteOutlined className="text-red-500" />}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDelete(alert.id);
+                            }}
+                          />
+                        </Tooltip>
+                      </div>
 
-      <BoxContainer width="100%" className="shadow-md">
-        <Table
-          columns={columns}
-          dataSource={jobAlerts}
-          rowKey="id"
-          loading={loading}
-          locale={{
-            emptyText: 'Bạn chưa tạo thông báo việc làm nào. Tạo ngay để nhận thông tin công việc phù hợp!'
-          }}
-          pagination={{
-            pageSize: 10,
-            showSizeChanger: true,
-            pageSizeOptions: ['10', '20', '50'],
-          }}
-        />
+                      <Flex align="center" gap={20}>
+                        <div className="flex-1 min-w-0">
+                          {/* Tên công việc */}
+                          <Text
+                            strong
+                            className="block mb-2 text-base font-semibold"
+                          >
+                            {alert.jobTitle ||
+                              t("student.jobAlerts.form.allJobs")}
+                          </Text>
+                          <Divider type="horizontal" className="my-3" />
+                          <Flex wrap="wrap" gap={16} className="!text-sm">
+                            {/* Cấp bậc */}
+                            <Row gutter={[16, 16]}>
+                              <Col>
+                                <Flex align="center" gap={2}>
+                                  <TagsOutlined className="text-green-600 !text-lg" />
+                                  <Text type="secondary" className="!text-sm">
+                                    {t("student.jobAlerts.form.level")}:
+                                  </Text>
+                                  <Text
+                                    className="!text-sm"
+                                    ellipsis={{
+                                      tooltip: getLevelNames(alert.level),
+                                    }}
+                                  >
+                                    {getLevelNames(alert.level)}
+                                  </Text>
+                                </Flex>
+
+                                {/* Lương tối thiểu */}
+                                <Flex align="center" gap={2} className="mt-2">
+                                  <DollarOutlined className="text-[goldenrod] !text-lg" />
+                                  <Text type="secondary" className="!text-sm">
+                                    {t("student.jobAlerts.form.minSalary")}:
+                                  </Text>
+                                  <Text className="!text-sm">
+                                    {alert.minSalary
+                                      ? `${alert.minSalary.toLocaleString(
+                                          "vi-VN"
+                                        )} VND`
+                                      : "Không giới hạn"}
+                                  </Text>
+                                </Flex>
+                              </Col>
+                              <Col>
+                                {/* Lĩnh vực */}
+                                <Flex align="center" gap={2}>
+                                  <BankOutlined className="text-purple-600 !text-lg" />
+                                  <Text type="secondary" className="!text-sm">
+                                    {t("student.jobAlerts.form.companyField")}:
+                                  </Text>
+                                  <Text
+                                    className="!text-sm"
+                                    ellipsis={{
+                                      tooltip: getIndustryNames(
+                                        alert.companyField
+                                      ),
+                                    }}
+                                  >
+                                    {getIndustryNames(alert.companyField)}
+                                  </Text>
+                                </Flex>
+
+                                {/* Nhận qua */}
+                                <Flex align="center" gap={2} className="mt-2">
+                                  <BellOutlined className="text-blue-500 !text-lg" />
+                                  <Text type="secondary" className="!text-sm">
+                                    {t("student.jobAlerts.form.notifyByApp")}:
+                                  </Text>
+                                  <Text className="!text-sm">
+                                    {getNotificationMethods(alert)}
+                                  </Text>
+                                </Flex>
+                              </Col>
+                            </Row>
+                          </Flex>
+                        </div>
+                      </Flex>
+                    </Card>
+                  </Badge.Ribbon>
+                </Col>
+              ))}
+            </Row>
+
+            <Flex justify="end">
+              <Pagination
+                current={parseInt(page)}
+                pageSize={parseInt(size)}
+                total={jobAlerts?.data?.totalElements || 0}
+                onChange={handlePageChange}
+                showSizeChanger
+                pageSizeOptions={["10", "20", "50"]}
+              />
+            </Flex>
+          </>
+        )}
       </BoxContainer>
-    </>
+    </Flex>
   );
 };
 
