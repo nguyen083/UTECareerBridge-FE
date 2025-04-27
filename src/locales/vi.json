@@ -1,21 +1,22 @@
 {
   "chat_with_employer": "Trò chuyện với nhà tuyển dụng",
-  "job_application_submitted": "Tin tuyển dụng đã ứng tuyển",
+  "job_application_submitted": "Đã nộp đơn ứng tuyển",
   "find_company_name_employer": "Tìm tên công ty, nhà tuyển dụng",
-  "no_message": "không có tin nhắn",
-  "choose_conversation": "Chọn cuộc trò chuyện để xem tin nhắn",
-  "no_conversation": "Không có cuộc trò chuyện nào",
-  "end": "Hết",
-  "chat": "Nhắn tin",
-  "no_conversations_found": "Không tìm thấy cuộc trò chuyện nào.",
+  "no_message": "Không có tin nhắn",
+  "choose_conversation": "Chọn một cuộc trò chuyện để bắt đầu chat",
+  "no_convesation": "Không tìm thấy cuộc trò chuyện",
+  "end": "Kết thúc",
+  "chat": "Trò chuyện",
+  "no_conversations_found": "Không tìm thấy cuộc trò chuyện.",
   "enter_message": "Nhập tin nhắn...",
   "list_applicant": "Danh sách ứng viên",
   "list_conversation": "Danh sách cuộc trò chuyện",
-  "top_companies": "Công ty hàng đầu",
-  "hot_categories": "Nghành nghề trọng điểm",
+  "top_applicants": "Ứng viên nổi bật",
+  "top_companies": "Công ty nổi bật",
+  "hot_categories": "Ngành nghề hot",
   "newest_jobs": "Việc làm mới nhất",
-  "urgent_jobs": "Việc làm tuyển gấp",
-  "build_your_branch": "Cùng UTE-Career xây dựng thương hiệu cá nhân",
+  "urgent_jobs": "Việc làm gấp",
+  "build_your_branch": "Xây dựng thương hiệu cá nhân của bạn với UTE-Career",
   "follow_company": "Theo dõi công ty",
   "my_company": "Công ty của tôi",
   "marquee": "Khởi đầu sự nghiệp, tìm việc dễ dàng - Cơ hội nghề nghiệp dành cho bạn ngay hôm nay!",
@@ -105,7 +106,39 @@
     },
     "recommend": {
       "title": "Việc được đề xuất",
-      "description": "Việc làm được đề xuất cho bạn dựa trên các hoạt động của bạn trên hệ thống. Vui lòng chọn việc làm để xem chi tiết!"
+      "subtitle": "Công việc được cá nhân hóa bởi AI dựa trên hồ sơ và sở thích của bạn",
+      "description": "Việc làm được đề xuất cho bạn dựa trên các hoạt động của bạn trên hệ thống. Vui lòng chọn việc làm để xem chi tiết!",
+      "loading": "Đang tìm việc làm phù hợp nhất cho bạn...",
+      "noJobs": "Không tìm thấy việc làm đề xuất",
+      "refresh": "Làm mới đề xuất",
+      "refreshBtn": "Làm mới",
+      "toggleAI": "Hiển thị giải thích AI",
+      "matchScore": "Điểm phù hợp AI",
+      "tabs": {
+        "all": "Tất cả đề xuất",
+        "bestMatch": "Phù hợp nhất",
+        "trending": "Xu hướng",
+        "saved": "Đã lưu"
+      },
+      "aiExplanation": {
+        "title": "Tại sao công việc này phù hợp với bạn",
+        "skills": "Kỹ năng phù hợp",
+        "experience": "Kinh nghiệm phù hợp",
+        "location": "Vị trí phù hợp"
+      },
+      "actions": {
+        "like": "Tôi quan tâm việc này",
+        "dislike": "Không quan tâm"
+      },
+      "aiProfile": {
+        "title": "Hồ sơ đề xuất AI",
+        "subtitle": "Cách chúng tôi tìm việc cho bạn",
+        "category": "Lĩnh vực của bạn",
+        "field": "Danh mục nghề nghiệp",
+        "preferences": "Sở thích đã lưu",
+        "tip": "Nhận đề xuất tốt hơn",
+        "tipDescription": "Phản hồi về việc làm bạn thích hoặc không thích để giúp AI hiểu rõ sở thích của bạn và cải thiện đề xuất trong tương lai."
+      }
     }
   },
   "employer": {

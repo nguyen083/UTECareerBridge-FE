@@ -270,6 +270,30 @@ const App = () => {
               defaultColor: COLOR.textColor,
               defaultHoverBg: COLOR.cardColor,
             },
+            Card: {
+              colorBorderSecondary: "rgba(0,0,0,0.1)",
+              borderRadiusLG: 8,
+              boxShadowTertiary: "0 4px 15px rgba(0,0,0,0.1)",
+              colorFillAlter: "#f8f9fa",
+              headerFontSize: "1.1rem",
+              headerFontSizeSM: "1rem",
+              headerHeight: 60,
+              headerPadding: "16px 24px",
+            },
+            Statistic: {
+              titleFontSize: "1.1rem",
+              contentFontSize: "2rem",
+              fontFamily: "Be Vietnam Pro",
+            },
+            Table: {
+              cellFontSize: "1rem",
+              headerBg: "#f5f7fa",
+              headerColor: COLOR.textColor,
+              headerFilterHoverBg: "#e8edf5",
+              headerSortActiveBg: "#e8edf5",
+              rowHoverBg: "rgba(68, 120, 192, 0.05)",
+              borderColor: "rgba(0,0,0,0.1)"
+            },
             Menu: {
               fontSize: "1rem",
               iconMarginInlineEnd: "0.625rem",
@@ -283,9 +307,6 @@ const App = () => {
               colorTextHeading: COLOR.textColor,
               fontSize: "1rem",
               fontSizeIcon: "1.25rem",
-            },
-            Table: {
-              cellFontSize: "1rem",
             },
             Tag: {
               fontSizeSM: 14,

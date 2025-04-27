@@ -10,6 +10,10 @@ import {
   Spin,
   message,
   Avatar,
+  Tooltip,
+  Tag,
+  Row,
+  Col,
 } from "antd";
 import HtmlContent from "../Generate/HtmlContent";
 import { useNavigate, useParams } from "react-router-dom";
@@ -22,7 +26,22 @@ import {
 import YouTubeVideo from "../Generate/YouTubeVideo";
 import BenefitCard from "../Generate/BenefitComponent";
 import JobList from "../Generate/JobList";
-import { CheckOutlined } from "@ant-design/icons";
+import { 
+  CheckOutlined, 
+  EnvironmentOutlined, 
+  GlobalOutlined, 
+  PhoneOutlined, 
+  TeamOutlined, 
+  UserOutlined, 
+  MailOutlined,
+  BankOutlined,
+  BuildOutlined,
+  HomeOutlined,
+  FireOutlined,
+  InfoCircleOutlined,
+  VideoCameraOutlined,
+  GiftOutlined
+} from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import { UserPlus } from "lucide-react";
 import "./InforCompany.scss";
@@ -40,61 +59,7 @@ const InforCompany = () => {
   const [isFollow, setIsFollow] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
-  const items = [
-    {
-      key: "1",
-      label: "Quy mô",
-      children: company.companySize,
-    },
-    {
-      key: "2",
-      label: "Lĩnh vực",
-      children: company.industry,
-    },
-    {
-      key: "3",
-      label: "Liên hệ",
-      children: company.gender
-        ? "Chị "
-        : "Anh " + company.firstName + " " + company.lastName,
-    },
-    {
-      key: "4",
-      label: "Số điện thoại",
-      children: company.phoneNumber,
-    },
-    {
-      key: "5",
-      label: "Email",
-      children: company.companyEmail,
-    },
-    {
-      key: "6",
-      label: "Địa chỉ",
-      children: company.companyAddress,
-    },
-    {
-      key: "6",
-      label: "Website",
-      children: (
-        <Link href={company.companyWebsite} target="_blank">
-          {company.companyWebsite}
-        </Link>
-      ),
-    },
-    {
-      key: "7",
-      children: (
-        <Flex vertical gap={"0.5rem"}>
-          {" "}
-          {company?.companyDescription && (
-            <Title level={5}>Mô tả chi tiết</Title>
-          )}
-          <HtmlContent htmlString={company?.companyDescription} />
-        </Flex>
-      ),
-    },
-  ];
+  
   const fetchData = () => {
     try {
       getCompanyById(id).then((res) => {
@@ -135,10 +100,12 @@ const InforCompany = () => {
       }
     }
   };
+  
   useEffect(() => {
     window.scrollTo(0, 0);
     fetchData();
   }, [id]);
+  
   const handleFollow = () => {
     try {
       if (localStorage.getItem("accessToken")) {
@@ -158,6 +125,7 @@ const InforCompany = () => {
       message.error(error.message);
     }
   };
+  
   const handleUnfollow = () => {
     try {
       unfollowCompany(id).then((res) => {
@@ -171,6 +139,7 @@ const InforCompany = () => {
       message.error(error.message);
     }
   };
+  
   return (
     <>
       <Flex
@@ -181,133 +150,220 @@ const InforCompany = () => {
       >
         <Spin spinning={loading} size="large" />
       </Flex>
-      <BoxContainer padding="1rem" hidden={loading} className="shadow-lg">
+      
+      <BoxContainer padding="1rem" hidden={loading} className="shadow-lg company-profile">
         <Card
-          style={{ width: "100%", borderRadius: "10px", overflow: "hidden" }}
+          className="card-container"
           cover={
-            <div
-              style={{
-                height: 350,
-                background: "linear-gradient(90deg, #0046b8, #00aaff)",
-              }}
-            >
+            <div className="company-header">
               <img
+                className="header-image"
                 src={
                   company.backgroundImage
                     ? company.backgroundImage
                     : "https://www.vietnamworks.com/_next/image?url=https%3A%2F%2Fimages.vietnamworks.com%2Fcompany-assets%2Fimages%2Fbanner-default-company.png&w=1920&q=75"
                 }
-                style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                alt={company.companyName}
               />
             </div>
           }
         >
-          <Flex gap={"1rem"} vertical style={{ padding: "0 1rem 1rem 1rem" }}>
-            <Flex align="end" style={{ marginTop: -60 }} gap={"1rem"}>
-              <Avatar
-                preview={false}
-                size={136}
-                src={
-                  company.companyLogo
-                    ? company.companyLogo
-                    : "https://images.vietnamworks.com/img/company-default-logo.svg"
-                }
-                style={{
-                  border: "1px solid gray",
-                  borderRadius: "10px",
-                  objectFit: "cover",
-                  display: "block",
-                  margin: "0 auto",
-                }}
-              />
-              <Flex justify="space-between" style={{ width: "100%" }}>
-                <div>
-                  <Title level={4}>{company.companyName}</Title>
-                  <Text>{company.countFollower} lượt theo dõi</Text>
+          {/* Phần header với logo và thông tin công ty - sử dụng container mới */}
+          <div className="company-info-container">
+            <Row gutter={16} align="bottom" style={{ width: '100%' }}>
+              <Col>
+                <Tooltip title="Logo công ty" placement="bottom">
+                  <Avatar
+                    className="company-logo"
+                    size={120}
+                    src={
+                      company.companyLogo
+                        ? company.companyLogo
+                        : "https://images.vietnamworks.com/img/company-default-logo.svg"
+                    }
+                  />
+                </Tooltip>
+              </Col>
+              <Col flex="1">
+                <div className="company-info">
+                  <Title level={4} className="company-name">{company.companyName}</Title>
+                  <Flex align="center" gap={8}>
+                    <Text className="company-followers">
+                      <span className="follower-count">{company.countFollower}</span> lượt theo dõi
+                    </Text>
+                    <Tag color="blue" className="industry-tag">
+                      <BankOutlined className="tag-icon" /> {company.industry}
+                    </Tag>
+                  </Flex>
                 </div>
-                <Button
-                  size="large"
-                  onClick={isFollow ? handleUnfollow : handleFollow}
-                  type={isFollow ? "default" : "primary"}
-                  className={`
-                                        transition-all duration-300 ease-in-out
-                                        focus:ring-4 focus:ring-blue-300
-                                        font-medium rounded-lg text-sm px-5 py-2.5
-                                        flex items-center justify-center
-                                        w-32 h-10
-                                    `}
-                >
-                  {isFollow ? (
-                    <>
-                      <CheckOutlined className="w-4 h-4 mr-2" />
-                      Đang theo dõi
-                    </>
-                  ) : (
-                    <>
-                      <UserPlus className="w-4 h-4 mr-2" />
-                      Theo dõi
-                    </>
-                  )}
-                </Button>
-              </Flex>
-            </Flex>
+              </Col>
+              <Col className="follow-button-container">
+                <Tooltip title={isFollow ? "Hủy theo dõi" : "Theo dõi công ty"}>
+                  <Button
+                    size="large"
+                    onClick={isFollow ? handleUnfollow : handleFollow}
+                    type={isFollow ? "default" : "primary"}
+                    className={`follow-button ${isFollow ? 'followed' : ''}`}
+                  >
+                    {isFollow ? (
+                      <>
+                        <CheckOutlined className="icon" />
+                        Đang theo dõi
+                      </>
+                    ) : (
+                      <>
+                        <UserPlus className="icon" />
+                        Theo dõi
+                      </>
+                    )}
+                  </Button>
+                </Tooltip>
+              </Col>
+            </Row>
+          </div>
+
+          <Flex gap={"1rem"} vertical style={{ padding: '0 24px' }}>
             <Anchor
               targetOffset={60}
-              style={{ backgroundColor: "white", paddingTop: "1.25rem" }}
+              style={{ backgroundColor: "white" }}
               className="custom-anchor"
               direction="horizontal"
               items={[
                 {
                   key: "about",
                   href: "#about",
-                  title: <Text className="text-lg">Về chúng tôi</Text>,
+                  title: <><InfoCircleOutlined className="anchor-icon" /> <Text className="text-lg">Về chúng tôi</Text></>,
                 },
                 {
                   key: "list-job",
                   href: "#list-job",
                   title: (
-                    <Text className="text-lg">Vị trí đang tuyển dụng</Text>
+                    <><FireOutlined className="anchor-icon" /> <Text className="text-lg">Vị trí đang tuyển dụng</Text></>
                   ),
                 },
               ]}
             />
+            
             <Flex gap={"1rem"} vertical>
               <div id="about">
-                <BoxContainer padding="1rem">
+                <BoxContainer padding="1rem" className="section-title">
                   <Text className="title1">Về chúng tôi</Text>
                 </BoxContainer>
-                <Descriptions
-                  labelStyle={{ fontWeight: 550, color: "black" }}
-                  size="middle"
-                  items={items}
-                  column={1}
-                />
+                
+                <div className="descriptions-container">
+                  <Descriptions
+                    labelStyle={{ fontWeight: 550, color: "black" }}
+                    size="middle"
+                    items={[
+                      {
+                        key: "1",
+                        label: <><TeamOutlined /> Quy mô</>,
+                        children: <Tag color="purple">{company.companySize}</Tag>,
+                      },
+                      {
+                        key: "2",
+                        label: <><BankOutlined /> Lĩnh vực</>,
+                        children: <Tag color="blue">{company.industry}</Tag>,
+                      },
+                      {
+                        key: "3",
+                        label: <><UserOutlined /> Liên hệ</>,
+                        children: company.gender
+                          ? "Chị "
+                          : "Anh " + company.firstName + " " + company.lastName,
+                      },
+                      {
+                        key: "4",
+                        label: <><PhoneOutlined /> Số điện thoại</>,
+                        children: <a href={`tel:${company.phoneNumber}`}>{company.phoneNumber}</a>,
+                      },
+                      {
+                        key: "5",
+                        label: <><MailOutlined /> Email</>,
+                        children: <a href={`mailto:${company.companyEmail}`}>{company.companyEmail}</a>,
+                      },
+                      {
+                        key: "6",
+                        label: <><EnvironmentOutlined /> Địa chỉ</>,
+                        children: (
+                          <Flex align="center" gap={8}>
+                            <span>{company.companyAddress}</span>
+                            <Tooltip title="Xem trên bản đồ">
+                              <a 
+                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(company.companyAddress)}`} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="map-link"
+                              >
+                                <HomeOutlined />
+                              </a>
+                            </Tooltip>
+                          </Flex>
+                        ),
+                      },
+                      {
+                        key: "7",
+                        label: <><GlobalOutlined /> Website</>,
+                        children: (
+                          <Link href={company.companyWebsite} target="_blank">
+                            {company.companyWebsite}
+                          </Link>
+                        ),
+                      },
+                    ]}
+                    column={1}
+                  />
+                  
+                  {company?.companyDescription && (
+                    <Flex vertical gap="16px" className="mt-4 company-description">
+                      <Title level={5} style={{ marginBottom: 8, color: '#1E4F94' }}>
+                        <BuildOutlined /> Mô tả chi tiết
+                      </Title>
+                      <div className="description-content">
+                        <HtmlContent htmlString={company?.companyDescription} />
+                      </div>
+                    </Flex>
+                  )}
+                </div>
+                
                 <Flex gap={"1rem"} vertical>
-                  <BoxContainer padding="1rem">
-                    <Text className="title1">Video</Text>
-                  </BoxContainer>
-                  <YouTubeVideo link={company.videoIntroduction} />
+                  {company.videoIntroduction && (
+                    <>
+                      <BoxContainer padding="1rem" className="section-title">
+                        <Text className="title1"><VideoCameraOutlined /> Video giới thiệu</Text>
+                      </BoxContainer>
+                      <div className="video-container">
+                        <YouTubeVideo link={company.videoIntroduction} />
+                      </div>
+                    </>
+                  )}
+                  
                   {!isEmpty(company.benefitDetails) && (
                     <Flex gap={"1rem"} vertical>
-                      <BoxContainer padding="1rem">
-                        <Text className="title1">Phúc lợi</Text>
+                      <BoxContainer padding="1rem" className="section-title">
+                        <Text className="title1"><GiftOutlined /> Phúc lợi</Text>
                       </BoxContainer>
-                      {company.benefitDetails.map((benefit, index) => (
-                        <BenefitCard
-                          key={index}
-                          benefitName={benefit.benefitName}
-                          description={benefit.description}
-                          benefitIcon={benefit.benefitIcon}
-                          size="large"
-                        />
-                      ))}
+                      
+                      <Flex gap="16px" vertical className="benefits-container">
+                        {company.benefitDetails.map((benefit, index) => (
+                          <div key={index} className="benefit-card">
+                            <BenefitCard
+                              benefitName={benefit.benefitName}
+                              description={benefit.description}
+                              benefitIcon={benefit.benefitIcon}
+                              size="large"
+                            />
+                          </div>
+                        ))}
+                      </Flex>
                     </Flex>
                   )}
                 </Flex>
               </div>
-              <div id="list-job">
-                <BoxContainer padding="1rem">
-                  <Text className="title1">Vị trí đang tuyển dụng</Text>
+              
+              <div id="list-job" className="job-list-section">
+                <BoxContainer padding="1rem" className="section-title">
+                  <Text className="title1"><FireOutlined /> Vị trí đang tuyển dụng</Text>
                 </BoxContainer>
                 <JobList />
               </div>
@@ -318,4 +374,5 @@ const InforCompany = () => {
     </>
   );
 };
+
 export default InforCompany;

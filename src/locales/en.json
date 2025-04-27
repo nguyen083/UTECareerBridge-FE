@@ -105,7 +105,39 @@
     },
     "recommend": {
       "title": "Recommend Jobs",
-      "description": "Recommend jobs for you based on your activity on the system. Please select a job to view details!"
+      "subtitle": "Personalized job recommendations powered by AI based on your profile and preferences",
+      "description": "Recommend jobs for you based on your activity on the system. Please select a job to view details!",
+      "loading": "Finding the best jobs for you...",
+      "noJobs": "No recommended jobs found",
+      "refresh": "Refresh recommendations",
+      "refreshBtn": "Refresh",
+      "toggleAI": "Show AI explanations",
+      "matchScore": "AI match score",
+      "tabs": {
+        "all": "All Recommendations",
+        "bestMatch": "Best Matches",
+        "trending": "Trending",
+        "saved": "Saved"
+      },
+      "aiExplanation": {
+        "title": "Why this job matches your profile",
+        "skills": "Skills Match",
+        "experience": "Experience Level Match",
+        "location": "Location Match"
+      },
+      "actions": {
+        "like": "This job interests me",
+        "dislike": "Not interested"
+      },
+      "aiProfile": {
+        "title": "AI Recommendation Profile",
+        "subtitle": "How we find jobs for you",
+        "category": "Your Field",
+        "field": "Career category",
+        "preferences": "Saved preferences",
+        "tip": "Get better recommendations",
+        "tipDescription": "React to jobs you like or dislike to help our AI understand your preferences and improve future recommendations."
+      }
     }
   },
   "employer": {
@@ -464,7 +496,13 @@
     "voucher": {
       "selectTitle": "Select voucher",
       "useNow": "Use now",
-      "fetchError": "Error fetching coupons"
+      "fetchError": "Error fetching coupons",
+      "searchPlaceholder": "Search by code or description",
+      "expiringSoon": "Expiring soon",
+      "expired": "Expired",
+      "daysRemaining": "days remaining",
+      "noSearchResults": "No vouchers found matching your search",
+      "noCoupons": "No vouchers available at the moment"
     }
   },
   "auth": {

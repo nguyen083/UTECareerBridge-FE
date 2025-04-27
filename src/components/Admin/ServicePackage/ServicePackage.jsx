@@ -3,6 +3,10 @@ import {
   EditOutlined,
   MoreOutlined,
   PlusOutlined,
+  AppstoreOutlined,
+  DollarOutlined,
+  FieldTimeOutlined,
+  InfoCircleOutlined,
 } from "@ant-design/icons";
 import BoxContainer from "../../Generate/BoxContainer";
 import {
@@ -322,105 +326,102 @@ const ListServicePackage = ({ fetch, setFetch }) => {
         className="service-package-list"
         loading={loading}
         style={{ marginTop: 20 }}
-        split={false}
+        grid={{
+          gutter: 16,
+          xs: 1,
+          sm: 1,
+          md: 2,
+          lg: 3,
+          xl: 3,
+          xxl: 4,
+        }}
         locale={{
           emptyText: (
             <Empty description={t("admin.servicePackage.list.empty")} />
           ),
         }}
-        itemLayout="horizontal"
         dataSource={data}
         pagination={{
-          pageSize: 10,
+          pageSize: 6,
           total: data.length,
+          showSizeChanger: false,
         }}
         renderItem={(item) => (
-          <Card size="small" className="shadow voucher-card-admin">
-            <List.Item
+          <List.Item>
+            <Card 
+              size="small" 
+              className="package-card"
+              title={
+                <div className="package-card-header">
+                  <Text className="package-name">{item.packageName}</Text>
+                </div>
+              }
               actions={[
-                <Dropdown
-                  key={item.packageId}
-                  overlay={
-                    <Menu>
-                      <Menu.Item key="2">
-                        <Button
-                          icon={<EditOutlined />}
-                          type="link"
-                          color="primary"
-                          onClick={() => handleEditServicePackage(item)}
-                        >
-                          {t("admin.servicePackage.list.actions.edit")}
-                        </Button>
-                      </Menu.Item>
-                      <Menu.Item
-                        key="3"
-                        onClick={() => {
-                          handleDeleteServicePackage(item);
-                        }}
-                      >
-                        <Button icon={<DeleteOutlined />} type="link" danger>
-                          {t("admin.servicePackage.list.actions.delete")}
-                        </Button>
-                      </Menu.Item>
-                    </Menu>
-                  }
-                  trigger={["click"]}
+                <Button
+                  icon={<EditOutlined />}
+                  type="link"
+                  onClick={() => handleEditServicePackage(item)}
                 >
-                  <MoreOutlined className="f-20" />
-                </Dropdown>,
+                  {t("admin.servicePackage.list.actions.edit")}
+                </Button>,
+                <Button
+                  icon={<DeleteOutlined />}
+                  type="link"
+                  danger
+                  onClick={() => handleDeleteServicePackage(item)}
+                >
+                  {t("admin.servicePackage.list.actions.delete")}
+                </Button>
               ]}
             >
-              <List.Item.Meta
-                className="voucher-meta"
-                avatar={
-                  <Flex
-                    className="h-full voucher-flex"
-                    align="center"
-                    justify="center"
-                  >
-                    <Text className="voucher-avatar">{item.packageName}</Text>
-                  </Flex>
-                }
-                description={
-                  <>
-                    <Text className="font-bold voucher-title">
-                      {t("admin.servicePackage.list.price")}:&nbsp;
-                    </Text>
-                    <Text className="text-base salary">
-                      {item.price.toLocaleString("vi-VN", {
-                        style: "currency",
-                        currency: "VND",
-                      })}
-                    </Text>
-                    <br />
-                    <Text className="font-bold voucher-title">
-                      {t("admin.servicePackage.list.feature")}:&nbsp;
-                    </Text>
-                    <Text>{item.featureName}</Text>
-                    <br />
-                    <Text className="font-bold voucher-title">
-                      {t("admin.servicePackage.list.description")}:&nbsp;
-                    </Text>
-                    <Text>{item.description}</Text>
-                    <br />
-                    <Flex align="center">
-                      <Text className="font-bold voucher-title">
-                        {t("admin.servicePackage.list.duration")}:&nbsp;
-                      </Text>
-                      <Text>
-                        {item.duration} {t("admin.servicePackage.list.months")}
-                      </Text>
-                      <Divider type="vertical" />
-                      <Text className="font-bold voucher-title">
-                        {t("admin.servicePackage.list.postAmount")}:&nbsp;
-                      </Text>
-                      <Text>{item.amount}</Text>
-                    </Flex>
-                  </>
-                }
-              />
-            </List.Item>
-          </Card>
+              <div className="package-price">
+                <Text className="price-label">{t("admin.servicePackage.list.price")}:</Text>
+                <Text className="price-value">
+                  {item.price.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}
+                </Text>
+              </div>
+              
+              <div className="package-info">
+                <div className="info-item">
+                  <DollarOutlined className="info-icon" />
+                  <div className="info-content">
+                    <Text className="info-label">{t("admin.servicePackage.list.feature")}:</Text>
+                    <Text className="info-value">{item.featureName}</Text>
+                  </div>
+                </div>
+                
+                <div className="info-item">
+                  <InfoCircleOutlined className="info-icon" />
+                  <div className="info-content">
+                    <Text className="info-label">{t("admin.servicePackage.list.description")}:</Text>
+                    <Text className="info-value description-text">{item.description}</Text>
+                  </div>
+                </div>
+                
+                <Divider style={{ margin: "8px 0" }} />
+                
+                <Flex align="center" justify="space-between">
+                  <div className="info-item">
+                    <FieldTimeOutlined className="info-icon" />
+                    <div className="info-content">
+                      <Text className="info-label">{t("admin.servicePackage.list.duration")}:</Text>
+                      <Text className="info-value">{item.duration} {t("admin.servicePackage.list.months")}</Text>
+                    </div>
+                  </div>
+                  <div className="info-item">
+                    <AppstoreOutlined className="info-icon" />
+                    <div className="info-content">
+                      <Text className="info-label">{t("admin.servicePackage.list.postAmount")}:</Text>
+                      <Text className="info-value">{item.amount}</Text>
+                    </div>
+                  </div>
+                </Flex>
+              </div>
+            </Card>
+          </List.Item>
         )}
       />
       <ModalCreateServicePackage
@@ -440,12 +441,11 @@ const ServicePackage = () => {
 
   return (
     <>
-      <BoxContainer className="shadow-md">
-        <Text className="title1">{t("admin.servicePackage.title")}</Text>
-      </BoxContainer>
-      <BoxContainer className="shadow-md">
-        <Flex align="center" justify="end" gap={20}>
+      <BoxContainer className="shadow-md admin-header">
+        <Flex align="center" justify="space-between">
+          <Text className="title1">{t("admin.servicePackage.title")}</Text>
           <Button
+            type="primary"
             icon={<PlusOutlined />}
             onClick={() => {
               setOpen(true);
@@ -454,6 +454,8 @@ const ServicePackage = () => {
             {t("admin.servicePackage.createNew")}
           </Button>
         </Flex>
+      </BoxContainer>
+      <BoxContainer className="shadow-md">
         <ListServicePackage fetch={fetch} setFetch={setFetch} />
       </BoxContainer>
       <ModalCreateServicePackage

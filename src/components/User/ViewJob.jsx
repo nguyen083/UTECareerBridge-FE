@@ -1,19 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
-import { Row, Col, Card, Button, Space, Image, Typography, Flex, Carousel, Divider, Descriptions, Spin, message } from 'antd';
-import { EnvironmentOutlined, TeamOutlined, ClockCircleOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
-import { FaCalendarAlt, FaInbox, FaUserTie, FaCubes, FaReact, FaUsers, } from "react-icons/fa";
+import { Row, Col, Card, Button, Space, Image, Typography, Flex, Carousel, Divider, Descriptions, Spin, message, Tag, Badge } from 'antd';
+import { EnvironmentOutlined, TeamOutlined, ClockCircleOutlined, HeartOutlined, HeartFilled, CalendarOutlined, BankOutlined } from '@ant-design/icons';
+import { FaCalendarAlt, FaInbox, FaUserTie, FaCubes, FaReact, FaUsers, FaRegMoneyBillAlt } from "react-icons/fa";
 import { checkSaveJob, getAllCompany, getAllJobEmployer, getJobById, getSimilarJob, saveJob, unSaveJob } from '../../services/apiService';
 import BoxContainer from '../Generate/BoxContainer';
 import HtmlContent from '../Generate/HtmlContent';
 import BenefitComponent from '../Generate/BenefitComponent';
 import BackgroundIcon from '../Generate/BackgroundIcon';
-import {  JobCardSmall } from '../Generate/JobCard';
+import { JobCardSmall } from '../Generate/JobCard';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { ModalApply } from '../Generate/ModalApply';
 import { useSelector } from 'react-redux';
+import './ViewJob.scss';
 
 
-const { Text, Link } = Typography;
+const { Text, Link, Paragraph, Title } = Typography;
 const ViewJob = () => {
     const user = useSelector(state => state.user);
     const location = useLocation();
@@ -30,11 +31,12 @@ const ViewJob = () => {
     const navigate = useNavigate();
     const [carouselItems, setCarouselItems] = useState([]);
     const [notice, setNotice] = useState(null);
+    
     useEffect(() => {
         id && window.scrollTo(0, 0);
     }, [id]);
+    
     useEffect(() => {
-
         setLoading(true);
         const status = location.state?.status;
        
@@ -67,17 +69,16 @@ const ViewJob = () => {
                     jobLevel: job.jobLevel.nameLevel,
                     jobCategoryId: job.jobCategory.jobCategoryId,
                     jobSkills: job.jobSkills.map(skill => skill.skillName).join(', '),
-                   
                 });
             }
             setLoading(false);
         });
+        
         getSimilarJob(id).then((res) => {
             if (res.status === 'OK' && res.data !== null) {
                 setSimilarJobs(res.data?.jobResponses.filter((item) => item.jobId !== +id));
             }
         });
-
 
         if (user.role === 'student') {
             checkSaveJob(id).then((res) => {
@@ -86,10 +87,7 @@ const ViewJob = () => {
                 }
             });
         }
-
-
     }, [id]);
-
 
     useEffect(() => {
         if (company.id) {
@@ -113,7 +111,7 @@ const ViewJob = () => {
                 }
             });
         }
-    }, [company])
+    }, [company]);
 
     useEffect(() => {
         setItems([
@@ -125,32 +123,32 @@ const ViewJob = () => {
             {
                 key: '2',
                 label: <BackgroundIcon lable={"CẤP BẬC"}><FaUserTie /></BackgroundIcon>,
-                children: job.jobLevel,
+                children: <Tag color="blue">{job.jobLevel}</Tag>,
             },
             {
                 key: '3',
                 label: <BackgroundIcon lable={"NGHÀNH NGHỀ"}><FaInbox /></BackgroundIcon>,
-                children: job.jobCategory,
+                children: <Tag color="green">{job.jobCategory}</Tag>,
             },
-
             {
                 key: '4',
                 label: <BackgroundIcon lable={"KĨ NĂNG"}><FaReact /></BackgroundIcon>,
-                children: job.jobSkills,
+                children: job.jobSkills?.split(',').map((skill, index) => (
+                    <Tag key={index} color="purple" style={{ margin: '2px' }}>{skill.trim()}</Tag>
+                )),
             },
             {
                 key: '5',
                 label: <BackgroundIcon lable={"LĨNH VỰC"}><FaCubes /></BackgroundIcon>,
-                children: job.industry,
+                children: <Tag color="orange">{job.industry}</Tag>,
             },
             {
                 key: '6',
                 label: <BackgroundIcon lable={"SỐ LƯỢNG TUYỂN DỤNG"}><FaUsers /></BackgroundIcon>,
-                children: job.amount,
+                children: <Badge count={job.amount} style={{ backgroundColor: '#52c41a' }} />,
             },
         ]);
     }, [job]);
-
 
     const handleSave = () => {
         if (localStorage.getItem('accessToken')) {
@@ -175,6 +173,7 @@ const ViewJob = () => {
             navigate('/login');
         }
     }
+    
     const handleToCompany = (id) => {
         navigate('/company/' + id);
     }
@@ -191,67 +190,158 @@ const ViewJob = () => {
             }
         }
     }, [notice]);
+    
+    const isDeadlineSoon = () => {
+        if (!job.jobDeadline) return false;
+        const parts = job.jobDeadline.split('/');
+        if (parts.length !== 3) return false;
+        
+        const deadline = new Date(parts[2], parts[1] - 1, parts[0]);
+        const today = new Date();
+        const diffTime = deadline - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        return diffDays >= 0 && diffDays <= 7;
+    };
+    
+    const renderDeadline = () => (
+        <Flex align="center" className="deadline-info">
+            <ClockCircleOutlined className='icon-small' />
+            <Text>
+                Hết hạn ngày: <Text strong>{job.jobDeadline}</Text>
+                {isDeadlineSoon() && (
+                    <Tag color="orange" style={{ marginLeft: 8 }}>Sắp hết hạn</Tag>
+                )}
+            </Text>
+        </Flex>
+    );
+    
     return (
         <>
             <Flex align='center' justify='center' style={{ height: '100vh', width: "100%" }} hidden={!loading}>
                 <Spin spinning={loading} size='large' />
             </Flex>
 
-            <div hidden={loading}>
-                <Row gutter={[8, 8]}>
+            <div hidden={loading} className="job-detail-container animate-fade-in">
+                <Row gutter={[16, 16]}>
                     {/* Cột trái - Main content */}
                     <Col xs={24} md={16} lg={18}>
-                        <Flex vertical gap={8}>
-                            <BoxContainer className='shadow' padding='1rem'>
-                                <Flex vertical gap={"1.25rem"}>
-                                    <BoxContainer background='#F8F9FA'>
-                                        <div className='text-lg font-[550] text-[#333] leading-4 text-[1.35rem] mb-5'>{job.jobTitle} </div>
-                                        <div className='mb-3 salary'>
-                                            Lương: {job?.jobMinSalary?.toLocaleString('vi-VN')} - {job?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}/tháng
+                        <Flex vertical gap={16}>
+                            <BoxContainer className='shadow' padding='1.25rem'>
+                                <Flex vertical gap="1.5rem">
+                                    <BoxContainer className="job-header" background='#F8F9FA'>
+                                        <div className="job-title-wrapper">
+                                            <Title level={4} className="job-title-text">{job.jobTitle}</Title>
+                                            <Badge.Ribbon text="Hot" color="red" style={{ display: isDeadlineSoon() ? 'block' : 'none' }}/>
                                         </div>
-                                        <Flex className='mb-3'>
-                                            <Text><ClockCircleOutlined className='icon-small' /> Hết hạn ngày: {job.jobDeadline} </Text>
+                                        
+                                        <div className='salary'>
+                                            {job?.jobMinSalary?.toLocaleString('vi-VN')} - {job?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}/tháng
+                                        </div>
+                                        
+                                        <Flex wrap="wrap" gap={16} className="job-meta">
+                                            {renderDeadline()}
                                             <Divider type='vertical' style={{ height: 'auto' }} />
-                                            <Text><EnvironmentOutlined className='icon-small' /> {job.jobLocation} </Text>
+                                            <Flex align="center">
+                                                <EnvironmentOutlined className='icon-small' />
+                                                <Text>{job.jobLocation}</Text>
+                                            </Flex>
                                         </Flex>
-                                        <Row gutter={8}>
+                                        
+                                        <Row gutter={16} style={{ marginTop: 20 }}>
                                             <Col xs={24} md={18}>
-                                                <Button type='primary' style={{ width: "100%" }} size='large' onClick={() => { user.role === 'student' ? setApply(true) : navigate('/login') }}>Nộp đơn</Button>
+                                                <Button 
+                                                    type='primary' 
+                                                    style={{ width: "100%" }} 
+                                                    size='large' 
+                                                    onClick={() => { user.role === 'student' ? setApply(true) : navigate('/login') }}
+                                                    className="apply-button"
+                                                >
+                                                    Nộp đơn ứng tuyển
+                                                </Button>
                                             </Col>
                                             <Col xs={24} md={6}>
-                                                <Button onClick={handleSave} type={isSaved ? 'primary' : 'default'} ghost={isSaved} style={{ width: "100%" }} size='large'>{isSaved ? <HeartFilled /> : <HeartOutlined />} {isSaved ? "Đã lưu" : "Lưu công việc"}</Button>
+                                                <Button 
+                                                    onClick={handleSave} 
+                                                    type={isSaved ? 'primary' : 'default'} 
+                                                    ghost={isSaved} 
+                                                    style={{ width: "100%" }} 
+                                                    size='large'
+                                                    className="save-button"
+                                                >
+                                                    {isSaved ? <HeartFilled /> : <HeartOutlined />} {isSaved ? "Đã lưu" : "Lưu việc làm"}
+                                                </Button>
                                             </Col>
                                         </Row>
                                     </BoxContainer>
-                                    <Flex vertical gap={"1rem"}>
+                                    
+                                    <Flex vertical gap="1.5rem" className="job-section">
                                         <div className='title2'>
                                             Mô tả công việc
                                         </div>
 
-                                        <div className='px-3 py-1'><HtmlContent htmlString={job.jobDescription} /></div>
+                                        <div className='px-3 py-1 content-block'><HtmlContent htmlString={job.jobDescription} /></div>
                                     </Flex>
-                                    <Flex vertical gap={"1rem"}>
+                                    
+                                    <Flex vertical gap="1.5rem" className="job-section">
                                         <div className='title2'>
                                             Yêu cầu công việc
                                         </div>
-                                        <div className='px-3 py-1'><HtmlContent htmlString={job.jobRequirements} /></div>
+                                        <div className='px-3 py-1 content-block'><HtmlContent htmlString={job.jobRequirements} /></div>
                                     </Flex>
 
-                                    {job?.benefitDetails?.length !== 0 && <Flex vertical gap={"1rem"}>
-                                        <div className='title2'>
-                                            Các phúc lợi dành cho bạn
-                                        </div>
-                                        <Flex vertical gap={"0.5rem"}>
-                                            {job?.benefitDetails?.map((benefit) => (
-                                                <BenefitComponent key={benefit.benefitId} benefitName={benefit.benefitName} description={benefit.description} benefitIcon={benefit.benefitIcon} />
-                                            ))}
+                                    {job?.benefitDetails?.length !== 0 && (
+                                        <Flex vertical gap="1.5rem" className="job-section benefits-section">
+                                            <div className='title2'>
+                                                Phúc lợi dành cho bạn
+                                            </div>
+                                            <Flex vertical gap={12} className="benefits-list">
+                                                {job?.benefitDetails?.map((benefit) => (
+                                                    <BenefitComponent 
+                                                        key={benefit.benefitId} 
+                                                        benefitName={benefit.benefitName} 
+                                                        description={benefit.description} 
+                                                        benefitIcon={benefit.benefitIcon} 
+                                                    />
+                                                ))}
+                                            </Flex>
                                         </Flex>
-                                    </Flex>}
-                                    <Flex vertical gap={"1rem"}>
+                                    )}
+                                    
+                                    <Flex vertical gap="1.5rem" className="job-section">
                                         <div className='title2'>
                                             Thông tin làm việc
                                         </div>
-                                        <Descriptions items={items} contentStyle={{ paddingLeft: 27 }} column={2} layout='vertical' size='middle' />
+                                        <Descriptions 
+                                            items={items} 
+                                            contentStyle={{ paddingLeft: 27 }} 
+                                            column={{ xs: 1, sm: 2 }} 
+                                            layout='vertical' 
+                                            size='middle'
+                                            className="job-details-table" 
+                                        />
+                                    </Flex>
+                                    
+                                    <Flex vertical gap={12}>
+                                        <div className='title2'>Thông tin công ty</div>
+                                        <Flex align='center' className="company-brief">
+                                            <Image
+                                                preview={false}
+                                                src={company.companyLogo || 'https://images.vietnamworks.com/img/company-default-logo.svg'}
+                                                height={60}
+                                                width={60}
+                                                style={{ borderRadius: "8px", objectFit: 'contain' }}
+                                            />
+                                            <Flex vertical style={{ marginLeft: 16 }}>
+                                                <Text strong className="company-name-text" onClick={() => handleToCompany(company.id)}>
+                                                    {company.companyName}
+                                                </Text>
+                                                <Text type="secondary">
+                                                    <EnvironmentOutlined style={{ marginRight: 8 }} />
+                                                    {company.companyAddress}
+                                                </Text>
+                                            </Flex>
+                                        </Flex>
                                     </Flex>
                                 </Flex>
                             </BoxContainer>
@@ -260,112 +350,238 @@ const ViewJob = () => {
 
                     {/* Cột phải - Sidebar */}
                     <Col xs={24} md={8} lg={6}>
-                        <Row gutter={[0, 8]}>
-
-                            <Card className='shadow'
-                                style={{ width: "100%", borderRadius: '10px', textAlign: 'center' }}
+                        <Row gutter={[0, 16]}>
+                            <Card 
+                                className='shadow company-card'
+                                style={{ width: "100%" }}
                                 cover={
                                     <div
+                                        className="company-header"
                                         style={{
-                                            backgroundImage: `url(${company.backgroundImage ? company.backgroundImage : 'https://www.vietnamworks.com/_next/image?url=https%3A%2F%2Fimages.vietnamworks.com%2Fcompany-assets%2Fimages%2Fbanner-default-company.png&w=1920&q=75'})`,
+                                            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url(${company.backgroundImage || 'https://www.vietnamworks.com/_next/image?url=https%3A%2F%2Fimages.vietnamworks.com%2Fcompany-assets%2Fimages%2Fbanner-default-company.png&w=1920&q=75'})`,
+                                            backgroundPosition: 'center',
                                             backgroundSize: 'cover',
-                                            height: 120,
-                                            display: 'flex',
-                                            justifyContent: 'center',
-                                            alignItems: 'center',
+                                            height: '140px',
+                                            position: 'relative',
                                         }}
-                                    />
+                                    >
+                                        <div className="company-verified-badge" style={{ position: 'absolute', top: 0, right: 0 }}>
+                                            <Badge.Ribbon text="Đã xác minh" color="#52c41a" style={{fontSize: '14px', fontWeight: '500'}} />
+                                        </div>
+                                    </div>
                                 }
+                                bodyStyle={{ padding: '0px', paddingTop: '45px', position: 'relative' }}
                             >
-                                <Flex align='center' vertical style={{ marginTop: -50 }}>
-                                    <Image
-                                        preview={false}
-                                        src={company.companyLogo ? company.companyLogo : 'https://images.vietnamworks.com/img/company-default-logo.svg'}
-                                        height={80}
-                                        width={80}
-                                        style={{ border: '6px solid white', borderRadius: "10px", textAlign: "center", objectFit: 'cover' }}
-                                    />
-                                    <Space className='mt-2' direction="vertical" style={{ width: '100%' }}>
-                                        <Text onClick={() => handleToCompany(company.id)} strong className='text-base hover-effect'>
+                                {/* Logo công ty nằm giữa ảnh bìa và bên dưới */}
+                                <div style={{ 
+                                    position: 'absolute', 
+                                    top: '-45px', 
+                                    left: '50%', 
+                                    transform: 'translateX(-50%)', 
+                                    zIndex: 2,
+                                    display: 'flex',
+                                    justifyContent: 'center',
+                                    width: '100%'
+                                }}>
+                                    <div style={{ 
+                                        width: '90px', 
+                                        height: '90px', 
+                                        borderRadius: '10px',
+                                        background: 'white',
+                                        padding: '8px',
+                                        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.15)',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}>
+                                        <Image
+                                            preview={false}
+                                            src={company.companyLogo || 'https://images.vietnamworks.com/img/company-default-logo.svg'}
+                                            style={{ 
+                                                width: '100%',
+                                                height: '100%',
+                                                objectFit: 'contain'
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                                
+                                <Flex align='center' vertical className="company-profile-section">
+                                    <div className="company-name-container">
+                                        <Text 
+                                            onClick={() => handleToCompany(company.id)} 
+                                            strong 
+                                            className='company-name'
+                                            style={{
+                                                fontSize: '20px',
+                                                margin: '0px 0 10px',
+                                                display: 'block',
+                                                textAlign: 'center'
+                                            }}
+                                        >
                                             {company.companyName}
                                         </Text>
+                                    </div>
 
-                                        {/* Địa chỉ */}
-                                        <Space align="start" style={{ textAlign: "left" }}>
-                                            <EnvironmentOutlined style={{ fontSize: '16px', color: '#1890ff' }} />
-                                            <Text>
-                                                {company.companyAddress}
-                                            </Text>
-                                        </Space>
-
-                                        {/* Link */}
-                                        {/* <Link href="#" target="_blank">
-                                    Xem bản đồ
-                                </Link> */}
-
-                                        {/* Thông tin nhân viên */}
-                                        <Flex align="start" gap={10}>
-                                            <TeamOutlined style={{ fontSize: '16px', color: '#1890ff' }} />
-                                            <Text>{company.companySize}</Text>
+                                    <Divider style={{ margin: '8px 0 16px' }} />
+                                    
+                                    <div className="company-meta" style={{ width: '100%', padding: '0 20px' }}>
+                                        <Flex align="center" gap={14} className="meta-item" style={{ marginBottom: '15px' }}>
+                                            <div className="icon-wrapper" style={{
+                                                backgroundColor: 'rgba(24, 144, 255, 0.1)',
+                                                borderRadius: '50%',
+                                                width: '40px',
+                                                height: '40px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                flexShrink: 0
+                                            }}>
+                                                <EnvironmentOutlined className="meta-icon" style={{ fontSize: '20px', color: '#1890ff' }} />
+                                            </div>
+                                            <div>
+                                                <Text strong style={{ display: 'block', fontSize: '14px' }}>Địa chỉ</Text>
+                                                <Text className="meta-text" style={{ fontSize: '14px' }}>{company.companyAddress}</Text>
+                                            </div>
                                         </Flex>
-                                    </Space>
+
+                                        <Flex align="center" gap={14} className="meta-item" style={{ marginBottom: '15px' }}>
+                                            <div className="icon-wrapper" style={{
+                                                backgroundColor: 'rgba(82, 196, 26, 0.1)',
+                                                borderRadius: '50%',
+                                                width: '40px',
+                                                height: '40px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                flexShrink: 0
+                                            }}>
+                                                <TeamOutlined className="meta-icon" style={{ fontSize: '20px', color: '#52c41a' }} />
+                                            </div>
+                                            <div>
+                                                <Text strong style={{ display: 'block', fontSize: '14px' }}>Quy mô</Text>
+                                                <Text className="meta-text" style={{ fontSize: '14px' }}>{company.companySize} nhân viên</Text>
+                                            </div>
+                                        </Flex>
+                                        
+                                        <Flex align="center" gap={14} className="meta-item" style={{ marginBottom: '15px' }}>
+                                            <div className="icon-wrapper" style={{
+                                                backgroundColor: 'rgba(250, 140, 22, 0.1)',
+                                                borderRadius: '50%',
+                                                width: '40px',
+                                                height: '40px',
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                justifyContent: 'center',
+                                                flexShrink: 0
+                                            }}>
+                                                <BankOutlined className="meta-icon" style={{ fontSize: '20px', color: '#fa8c16' }} />
+                                            </div>
+                                            <div>
+                                                <Text strong style={{ display: 'block', fontSize: '14px' }}>Lĩnh vực</Text>
+                                                <Text className="meta-text" style={{ fontSize: '14px' }}>{job.industry}</Text>
+                                            </div>
+                                        </Flex>
+                                    </div>
+                                    
+                                    <div style={{ width: '100%', padding: '0 20px 20px' }}>
+                                        <Button 
+                                            type="primary" 
+                                            onClick={() => handleToCompany(company.id)}
+                                            className="view-company-btn"
+                                            style={{ 
+                                                width: '100%', 
+                                                height: '44px',
+                                                borderRadius: '8px',
+                                                boxShadow: '0 4px 12px rgba(24, 144, 255, 0.15)',
+                                                marginTop: '10px'
+                                            }}
+                                            icon={<BankOutlined />}
+                                        >
+                                            Xem chi tiết công ty
+                                        </Button>
+                                    </div>
                                 </Flex>
                             </Card>
-                            {carouselItems.length > 0 && <Card className='shadow'
-                                title={<div className='p-3 title2'>Công ty cùng lĩnh vực</div>}
-                                style={{ textAlign: "center", width: "100%" }}
-                            >
-                                <Carousel
-                                    style={{ marginBottom: 10 }}
-                                    autoplay
-                                    autoplaySpeed={4000}
-                                    dots={true}
-                                    arrows
-                                    pauseOnHover={true}
-                                    draggable={true}
-                                    ref={ref}
+                            
+                            {carouselItems.length > 0 && (
+                                <Card 
+                                    className='shadow related-companies-card'
+                                    title={<div className='card-title'>Công ty cùng lĩnh vực</div>}
+                                    style={{ width: "100%" }}
                                 >
-                                    {carouselItems.map((item, index) => (
-                                        <div key={index} >
-                                            <Flex justify='space-between' align='center' vertical gap={8} >
-                                                <Flex align='center' justify='center' style={{ minHeight: 300, maxHeight: 300, width: "100%" }}>
+                                    <Carousel
+                                        autoplay
+                                        autoplaySpeed={4000}
+                                        dots={true}
+                                        pauseOnHover={true}
+                                        draggable={true}
+                                        ref={ref}
+                                        className="companies-carousel"
+                                    >
+                                        {carouselItems.map((item, index) => (
+                                            <div key={index} className="carousel-item">
+                                                <Flex vertical gap={12} align="center">
                                                     <Image
-                                                        className='mx-auto'
                                                         src={item.imgSrc}
                                                         alt={item.title}
                                                         preview={false}
                                                         width={"80%"}
+                                                        className="company-logo-carousel"
                                                     />
+                                                    <Text strong ellipsis={{ rows: 2, tooltip: item.title }}>
+                                                        {item.title}
+                                                    </Text>
+                                                    <Button 
+                                                        onClick={() => navigate('/company/' + item.id)}
+                                                        type="primary"
+                                                        ghost
+                                                    >
+                                                        Xem chi tiết
+                                                    </Button>
                                                 </Flex>
-                                                <Text strong className='text-base' ellipsis={{ rows: 2, tooltip: item.title }}>
-                                                    {item.title}
-                                                </Text>
-                                                <br />
-                                                {/* <Text ellipsis={{ rows: 3 }}>{item.description}</Text> */}
-                                                <Button className='mb-4' onClick={() => navigate('/company/' + item.id)}>Xem chi tiết</Button>
-                                            </Flex>
-                                        </div>
-                                    ))}
-                                </Carousel>
-                            </Card>}
-                            {similarJobs && similarJobs.length > 0 && <Card className='shadow' actions={[<Link key="see-more" onClick={() => { navigate('/search', { state: { filters: { categoryId: job.jobCategoryId } } }) }}>Xem thêm</Link>]} title={<div className='p-3 text-center title2'>Việc làm tương tự</div>}
-                                style={{ width: "100%" }} size='small'>
-                                <Flex gap={"0.5rem"} vertical>
-                                    {similarJobs.map((job) => <JobCardSmall key={job.jobId} job={job} />)}
-                                </Flex>
-                            </Card>}
-                            {jobSameCompany && jobSameCompany.length > 0 && <Card className='shadow' title={<div className='p-3 text-center title2'>Việc làm cùng công ty</div>}
-                                style={{ width: "100%", marginBottom: 16 }} size='small'>
-                                <Flex gap={"0.5rem"} vertical>
-                                    {jobSameCompany.slice(0, 5).map((job) => <JobCardSmall key={job.jobId} job={job} />)}
-                                </Flex>
-                            </Card>}
+                                            </div>
+                                        ))}
+                                    </Carousel>
+                                </Card>
+                            )}
+                            
+                            {similarJobs && similarJobs.length > 0 && (
+                                <Card 
+                                    className='shadow related-jobs-card'
+                                    actions={[
+                                        <Link 
+                                            key="see-more" 
+                                            onClick={() => navigate('/search', { state: { filters: { categoryId: job.jobCategoryId } } })}
+                                        >
+                                            Xem thêm việc làm tương tự
+                                        </Link>
+                                    ]} 
+                                    title={<div className='card-title'>Việc làm tương tự</div>}
+                                >
+                                    <div className="related-jobs-list">
+                                        {similarJobs.map((job) => <JobCardSmall key={job.jobId} job={job} />)}
+                                    </div>
+                                </Card>
+                            )}
+                            
+                            {jobSameCompany && jobSameCompany.length > 0 && (
+                                <Card 
+                                    className='shadow related-jobs-card'
+                                    title={<div className='card-title'>Việc làm cùng công ty</div>}
+                                >
+                                    <div className="related-jobs-list">
+                                        {jobSameCompany.slice(0, 5).map((job) => <JobCardSmall key={job.jobId} job={job} />)}
+                                    </div>
+                                </Card>
+                            )}
                         </Row>
                     </Col>
-                </Row >
-            </div >
+                </Row>
+            </div>
             <ModalApply show={apply} setShow={setApply} company={company} job={job} key={id} setNotice={setNotice} />
         </>
     );
 }
+
 export default ViewJob;

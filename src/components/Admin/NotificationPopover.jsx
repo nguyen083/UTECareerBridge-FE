@@ -9,8 +9,19 @@ import {
   Tag,
   Spin,
   notification,
+  Empty,
+  Divider,
+  Avatar
 } from "antd";
-import { BellOutlined, CheckCircleOutlined } from "@ant-design/icons";
+import { 
+  BellOutlined, 
+  CheckCircleOutlined, 
+  ClockCircleOutlined,
+  InfoCircleFilled,
+  WarningFilled,
+  CheckCircleFilled,
+  ExclamationCircleFilled
+} from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import {
   initializeNotifications,
@@ -23,26 +34,42 @@ import { setNotificationCount } from "../../redux/action/notificationSlice";
 
 const { Text, Paragraph } = Typography;
 
-const NotificationPopover = () => {
+const NotificationPopover = ({ children, userId }) => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.auth?.user?.id) || 1;
+  const authenticatedUserId = useSelector((state) => state.auth?.user?.id);
+  const actualUserId = userId || authenticatedUserId || 1;
   const notificationCount = useSelector(
     (state) => state.notification?.unread || 0
   );
 
-  const notificationSound = new Audio("/sounds/notification.mp3");
+  const notificationSound = new Audio("/assets/sounds/notification.mp3");
+
+  // Get notification icon based on type
+  const getNotificationIcon = (type) => {
+    switch (type?.toLowerCase()) {
+      case 'warning':
+        return <WarningFilled style={{ color: '#faad14' }} />;
+      case 'success':
+        return <CheckCircleFilled style={{ color: '#52c41a' }} />;
+      case 'error':
+        return <ExclamationCircleFilled style={{ color: '#ff4d4f' }} />;
+      case 'info':
+      default:
+        return <InfoCircleFilled style={{ color: '#1890ff' }} />;
+    }
+  };
 
   useEffect(() => {
     const fetchInitialNotificationCount = async () => {
-      if (!userId) return;
+      if (!actualUserId) return;
 
       try {
-        const response = await getAllNotificationById(userId);
+        const response = await getAllNotificationById(actualUserId);
         const unreadCount = response.filter((n) => !n.isRead).length;
         dispatch(setNotificationCount(unreadCount));
       } catch (error) {
@@ -51,7 +78,7 @@ const NotificationPopover = () => {
     };
 
     fetchInitialNotificationCount();
-  }, [userId, dispatch]);
+  }, [actualUserId, dispatch]);
 
   const playNotificationSound = useCallback(() => {
     try {
@@ -73,6 +100,7 @@ const NotificationPopover = () => {
         notificationDate: new Date().toISOString(),
         isRead: false,
         url: payload.data?.url,
+        type: payload.data?.type || 'info'
       };
 
       setNotifications((prev) => [newNotification, ...prev]);
@@ -84,6 +112,7 @@ const NotificationPopover = () => {
         description: payload.notification.body,
         placement: "topRight",
         duration: 4,
+        icon: getNotificationIcon(payload.data?.type),
         onClick: () => {
           if (payload.data?.url) {
             window.open(payload.data.url, "_blank");
@@ -98,10 +127,10 @@ const NotificationPopover = () => {
     let messageUnsubscribe;
 
     const setupNotifications = async () => {
-      if (!userId || isInitialized) return;
+      if (!actualUserId || isInitialized) return;
 
       try {
-        await initializeNotifications(userId);
+        await initializeNotifications(actualUserId);
         messageUnsubscribe = setupMessageListener(handleNewMessage);
         setIsInitialized(true);
       } catch (error) {
@@ -120,15 +149,15 @@ const NotificationPopover = () => {
         messageUnsubscribe();
       }
     };
-  }, [userId, isInitialized, handleNewMessage]);
+  }, [actualUserId, isInitialized, handleNewMessage]);
 
   useEffect(() => {
     const fetchNotifications = async () => {
-      if (!open || !userId) return;
+      if (!open || !actualUserId) return;
 
       try {
         setLoading(true);
-        const response = await getAllNotificationById(userId);
+        const response = await getAllNotificationById(actualUserId);
         setNotifications(response);
 
         const unreadCount = response.filter((n) => !n.isRead).length;
@@ -145,7 +174,7 @@ const NotificationPopover = () => {
     };
 
     fetchNotifications();
-  }, [open, userId, dispatch]);
+  }, [open, actualUserId, dispatch]);
 
   const handleReadNotification = async (notificationId) => {
     try {
@@ -172,7 +201,7 @@ const NotificationPopover = () => {
 
   const handleMarkAllRead = async () => {
     try {
-      await markAllNotificationsAsRead(userId);
+      await markAllNotificationsAsRead(actualUserId);
       setNotifications((prev) =>
         prev.map((notif) => ({ ...notif, isRead: true }))
       );
@@ -186,67 +215,111 @@ const NotificationPopover = () => {
     }
   };
 
+  const formatTimeAgo = (dateString) => {
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffInSeconds = Math.floor((now - date) / 1000);
+    
+    if (diffInSeconds < 60) {
+      return 'Vài giây trước';
+    } else if (diffInSeconds < 3600) {
+      return `${Math.floor(diffInSeconds / 60)} phút trước`;
+    } else if (diffInSeconds < 86400) {
+      return `${Math.floor(diffInSeconds / 3600)} giờ trước`;
+    } else if (diffInSeconds < 604800) {
+      return `${Math.floor(diffInSeconds / 86400)} ngày trước`;
+    } else {
+      return date.toLocaleDateString('vi-VN', { 
+        day: '2-digit', 
+        month: '2-digit', 
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      });
+    }
+  };
+
   const notificationContent = (
-    <div className="max-w-sm w-80">
-      <div className="flex items-center justify-between px-4 pt-2 mb-4">
-        <Text strong>Thông báo</Text>
+    <div className="notification-popover-content">
+      <div className="notification-header">
+        <Text strong style={{ fontSize: '16px' }}>Thông báo</Text>
         <Button
-          type="link"
+          type="text"
           onClick={handleMarkAllRead}
           disabled={!notifications.some((n) => !n.isRead)}
-          className="text-sm"
+          className="mark-read-btn"
         >
           <Space>
             <CheckCircleOutlined />
-            Đánh dấu đã đọc tất cả
+            Đánh dấu tất cả đã đọc
           </Space>
         </Button>
       </div>
-      <div className="overflow-y-auto max-h-96">
+      
+      <Divider style={{ margin: '8px 0' }} />
+      
+      <div className="notification-list-container">
         <Spin spinning={loading}>
-          <List
-            dataSource={notifications}
-            renderItem={(notification) => (
-              <List.Item
-                className={`cursor-pointer transition-colors hover:bg-gray-50 ${
-                  !notification.isRead ? "bg-blue-50" : ""
-                }`}
-                onClick={() => {
-                  handleReadNotification(notification.id);
-                  if (notification.url) {
-                    window.open(notification.url, "_blank");
-                  }
-                }}
-              >
-                <List.Item.Meta
-                  title={
-                    <Space className="justify-between w-full">
-                      <Text strong>{notification.title}</Text>
-                      {!notification.isRead && (
-                        <Tag className="text-sm font-normal w-fit" color="blue">
-                          Mới
-                        </Tag>
-                      )}
-                    </Space>
-                  }
-                  description={
-                    <>
-                      <Paragraph className="mb-1 text-gray-600">
-                        {notification.content}
-                      </Paragraph>
-                      <Text className="text-xs text-gray-400">
-                        {new Date(notification.notificationDate).toLocaleString(
-                          "vi-VN"
+          {notifications.length > 0 ? (
+            <List
+              dataSource={notifications}
+              renderItem={(notification) => (
+                <List.Item
+                  className={`notification-item ${!notification.isRead ? 'unread' : ''}`}
+                  onClick={() => {
+                    handleReadNotification(notification.id);
+                    if (notification.url) {
+                      window.open(notification.url, "_blank");
+                    }
+                  }}
+                >
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar icon={getNotificationIcon(notification.type)} 
+                        className={`notification-avatar ${notification.type || 'info'}`} 
+                      />
+                    }
+                    title={
+                      <Space className="notification-title">
+                        <Text strong>{notification.title}</Text>
+                        {!notification.isRead && (
+                          <Tag color="blue" className="notification-badge">Mới</Tag>
                         )}
-                      </Text>
-                    </>
-                  }
-                />
-              </List.Item>
-            )}
-            locale={{ emptyText: "Không có thông báo mới" }}
-          />
+                      </Space>
+                    }
+                    description={
+                      <div className="notification-description">
+                        <Paragraph className="notification-content">
+                          {notification.content}
+                        </Paragraph>
+                        <div className="notification-time">
+                          <ClockCircleOutlined style={{ fontSize: '12px', marginRight: '4px' }} />
+                          <Text type="secondary" style={{ fontSize: '12px' }}>
+                            {formatTimeAgo(notification.notificationDate)}
+                          </Text>
+                        </div>
+                      </div>
+                    }
+                  />
+                </List.Item>
+              )}
+            />
+          ) : (
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description="Không có thông báo mới"
+              style={{ padding: '24px 0' }}
+            />
+          )}
         </Spin>
+      </div>
+      
+      <Divider style={{ margin: '8px 0' }} />
+      
+      <div className="notification-footer">
+        <Button type="link" className="view-all-btn">
+          Xem tất cả thông báo
+        </Button>
       </div>
     </div>
   );
@@ -258,11 +331,14 @@ const NotificationPopover = () => {
       open={open}
       onOpenChange={setOpen}
       placement="bottomRight"
-      arrow={false}
+      overlayClassName="admin-notification-popover"
+      arrow={{ pointAtCenter: true }}
     >
-      <Badge count={notificationCount} overflowCount={99}>
-        <BellOutlined className="text-lg cursor-pointer notification-icon" />
-      </Badge>
+      {children ? children : (
+        <Badge count={notificationCount} overflowCount={99}>
+          <BellOutlined className="text-lg cursor-pointer notification-icon" />
+        </Badge>
+      )}
     </Popover>
   );
 };

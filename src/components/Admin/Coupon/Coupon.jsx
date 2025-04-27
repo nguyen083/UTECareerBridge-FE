@@ -1,10 +1,9 @@
-import { Button, Divider, Empty, Flex, Form, List, Tag, Typography, Modal, Input, Row, Col, InputNumber, Select, DatePicker, message, Dropdown, Menu, } from "antd";
+import { Button, Divider, Empty, Flex, Form, List, Tag, Typography, Modal, Input, Row, Col, InputNumber, Select, DatePicker, message, Card } from "antd";
 import BoxContainer from "../../Generate/BoxContainer";
 import { useState, useEffect } from "react";
 import './Coupon.scss'
 import { createCoupon, deleteCoupon, getAllCoupon, updateCoupon } from "../../../services/apiService";
-import { CalendarOutlined, DeleteOutlined, EditOutlined, MoreOutlined, PlusOutlined } from "@ant-design/icons";
-import { RiDiscountPercentLine } from "react-icons/ri";
+import { CalendarOutlined, DeleteOutlined, EditOutlined, PlusOutlined, TagOutlined, PercentageOutlined, NumberOutlined, InfoCircleOutlined } from "@ant-design/icons";
 import dayjs from 'dayjs';
 import { useTranslation } from 'react-i18next';
 
@@ -51,81 +50,138 @@ const CouponList = ({ fetch, setFetch }) => {
     useEffect(() => {
         setCouponSelected(null);
     }, [open === false]);
-    const handleEditServicePackage = (coupon) => {
+    const handleEditCoupon = (coupon) => {
         coupon.expiredAt = dayjs(coupon.expiredAt);
         setCouponSelected(coupon);
         setOpen(true);
     }
-    const handleDeleteServicePackage = (coupon) => {
-        deleteCoupon(coupon.id).then((res) => {
-            if (res.status === 'OK') {
-                message.success(res.message);
+    const handleDeleteCoupon = (coupon) => {
+        Modal.confirm({
+            centered: true,
+            title: t('admin.coupon.deleteConfirm.title'),
+            content: t('admin.coupon.deleteConfirm.content'),
+            okType: 'danger',
+            okText: t('admin.coupon.deleteConfirm.okText'),
+            onOk: () => {
+                deleteCoupon(coupon.id).then((res) => {
+                    if (res.status === 'OK') {
+                        message.success(res.message);
+                    }
+                    else {
+                        message.error(t('admin.coupon.deleteError'));
+                    }
+                }).catch((err) => {
+                    console.error(err);
+                    message.error(t('admin.coupon.deleteError'));
+                }).finally(() => {
+                    setFetch(true);
+                });
             }
-            else {
-                message.error(t('admin.coupon.deleteError'));
-            }
-        }).catch((err) => {
-            console.error(err);
-        }).finally(() => {
-            setFetch(true);
         });
     }
     return (
         <>
             <List
                 loading={loading}
+                className="coupon-list"
+                grid={{
+                    gutter: 16,
+                    xs: 1,
+                    sm: 1,
+                    md: 2,
+                    lg: 3,
+                    xl: 3,
+                    xxl: 4,
+                }}
                 locale={{ emptyText: <Empty description={t('admin.coupon.empty')} /> }}
                 dataSource={coupons}
+                pagination={{
+                    pageSize: 6,
+                    total: coupons.length,
+                    showSizeChanger: false,
+                }}
                 renderItem={(coupon) => (
-                    <List.Item
-                        key={coupon.key}
-                        actions={[
-                            <Dropdown
-                                key={coupon.key}
-                                overlay={
-                                    <Menu>
-                                        <Menu.Item key="2" onClick={() => handleEditServicePackage(coupon)}>
-                                            <Button icon={<EditOutlined />} type="link" color="primary" >{t('admin.coupon.edit')}</Button>
-                                        </Menu.Item>
-                                        <Menu.Item key="3" onClick={() => { handleDeleteServicePackage(coupon) }}>
-                                            <Button icon={<DeleteOutlined />} type="link" danger >{t('admin.coupon.delete')}</Button>
-                                        </Menu.Item>
-                                    </Menu >
-                                }
-                                trigger={['click']}
-                            >
-                                <MoreOutlined className="text-lg" />
-                            </Dropdown >
-                        ]}
-                        className="coupon-list-item shadow border rounded border-warning my-4 !py-0"
-                    >
-                        <List.Item.Meta
-                            className='flex !items-stretch'
-                            avatar={
-                                <div className="voucher-left rounded-start">
-                                    <div className="voucher-label"> <Flex align="center" gap={5}><RiDiscountPercentLine size={20} /> Voucher</Flex></div>
-                                </div>}
+                    <List.Item>
+                        <Card
+                            className="coupon-card"
                             title={
-                                <>
-                                    <Text strong>
-                                    {t('admin.coupon.discount', { discount: coupon.discount })}</Text>
-                                </>
-                            }
-                            description={
-                                <div className='ps-1'>
-                                    <p>{t('admin.coupon.code')} <Tag className="text-sm font-normal w-fit" color="orange">{coupon.code}</Tag></p>
-                                    <p>{coupon.description}</p>
-                                    <Flex align="center">
-                                        <p>{t('admin.coupon.remaining')} {coupon.amount}</p> <Divider type="vertical" />
-                                        <p> <CalendarOutlined />{t('admin.coupon.expireDate')} {new Date(coupon.expiredAt).toLocaleDateString('vi-VN').split(' ')[0]}</p>
-                                    </Flex>
+                                <div className="coupon-card-header">
+                                    <Tag className="discount-tag">
+                                        <PercentageOutlined /> {coupon.discount}%
+                                    </Tag>
+                                    <Tag className="code-tag" color="orange">
+                                        <TagOutlined /> {coupon.code}
+                                    </Tag>
                                 </div>
                             }
-                        />
-                    </List.Item >
+                            actions={[
+                                <Button
+                                    icon={<EditOutlined />}
+                                    type="link"
+                                    onClick={() => handleEditCoupon(coupon)}
+                                >
+                                    {t('admin.coupon.edit')}
+                                </Button>,
+                                <Button
+                                    icon={<DeleteOutlined />}
+                                    type="link"
+                                    danger
+                                    onClick={() => handleDeleteCoupon(coupon)}
+                                >
+                                    {t('admin.coupon.delete')}
+                                </Button>
+                            ]}
+                        >
+                            <div className="coupon-status">
+                                {coupon.active ? (
+                                    <Tag color="success">{t('admin.coupon.active')}</Tag>
+                                ) : (
+                                    <Tag color="error">{t('admin.coupon.inactive')}</Tag>
+                                )}
+                            </div>
+                            
+                            <div className="coupon-info">
+                                <div className="info-item">
+                                    <InfoCircleOutlined className="info-icon" />
+                                    <div className="info-content">
+                                        <Text className="info-value description-text">{coupon.description}</Text>
+                                    </div>
+                                </div>
+                                
+                                <Divider style={{ margin: "8px 0" }} />
+                                
+                                <Flex align="center" justify="space-between">
+                                    <div className="info-item">
+                                        <NumberOutlined className="info-icon" />
+                                        <div className="info-content">
+                                            <Text className="info-label">{t('admin.coupon.remaining')}:</Text>
+                                            <Text className="info-value amount-value">{coupon.amount}</Text>
+                                        </div>
+                                    </div>
+                                    <div className="info-item">
+                                        <NumberOutlined className="info-icon" />
+                                        <div className="info-content">
+                                            <Text className="info-label">{t('admin.coupon.maxUsage')}:</Text>
+                                            <Text className="info-value">{coupon.maxUsage}</Text>
+                                        </div>
+                                    </div>
+                                </Flex>
+                                
+                                <div className="info-item expire-item">
+                                    <CalendarOutlined className="info-icon" />
+                                    <div className="info-content">
+                                        <Text className="info-label">{t('admin.coupon.expireDate')}:</Text>
+                                        <Text className="info-value expire-date">
+                                            {new Date(coupon.expiredAt).toLocaleDateString('vi-VN').split(' ')[0]}
+                                        </Text>
+                                    </div>
+                                </div>
+                            </div>
+                        </Card>
+                    </List.Item>
                 )}
             />
-            < ModalCreateCoupon open={open} setOpen={setOpen} setFetch={setFetch} item={couponSelected} />
+            <ModalCreateCoupon open={open} setOpen={setOpen} setFetch={setFetch} item={couponSelected} />
         </>
     )
 }
@@ -184,10 +240,6 @@ const ModalCreateCoupon = ({ open, setOpen, setFetch, item = null }) => {
                 setFetch(true);
             });
         }
-
-
-
-
 
     }
     return (
@@ -289,13 +341,15 @@ const Coupon = () => {
 
     return (
         <>
-            <BoxContainer className="shadow-md">
-                <div className="title1">{t('admin.coupon.title')}</div>
+            <BoxContainer className="shadow-md admin-header">
+                <Flex align="center" justify="space-between">
+                    <Text className="title1">{t('admin.coupon.title')}</Text>
+                    <Button type="primary" icon={<PlusOutlined />} onClick={() => { setOpen(true) }}>
+                        {t('admin.coupon.createNew')}
+                    </Button>
+                </Flex>
             </BoxContainer>
             <BoxContainer className="shadow-md">
-                <Flex align="center" justify="end" gap={20}>
-                    <Button icon={<PlusOutlined />} onClick={() => { setOpen(true) }}>{t('admin.coupon.createNew')}</Button>
-                </Flex>
                 <CouponList fetch={fetch} setFetch={setFetch} />
             </BoxContainer>
             <ModalCreateCoupon open={open} setOpen={setOpen} setFetch={setFetch} />
