@@ -1,35 +1,38 @@
-import { useState, useEffect } from 'react';
-import { List, Card, Flex, Typography, Empty } from 'antd';
-import { getAllJobEmployer } from '../../services/apiService';
-import { useNavigate, useParams } from 'react-router-dom';
-import { IoIosBusiness } from 'react-icons/io';
-import { FaMapLocationDot } from 'react-icons/fa6';
-import { FaRegMoneyBillAlt } from 'react-icons/fa';
-import { useTranslation } from 'react-i18next';
+import { useState, useEffect } from "react";
+import { List, Card, Flex, Typography, Empty, Tag, Skeleton } from "antd";
+import { getAllJobEmployer } from "../../services/apiService";
+import { useNavigate, useParams } from "react-router-dom";
+import { IoIosBusiness } from "react-icons/io";
+import { FaMapLocationDot } from "react-icons/fa6";
+import { FaRegMoneyBillAlt, FaRegClock } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
+import "./JobList.scss";
+import { getTimeAgo } from "../../utils/day";
+import dayjs from "dayjs";
+
 const { Title, Paragraph } = Typography;
+
 const JobList = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
-    total: 0
+    total: 0,
   });
 
- 
   const fetchData = async (page, pageSize) => {
     setLoading(true);
     try {
       const params = {
-        page: page - 1,      
-        limit: pageSize,        
+        page: page - 1,
+        limit: pageSize,
       };
       await getAllJobEmployer(id, params).then((res) => {
-
-        if (res.status === 'OK' && res.data) {
+        if (res.status === "OK" && res.data) {
           const data = res.data.jobResponses.map((item) => {
             return {
               jobId: item.jobId,
@@ -40,7 +43,9 @@ const JobList = () => {
               jobMaxSalary: item.jobMaxSalary,
               rejectionReason: item.rejectionReason,
               jobLocation: item.jobLocation,
-             
+              createdAt: item.createdAt,
+              isHot: item.isHot,
+              isUrgent: item.isUrgent,
             };
           });
 
@@ -48,15 +53,12 @@ const JobList = () => {
           setPagination({
             current: page,
             pageSize: pageSize,
-            total: res.data.totalPages * pageSize
+            total: res.data.totalPages * pageSize,
           });
         }
       });
-
-
-
     } catch (error) {
-      console.error('Failed to fetch data:', error);
+      console.error("Failed to fetch data:", error);
     } finally {
       setLoading(false);
     }
@@ -70,16 +72,22 @@ const JobList = () => {
     setPagination({
       ...pagination,
       current: page,
-      pageSize: pageSize
+      pageSize: pageSize,
     });
   };
-  const handleClick = (key) => {
-    navigate('/job/' + key);
 
-  }
-  
+  const formatTime = (time) => {
+    const date = dayjs(time, "DD/MM/YYYY").toDate();
+    const { key, value } = getTimeAgo(date);
+    return t(key, { value });
+  };
+
+  const handleClick = (key) => {
+    navigate("/job/" + key);
+  };
+
   return (
-    <div className="w-full p-4 mx-auto">
+    <div className="job-list-container">
       <List
         grid={{ gutter: 16, xs: 1, sm: 1, md: 1, lg: 1, xl: 1, xxl: 1 }}
         dataSource={data}
@@ -89,57 +97,89 @@ const JobList = () => {
           pageSize: pagination.pageSize,
           total: pagination.total,
           onChange: handleListChange,
-          showSizeChanger: true
+          showSizeChanger: true,
+          className: "job-pagination",
         }}
         locale={{
           emptyText: (
-            <Empty description={t('student.layout.jobs.noJob')}></Empty>
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description={t("student.layout.jobs.noJob")}
+              className="empty-jobs"
+            />
           ),
         }}
         renderItem={(item) => (
-          <List.Item className='w-full'>
-            <Card
-              hoverable
-              className='cursor-default w-full rounded-[10px] overflow-hidden shadow '
-              bodyStyle={{ padding: 16 }}
-            >
-              <Flex onClick={() => handleClick(item.jobId)} align='center' className='cursor-pointer'>
-                <img
-                  src={item.logo}
-                  className='w-20 h-20 mr-3 rounded'
-                />
-                <div className='w-full'>
-                  <Flex align='center' justify='space-between' >
-                    <Title level={5}
-                      className='m-0 whitespace-nowrap overflow-hidden text-ellipsis max-w-[80%]'>
-                      {item.title}
-                    </Title>
-                  </Flex>
-                  < Paragraph
-                    className='m-0 flex gap-2 items-center !mb-2'
-                    type='secondary'
-                    ellipsis={{
-                      rows: 1,
-                      tooltip: true
-                    }}
-                  >
-                    <IoIosBusiness />{item.company}
-                  </Paragraph>
-                  <Flex align='center' className='flex items-center gap-2 mx-0 my-2 text-sm text-red-500'>
-                    <FaRegMoneyBillAlt /><div className='flex'>{item?.jobMinSalary?.toLocaleString('vi-VN')} - {item?.jobMaxSalary?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}  <div className='text-sm'>{t('common.month')}</div></div>
-                  </Flex>
+          <List.Item className="job-list-item">
+            {loading ? (
+              <Card className="job-card-skeleton">
+                <Skeleton active avatar paragraph={{ rows: 3 }} />
+              </Card>
+            ) : (
+              <Card
+                hoverable
+                className="job-card"
+                bodyStyle={{ padding: 16 }}
+                onClick={() => handleClick(item.jobId)}
+              >
+                <Flex align="center" className="job-content">
+                  <div className="job-logo-container">
+                    <img
+                      src={item.logo}
+                      alt={item.company}
+                      className="job-logo"
+                    />
+                  </div>
+                  <div className="job-details">
+                    <Flex align="center" justify="space-between">
+                      <div className="job-title-container">
+                        <Title level={5} className="job-title">
+                          {item.title}
+                        </Title>
+                        <Flex gap={8} className="job-tags">
+                          {item.isHot && (
+                            <Tag color="red" className="job-tag">
+                              {t("common.hot")}
+                            </Tag>
+                          )}
+                          {item.isUrgent && (
+                            <Tag color="orange" className="job-tag">
+                              {t("common.urgent")}
+                            </Tag>
+                          )}
+                        </Flex>
+                      </div>
+                      <div className="job-time">
+                        <FaRegClock /> {formatTime(item?.createdAt)}
+                      </div>
+                    </Flex>
 
-                  < Paragraph
-                    type='secondary'
-                    className='m-0 whitespace-nowrap overflow-hidden text-ellipsis max-w-[80%] gap-2 flex items-center !mb-0'>
-                    <FaMapLocationDot />{item.jobLocation}</Paragraph>
-                </div>
-              </Flex>
-            </Card>
+                    <Paragraph className="company-name">
+                      <IoIosBusiness /> {item.company}
+                    </Paragraph>
+
+                    <Flex align="center" className="job-salary">
+                      <FaRegMoneyBillAlt />
+                      <div>
+                        {item?.jobMinSalary?.toLocaleString("vi-VN")} -{" "}
+                        {item?.jobMaxSalary?.toLocaleString("vi-VN", {
+                          style: "currency",
+                          currency: "VND",
+                        })}
+                      </div>
+                    </Flex>
+
+                    <Paragraph className="job-location">
+                      <FaMapLocationDot /> {item.jobLocation}
+                    </Paragraph>
+                  </div>
+                </Flex>
+              </Card>
+            )}
           </List.Item>
         )}
       />
-    </div >
+    </div>
   );
 };
 

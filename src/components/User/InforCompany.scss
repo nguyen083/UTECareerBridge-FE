@@ -1,0 +1,232 @@
+.company-page {
+  .company-banner {
+    height: 350px;
+    position: relative;
+    overflow: hidden;
+    transition: height 0.3s ease;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+
+  .company-logo {
+    border: 3px solid white;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background-color: white;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+
+  .company-name {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    background: linear-gradient(90deg, #1890ff, #0050b3);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
+  }
+
+  .follow-count {
+    color: #4b5563;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+
+    .follow-icon {
+      color: #3b82f6;
+    }
+  }
+
+  .follow-button {
+    border-radius: 25px;
+    font-weight: 500;
+    height: 40px;
+    transition: all 0.3s ease;
+    padding: 0 25px;
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    &.following {
+      background: white;
+      color: #1890ff;
+      border: 1px solid #1890ff;
+
+      &:hover {
+        background-color: rgba(59, 130, 246, 0.05);
+      }
+    }
+
+    &:not(.following) {
+      background: linear-gradient(45deg, #1890ff, #096dd9);
+      color: white;
+
+      &:hover {
+        background: linear-gradient(45deg, #096dd9, #0050b3);
+      }
+    }
+  }
+
+  .custom-anchor {
+    padding: 1rem 0;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 60px;
+    z-index: 10;
+    background-color: white;
+
+    .anchor-link {
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+
+      &:hover {
+        background-color: #f3f4f6;
+      }
+
+      &.active {
+        font-weight: 600;
+        color: #3b82f6;
+      }
+    }
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #3b82f6;
+    background: linear-gradient(90deg, #f0f7ff, #ffffff);
+    border-radius: 0 4px 4px 0;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
+    &::before {
+      content: "";
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      background: #3b82f6;
+      border-radius: 50%;
+      margin-right: 12px;
+    }
+  }
+
+  .company-description {
+    .ant-typography-expand {
+      color: #3b82f6;
+      font-weight: 500;
+    }
+  }
+
+  .benefit-card {
+    transition: transform 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+    }
+  }
+
+  .job-card {
+    border-radius: 10px;
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .info-items-container {
+    margin: 1.5rem 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  .info-item {
+    margin-bottom: 0;
+    padding: 16px 20px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    background-color: #f9fafb;
+    border-left: 4px solid transparent;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    &:hover {
+      border-left-color: #1890ff;
+      background-color: #f0f7ff;
+      transform: translateX(5px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .info-label {
+      font-weight: 600;
+      color: #374151;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+
+      .anticon {
+        color: #1890ff;
+        font-size: 18px;
+        background-color: rgba(24, 144, 255, 0.1);
+        padding: 8px;
+        border-radius: 8px;
+      }
+    }
+
+    .info-value {
+      color: #4b5563;
+      padding-left: 36px;
+      word-break: break-word;
+      font-size: 1.05rem;
+      line-height: 1.5;
+
+      a {
+        color: #1890ff;
+        transition: all 0.3s ease;
+        font-weight: 500;
+
+        &:hover {
+          color: #0050b3;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  .video-container {
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+}

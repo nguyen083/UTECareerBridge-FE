@@ -272,7 +272,7 @@ const getJobsNewest = async () => {
 };
 const updateQuantityPackage = async (values) => {
   const param = new URLSearchParams(values).toString();
-  return axios.post(`carts/add-to-cart${param}`);
+  return axios.post(`carts/add-to-cart?${param}`);
 };
 const createOrder = async (couponCode) => {
   const formData = new FormData();

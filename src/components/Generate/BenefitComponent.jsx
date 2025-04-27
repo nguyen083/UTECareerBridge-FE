@@ -1,33 +1,33 @@
-import React from 'react';
-import { Card, Typography } from 'antd';
+import React from "react";
+import { Card, Typography } from "antd";
 import * as Icons from "react-icons/fa";
+import "./BenefitComponent.scss";
 
 const { Title, Text } = Typography;
 
-const BenefitCard = ({ benefitName, description, benefitIcon, size = 'small' }) => {
-   
-    const IconComponent = Icons[benefitIcon] ? React.createElement(Icons[benefitIcon]) : null;
+const BenefitCard = ({
+  benefitName,
+  description,
+  benefitIcon,
+  size = "small",
+}) => {
+  const IconComponent = Icons[benefitIcon]
+    ? React.createElement(Icons[benefitIcon])
+    : null;
 
-    return (
-        <Card
-            size={size}
-            style={{ borderRadius: 8, backgroundColor: '#f0f5ff' }}
-        >
-            <div style={{ display: 'flex', alignItems: 'center' }}>
-                {IconComponent && (
-                    <span style={{ fontSize: 30, color: '#1890ff', marginRight: 8 }}>
-                        {IconComponent}
-                    </span>
-                )}
-                <div>
-                    <Title level={5} style={{ margin: 0 }}>
-                        {benefitName}
-                    </Title>
-                    <Text>{description}</Text>
-                </div>
-            </div>
-        </Card>
-    );
+  return (
+    <Card size={size} className="benefit-card-component" hoverable>
+      <div className="benefit-content">
+        {IconComponent && <div className="benefit-icon">{IconComponent}</div>}
+        <div className="benefit-info">
+          <Title level={5} className="benefit-title">
+            {benefitName}
+          </Title>
+          <Text className="benefit-description">{description}</Text>
+        </div>
+      </div>
+    </Card>
+  );
 };
 
 export default BenefitCard;

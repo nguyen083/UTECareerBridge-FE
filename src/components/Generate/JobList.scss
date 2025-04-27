@@ -1,0 +1,145 @@
+.job-list-container {
+  width: 100%;
+  padding: 1rem;
+
+  .job-list-item {
+    margin-bottom: 1rem;
+  }
+
+  .job-card {
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  .job-card-skeleton {
+    width: 100%;
+    border-radius: 10px;
+    padding: 1rem;
+  }
+
+  .job-content {
+    gap: 16px;
+  }
+
+  .job-logo-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .job-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 1px solid #f0f0f0;
+  }
+
+  .job-details {
+    flex: 1;
+  }
+
+  .job-title-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 80%;
+  }
+
+  .job-title {
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-weight: 600;
+    color: #262626;
+
+    &:hover {
+      color: #1890ff;
+    }
+  }
+
+  .job-tags {
+    margin-top: 4px;
+  }
+
+  .job-tag {
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  .job-time {
+    color: #8c8c8c;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .company-name {
+    margin: 0 0 8px 0;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    color: #595959;
+    font-size: 14px;
+
+    svg {
+      color: #8c8c8c;
+    }
+  }
+
+  .job-salary {
+    color: #f5222d;
+    margin: 8px 0;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+
+    svg {
+      font-size: 16px;
+    }
+
+    span {
+      margin-left: 4px;
+      font-size: 12px;
+      font-weight: normal;
+    }
+  }
+
+  .job-location {
+    margin: 0;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    color: #595959;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    svg {
+      color: #8c8c8c;
+      flex-shrink: 0;
+    }
+  }
+
+  .job-pagination {
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  .empty-jobs {
+    padding: 3rem 0;
+  }
+}

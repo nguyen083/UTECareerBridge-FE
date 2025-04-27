@@ -425,6 +425,13 @@ const App = () => {
                     <Route path="view/company/:id" element={<InforCompany />} />
                     <Route path="view/job/:id" element={<ViewJob />} />
                   </Route>
+
+                  <Route
+                    path="employer/register"
+                    element={<BackgroundAndForm />}
+                  >
+                    <Route index element={<EmployerRegister />} />
+                  </Route>
                   <Route element={<PersonalLayout />}>
                     <Route path="/profile" element={<ProfilePage />} />
                     <Route path="/my-company" element={<MyCompanyPage />} />

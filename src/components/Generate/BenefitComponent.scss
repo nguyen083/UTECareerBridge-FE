@@ -1,0 +1,54 @@
+.benefit-card-component {
+  border-radius: 10px;
+  background-color: #f0f7ff;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  overflow: hidden;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .benefit-content {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+  }
+
+  .benefit-icon {
+    font-size: 32px;
+    color: #1890ff;
+    background-color: rgba(24, 144, 255, 0.1);
+    min-width: 50px;
+    min-height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  &:hover .benefit-icon {
+    background-color: #1890ff;
+    color: white;
+    transform: scale(1.1);
+  }
+
+  .benefit-info {
+    flex: 1;
+  }
+
+  .benefit-title {
+    margin: 0 0 5px 0;
+    color: #262626;
+    font-weight: 600;
+  }
+
+  .benefit-description {
+    color: #595959;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}

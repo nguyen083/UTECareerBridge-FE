@@ -4,22 +4,22 @@
   "find_company_name_employer": "Tìm tên công ty, nhà tuyển dụng",
   "no_message": "không có tin nhắn",
   "choose_conversation": "Chọn cuộc trò chuyện để xem tin nhắn",
-  "no_conversation": "Không có cuộc trò chuyện nào",
-  "end": "Hết",
+  "no_conversation": "Không có cuộc trò chuyện nào",
+  "end": "Hết",
   "chat": "Nhắn tin",
   "no_conversations_found": "Không tìm thấy cuộc trò chuyện nào.",
   "enter_message": "Nhập tin nhắn...",
   "list_applicant": "Danh sách ứng viên",
   "list_conversation": "Danh sách cuộc trò chuyện",
+  "top_applicants": "Ứng viên hàng đầu",
   "top_companies": "Công ty hàng đầu",
-  "hot_categories": "Nghành nghề trọng điểm",
+  "hot_categories": "Nghành nghề trọng điểm",
   "newest_jobs": "Việc làm mới nhất",
-  "urgent_jobs": "Việc làm tuyển gấp",
+  "urgent_jobs": "Việc làm tuyển gấp",
   "build_your_branch": "Cùng UTE-Career xây dựng thương hiệu cá nhân",
   "follow_company": "Theo dõi công ty",
   "my_company": "Công ty của tôi",
   "marquee": "Khởi đầu sự nghiệp, tìm việc dễ dàng - Cơ hội nghề nghiệp dành cho bạn ngay hôm nay!",
-
   "notification": {
     "title": "Thông báo",
     "titleDetail": "Chi tiết thông báo",
@@ -36,7 +36,7 @@
     }
   },
   "all_categories": {
-    "title": "Tất cả danh mục"
+    "title": "Tất cả danh mục"
   },
   "common": {
     "save": "Lưu",
@@ -45,7 +45,7 @@
     "complete": "Hoàn tất",
     "error": "Lỗi",
     "success": "Thành công",
-    "notice": "Chú ý",
+    "notice": "Chú ý",
     "empty": "Không có",
     "copy": "Sao chép vào bộ nhớ tạm",
     "seeMore": "Xem thêm",
@@ -64,7 +64,14 @@
     "item": "mục",
     "login": "Đăng nhập",
     "continue": "Tiếp tục",
-    "viewDetail": "Xem chi tiết"
+    "viewDetail": "Xem chi tiết",
+    "today": "Hôm nay",
+    "yesterday": "Hôm qua",
+    "daysAgo": "{{value}} ngày trước",
+    "weekAgo": "{{value}} tuần trước",
+    "weeksAgo": "{{value}} tuần trước",
+    "monthAgo": "{{value}} tháng trước",
+    "monthsAgo": "{{value}} tháng trước"
   },
   "role": {
     "STUDENT": "Sinh viên",
@@ -80,6 +87,7 @@
       "notification": "Thông báo",
       "myCompany": "Công ty của tôi",
       "myJob": "Việc làm của tôi",
+      "jobAlerts": "Thông báo việc làm",
       "recommend": "Việc được đề xuất",
       "changePassword": "Đổi mật khẩu"
     },
@@ -103,9 +111,57 @@
         "all": "Tất cả sự kiện"
       }
     },
+    "jobAlerts": {
+      "title": "Thông báo việc làm",
+      "create": "Tạo thông báo việc làm",
+      "edit": "Chỉnh sửa thông báo việc làm",
+      "manage": "Quản lý thông báo việc làm",
+      "frequency": {
+        "daily": "Hàng ngày",
+        "weekly": "Hàng tuần",
+        "monthly": "Hàng tháng"
+      },
+      "notificationMethods": {
+        "email": "Email",
+        "app": "Ứng dụng"
+      },
+      "form": {
+        "jobTitle": "Tiêu đề công việc",
+        "jobTitlePlaceholder": "Nhập tiêu đề công việc bạn muốn nhận thông báo",
+        "location": "Địa điểm",
+        "locationPlaceholder": "Nhập địa điểm làm việc",
+        "jobCategory": "Danh mục công việc",
+        "jobCategoryRequired": "Vui lòng chọn ít nhất một danh mục công việc",
+        "minSalary": "Lương tối thiểu",
+        "level": "Cấp bậc",
+        "companyField": "Lĩnh vực công ty",
+        "frequency": "Tần suất thông báo",
+        "frequencyRequired": "Vui lòng chọn tần suất thông báo",
+        "notifyByEmail": "Thông báo qua Email",
+        "notifyByApp": "Thông báo qua ứng dụng",
+        "searchCriteria": "Tiêu chí tìm kiếm",
+        "notificationOptions": "Tùy chọn thông báo"
+      },
+      "messages": {
+        "createSuccess": "Tạo thông báo việc làm thành công",
+        "createError": "Tạo thông báo việc làm thất bại",
+        "updateSuccess": "Cập nhật thông báo việc làm thành công",
+        "updateError": "Cập nhật thông báo việc làm thất bại",
+        "deleteSuccess": "Xóa thông báo việc làm thành công",
+        "deleteError": "Xóa thông báo việc làm thất bại",
+        "confirmDelete": "Bạn có chắc chắn muốn xóa thông báo việc làm này không?"
+      },
+      "help": {
+        "title": "Hướng dẫn thông báo việc làm",
+        "jobTitle": "Nhập tiêu đề công việc để nhận thông báo cho vị trí có tiêu đề tương tự.",
+        "minSalary": "Nhập lương tối thiểu để lọc những công việc đáp ứng yêu cầu lương của bạn.",
+        "level": "Chọn cấp bậc phù hợp với kinh nghiệm và kỹ năng của bạn.",
+        "notification": "Chọn cách bạn muốn nhận thông báo (email, ứng dụng hoặc cả hai)."
+      }
+    },
     "recommend": {
       "title": "Việc được đề xuất",
-      "description": "Việc làm được đề xuất cho bạn dựa trên các hoạt động của bạn trên hệ thống. Vui lòng chọn việc làm để xem chi tiết!"
+      "description": "Việc làm được đề xuất cho bạn dựa trên các hoạt động của bạn trên hệ thống. Vui lòng chọn việc làm để xem chi tiết!"
     }
   },
   "employer": {
@@ -120,7 +176,8 @@
         "rejected": "Đã từ chối"
       },
       "messages": {
-        "notFound": "Không tìm thấy thông tin"
+        "notFound": "Không tìm thấy thông tin",
+        "empty": "Không tìm thấy ứng viên nào"
       },
       "viewDetail": {
         "title": "Hồ sơ chi tiết",
@@ -386,7 +443,35 @@
       "banking": "Ngân hàng",
       "automotiveTechnology": "Công nghệ ô tô",
       "informationTechnology": "Công nghệ thông tin",
-      "construction": "Xây dựng"
+      "construction": "Xây dựng",
+      "aboutUteCareerbridge": "Về Ute Careerbridge",
+      "faq": "Câu hỏi thường gặp",
+      "search": {
+        "placeholder": "Tìm kiếm công việc, kỹ năng...",
+        "noResults": "Không tìm thấy việc làm nào"
+      },
+      "categories": {
+        "media": "Báo chí/ truyền hình",
+        "mechanical": "Cơ khí / Chế tạo / Tự động hóa",
+        "automotive": "Công nghệ Ô tô",
+        "it": "Công nghệ thông tin",
+        "electrical": "Điện / Điện tử / Điện lạnh",
+        "accounting": "Kế toán / Kiểm toán",
+        "hospitality": "Khách sạn / Nhà hàng",
+        "marketing": "Marketing / Truyền thông / Quảng cáo",
+        "banking": "Ngân hàng / Tài chính"
+      },
+      "apply": {
+        "success": "Ứng tuyển thành công",
+        "alreadyApplied": "Hồ sơ đã được ứng tuyển",
+        "selectApplication": "Chọn đơn ứng tuyển",
+        "title": "Ứng tuyển công việc",
+        "submit": "Ứng tuyển"
+      },
+      "save": {
+        "saved": "Đã lưu",
+        "saveJob": "Lưu công việc"
+      }
     },
     "resumes": {
       "jobSeekerList": "Danh sách sinh viên đang tìm việc",

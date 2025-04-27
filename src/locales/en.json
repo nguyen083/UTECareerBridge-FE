@@ -40,8 +40,8 @@
   },
   "common": {
     "save": "Save",
-    "cancel": "Cancel",
     "edit": "Edit",
+    "cancel": "Cancel",
     "complete": "Complete",
     "error": "Error",
     "success": "Success",
@@ -63,12 +63,20 @@
     "of": "of",
     "item": "item",
     "login": "Login",
-    "continue": "Continue"
+    "continue": "Continue",
+    "viewDetail": "View detail",
+    "today": "Today",
+    "yesterday": "Yesterday",
+    "daysAgo": "{{value}} days ago",
+    "weekAgo": "{{value}} week ago",
+    "weeksAgo": "{{value}} weeks ago",
+    "monthAgo": "{{value}} month ago",
+    "monthsAgo": "{{value}} months ago"
   },
   "role": {
-    "admin": "Admin",
-    "employer": "Employer",
-    "student": "Student"
+    "ADMIN": "Admin",
+    "EMPLOYER": "Employer",
+    "STUDENT": "Student"
   },
   "student": {
     "year": "Student year {{year}}",
@@ -84,6 +92,7 @@
       "changePassword": "Change Password"
     },
     "layout": {
+      "forum": "Forum",
       "jobs": {
         "title": "Jobs",
         "newest": "Newest Jobs",
