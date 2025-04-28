@@ -30,8 +30,8 @@ import { useTranslation } from "react-i18next";
 import BoxContainer from "../../Generate/BoxContainer";
 import { getAllJobLevels, getAllIndustry } from "../../../services/apiService";
 import { MdNotificationsActive } from "react-icons/md";
-import { clsx } from "clsx";
 import {
+  useJobAlertById,
   useJobAlertByUserId,
   useJobAlertDelete,
 } from "../../../composables/notification";
@@ -52,6 +52,9 @@ const ManageJobAlerts = () => {
     isLoading: isLoadingJobAlerts,
     refetch: refetchJobAlerts,
   } = useJobAlertByUserId({ page: page - 1, size: size });
+  const [jobAlertId, setJobAlertId] = useState(null);
+  const { data: jobAlert, refetch: refetchJobAlert } =
+    useJobAlertById(jobAlertId);
   const { mutate: deleteJobAlert } = useJobAlertDelete();
 
   const fetchReferenceData = () => {
@@ -63,7 +66,6 @@ const ManageJobAlerts = () => {
       setLevels(levelsMap);
     });
 
-    // Fetch industries and convert to object for easy lookup
     getAllIndustry().then((industriesRes) => {
       const industriesMap = {};
       industriesRes.data.forEach((industry) => {
@@ -140,6 +142,25 @@ const ManageJobAlerts = () => {
       .join(", ");
   };
 
+  const handlePageChange = (page, pageSize) => {
+    searchParams.set("page", page);
+    searchParams.set("size", pageSize);
+    setSearchParams(searchParams);
+  };
+
+  useEffect(() => {
+    if (jobAlert) {
+      const matchedJobs = jobAlert.data.matchedJobs;
+      // navigate(`/search/${jobAlertId}`);
+    }
+  }, [jobAlert]);
+
+  useEffect(() => {
+    if (jobAlertId) {
+      refetchJobAlert();
+    }
+  }, [jobAlertId]);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
     fetchReferenceData();
@@ -148,12 +169,6 @@ const ManageJobAlerts = () => {
   useEffect(() => {
     refetchJobAlerts();
   }, [searchParams]);
-
-  const handlePageChange = (page, pageSize) => {
-    searchParams.set("page", page);
-    searchParams.set("size", pageSize);
-    setSearchParams(searchParams);
-  };
 
   return (
     <Flex vertical gap={16}>
@@ -185,16 +200,24 @@ const ManageJobAlerts = () => {
                     text={formatFrequency(alert.frequency)}
                     color={getFrequencyColor(alert.frequency)}
                   >
-                    <Card
-                      hoverable
-                      className={clsx(
-                        `relative overflow-hidden transition-all duration-300 border-l-4 group hover:shadow-lg border-l-text-color-hover`
-                      )}
-                    >
-                      <div className="absolute flex gap-2 space-x-1 transition-opacity duration-200 opacity-70 bottom-4 right-2 group-hover:opacity-100">
+                    <Card className="relative overflow-hidden transition-all duration-300 border-l-4 group border-l-text-color-hover">
+                      <div className="absolute flex gap-2 space-x-1 transition-opacity duration-200 bottom-4 right-2">
+                        {/* Xem công việc phù hợp */}
+                        <Button
+                          className="mr-4"
+                          type="primary"
+                          size="small"
+                          onClick={() => {
+                            setJobAlertId(alert.id);
+                          }}
+                        >
+                          {t("student.jobAlerts.viewMatchedJobs")}
+                        </Button>
+
                         {/* Chỉnh sửa */}
                         <Tooltip title={t("common.edit")}>
                           <Button
+                            className="opacity-70"
                             type="text"
                             size="small"
                             icon={<EditOutlined className="text-blue-500" />}
@@ -207,6 +230,7 @@ const ManageJobAlerts = () => {
                         {/* Xóa */}
                         <Tooltip title={t("common.delete")}>
                           <Button
+                            className="opacity-70"
                             type="text"
                             size="small"
                             icon={<DeleteOutlined className="text-red-500" />}
@@ -217,7 +241,6 @@ const ManageJobAlerts = () => {
                           />
                         </Tooltip>
                       </div>
-
                       <Flex align="center" gap={20}>
                         <div className="flex-1 min-w-0">
                           {/* Tên công việc */}
@@ -228,6 +251,7 @@ const ManageJobAlerts = () => {
                             {alert.jobTitle ||
                               t("student.jobAlerts.form.allJobs")}
                           </Text>
+
                           <Divider type="horizontal" className="my-3" />
                           <Flex wrap="wrap" gap={16} className="!text-sm">
                             {/* Cấp bậc */}

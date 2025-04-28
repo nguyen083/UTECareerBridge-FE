@@ -117,6 +117,7 @@
       "create": "Tạo thông báo việc làm",
       "edit": "Chỉnh sửa thông báo việc làm",
       "manage": "Quản lý thông báo việc làm",
+      "viewMatchedJobs": "Xem công việc phù hợp",
       "form": {
         "title": "Tiêu chí tìm kiếm việc làm",
         "jobTitle": "Tiêu đề công việc",
