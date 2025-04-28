@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { store } from "../redux/store"; // Import the Redux store directly
 import { setInitEmployer } from "../redux/action/employerSlice";
 import { setInitStudent } from "../redux/action/studentSlice";
 import { setInitUser } from "../redux/action/userSlice";
@@ -57,12 +57,21 @@ export const refreshToken = async () => {
     return response.data;
   } catch (error) {
     console.log("Error refreshing token - redirecting to login");
-
-    setTimeout(() => {
-      window.location = "/login";
-    }, 100);
     throw error;
   }
+};
+
+// Function to handle logout and reset state
+const handleLogout = () => {
+  // Use store.dispatch directly instead of the useDispatch hook
+  store.dispatch(setInitEmployer());
+  store.dispatch(setInitStudent());
+  store.dispatch(setInitUser());
+  removeAllToken();
+  store.dispatch(setInitWeb());
+
+  // Redirect to login page
+  window.location = "/login";
 };
 
 instance.interceptors.response.use(
@@ -76,18 +85,20 @@ instance.interceptors.response.use(
       window.location = "/forbidden"; // or '/unauthorized', depending on your route setup
       return Promise.reject(error);
     }
+
     if (error.response?.status === 500) {
-      // Redirect to not found page
-      // window.location = "/user/500";
+      // Handle 500 error without redirecting
       return Promise.reject(error);
     }
+
     if (error.response?.status === 404) {
       window.location = "/user/404";
       return Promise.reject(error);
     }
+
     // Handle 401 Unauthorized
     if (error.response?.status === 401 && !originalRequest._retry) {
-      // Loại trừ trường hợp từ endpoint interviews/schedule
+      // Exclude interviews/schedule endpoint
       if (originalRequest.url.includes("interviews/schedule")) {
         return error?.response?.data
           ? error.response.data
@@ -95,7 +106,7 @@ instance.interceptors.response.use(
       }
 
       if (isRefreshing) {
-        // Nếu đang refresh token, thêm request vào hàng đợi
+        // If already refreshing, add request to queue
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         })
@@ -109,7 +120,7 @@ instance.interceptors.response.use(
 
       originalRequest._retry = true;
       isRefreshing = true;
-      const dispatch = useDispatch();
+
       try {
         const newTokens = await refreshToken();
         localStorage.setItem("accessToken", newTokens.accessToken);
@@ -117,7 +128,7 @@ instance.interceptors.response.use(
           "Authorization"
         ] = `Bearer ${newTokens.accessToken}`;
 
-        // Xử lý các request trong hàng đợi
+        // Process queued requests
         processQueue();
         isRefreshing = false;
 
@@ -125,13 +136,10 @@ instance.interceptors.response.use(
       } catch (refreshError) {
         processQueue(refreshError);
         isRefreshing = false;
-        // Directly redirect to login without showing error message
-        dispatch(setInitEmployer());
-        dispatch(setInitStudent());
-        dispatch(setInitUser());
-        removeAllToken();
-        dispatch(setInitWeb());
-        window.location = "/login";
+
+        // Handle failed refresh - logout user
+        handleLogout();
+
         return Promise.reject(refreshError);
       }
     }
