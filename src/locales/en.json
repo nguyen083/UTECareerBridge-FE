@@ -117,7 +117,6 @@
       "create": "Create job alert",
       "edit": "Edit job alert",
       "manage": "Manage job alerts",
-
       "form": {
         "title": "Job search criteria",
         "jobTitle": "Job title",

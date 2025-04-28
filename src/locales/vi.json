@@ -114,50 +114,55 @@
     },
     "jobAlerts": {
       "title": "Thông báo việc làm",
-      "create": "Tạo thông báo",
-      "edit": "Chỉnh sửa thông báo",
+      "create": "Tạo thông báo việc làm",
+      "edit": "Chỉnh sửa thông báo việc làm",
       "manage": "Quản lý thông báo việc làm",
-      "frequency": {
-        "daily": "Hàng ngày",
-        "weekly": "Hàng tuần",
-        "monthly": "Hàng tháng"
-      },
-      "notificationMethods": {
-        "email": "Email",
-        "app": "Ứng dụng"
-      },
       "form": {
+        "title": "Tiêu chí tìm kiếm việc làm",
         "jobTitle": "Tiêu đề công việc",
-        "jobTitlePlaceholder": "Nhập tiêu đề công việc bạn muốn nhận thông báo",
+        "jobTitlePlaceholder": "Nhập tiêu đề công việc bạn muốn tìm, ví dụ: Developer, Marketing",
+        "jobTitleRequired": "Vui lòng nhập tiêu đề công việc",
         "location": "Địa điểm",
         "locationPlaceholder": "Nhập địa điểm làm việc",
         "jobCategory": "Danh mục công việc",
-        "jobCategoryRequired": "Vui lòng chọn ít nhất một danh mục công việc",
-        "minSalary": "Lương tối thiểu",
+        "jobCategoryPlaceholder": "Vui lòng chọn",
+        "minSalary": "Mức lương tối thiểu",
+        "minSalaryPlaceholder": "Nhập mức lương tối thiểu",
         "level": "Cấp bậc",
+        "levelPlaceholder": "Vui lòng chọn",
         "companyField": "Lĩnh vực công ty",
+        "companyFieldPlaceholder": "Vui lòng chọn",
         "frequency": "Tần suất thông báo",
-        "frequencyRequired": "Vui lòng chọn tần suất thông báo",
-        "notifyByEmail": "Thông báo qua Email",
+        "frequencyPlaceholder": "Vui lòng chọn",
+        "notifyByEmail": "Thông báo qua email",
         "notifyByApp": "Thông báo qua ứng dụng",
         "searchCriteria": "Tiêu chí tìm kiếm",
-        "notificationOptions": "Tùy chọn thông báo"
+        "notificationOptions": "Tùy chọn thông báo",
+        "notifyByEmailLabel": "Thông báo qua email",
+        "notifyByAppLabel": "Thông báo qua ứng dụng",
+        "yes": "Có",
+        "no": "Không",
+        "createJobAlert": "Tạo thông báo việc làm",
+        "updateJobAlert": "Cập nhật thông báo việc làm"
       },
       "messages": {
-        "createSuccess": "Tạo thông báo việc làm thành công",
-        "createError": "Tạo thông báo việc làm thất bại",
-        "updateSuccess": "Cập nhật thông báo việc làm thành công",
-        "updateError": "Cập nhật thông báo việc làm thất bại",
-        "deleteSuccess": "Xóa thông báo việc làm thành công",
-        "deleteError": "Xóa thông báo việc làm thất bại",
-        "confirmDelete": "Bạn có chắc chắn muốn xóa thông báo việc làm này không?"
+        "createSuccess": "Tạo thông báo việc làm thành công!",
+        "createError": "Tạo thông báo việc làm thất bại!",
+        "updateSuccess": "Cập nhật thông báo việc làm thành công!",
+        "updateError": "Cập nhật thông báo việc làm thất bại!",
+        "delete": "Xóa",
+        "deleteConfirm": "Bạn có chắc chắn muốn xóa thông báo việc làm này?",
+        "deleteSuccess": "Xóa thông báo việc làm thành công!",
+        "deleteError": "Xóa thông báo việc làm thất bại!",
+        "emptyText": "Không tìm thấy thông báo việc làm nào"
       },
       "help": {
-        "title": "Hướng dẫn thông báo việc làm",
-        "jobTitle": "Nhập tiêu đề công việc để nhận thông báo cho vị trí có tiêu đề tương tự.",
-        "minSalary": "Nhập lương tối thiểu để lọc những công việc đáp ứng yêu cầu lương của bạn.",
+        "title": "Trợ giúp thông báo việc làm",
+        "jobTitle": "Nhập tiêu đề công việc để nhận thông báo cho các vị trí có tiêu đề tương tự.",
+        "minSalary": "Nhập mức lương tối thiểu để lọc các công việc đáp ứng yêu cầu lương của bạn.",
         "level": "Chọn cấp bậc phù hợp với kinh nghiệm và kỹ năng của bạn.",
-        "notification": "Chọn cách bạn muốn nhận thông báo (email, ứng dụng hoặc cả hai)."
+        "notification": "Chọn cách bạn muốn nhận thông báo (email, ứng dụng hoặc cả hai).",
+        "description": "Hệ thống sẽ gửi thông báo cho bạn về các công việc phù hợp với tiêu chí của bạn theo tần suất bạn đã đặt. Bạn có thể tạo nhiều thông báo việc làm với các tiêu chí khác nhau."
       }
     },
     "recommend": {
