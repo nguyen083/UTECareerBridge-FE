@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { LikeOutlined } from "@ant-design/icons";
 import { Button, Popover } from "antd";
 import { clsx } from "clsx";

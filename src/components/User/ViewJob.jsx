@@ -4,7 +4,6 @@ import {
   Col,
   Card,
   Button,
-  Space,
   Image,
   Typography,
   Flex,
@@ -22,7 +21,6 @@ import {
   ClockCircleOutlined,
   HeartOutlined,
   HeartFilled,
-  CalendarOutlined,
   BankOutlined,
 } from "@ant-design/icons";
 import {
@@ -32,7 +30,6 @@ import {
   FaCubes,
   FaReact,
   FaUsers,
-  FaRegMoneyBillAlt,
 } from "react-icons/fa";
 import {
   checkSaveJob,
@@ -53,7 +50,7 @@ import { ModalApply } from "../Generate/ModalApply";
 import { useSelector } from "react-redux";
 import "./ViewJob.scss";
 
-const { Text, Link, Paragraph, Title } = Typography;
+const { Text, Link, Title } = Typography;
 const ViewJob = () => {
   const user = useSelector((state) => state.user);
   const location = useLocation();
