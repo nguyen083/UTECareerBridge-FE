@@ -79,9 +79,12 @@ const LoginPage = () => {
                         onClick={() => navigate('/home')}
                     />
                 </Link>
-                <div className="p-5 mt-10 shadow-2xl login-form h-fit lg:w-7/12 ">
+                <div className="p-8 mt-6 shadow-2xl login-form h-fit lg:w-8/12 rounded-xl">
+                    <span className="flex justify-center welcome-text">{t('auth.login.welcome')}</span>
                     <span className="flex justify-center title">{t('auth.login.title')}</span>
-                    <div className="mt-5 mb-4 md:w-full form-group">
+                    <p className="text-center subtitle">{t('auth.login.subtitle')}</p>
+                    
+                    <div className="mt-8 mb-4 md:w-full form-group">
                         <Form
                             size='large'
                             requiredMark={false}
@@ -92,7 +95,7 @@ const LoginPage = () => {
                             validateTrigger={['onBlur']}>
                             <Form.Item
                                 name="username"
-                                label={t('auth.login.email/phone')}
+                                label={<span className="label-text">{t('auth.login.email/phone')}</span>}
                                 rules={[{
                                     required: true,
                                     message: t('auth.register.emailRequired'),
@@ -112,42 +115,53 @@ const LoginPage = () => {
                                     },
                                 })
                                 ]} validateFirst >
-                                <Input prefix={<UserOutlined />} placeholder={t('auth.login.emailPlaceholder')} />
+                                <Input 
+                                    prefix={<UserOutlined className="input-icon" />} 
+                                    placeholder={t('auth.login.emailPlaceholder')} 
+                                    className="input-field"
+                                />
                             </Form.Item>
                             <Form.Item
-                                label={t('auth.register.password')}
+                                label={<span className="label-text">{t('auth.register.password')}</span>}
                                 required
                                 name="password"
                                 rules={[{
                                     required: true,
                                     message: t('auth.register.passwordRequired'),
                                 }]}>
-                                <Input.Password prefix={<UnlockOutlined />} placeholder={t('auth.login.passwordPlaceholder')} />
+                                <Input.Password 
+                                    prefix={<UnlockOutlined className="input-icon" />} 
+                                    placeholder={t('auth.login.passwordPlaceholder')} 
+                                    className="input-field"
+                                />
                             </Form.Item>
 
                             <Form.Item>
                                 <Flex justify='space-between'>
                                     <Flex gap={7} align='center' justify='center'>
-                                        <Text>{t('auth.login.dont_have_an_account')}</Text>
-                                        <Link to='/employer/register'>{t('auth.register.title')}</Link>
+                                        <Text className="text-secondary">{t('auth.login.dont_have_an_account')}</Text>
+                                        <Link to='/employer/register' className="register-link">{t('auth.register.title')}</Link>
                                     </Flex>
-                                    <Link to='/forgot-password' target='_blank'>{t('auth.login.forgotPassword')}</Link>
+                                    <Link to='/forgot-password' target='_blank' className="forgot-password">{t('auth.login.forgotPassword')}</Link>
                                 </Flex>
                             </Form.Item>
-                            <Flex align='center' justify='space-between'>
-                                <Button size='large' className='w-full' type="primary" htmlType='submit'>
+                            <Form.Item>
+                                <Button size='large' className='w-full login-button' type="primary" htmlType='submit'>
                                     {t('auth.login.title')}
                                 </Button>
-                            </Flex>
-                            <Divider className='mb-3'><div className='text-gray-500'>{t('common.or')}</div></Divider>
+                            </Form.Item>
+                            <Divider className='mb-6 mt-6'><div className='text-gray-500'>{t('common.or')}</div></Divider>
 
                             <Form.Item className='mb-1'>
-                                <Button className='w-full' type="default" onClick={handleLoginWithGoogle}>
+                                <Button className='w-full google-button' type="default" onClick={handleLoginWithGoogle}>
                                     <FcGoogle size={24} className='mr-1' />{t('auth.login.googleLogin')}
                                 </Button>
                             </Form.Item>
                         </Form>
                     </div>
+                </div>
+                <div className="mt-4 text-center text-sm text-gray-500 footer-text">
+                    © {new Date().getFullYear()} UTECareerBridge. {t('auth.login.rights')}
                 </div>
             </div>
         </div >

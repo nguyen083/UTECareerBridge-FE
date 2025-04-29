@@ -1,19 +1,110 @@
-.company-page {
-  .company-banner {
-    height: 350px;
-    position: relative;
-    overflow: hidden;
-    transition: height 0.3s ease;
+@import "../../components/styles/variables.scss";
 
-    &:hover {
-      cursor: pointer;
+// Biến màu chính với tông màu phong phú hơn
+$primary-color: #1890ff;
+$primary-gradient: linear-gradient(135deg, #1890ff 0%, #0050b3 100%);
+$secondary-color: #1e4f94;
+$secondary-gradient: linear-gradient(135deg, #1e4f94 0%, #0e2748 100%);
+$accent-color: #52c41a;
+$light-blue: #e6f7ff;
+$border-color: #e8e8e8;
+$text-color: #333333;
+$light-bg: #f8f9fa;
+$card-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+$hover-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+
+// Company profile styles
+.company-profile {
+  animation: fadeIn 0.8s ease;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes slideRight {
+    from {
+      transform: translateX(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .card-container {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: $card-shadow;
+    border-radius: 16px !important;
+    overflow: hidden;
+    border: none !important;
+
+    .ant-card-body {
+      padding-top: 0; // Đảm bảo không có padding trên cùng
     }
 
-    img {
+    &:hover {
+      box-shadow: $hover-shadow;
+    }
+  }
+
+  .company-header {
+    position: relative;
+    overflow: hidden;
+    height: 280px; // Giảm chiều cao hình ảnh đầu trang
+
+    &::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.65) 0%,
+        rgba(0, 0, 0, 0.4) 50%,
+        rgba(0, 0, 0, 0.1) 100%
+      );
+      z-index: 1;
+    }
+
+    .header-image {
+      transition: transform 1s cubic-bezier(0.165, 0.84, 0.44, 1);
       width: 100%;
       height: 100%;
       object-fit: cover;
-      transition: transform 0.5s ease;
+      filter: brightness(0.9);
 
       &:hover {
         transform: scale(1.05);
@@ -21,212 +112,470 @@
     }
   }
 
+  // Container cho thông tin công ty
+  .company-info-container {
+    position: relative;
+    width: 100%;
+    padding: 0 24px 30px;
+    margin-top: -50px; // Di chuyển toàn bộ container lên phía trên
+    z-index: 10;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
   .company-logo {
-    border: 3px solid white;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    background-color: white;
-    transition: transform 0.3s ease;
+    background-color: #fff;
+    border: 6px solid white !important;
+    border-radius: 14px !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4); // Bóng đổ mạnh hơn
+    position: relative;
+    z-index: 20;
+    width: 120px !important;
+    height: 120px !important;
+    margin-right: 24px;
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      z-index: 11;
+    }
 
     &:hover {
-      transform: translateY(-5px);
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
     }
   }
 
-  .company-name {
-    font-weight: 600;
-    margin-bottom: 0.25rem;
-    background: linear-gradient(90deg, #1890ff, #0050b3);
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.05);
-  }
+  .company-info {
+    flex: 1;
+    margin-top: 30px;
+    z-index: 10;
 
-  .follow-count {
-    color: #4b5563;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
+    .company-name {
+      margin-bottom: 10px;
+      color: #000000;
+      font-weight: bold;
+      font-size: 28px;
+      text-shadow: 0 2px 4px rgba(255, 255, 255, 1); // Tăng độ đậm của bóng đổ
+      display: inline-block;
+      letter-spacing: 0.5px;
+      position: relative;
+      background-color: rgba(
+        255,
+        255,
+        255,
+        0.85
+      ); // Thêm nền trắng bán trong suốt
+      padding: 5px 12px; // Thêm padding
+      border-radius: 8px; // Bo góc
 
-    .follow-icon {
-      color: #3b82f6;
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 60px;
+        height: 3px;
+        background: $primary-color;
+        border-radius: 3px;
+        transition: width 0.3s ease;
+      }
+    }
+
+    .company-followers {
+      color: #000000;
+      margin-bottom: 8px;
+      font-size: 16px;
+      display: inline-flex; // Thay đổi từ flex sang inline-flex
+      align-items: center;
+      gap: 5px;
+      background-color: rgba(
+        255,
+        255,
+        255,
+        0.85
+      ); // Thêm nền trắng bán trong suốt
+      padding: 4px 10px; // Thêm padding
+      border-radius: 20px; // Bo góc
+      margin-right: 8px; // Khoảng cách với tag bên cạnh
+
+      &::before {
+        content: "•";
+        font-size: 20px;
+        color: $primary-color;
+      }
+
+      .follower-count {
+        font-weight: bold;
+        color: #000000;
+      }
     }
   }
 
-  .follow-button {
-    border-radius: 25px;
+  .industry-tag {
+    border-radius: 20px !important;
+    padding: 4px 12px !important;
     font-weight: 500;
-    height: 40px;
-    transition: all 0.3s ease;
-    padding: 0 25px;
-    border: none;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 6px rgba(24, 144, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.9) !important;
+
+    .tag-icon {
+      margin-right: 5px;
+    }
 
     &:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    &.following {
-      background: white;
-      color: #1890ff;
-      border: 1px solid #1890ff;
-
-      &:hover {
-        background-color: rgba(59, 130, 246, 0.05);
-      }
-    }
-
-    &:not(.following) {
-      background: linear-gradient(45deg, #1890ff, #096dd9);
-      color: white;
-
-      &:hover {
-        background: linear-gradient(45deg, #096dd9, #0050b3);
-      }
+      box-shadow: 0 4px 8px rgba(24, 144, 255, 0.3);
     }
   }
 
-  .custom-anchor {
-    padding: 1rem 0;
-    border-bottom: 1px solid #e5e7eb;
-    position: sticky;
-    top: 60px;
-    z-index: 10;
-    background-color: white;
+  .follow-button-container {
+    margin-top: 30px;
+    z-index: 20;
+  }
 
-    .anchor-link {
-      font-size: 1rem;
-      padding: 0.5rem 1rem;
-      border-radius: 4px;
+  .follow-button {
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+    height: 40px !important;
+    border-radius: 50px !important;
+    padding: 0 20px !important;
+    font-weight: 600 !important;
+    position: relative;
+    overflow: hidden;
+
+    &.followed {
+      background-color: rgba(255, 255, 255, 0.9) !important;
+      border-color: $primary-color;
+      color: $primary-color;
 
       &:hover {
-        background-color: #f3f4f6;
+        background-color: rgba(255, 255, 255, 1) !important;
+      }
+    }
+
+    &:not(.followed) {
+      background: $primary-gradient !important;
+      border: none !important;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.2),
+          transparent
+        );
+        transition: left 0.7s;
       }
 
-      &.active {
-        font-weight: 600;
-        color: #3b82f6;
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 7px 15px rgba(24, 144, 255, 0.4);
+
+        &::before {
+          left: 100%;
+        }
       }
+    }
+
+    .icon {
+      display: inline-flex;
+      margin-right: 8px;
+      font-size: 16px;
+    }
+  }
+
+  // Rest of CSS remains the same
+  .custom-anchor {
+    border-bottom: 1px solid $border-color;
+    margin: 10px 0 24px;
+    padding: 8px 0;
+
+    .ant-anchor-link {
+      padding: 4px 0;
+      margin: 0 15px;
+      position: relative;
+
+      .ant-anchor-link-title {
+        font-size: 16px;
+        font-weight: 500;
+        transition: all 0.3s;
+        padding: 5px 15px;
+        border-radius: 20px;
+
+        .anchor-icon {
+          margin-right: 5px;
+          font-size: 16px;
+          vertical-align: middle;
+        }
+
+        &:hover {
+          color: $primary-color;
+          background-color: rgba(24, 144, 255, 0.08);
+        }
+      }
+
+      &.ant-anchor-link-active {
+        .ant-anchor-link-title {
+          color: white;
+          background-color: $primary-color;
+        }
+      }
+    }
+
+    .ant-anchor-ink {
+      display: none;
     }
   }
 
   .section-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    padding: 1rem 1.5rem;
-    margin-bottom: 1.5rem;
-    border-left: 4px solid #3b82f6;
-    background: linear-gradient(90deg, #f0f7ff, #ffffff);
-    border-radius: 0 4px 4px 0;
-    display: flex;
-    align-items: center;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    padding: 18px 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border-left: 5px solid $primary-color;
+    position: relative;
+    overflow: hidden;
 
     &::before {
       content: "";
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      background: #3b82f6;
-      border-radius: 50%;
-      margin-right: 12px;
-    }
-  }
-
-  .company-description {
-    .ant-typography-expand {
-      color: #3b82f6;
-      font-weight: 500;
-    }
-  }
-
-  .benefit-card {
-    transition: transform 0.3s ease;
-
-    &:hover {
-      transform: translateY(-5px);
-    }
-  }
-
-  .job-card {
-    border-radius: 10px;
-    transition: all 0.3s ease;
-
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
-    }
-  }
-
-  .info-items-container {
-    margin: 1.5rem 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
-  }
-
-  .info-item {
-    margin-bottom: 0;
-    padding: 16px 20px;
-    border-radius: 12px;
-    transition: all 0.3s ease;
-    background-color: #f9fafb;
-    border-left: 4px solid transparent;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-
-    &:hover {
-      border-left-color: #1890ff;
-      background-color: #f0f7ff;
-      transform: translateX(5px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.5),
+        transparent
+      );
+      transform: translateX(-100%);
+      transition: transform 0.6s;
     }
 
-    .info-label {
+    &:hover::before {
+      transform: translateX(100%);
+    }
+
+    .title1 {
+      font-size: 20px;
       font-weight: 600;
-      color: #374151;
+      color: $secondary-color;
+      margin: 0;
       display: flex;
       align-items: center;
-      gap: 8px;
-      font-size: 1.1rem;
-      margin-bottom: 4px;
 
-      .anticon {
-        color: #1890ff;
-        font-size: 18px;
-        background-color: rgba(24, 144, 255, 0.1);
-        padding: 8px;
-        border-radius: 8px;
+      &::before {
+        content: "";
+        width: 6px;
+        height: 20px;
+        background: $primary-gradient;
+        margin-right: 12px;
+        border-radius: 3px;
+        display: inline-block;
+      }
+    }
+  }
+
+  .descriptions-container {
+    background-color: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transition: all 0.3s;
+    animation: fadeIn 1s ease;
+
+    &:hover {
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .ant-descriptions-item {
+      padding: 12px 0;
+      position: relative;
+
+      &:not(:last-child) {
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 1px;
+          background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(0, 0, 0, 0.08),
+            transparent
+          );
+        }
       }
     }
 
-    .info-value {
-      color: #4b5563;
-      padding-left: 36px;
-      word-break: break-word;
-      font-size: 1.05rem;
-      line-height: 1.5;
+    .ant-descriptions-item-label {
+      font-weight: 600;
+      color: $secondary-color;
 
-      a {
-        color: #1890ff;
-        transition: all 0.3s ease;
+      .anticon {
+        margin-right: 8px;
+        font-size: 16px;
+        color: $primary-color;
+      }
+    }
+
+    .ant-descriptions-item-content {
+      color: $text-color;
+
+      .ant-tag {
+        font-size: 14px;
+        padding: 4px 12px;
+        border-radius: 20px;
         font-weight: 500;
+        transition: all 0.3s;
 
         &:hover {
-          color: #0050b3;
-          text-decoration: underline;
+          transform: translateY(-2px);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      a {
+        color: $primary-color;
+        transition: all 0.3s;
+        position: relative;
+        display: inline-block;
+
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          width: 0;
+          height: 1px;
+          background-color: $primary-color;
+          transition: width 0.3s;
+        }
+
+        &:hover {
+          color: darken($primary-color, 10%);
+
+          &::after {
+            width: 100%;
+          }
+        }
+
+        &.map-link {
+          margin-left: 8px;
+          background-color: #f0f0f0;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+
+          &::after {
+            display: none;
+          }
+
+          &:hover {
+            background-color: $light-blue;
+            transform: scale(1.1);
+          }
         }
       }
     }
   }
 
+  .company-description {
+    padding-top: 15px;
+    margin-top: 10px;
+    border-top: 1px dashed rgba(0, 0, 0, 0.1);
+
+    h5 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .anticon {
+        color: $primary-color;
+      }
+    }
+
+    .description-content {
+      line-height: 1.8;
+      color: #444;
+
+      p {
+        margin-bottom: 16px;
+      }
+
+      ul {
+        padding-left: 20px;
+      }
+    }
+  }
+
   .video-container {
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    transition: all 0.3s;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+    }
+
+    iframe {
+      display: block;
+      border-radius: 12px;
+    }
+  }
+
+  .benefits-container {
+    animation: slideUp 0.8s ease-out;
+  }
+
+  .benefit-card {
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 16px;
+
+    &:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    }
+  }
+
+  .job-list-section {
+    animation: slideUp 1s ease-out;
+
+    .job-card {
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 16px;
+
+      &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+      }
+    }
   }
 }

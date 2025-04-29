@@ -527,7 +527,13 @@
     "voucher": {
       "selectTitle": "Select voucher",
       "useNow": "Use now",
-      "fetchError": "Error fetching coupons"
+      "fetchError": "Error fetching coupons",
+      "searchPlaceholder": "Search by code or description",
+      "expiringSoon": "Expiring soon",
+      "expired": "Expired",
+      "daysRemaining": "days remaining",
+      "noSearchResults": "No vouchers found matching your search",
+      "noCoupons": "No vouchers available at the moment"
     }
   },
   "auth": {
@@ -1226,5 +1232,54 @@
     "permission_required": "Permission Required",
     "permission_instruction": "Please grant camera and microphone access to join the meeting",
     "try_again": "Try Again"
+  },
+  "forum": {
+    "title": "Forum",
+    "listForum": {
+      "title": "A list of forums",
+      "search": "Search forum",
+      "create": "Create forum",
+      "edit": "Edit forum",
+      "delete": "Delete forum",
+      "createDate": "Published at"
+    }
+  },
+  "topic": {
+    "ADMIN": "Admin",
+    "STUDENT": "Student",
+    "EMPLOYER": "Employer",
+    "search": "Search topic",
+    "addTopic": "Create topic",
+    "filter": "Filter topic",
+    "createError": "Create topic failed"
+  },
+  "post": {
+    "topic": "Topic",
+    "description": "Description",
+    "content": "Content",
+    "tags": "Tags",
+    "statistic": "Statistic",
+    "createdAt": "Published at",
+    "updatedAt": "Updated at",
+    "post": "Post",
+    "viewCount": "View count",
+    "inforTopic": "Topic information",
+    "inforPost": "Post information",
+    "lastUpdate": "Last updated",
+    "share": "Share",
+    "comment": "Comment",
+    "writeComment": "Write a comment",
+    "noComment": "No comments yet. Be the first to comment!"
+  },
+  "comment": {
+    "reply": "Reply",
+    "login": "Login to comment"
+  },
+  "tag": {
+    "create": "Create tag",
+    "edit": "Edit tag",
+    "delete": "Delete tag",
+    "createSuccess": "Create tag successfully",
+    "createError": "Create tag failed"
   }
 }

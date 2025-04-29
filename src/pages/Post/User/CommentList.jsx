@@ -1,5 +1,3 @@
-"use client";
-
 import { Avatar, Typography, Button, Input, message, Modal } from "antd";
 import {
   DeleteOutlined,

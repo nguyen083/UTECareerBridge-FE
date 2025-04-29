@@ -1,24 +1,24 @@
 import { useCallback, useRef, useState, useEffect } from "react";
 import { Card, Flex, FloatButton, Image, Popover, Input, Button } from "antd";
 
-import './ChatBot.scss'
-import { ReceiverChat, SenderChat } from '../../../pages/Chat/ContainerofChat';
-import { connectStomp } from '../../../utils/stompConfig';
-import { SendOutlined } from '@ant-design/icons';
-import chat from '../../../services/api/chat';
-import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
+import "./ChatBot.scss";
+import { ReceiverChat, SenderChat } from "../../../pages/Chat/ContainerofChat";
+import { connectStomp } from "../../../utils/stompConfig";
+import { SendOutlined } from "@ant-design/icons";
+import chat from "../../../services/api/chat";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 const { TextArea } = Input;
 const ChatBot = () => {
-    const { t } = useTranslation();
-    const [messages, setMessages] = useState([]);
-    const [stompClient, setStompClient] = useState(null);
-    const divRef = useRef(null);
-    const [sessionId, setSessionId] = useState(null);
-    const [newMessage, setNewMessage] = useState('');
-    const currentUserId = "current-user";
-    const lang = useSelector((state) => state.web.lang || "en");
+  const { t } = useTranslation();
+  const [messages, setMessages] = useState([]);
+  const [stompClient, setStompClient] = useState(null);
+  const divRef = useRef(null);
+  const [sessionId, setSessionId] = useState(null);
+  const [newMessage, setNewMessage] = useState("");
+  const currentUserId = "current-user";
+  const lang = useSelector((state) => state.web.lang || "en");
 
   const generateSessionId = () => {
     const storedId = localStorage.getItem("chatbotSessionId");
@@ -120,12 +120,11 @@ const ChatBot = () => {
     };
     setMessages((prev) => [...prev, userMessage]);
 
-       
-        const payload = {
-            sessionId: sessionId,
-            content: newMessage,
-            language: lang 
-        };
+    const payload = {
+      sessionId: sessionId,
+      content: newMessage,
+      language: lang,
+    };
 
     chat.sendMessageToChatBot(stompClient, payload);
     setNewMessage("");

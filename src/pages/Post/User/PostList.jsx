@@ -300,7 +300,6 @@ const PostItem = ({ post }) => {
         SAD: reactionCount.data.sadCount,
         ANGRY: reactionCount.data.angryCount,
       };
-
       const result = Object.entries(reactions)
         .filter(([, count]) => count > 0)
         .sort(([, a], [, b]) => b - a)
@@ -309,7 +308,6 @@ const PostItem = ({ post }) => {
           mapReaction: mapReaction[key],
           value,
         }));
-
       setSortedReactions(result);
     }
   }, [reactionCount]);
