@@ -20,7 +20,6 @@
   "follow_company": "Theo dõi công ty",
   "my_company": "Công ty của tôi",
   "marquee": "Khởi đầu sự nghiệp, tìm việc dễ dàng - Cơ hội nghề nghiệp dành cho bạn ngay hôm nay!",
-
   "notification": {
     "title": "Thông báo",
     "titleDetail": "Chi tiết thông báo",
@@ -40,6 +39,7 @@
     "title": "Tất cả danh mục"
   },
   "common": {
+    "home": "Trang chủ",
     "save": "Lưu",
     "edit": "Chỉnh sửa",
     "delete": "Xóa",
@@ -188,8 +188,8 @@
         "empty": "Không tìm thấy ứng viên nào"
       },
       "viewDetail": {
-        "title": "Hồ sơ chi tiết",
-        "approve": "Duyệt",
+        "title": "Xem hồ sơ ứng viên",
+        "approve": "Phê duyệt",
         "reject": "Từ chối",
         "interview": {
           "title": "Thông báo phỏng vấn",
@@ -203,12 +203,17 @@
           "position": {
             "label": "Vị trí phỏng vấn",
             "placeholder": "Nhập vị trí phỏng vấn",
-            "required": "Vui vị trí phỏng vấn!"
+            "required": "Vui lòng nhập vị trí phỏng vấn!"
           },
           "time": {
             "label": "Thời gian phỏng vấn",
             "placeholder": "Chọn thời gian phỏng vấn",
             "required": "Vui lòng chọn thời gian phỏng vấn!"
+          },
+          "duration": {
+            "label": "Thời lượng phỏng vấn",
+            "placeholder": "Nhập thời lượng phỏng vấn",
+            "required": "Vui lòng nhập thời lượng phỏng vấn!"
           },
           "location": {
             "online": {
@@ -221,11 +226,6 @@
               "placeholder": "Nhập địa điểm phỏng vấn",
               "required": "Vui lòng nhập địa điểm phỏng vấn!"
             }
-          },
-          "duration": {
-            "label": "Thời gian phỏng vấn",
-            "placeholder": "Nhập thời gian phỏng vấn",
-            "required": "Vui lòng nhập thời gian phỏng vấn!"
           },
           "additionalInfo": {
             "label": "Thông tin bổ sung",
@@ -240,18 +240,18 @@
           "language": {
             "label": "Ngôn ngữ phỏng vấn",
             "placeholder": "Ngôn ngữ phỏng vấn",
-            "required": "Vui lòng nhập ngôn ngữ sẽ phỏng vấn!"
+            "required": "Vui lòng nhập ngôn ngữ phỏng vấn!"
           },
           "contact": {
             "label": "Thông tin liên hệ",
-            "tooltip": "Thông tin liên hệ khi người nhận được thông báo này cần hỗ trợ",
+            "tooltip": "Thông tin liên hệ khi người nhận cần hỗ trợ",
             "phone": {
               "placeholder": "Số điện thoại",
               "required": "Vui lòng nhập số điện thoại!",
               "invalid": "Số điện thoại không hợp lệ"
             },
             "name": {
-              "prefix": "Gặp Anh/ Chị: ",
+              "prefix": "Người liên hệ: ",
               "placeholder": "Tên người liên hệ",
               "required": "Vui lòng nhập tên người liên hệ!"
             },
@@ -265,11 +265,11 @@
       }
     },
     "chat": {
-      "title": "Trò chuyện với ứng viên",
-      "noConversations": "Không có cuộc trò chuyện nào",
-      "noMessages": "Không có tin nhắn nào",
+      "title": "Trò chuyện với sinh viên",
+      "noConvesation": "Không tìm thấy cuộc trò chuyện",
+      "noMessages": "Không tìm thấy tin nhắn",
       "end": "Kết thúc",
-      "chat": "Nhắn tin",
+      "chat": "Trò chuyện",
       "enterMessage": "Nhập tin nhắn..."
     },
     "changePassword": {
@@ -283,14 +283,14 @@
         "label": "Mật khẩu mới",
         "required": "Vui lòng nhập mật khẩu mới!",
         "minLength": "Mật khẩu phải có ít nhất 8 ký tự",
-        "uppercase": "Mật khẩu phải chứa ít nhất 1 chữ cái viết hoa",
-        "number": "Mật khẩu phải chứa ít nhất 1 chữ số",
-        "special": "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt"
+        "uppercase": "Mật khẩu phải có ít nhất 1 chữ in hoa",
+        "number": "Mật khẩu phải có ít nhất 1 số",
+        "special": "Mật khẩu phải có ít nhất 1 ký tự đặc biệt"
       },
       "confirmPassword": {
-        "label": "Nhập lại mật khẩu mới",
-        "required": "Vui lòng nhập lại mật khẩu mới!",
-        "mismatch": "Mật khẩu xác nhận không khớp!"
+        "label": "Xác nhận mật khẩu mới",
+        "required": "Vui lòng xác nhận mật khẩu mới!",
+        "mismatch": "Xác nhận mật khẩu không khớp!"
       },
       "save": "Lưu"
     },
@@ -299,32 +299,32 @@
       "info": "Thông tin công ty",
       "size": "Quy mô công ty",
       "sizePlaceholder": "Vui lòng chọn",
-      "sizeLessThan10": "Ít hơn 10",
-      "sizeMoreThan50000": "Hơn 50.000",
-      "industry": "Lĩnh vực công ty",
-      "industryRequired": "Vui lòng chọn lĩnh vực của công ty",
+      "sizeLessThan10": "Ít hơn 10 người",
+      "sizeMoreThan50000": "Hơn 50,000 người",
+      "industry": "Ngành nghề công ty",
+      "industryRequired": "Vui lòng chọn ngành nghề công ty",
       "industryPlaceholder": "Vui lòng chọn",
       "benefits": "Phúc lợi công ty",
       "benefitDescriptionPlaceholder": "Nhập mô tả phúc lợi",
       "addBenefit": "Thêm phúc lợi",
       "description": "Mô tả công ty",
       "logo": "Logo công ty",
-      "logoTooltip": "Kéo thả hoặc nhấp chọn để tải ảnh lên",
-      "backgroundImage": "Hình ảnh công ty",
-      "imageTooltip": "Kéo thả hoặc nhấp chọn để tải ảnh lên",
-      "websitePlaceholder": "Địa chỉ website công ty",
+      "logoTooltip": "Kéo thả hoặc nhấp để tải ảnh lên",
+      "backgroundImage": "Ảnh công ty",
+      "imageTooltip": "Kéo thả hoặc nhấp để tải ảnh lên",
+      "websitePlaceholder": "URL website công ty",
       "video": "Video công ty",
-      "videoPlaceholder": "Sao chép và dán từ liên kết Youtube của bạn vào đây",
-      "addressPlaceholder": "Ví dụ: 130 Sương Nguyệt Anh, Phường Bến Thành, Quận 1",
+      "videoPlaceholder": "Dán link YouTube của bạn vào đây",
+      "addressPlaceholder": "Ví dụ: 130 Sương Nguyệt Ánh, Phường Bến Thành, Quận 1",
       "certificate": {
-        "title": "Giấy chứng nhận kinh doanh",
-        "uploadLabel": "Ảnh giấy chứng nhận kinh doanh",
-        "uploadTooltip": "Kéo thả hoặc nhấp chọn để tải ảnh lên",
-        "previewTitle": "Ảnh minh họa",
-        "previewAlt": "Giấy phép minh họa",
+        "title": "Giấy phép kinh doanh",
+        "uploadLabel": "Ảnh giấy phép kinh doanh",
+        "uploadTooltip": "Kéo thả hoặc nhấp để tải ảnh lên",
+        "previewTitle": "Xem trước ảnh",
+        "previewAlt": "Xem trước giấy phép kinh doanh",
         "confirmModal": {
           "title": "Xác nhận gửi thông tin",
-          "content": "Bằng cách nhấp vào nút xác nhận, bạn đồng ý rằng việc không cung cấp hoặc cung cấp thông tin sai được coi là một vi phạm có thể dẫn tới tạm dừng dịch vụ và/hoặc hủy tài khoản mà không được hoàn tiền. Bạn có thể kiểm tra lại thông tin đã cung cấp"
+          "content": "Bằng cách nhấp xác nhận, bạn đồng ý rằng việc không cung cấp hoặc cung cấp thông tin không chính xác được coi là vi phạm có thể dẫn đến việc tạm dừng dịch vụ và/hoặc chấm dứt tài khoản mà không được hoàn tiền. Bạn có thể xem lại thông tin đã cung cấp"
         }
       }
     },
@@ -340,17 +340,17 @@
           "unit": "người"
         },
         "jobs": {
-          "title": "Số công việc đã đăng",
-          "unit": "công việc"
+          "title": "Bài đăng tuyển dụng",
+          "unit": "bài"
         }
       },
       "servicePackage": {
         "title": "Gói dịch vụ",
         "table": {
-          "packageName": "Tên Gói Dịch Vụ",
-          "amount": "Số Lượng",
-          "expiredAt": "Ngày Hết Hạn",
-          "emptyText": "Không có gói dịch vụ nào"
+          "packageName": "Tên gói",
+          "amount": "Số lượng",
+          "expiredAt": "Ngày hết hạn",
+          "emptyText": "Không tìm thấy gói dịch vụ nào"
         }
       }
     },
@@ -358,41 +358,41 @@
       "title": "Thông tin cá nhân",
       "generalInfo": "Thông tin chung",
       "messages": {
-        "updateSuccess": "Cập nhật thông tin thành công",
-        "updateError": "Cập nhật thông tin thất bại"
+        "updateSuccess": "Cập nhật hồ sơ thành công",
+        "updateError": "Cập nhật hồ sơ thất bại"
       }
     },
     "interview": {
       "title": "Lịch phỏng vấn",
       "create": {
-        "title": "Tạo cuộc phỏng vấn",
-        "description": "Tạo cuộc phỏng vấn để tiếp cận ứng viên",
+        "title": "Tạo lịch phỏng vấn",
+        "description": "Tạo lịch phỏng vấn để liên hệ với ứng viên",
         "jobPosition": "Vị trí công việc",
         "interviewDate": "Ngày phỏng vấn",
         "interviewTime": "Thời gian phỏng vấn",
         "interviewLocation": "Địa điểm phỏng vấn",
-        "meetingLink": "Link cuộc phỏng vấn",
+        "meetingLink": "Link họp",
         "message": {
-          "success": "Cuộc phỏng vấn đã được tạo thành công",
-          "error": "Cuộc phỏng vấn đã tạo thất bại"
+          "success": "Tạo lịch phỏng vấn thành công",
+          "error": "Tạo lịch phỏng vấn thất bại"
         }
       }
     },
     "manageJobs": {
-      "listJobs": "Danh sách bài đăng",
+      "listJobs": "Danh sách việc làm",
       "tabs": {
-        "active": "Đang hiển thị",
-        "inactive": "Đang ẩn",
-        "pending": "Chờ duyệt",
-        "rejected": "Bị từ chối"
+        "active": "Đang hoạt động",
+        "inactive": "Đã ẩn",
+        "pending": "Đang chờ",
+        "rejected": "Đã từ chối"
       },
-      "deleteConfirm": "Bạn chắc chắn muốn xóa bài đăng này?",
-      "hideConfirm": "Bạn chắc chắn muốn ẩn bài đăng này?",
-      "showConfirm": "Bạn chắc chắn muốn hiện bài đăng này?",
+      "deleteConfirm": "Bạn có chắc chắn muốn xóa bài đăng này?",
+      "hideConfirm": "Bạn có chắc chắn muốn ẩn bài đăng này?",
+      "showConfirm": "Bạn có chắc chắn muốn hiển thị bài đăng này?",
       "hideShow": "Ẩn/Hiện",
       "search": {
-        "placeholder": "Tìm {field}",
-        "search": "Tìm",
+        "placeholder": "Tìm kiếm {field}",
+        "search": "Tìm kiếm",
         "reset": "Đặt lại",
         "filter": "Lọc",
         "close": "Đóng"
@@ -403,50 +403,50 @@
       "titleRequired": "Vui lòng nhập tiêu đề",
       "location": "Địa điểm làm việc",
       "locationRequired": "Vui lòng nhập địa điểm làm việc",
-      "category": "Lĩnh vực",
-      "categoryRequired": "Vui lòng chọn lĩnh vực của công ty",
+      "category": "Danh mục",
+      "categoryRequired": "Vui lòng chọn danh mục",
       "categoryPlaceholder": "Vui lòng chọn",
-      "minSalary": "Lương tối thiểu",
-      "minSalaryRequired": "Vui lòng nhập lương tối thiểu",
-      "maxSalary": "Lương tối đa",
-      "maxSalaryRequired": "Vui lòng nhập lương tối đa",
-      "salaryError": "Lương tối đa phải lớn hơn lương tối thiểu",
-      "deadline": "Ngày hết hạn",
-      "deadlineRequired": "Vui lòng nhập thời gian hết hạn nộp hồ sơ",
+      "minSalary": "Mức lương tối thiểu",
+      "minSalaryRequired": "Vui lòng nhập mức lương tối thiểu",
+      "maxSalary": "Mức lương tối đa",
+      "maxSalaryRequired": "Vui lòng nhập mức lương tối đa",
+      "salaryError": "Mức lương tối đa phải lớn hơn mức lương tối thiểu",
+      "deadline": "Hạn nộp",
+      "deadlineRequired": "Vui lòng nhập hạn nộp hồ sơ",
       "deadlinePlaceholder": "Vui lòng chọn ngày",
-      "quantity": "Số lượng tuyển dụng",
-      "quantityRequired": "Vui lòng nhập số lượng tuyển dụng",
+      "quantity": "Số lượng vị trí",
+      "quantityRequired": "Vui lòng nhập số lượng vị trí",
       "level": "Cấp bậc",
-      "levelRequired": "Vui lòng chọn cấp bậc cần tuyển dụng",
+      "levelRequired": "Vui lòng chọn cấp bậc",
       "levelPlaceholder": "Vui lòng chọn",
-      "skills": "Kĩ năng yêu cầu",
-      "skillsRequired": "Vui lòng chọn ít nhất một kĩ năng",
-      "skillsPlaceholder": "Vui lòng chọn kĩ năng",
-      "requirements": "Yêu cầu tuyển dụng",
+      "skills": "Kỹ năng yêu cầu",
+      "skillsRequired": "Vui lòng chọn ít nhất một kỹ năng",
+      "skillsPlaceholder": "Vui lòng chọn kỹ năng",
+      "requirements": "Yêu cầu công việc",
       "description": "Mô tả công việc",
       "descriptionPlaceholder": "Nhập mô tả công việc",
-      "basicInfo": "Thông tin tuyển dụng",
-      "requirementsInfo": "Yêu cầu tuyển dụng",
+      "basicInfo": "Thông tin cơ bản",
+      "requirementsInfo": "Yêu cầu công việc",
       "editJob": "Chỉnh sửa bài đăng",
       "postJob": "Đăng bài tuyển dụng",
       "post": "Đăng",
       "packagePlaceholder": "Vui lòng chọn gói dịch vụ",
       "packageDetailTitle": "Chi tiết gói dịch vụ",
       "packageRemainingAmount": "Số lượng còn lại",
-      "packageDuration": "Thời hạn đăng bài",
+      "packageDuration": "Thời gian đăng bài",
       "selectPackage": "Chọn gói dịch vụ",
       "resume": "Hồ sơ",
-      "uploadedAt": "Tải lên lúc",
+      "uploadedAt": "Đã tải lên lúc",
       "updateResume": "Cập nhật hồ sơ",
-      "noResume": "Không có hồ sơ, vui lòng tải lên ",
-      "forEmployer": "Dành cho Nhà tuyển dụng",
+      "noResume": "Chưa có hồ sơ, vui lòng tải lên",
+      "forEmployer": "Dành cho nhà tuyển dụng",
       "searchResume": "Tìm kiếm hồ sơ",
       "contact": "Liên hệ",
       "aboutUteinTECH": "Về Ute inTECH",
-      "termsOfUse": "Thỏa thuận sử dụng",
-      "privacyPolicy": "Quyền riêng tư",
-      "jobsByIndustry": "Việc làm theo ngành nghề",
-      "findJob": "Tìm việc làm",
+      "termsOfUse": "Điều khoản sử dụng",
+      "privacyPolicy": "Chính sách bảo mật",
+      "jobsByIndustry": "Việc làm theo ngành",
+      "findJob": "Tìm việc",
       "accounting": "Kế toán",
       "banking": "Ngân hàng",
       "automotiveTechnology": "Công nghệ ô tô",
@@ -455,34 +455,34 @@
       "aboutUteCareerbridge": "Về Ute Careerbridge",
       "faq": "Câu hỏi thường gặp",
       "search": {
-        "placeholder": "Tìm kiếm công việc, kỹ năng...",
-        "noResults": "Không tìm thấy việc làm nào"
+        "placeholder": "Tìm kiếm việc làm, kỹ năng...",
+        "noResults": "Không tìm thấy việc làm"
       },
       "categories": {
-        "media": "Báo chí/ truyền hình",
-        "mechanical": "Cơ khí / Chế tạo / Tự động hóa",
-        "automotive": "Công nghệ Ô tô",
+        "media": "Truyền thông/Phát thanh",
+        "mechanical": "Cơ khí/Sản xuất/Tự động hóa",
+        "automotive": "Công nghệ ô tô",
         "it": "Công nghệ thông tin",
-        "electrical": "Điện / Điện tử / Điện lạnh",
-        "accounting": "Kế toán / Kiểm toán",
-        "hospitality": "Khách sạn / Nhà hàng",
-        "marketing": "Marketing / Truyền thông / Quảng cáo",
-        "banking": "Ngân hàng / Tài chính"
+        "electrical": "Điện/Điện tử/HVAC",
+        "accounting": "Kế toán/Kiểm toán",
+        "hospitality": "Khách sạn/Nhà hàng",
+        "marketing": "Marketing/Truyền thông/Quảng cáo",
+        "banking": "Ngân hàng/Tài chính"
       },
       "apply": {
         "success": "Ứng tuyển thành công",
-        "alreadyApplied": "Hồ sơ đã được ứng tuyển",
+        "alreadyApplied": "Bạn đã ứng tuyển",
         "selectApplication": "Chọn đơn ứng tuyển",
-        "title": "Ứng tuyển công việc",
-        "submit": "Ứng tuyển"
+        "title": "Ứng tuyển",
+        "submit": "Nộp đơn"
       },
       "save": {
         "saved": "Đã lưu",
-        "saveJob": "Lưu công việc"
+        "saveJob": "Lưu việc làm"
       }
     },
     "resumes": {
-      "jobSeekerList": "Danh sách sinh viên đang tìm việc",
+      "jobSeekerList": "Danh sách sinh viên tìm việc",
       "industry": "Ngành nghề",
       "studentYear": "Sinh viên năm {{year}}",
       "major": "chuyên ngành {{major}}",
@@ -491,17 +491,17 @@
     },
     "orders": {
       "title": "Đơn hàng",
-      "orderId": "ID Đơn hàng",
+      "orderId": "Mã đơn hàng",
       "orderDate": "Ngày đặt hàng",
-      "couponCode": "Mã Coupon",
-      "total": "Tổng tiền",
+      "couponCode": "Mã giảm giá",
+      "total": "Tổng cộng",
       "status": "Trạng thái",
       "actions": "Xem / Thanh toán",
-      "pending": "Chờ thanh toán",
+      "pending": "Đang chờ",
       "paid": "Đã thanh toán",
       "pay": "Thanh toán",
       "view": "Xem chi tiết",
-      "loadError": "Lỗi khi tải danh sách đơn hàng",
+      "loadError": "Lỗi tải danh sách đơn hàng",
       "orderDetail": "Chi tiết đơn hàng",
       "orderInfo": "Thông tin đơn hàng",
       "company": "Công ty",
@@ -514,21 +514,27 @@
       "paymentMethod": "Chọn phương thức thanh toán",
       "vnpay": "Ví điện tử VNPAY",
       "paymentSuccess": "Thanh toán thành công!",
-      "paymentError": "Thanh toán không thành công"
+      "paymentError": "Thanh toán thất bại"
     },
     "services": {
-      "title": "Danh sách gói dịch vụ",
-      "importantNotice": "Lưu ý quan trọng",
-      "noticeDescription": "Nhằm tránh rủi ro mạo danh và lừa đảo, chúng tôi khuyến nghị quý khách hàng không chuyển khoản vào bất cứ tài khoản cá nhân nào và chỉ thực hiện thanh toán vào các tài khoản chính thức của chúng tôi.",
+      "title": "Gói dịch vụ",
+      "importantNotice": "Thông báo quan trọng",
+      "noticeDescription": "Để tránh lừa đảo và gian lận, chúng tôi khuyến nghị bạn không chuyển tiền vào bất kỳ tài khoản cá nhân nào và chỉ thanh toán vào các tài khoản chính thức của chúng tôi.",
       "addToCart": "Thêm vào giỏ",
       "buyNow": "Mua ngay",
-      "addToCartError": "Không thể thêm sản phẩm vào giỏ hàng.",
-      "addToCartErrorGeneric": "Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng."
+      "addToCartError": "Không thể thêm sản phẩm vào giỏ.",
+      "addToCartErrorGeneric": "Đã xảy ra lỗi khi thêm sản phẩm vào giỏ."
     },
     "voucher": {
       "selectTitle": "Chọn voucher",
-      "useNow": "Dùng ngay",
-      "fetchError": "Lỗi khi tải danh sách voucher"
+      "useNow": "Sử dụng ngay",
+      "fetchError": "Lỗi tải voucher",
+      "searchPlaceholder": "Tìm kiếm theo mã hoặc mô tả",
+      "expiringSoon": "Sắp hết hạn",
+      "expired": "Đã hết hạn",
+      "daysRemaining": "ngày còn lại",
+      "noSearchResults": "Không tìm thấy voucher phù hợp",
+      "noCoupons": "Hiện không có voucher nào"
     }
   },
   "auth": {
@@ -540,6 +546,7 @@
       "forgotPassword": "Quên mật khẩu?",
       "emailPlaceholder": "Nhập email/SĐT",
       "passwordPlaceholder": "Nhập mật khẩu",
+      "googleLogin": "Đăng nhập với Google",
       "loginSuccess": "Đăng nhập thành công",
       "loginError": "Đăng nhập thất bại"
     },
@@ -622,7 +629,26 @@
   "job": {
     "search": {
       "placeholder": "Tìm kiếm công việc, kỹ năng...",
-      "noResults": "Không tìm thấy việc làm nào"
+      "noResults": "Không tìm thấy việc làm nào",
+      "title": "Tìm kiếm việc làm",
+      "filters": "Bộ lọc",
+      "reset": "Đặt lại",
+      "found": "Tìm thấy",
+      "jobs": "việc làm",
+      "sortBy": "Sắp xếp theo",
+      "sortOptions": {
+        "all": "Tất cả",
+        "newest": "Mới nhất",
+        "oldest": "Cũ nhất",
+        "salaryDesc": "Lương (Cao đến thấp)",
+        "salaryAsc": "Lương (Thấp đến cao)"
+      },
+      "results": "Kết quả",
+      "total": "Tổng cộng",
+      "statistics": "Thống kê",
+      "totalJobs": "Tổng số việc làm",
+      "currentFilters": "Bộ lọc hiện tại",
+      "refineSearch": "Tinh chỉnh tìm kiếm để tìm thêm việc làm"
     },
     "categories": {
       "media": "Báo chí/ truyền hình",
@@ -1248,20 +1274,13 @@
     "createError": "Tạo chủ đề thất bại"
   },
   "post": {
-    "create": "Tạo bài viết",
-    "placeholder": "Nhập nội dung bài viết của bạn ở đây...",
-    "update": "Cập nhật bài viết",
-    "updateError": "Cập nhật bài viết thất bại",
-    "delete": "Xóa bài viết",
-    "deleteConfirm": "Bạn có chắc chắn muốn xóa bài viết này?",
-    "deleteError": "Xóa bài viết thất bại",
     "topic": "Chủ đề",
     "description": "Mô tả",
     "content": "Nội dung",
     "tags": "Thẻ",
     "statistic": "Thống kê",
-    "createdAt": "Ngày tạo",
-    "updatedAt": "Ngày cập nhật",
+    "createdAt": "Đã đăng vào",
+    "updatedAt": "Đã cập nhật vào",
     "post": "Bài viết",
     "viewCount": "Số lượt xem",
     "inforTopic": "Thông tin chủ đề",

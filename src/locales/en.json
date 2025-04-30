@@ -39,6 +39,7 @@
     "title": "All Categories"
   },
   "common": {
+    "home": "Home",
     "save": "Save",
     "edit": "Edit",
     "delete": "Delete",
@@ -628,7 +629,26 @@
   "job": {
     "search": {
       "placeholder": "Search for jobs, skills...",
-      "noResults": "No jobs found"
+      "noResults": "No jobs found",
+      "title": "Job Search",
+      "filters": "Filters",
+      "reset": "Reset",
+      "found": "Found",
+      "jobs": "jobs",
+      "sortBy": "Sort by",
+      "sortOptions": {
+        "all": "All",
+        "newest": "Newest",
+        "oldest": "Oldest",
+        "salaryDesc": "Salary (High to Low)",
+        "salaryAsc": "Salary (Low to High)"
+      },
+      "results": "Results",
+      "total": "Total",
+      "statistics": "Statistics",
+      "totalJobs": "Total Jobs",
+      "currentFilters": "Current Filters",
+      "refineSearch": "Refine your search to find more jobs"
     },
     "categories": {
       "media": "Media/Broadcasting",
@@ -1273,7 +1293,11 @@
   },
   "comment": {
     "reply": "Reply",
-    "login": "Login to comment"
+    "login": "Login to comment",
+    "delete": "Delete comment",
+    "deleteConfirm": "Are you sure you want to delete this comment?",
+    "deleteError": "Delete comment failed",
+    "deleteSuccess": "Delete comment successfully"
   },
   "tag": {
     "create": "Create tag",
