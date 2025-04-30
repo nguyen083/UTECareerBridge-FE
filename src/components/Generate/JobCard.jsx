@@ -85,7 +85,6 @@ const JobCardLarge = ({ job, disable = false }) => {
   return (
     <Card
       onClick={() => handleClick(job.jobId)}
-      hoverable
       className="w-full overflow-hidden job-card-large rounded-xl"
     >
       <Flex align="center" className="w-full">
