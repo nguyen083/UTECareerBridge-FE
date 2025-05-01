@@ -9,28 +9,26 @@
     background-position: center;
     position: relative;
     background: rgb(246, 246, 246);
-    background: linear-gradient(127deg, 
-                rgba(246, 246, 246, 0.8) 0%, 
-                rgba(186, 207, 234, 0.8) 25%, 
-                rgba(26, 74, 131, 0.8) 75%, 
-                rgba(11, 80, 163, 0.8) 100%);
+    background: linear-gradient(
+      127deg,
+      rgba(246, 246, 246, 0.8) 0%,
+      rgba(186, 207, 234, 0.8) 25%,
+      rgba(26, 74, 131, 0.8) 75%,
+      rgba(11, 80, 163, 0.8) 100%
+    );
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    
+
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: url('https://i.pinimg.com/736x/a0/5f/d1/a05fd1a74e574ff77e6657e7fa37c234.jpg') center/cover no-repeat;
+      background: url("https://i.pinimg.com/736x/a0/5f/d1/a05fd1a74e574ff77e6657e7fa37c234.jpg")
+        center/cover no-repeat;
       opacity: 0.1;
       z-index: -1;
-    }
-
-    .top-company {
-      transform: translateY(30px);
-      transition: all 0.5s ease;
     }
   }
 
@@ -40,7 +38,7 @@
     overflow: hidden;
     transition: all 0.3s ease;
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
-    
+
     &:hover {
       transform: translateY(-5px);
       box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
@@ -53,23 +51,27 @@
       background-color: $card-color;
       padding: 1.2rem;
       position: relative;
-      
+
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         bottom: 0;
         left: 0;
         height: 3px;
         width: 50px;
-        background: linear-gradient(90deg, $text-color, lighten($text-color, 30%));
+        background: linear-gradient(
+          90deg,
+          $text-color,
+          lighten($text-color, 30%)
+        );
         transition: width 0.3s ease;
       }
     }
-    
+
     &:hover .ant-card-head::after {
       width: 100px;
     }
-    
+
     .ant-card-body {
       padding: 1.5rem;
     }
@@ -84,9 +86,9 @@
     color: #333;
     position: relative;
     display: inline-block;
-    
+
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: -5px;
       left: 0;
@@ -124,7 +126,7 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
       backdrop-filter: blur(5px);
       border: 1px solid rgba(255, 255, 255, 0.5);
-      
+
       &:hover {
         transform: translateY(-3px);
         box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
@@ -147,10 +149,10 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             flex: 1;
             border: 1px solid rgba(0, 0, 0, 0.1);
-            
+
             &:focus {
               border-color: $text-color;
-              box-shadow: 0 0 0 2px rgba(26, 74, 131, 0.2);
+              // box-shadow: 0 0 0 2px rgba(26, 74, 131, 0.2);
             }
           }
 
@@ -168,7 +170,8 @@
               border: 1px solid rgba(0, 0, 0, 0.1);
             }
 
-            &:focus, &:hover {
+            &:focus,
+            &:hover {
               .ant-select-selector {
                 border-color: $text-color;
                 box-shadow: 0 0 0 2px rgba(26, 74, 131, 0.2);
@@ -184,7 +187,7 @@
             font-weight: 600;
             background: $text-color;
             transition: all 0.3s ease;
-            
+
             &:hover {
               background: lighten($text-color, 10%);
               transform: translateY(-2px);
@@ -199,7 +202,7 @@
           gap: 8px;
           flex-wrap: wrap;
           padding: 0 5px;
-          
+
           span {
             color: #666;
             font-size: 14px;
@@ -210,7 +213,7 @@
             font-weight: 500;
             padding: 0 5px;
             height: auto;
-            
+
             &:hover {
               color: lighten($text-color, 15%);
               text-decoration: underline;
@@ -220,45 +223,45 @@
       }
     }
   }
-  
+
   // Animation for job cards
   .job-card {
     transition: all 0.3s ease;
-    
+
     &:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 15px rgba(0, 0, 0, 0.08);
     }
   }
-  
+
   // Styling for category section
   .category-section {
     margin: 30px auto;
-    
+
     .category-item {
       transition: all 0.3s ease;
-      
+
       &:hover {
         transform: scale(1.05);
       }
-      
+
       .category-icon {
         transition: all 0.3s ease;
       }
-      
+
       &:hover .category-icon {
         transform: translateY(-5px);
       }
     }
   }
-  
+
   // Animation for other cards section
   .other-items {
     margin-top: 30px;
-    
+
     .other-card {
       transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      
+
       &:hover {
         transform: scale(1.03);
       }
@@ -271,37 +274,44 @@
   .ant-alert-message {
     font-weight: 600;
   }
-  
+
   &.rounded-none {
     position: relative;
     overflow: hidden;
-    
+
     &::after {
-      content: '';
+      content: "";
       position: absolute;
       bottom: 0;
       left: 0;
       width: 100%;
       height: 2px;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.7), transparent);
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.7),
+        transparent
+      );
       animation: flow 2s infinite;
     }
-    
+
     @keyframes flow {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(100%);
+      }
     }
   }
 }
 
 .box_shadow {
-  box-shadow: 9px 9px 18px #d8d8d8,
-    -9px -9px 18px #fefefe;
+  box-shadow: 9px 9px 18px #d8d8d8, -9px -9px 18px #fefefe;
   transition: all 0.3s ease;
-  
+
   &:hover {
-    box-shadow: 12px 12px 24px #d0d0d0,
-      -12px -12px 24px #ffffff;
+    box-shadow: 12px 12px 24px #d0d0d0, -12px -12px 24px #ffffff;
   }
 }
 
@@ -311,35 +321,37 @@
     .customize-card {
       width: 95% !important;
     }
-    
+
     h2 {
       font-size: 1.5rem;
     }
-    
+
     &__header {
       h1 {
         font-size: 2rem;
       }
-      
+
       .homepage__search {
         padding: 15px 10px;
-        
+
         .search-container {
           .search-inputs {
             flex-direction: column;
-            
-            .ant-input, .ant-select, .search-button {
+
+            .ant-input,
+            .ant-select,
+            .search-button {
               width: 100% !important;
             }
           }
-          
+
           .popular-searches {
             justify-content: center;
           }
         }
       }
     }
-    
+
     .gradient-background .top-company {
       transform: translateY(15px);
     }
@@ -364,9 +376,15 @@
 
 // Add keyframe animation for search input focus highlight
 @keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(26, 74, 131, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(26, 74, 131, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(26, 74, 131, 0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(26, 74, 131, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(26, 74, 131, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(26, 74, 131, 0);
+  }
 }
 
 .homepage__search .search-inputs .ant-input:focus {

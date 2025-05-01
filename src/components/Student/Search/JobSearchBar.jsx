@@ -26,7 +26,10 @@ const JobSearchBar = () => {
   };
 
   return (
-    <div className="flex search-input">
+    <div
+      className="flex search-input"
+      style={{ display: location.pathname !== "/home" ? "block" : "none" }}
+    >
       <Input.Search
         placeholder={t("job.search.placeholder")}
         allowClear

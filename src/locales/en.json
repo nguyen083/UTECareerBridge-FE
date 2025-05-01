@@ -20,6 +20,7 @@
   "follow_company": "Follow company",
   "my_company": "My company",
   "marquee": "Kickstart your career, find a job with ease - Career opportunities await you today!",
+  "explore_opportunities": "Explore opportunities",
   "notification": {
     "title": "Notification",
     "titleDetail": "Notification Detail",
@@ -628,6 +629,8 @@
   },
   "job": {
     "search": {
+      "search": "Search",
+      "category": "Category",
       "placeholder": "Search for jobs, skills...",
       "noResults": "No jobs found",
       "title": "Job Search",
