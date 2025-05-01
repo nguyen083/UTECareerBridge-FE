@@ -31,7 +31,7 @@ const PostListAdmin = lazy(() => import("./pages/Post/Admin/PostList.jsx"));
 const TopicList = lazy(() => import("./pages/Topic/User/TopicList.jsx"));
 const PostDetail = lazy(() => import("./pages/Post/PostDetail.jsx"));
 const AboutPage = lazy(() => import("./pages/About/AboutPage.jsx"));
-import { refreshToken } from "./utils/axiosCustomize.jsx";
+// import { refreshToken } from "./utils/axiosCustomize.jsx";
 import CreateJobAlert from "./components/Student/JobAlert/CreateJobAlert.jsx";
 import ManageJobAlerts from "./components/Student/JobAlert/ManageJobAlerts.jsx";
 import EditJobAlert from "./components/Student/JobAlert/EditJobAlert.jsx";
@@ -206,44 +206,46 @@ const DetailNotification = lazy(() =>
 const App = () => {
   const lang = useSelector((state) => state.web.lang || "en");
   const queryClient = new QueryClient();
-  const isTokenExpired = (token) => {
-    if (!token) return true;
+  // const isTokenExpired = (token) => {
+  //   if (!token) return true;
 
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      return payload.exp * 1000 < Date.now();
-    } catch (e) {
-      console.log(e);
-      return true;
-    }
-  };
+  //   try {
+  //     const payload = JSON.parse(atob(token.split(".")[1]));
+  //     return payload.exp * 1000 < Date.now();
+  //   } catch (e) {
+  //     console.log(e);
+  //     return true;
+  //   }
+  // };
   useEffect(() => {
-    const token = localStorage.getItem("accessToken");
-
+    // const token = localStorage.getItem("accessToken");
+    connectStomp(() => {
+      console.log("WebSocket connected after token refresh");
+    });
     // Only try to refresh if there's actually a token to refresh
-    if (token && isTokenExpired(token)) {
-      refreshToken()
-        .then(() => {
-          // Successfully refreshed, connect WebSocket
-          connectStomp(() => {
-            console.log("WebSocket connected after token refresh");
-          });
-        })
-        .catch(() => {
-          console.log("Token refresh failed, redirecting to login");
-          // Don't try to connect WebSocket with invalid tokens
-          // Just redirect to login page
-          window.location = "/login";
-        });
-    } else if (token) {
-      // Token exists and is valid, connect WebSocket
-      connectStomp(() => {});
-    } else {
-      // No token, don't try to connect WebSocket that requires auth
-      console.log(
-        "No token available, skipping authenticated WebSocket connection"
-      );
-    }
+    // if (token && isTokenExpired(token)) {
+    //   refreshToken()
+    //     .then(() => {
+    //       // Successfully refreshed, connect WebSocket
+    //       connectStomp(() => {
+    //         console.log("WebSocket connected after token refresh");
+    //       });
+    //     })
+    //     .catch(() => {
+    //       console.log("Token refresh failed, redirecting to login");
+    //       // Don't try to connect WebSocket with invalid tokens
+    //       // Just redirect to login page
+    //       window.location = "/login";
+    //     });
+    // } else if (token) {
+    //   // Token exists and is valid, connect WebSocket
+    //   connectStomp(() => {});
+    // } else {
+    //   // No token, don't try to connect WebSocket that requires auth
+    //   console.log(
+    //     "No token available, skipping authenticated WebSocket connection"
+    //   );
+    // }
 
     return () => {
       disconnectStomp();
