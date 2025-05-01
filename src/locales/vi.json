@@ -1275,6 +1275,7 @@
     "createError": "Tạo chủ đề thất bại"
   },
   "post": {
+    "create": "Tạo bài viết",
     "topic": "Chủ đề",
     "description": "Mô tả",
     "content": "Nội dung",

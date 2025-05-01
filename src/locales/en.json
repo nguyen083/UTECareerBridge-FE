@@ -1277,6 +1277,7 @@
     "createError": "Create topic failed"
   },
   "post": {
+    "create": "Create post",
     "topic": "Topic",
     "description": "Description",
     "content": "Content",

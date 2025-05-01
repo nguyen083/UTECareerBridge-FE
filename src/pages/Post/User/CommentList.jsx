@@ -6,7 +6,7 @@ import {
   UserOutlined,
 } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   useCreateComment,
   useDeleteComment,
@@ -65,7 +65,13 @@ const CommentList = ({
 };
 
 // Component for rendering a child comment with its own replies
-const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
+const ChildCommentItem = ({
+  childComment,
+  post,
+  isOpenModal,
+  onDeleteChildComment,
+}) => {
+  const commentInputRef = useRef(null);
   const user = useSelector((state) => state.user);
   const [isReply, setIsReply] = useState(false);
   const [commentText, setCommentText] = useState("");
@@ -95,7 +101,7 @@ const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
       {
         onSuccess: (response) => {
           setReplyCount(replyCount + 1);
-          setReplyComments([response.data, ...replyComments]);
+          setReplyComments([...replyComments, response.data]);
           setCommentText("");
           setIsReply(false);
         },
@@ -141,6 +147,11 @@ const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
           {
             onSuccess: () => {
               message.success(t("comment.deleteSuccess"));
+              setReplyComments(
+                replyComments.filter((c) => c.commentId !== commentId)
+              );
+              setReplyCount((prev) => prev - 1);
+              onDeleteChildComment && onDeleteChildComment(commentId);
             },
             onError: () => {
               message.error(t("comment.deleteError"));
@@ -150,6 +161,11 @@ const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
       },
     });
   };
+  useEffect(() => {
+    if (commentInputRef.current && isReply) {
+      commentInputRef.current.focus();
+    }
+  }, [isReply]);
   return (
     <div className="mb-2">
       <div className="flex items-start gap-2">
@@ -186,7 +202,7 @@ const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
           {replyCount > 0 && (
             <div className="pl-2 mt-1">
               {replyComments.length > 0 ? (
-                <span className="text-sm text-gray-500">{`${replyCount} phản hồi`}</span>
+                <></>
               ) : (
                 <Button
                   type="text"
@@ -297,6 +313,7 @@ const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
             />
             <div className="flex-grow">
               <TextArea
+                ref={commentInputRef}
                 rows={1}
                 placeholder={t("post.writeComment")}
                 value={commentText}
@@ -328,6 +345,7 @@ const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
 };
 
 const CommentItem = ({ comment, post, isOpenModal }) => {
+  const commentInputRef = useRef(null);
   const user = useSelector((state) => state.user);
   const [replyCommentCount, setReplyCommentCount] = useState(
     comment.replyCount
@@ -361,7 +379,7 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
       {
         onSuccess: (response) => {
           setReplyCommentCount(replyCommentCount + 1);
-          setCommentChild([response.data, ...commentChild]);
+          setCommentChild([...commentChild, response.data]);
           setCommentText("");
           setIsReply(false);
         },
@@ -371,6 +389,12 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
         },
       }
     );
+  };
+  const handleDeleteChildComment = (deletedCommentId) => {
+    setCommentChild(
+      commentChild.filter((c) => c.commentId !== deletedCommentId)
+    );
+    setReplyCommentCount((prev) => prev - 1);
   };
   const handleDeleteComment = (commentId, parentCommentId) => {
     Modal.confirm({
@@ -383,6 +407,17 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
           {
             onSuccess: () => {
               message.success(t("comment.deleteSuccess"));
+              if (parentCommentId) {
+                setCommentChild(
+                  commentChild.filter((c) => c.commentId !== commentId)
+                );
+                setReplyCommentCount((prev) => prev - 1);
+              } else {
+                setCommentChild(
+                  commentChild.filter((c) => c.commentId !== commentId)
+                );
+                setReplyCommentCount((prev) => prev - 1);
+              }
             },
             onError: () => {
               message.error(t("comment.deleteError"));
@@ -405,7 +440,7 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
   }, [commentChildData]);
   useEffect(() => {
     if (commentChildData?.data && page !== 1) {
-      setCommentChild([...commentChildData.data.comments, ...commentChild]);
+      setCommentChild([...commentChild, ...commentChildData.data.comments]);
     }
   }, [commentChildData]);
   useEffect(() => {
@@ -420,6 +455,11 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
       setIsFetchingMoreCommentChild(false);
     }
   }, [isFetchingCommentChild]);
+  useEffect(() => {
+    if (commentInputRef.current && isReply) {
+      commentInputRef.current.focus();
+    }
+  }, [isReply]);
   return (
     <div className="mb-3">
       <div className="flex items-start gap-2">
@@ -456,7 +496,7 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
           {comment.replyCount > 0 && (
             <div className="pl-2 mt-1">
               {commentChild.length > 0 ? (
-                <span className="text-sm text-gray-500">{`${replyCommentCount} phản hồi`}</span>
+                <></>
               ) : (
                 <Button
                   type="text"
@@ -496,6 +536,7 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
               childComment={childComment}
               post={post}
               isOpenModal={isOpenModal}
+              onDeleteChildComment={handleDeleteChildComment}
             />
           ))}
 
@@ -524,6 +565,7 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
             />
             <div className="flex-grow">
               <TextArea
+                ref={commentInputRef}
                 rows={1}
                 placeholder={t("post.writeComment")}
                 value={commentText}
