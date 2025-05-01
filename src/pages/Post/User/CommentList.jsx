@@ -130,14 +130,14 @@ const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
     }
   }, [page]);
 
-  const handleDeleteComment = (commentId) => {
+  const handleDeleteComment = (commentId, parentCommentId) => {
     Modal.confirm({
       title: t("comment.delete"),
       content: t("comment.deleteConfirm"),
       centered: true,
       onOk: () => {
         deleteComment(
-          { commentId },
+          { commentId, parentCommentId },
           {
             onSuccess: () => {
               message.success(t("comment.deleteSuccess"));
@@ -207,7 +207,13 @@ const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
           <Button
             type="text"
             size="small"
-            onClick={() => handleDeleteComment(childComment.commentId)}
+            onClick={() => {
+              handleDeleteComment(
+                childComment.commentId,
+                childComment.parentCommentId
+              );
+              console.log("childComment.parentCommentId:", page);
+            }}
             loading={isDeletingComment}
             icon={<DeleteOutlined />}
             className="text-xs text-gray-500"
@@ -247,7 +253,16 @@ const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
                 <Button
                   type="text"
                   size="small"
-                  onClick={() => handleDeleteComment(replyComment.commentId)}
+                  onClick={() => {
+                    handleDeleteComment(
+                      replyComment.commentId,
+                      replyComment.parentCommentId
+                    );
+                    console.log(
+                      "replyComment.parentCommentId:",
+                      replyComment.parentCommentId
+                    );
+                  }}
                   loading={isDeletingComment}
                   icon={<DeleteOutlined />}
                   className="text-xs text-gray-500"
@@ -288,6 +303,12 @@ const ChildCommentItem = ({ childComment, post, isOpenModal }) => {
                 onChange={(e) => setCommentText(e.target.value)}
                 className="bg-gray-100 resize-none rounded-3xl scrollbar-webkit scrollbar-thin"
                 autoSize={{ minRows: 1, maxRows: 3 }}
+                onPressEnter={(e) => {
+                  if (!e.shiftKey) {
+                    e.preventDefault();
+                    handleCommentSubmit();
+                  }
+                }}
               />
             </div>
             <Button
@@ -351,14 +372,14 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
       }
     );
   };
-  const handleDeleteComment = (commentId) => {
+  const handleDeleteComment = (commentId, parentCommentId) => {
     Modal.confirm({
       title: t("comment.delete"),
       content: t("comment.deleteConfirm"),
       centered: true,
       onOk: () => {
         deleteComment(
-          { commentId },
+          { commentId, parentCommentId },
           {
             onSuccess: () => {
               message.success(t("comment.deleteSuccess"));
@@ -456,7 +477,10 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
           <Button
             type="text"
             size="small"
-            onClick={() => handleDeleteComment(comment.commentId)}
+            onClick={() => {
+              handleDeleteComment(comment.commentId, comment.parentCommentId);
+              console.log("comment.parentCommentId: ", comment.parentCommentId);
+            }}
             loading={isDeletingComment}
             icon={<DeleteOutlined />}
             className="text-xs text-gray-500"
@@ -506,6 +530,12 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
                 onChange={(e) => setCommentText(e.target.value)}
                 className="bg-gray-100 resize-none rounded-3xl scrollbar-webkit scrollbar-thin"
                 autoSize={{ minRows: 1, maxRows: 3 }}
+                onPressEnter={(e) => {
+                  if (!e.shiftKey) {
+                    e.preventDefault();
+                    handleCommentSubmit();
+                  }
+                }}
               />
             </div>
             <Button

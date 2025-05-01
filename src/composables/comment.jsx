@@ -26,7 +26,7 @@ export const useGetCommentChildrenByCommentId = (commentId, page) => {
       }),
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
-    enabled: false,
+    // enabled: false,
   });
 };
 
@@ -52,10 +52,14 @@ export const useUpdateComment = () => {
 export const useDeleteComment = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: ({ commentId }) => comment.deleteComment(commentId),
-    onSuccess: () => {
+    mutationFn: (data) => comment.deleteComment(data.commentId),
+    onSuccess: (_, data) => {
+      // queryClient.invalidateQueries({
+      //   queryKey: ["commentsRoot"],
+      //   exact: false,
+      // });
       queryClient.invalidateQueries({
-        queryKey: ["commentsRoot"],
+        queryKey: ["commentsChildren", data.parentCommentId],
         exact: false,
       });
     },
