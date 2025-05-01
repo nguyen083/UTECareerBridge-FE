@@ -1,9 +1,12 @@
+"use client";
+
 import { Avatar, Typography, Button, Input, message, Modal } from "antd";
 import {
   DeleteOutlined,
   MessageOutlined,
   SendOutlined,
   UserOutlined,
+  EditOutlined,
 } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
@@ -11,6 +14,7 @@ import {
   useCreateComment,
   useDeleteComment,
   useGetCommentChildrenByCommentId,
+  useUpdateComment,
 } from "../../../composables/comment";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -78,6 +82,8 @@ const ChildCommentItem = ({
   const [replyComments, setReplyComments] = useState([]);
   const [replyCount, setReplyCount] = useState(childComment.replyCount || 0);
   const [page, setPage] = useState(0);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editText, setEditText] = useState(childComment.content);
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { mutate: createComment, isPending: isCreatingComment } =
@@ -91,6 +97,8 @@ const ChildCommentItem = ({
   const employer = useSelector((state) => state.employer);
   const { mutate: deleteComment, isPending: isDeletingComment } =
     useDeleteComment();
+  const { mutate: updateComment, isPending: isUpdatingComment } =
+    useUpdateComment();
   const handleCommentSubmit = () => {
     createComment(
       {
@@ -108,6 +116,35 @@ const ChildCommentItem = ({
         onError: () => {
           message.error(t("comment.login"));
           navigate("/login");
+        },
+      }
+    );
+  };
+  const handleUpdateComment = (commentId, newContent) => {
+    updateComment(
+      { commentId, data: { content: newContent } },
+      {
+        onSuccess: () => {
+          message.success(t("comment.updateSuccess"));
+          const isThirdLevelComment = replyComments.some(
+            (c) => c.commentId === commentId
+          );
+
+          if (isThirdLevelComment) {
+            setReplyComments(
+              replyComments.map((comment) =>
+                comment.commentId === commentId
+                  ? { ...comment, content: newContent, isEditing: false }
+                  : comment
+              )
+            );
+          } else {
+            childComment.content = newContent;
+            setIsEditing(false);
+          }
+        },
+        onError: () => {
+          message.error(t("comment.updateError"));
         },
       }
     );
@@ -175,30 +212,60 @@ const ChildCommentItem = ({
           className="flex-shrink-0 mr-2"
           size={32}
         />
-        <div className="flex-col">
-          <div className="px-3 py-2 bg-gray-100 rounded-2xl">
-            <Text strong className="text-sm">
-              {childComment.userName}
-            </Text>
-            <Paragraph className="!my-1 text-sm">
-              {childComment.content}
-            </Paragraph>
-          </div>
-          <div className="flex items-center pl-2 mt-1 text-xs text-gray-500">
-            <Button
-              type="text"
-              size="small"
-              className="px-1 text-xs font-medium text-gray-600 hover:text-blue-600"
-              onClick={() => setIsReply(!isReply)}
-            >
-              {t("comment.reply")}
-            </Button>
-            <span className="mx-1">·</span>
-            <span className="text-xs text-gray-500">
-              {childComment.createdAt}
-            </span>
-          </div>
-
+        <div className={`flex-col ${isEditing ? "w-full" : ""}`}>
+          {isEditing ? (
+            <div className="flex items-center gap-2">
+              <TextArea
+                autoFocus
+                value={editText}
+                onChange={(e) => setEditText(e.target.value)}
+                className="flex-grow"
+                autoSize={{ minRows: 1, maxRows: 3 }}
+              />
+              <Button
+                type="primary"
+                onClick={() =>
+                  handleUpdateComment(childComment.commentId, editText)
+                }
+                loading={isUpdatingComment}
+              >
+                {t("common.save")}
+              </Button>
+              <Button
+                onClick={() => {
+                  setIsEditing(false);
+                  setEditText(childComment.content);
+                }}
+              >
+                {t("common.cancel")}
+              </Button>
+            </div>
+          ) : (
+            <div className="px-3 py-2 bg-gray-100 rounded-2xl">
+              <Text strong className="text-sm">
+                {childComment.userName}
+              </Text>
+              <Paragraph className="!my-1 text-sm">
+                {childComment.content}
+              </Paragraph>
+            </div>
+          )}
+          {!isEditing && (
+            <div className="flex items-center pl-2 mt-1 text-xs text-gray-500">
+              <Button
+                type="text"
+                size="small"
+                className="px-1 text-xs font-medium text-gray-600 hover:text-blue-600"
+                onClick={() => setIsReply(!isReply)}
+              >
+                {t("comment.reply")}
+              </Button>
+              <span className="mx-1">·</span>
+              <span className="text-xs text-gray-500">
+                {childComment.createdAt}
+              </span>
+            </div>
+          )}
           {replyCount > 0 && (
             <div className="pl-2 mt-1">
               {replyComments.length > 0 ? (
@@ -217,24 +284,35 @@ const ChildCommentItem = ({
             </div>
           )}
         </div>
-        {(user.userId === childComment.userId ||
-          user.userId === post.data.userId ||
-          user.role === "admin") && (
-          <Button
-            type="text"
-            size="small"
-            onClick={() => {
-              handleDeleteComment(
-                childComment.commentId,
-                childComment.parentCommentId
-              );
-              console.log("childComment.parentCommentId:", page);
-            }}
-            loading={isDeletingComment}
-            icon={<DeleteOutlined />}
-            className="text-xs text-gray-500"
-          ></Button>
-        )}
+        <div className="flex">
+          {user.userId === childComment.userId && !isEditing && (
+            <Button
+              type="text"
+              size="small"
+              onClick={() => setIsEditing(true)}
+              icon={<EditOutlined />}
+              className="mr-1 text-xs text-gray-500"
+            ></Button>
+          )}
+          {(user.userId === childComment.userId ||
+            user.userId === post.data.userId ||
+            user.role === "admin") &&
+            !isEditing && (
+              <Button
+                type="text"
+                size="small"
+                onClick={() => {
+                  handleDeleteComment(
+                    childComment.commentId,
+                    childComment.parentCommentId
+                  );
+                }}
+                loading={isDeletingComment}
+                icon={<DeleteOutlined />}
+                className="text-xs text-gray-500"
+              ></Button>
+            )}
+        </div>
       </div>
 
       {/* Third level replies */}
@@ -248,15 +326,60 @@ const ChildCommentItem = ({
                 className="flex-shrink-0 mr-2"
                 size={28}
               />
-              <div className="flex-col">
-                <div className="px-3 py-2 bg-gray-100 rounded-2xl">
-                  <Text strong className="text-sm">
-                    {replyComment.userName}
-                  </Text>
-                  <Paragraph className="!my-1 text-sm">
-                    {replyComment.content}
-                  </Paragraph>
-                </div>
+              <div
+                className={`flex-col ${replyComment.isEditing ? "w-full" : ""}`}
+              >
+                {replyComment.isEditing ? (
+                  <div className="flex items-center gap-2">
+                    <TextArea
+                      autoFocus
+                      value={replyComment.editText}
+                      onChange={(e) => {
+                        const updatedComments = replyComments.map((c) =>
+                          c.commentId === replyComment.commentId
+                            ? { ...c, editText: e.target.value }
+                            : c
+                        );
+                        setReplyComments(updatedComments);
+                      }}
+                      className="flex-grow"
+                      autoSize={{ minRows: 1, maxRows: 3 }}
+                    />
+                    <Button
+                      type="primary"
+                      onClick={() =>
+                        handleUpdateComment(
+                          replyComment.commentId,
+                          replyComment.editText
+                        )
+                      }
+                      loading={isUpdatingComment}
+                    >
+                      {t("common.save")}
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        const updatedComments = replyComments.map((c) =>
+                          c.commentId === replyComment.commentId
+                            ? { ...c, isEditing: false }
+                            : c
+                        );
+                        setReplyComments(updatedComments);
+                      }}
+                    >
+                      {t("common.cancel")}
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="px-3 py-2 bg-gray-100 rounded-2xl">
+                    <Text strong className="text-sm">
+                      {replyComment.userName}
+                    </Text>
+                    <Paragraph className="!my-1 text-sm">
+                      {replyComment.content}
+                    </Paragraph>
+                  </div>
+                )}
                 <div className="flex items-center pl-2 mt-1 text-xs text-gray-500">
                   <span className="text-xs text-gray-500">
                     {replyComment.createdAt}
@@ -266,23 +389,40 @@ const ChildCommentItem = ({
               {(user.userId === replyComment.userId ||
                 user.userId === post.data.userId ||
                 user.role === "admin") && (
-                <Button
-                  type="text"
-                  size="small"
-                  onClick={() => {
-                    handleDeleteComment(
-                      replyComment.commentId,
-                      replyComment.parentCommentId
-                    );
-                    console.log(
-                      "replyComment.parentCommentId:",
-                      replyComment.parentCommentId
-                    );
-                  }}
-                  loading={isDeletingComment}
-                  icon={<DeleteOutlined />}
-                  className="text-xs text-gray-500"
-                ></Button>
+                <div className="flex">
+                  {user.userId === replyComment.userId &&
+                    !replyComment.isEditing && (
+                      <Button
+                        type="text"
+                        size="small"
+                        onClick={() => {
+                          const updatedComments = replyComments.map((c) =>
+                            c.commentId === replyComment.commentId
+                              ? { ...c, isEditing: true, editText: c.content }
+                              : c
+                          );
+                          setReplyComments(updatedComments);
+                        }}
+                        icon={<EditOutlined />}
+                        className="mr-1 text-xs text-gray-500"
+                      ></Button>
+                    )}
+                  {!replyComment.isEditing && (
+                    <Button
+                      type="text"
+                      size="small"
+                      onClick={() => {
+                        handleDeleteComment(
+                          replyComment.commentId,
+                          replyComment.parentCommentId
+                        );
+                      }}
+                      loading={isDeletingComment}
+                      icon={<DeleteOutlined />}
+                      className="text-xs text-gray-500"
+                    ></Button>
+                  )}
+                </div>
               )}
             </div>
           ))}
@@ -303,7 +443,7 @@ const ChildCommentItem = ({
 
       {/* Reply input for third level */}
       {isReply && (
-        <div className="pl-8 mt-2">
+        <div className="pl-8 mt-2 ">
           <div className="flex items-center gap-2">
             <Avatar
               src={student.profileImage || employer.companyLogo}
@@ -356,6 +496,8 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
     useCreateComment();
   const [isReply, setIsReply] = useState(false);
   const [commentText, setCommentText] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [editText, setEditText] = useState(comment.content);
   const {
     data: commentChildData,
     isFetching: isFetchingCommentChild,
@@ -363,6 +505,8 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
   } = useGetCommentChildrenByCommentId(comment.commentId, page);
   const { mutate: deleteComment, isPending: isDeletingComment } =
     useDeleteComment();
+  const { mutate: updateComment, isPending: isUpdatingComment } =
+    useUpdateComment();
   const [isFetchingMoreCommentChild, setIsFetchingMoreCommentChild] =
     useState(false);
   const [commentChild, setCommentChild] = useState([]);
@@ -427,6 +571,35 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
       },
     });
   };
+  const handleUpdateComment = (commentId, newContent) => {
+    updateComment(
+      { commentId, data: { content: newContent } },
+      {
+        onSuccess: () => {
+          message.success(t("comment.updateSuccess"));
+          const isSecondLevelComment = commentChild.some(
+            (c) => c.commentId === commentId
+          );
+
+          if (isSecondLevelComment) {
+            setCommentChild(
+              commentChild.map((comment) =>
+                comment.commentId === commentId
+                  ? { ...comment, content: newContent, isEditing: false }
+                  : comment
+              )
+            );
+          } else {
+            comment.content = newContent;
+            setIsEditing(false);
+          }
+        },
+        onError: () => {
+          message.error(t("comment.updateError"));
+        },
+      }
+    );
+  };
   useEffect(() => {
     if (!isOpenModal) {
       setCommentText("");
@@ -469,30 +642,58 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
           className="flex-shrink-0 mr-3"
           size={36}
         />
-        <div className="flex-col">
-          <div className="px-3 py-2 bg-gray-100 rounded-2xl">
-            <div className="flex items-start justify-between">
-              <div>
-                <Text strong className="text-sm">
-                  {comment.userName}
-                </Text>
-              </div>
+        <div className={`flex-col ${isEditing ? "w-full" : ""}`}>
+          {isEditing ? (
+            <div className="flex items-center gap-2">
+              <TextArea
+                autoFocus
+                value={editText}
+                onChange={(e) => setEditText(e.target.value)}
+                className="flex-grow"
+                autoSize={{ minRows: 1, maxRows: 3 }}
+              />
+              <Button
+                type="primary"
+                onClick={() => handleUpdateComment(comment.commentId, editText)}
+                loading={isUpdatingComment}
+              >
+                {t("common.save")}
+              </Button>
+              <Button
+                onClick={() => {
+                  setIsEditing(false);
+                  setEditText(comment.content);
+                }}
+              >
+                {t("common.cancel")}
+              </Button>
             </div>
-            <Paragraph className="!my-1 text-sm">{comment.content}</Paragraph>
-          </div>
-          <div className="flex items-center pl-2 mt-1 text-xs text-gray-500">
-            <Button
-              type="text"
-              size="small"
-              className="px-1 text-xs font-medium text-gray-600 hover:text-blue-600"
-              onClick={() => setIsReply(!isReply)}
-            >
-              {t("comment.reply")}
-            </Button>
-            <span className="mx-1">·</span>
-            <span className="text-xs text-gray-500">{comment.createdAt}</span>
-          </div>
-
+          ) : (
+            <div className="px-3 py-2 bg-gray-100 rounded-2xl">
+              <div className="flex items-start justify-between">
+                <div>
+                  <Text strong className="text-sm">
+                    {comment.userName}
+                  </Text>
+                </div>
+              </div>
+              <Paragraph className="!my-1 text-sm">{comment.content}</Paragraph>
+            </div>
+          )}
+          {!isEditing && (
+            <div className="flex items-center pl-2 mt-1 text-xs text-gray-500">
+              <Button
+                type="text"
+                size="small"
+                className="px-1 text-xs font-medium text-gray-600 hover:text-blue-600"
+                onClick={() => setIsReply(!isReply)}
+              >
+                {t("comment.reply")}
+              </Button>
+              <span className="mx-1">·</span>
+              <span className="text-xs text-gray-500">{comment.createdAt}</span>
+            </div>
+          )}
           {comment.replyCount > 0 && (
             <div className="pl-2 mt-1">
               {commentChild.length > 0 ? (
@@ -511,21 +712,39 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
             </div>
           )}
         </div>
-        {(user.userId === comment.userId ||
-          user.userId === post.data.userId ||
-          user.role === "admin") && (
-          <Button
-            type="text"
-            size="small"
-            onClick={() => {
-              handleDeleteComment(comment.commentId, comment.parentCommentId);
-              console.log("comment.parentCommentId: ", comment.parentCommentId);
-            }}
-            loading={isDeletingComment}
-            icon={<DeleteOutlined />}
-            className="text-xs text-gray-500"
-          ></Button>
-        )}
+        <div className="flex">
+          {user.userId === comment.userId && !isEditing && (
+            <Button
+              type="text"
+              size="small"
+              onClick={() => setIsEditing(true)}
+              icon={<EditOutlined />}
+              className="mr-1 text-xs text-gray-500"
+            ></Button>
+          )}
+          {(user.userId === comment.userId ||
+            user.userId === post.data.userId ||
+            user.role === "admin") &&
+            !isEditing && (
+              <Button
+                type="text"
+                size="small"
+                onClick={() => {
+                  handleDeleteComment(
+                    comment.commentId,
+                    comment.parentCommentId
+                  );
+                  console.log(
+                    "comment.parentCommentId: ",
+                    comment.parentCommentId
+                  );
+                }}
+                loading={isDeletingComment}
+                icon={<DeleteOutlined />}
+                className="text-xs text-gray-500"
+              ></Button>
+            )}
+        </div>
       </div>
 
       {commentChild.length > 0 && (

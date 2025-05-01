@@ -1299,7 +1299,9 @@
     "delete": "Xóa bình luận",
     "deleteConfirm": "Bạn có chắc chắn muốn xóa bình luận này?",
     "deleteError": "Xóa bình luận thất bại",
-    "deleteSuccess": "Xóa bình luận thành công"
+    "deleteSuccess": "Xóa bình luận thành công",
+    "updateSuccess": "Cập nhật bình luận thành công",
+    "updateError": "Cập nhật bình luận thất bại"
   },
   "tag": {
     "create": "Tạo thẻ",
