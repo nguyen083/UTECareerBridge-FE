@@ -1,117 +1,106 @@
 import { useEffect, useRef } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { ZegoSuperBoardManager } from "zego-superboard-web";
+import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
+import meeting from "../../../services/api/meeting";
 
 const VideoCall = () => {
   const rootRef = useRef(null);
   const { roomID } = useParams();
-  // const [permissionGranted, setPermissionGranted] = useState(false);
   const { t } = useTranslation();
+  const user = useSelector((state) => state.user);
+  const student = useSelector((state) => state.student);
+  const employer = useSelector((state) => state.employer);
+  const navigate = useNavigate();
+  const getUserAvatar = () => {
+    if (user.role === "student") {
+      return student.profileImage;
+    } else if (user.role === "employer") {
+      return employer.companyLogo;
+    } else {
+      return "https://res.cloudinary.com/utejobhub/image/upload/v1745056474/UTE-removebg-preview_dz3ykb.png";
+    }
+  };
 
-  // useEffect(()=>{
-  //   const requestMediaPermissions = async () => {
-  //     try {
-  //       const stream = await navigator.mediaDevices.getUserMedia({
-  //         video: true,
-  //         audio: true
-  //       });
+  const getUserName = () => {
+    if (user.role === "student") {
+      return student.firstName + " " + student.lastName;
+    } else if (user.role === "employer") {
+      return employer.companyName;
+    } else {
+      return "UserName_" + Math.floor(Math.random() * 10000);
+    }
+  };
 
-  //       setPermissionGranted(true);
-
-  //       stream.getTracks().forEach(track => track.stop());
-
-  //       console.log(t('meeting.permissions_granted'));
-  //     } catch (error) {
-  //       console.error(t('meeting.permission_error'), error);
-  //       alert(t('meeting.permission_alert'));
-  //     }
-  //   };
-
-  //   requestMediaPermissions();
-  // },[t])
+  const URLToRedirect = () => {
+    if (user.role === "student") {
+      return navigate("/my-job");
+    } else if (user.role === "employer") {
+      return navigate("/employer/profile");
+    } else {
+      navigate("/");
+    }
+  };
 
   useEffect(() => {
-    // if (!permissionGranted) return;
-
-    const userID = Math.floor(Math.random() * 10000).toString();
-    const userName = "userName" + userID;
+    const userID = user.userId.toString();
+    const userName = getUserName();
     const appID = Number(import.meta.env.VITE_APP_ID);
-    const serverSecret = import.meta.env.VITE_SERVER_SECRET;
-
-    const kitToken = window.ZegoUIKitPrebuilt.generateKitTokenForTest(
-      appID,
-      serverSecret,
-      roomID,
-      userID,
-      userName
-    );
-    console.log("kitToken: ", kitToken);
-    const zp = window.ZegoUIKitPrebuilt.create(kitToken);
-    zp.joinRoom({
-      container: rootRef.current,
-      sharedLinks: [
-        {
-          name: t("meeting.join_link"),
-          url:
-            window.location.protocol +
-            "//" +
-            window.location.host +
-            window.location.pathname,
-        },
-      ],
-      scenario: {
-        mode: window.ZegoUIKitPrebuilt.VideoConference,
-      },
-      turnOnMicrophoneWhenJoining: false,
-      turnOnCameraWhenJoining: false,
-      showMyCameraToggleButton: true,
-      showMyMicrophoneToggleButton: true,
-      showAudioVideoSettingsButton: true,
-      showScreenSharingButton: true,
-      showTextChat: true,
-      showUserList: true,
-      maxUsers: 50,
-      layout: "Auto",
-      showLayoutButton: true,
-    });
-
-    return () => {
-      zp.leaveRoom();
-    };
+    meeting
+      .getToken({ userId: parseInt(userID), roomId: roomID })
+      .then(({ token }) => {
+        const kitToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(
+          appID,
+          token,
+          roomID,
+          userID,
+          userName
+        );
+        const zp = ZegoUIKitPrebuilt.create(kitToken);
+        zp.addPlugins({ ZegoSuperBoardManager });
+        zp.joinRoom({
+          container: rootRef.current,
+          sharedLinks: [
+            {
+              name: t("meeting.join_link"),
+              url:
+                window.location.protocol +
+                "//" +
+                window.location.host +
+                window.location.pathname,
+            },
+          ],
+          onUserAvatarSetter: (userList) => {
+            userList.forEach((user) => {
+              user.setUserAvatar(getUserAvatar());
+            });
+          },
+          scenario: {
+            mode: ZegoUIKitPrebuilt.VideoConference,
+          },
+          turnOnMicrophoneWhenJoining: false,
+          turnOnCameraWhenJoining: false,
+          showMyCameraToggleButton: true,
+          showMyMicrophoneToggleButton: true,
+          showAudioVideoSettingsButton: true,
+          showScreenSharingButton: true,
+          showTextChat: true,
+          showUserList: true,
+          maxUsers: 50,
+          layout: "Auto",
+          showLayoutButton: true,
+          onLeaveRoom: () => {
+            URLToRedirect();
+          },
+        });
+      });
   }, [roomID, t]);
 
   return (
     <>
-      {/* {!permissionGranted ? (
-        <div style={{ 
-          width: '100vw', 
-          height: '100vh', 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center',
-          flexDirection: 'column',
-          backgroundColor: '#f8f9fa'
-        }}>
-          <h2>{t('meeting.permission_required')}</h2>
-          <p>{t('meeting.permission_instruction')}</p>
-          <button 
-            onClick={() => window.location.reload()} 
-            style={{
-              padding: '10px 20px',
-              backgroundColor: '#007bff',
-              color: 'white',
-              border: 'none',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              marginTop: '20px'
-            }}
-          >
-            {t('meeting.try_again')}
-          </button>
-        </div>
-      ) : ( */}
       <div ref={rootRef} style={{ width: "100vw", height: "100vh" }} />
-      {/* )} */}
     </>
   );
 };

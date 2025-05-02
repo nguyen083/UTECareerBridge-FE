@@ -20,6 +20,7 @@
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "@zegocloud/zego-uikit-prebuilt": "^2.14.3-beta",
     "all": "^0.0.0",
     "antd": "^5.22.4",
     "antd-img-crop": "^4.23.0",
@@ -64,7 +65,8 @@
     "tailwindcss": "3.4.17",
     "vite-plugin-svgr": "^4.3.0",
     "vite-tsconfig-paths": "^5.1.2",
-    "web-vitals": "^2.1.4"
+    "web-vitals": "^2.1.4",
+    "zego-superboard-web": "2.15.3"
   },
   "devDependencies": {
     "@eslint/js": "9.17.0",
