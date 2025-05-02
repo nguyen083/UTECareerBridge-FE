@@ -27,7 +27,7 @@ const JobSearchBar = () => {
 
   return (
     <div
-      className="flex search-input"
+      className="!flex items-center justify-center search-input"
       style={{ display: location.pathname !== "/home" ? "block" : "none" }}
     >
       <Input.Search
