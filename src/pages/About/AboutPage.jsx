@@ -195,7 +195,7 @@ export default function AboutPage() {
                         <List.Item>
                           <List.Item.Meta
                             avatar={
-                              <div className="p-2 mr-4 text-blue-500 bg-blue-100 rounded-full">
+                              <div className="flex items-center justify-center w-10 h-10 p-2 mr-4 text-blue-500 bg-blue-100 rounded-full">
                                 {item.icon}
                               </div>
                             }
@@ -256,7 +256,7 @@ export default function AboutPage() {
                         <List.Item>
                           <List.Item.Meta
                             avatar={
-                              <div className="p-2 mr-4 text-indigo-600 bg-indigo-100 rounded-full">
+                              <div className="flex items-center justify-center w-10 h-10 p-2 mr-4 text-indigo-600 bg-indigo-100 rounded-full">
                                 {item.icon}
                               </div>
                             }
@@ -319,7 +319,7 @@ export default function AboutPage() {
                       hơn 50 doanh nghiệp và hàng nghìn cơ hội việc làm.
                     </Paragraph>
                     <Link
-                      to="/events/job-fair"
+                      to="/event?eventType=CAREER_FAIR"
                       className="inline-flex items-center font-medium text-blue-500 hover:text-blue-600"
                     >
                       Tìm hiểu thêm <RightOutlined className="ml-1" />
@@ -428,7 +428,7 @@ export default function AboutPage() {
             <Row gutter={[48, 48]}>
               {/* For Students */}
               <Col xs={24} md={12}>
-                <Card className="p-8 shadow-md rounded-xl">
+                <Card className="flex flex-col justify-start h-full p-8 shadow-md rounded-xl">
                   <Title level={3} className="flex items-center mb-6">
                     <UserOutlined className="mr-2 text-blue-500" />
                     Dành cho sinh viên & cựu sinh viên
@@ -462,7 +462,7 @@ export default function AboutPage() {
                       },
                     ].map((item) => (
                       <div className="flex" key={item.step}>
-                        <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 mr-4 font-bold text-white rounded-full bg-card-color0">
+                        <div className="flex items-center justify-center flex-shrink-0 w-10 h-10 mr-4 font-bold text-white bg-blue-500 rounded-full">
                           {item.step}
                         </div>
                         <div>
@@ -477,13 +477,13 @@ export default function AboutPage() {
                     ))}
                   </div>
 
-                  <div className="mt-8">
+                  <div className="flex self-end justify-center mt-8">
                     <Button
                       type="primary"
                       size="large"
-                      className="border-blue-500 bg-card-color0 hover:bg-blue-600 hover:border-blue-600"
+                      className="!bg-blue-500 !border-blue-500 hover:!bg-blue-600 hover:!border-blue-600"
                     >
-                      <Link to="/register/student">Đăng ký ngay</Link>
+                      <Link to="/register">Đăng ký ngay</Link>
                     </Button>
                   </div>
                 </Card>
@@ -491,13 +491,21 @@ export default function AboutPage() {
 
               {/* For Employers */}
               <Col xs={24} md={12}>
-                <Card className="p-8 shadow-md rounded-xl">
+                <Card
+                  bodyStyle={{
+                    height: "100%",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "start",
+                  }}
+                  className="flex flex-col h-full p-8 shadow-md rounded-xl"
+                >
                   <Title level={3} className="flex items-center mb-6">
                     <BankOutlined className="mr-2 text-indigo-600" />
                     Dành cho nhà tuyển dụng
                   </Title>
 
-                  <div className="space-y-8">
+                  <div className="space-y-8 ">
                     {[
                       {
                         step: 1,
@@ -540,13 +548,13 @@ export default function AboutPage() {
                     ))}
                   </div>
 
-                  <div className="mt-8">
+                  <div className="flex justify-center mt-auto">
                     <Button
                       type="primary"
                       size="large"
-                      className="bg-indigo-600 border-indigo-600 hover:bg-indigo-700 hover:border-indigo-700"
+                      className="!bg-indigo-600 !border-indigo-600 hover:!bg-indigo-700 hover:!border-indigo-700"
                     >
-                      <Link to="/register/employer">Đăng ký ngay</Link>
+                      <Link to="/employer/register">Đăng ký ngay</Link>
                     </Button>
                   </div>
                 </Card>

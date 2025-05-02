@@ -16,7 +16,7 @@ import {
 import { CalendarOutlined, EnvironmentOutlined } from "@ant-design/icons";
 import BoxContainer from "../../Generate/BoxContainer";
 import { getAllEvent } from "../../../services/apiService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { FaFilter } from "react-icons/fa";
 
 const { Text } = Typography;
@@ -24,20 +24,20 @@ const { Text } = Typography;
 const EventPage = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const [eventType, setEventType] = useState(null);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(8);
+  const [eventType, setEventType] = useState(searchParams.get("eventType"));
+  const page = Number(searchParams.get("page")) || 1;
+  const size = Number(searchParams.get("size")) || 8;
   const [total, setTotal] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
     const fetchEvents = async () => {
       setLoading(true);
-
       const params = {
-        page: currentPage - 1,
-        size: pageSize,
+        page: page - 1,
+        size: size,
         eventType: eventType,
       };
 
@@ -59,7 +59,29 @@ const EventPage = () => {
     };
 
     fetchEvents();
-  }, [currentPage, pageSize, eventType]);
+  }, [searchParams]);
+
+  const handlePageChange = (page) => {
+    searchParams.set("page", page);
+    setSearchParams(searchParams);
+  };
+
+  const handleSizeChange = (current, size) => {
+    searchParams.set("size", size);
+    searchParams.set("page", 1);
+    setSearchParams(searchParams);
+  };
+
+  const handleEventTypeChange = (value) => {
+    setEventType(value);
+    if (value) {
+      searchParams.set("eventType", value);
+    } else {
+      searchParams.delete("eventType");
+    }
+    searchParams.set("page", 1);
+    setSearchParams(searchParams);
+  };
 
   const showEventDetails = (event) => {
     console.log(event);
@@ -77,7 +99,8 @@ const EventPage = () => {
               allowClear
               style={{ width: 200 }}
               placeholder="Lọc theo loại"
-              onChange={(value) => setEventType(value)}
+              onChange={handleEventTypeChange}
+              value={eventType}
               prefix={<FaFilter color="#1E4F94" style={{ marginRight: 8 }} />}
             >
               <Select.Option value="SEMINAR">Hội thảo</Select.Option>
@@ -154,13 +177,13 @@ const EventPage = () => {
               }}
             >
               <Pagination
-                current={currentPage}
-                pageSize={pageSize}
-                total={total}
-                onChange={(page) => setCurrentPage(page)}
+                current={page}
+                pageSize={size}
+                total={total * size}
+                onChange={handlePageChange}
                 showSizeChanger
                 pageSizeOptions={["8", "16", "24"]}
-                onShowSizeChange={(current, size) => setPageSize(size)}
+                onShowSizeChange={handleSizeChange}
               />
             </div>
           </>
