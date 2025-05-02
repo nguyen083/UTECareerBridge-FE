@@ -50,10 +50,10 @@ const VideoCall = () => {
     const appID = Number(import.meta.env.VITE_APP_ID);
     meeting
       .getToken({ userId: parseInt(userID), roomId: roomID })
-      .then(({ token }) => {
+      .then((res) => {
         const kitToken = ZegoUIKitPrebuilt.generateKitTokenForProduction(
           appID,
-          token,
+          res.data.token,
           roomID,
           userID,
           userName
