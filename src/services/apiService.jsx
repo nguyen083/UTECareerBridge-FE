@@ -268,7 +268,7 @@ const changePassword = async (values) => {
   return axios.put("users/update-password", values);
 };
 const getJobsNewest = async () => {
-  return axios.get(`jobs/search?keyword=&page=0&limit=30&sorting=newest`);
+  return axios.get(`jobs/search?keyword=&page=0&limit=15&sorting=newest`);
 };
 const updateQuantityPackage = async (values) => {
   const param = new URLSearchParams(values).toString();
