@@ -476,6 +476,10 @@ const App = () => {
                     <Route index path="dashboard" element={<DashBoard />} />
                     <Route path="notification" element={<Notification />} />
                     <Route
+                      path="notification/:id"
+                      element={<DetailNotification />}
+                    />
+                    <Route
                       path="infor-company/:id"
                       element={<InforCompany />}
                     />

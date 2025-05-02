@@ -95,6 +95,9 @@
       "changePassword": "Change Password"
     },
     "layout": {
+      "profile": {
+        "resumeAttachment": "Resume Attachment"
+      },
       "forum": "Forum",
       "jobs": {
         "title": "Jobs",

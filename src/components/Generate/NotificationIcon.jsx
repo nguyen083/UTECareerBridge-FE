@@ -271,8 +271,7 @@ const NotificationIcon = ({ userId = null }) => {
   return (
     <Popover
       overlayClassName="notification-popover"
-      arrow={false}
-      placement="bottom"
+      placement="bottomRight"
       title={
         <Flex justify="space-between">
           <Typography.Title className="notification-title-header" level={5}>
@@ -293,7 +292,7 @@ const NotificationIcon = ({ userId = null }) => {
       trigger={["click"]}
     >
       <Tooltip
-        title="Thông báo"
+        title={t("notification.title")}
         placement="bottom"
         color={COLOR.bgTooltipColor}
       >

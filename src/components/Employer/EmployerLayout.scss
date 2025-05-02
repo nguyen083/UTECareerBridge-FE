@@ -1,294 +1,307 @@
-@import '../styles/variables.scss';
+@import "../styles/variables.scss";
 
 .employer-layout {
-    min-height: 100vh;
-    
-    .employer-sider {
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-        background-color: white !important;
-        position: relative;
-        z-index: 10;
-        
-        .logo-container {
-            height: 64px;
+  min-height: 100vh;
+
+  .employer-sider {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    background-color: white !important;
+    position: relative;
+    z-index: 10;
+
+    .logo-container {
+      height: 64px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+
+      .logo-small {
+        width: 40px;
+        height: auto;
+      }
+
+      .logo-large {
+        width: 80%;
+        height: auto;
+        object-fit: contain;
+      }
+    }
+
+    .sidebar-menu {
+      margin-top: 0.5rem;
+      border-inline-end: none !important;
+
+      .sidebar-item {
+        margin: 0.25rem 0.5rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.04);
+        }
+      }
+
+      .sidebar-group {
+        margin: 0.25rem 0.5rem;
+        border-radius: 8px;
+      }
+
+      .sidebar-subitem {
+        border-radius: 6px;
+        margin: 0.125rem 0;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.04);
+        }
+      }
+
+      .logout {
+        color: #ff4d4f;
+        margin-top: 2rem;
+
+        &:hover {
+          background-color: rgba(255, 77, 79, 0.1);
+        }
+      }
+
+      .ant-menu-item-selected {
+        background-color: $card-color;
+        color: $text-color;
+        font-weight: 500;
+
+        &:after {
+          border-right: 3px solid $text-color;
+        }
+      }
+
+      .ant-menu-submenu-title {
+        border-radius: 8px;
+
+        &:hover {
+          background-color: rgba(0, 0, 0, 0.04);
+          color: inherit;
+        }
+      }
+
+      .ant-menu-submenu-selected > .ant-menu-submenu-title {
+        color: $text-color;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .site-layout {
+    .header-employer {
+      position: sticky;
+      top: 0;
+      z-index: 9;
+      width: 100%;
+      height: 64px;
+      padding: 0 1rem;
+      background-color: white;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+
+      .header-content {
+        height: 100%;
+        width: 100%;
+
+        .header-left {
+          display: flex;
+          align-items: center;
+          gap: 1rem;
+
+          .menu-trigger {
+            font-size: 1.25rem;
+            width: 40px;
+            height: 40px;
             display: flex;
-            justify-content: center;
             align-items: center;
-            padding: 0.5rem;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-            
-            .logo-small {
-                width: 40px;
-                height: auto;
-            }
-            
-            .logo-large {
-                width: 80%;
-                height: auto;
-                object-fit: contain;
-            }
-        }
-        
-        .sidebar-menu {
-            margin-top: 0.5rem;
-            border-inline-end: none !important;
-            
-            .sidebar-item {
-                margin: 0.25rem 0.5rem;
-                border-radius: 8px;
-                transition: all 0.3s ease;
-                
-                &:hover {
-                    background-color: rgba(0, 0, 0, 0.04);
-                }
-            }
-            
-            .sidebar-group {
-                margin: 0.25rem 0.5rem;
-                border-radius: 8px;
-            }
-            
-            .sidebar-subitem {
-                border-radius: 6px;
-                margin: 0.125rem 0;
-                
-                &:hover {
-                    background-color: rgba(0, 0, 0, 0.04);
-                }
-            }
-            
-            .logout {
-                color: #ff4d4f;
-                margin-top: 2rem;
-                
-                &:hover {
-                    background-color: rgba(255, 77, 79, 0.1);
-                }
-            }
-            
-            .ant-menu-item-selected {
-                background-color: $card-color;
-                color: $text-color;
-                font-weight: 500;
-                
-                &:after {
-                    border-right: 3px solid $text-color;
-                }
-            }
-            
-            .ant-menu-submenu-title {
-                border-radius: 8px;
-                
-                &:hover {
-                    background-color: rgba(0, 0, 0, 0.04);
-                    color: inherit;
-                }
-            }
-            
-            .ant-menu-submenu-selected > .ant-menu-submenu-title {
-                color: $text-color;
-                font-weight: 500;
-            }
-        }
-    }
+            justify-content: center;
+            border: none;
 
-    .site-layout {
-        .header-employer {
-            position: sticky;
-            top: 0;
-            z-index: 9;
-            width: 100%;
-            height: 64px;
-            padding: 0 1rem;
-            background-color: white;
-            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-            
-            .header-content {
-                height: 100%;
-                width: 100%;
-                
-                .header-left {
-                    display: flex;
-                    align-items: center;
-                    gap: 1rem;
-                    
-                    .menu-trigger {
-                        font-size: 1.25rem;
-                        width: 40px;
-                        height: 40px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        border: none;
-                        
-                        &:hover {
-                            background-color: rgba(0, 0, 0, 0.04);
-                        }
-                    }
-                    
-                    .company-info {
-                        .company-name {
-                            font-size: 1.125rem;
-                            color: $text-color;
-                            white-space: nowrap;
-                            max-width: 200px;
-                            overflow: hidden;
-                            text-overflow: ellipsis;
-                        }
-                    }
-                }
-                
-                .header-right {
-                    display: flex;
-                    align-items: center;
-                    gap: 0.75rem;
-                    
-                    .search-input {
-                        width: 240px;
-                        transition: all 0.3s;
-                        border-radius: 20px;
-                    }
-                    
-                    .search-button {
-                        border: none;
-                        font-size: 1.125rem;
-                        width: 40px;
-                        height: 40px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        
-                        &:hover {
-                            background-color: rgba(0, 0, 0, 0.04);
-                            color: $text-color;
-                        }
-                    }
-                    
-                    .header-icon-button {
-                        font-size: 1.125rem;
-                        width: 40px;
-                        height: 40px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        border: none;
-                        
-                        &:hover {
-                            background-color: rgba(0, 0, 0, 0.04);
-                            color: $text-color;
-                        }
-                    }
-                    
-                    .user-profile {
-                        display: flex;
-                        align-items: center;
-                        gap: 0.75rem;
-                        padding: 0.25rem 0.5rem;
-                        border-radius: 24px;
-                        cursor: pointer;
-                        transition: all 0.3s;
-                        
-                        &:hover {
-                            background-color: rgba(0, 0, 0, 0.04);
-                        }
-                        
-                        .avatar {
-                            border: 1px solid rgba(0, 0, 0, 0.1);
-                        }
-                        
-                        .user-info {
-                            .username {
-                                font-size: 0.875rem;
-                                line-height: 1.2;
-                            }
-                            
-                            .user-role {
-                                font-size: 0.75rem;
-                                line-height: 1;
-                            }
-                        }
-                    }
-                }
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.04);
             }
+          }
+
+          .company-info {
+            .company-name {
+              font-size: 1.125rem;
+              color: $text-color;
+              white-space: nowrap;
+              max-width: 200px;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
+          }
         }
 
-        .content-employer {
-            margin: 1rem;
-            padding: 0;
-            min-height: calc(100vh - 64px - 2rem);
-            
-            .page-content {
-                height: 100%;
-                
-                .title1 {
-                    font-size: 1.5rem;
-                    font-weight: 600;
-                    margin-bottom: 1rem;
-                    color: $text-color;
-                }
+        .header-right {
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+
+          .search-input {
+            width: 240px;
+            transition: all 0.3s;
+            border-radius: 20px;
+          }
+
+          .search-button {
+            border: none;
+            font-size: 1.125rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.04);
+              color: $text-color;
             }
-            
-            @media (max-width: 768px) {
-                margin: 0.75rem;
+          }
+          .btn-bell {
+            background-color: $text-color;
+            color: white;
+            border: 0px;
+            height: 40px;
+            width: 40px;
+
+            &:hover {
+              background-color: $text-color-hover !important;
+              color: white !important;
             }
-            
-            @media (max-width: 576px) {
-                margin: 0.5rem;
+          }
+
+          .header-icon-button {
+            font-size: 1.125rem;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.04);
+              color: $text-color;
             }
+          }
+
+          .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.04);
+            }
+
+            .avatar {
+              border: 1px solid rgba(0, 0, 0, 0.1);
+            }
+
+            .user-info {
+              .username {
+                font-size: 0.875rem;
+                line-height: 1.2;
+              }
+
+              .user-role {
+                font-size: 0.75rem;
+                line-height: 1;
+              }
+            }
+          }
         }
+      }
     }
+
+    .content-employer {
+      margin: 1rem;
+      padding: 0;
+      min-height: calc(100vh - 64px - 2rem);
+
+      .page-content {
+        height: 100%;
+
+        .title1 {
+          font-size: 1.5rem;
+          font-weight: 600;
+          margin-bottom: 1rem;
+          color: $text-color;
+        }
+      }
+
+      @media (max-width: 768px) {
+        margin: 0.75rem;
+      }
+
+      @media (max-width: 576px) {
+        margin: 0.5rem;
+      }
+    }
+  }
 }
 
 // Custom styles for specific components
 .dashboard-header {
-    padding: 1.5rem;
-    border-radius: 8px;
-    
-    h3 {
-        margin-bottom: 0.25rem;
-    }
+  padding: 1.5rem;
+  border-radius: 8px;
+
+  h3 {
+    margin-bottom: 0.25rem;
+  }
 }
 
 .dashboard-stat-card {
-    border-radius: 8px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
-    
-    .ant-statistic-title {
-        margin-bottom: 0.75rem;
-    }
+  border-radius: 8px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .ant-statistic-title {
+    margin-bottom: 0.75rem;
+  }
 }
 
-.dashboard-chart-card, 
+.dashboard-chart-card,
 .dashboard-table-card {
-    border-radius: 8px;
-    overflow: hidden;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 // Customize BoxContainer for consistent appearance
 :global(.shadow-md) {
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-    border-radius: 8px;
-    overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 // Overriding Ant Design styles
 .ant-form-item-label > label {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .ant-modal-title {
-    font-weight: 600;
-    font-size: 1.125rem;
+  font-weight: 600;
+  font-size: 1.125rem;
 }
 
 .ant-table-thead > tr > th {
-    background-color: #f5f7fa;
-    color: $text-color;
-    font-weight: 500;
+  background-color: #f5f7fa;
+  color: $text-color;
+  font-weight: 500;
 }

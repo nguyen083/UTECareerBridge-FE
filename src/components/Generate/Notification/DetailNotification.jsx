@@ -9,10 +9,12 @@ import {
   useDetailNotification,
   useNotificationRead,
 } from "../../../composables/notification";
+import { useSelector } from "react-redux";
 const DetailNotification = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { id } = useParams();
+  const role = useSelector((state) => state.user.role);
   const notificationMutation = useNotificationRead();
   const { data: notification, isLoading } = useDetailNotification(id);
   useEffect(() => {
@@ -24,9 +26,13 @@ const DetailNotification = () => {
         <Flex gap={16} align="center">
           <ArrowLeftOutlined
             size={40}
-            onClick={() => navigate("/notification")}
+            onClick={() => {
+              role === "student"
+                ? navigate("/notification")
+                : navigate("/employer/notification");
+            }}
           />
-          <div className="title1">{t("notification.titleDetail")}</div>
+          <div className="!mb-0 title1">{t("notification.titleDetail")}</div>
         </Flex>
       </BoxContainer>
       <BoxContainer className="shadow">

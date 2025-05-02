@@ -95,6 +95,9 @@
       "changePassword": "Đổi mật khẩu"
     },
     "layout": {
+      "profile": {
+        "resumeAttachment": "Hồ sơ đính kèm"
+      },
       "forum": "Diễn đàn",
       "jobs": {
         "title": "Việc làm",
