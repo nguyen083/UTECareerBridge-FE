@@ -349,6 +349,7 @@ const UpdateProfile = () => {
                     className="w-full"
                     type="number"
                     placeholder="Bạn là sinh viên năm mấy"
+                    min={1}
                   />
                 </Form.Item>
               </Col>
