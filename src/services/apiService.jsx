@@ -298,11 +298,7 @@ const getJobPackage = async () => {
   return axios.get("employers/manage-package/get-all-non-expired");
 };
 const getAllEvent = async (params) => {
-  if (!params.eventType) {
-    delete params.eventType;
-  }
-  const queryString = new URLSearchParams(params).toString();
-  return axios.get(`admin/events/get-all?${queryString}`);
+  return axios.get(`admin/events/get-all`, { params });
 };
 const createEvent = async (values) => {
   return axios.post("admin/events", values);

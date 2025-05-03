@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { SearchOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
+import { clsx } from "clsx";
 
 const JobSearchBar = () => {
   const dispatch = useDispatch();
@@ -27,8 +28,12 @@ const JobSearchBar = () => {
 
   return (
     <div
-      className="!flex items-center justify-center search-input"
-      style={{ display: location.pathname !== "/home" ? "block" : "none" }}
+      className={clsx(
+        "search-input",
+        location.pathname === "/home"
+          ? "hidden"
+          : "!flex items-center justify-center"
+      )}
     >
       <Input.Search
         placeholder={t("job.search.placeholder")}

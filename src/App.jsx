@@ -382,7 +382,6 @@ const App = () => {
                 spinning={useSelector((state) => state.web.loading)}
               >
                 <Routes>
-                  <Route path="/about" element={<AboutPage />} />
                   <Route path="/meeting/:roomID" element={<Meeting />} />
                   <Route path="/chat" element={<ChatLayout />} />
                   <Route path="/chat/:recipientId" element={<ChatLayout />} />
@@ -455,6 +454,7 @@ const App = () => {
                         element={<PostList />}
                       />
                     </Route>
+                    <Route path="/about" element={<AboutPage />} />
                   </Route>
                   <Route element={<ViewLayout />}>
                     <Route path="view/company/:id" element={<InforCompany />} />
