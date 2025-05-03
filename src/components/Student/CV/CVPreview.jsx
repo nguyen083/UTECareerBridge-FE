@@ -240,9 +240,23 @@ const CVPreview = forwardRef(({
           if (el.classList.contains('section-title')) {
             el.style.fontWeight = 'bold';
             el.style.fontSize = `${parseInt(currentTemplate.fontSize) + 2}px`;
-            el.style.borderBottomWidth = '2px';
-            el.style.borderBottomStyle = 'solid';
-            el.style.borderBottomColor = themeColor;
+            // Đảm bảo border luôn hiển thị trong PDF
+            if (el.style.borderBottomColor) {
+              // Đặt borderBottom đầy đủ để đảm bảo nó hiển thị trong PDF
+              el.style.borderBottomWidth = '2px';
+              el.style.borderBottomStyle = 'solid';
+              el.style.borderBottomColor = themeColor;
+            }
+            if (el.style.borderBottom) {
+              // Nếu đã có thuộc tính borderBottom đầy đủ thì giữ nguyên
+              el.style.borderBottom = el.style.borderBottom;
+            }
+            if (el.style.borderLeft) {
+              // Đảm bảo borderLeft hiển thị
+              el.style.borderLeftWidth = el.style.borderLeftWidth || '4px';
+              el.style.borderLeftStyle = 'solid';
+              el.style.borderLeftColor = themeColor;
+            }
             el.style.paddingBottom = '5px';
             el.style.marginBottom = '15px';
           }
@@ -250,85 +264,20 @@ const CVPreview = forwardRef(({
           // Đảm bảo không phần tử nào bị phóng to
           el.style.transform = 'none';
           el.style.zoom = '1';
-          el.style.boxSizing = 'border-box';
           
-          // Xử lý grid và flex một cách tường minh
-          const computedStyle = window.getComputedStyle(el);
-          
-          // Xử lý flexbox
-          if (computedStyle.display === 'flex') {
-            el.style.display = 'flex';
-            el.style.flexDirection = computedStyle.flexDirection;
-            el.style.justifyContent = computedStyle.justifyContent;
-            el.style.alignItems = computedStyle.alignItems;
-            el.style.flexWrap = computedStyle.flexWrap;
-            
-            // Đảm bảo các phần tử con trong flex container có kích thước chính xác
-            Array.from(el.children).forEach(child => {
-              child.style.boxSizing = 'border-box';
-              
-              // Lấy các thông số flex thực tế từ computed style
-              const childStyle = window.getComputedStyle(child);
-              if (childStyle.flexBasis !== 'auto') {
-                child.style.flexBasis = childStyle.flexBasis;
-              }
-              if (childStyle.flexGrow !== '0') {
-                child.style.flexGrow = childStyle.flexGrow;
-              }
-              if (childStyle.flexShrink !== '1') {
-                child.style.flexShrink = childStyle.flexShrink;
-              }
-              
-              // Đảm bảo kích thước thực tế được áp dụng
-              child.style.width = childStyle.width;
-              child.style.height = childStyle.height;
-            });
+          // Đảm bảo border của các element khác
+          if (el.style.border && el.style.border.includes(themeColor)) {
+            el.style.border = el.style.border;
           }
           
-          // Xử lý grid
-          if (computedStyle.display === 'grid') {
-            el.style.display = 'grid';
-            el.style.gridTemplateColumns = computedStyle.gridTemplateColumns;
-            el.style.gridTemplateRows = computedStyle.gridTemplateRows;
-            el.style.gridGap = computedStyle.gridGap;
-          }
-          
-          // Đảm bảo các giá trị width và height được áp dụng chính xác
-          if (computedStyle.width && !computedStyle.width.includes('auto')) {
-            // Chuyển đổi % thành px
-            if (computedStyle.width.includes('%')) {
-              const parentWidth = el.parentElement.getBoundingClientRect().width;
-              const percentage = parseFloat(computedStyle.width) / 100;
-              el.style.width = `${parentWidth * percentage}px`;
-            } else {
-              el.style.width = computedStyle.width;
+          // Đảm bảo các thuộc tính border khác được hiển thị
+          ['Top', 'Right', 'Bottom', 'Left'].forEach(side => {
+            if (el.style[`border${side}Color`] === themeColor || el.style[`border${side}`]?.includes(themeColor)) {
+              el.style[`border${side}Width`] = el.style[`border${side}Width`] || '2px';
+              el.style[`border${side}Style`] = el.style[`border${side}Style`] || 'solid';
+              el.style[`border${side}Color`] = themeColor;
             }
-          }
-          
-          if (computedStyle.height && !computedStyle.height.includes('auto')) {
-            if (computedStyle.height.includes('%')) {
-              const parentHeight = el.parentElement.getBoundingClientRect().height;
-              const percentage = parseFloat(computedStyle.height) / 100;
-              el.style.height = `${parentHeight * percentage}px`;
-            } else {
-              el.style.height = computedStyle.height;
-            }
-          }
-          
-          // Đảm bảo margin và padding được áp dụng chính xác
-          el.style.margin = computedStyle.margin;
-          el.style.padding = computedStyle.padding;
-          
-          // Bảo toàn màu sắc và các thuộc tính hiển thị khác
-          el.style.color = computedStyle.color;
-          el.style.backgroundColor = computedStyle.backgroundColor;
-          el.style.borderRadius = computedStyle.borderRadius;
-          
-          // Áp dụng các thuộc tính văn bản
-          el.style.lineHeight = computedStyle.lineHeight;
-          el.style.textAlign = computedStyle.textAlign;
-          el.style.fontWeight = computedStyle.fontWeight;
-          el.style.fontStyle = computedStyle.fontStyle;
+          });
         });
       };
       
