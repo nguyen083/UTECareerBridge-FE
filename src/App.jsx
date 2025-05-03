@@ -9,6 +9,9 @@ import I18nInitializer from "./i18n";
 import { lazy, Suspense, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { connectStomp, disconnectStomp } from "./utils/stompConfig.js";
+const StudentDashboard = lazy(() =>
+  import("./components/Student/Dashboard/Dashboard.jsx")
+);
 const RecommendJob = lazy(() =>
   import("./components/Student/Recommend/RecommendJob.jsx")
 );
@@ -406,6 +409,7 @@ const App = () => {
                       <Route path="/recommend-job" element={<RecommendJob />} />
                     </Route>
                     <Route element={<PersonalLayout />}>
+                      <Route path="/dashboard" element={<StudentDashboard />} />
                       <Route path="/profile" element={<ProfilePage />} />
                       <Route path="/my-company" element={<MyCompanyPage />} />
                       <Route path="/notification" element={<Notification />} />

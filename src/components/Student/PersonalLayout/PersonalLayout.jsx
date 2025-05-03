@@ -53,6 +53,11 @@ const PersonalLayout = () => {
 
   const menuItems = [
     {
+      key: "/dashboard",
+      label: <div className="text-base">{t("student.menu.dashboard")}</div>,
+      icon: <SolutionOutlined />,
+    },
+    {
       key: "/profile",
       label: <div className="text-base">{t("student.menu.myResume")}</div>,
       icon: <SolutionOutlined />,
