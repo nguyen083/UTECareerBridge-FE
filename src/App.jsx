@@ -202,6 +202,9 @@ const Meeting = lazy(() => import("./components/Generate/Meeting/Meeting.jsx"));
 const DetailNotification = lazy(() =>
   import("./components/Generate/Notification/DetailNotification.jsx")
 );
+const CVBuilderPage = lazy(() =>
+  import("./components/Student/CV/CVBuilderPage.jsx")
+);
 
 const App = () => {
   const lang = useSelector((state) => state.web.lang || "en");
@@ -411,6 +414,7 @@ const App = () => {
                         element={<DetailNotification />}
                       />
                       <Route path="/my-job" element={<MyJobPage />} />
+                      <Route path="/cv-builder" element={<CVBuilderPage />} />
                       <Route
                         path="/account-management"
                         element={<AccountManagement />}

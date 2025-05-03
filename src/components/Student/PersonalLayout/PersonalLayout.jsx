@@ -58,6 +58,11 @@ const PersonalLayout = () => {
       icon: <SolutionOutlined />,
     },
     {
+      key: "/cv-builder",
+      label: <div className="text-base">{t("student.menu.cvBuilder") || "CV Builder"}</div>,
+      icon: <PaperClipOutlined />,
+    },
+    {
       key: "/notification",
       label: <div className="text-base">{t("student.menu.notification")}</div>,
       icon: <NotificationOutlined />,
