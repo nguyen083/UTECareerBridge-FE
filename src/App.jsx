@@ -9,6 +9,9 @@ import I18nInitializer from "./i18n";
 import { lazy, Suspense, useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { connectStomp, disconnectStomp } from "./utils/stompConfig.js";
+const StudentDashboard = lazy(() =>
+  import("./components/Student/Dashboard/Dashboard.jsx")
+);
 const RecommendJob = lazy(() =>
   import("./components/Student/Recommend/RecommendJob.jsx")
 );
@@ -201,6 +204,9 @@ const ChatLayout = lazy(() => import("./pages/Chat/ChatLayout.jsx"));
 const Meeting = lazy(() => import("./components/Generate/Meeting/Meeting.jsx"));
 const DetailNotification = lazy(() =>
   import("./components/Generate/Notification/DetailNotification.jsx")
+);
+const CVBuilderPage = lazy(() =>
+  import("./components/Student/CV/CVBuilderPage.jsx")
 );
 
 const App = () => {
@@ -402,6 +408,7 @@ const App = () => {
                       <Route path="/recommend-job" element={<RecommendJob />} />
                     </Route>
                     <Route element={<PersonalLayout />}>
+                      <Route path="/dashboard" element={<StudentDashboard />} />
                       <Route path="/profile" element={<ProfilePage />} />
                       <Route path="/my-company" element={<MyCompanyPage />} />
                       <Route path="/notification" element={<Notification />} />
@@ -410,6 +417,7 @@ const App = () => {
                         element={<DetailNotification />}
                       />
                       <Route path="/my-job" element={<MyJobPage />} />
+                      <Route path="/cv-builder" element={<CVBuilderPage />} />
                       <Route
                         path="/account-management"
                         element={<AccountManagement />}

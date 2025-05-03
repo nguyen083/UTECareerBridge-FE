@@ -85,6 +85,34 @@
     "year": "Student year {{year}}",
     "allowSearch": "Allow search resume",
     "setupResume": "Setup resume",
+    "dashboard": {
+      "welcome": "Welcome, {{name}}!",
+      "subtitle": "Track your job applications and career progress",
+      "student": "Student",
+      "today": "Today's Date",
+      "profileCompletion": "Profile Completion",
+      "viewResume": "View My Resume",
+      "editProfile": "Edit My Profile",
+      "jobsApplied": "Jobs Applied",
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "viewAllApplications": "View All Applications",
+      "savedJobs": "Saved Jobs",
+      "viewSavedJobs": "View Saved Jobs",
+      "recommendedJobs": "Recommended Jobs",
+      "upcomingEvents": "Upcoming Events",
+      "recentActivities": "Recent Activities",
+      "noActivities": "No recent activities",
+      "careerTips": "Career Tips",
+      "resumeBuilding": "Resume Building",
+      "resumeTip": "Highlight your achievements with quantifiable results to make your resume stand out.",
+      "interviewPrep": "Interview Preparation",
+      "interviewTip": "Research the company thoroughly and prepare answers to common questions before your interview.",
+      "networkingSkills": "Networking Skills",
+      "networkingTip": "Build your professional network to discover hidden job opportunities and career advice.",
+      "learnMore": "Learn more"
+    },
     "menu": {
       "myResume": "My Resume",
       "notification": "Notification",
@@ -92,7 +120,8 @@
       "myJob": "My Job",
       "jobAlerts": "Job Alerts",
       "recommend": "Recommend Jobs",
-      "changePassword": "Change Password"
+      "changePassword": "Change Password",
+      "dashboard": "Dashboard"
     },
     "layout": {
       "profile": {

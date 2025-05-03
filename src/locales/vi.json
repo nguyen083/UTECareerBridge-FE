@@ -85,6 +85,34 @@
     "year": "Sinh viên năm thứ {{year}}",
     "allowSearch": "Cho phép tìm kiếm hồ sơ",
     "setupResume": "Thiết lập hồ sơ",
+    "dashboard": {
+      "welcome": "Xin chào, {{name}}!",
+      "subtitle": "Theo dõi hồ sơ ứng tuyển và sự phát triển nghề nghiệp của bạn",
+      "student": "Sinh viên",
+      "today": "Ngày hôm nay",
+      "profileCompletion": "Mức độ hoàn thiện hồ sơ",
+      "viewResume": "Xem hồ sơ của tôi",
+      "editProfile": "Chỉnh sửa hồ sơ",
+      "jobsApplied": "Công việc đã ứng tuyển",
+      "pending": "Đang chờ",
+      "accepted": "Đã duyệt",
+      "rejected": "Từ chối",
+      "viewAllApplications": "Xem tất cả đơn ứng tuyển",
+      "savedJobs": "Công việc đã lưu",
+      "viewSavedJobs": "Xem công việc đã lưu",
+      "recommendedJobs": "Công việc được đề xuất",
+      "upcomingEvents": "Sự kiện sắp diễn ra",
+      "recentActivities": "Hoạt động gần đây",
+      "noActivities": "Không có hoạt động nào gần đây",
+      "careerTips": "Mẹo nghề nghiệp",
+      "resumeBuilding": "Xây dựng hồ sơ",
+      "resumeTip": "Hãy nêu bật thành tích của bạn với những kết quả cụ thể để làm nổi bật hồ sơ của bạn.",
+      "interviewPrep": "Chuẩn bị phỏng vấn",
+      "interviewTip": "Hãy nghiên cứu kỹ về công ty và chuẩn bị câu trả lời cho các câu hỏi phổ biến trước buổi phỏng vấn.",
+      "networkingSkills": "Kỹ năng networking",
+      "networkingTip": "Xây dựng mạng lưới chuyên nghiệp để khám phá cơ hội nghề nghiệp tiềm ẩn và lời khuyên về sự nghiệp.",
+      "learnMore": "Tìm hiểu thêm"
+    },
     "menu": {
       "myResume": "Hồ sơ của tôi",
       "notification": "Thông báo",
@@ -92,7 +120,8 @@
       "myJob": "Việc làm của tôi",
       "jobAlerts": "Thông báo việc làm",
       "recommend": "Việc được đề xuất",
-      "changePassword": "Đổi mật khẩu"
+      "changePassword": "Đổi mật khẩu",
+      "dashboard": "Tổng quan"
     },
     "layout": {
       "profile": {
