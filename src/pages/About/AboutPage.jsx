@@ -291,17 +291,17 @@ export default function AboutPage() {
                 <Card
                   className="overflow-hidden transition-shadow shadow-md rounded-xl hover:shadow-xl"
                   bodyStyle={{ padding: 0 }}
-                  hoverable
                   cover={
-                    <div className="relative h-48">
+                    <div className="relative">
                       <Image
-                        src="/placeholder.svg?height=400&width=600"
+                        preview={false}
+                        src="https://res.cloudinary.com/utejobhub/image/upload/v1746286203/admin/event/kycbin8dkmgi4xcluss0.jpg"
                         alt="UTE Job Fair"
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 to-transparent">
+                      <div className="absolute bottom-0 flex items-end bg-gradient-to-t from-black/70 to-transparent">
                         <div className="p-6 text-white">
-                          <Title level={3} className="m-0 text-white">
+                          <Title level={3} className="!text-white ">
                             Ngày hội việc làm UTE Job Fair
                           </Title>
                         </div>
@@ -332,17 +332,17 @@ export default function AboutPage() {
                 <Card
                   className="overflow-hidden transition-shadow shadow-md rounded-xl hover:shadow-xl"
                   bodyStyle={{ padding: 0 }}
-                  hoverable
                   cover={
-                    <div className="relative h-48">
+                    <div className="relative">
                       <Image
-                        src="/placeholder.svg?height=400&width=600"
+                        preview={false}
+                        src="https://res.cloudinary.com/utejobhub/image/upload/v1746287581/admin/event/bt4pbdpmcukibjwo5qlx.jpg"
                         alt="Workshop kỹ năng"
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 to-transparent">
+                      <div className="absolute bottom-0 left-0 right-0 flex items-end bg-gradient-to-t from-black/70 to-transparent">
                         <div className="p-6 text-white">
-                          <Title level={3} className="m-0 text-white">
+                          <Title level={3} className="!text-white">
                             Workshop kỹ năng
                           </Title>
                         </div>
@@ -360,7 +360,7 @@ export default function AboutPage() {
                       viên chuẩn bị tốt nhất cho hành trình nghề nghiệp.
                     </Paragraph>
                     <Link
-                      to="/events/workshops"
+                      to="/event?eventType=WORKSHOP"
                       className="inline-flex items-center font-medium text-blue-500 hover:text-blue-600"
                     >
                       Tìm hiểu thêm <RightOutlined className="ml-1" />
@@ -373,17 +373,17 @@ export default function AboutPage() {
                 <Card
                   className="overflow-hidden transition-shadow shadow-md rounded-xl hover:shadow-xl"
                   bodyStyle={{ padding: 0 }}
-                  hoverable
                   cover={
-                    <div className="relative h-48">
+                    <div className="relative">
                       <Image
-                        src="/placeholder.svg?height=400&width=600"
+                        preview={false}
+                        src="https://res.cloudinary.com/utejobhub/image/upload/v1746287808/admin/event/v3amqdkjdsfmqrkuef6c.jpg"
                         alt="Hội thảo doanh nghiệp"
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                       />
-                      <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 to-transparent">
+                      <div className="absolute bottom-0 left-0 right-0 flex items-end bg-gradient-to-t from-black/70 to-transparent">
                         <div className="p-6 text-white">
-                          <Title level={3} className="m-0 text-white">
+                          <Title level={3} className="!text-white">
                             Hội thảo doanh nghiệp
                           </Title>
                         </div>
@@ -401,7 +401,7 @@ export default function AboutPage() {
                       từ các doanh nghiệp đối tác hàng đầu.
                     </Paragraph>
                     <Link
-                      to="/events/seminars"
+                      to="/event?eventType=SEMINAR"
                       className="inline-flex items-center font-medium text-blue-500 hover:text-blue-600"
                     >
                       Tìm hiểu thêm <RightOutlined className="ml-1" />
