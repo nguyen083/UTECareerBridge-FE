@@ -24,7 +24,7 @@ $timeline-color: $primary-color;
   display: flex;
   flex-direction: column;
   height: calc(100vh - 64px); /* Adjust based on your header height */
-  
+
   .cv-toolbar {
     display: flex;
     justify-content: space-between;
@@ -33,30 +33,30 @@ $timeline-color: $primary-color;
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     z-index: 10;
     box-shadow: 0 2px 12px rgba(0, 0, 0, 0.07);
-    
+
     button {
       border-radius: 6px;
       transition: all 0.3s ease;
-      
+
       &:hover {
         transform: translateY(-2px);
       }
-      
+
       .anticon {
         font-size: 16px;
       }
     }
   }
-  
+
   .cv-main-content {
     display: flex;
     flex: 1;
     overflow: hidden;
     position: relative;
     background-color: #f8fafe;
-    
+
     .cv-sidebar {
-      width: 320px;
+      width: 450px;
       height: 100%;
       overflow-y: auto;
       background-color: white;
@@ -65,52 +65,51 @@ $timeline-color: $primary-color;
       box-shadow: 2px 0 12px rgba(0, 0, 0, 0.06);
       z-index: 5;
       transition: all 0.3s ease;
-      
+
       .sidebar-section {
         margin-bottom: 28px;
         padding-bottom: 20px;
         border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-        
+
         &:last-child {
           border-bottom: none;
           margin-bottom: 0;
           padding-bottom: 0;
         }
-        
+
         .ant-typography {
           margin-bottom: 16px;
           font-weight: 600;
           color: #111827;
         }
-        
+
         .section-list {
           margin-top: 12px;
           max-height: 400px;
-          overflow-y: auto;
           padding-right: 6px;
-          
+
           /* Custom scrollbar styling */
           &::-webkit-scrollbar {
             width: 5px;
           }
-          
+
           &::-webkit-scrollbar-track {
             background: #f1f1f1;
             border-radius: 8px;
           }
-          
+
           &::-webkit-scrollbar-thumb {
             background: #c1c1c1;
             border-radius: 8px;
           }
-          
+
           &::-webkit-scrollbar-thumb:hover {
             background: #a1a1a1;
           }
-          
+
           .section-item {
             margin-bottom: 12px;
-            
+
             .section-add-btn {
               display: flex;
               align-items: center;
@@ -122,29 +121,30 @@ $timeline-color: $primary-color;
               transition: all 0.3s ease;
               box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
               border: 1px solid rgba(0, 0, 0, 0.06);
-              
+
               &:hover {
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                 transform: translateY(-2px);
                 border-color: $primary-color;
               }
-              
+
               .section-btn-content {
                 flex: 1;
+                white-space: wrap;
               }
-              
+
               .section-btn-title {
                 font-weight: 600;
                 margin-bottom: 4px;
                 color: #111827;
               }
-              
+
               .section-btn-desc {
                 font-size: 12px;
                 color: #6b7280;
                 line-height: 1.4;
               }
-              
+
               .section-btn-icon {
                 margin-left: 12px;
                 font-size: 18px;
@@ -153,7 +153,7 @@ $timeline-color: $primary-color;
             }
           }
         }
-        
+
         .template-button {
           height: auto;
           padding: 16px;
@@ -167,44 +167,44 @@ $timeline-color: $primary-color;
           box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
           background: linear-gradient(145deg, #ffffff, #f5f5f5);
           border: 1px solid rgba(0, 0, 0, 0.06);
-          
+
           &:hover {
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
             transform: translateY(-2px);
             border-color: $primary-color;
           }
-          
+
           .anticon {
             margin-right: 8px;
             font-size: 18px;
             color: $primary-color;
           }
         }
-        
+
         .color-controls {
           margin: 20px 0;
           background: rgba(0, 0, 0, 0.02);
           padding: 16px;
           border-radius: 8px;
-          
+
           .control-label {
             font-weight: 500;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
-            
+
             &::before {
               content: "🎨";
               margin-right: 8px;
               font-size: 16px;
             }
           }
-          
+
           .color-options {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            
+
             .color-preset {
               width: 32px;
               height: 32px;
@@ -213,16 +213,16 @@ $timeline-color: $primary-color;
               transition: all 0.3s ease;
               border: 2px solid transparent;
               position: relative;
-              
+
               &:hover {
                 transform: scale(1.15);
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
               }
-              
+
               &.active {
                 border: 2px solid white;
                 box-shadow: 0 0 0 2px #1890ff;
-                
+
                 &::after {
                   content: "✓";
                   position: absolute;
@@ -234,7 +234,7 @@ $timeline-color: $primary-color;
                   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
                 }
               }
-              
+
               &.add-color {
                 background: linear-gradient(145deg, #fafafa, #f0f0f0);
                 display: flex;
@@ -242,7 +242,7 @@ $timeline-color: $primary-color;
                 justify-content: center;
                 color: #999;
                 border: 1px dashed #d9d9d9;
-                
+
                 &:hover {
                   color: #1890ff;
                   border-color: #1890ff;
@@ -252,49 +252,50 @@ $timeline-color: $primary-color;
             }
           }
         }
-        
+
         .font-controls {
           background: rgba(0, 0, 0, 0.02);
           padding: 16px;
           border-radius: 8px;
           margin-top: 20px;
-          
+
           .control-group {
             margin-bottom: 20px;
-            
+
             &:last-child {
               margin-bottom: 0;
             }
-            
+
             .control-label {
               font-weight: 500;
               margin-bottom: 12px;
               display: flex;
               align-items: center;
-              
+
               &:nth-child(1)::before {
                 content: "🔤";
                 margin-right: 8px;
                 font-size: 16px;
               }
-              
+
               &:nth-child(3)::before {
                 content: "📏";
                 margin-right: 8px;
                 font-size: 16px;
               }
-              
+
               &:nth-child(5)::before {
                 content: "🌐";
                 margin-right: 8px;
                 font-size: 16px;
               }
             }
-            
-            .font-select, .language-select {
+
+            .font-select,
+            .language-select {
               width: 100%;
               margin-bottom: 12px;
-              
+
               .ant-select-selector {
                 border-radius: 6px;
                 height: 40px;
@@ -302,13 +303,13 @@ $timeline-color: $primary-color;
                 align-items: center;
                 border: 1px solid rgba(0, 0, 0, 0.15);
                 transition: all 0.3s;
-                
+
                 &:hover {
                   border-color: $primary-color;
                 }
               }
             }
-            
+
             .font-size-control {
               display: flex;
               align-items: center;
@@ -316,21 +317,21 @@ $timeline-color: $primary-color;
               padding: 10px 12px;
               border-radius: 6px;
               border: 1px solid rgba(0, 0, 0, 0.08);
-              
+
               .anticon {
                 margin-right: 10px;
                 font-size: 16px;
                 color: #666;
               }
-              
+
               .font-slider {
                 flex: 1;
                 margin: 0 12px;
-                
+
                 .ant-slider-track {
                   background-color: $primary-color;
                 }
-                
+
                 .ant-slider-handle {
                   border-color: $primary-color;
                 }
@@ -340,16 +341,17 @@ $timeline-color: $primary-color;
         }
       }
     }
-    
+
     .cv-preview-container {
       flex: 1;
+      height: 100%;
       overflow-y: auto;
       padding: 30px;
       display: flex;
       justify-content: center;
       background-color: #f7f9fc;
       position: relative;
-      
+
       &::before {
         content: "";
         position: absolute;
@@ -357,39 +359,43 @@ $timeline-color: $primary-color;
         left: 0;
         right: 0;
         bottom: 0;
-        background: repeating-linear-gradient(45deg, #f0f2f7, #f0f2f7 10px, #f7f9fc 10px, #f7f9fc 20px);
+        background: repeating-linear-gradient(
+          45deg,
+          #f0f2f7,
+          #f0f2f7 10px,
+          #f7f9fc 10px,
+          #f7f9fc 20px
+        );
         opacity: 0.4;
         z-index: 0;
       }
-      
+
       /* Custom scrollbar styling */
       &::-webkit-scrollbar {
         width: 8px;
       }
-      
+
       &::-webkit-scrollbar-track {
         background: rgba(0, 0, 0, 0.03);
         border-radius: 8px;
       }
-      
+
       &::-webkit-scrollbar-thumb {
         background: rgba(0, 0, 0, 0.12);
         border-radius: 8px;
       }
-      
+
       &::-webkit-scrollbar-thumb:hover {
         background: rgba(0, 0, 0, 0.18);
       }
-      
+
       .cv-a4-page {
         width: 210mm;
-        min-height: 297mm;
+        min-height: fit-content;
         background-color: white;
         padding: 20mm;
         border-radius: 4px;
-        box-shadow: 
-          0 1px 3px rgba(0, 0, 0, 0.1),
-          0 5px 15px rgba(0, 0, 0, 0.1),
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.1),
           0 10px 30px rgba(0, 0, 0, 0.08);
         margin-bottom: 30px;
         overflow-x: hidden;
@@ -406,7 +412,7 @@ $timeline-color: $primary-color;
           position: relative;
           overflow: hidden;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-          
+
           &::before {
             content: "";
             position: absolute;
@@ -414,18 +420,22 @@ $timeline-color: $primary-color;
             left: 0;
             width: 100%;
             height: 100%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.2), rgba(255,255,255,0));
+            background: linear-gradient(
+              135deg,
+              rgba(255, 255, 255, 0.2),
+              rgba(255, 255, 255, 0)
+            );
             z-index: 1;
           }
-          
+
           .profile-photo-container {
             margin-right: 30px;
             position: relative;
             z-index: 2;
-            
+
             .profile-photo-uploader {
               position: relative;
-              
+
               .ant-upload {
                 width: 120px;
                 height: 120px;
@@ -439,12 +449,12 @@ $timeline-color: $primary-color;
                 position: relative;
                 cursor: pointer !important;
                 z-index: 10;
-                
+
                 &:hover {
                   background-color: #f0f0f0;
                   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
                 }
-                
+
                 &::after {
                   content: "";
                   position: absolute;
@@ -453,12 +463,12 @@ $timeline-color: $primary-color;
                   transition: all 0.3s ease;
                   z-index: 1;
                 }
-                
+
                 &:hover::after {
                   background: rgba(0, 0, 0, 0.05);
                 }
               }
-              
+
               .profile-photo {
                 width: 120px;
                 height: 120px;
@@ -466,11 +476,11 @@ $timeline-color: $primary-color;
                 overflow: hidden;
                 transition: all 0.3s ease;
                 position: relative;
-                
+
                 &:hover {
                   transform: scale(1.03);
                 }
-                
+
                 &::before {
                   content: "Click to change";
                   position: absolute;
@@ -487,11 +497,11 @@ $timeline-color: $primary-color;
                   transition: opacity 0.3s;
                   z-index: 2;
                 }
-                
+
                 &:hover::before {
                   opacity: 1;
                 }
-                
+
                 img {
                   width: 100%;
                   height: 100%;
@@ -499,7 +509,7 @@ $timeline-color: $primary-color;
                   transition: all 0.3s ease;
                 }
               }
-              
+
               .upload-button-container {
                 color: #666;
                 font-size: 14px;
@@ -512,7 +522,7 @@ $timeline-color: $primary-color;
                 height: 100%;
                 cursor: pointer !important;
                 z-index: 10;
-                
+
                 .upload-progress-container {
                   display: flex;
                   flex-direction: column;
@@ -520,12 +530,12 @@ $timeline-color: $primary-color;
                   justify-content: center;
                   width: 100%;
                   height: 100%;
-                  
+
                   .ant-progress-circle {
                     margin-bottom: 8px;
                   }
                 }
-                
+
                 .anticon {
                   font-size: 28px;
                   margin-bottom: 8px;
@@ -533,12 +543,12 @@ $timeline-color: $primary-color;
               }
             }
           }
-          
+
           .header-content {
             flex: 1;
             position: relative;
             z-index: 2;
-            
+
             .header-name {
               font-size: 32px;
               font-weight: 700;
@@ -549,16 +559,16 @@ $timeline-color: $primary-color;
               padding: 2px 6px;
               border-radius: 4px;
               display: inline-block;
-              
+
               &:hover {
                 background: rgba(255, 255, 255, 0.6);
               }
-              
+
               &:focus {
                 background: rgba(255, 255, 255, 0.8);
               }
             }
-            
+
             .header-title {
               font-size: 18px;
               margin-bottom: 16px;
@@ -569,21 +579,21 @@ $timeline-color: $primary-color;
               padding: 2px 6px;
               border-radius: 4px;
               display: inline-block;
-              
+
               &:hover {
                 background: rgba(255, 255, 255, 0.6);
               }
-              
+
               &:focus {
                 background: rgba(255, 255, 255, 0.8);
               }
             }
-            
+
             .contact-details {
               display: flex;
               flex-wrap: wrap;
               margin-top: 8px;
-              
+
               .contact-item {
                 margin-right: 24px;
                 margin-bottom: 10px;
@@ -593,23 +603,23 @@ $timeline-color: $primary-color;
                 padding: 6px 12px;
                 border-radius: 20px;
                 transition: all 0.3s ease;
-                
+
                 &:hover {
                   background: rgba(255, 255, 255, 0.9);
                   transform: translateY(-2px);
                   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
                 }
-                
+
                 .contact-icon {
                   margin-right: 8px;
                   font-size: 16px;
                 }
-                
+
                 .contact-text {
                   outline: none;
                   padding: 2px 4px;
                   border-radius: 4px;
-                  
+
                   &:focus {
                     background-color: rgba(255, 255, 255, 0.6);
                   }
@@ -630,11 +640,11 @@ $timeline-color: $primary-color;
           box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
           padding: 0 0 16px 0;
           transition: all 0.3s ease;
-          
+
           &:hover {
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
           }
-          
+
           .section-title {
             font-size: 18px;
             font-weight: 600;
@@ -648,7 +658,7 @@ $timeline-color: $primary-color;
             box-sizing: border-box;
             background: rgba(0, 0, 0, 0.01);
             position: relative;
-            
+
             &::before {
               content: "";
               position: absolute;
@@ -660,38 +670,38 @@ $timeline-color: $primary-color;
               border-radius: 2px 0 0 0;
             }
           }
-          
+
           .section-content {
             outline: none;
             padding: 4px 20px;
             width: 100%;
             box-sizing: border-box;
             transition: all 0.2s ease;
-            
+
             &:hover {
               background-color: rgba(0, 0, 0, 0.01);
             }
-            
+
             &:focus {
               background-color: rgba(0, 0, 0, 0.02);
             }
-            
+
             &.personal-info {
               display: flex;
               flex-wrap: wrap;
-              
+
               .personal-info-item {
                 width: 50%;
                 margin-bottom: 16px;
                 padding-right: 20px;
-                
+
                 .info-label {
                   font-weight: 600;
                   margin-bottom: 6px;
                   color: #444;
                   font-size: 14px;
                 }
-                
+
                 .info-value {
                   outline: none;
                   padding: 4px 8px;
@@ -699,12 +709,12 @@ $timeline-color: $primary-color;
                   background: rgba(0, 0, 0, 0.015);
                   transition: all 0.3s ease;
                   border: 1px solid transparent;
-                  
+
                   &:hover {
                     background-color: rgba(0, 0, 0, 0.03);
                     border-color: rgba(0, 0, 0, 0.06);
                   }
-                  
+
                   &:focus {
                     background-color: white;
                     border-color: rgba(0, 0, 0, 0.09);
@@ -717,20 +727,20 @@ $timeline-color: $primary-color;
             &.timeline-section {
               position: relative;
               padding: 10px 20px;
-              
+
               .timeline-item {
                 position: relative;
                 padding-left: 32px;
                 margin-bottom: 26px;
                 border-left: 2px dashed rgba(0, 0, 0, 0.06);
                 padding-bottom: 18px;
-                
+
                 &:last-child {
                   margin-bottom: 0;
                   padding-bottom: 0;
                   border-left: none;
                 }
-                
+
                 .timeline-point {
                   position: absolute;
                   left: -8px;
@@ -743,13 +753,14 @@ $timeline-color: $primary-color;
                   z-index: 2;
                   box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.8);
                   transition: all 0.3s ease;
-                  
+
                   &:hover {
                     transform: scale(1.2);
-                    box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.9), 0 0 0 10px rgba(0, 0, 0, 0.02);
+                    box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.9),
+                      0 0 0 10px rgba(0, 0, 0, 0.02);
                   }
                 }
-                
+
                 .timeline-date {
                   font-weight: 500;
                   color: #444;
@@ -760,11 +771,11 @@ $timeline-color: $primary-color;
                   border-radius: 20px;
                   font-size: 14px;
                   transition: all 0.2s ease;
-                  
+
                   &:hover {
                     background: rgba(0, 0, 0, 0.05);
                   }
-                  
+
                   .date-field {
                     outline: none;
                     padding: 2px 4px;
@@ -773,23 +784,23 @@ $timeline-color: $primary-color;
                     display: inline-block;
                     text-align: center;
                     background: rgba(255, 255, 255, 0.6);
-                    
+
                     &:hover {
                       background: rgba(255, 255, 255, 0.9);
                     }
-                    
+
                     &:focus {
                       background-color: white;
                       box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
                     }
                   }
-                  
+
                   .date-separator {
                     margin: 0 8px;
                     color: #777;
                   }
                 }
-                
+
                 .timeline-content {
                   background: white;
                   padding: 16px;
@@ -797,19 +808,20 @@ $timeline-color: $primary-color;
                   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
                   border: 1px solid rgba(0, 0, 0, 0.04);
                   transition: all 0.3s ease;
-                  
+
                   &:hover {
                     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
                     transform: translateY(-2px);
                   }
-                  
+
                   .timeline-item-header {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
                     margin-bottom: 6px;
-                    
-                    .company-name, .organization-name {
+
+                    .company-name,
+                    .organization-name {
                       font-weight: 600;
                       font-size: 16px;
                       outline: none;
@@ -818,21 +830,21 @@ $timeline-color: $primary-color;
                       min-height: 28px;
                       word-break: break-word;
                       transition: all 0.2s ease;
-                      
+
                       &:hover {
                         background-color: rgba(0, 0, 0, 0.02);
                       }
-                      
+
                       &:focus {
                         background-color: rgba(0, 0, 0, 0.04);
                       }
                     }
-                    
+
                     .remove-item-btn {
                       padding: 4px;
                       visibility: hidden;
                       transition: all 0.2s ease;
-                      
+
                       &:hover {
                         color: #ff4d4f;
                         background: rgba(255, 77, 79, 0.1);
@@ -840,8 +852,9 @@ $timeline-color: $primary-color;
                       }
                     }
                   }
-                  
-                  .job-title, .certificate-name {
+
+                  .job-title,
+                  .certificate-name {
                     font-style: italic;
                     margin-bottom: 10px;
                     color: #555;
@@ -852,17 +865,17 @@ $timeline-color: $primary-color;
                     word-break: break-word;
                     background: rgba(0, 0, 0, 0.01);
                     display: inline-block;
-                    
+
                     &:hover {
                       background-color: rgba(0, 0, 0, 0.03);
                     }
-                    
+
                     &:focus {
                       background-color: white;
                       border: 1px solid rgba(0, 0, 0, 0.09);
                     }
                   }
-                  
+
                   .description {
                     outline: none;
                     padding: 8px;
@@ -870,18 +883,18 @@ $timeline-color: $primary-color;
                     min-height: 22px;
                     word-break: break-word;
                     background: rgba(0, 0, 0, 0.01);
-                    
+
                     &:hover {
                       background-color: rgba(0, 0, 0, 0.02);
                     }
-                    
+
                     &:focus {
                       background-color: white;
                       border: 1px solid rgba(0, 0, 0, 0.08);
                     }
                   }
                 }
-                
+
                 &:hover {
                   .remove-item-btn {
                     visibility: visible;
@@ -892,7 +905,7 @@ $timeline-color: $primary-color;
 
             &.skills-list {
               padding: 16px;
-              
+
               .skill-item {
                 display: flex;
                 align-items: center;
@@ -904,12 +917,12 @@ $timeline-color: $primary-color;
                 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
                 transition: all 0.3s ease;
                 border: 1px solid rgba(0, 0, 0, 0.03);
-                
+
                 &:hover {
                   box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
                   transform: translateY(-2px);
                 }
-                
+
                 .skill-name {
                   flex: 1;
                   font-weight: 500;
@@ -921,32 +934,32 @@ $timeline-color: $primary-color;
                   word-break: break-word;
                   position: relative;
                   transition: all 0.2s ease;
-                  
+
                   &:hover {
                     background-color: rgba(0, 0, 0, 0.02);
                   }
-                  
+
                   &:focus {
                     background-color: white;
                     border: 1px solid rgba(0, 0, 0, 0.08);
                   }
                 }
-                
+
                 .skill-controls {
                   display: flex;
                   align-items: center;
                   flex-shrink: 0;
                   gap: 8px;
-                  
+
                   .skill-level-select {
                     background: rgba(0, 0, 0, 0.02);
                     border-radius: 20px;
                     transition: all 0.3s ease;
-                    
+
                     &:hover {
                       background: rgba(0, 0, 0, 0.04);
                     }
-                    
+
                     .ant-select-selector {
                       border-radius: 20px;
                       border: none !important;
@@ -954,34 +967,34 @@ $timeline-color: $primary-color;
                     }
                   }
                 }
-                
+
                 .remove-skill-btn {
                   padding: 4px;
                   border-radius: 50%;
                   visibility: hidden;
                   transition: all 0.2s ease;
-                  
+
                   &:hover {
                     color: #ff4d4f;
                     background: rgba(255, 77, 79, 0.1);
                     transform: scale(1.1);
                   }
                 }
-                
+
                 &:hover {
                   .remove-skill-btn {
                     visibility: visible;
                   }
                 }
               }
-              
+
               .add-skill-btn {
                 margin-top: 16px;
                 border-radius: 8px;
                 border: 1px dashed rgba(0, 0, 0, 0.15);
                 height: 46px;
                 transition: all 0.3s ease;
-                
+
                 &:hover {
                   border-color: $primary-color;
                   color: $primary-color;
@@ -1001,11 +1014,11 @@ $timeline-color: $primary-color;
           border-radius: 8px;
           box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
           transition: all 0.3s ease;
-          
+
           &:hover {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
           }
-          
+
           .section-header {
             display: flex;
             align-items: center;
@@ -1016,7 +1029,7 @@ $timeline-color: $primary-color;
             border-bottom: 2px solid rgba(0, 0, 0, 0.06);
             background: rgba(0, 0, 0, 0.01);
             border-radius: 8px 8px 0 0;
-            
+
             .section-drag-handle {
               cursor: move;
               padding: 8px;
@@ -1030,13 +1043,13 @@ $timeline-color: $primary-color;
               border-radius: 4px;
               margin-right: 8px;
               transition: all 0.2s ease;
-              
+
               &:hover {
                 background-color: rgba(0, 0, 0, 0.05);
                 color: $primary-color;
               }
             }
-            
+
             .section-title {
               flex: 1;
               font-size: 16px;
@@ -1048,17 +1061,17 @@ $timeline-color: $primary-color;
               outline: none;
               border-radius: 4px;
               transition: all 0.2s ease;
-              
+
               &:hover {
                 background-color: rgba(0, 0, 0, 0.02);
               }
-              
+
               &:focus {
                 background-color: rgba(0, 0, 0, 0.04);
                 box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.06);
               }
             }
-            
+
             .remove-section-btn {
               padding: 8px;
               visibility: hidden;
@@ -1070,27 +1083,27 @@ $timeline-color: $primary-color;
               border-radius: 4px;
               color: #ff4d4f;
               transition: all 0.2s ease;
-              
+
               &:hover {
                 background-color: rgba(255, 77, 79, 0.1);
                 transform: scale(1.1);
               }
             }
           }
-          
+
           .section-content {
             padding: 0 20px 16px;
             outline: none;
             min-height: 60px;
           }
-          
+
           &:hover {
             .section-drag-handle,
             .remove-section-btn {
               visibility: visible;
             }
           }
-          
+
           &.is-dragging {
             opacity: 0.8;
             transform: scale(1.02);
@@ -1098,7 +1111,7 @@ $timeline-color: $primary-color;
             z-index: 100;
           }
         }
-        
+
         .add-section-btn {
           margin: 24px 0;
           height: 48px;
@@ -1110,14 +1123,14 @@ $timeline-color: $primary-color;
           align-items: center;
           justify-content: center;
           gap: 8px;
-          
+
           &:hover {
             border-color: $primary-color;
             color: $primary-color;
             background: rgba(245, 124, 0, 0.03);
             transform: translateY(-2px);
           }
-          
+
           .anticon {
             font-size: 16px;
           }
@@ -1125,7 +1138,7 @@ $timeline-color: $primary-color;
       }
     }
   }
-  
+
   .preview-container {
     flex: 1;
     overflow-y: auto;
@@ -1148,14 +1161,14 @@ $timeline-color: $primary-color;
 @media (max-width: 991px) {
   .cv-builder .cv-main-content {
     flex-direction: column;
-    
+
     .cv-sidebar {
       width: 100%;
       max-height: 300px;
       border-right: none;
       border-bottom: 1px solid #eee;
     }
-    
+
     .cv-preview-container {
       padding: 15px;
     }
