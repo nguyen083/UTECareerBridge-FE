@@ -21,7 +21,7 @@ import {
 import BoxContainer from '../../Generate/BoxContainer';
 import { useTranslation } from 'react-i18next';
 import './CVBuilder.scss';
-import { uploadCV } from '../../../services/apiService';
+import { uploadCV, updateCV } from '../../../services/apiService';
 import { uploadToCloudinary } from '../../../services/uploadCloudary';
 import CVPreview from './CVPreview';
 import CVTemplateSelector from './CVTemplateSelector';
@@ -214,14 +214,31 @@ const CVBuilder = ({ onFinish, existingCvData = null }) => {
   useEffect(() => {
     if (existingCvData) {
       try {
-        // Load existing data if provided
+        console.log("Loading existing CV data:", existingCvData);
+        
+        // Load personal info
         if (existingCvData.personalInfo) {
           setFullName(existingCvData.personalInfo.fullName || 'PHONG THANH');
           setJobTitle(existingCvData.personalInfo.jobTitle || 'CHỨC DANH - 0 NĂM KINH NGHIỆM');
+          
+          // Load career objective
+          if (existingCvData.personalInfo.objective) {
+            setCareerObjective(existingCvData.personalInfo.objective);
+          }
+          
+          // Load contact info
           setContactInfo({
             email: existingCvData.personalInfo.email || '',
             phone: existingCvData.personalInfo.phone || '',
             address: existingCvData.personalInfo.address || ''
+          });
+          
+          // Load additional personal info
+          setPersonalInfo({
+            birthDate: existingCvData.personalInfo.birthDate || '',
+            nationality: existingCvData.personalInfo.nationality || 'Việt Nam',
+            maritalStatus: existingCvData.personalInfo.maritalStatus || 'Độc thân',
+            gender: existingCvData.personalInfo.gender || 'Nam'
           });
           
           if (existingCvData.personalInfo.photoUrl) {
@@ -229,16 +246,43 @@ const CVBuilder = ({ onFinish, existingCvData = null }) => {
           }
         }
         
-        // Load other sections
+        // Load work experiences
+        if (existingCvData.workExperiences && existingCvData.workExperiences.length > 0) {
+          setWorkExperiences(existingCvData.workExperiences);
+        }
+        
+        // Load certificates
+        if (existingCvData.certificates && existingCvData.certificates.length > 0) {
+          setCertificates(existingCvData.certificates);
+        }
+        
+        // Load skills if they exist
+        if (existingCvData.skills && existingCvData.skills.length > 0) {
+          setSkills(existingCvData.skills);
+        }
+        
+        // Load custom sections
         if (existingCvData.sections) {
           setSections(existingCvData.sections);
         }
         
+        // Load theme settings
         if (existingCvData.theme) {
           setSelectedColor(existingCvData.theme.color || CV_COLOR_PRESETS[0].color);
           setSelectedFont(existingCvData.theme.font || FONT_OPTIONS[0].value);
           setFontSize(existingCvData.theme.fontSize || 12);
+          
+          // Set template if it exists
+          if (existingCvData.theme.id) {
+            const templateId = existingCvData.theme.id;
+            const template = CV_TEMPLATES.find(t => t.id === templateId);
+            if (template) {
+              setSelectedTemplate(template);
+            }
+          }
         }
+        
+        console.log("CV data loaded successfully");
       } catch (error) {
         console.error("Error loading existing CV data:", error);
         message.error(t('cv.builder.errorLoading'));
@@ -354,7 +398,14 @@ const CVBuilder = ({ onFinish, existingCvData = null }) => {
         certificates: certificates
       };
 
-      const response = await uploadCV(cvData);
+      let response;
+      if (existingCvData && existingCvData.resumeId) {
+        response = await updateCV(existingCvData.resumeId, cvData);
+        console.log("CV cvData successfully:", cvData);
+        console.log("CV updated successfully:", response);
+      } else {
+        response = await uploadCV(cvData);
+      }
       
       if (response.status === "OK") {
         message.success('Lưu CV thành công');

@@ -631,6 +631,42 @@
     }
   },
   "cv": {
+    "builder":{
+      "edit": "Chỉnh sửa hồ sơ",
+      "view": "Xem hồ sơ",
+      "delete": "Xóa hồ sơ",
+      "pageTitle": "Xây dựng hồ sơ",
+      "pageDescription": "Tạo hồ sơ của bạn với các thông tin cá nhân, học vấn, kinh nghiệm làm việc và kỹ năng. Bạn có thể tải lên hồ sơ của mình hoặc tạo mới từ đầu.",
+      "pageTitleEdit": "Chỉnh sửa hồ sơ",
+      "createNew": "Tạo mới",
+      "features":{
+        "title": "Tính năng",
+        "save": {
+          "title": "Lưu hồ sơ",
+          "description": "Lưu hồ sơ của bạn để có thể chỉnh sửa sau này."
+        },
+        "responsive": {
+          "title": "Tương thích với mọi thiết bị",
+          "description": "Hồ sơ của bạn sẽ hiển thị tốt trên mọi thiết bị, từ máy tính đến điện thoại di động."
+        },
+        "templates": {
+          "title": "Mẫu hồ sơ",
+          "description": "Chọn từ nhiều mẫu hồ sơ khác nhau để thể hiện phong cách cá nhân của bạn."
+        },
+        "dragDrop": {
+          "title": "Tùy chỉnh dễ dàng",
+          "description": "Có thể tự thêm các mục thông tin cần thiết."
+      }  },
+        "download": {
+          "title": "Tải xuống hồ sơ",
+          "description": "Tải xuống hồ sơ của bạn dưới dạng PDF hoặc DOCX để gửi cho nhà tuyển dụng."
+        },
+        "share": {
+          "title": "Chia sẻ hồ sơ",
+          "description": "Chia sẻ hồ sơ của bạn với nhà tuyển dụng qua email hoặc mạng xã hội."
+        }
+      
+    },
     "chooseResume": "Vui lòng chọn hồ sơ",
     "upload": {
       "success": "Tải lên thành công!",
