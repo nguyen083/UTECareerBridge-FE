@@ -212,47 +212,11 @@ const CVBuilderPage = lazy(() =>
 const App = () => {
   const lang = useSelector((state) => state.web.lang || "en");
   const queryClient = new QueryClient();
-  // const isTokenExpired = (token) => {
-  //   if (!token) return true;
 
-  //   try {
-  //     const payload = JSON.parse(atob(token.split(".")[1]));
-  //     return payload.exp * 1000 < Date.now();
-  //   } catch (e) {
-  //     console.log(e);
-  //     return true;
-  //   }
-  // };
   useEffect(() => {
-    // const token = localStorage.getItem("accessToken");
     connectStomp(() => {
       console.log("WebSocket connected after token refresh");
     });
-    // Only try to refresh if there's actually a token to refresh
-    // if (token && isTokenExpired(token)) {
-    //   refreshToken()
-    //     .then(() => {
-    //       // Successfully refreshed, connect WebSocket
-    //       connectStomp(() => {
-    //         console.log("WebSocket connected after token refresh");
-    //       });
-    //     })
-    //     .catch(() => {
-    //       console.log("Token refresh failed, redirecting to login");
-    //       // Don't try to connect WebSocket with invalid tokens
-    //       // Just redirect to login page
-    //       window.location = "/login";
-    //     });
-    // } else if (token) {
-    //   // Token exists and is valid, connect WebSocket
-    //   connectStomp(() => {});
-    // } else {
-    //   // No token, don't try to connect WebSocket that requires auth
-    //   console.log(
-    //     "No token available, skipping authenticated WebSocket connection"
-    //   );
-    // }
-
     return () => {
       disconnectStomp();
     };

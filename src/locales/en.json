@@ -89,7 +89,7 @@
       "welcome": "Welcome, {{name}}!",
       "subtitle": "Track your job applications and career progress",
       "student": "Student",
-      "today": "Today's Date",
+      "joinDate": "Join Date",
       "profileCompletion": "Profile Completion",
       "viewResume": "View My Resume",
       "editProfile": "Edit My Profile",
@@ -114,6 +114,7 @@
       "learnMore": "Learn more"
     },
     "menu": {
+      "updateProfile": "Update profile",
       "myResume": "My Resume",
       "notification": "Notification",
       "myCompany": "My Company",
@@ -121,7 +122,9 @@
       "jobAlerts": "Job Alerts",
       "recommend": "Recommend Jobs",
       "changePassword": "Change Password",
-      "dashboard": "Dashboard"
+      "dashboard": "Dashboard",
+      "cvBuilder": "Tạo CV",
+      "logout": "Logout"
     },
     "layout": {
       "profile": {

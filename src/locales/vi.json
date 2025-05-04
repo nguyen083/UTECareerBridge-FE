@@ -89,7 +89,7 @@
       "welcome": "Xin chào, {{name}}!",
       "subtitle": "Theo dõi hồ sơ ứng tuyển và sự phát triển nghề nghiệp của bạn",
       "student": "Sinh viên",
-      "today": "Ngày hôm nay",
+      "joinDate": "Ngày tham gia",
       "profileCompletion": "Mức độ hoàn thiện hồ sơ",
       "viewResume": "Xem hồ sơ của tôi",
       "editProfile": "Chỉnh sửa hồ sơ",
@@ -114,6 +114,7 @@
       "learnMore": "Tìm hiểu thêm"
     },
     "menu": {
+      "updateProfile": "Cập nhật hồ sơ",
       "myResume": "Hồ sơ của tôi",
       "notification": "Thông báo",
       "myCompany": "Công ty của tôi",
@@ -121,7 +122,9 @@
       "jobAlerts": "Thông báo việc làm",
       "recommend": "Việc được đề xuất",
       "changePassword": "Đổi mật khẩu",
-      "dashboard": "Tổng quan"
+      "dashboard": "Tổng quan",
+      "cvBuilder": "Tạo CV",
+      "logout": "Đăng xuất"
     },
     "layout": {
       "profile": {
