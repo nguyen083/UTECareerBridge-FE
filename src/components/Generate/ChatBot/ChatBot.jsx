@@ -1,5 +1,15 @@
 import { useCallback, useRef, useState, useEffect } from "react";
-import { Card, Flex, FloatButton, Image, Popover, Input, Button } from "antd";
+import {
+  Card,
+  Flex,
+  FloatButton,
+  Image,
+  Popover,
+  Input,
+  Button,
+  Typography,
+  Space,
+} from "antd";
 
 import "./ChatBot.scss";
 import { ReceiverChat, SenderChat } from "../../../pages/Chat/ContainerofChat";
@@ -8,8 +18,64 @@ import { SendOutlined } from "@ant-design/icons";
 import chat from "../../../services/api/chat";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import TypingIndicator from "./TypingIndicator";
 
 const { TextArea } = Input;
+const { Title, Text } = Typography;
+
+// Component hiển thị lời chào và các câu hỏi gợi ý ban đầu
+const WelcomeMessage = ({ onSuggestedQuestionClick }) => {
+  const { t } = useTranslation();
+
+  // Danh sách các câu hỏi gợi ý (có thể dịch bằng t() nếu cần)
+  const suggestedQuestions = [
+    t("chatbot.howToFindJob", "Làm thế nào để tìm việc làm?"),
+    t(
+      "chatbot.UTECareerBridgeFeatures",
+      "UTECareerBridge có những tính năng gì?"
+    ),
+    t("chatbot.howToUpdateCV", "Tôi muốn cập nhật CV như thế nào?"),
+    t("chatbot.howToApplyForJob", "Làm thế nào để ứng tuyển công việc?"),
+  ];
+
+  return (
+    <Flex className="flex-col items-center gap-6 px-4 py-8">
+      <Image
+        src="src\assets\chatbot.png"
+        preview={false}
+        width={50}
+        className="mb-4"
+      />
+      <Title level={4} className="text-center">
+        {t(
+          "chatbot.welcomeTitle",
+          "Chào mừng đến với UTECareerBridge Assistant"
+        )}
+      </Title>
+      <Text className="text-center">
+        {t(
+          "chatbot.welcomeDescription",
+          "Tôi có thể giúp bạn tìm hiểu về UTECareerBridge và cách sử dụng các tính năng của nền tảng."
+        )}
+      </Text>
+
+      <Space direction="vertical" size="middle" className="w-full mt-4">
+        <Text strong>{t("chatbot.suggestedQuestions", "Bạn có thể hỏi:")}</Text>
+        {suggestedQuestions.map((question, index) => (
+          <Button
+            key={index}
+            type="default"
+            className="w-full text-left border border-gray-300 rounded-lg hover:border-blue-500 hover:text-blue-500"
+            onClick={() => onSuggestedQuestionClick(question)}
+          >
+            {question}
+          </Button>
+        ))}
+      </Space>
+    </Flex>
+  );
+};
+
 const ChatBot = () => {
   const { t } = useTranslation();
   const [messages, setMessages] = useState([]);
@@ -17,8 +83,31 @@ const ChatBot = () => {
   const divRef = useRef(null);
   const [sessionId, setSessionId] = useState(null);
   const [newMessage, setNewMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const currentUserId = "current-user";
   const lang = useSelector((state) => state.web.lang || "en");
+
+  const handleSuggestedQuestionClick = (question) => {
+    setNewMessage(question);
+    setIsLoading(true);
+    setTimeout(() => {
+      const userMessage = {
+        content: question,
+        senderId: currentUserId,
+        timestamp: new Date().toISOString(),
+      };
+      setMessages((prev) => [...prev, userMessage]);
+
+      const payload = {
+        sessionId: sessionId,
+        content: question,
+        language: lang,
+      };
+
+      chat.sendMessageToChatBot(stompClient, payload);
+      setNewMessage("");
+    }, 100);
+  };
 
   const generateSessionId = () => {
     const storedId = localStorage.getItem("chatbotSessionId");
@@ -91,8 +180,10 @@ const ChatBot = () => {
           timestamp: new Date().toISOString(),
         };
         setMessages((prevMessages) => [...prevMessages, botMessage]);
+        setIsLoading(false);
       } else {
         console.error("No message content found in response:", responseBody);
+        setIsLoading(false);
       }
     });
   }, []);
@@ -133,8 +224,8 @@ const ChatBot = () => {
     <Card
       title={
         <Flex className="text-white" align="center" gap={6}>
-          <Image size={30} src="src\assets\chatbot.png" preview={false} />{" "}
-          ChatBot
+          <Image size={30} src="src\\assets\\chatbot.png" preview={false} />{" "}
+          UTECareerBridge Assistant
         </Flex>
       }
     >
@@ -164,14 +255,20 @@ const ChatBot = () => {
                             background: #555;
                         }
                     `}</style>
+          <WelcomeMessage
+            onSuggestedQuestionClick={handleSuggestedQuestionClick}
+          />
           {messages.map((message, index) => {
             if (message.senderId === currentUserId) {
               return <SenderChat key={index} message={message} />;
             }
-            {
-              return <ReceiverChat key={index} message={message} />;
-            }
+            return <ReceiverChat key={index} message={message} />;
           })}
+          {isLoading && (
+            <div className="px-3 py-3 bg-gray-200 rounded-t-3xl rounded-e-3xl w-fit">
+              <TypingIndicator />
+            </div>
+          )}
         </div>
         <Flex
           className="w-full h-auto p-2 "

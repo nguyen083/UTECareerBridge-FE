@@ -1306,7 +1306,16 @@
     }
   },
   "chatbot": {
-    "placeholderInput": "Type your message here..."
+    "placeholderInput": "Type your message here...",
+    "welcomeTitle": "Welcome to UTECareerBridge Assistant",
+    "welcomeDescription": "I can help you learn about UTECareerBridge and how to use the platform's features.",
+    "suggestedQuestions": "You can ask:",
+    "loading": "Loading...",
+    "typing": "Chatbot is typing...",
+    "howToFindJob": "How to find a job?",
+    "UTECareerBridgeFeatures": "What are the features of UTECareerBridge?",
+    "howToUpdateCV": "How to update CV?",
+    "howToApplyForJob": "How to apply for a job?"
   },
   "meeting": {
     "permissions_granted": "Camera and microphone access granted",
