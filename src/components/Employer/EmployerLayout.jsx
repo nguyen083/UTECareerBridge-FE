@@ -352,7 +352,7 @@ const EmployerLayout = () => {
               >
                 <div className="user-profile">
                   <Avatar
-                    size={36}
+                    size={40}
                     className="avatar"
                     icon={<UserOutlined />}
                     src={avatar}

@@ -16,7 +16,13 @@ import {
   Divider,
   Tabs,
   Table,
-  Avatar 
+  Avatar,
+  Flex,
+  List,
+  Tag,
+  Empty,
+  Tooltip as AntTooltip,
+  Alert
 } from "antd";
 import {
   LineChart,
@@ -34,6 +40,13 @@ import {
   Legend,
   ResponsiveContainer,
   Cell,
+  RadarChart,
+  Radar,
+  PolarGrid,
+  PolarAngleAxis,
+  PolarRadiusAxis,
+  ScatterChart,
+  Scatter,
 } from "recharts";
 import { 
   UserOutlined, 
@@ -46,7 +59,23 @@ import {
   RiseOutlined,
   CalendarOutlined,
   ReloadOutlined,
-  FilterOutlined
+  FilterOutlined,
+  SafetyCertificateOutlined,
+  ExceptionOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+  PieChartOutlined,
+  LineChartOutlined,
+  BarChartOutlined,
+  RadarChartOutlined,
+  ScheduleOutlined,
+  GlobalOutlined,
+  FireOutlined,
+  TrophyOutlined,
+  AlertOutlined,
+  SearchOutlined,
+  InfoCircleOutlined,
+  BellOutlined
 } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import {
@@ -55,6 +84,7 @@ import {
   getStatisticUser,
   getStatisticPackage,
 } from "../../../services/apiService";
+import "./Dashboard.scss";
 
 const { Option } = Select;
 const { Title, Text } = Typography;
@@ -82,6 +112,25 @@ const AdminDashboard = () => {
     employers: true,
   });
   const [chartView, setChartView] = useState('revenue');
+  const [chartType, setChartType] = useState('pie');
+  const [packageChartType, setPackageChartType] = useState('pie');
+  const [comparisonPeriod, setComparisonPeriod] = useState('month');
+  const [platformAnalytics, setPlatformAnalytics] = useState({
+    activeUsers: 587,
+    avgSessionDuration: '4:32',
+    bounceRate: 32.7,
+    conversionRate: 8.4,
+  });
+  const [jobApprovalStats, setJobApprovalStats] = useState({
+    pending: 12,
+    approved: 241,
+    rejected: 19,
+    total: 272
+  });
+  const [userGrowthData, setUserGrowthData] = useState([]);
+  const [skillDemandData, setSkillDemandData] = useState([]);
+  const [geographicData, setGeographicData] = useState([]);
+  const [recruitmentSuccessData, setRecruitmentSuccessData] = useState([]);
   
   const COLORS = [
     "#722ed1",
@@ -373,24 +422,24 @@ const AdminDashboard = () => {
 
   const orderColumns = [
     {
-      title: 'ID',
+      title: t('admin.dashboard.tables.columns.id') || 'ID',
       dataIndex: 'id',
       key: 'id',
       width: 60,
     },
     {
-      title: 'Company',
+      title: t('admin.dashboard.tables.columns.company') || 'Company',
       dataIndex: 'company',
       key: 'company',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Package',
+      title: t('admin.dashboard.tables.columns.package') || 'Package',
       dataIndex: 'package',
       key: 'package',
     },
     {
-      title: 'Amount',
+      title: t('admin.dashboard.tables.columns.amount') || 'Amount',
       dataIndex: 'amount',
       key: 'amount',
       render: (amount) => new Intl.NumberFormat("vi-VN", {
@@ -402,18 +451,18 @@ const AdminDashboard = () => {
       align: 'right',
     },
     {
-      title: 'Date',
+      title: t('admin.dashboard.tables.columns.date') || 'Date',
       dataIndex: 'date',
       key: 'date',
     },
     {
-      title: 'Status',
+      title: t('admin.dashboard.tables.columns.status') || 'Status',
       dataIndex: 'status',
       key: 'status',
       render: (status) => (
         <Badge 
           status={status === 'completed' ? 'success' : 'processing'} 
-          text={status === 'completed' ? 'Completed' : 'Processing'} 
+          text={status === 'completed' ? t('admin.dashboard.tables.statuses.completed') || 'Completed' : t('admin.dashboard.tables.statuses.processing') || 'Processing'} 
         />
       ),
     },
@@ -421,23 +470,23 @@ const AdminDashboard = () => {
   
   const employerColumns = [
     {
-      title: 'Company',
+      title: t('admin.dashboard.tables.columns.company') || 'Company',
       dataIndex: 'name',
       key: 'name',
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Jobs Posted',
+      title: t('admin.dashboard.tables.columns.jobsPosted') || 'Jobs Posted',
       dataIndex: 'jobsPosted',
       key: 'jobsPosted',
     },
     {
-      title: 'Successful Hires',
+      title: t('admin.dashboard.tables.columns.hires') || 'Successful Hires',
       dataIndex: 'hires',
       key: 'hires',
     },
     {
-      title: 'Rating',
+      title: t('admin.dashboard.tables.columns.rating') || 'Rating',
       dataIndex: 'rating',
       key: 'rating',
       render: (rating) => (
@@ -452,17 +501,223 @@ const AdminDashboard = () => {
     },
   ];
 
+  // Generate sample data for user growth
+  useEffect(() => {
+    // Generate user growth data
+    const generateUserGrowthData = () => {
+      const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      const now = new Date();
+      const currentMonth = now.getMonth();
+      
+      // Generate data for the past 6 months
+      const data = [];
+      
+      for (let i = 5; i >= 0; i--) {
+        const monthIndex = (currentMonth - i + 12) % 12;
+        const employerBase = 50 + Math.floor(i * 12) + Math.floor(Math.random() * 10);
+        const candidateBase = 120 + Math.floor(i * 25) + Math.floor(Math.random() * 20);
+        
+        data.push({
+          month: months[monthIndex],
+          employers: employerBase + i * 5,
+          candidates: candidateBase + i * 15,
+          total: employerBase + candidateBase + i * 20
+        });
+      }
+      
+      setUserGrowthData(data);
+    };
+    
+    // Generate skill demand data
+    const generateSkillDemandData = () => {
+      const data = [
+        { skill: "JavaScript", count: 156, change: 12 },
+        { skill: "React", count: 143, change: 18 },
+        { skill: "Node.js", count: 98, change: 5 },
+        { skill: "TypeScript", count: 87, change: 15 },
+        { skill: "Python", count: 76, change: -2 },
+        { skill: "Java", count: 72, change: -5 },
+        { skill: "AWS", count: 65, change: 8 },
+        { skill: "DevOps", count: 58, change: 14 },
+        { skill: "SQL", count: 51, change: 3 },
+        { skill: "UI/UX", count: 48, change: 9 }
+      ];
+      
+      setSkillDemandData(data);
+    };
+    
+    // Generate geographic data
+    const generateGeographicData = () => {
+      const data = [
+        { city: "Ho Chi Minh City", employers: 120, candidates: 580, jobs: 245 },
+        { city: "Hanoi", employers: 85, candidates: 420, jobs: 174 },
+        { city: "Da Nang", employers: 42, candidates: 195, jobs: 87 },
+        { city: "Can Tho", employers: 23, candidates: 125, jobs: 46 },
+        { city: "Hai Phong", employers: 19, candidates: 105, jobs: 38 },
+        { city: "Nha Trang", employers: 16, candidates: 85, jobs: 31 },
+        { city: "Other", employers: 37, candidates: 210, jobs: 74 }
+      ];
+      
+      setGeographicData(data);
+    };
+    
+    // Generate recruitment success data
+    const generateRecruitmentSuccessData = () => {
+      const data = [
+        { name: "Công nghệ thông tin", applied: 185, interviewed: 112, hired: 68, rate: 37 },
+        { name: "Kỹ thuật điện tử", applied: 142, interviewed: 94, hired: 52, rate: 37 },
+        { name: "Quản trị kinh doanh", applied: 156, interviewed: 85, hired: 42, rate: 27 },
+        { name: "Marketing", applied: 108, interviewed: 63, hired: 31, rate: 29 },
+        { name: "Kế toán", applied: 98, interviewed: 54, hired: 28, rate: 29 },
+        { name: "Kỹ thuật ô tô", applied: 87, interviewed: 45, hired: 23, rate: 26 }
+      ];
+      
+      setRecruitmentSuccessData(data);
+    };
+    
+    generateUserGrowthData();
+    generateSkillDemandData();
+    generateGeographicData();
+    generateRecruitmentSuccessData();
+  }, []);
+
+  // Platform insights
+  const platformInsights = [
+    {
+      type: "positive",
+      title: t("admin.dashboard.insights.engagementTitle") || "Increasing Engagement",
+      description: t("admin.dashboard.insights.engagementDesc") || "User sessions increased by 12% compared to last month, indicating higher engagement with the platform."
+    },
+    {
+      type: "warning",
+      title: t("admin.dashboard.insights.mobileTitle") || "Mobile Usage Trend",
+      description: t("admin.dashboard.insights.mobileDesc") || "Mobile usage is growing but conversion rates are 5% lower on mobile compared to desktop. Consider optimizing the mobile experience."
+    },
+    {
+      type: "info",
+      title: t("admin.dashboard.insights.categoriesTitle") || "Popular Job Categories",
+      description: t("admin.dashboard.insights.categoriesDesc") || "IT/Software Development and Data Analysis are the fastest growing job categories this month."
+    }
+  ];
+
   return (
     <div className="admin-dashboard">
       <Card className="admin-card mb-5">
         <div className="flex justify-between items-center flex-wrap gap-4">
           <div>
-            <Title level={4} style={{ margin: 0 }}>{t("admin.dashboard.title")}</Title>
-            <Text type="secondary">{t("admin.dashboard.subtitle", { date: new Date().toLocaleDateString() })}</Text>
+            <Title level={4} style={{ margin: 0 }}>{t("admin.dashboard.title") || "Admin Dashboard"}</Title>
+            <Text type="secondary">{t("admin.dashboard.subtitle", { date: new Date().toLocaleDateString() }) || `Overview as of ${new Date().toLocaleDateString()}`}</Text>
           </div>
           <FilterControls />
         </div>
       </Card>
+      
+      {/* Alert Section for Important Notices */}
+      <div className="alert-section">
+        <Alert
+          message={t("admin.dashboard.alerts.systemNotice") || "System Notice"}
+          description={t("admin.dashboard.alerts.pendingJobs", { count: 12 }) || "There are 12 new job listings pending approval. Please review them to maintain platform quality."}
+          type="info"
+          showIcon
+          action={
+            <Button size="small" type="primary">
+              {t("admin.dashboard.alerts.reviewNow") || "Review Now"}
+            </Button>
+          }
+        />
+      </div>
+      
+      {/* Key Performance Metrics */}
+      <div className="key-metrics-container">
+        <div className="key-metric-item">
+          <div className="metric-header">
+            <div className="metric-icon" style={{ backgroundColor: `rgba(82, 196, 26, 0.1)`, color: '#52c41a' }}>
+              <DollarOutlined />
+            </div>
+            <div className="metric-title">Monthly Revenue</div>
+          </div>
+          <div className="metric-value">
+            {new Intl.NumberFormat("vi-VN", {
+              style: "currency",
+              currency: "VND",
+              minimumFractionDigits: 0,
+              maximumFractionDigits: 0,
+            }).format(currentMonthRevenue)}
+          </div>
+          <div className="metric-footer">
+            <div className={`trend ${revenueGrowth >= 0 ? 'positive' : 'negative'}`}>
+              {revenueGrowth >= 0 ? <UpOutlined /> : <DownOutlined />}{' '}{Math.abs(revenueGrowth).toFixed(1)}%
+            </div>
+            <div className="trend-period">vs last month</div>
+          </div>
+        </div>
+        
+        <div className="key-metric-item">
+          <div className="metric-header">
+            <div className="metric-icon" style={{ backgroundColor: `rgba(24, 144, 255, 0.1)`, color: '#1890ff' }}>
+              <TeamOutlined />
+            </div>
+            <div className="metric-title">Total Users</div>
+          </div>
+          <div className="metric-value">
+            {statisticUser.totalCandidates + statisticUser.totalEmployers || 0}
+          </div>
+          <div className="metric-footer">
+            <div className="trend positive">
+              <UpOutlined /> 8.5%
+            </div>
+            <div className="trend-period">vs last month</div>
+          </div>
+        </div>
+        
+        <div className="key-metric-item">
+          <div className="metric-header">
+            <div className="metric-icon" style={{ backgroundColor: `rgba(250, 173, 20, 0.1)`, color: '#faad14' }}>
+              <FileTextOutlined />
+            </div>
+            <div className="metric-title">Active Jobs</div>
+          </div>
+          <div className="metric-value">
+            {jobApprovalStats.approved}
+          </div>
+          <div className="metric-footer">
+            <div className="trend positive">
+              <UpOutlined /> 12.3%
+            </div>
+            <div className="trend-period">vs last month</div>
+          </div>
+        </div>
+        
+        <div className="key-metric-item">
+          <div className="metric-header">
+            <div className="metric-icon" style={{ backgroundColor: `rgba(114, 46, 209, 0.1)`, color: '#722ed1' }}>
+              <RiseOutlined />
+            </div>
+            <div className="metric-title">Conversion Rate</div>
+          </div>
+          <div className="metric-value">
+            {platformAnalytics.conversionRate}%
+          </div>
+          <div className="metric-footer">
+            <div className="trend positive">
+              <UpOutlined /> 1.2%
+            </div>
+            <div className="trend-period">vs last month</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Insights Cards */}
+      <Row gutter={[16, 16]} className="mb-5">
+        {platformInsights.map((insight, index) => (
+          <Col key={index} xs={24} md={8}>
+            <div className={`insight-card ${insight.type}`}>
+              <Title level={5} style={{ marginTop: 0, marginBottom: 8 }}>{insight.title}</Title>
+              <Text>{insight.description}</Text>
+            </div>
+          </Col>
+        ))}
+      </Row>
       
       {/* Overview Statistics */}
       <Row gutter={[16, 16]} className="mb-5">
@@ -473,7 +728,7 @@ const AdminDashboard = () => {
             </Card>
           ) : (
             revenueStatsCard(
-              t("admin.dashboard.stats.currentMonthRevenue"),
+              t("admin.dashboard.stats.currentMonthRevenue") || "Monthly Revenue",
               currentMonthRevenue,
               previousMonthRevenue,
               <DollarOutlined />,
@@ -488,7 +743,7 @@ const AdminDashboard = () => {
             </Card>
           ) : (
             renderStatsCard(
-              t("admin.dashboard.stats.totalCandidates"),
+              t("admin.dashboard.stats.totalCandidates") || "Total Candidates",
               statisticUser.totalCandidates,
               <UserOutlined />,
               "#1890ff",
@@ -504,7 +759,7 @@ const AdminDashboard = () => {
             </Card>
           ) : (
             renderStatsCard(
-              t("admin.dashboard.stats.totalEmployers"),
+              t("admin.dashboard.stats.totalEmployers") || "Total Employers",
               statisticUser.totalEmployers,
               <BankOutlined />,
               "#722ed1",
@@ -520,7 +775,7 @@ const AdminDashboard = () => {
             </Card>
           ) : (
             renderStatsCard(
-              t("admin.dashboard.stats.totalJobs"),
+              t("admin.dashboard.stats.totalJobs") || "Total Jobs",
               jobCategoryStats.reduce((sum, item) => sum + item.value, 0),
               <FileTextOutlined />,
               "#fa8c16",
@@ -531,11 +786,123 @@ const AdminDashboard = () => {
         </Col>
       </Row>
 
+      {/* Job Approval Status */}
+      <Row gutter={[16, 16]} className="mb-5">
+        <Col xs={24}>
+          <Card title={<Flex align="center" gap="small"><SafetyCertificateOutlined /> {t("admin.dashboard.jobApproval.title") || "Job Approval Status"}</Flex>} className="admin-card overview-card">
+            <div className="job-status-summary">
+              <div className="status-item" style={{ borderTop: '3px solid #faad14' }}>
+                <div className="status-count">{jobApprovalStats.pending}</div>
+                <div className="status-label">{t("admin.dashboard.jobApproval.pending") || "Pending"}</div>
+              </div>
+              <div className="status-item" style={{ borderTop: '3px solid #52c41a' }}>
+                <div className="status-count">{jobApprovalStats.approved}</div>
+                <div className="status-label">{t("admin.dashboard.jobApproval.approved") || "Approved"}</div>
+              </div>
+              <div className="status-item" style={{ borderTop: '3px solid #f5222d' }}>
+                <div className="status-count">{jobApprovalStats.rejected}</div>
+                <div className="status-label">{t("admin.dashboard.jobApproval.rejected") || "Rejected"}</div>
+              </div>
+              <div className="status-item" style={{ borderTop: '3px solid #1890ff' }}>
+                <div className="status-count">{jobApprovalStats.total}</div>
+                <div className="status-label">{t("admin.dashboard.jobApproval.total") || "Total"}</div>
+              </div>
+            </div>
+            
+            <Divider />
+            
+            <Progress
+              percent={Math.round((jobApprovalStats.approved / jobApprovalStats.total) * 100)}
+              strokeColor="#52c41a"
+              format={(percent) => `${percent}% ${t("admin.dashboard.jobApproval.approved") || "approved"}`}
+            />
+          </Card>
+        </Col>
+      </Row>
+
+      {/* User Growth and Platform Performance */}
+      <Row gutter={[16, 16]} className="mb-5">
+        <Col xs={24} lg={16}>
+          <Card 
+            title={<Flex align="center" gap="small"><LineChartOutlined /> {t("admin.dashboard.charts.userGrowth") || "User Growth Trends"}</Flex>}
+            className="admin-card"
+            extra={
+              <Select defaultValue="6months" style={{ width: 120 }}>
+                <Option value="30days">{t("admin.dashboard.filters.last30Days") || "Last 30 Days"}</Option>
+                <Option value="6months">{t("admin.dashboard.filters.last6Months") || "Last 6 Months"}</Option>
+                <Option value="1year">{t("admin.dashboard.filters.lastYear") || "Last Year"}</Option>
+              </Select>
+            }
+          >
+            <div style={{ height: 350 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart data={userGrowthData} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="colorEmployers" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#722ed1" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#722ed1" stopOpacity={0}/>
+                    </linearGradient>
+                    <linearGradient id="colorCandidates" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="5%" stopColor="#1890ff" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#1890ff" stopOpacity={0}/>
+                    </linearGradient>
+                  </defs>
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <Tooltip />
+                  <Area type="monotone" dataKey="employers" name={t("admin.dashboard.charts.employers") || "Employers"} stroke="#722ed1" fillOpacity={1} fill="url(#colorEmployers)" />
+                  <Area type="monotone" dataKey="candidates" name={t("admin.dashboard.charts.candidates") || "Candidates"} stroke="#1890ff" fillOpacity={1} fill="url(#colorCandidates)" />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </Card>
+        </Col>
+        <Col xs={24} lg={8}>
+          <Card 
+            title={<Flex align="center" gap="small"><PieChartOutlined /> {t("admin.dashboard.platform.performance") || "Platform Performance"}</Flex>}
+            className="admin-card site-performance-card"
+          >
+            <div className="performance-item">
+              <div className="performance-header">
+                <div className="performance-label">{t("admin.dashboard.platform.activeUsers") || "Active Users (daily)"}</div>
+                <div className="performance-value">{platformAnalytics.activeUsers}</div>
+              </div>
+              <Progress percent={58} showInfo={false} strokeColor="#1890ff" />
+            </div>
+            
+            <div className="performance-item">
+              <div className="performance-header">
+                <div className="performance-label">{t("admin.dashboard.platform.avgSessionDuration") || "Avg. Session Duration"}</div>
+                <div className="performance-value">{platformAnalytics.avgSessionDuration}</div>
+              </div>
+              <Progress percent={75} showInfo={false} strokeColor="#722ed1" />
+            </div>
+            
+            <div className="performance-item">
+              <div className="performance-header">
+                <div className="performance-label">{t("admin.dashboard.platform.bounceRate") || "Bounce Rate"}</div>
+                <div className="performance-value">{platformAnalytics.bounceRate}%</div>
+              </div>
+              <Progress percent={100 - platformAnalytics.bounceRate} showInfo={false} strokeColor="#52c41a" />
+            </div>
+            
+            <div className="performance-item">
+              <div className="performance-header">
+                <div className="performance-label">{t("admin.dashboard.platform.conversionRate") || "Conversion Rate"}</div>
+                <div className="performance-value">{platformAnalytics.conversionRate}%</div>
+              </div>
+              <Progress percent={platformAnalytics.conversionRate * 10} showInfo={false} strokeColor="#fa8c16" />
+            </div>
+          </Card>
+        </Col>
+      </Row>
+
       {/* Charts */}
       <Row gutter={[16, 16]} className="mb-5">
         <Col xs={24} lg={16}>
           <Card 
-            title={t("admin.dashboard.charts.performanceAnalytics")}
+            title={<Flex align="center" gap="small"><BarChartOutlined /> Revenue Analytics</Flex>}
             className="admin-card"
             extra={
               <Segmented
@@ -557,94 +924,52 @@ const AdminDashboard = () => {
               <div style={{ height: 400 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   {chartView === 'revenue' ? (
-                    <AreaChart data={revenueByMonth} margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
-                      <defs>
-                        <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#52c41a" stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor="#52c41a" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                      <XAxis 
-                        dataKey="month" 
-                        axisLine={{ stroke: "#d9d9d9" }}
-                        tick={{ fill: "#8c8c8c" }}
-                        tickFormatter={(month) => {
-                          const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                          return monthNames[month - 1];
-                        }}
-                      />
+                    <BarChart
+                      data={revenueByMonth}
+                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
                       <YAxis
                         tickFormatter={(value) =>
                           new Intl.NumberFormat("vi-VN", {
-                            style: "currency",
-                            currency: "VND",
                             notation: "compact",
                             compactDisplay: "short",
+                          }).format(value)
+                        }
+                      />
+                      <Tooltip
+                        formatter={(value) =>
+                          new Intl.NumberFormat("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
                             minimumFractionDigits: 0,
                             maximumFractionDigits: 0,
                           }).format(value)
                         }
-                        domain={[0, (dataMax) => Math.ceil(dataMax * 1.1)]}
-                        axisLine={{ stroke: "#d9d9d9" }}
-                        tick={{ fill: "#8c8c8c" }}
                       />
-                      <Tooltip
-                        formatter={(value, name) => {
-                          if (name === t("admin.dashboard.charts.revenue")) {
-                            return [
-                              new Intl.NumberFormat("vi-VN", {
-                                style: "currency",
-                                currency: "VND",
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0,
-                              }).format(value),
-                              name,
-                            ];
-                          }
-                          return [value, name];
-                        }}
-                        labelFormatter={(month) => {
-                          const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                          return monthNames[month - 1];
-                        }}
-                      />
-                      <Area
-                        type="monotone"
+                      <Legend />
+                      <Bar
                         dataKey="revenue"
-                        stroke="#52c41a"
-                        name={t("admin.dashboard.charts.revenue")}
-                        strokeWidth={3}
-                        dot={{ stroke: "#52c41a", strokeWidth: 2, r: 4 }}
-                        activeDot={{ r: 6 }}
-                        fill="url(#colorRevenue)"
+                        name="Revenue"
+                        fill="#1890ff"
+                        radius={[4, 4, 0, 0]}
+                        barSize={30}
                       />
-                    </AreaChart>
+                    </BarChart>
                   ) : (
-                    <BarChart data={revenueByMonth} margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                      <XAxis 
-                        dataKey="month" 
-                        axisLine={{ stroke: "#d9d9d9" }}
-                        tick={{ fill: "#8c8c8c" }}
-                        tickFormatter={(month) => {
-                          const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                          return monthNames[month - 1];
-                        }}
-                      />
-                      <YAxis
-                        axisLine={{ stroke: "#d9d9d9" }}
-                        tick={{ fill: "#8c8c8c" }}
-                      />
-                      <Tooltip
-                        labelFormatter={(month) => {
-                          const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                          return monthNames[month - 1];
-                        }}
-                      />
+                    <BarChart
+                      data={revenueByMonth}
+                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
                       <Bar
                         dataKey="subscriptions"
-                        name={t("admin.dashboard.charts.packageCount")}
+                        name="Package Subscriptions"
                         fill="#1890ff"
                         radius={[4, 4, 0, 0]}
                         barSize={30}
@@ -658,7 +983,7 @@ const AdminDashboard = () => {
         </Col>
 
         <Col xs={24} lg={8}>
-          <Card title={t("admin.dashboard.charts.recentActivities")} className="admin-card h-full">
+          <Card title={<Flex align="center" gap="small"><BellOutlined /> Recent Activities</Flex>} className="admin-card h-full">
             <div className="recent-activities-list">
               {recentActivities.map(activity => (
                 <div key={activity.id} className="recent-activity-item">
@@ -680,146 +1005,152 @@ const AdminDashboard = () => {
         </Col>
       </Row>
 
+      {/* Skill Demand Trend and Geographic Data */}
       <Row gutter={[16, 16]} className="mb-5">
+        {/* Skill Distribution Analysis */}
         <Col xs={24} lg={12}>
-          <Card title={t("admin.dashboard.charts.topPackages")} className="admin-card">
-            {loading.packages ? (
-              <div style={{ height: 350 }}>
-                <Skeleton active paragraph={{ rows: 10 }} />
-              </div>
-            ) : (
-              <div style={{ height: 350 }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={packageStats}
-                      dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={70}
-                      outerRadius={110}
-                      fill="#722ed1"
-                      paddingAngle={2}
-                      label={({ value, percentage }) =>
-                        t("admin.dashboard.charts.packages", {
-                          value,
-                          percentage,
-                        })
-                      }
-                      labelLine={{ stroke: "#555", strokeWidth: 0.5, strokeDasharray: "2 2" }}
-                    >
-                      {packageStats.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      formatter={(value, name) => [
-                        t("admin.dashboard.charts.packages", {
-                          value,
-                          percentage: packageStats.find(
-                            (item) => item.name === name
-                          )?.percentage,
-                        }),
-                        name,
-                      ]}
-                      contentStyle={{
-                        backgroundColor: "rgba(255, 255, 255, 0.98)",
-                        border: "1px solid #e8e8e8",
-                        borderRadius: "8px",
-                        padding: "10px",
-                        boxShadow: "0 2px 12px rgba(0,0,0,0.05)",
-                      }}
-                    />
-                    <Legend
-                      layout="vertical"
-                      align="right"
-                      verticalAlign="middle"
-                      wrapperStyle={{
-                        paddingLeft: "20px",
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            )}
+          <Card title={<Flex align="center" gap="small"><RadarChartOutlined /> {t("admin.dashboard.skills.distribution") || "Skill Distribution Analysis"}</Flex>} className="admin-card">
+            <div style={{ height: 350 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart outerRadius={90} data={skillDemandData.slice(0, 8)}>
+                  <PolarGrid />
+                  <PolarAngleAxis dataKey="skill" />
+                  <PolarRadiusAxis angle={30} domain={[0, 'auto']} />
+                  <Radar name={t("admin.dashboard.skills.title") || "Skills"} dataKey="count" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+                  <Tooltip />
+                  <Legend />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
+            <Divider />
+            <Flex justify="center" align="middle" gap="small">
+              <InfoCircleOutlined />
+              <Text type="secondary">
+                {t("admin.dashboard.charts.skillsAnalysis") || "Radar analysis showing skills distribution across the platform"}
+              </Text>
+            </Flex>
           </Card>
         </Col>
-
+        
+        {/* Top In-Demand Skills */}
         <Col xs={24} lg={12}>
-          <Card title={t("admin.dashboard.charts.jobsByCategory")} className="admin-card">
-            {loading.categories ? (
-              <div style={{ height: 350 }}>
-                <Skeleton active paragraph={{ rows: 10 }} />
-              </div>
-            ) : (
-              <div style={{ height: 350 }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={jobCategoryStats}
-                      dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={70}
-                      outerRadius={110}
-                      fill="#722ed1"
-                      paddingAngle={2}
-                      label={({ value, percentage }) =>
-                        t("admin.dashboard.charts.jobs", { value, percentage })
-                      }
-                      labelLine={{ stroke: "#555", strokeWidth: 0.5, strokeDasharray: "2 2" }}
+          <Card title={<Flex align="center" gap="small"><FireOutlined /> {t("admin.dashboard.skills.title") || "Top In-Demand Skills"}</Flex>} className="admin-card">
+            <div className="top-skills-chart">
+              {skillDemandData.slice(0, 6).map((skill, index) => (
+                <div key={index} className="skill-item">
+                  <div className="skill-name">{skill.skill}</div>
+                  <div className="skill-bar">
+                    <Progress 
+                      percent={Math.round((skill.count / skillDemandData[0].count) * 100)} 
+                      showInfo={false}
+                      strokeColor={COLORS[index % COLORS.length]}
+                    />
+                  </div>
+                  <div className="skill-value">
+                    {skill.count}
+                    <Tag 
+                      color={skill.change > 0 ? 'success' : skill.change < 0 ? 'error' : 'default'}
+                      style={{ marginLeft: 8 }}
                     >
-                      {jobCategoryStats.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      formatter={(value, name) => [
-                        t("admin.dashboard.charts.jobs", {
-                          value,
-                          percentage: jobCategoryStats.find(
-                            (item) => item.name === name
-                          )?.percentage,
-                        }),
-                        name,
-                      ]}
-                      contentStyle={{
-                        backgroundColor: "rgba(255, 255, 255, 0.98)",
-                        border: "1px solid #e8e8e8",
-                        borderRadius: "8px",
-                        padding: "10px",
-                        boxShadow: "0 2px 12px rgba(0,0,0,0.05)",
-                      }}
-                    />
-                    <Legend
-                      layout="vertical"
-                      align="right"
-                      verticalAlign="middle"
-                      wrapperStyle={{
-                        paddingLeft: "20px",
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            )}
+                      {skill.change > 0 ? '+' : ''}{skill.change}%
+                    </Tag>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <Divider />
+            <Flex justify="center">
+              <Button type="primary" ghost>{t("admin.dashboard.skills.viewAll") || "View All Skills"}</Button>
+            </Flex>
           </Card>
         </Col>
       </Row>
 
+      {/* Recruitment Success and Geographic Data */}
+      <Row gutter={[16, 16]} className="mb-5">
+        {/* Recruitment Success */}
+        <Col xs={24} lg={12}>
+          <Card title={<Flex align="center" gap="small"><TrophyOutlined /> {"Thống kê ứng tuyển thành công"}</Flex>} className="admin-card">
+            <div style={{ height: 350 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={recruitmentSuccessData}
+                  margin={{ top: 20, right: 30, left: 0, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="name" />
+                  <YAxis />
+                  <Tooltip formatter={(value, name) => {
+                    if (name === 'rate') return [`${value}%`, 'Tỷ lệ thành công'];
+                    return [value, name === 'applied' ? 'Ứng tuyển' : name === 'interviewed' ? 'Phỏng vấn' : 'Được nhận'];
+                  }} />
+                  <Legend />
+                  <Bar dataKey="applied" name="Ứng tuyển" fill="#1890ff" />
+                  <Bar dataKey="interviewed" name="Phỏng vấn" fill="#faad14" />
+                  <Bar dataKey="hired" name="Được nhận" fill="#52c41a" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <Divider />
+            <Flex justify="center" align="middle">
+              <Row gutter={16} className="recruitment-stats">
+                {recruitmentSuccessData.slice(0, 3).map((item, index) => (
+                  <Col key={index} span={8}>
+                    <Statistic
+                      title={item.name}
+                      value={item.rate}
+                      suffix="%"
+                      valueStyle={{ color: item.rate > 35 ? '#52c41a' : item.rate > 25 ? '#faad14' : '#f5222d' }}
+                    />
+                  </Col>
+                ))}
+              </Row>
+            </Flex>
+          </Card>
+        </Col>
+
+        {/* Geographic Distribution */}
+        <Col xs={24} lg={12}>
+          <Card title={<Flex align="center" gap="small"><GlobalOutlined /> {t("admin.dashboard.geographic.title") || "Geographic Distribution"}</Flex>} className="admin-card">
+            <div style={{ height: 350 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={geographicData}
+                  layout="vertical"
+                  margin={{ top: 5, right: 30, left: 80, bottom: 5 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
+                  <XAxis type="number" />
+                  <YAxis 
+                    dataKey="city" 
+                    type="category"
+                    tick={{ fontSize: 12 }}
+                    width={80}
+                  />
+                  <Tooltip 
+                    formatter={(value, name) => {
+                      return [value, name === 'employers' ? t("admin.dashboard.geographic.employers") || 'Employers' : 
+                                   name === 'candidates' ? t("admin.dashboard.geographic.candidates") || 'Candidates' : 
+                                   t("admin.dashboard.geographic.jobs") || 'Jobs'];
+                    }}
+                  />
+                  <Legend verticalAlign="top" height={36} />
+                  <Bar dataKey="employers" name={t("admin.dashboard.geographic.employers") || "Employers"} fill="#722ed1" barSize={10} />
+                  <Bar dataKey="candidates" name={t("admin.dashboard.geographic.candidates") || "Candidates"} fill="#1890ff" barSize={10} />
+                  <Bar dataKey="jobs" name={t("admin.dashboard.geographic.jobs") || "Jobs"} fill="#52c41a" barSize={10} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Tables Section */}
       <Row gutter={[16, 16]}>
         <Col xs={24}>
           <Card className="admin-card">
             <Tabs defaultActiveKey="1">
-              <Tabs.TabPane tab="Recent Orders" key="1">
+              <Tabs.TabPane tab={<span><DollarOutlined /> {t("admin.dashboard.tables.recentOrders") || "Recent Orders"}</span>} key="1">
                 <Table 
                   dataSource={recentOrders}
                   columns={orderColumns}
@@ -828,13 +1159,53 @@ const AdminDashboard = () => {
                   className="admin-table"
                 />
               </Tabs.TabPane>
-              <Tabs.TabPane tab="Top Employers" key="2">
+              <Tabs.TabPane tab={<span><TrophyOutlined /> {t("admin.dashboard.tables.topEmployers") || "Top Employers"}</span>} key="2">
                 <Table 
                   dataSource={topEmployers}
                   columns={employerColumns}
                   rowKey="id"
                   pagination={{ pageSize: 5 }}
                   className="admin-table"
+                />
+              </Tabs.TabPane>
+              <Tabs.TabPane tab={<span><AlertOutlined /> {t("admin.dashboard.tables.systemAlerts") || "System Alerts"}</span>} key="3">
+                <List
+                  dataSource={[
+                    { id: 1, title: t("admin.dashboard.alerts.packages.title") || "Package Expiration", message: t("admin.dashboard.alerts.packages.message", {count: 8}) || "8 employer packages expiring in the next 7 days", type: "warning" },
+                    { id: 2, title: t("admin.dashboard.alerts.system.title") || "System Load", message: t("admin.dashboard.alerts.system.message") || "Server CPU usage peaked at 85% at 2pm today", type: "info" },
+                    { id: 3, title: t("admin.dashboard.alerts.security.title") || "Security Alert", message: t("admin.dashboard.alerts.security.message") || "Unusual login activity detected from IP 192.168.1.15", type: "error" },
+                    { id: 4, title: t("admin.dashboard.alerts.backup.title") || "Backup Status", message: t("admin.dashboard.alerts.backup.message") || "Daily backup completed successfully at 3:00 AM", type: "success" },
+                  ]}
+                  renderItem={(item) => (
+                    <List.Item>
+                      <List.Item.Meta
+                        avatar={
+                          <div style={{ 
+                            width: '40px', 
+                            height: '40px',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            background: item.type === 'warning' ? '#fffbe6' : 
+                                       item.type === 'info' ? '#e6f7ff' : 
+                                       item.type === 'error' ? '#fff1f0' : '#f6ffed',
+                            color: item.type === 'warning' ? '#faad14' : 
+                                  item.type === 'info' ? '#1890ff' : 
+                                  item.type === 'error' ? '#f5222d' : '#52c41a'
+                          }}>
+                            {item.type === 'warning' && <ExceptionOutlined />}
+                            {item.type === 'info' && <InfoCircleOutlined />}
+                            {item.type === 'error' && <CloseCircleOutlined />}
+                            {item.type === 'success' && <CheckCircleOutlined />}
+                          </div>
+                        }
+                        title={<Text strong>{item.title}</Text>}
+                        description={item.message}
+                      />
+                      <Button size="small">{t("admin.dashboard.alerts.action") || "Action"}</Button>
+                    </List.Item>
+                  )}
                 />
               </Tabs.TabPane>
             </Tabs>

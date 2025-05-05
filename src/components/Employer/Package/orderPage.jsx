@@ -51,13 +51,34 @@ const OrderPage = () => {
   }, [orderId]);
 
   const handleQuantityChange = (packageId, newQuantity, quantityChange) => {
-    if (newQuantity === 0)
+    if (newQuantity === 0) {
       handleDeleteItem(packageId);
-    else {
-      updateQuantityPackage({ packageId, quantity: quantityChange }).then((res) => {
-        if (res.status === 'OK') {
-          getItemsInCart();
+    } else {
+      // Cập nhật UI trước khi gọi API để tránh hiệu ứng skeleton
+      const updatedItems = cartItems.map(item => {
+        if (item.packageId === packageId) {
+          const newQty = item.quantity + quantityChange;
+          return {
+            ...item,
+            quantity: newQty,
+            total: item.price * newQty
+          };
         }
+        return item;
+      });
+      setCartItems(updatedItems);
+      
+      // Gửi yêu cầu cập nhật lên server mà không gây loading state
+      updateQuantityPackage({ packageId, quantity: quantityChange }).then((res) => {
+        if (res.status !== 'OK') {
+          // Nếu lỗi, khôi phục lại dữ liệu cũ
+          getItemsInCart();
+          message.error(res.message || 'Đã xảy ra lỗi khi cập nhật số lượng');
+        }
+      }).catch(() => {
+        // Nếu có lỗi, tải lại giỏ hàng
+        getItemsInCart();
+        message.error('Đã xảy ra lỗi khi cập nhật số lượng');
       });
     }
   };

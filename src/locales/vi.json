@@ -331,6 +331,9 @@
       "save": "Lưu"
     },
     "company": {
+      "email": "Email công ty",
+      "mediaAndDescription": "Phương tiện và mô tả",
+      "basicInfo": "Thông tin cơ bản",
       "title": "Công ty",
       "info": "Thông tin công ty",
       "size": "Quy mô công ty",
@@ -365,8 +368,67 @@
       }
     },
     "dashboard": {
+      "hiringTime": "Thời gian tuyển dụng",
+      "hiringTimeDesc": "Thời gian trung bình từ khi đăng tin đến khi tuyển được ứng viên",
+      "days": "ngày",
+      "buyPackages": "Mua gói dịch vụ",
+      "postJob": "Đăng bài tuyển dụng",
+      "refresh": "Làm mới",
+      "schedule": "Lịch phỏng vấn",
+      "manageJobs": "Quản lý bài đăng",
+      "viewAll": "Xem tất cả",
+      "welcome": "Chào mừng bạn đến với UTE-Career",
       "title": "Thống kê",
+      "postFirstJob": "Đăng tin tuyển dụng đầu tiên",
+      "getStarted": "Bắt đầu ngay",
+      "buyMore": "Mua thêm",
+      "skillDistribution": "Phân bố kỹ năng",
+      "jobPerformance": "Hiệu suất tuyển dụng",
+      "jobTitle": "Tiêu đề công việc",
+      "conversionRate": "Tỷ lệ chuyển đổi",
+      "topSkills": "Kỹ năng ứng viên hàng đầu",
+      "upcomingInterviews": "Lịch phỏng vấn sắp tới",
+      "noInterviews": "Không có cuộc phỏng vấn sắp tới",
+      "filters": {
+        "selectPeriod": "Chọn thời gian",
+        "allTime": "Tất cả",
+        "today": "Hôm nay",
+        "week": "Tuần này",
+        "month": "Tháng này",
+        "year": "Năm này",
+        "quarter": "Quý này"
+      },
+      "sortBy": {
+        "views": "Sắp xếp theo lượt xem",
+        "applications": "Sắp xếp theo lượt ứng tuyển",
+        "conversionRate": "Sắp xếp theo tỷ lệ chuyển đổi"
+      },
+      "chartTypes": {
+        "area": "Biểu đồ vùng",
+        "line": "Biểu đồ đường",
+        "bar": "Biểu đồ cột"
+      },
+      "metrics": {
+        "views": "Lượt xem",
+        "applications": "Lượt ứng tuyển",
+        "interviews": "Phỏng vấn"
+      },
+      "charts": {
+        "applicationsOverview": "Lượt xem & Ứng tuyển",
+        "jobStatus": "Trạng thái công việc",
+        "views": "Lượt xem",
+        "applications": "Lượt ứng tuyển",
+        "jobs": "công việc",
+        "noData": "Không có dữ liệu ứng tuyển",
+        "noJobsData": "Không có dữ liệu công việc"
+      },
       "stats": {
+        "conversionRate": "Tỷ lệ chuyển đổi",
+        "applications": "Lượt ứng tuyển",
+        "interviews": {
+          "title": "Số cuộc phỏng vấn",
+          "unit": "cuộc phỏng vấn"
+        },
         "followers": {
           "title": "Số người theo dõi",
           "unit": "người"
@@ -399,7 +461,32 @@
       }
     },
     "interview": {
+      "calendar_view": "Chế độ xem lịch",
+      "list_view": "Chế độ xem danh sách",
+      "subtitle": "Quản lý lịch phỏng vấn của bạn",
       "title": "Lịch phỏng vấn",
+      "evaluation": {
+        "title": "Đánh giá ứng viên",
+        "fromMeetingDescription": "Vui lòng đánh giá ứng viên mà bạn vừa phỏng vấn.",
+        "description": "Đánh giá hiệu suất của ứng viên sau cuộc phỏng vấn.",
+        "skills": "Kỹ năng kỹ thuật",
+        "skillsRating": "Điểm đánh giá kỹ năng",
+        "skillsFeedback": "Nhận xét về kỹ năng",
+        "communication": "Kỹ năng giao tiếp",
+        "communicationRating": "Điểm đánh giá giao tiếp",
+        "communicationFeedback": "Nhận xét về giao tiếp",
+        "cultureFit": "Phù hợp văn hóa",
+        "cultureFitRating": "Điểm đánh giá sự phù hợp văn hóa",
+        "cultureFitFeedback": "Nhận xét về sự phù hợp văn hóa",
+        "overall": "Đánh giá tổng thể",
+        "overallRating": "Điểm tổng thể",
+        "hiringDecision": "Quyết định tuyển dụng",
+        "hire": "Tuyển dụng",
+        "consider": "Cân nhắc",
+        "reject": "Từ chối",
+        "additionalFeedback": "Ý kiến bổ sung",
+        "submit": "Gửi đánh giá"
+      },
       "create": {
         "title": "Tạo lịch phỏng vấn",
         "description": "Tạo lịch phỏng vấn để liên hệ với ứng viên",
@@ -435,6 +522,8 @@
       }
     },
     "job": {
+      "packageSelection": "Chọn gói dịch vụ",
+      "postJobDescription": "Đăng bài tuyển dụng để tìm kiếm ứng viên",
       "title": "Tiêu đề",
       "titleRequired": "Vui lòng nhập tiêu đề",
       "location": "Địa điểm làm việc",
@@ -516,6 +605,16 @@
         "saved": "Đã lưu",
         "saveJob": "Lưu việc làm"
       }
+    },
+    "manageJobs": {
+      "totalItems": "Tổng số trang",
+      "totalJobs": "Tổng số bài đăng",
+      "rejectedDescription": "Bài đăng đã bị từ chối",
+      "pendingDescription": "Bài đăng đang chờ duyệt",
+      "inactiveDescription": "Bài đăng đang ẩn",
+      "activeDescription": "Bài đăng đang hiển thị",
+      "description": "Quản lý bài đăng của bạn",
+      "createJob": "Tạo bài đăng"
     },
     "resumes": {
       "jobSeekerList": "Danh sách sinh viên tìm việc",
@@ -753,6 +852,10 @@
     "backToHome": "Quay lại trang chủ"
   },
   "admin": {
+    "search": {
+      "placeholder": "Tìm kiếm công ty, ứng viên...",
+      "noResults": "Không tìm thấy kết quả nào"
+    },
     "companyApproval": {
       "title": "Duyệt công ty",
       "tabs": {
@@ -763,25 +866,131 @@
     },
     "dashboard": {
       "title": "Tổng quan",
+      "subtitle": "Tổng quan tính đến {date}",
+      "refresh": "Làm mới",
       "filters": {
+        "selectMonth": "Chọn tháng",
+        "selectYear": "Chọn năm",
         "allMonths": "Tất cả tháng",
         "month": "Tháng {month}",
-        "allYears": "Tất cả năm"
+        "allYears": "Tất cả năm",
+        "last30Days": "30 ngày qua",
+        "last6Months": "6 tháng qua",
+        "lastYear": "Năm qua"
       },
       "stats": {
         "currentMonthRevenue": "Doanh thu tháng này",
         "totalCandidates": "Tổng ứng viên",
         "totalEmployers": "Tổng nhà tuyển dụng",
-        "conversionRate": "Tỷ lệ chuyển đổi"
+        "totalJobs": "Tổng số việc làm",
+        "conversionRate": "Tỷ lệ chuyển đổi",
+        "newCandidates": "Ứng viên mới",
+        "newEmployers": "Nhà tuyển dụng mới"
       },
       "charts": {
+        "employers": "Nhà tuyển dụng",
+        "candidates": "Ứng viên",
         "monthlyRevenue": "Doanh thu theo tháng",
         "revenue": "Doanh thu (VND)",
         "packageCount": "Số lượng gói",
         "topPackages": "Gói dịch vụ được bán nhiều nhất",
         "jobsByCategory": "Việc làm theo ngành",
         "packages": "{value} gói dịch vụ - {percentage}%",
-        "jobs": "{value} việc làm - {percentage}%"
+        "jobs": "{value} việc làm - {percentage}%",
+        "userGrowth": "Xu hướng tăng trưởng người dùng"
+      },
+      "platform": {
+        "performance": "Hiệu suất nền tảng",
+        "activeUsers": "Người dùng hoạt động (hàng ngày)",
+        "avgSessionDuration": "Thời gian phiên trung bình",
+        "bounceRate": "Tỷ lệ thoát",
+        "conversionRate": "Tỷ lệ chuyển đổi"
+      },
+      "insights": {
+        "title": "Phân tích nền tảng",
+        "engagementTitle": "Tăng mức độ tương tác",
+        "engagementDesc": "Phiên người dùng tăng 12% so với tháng trước, cho thấy mức độ tương tác cao hơn với nền tảng.",
+        "mobileTitle": "Xu hướng sử dụng di động",
+        "mobileDesc": "Việc sử dụng di động đang tăng lên nhưng tỷ lệ chuyển đổi thấp hơn 5% trên thiết bị di động so với máy tính để bàn. Cân nhắc tối ưu hóa trải nghiệm di động.",
+        "categoriesTitle": "Danh mục công việc phổ biến",
+        "categoriesDesc": "IT/Phát triển phần mềm và Phân tích dữ liệu là các danh mục công việc phát triển nhanh nhất trong tháng này."
+      },
+      "jobApproval": {
+        "title": "Trạng thái phê duyệt công việc",
+        "pending": "Đang chờ duyệt",
+        "approved": "Đã duyệt",
+        "rejected": "Bị từ chối",
+        "total": "Tổng cộng",
+        "approvedPercent": "{percent}% đã duyệt"
+      },
+      "metrics": {
+        "monthlyRevenue": "Doanh thu hàng tháng",
+        "totalUsers": "Tổng số người dùng",
+        "activeJobs": "Việc làm đang hoạt động",
+        "conversionRate": "Tỷ lệ chuyển đổi",
+        "vsLastMonth": "so với tháng trước"
+      },
+      "recentActivities": {
+        "title": "Hoạt động gần đây",
+        "newUser": "Nhà tuyển dụng mới đăng ký: {company}",
+        "newJob": "Công việc mới đăng: {position}",
+        "newPackage": "Gói dịch vụ đã mua: {package}",
+        "approval": "Hồ sơ công ty được duyệt: {company}",
+        "newApplication": "{count} đơn ứng tuyển mới nhận được hôm nay",
+        "timeAgo": "{time} trước"
+      },
+      "tables": {
+        "recentOrders": "Đơn hàng gần đây",
+        "topEmployers": "Nhà tuyển dụng hàng đầu",
+        "systemAlerts": "Cảnh báo hệ thống",
+        "columns": {
+          "id": "ID",
+          "company": "Công ty",
+          "package": "Gói dịch vụ",
+          "amount": "Số tiền",
+          "date": "Ngày",
+          "status": "Trạng thái",
+          "jobsPosted": "Việc làm đã đăng",
+          "hires": "Tuyển dụng thành công",
+          "rating": "Đánh giá"
+        },
+        "statuses": {
+          "completed": "Hoàn thành",
+          "processing": "Đang xử lý"
+        },
+        "action": "Hành động"
+      },
+      "skills": {
+        "title": "Kỹ năng được yêu cầu hàng đầu",
+        "viewAll": "Xem tất cả kỹ năng",
+        "distribution": "Phân tích phân phối kỹ năng"
+      },
+      "geographic": {
+        "title": "Phân phối địa lý",
+        "employers": "Nhà tuyển dụng",
+        "candidates": "Ứng viên",
+        "jobs": "Việc làm"
+      },
+      "chartTypes": {
+        "pie": "Biểu đồ tròn",
+        "bar": "Biểu đồ cột"
+      },
+      "tabViews": {
+        "chart": "Xem biểu đồ",
+        "data": "Xem dữ liệu"
+      },
+      "alerts": {
+        "systemNotice": "Thông báo hệ thống",
+        "pendingJobs": "Có {count} tin tuyển dụng mới đang chờ phê duyệt. Vui lòng xem xét để duy trì chất lượng nền tảng.",
+        "reviewNow": "Xem xét ngay",
+        "packageExpiration": "{count} gói của nhà tuyển dụng sẽ hết hạn trong 7 ngày tới",
+        "systemLoad": "Mức sử dụng CPU máy chủ đạt đỉnh {percent}% lúc {time}",
+        "securityAlert": "Phát hiện hoạt động đăng nhập bất thường từ IP {ip}",
+        "backupStatus": "Sao lưu hàng ngày đã hoàn tất thành công lúc {time}"
+      },
+      "search": {
+        "title": "Các từ khóa tìm kiếm hàng đầu",
+        "searches": "lượt tìm kiếm"
       },
       "errors": {
         "loadData": "Lỗi khi tải dữ liệu"
@@ -862,19 +1071,35 @@
       }
     },
     "company": {
+      "stats": {
+        "total": "Tổng số công ty",
+        "withCertificate": "Số công ty có giấy chứng nhận"
+      },
+      "status": {
+        "pendingTitle": "Công ty đang chờ duyệt",
+        "approvedTitle": "Công ty đã duyệt",
+        "rejectedTitle": "Công ty bị từ chối",
+        "pending": "Đang chờ duyệt",
+        "approved": "Đã duyệt",
+        "rejected": "Bị từ chối"
+      },
       "table": {
+        "pagination": "Trang",
+        "notAvailable": "Không có dữ liệu",
         "columns": {
           "companyName": "Tên công ty",
           "address": "Địa chỉ",
           "email": "Email",
           "phone": "Số điện thoại",
           "certificate": "Giấy chứng nhận",
-          "rejectedReason": "Lý do từ chối"
+          "rejectedReason": "Lý do từ chối",
+          "actions": "Hành động"
         },
         "actions": {
           "view": "Xem",
           "approve": "Duyệt",
-          "reject": "Từ chối"
+          "reject": "Từ chối",
+          "viewCertificate": "Xem giấy chứng nhận"
         },
         "search": {
           "searchFor": "Tìm {field}",

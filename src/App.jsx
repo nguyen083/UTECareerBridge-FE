@@ -208,6 +208,9 @@ const DetailNotification = lazy(() =>
 const CVBuilderPage = lazy(() =>
   import("./components/Student/CV/CVBuilderPage.jsx")
 );
+const InterviewEvaluation = lazy(() =>
+  import("./components/Employer/Interview/InterviewEvaluation.jsx")
+);
 
 const App = () => {
   const lang = useSelector((state) => state.web.lang || "en");
@@ -463,6 +466,10 @@ const App = () => {
                     <Route path="company" element={<EmployerCompany />} />
                     <Route path="list-resumes" element={<ListResumes />} />
                     <Route path="interview" element={<InterviewList />} />
+                    <Route
+                      path="interview/evaluation/:interviewId"
+                      element={<InterviewEvaluation />}
+                    />
                     <Route path="list-order" element={<ListOrder />} />
                     <Route path="detail-resume" element={<DetailResume />} />
                     <Route path="applicant" element={<Applicant />}>

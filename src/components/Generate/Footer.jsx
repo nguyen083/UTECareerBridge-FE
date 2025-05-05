@@ -93,7 +93,7 @@ const FooterComponent = () => {
 
                 <div className="footer-bottom">
                     <div className="footer-copyright">
-                        <Text>Copyright © {new Date().getFullYear()} UTE CAREERBRIDGE. All rights reserved.</Text>
+                        <Text>Copyright © {new Date().getFullYear()} UTECareerBridge - All Rights Reserved.</Text>
                     </div>
                     <div className="footer-social">
                         <Link href="https://facebook.com" target="_blank" className="social-icon">

@@ -7,6 +7,14 @@ const interview = {
     getListInterviewEmployer: async () => {
         const response = await axios.get(`/interviews/employers/calendar`);
         return response;
+    },
+    getInterviewById: async (id) => {
+        const response = await axios.get(`/interviews/${id}`);
+        return response;
+    },
+    submitEvaluation: async (data) => {
+        const response = await axios.post(`/interviews/${data.interviewId}/evaluation`, data);
+        return response;
     }
 }
 export default interview;
