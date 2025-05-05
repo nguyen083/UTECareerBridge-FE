@@ -74,7 +74,9 @@ const VideoCall = () => {
           ],
           onUserAvatarSetter: (userList) => {
             userList.forEach((user) => {
-              user.setUserAvatar(getUserAvatar());
+              if (user.userID === userID) {
+                user.setUserAvatar(getUserAvatar());
+              }
             });
           },
           scenario: {
@@ -86,6 +88,12 @@ const VideoCall = () => {
           showMyMicrophoneToggleButton: true,
           showAudioVideoSettingsButton: true,
           showScreenSharingButton: true,
+          privilegeControl: {
+            screenSharing: true,
+          },
+          screenSharing: {
+            enabled: true,
+          },
           showTextChat: true,
           showUserList: true,
           maxUsers: 50,
