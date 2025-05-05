@@ -482,7 +482,6 @@ $timeline-color: $primary-color;
                 }
 
                 &::before {
-                  content: "Click to change";
                   position: absolute;
                   top: 0;
                   left: 0;
@@ -842,7 +841,7 @@ $timeline-color: $primary-color;
 
                     .remove-item-btn {
                       padding: 4px;
-                      visibility: hidden;
+                      // visibility: hidden;
                       transition: all 0.2s ease;
 
                       &:hover {
@@ -892,12 +891,6 @@ $timeline-color: $primary-color;
                       background-color: white;
                       border: 1px solid rgba(0, 0, 0, 0.08);
                     }
-                  }
-                }
-
-                &:hover {
-                  .remove-item-btn {
-                    visibility: visible;
                   }
                 }
               }

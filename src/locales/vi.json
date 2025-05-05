@@ -634,14 +634,42 @@
     }
   },
   "cv": {
+    "chooseResume": "Vui lòng chọn hồ sơ",
+    "upload": {
+      "success": "Tải lên thành công!",
+      "error": "Tải lên thất bại. Vui lòng thử lại.",
+      "deleteSuccess": "Xóa hồ sơ thành công!",
+      "deleteError": "Xóa hồ sơ thất bại",
+      "updateError": "Cập nhật hồ sơ thất bại",
+      "fileChoose": "Chọn hoặc kéo thả hồ sơ từ máy của bạn",
+      "fileSupport": "Chỉ hỗ trợ định dạng .doc, .docx, .pdf có kích thước dưới 5MB",
+      "fileType": "Chỉ hỗ trợ định dạng .doc, .docx, .pdf",
+      "fileMax": "Kích thước tệp vượt quá 5MB"
+    },
+    "form": {
+      "title": "Tiêu đề",
+      "titleRequired": "Vui lòng nhập tiêu đề!",
+      "description": "Mô tả",
+      "descriptionRequired": "Vui lòng nhập mô tả!",
+      "descriptionPlaceholder": "Nhập mô tả resume",
+      "level": "Cấp độ",
+      "levelRequired": "Vui lòng chọn cấp độ!"
+    },
+    "confirmModal": {
+      "title": "Xác nhận",
+      "content": "Bạn chắc chắn muốn xóa hồ sơ này?",
+      "okText": "Xóa",
+      "cancelText": "Hủy"
+    },
     "builder": {
       "edit": "Chỉnh sửa hồ sơ",
       "view": "Xem hồ sơ",
       "delete": "Xóa hồ sơ",
       "pageTitle": "Xây dựng hồ sơ",
       "pageDescription": "Tạo hồ sơ của bạn với các thông tin cá nhân, học vấn, kinh nghiệm làm việc và kỹ năng. Bạn có thể tải lên hồ sơ của mình hoặc tạo mới từ đầu.",
-      "pageTitleEdit": "Chỉnh sửa hồ sơ",
       "createNew": "Tạo mới",
+      "noExistingCVs": "Không có hồ sơ nào",
+      "createFirstCV": "Tạo hồ sơ của bạn tại đây.",
       "features": {
         "title": "Tính năng",
         "save": {
@@ -669,33 +697,6 @@
         "title": "Chia sẻ hồ sơ",
         "description": "Chia sẻ hồ sơ của bạn với nhà tuyển dụng qua email hoặc mạng xã hội."
       }
-    },
-    "chooseResume": "Vui lòng chọn hồ sơ",
-    "upload": {
-      "success": "Tải lên thành công!",
-      "error": "Tải lên thất bại. Vui lòng thử lại.",
-      "deleteSuccess": "Xóa hồ sơ thành công!",
-      "deleteError": "Xóa hồ sơ thất bại",
-      "updateError": "Cập nhật hồ sơ thất bại",
-      "fileChoose": "Chọn hoặc kéo thả hồ sơ từ máy của bạn",
-      "fileSupport": "Chỉ hỗ trợ định dạng .doc, .docx, .pdf có kích thước dưới 5MB",
-      "fileType": "Chỉ hỗ trợ định dạng .doc, .docx, .pdf",
-      "fileMax": "Kích thước tệp vượt quá 5MB"
-    },
-    "form": {
-      "title": "Tiêu đề",
-      "titleRequired": "Vui lòng nhập tiêu đề!",
-      "description": "Mô tả",
-      "descriptionRequired": "Vui lòng nhập mô tả!",
-      "descriptionPlaceholder": "Nhập mô tả resume",
-      "level": "Cấp độ",
-      "levelRequired": "Vui lòng chọn cấp độ!"
-    },
-    "confirmModal": {
-      "title": "Xác nhận",
-      "content": "Bạn chắc chắn muốn xóa hồ sơ này?",
-      "okText": "Xóa",
-      "cancelText": "Hủy"
     }
   },
   "job": {

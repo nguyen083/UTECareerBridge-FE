@@ -662,6 +662,9 @@
       "cancelText": "Cancel"
     },
     "builder": {
+      "edit": "Edit CV",
+      "view": "View CV",
+      "delete": "Delete CV",
       "pageTitle": "CV Builder",
       "pageDescription": "Create and manage your CVs easily.",
       "createNew": "Create New CV",
@@ -669,22 +672,30 @@
       "createFirstCV": "Create your first CV here.",
       "features": {
         "title": "Features",
-        "dragDrop": {
-          "title": "Drag and Drop",
-          "description": "Easily drag and drop elements to create your CV."
-        },
-        "templates": {
-          "title": "Templates",
-          "description": "Choose from a variety of templates."
+        "save": {
+          "title": "Save",
+          "description": "Save your CV to access it later."
         },
         "responsive": {
           "title": "Responsive Design",
           "description": "Your CV will look great on any device."
         },
-        "save": {
-          "title": "Save",
-          "description": "Save your CV to access it later."
+        "templates": {
+          "title": "Templates",
+          "description": "Choose from a variety of templates."
+        },
+        "dragDrop": {
+          "title": "Drag and Drop",
+          "description": "Easily drag and drop elements to create your CV."
         }
+      },
+      "download": {
+        "title": "Download CV",
+        "description": "Download your CV as a PDF or DOCX file."
+      },
+      "share": {
+        "title": "Share CV",
+        "description": "Share your CV with others."
       }
     }
   },

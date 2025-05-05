@@ -34,15 +34,21 @@ import {
   GlobalOutlined,
   CameraOutlined,
   UploadOutlined,
-  FileOutlined
-} from '@ant-design/icons';
-import BoxContainer from '../../Generate/BoxContainer';
-import { useTranslation } from 'react-i18next';
-import './CVBuilder.scss';
-import { uploadCV, updateCV } from '../../../services/apiService';
-import { uploadToCloudinary } from '../../../services/uploadCloudary';
-import CVPreview from './CVPreview';
-import CVTemplateSelector from './CVTemplateSelector';
+  FileOutlined,
+} from "@ant-design/icons";
+import BoxContainer from "../../Generate/BoxContainer";
+import { useTranslation } from "react-i18next";
+import "./CVBuilder.scss";
+import {
+  uploadCV,
+  updateCV,
+  getSkillStudent,
+} from "../../../services/apiService";
+import { uploadToCloudinary } from "../../../services/uploadCloudary";
+import CVPreview from "./CVPreview";
+import CVTemplateSelector from "./CVTemplateSelector";
+import { useSelector } from "react-redux";
+import { apiService } from "../../../services/getAddressId";
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
@@ -211,27 +217,28 @@ class ErrorBoundary extends Component {
 
 const CVBuilder = ({ onFinish, existingCvData = null }) => {
   const { t, i18n } = useTranslation();
+  const user = useSelector((state) => state.user);
+  const student = useSelector((state) => state.student);
   const [sections, setSections] = useState([]);
-  const [fullName, setFullName] = useState("PHONG THANH");
+  const [fullName, setFullName] = useState(
+    student.firstName + " " + student.lastName
+  );
   const [jobTitle, setJobTitle] = useState("CHỨC DANH - 0 NĂM KINH NGHIỆM");
   const [careerObjective, setCareerObjective] = useState(
     "Nhập mục tiêu nghề nghiệp của bạn tại đây..."
   );
   const [contactInfo, setContactInfo] = useState({
-    email: "thanh2652003abc@gmail.com",
-    phone: "",
-    address: "Địa chỉ",
+    email: user.email,
+    phone: student.phoneNumber,
+    address: student.address,
   });
   const [personalInfo, setPersonalInfo] = useState({
-    birthDate: "",
+    birthDate: student.dob,
     nationality: "Việt Nam",
     maritalStatus: "Độc thân",
-    gender: "Nam",
+    gender: student.gender ? "Nữ" : "Nam",
   });
-  const [skills, setSkills] = useState([
-    { id: 1, name: "Java Spring Boot", level: "Advanced" },
-    { id: 2, name: "Quản Lý Dự Án", level: "Intermediate" },
-  ]);
+  const [skills, setSkills] = useState([]);
 
   // Work Experience
   const [workExperiences, setWorkExperiences] = useState([
@@ -263,9 +270,7 @@ const CVBuilder = ({ onFinish, existingCvData = null }) => {
   const [saveLoading, setSaveLoading] = useState(false);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [profilePhoto, setProfilePhoto] = useState(null);
-  const [profilePhotoUrl, setProfilePhotoUrl] = useState(
-    "https://placehold.co/200x200"
-  );
+  const [profilePhotoUrl, setProfilePhotoUrl] = useState(student.profileImage);
   const [showTemplateSelector, setShowTemplateSelector] = useState(false);
 
   // Template selection state
@@ -279,60 +284,104 @@ const CVBuilder = ({ onFinish, existingCvData = null }) => {
   const [uploadPhotoProgress, setUploadPhotoProgress] = useState(0);
 
   useEffect(() => {
+    apiService
+      .getInforAddress(
+        student.address,
+        student.provinceId,
+        student.districtId,
+        student.wardId
+      )
+      .then((res) => {
+        setContactInfo({
+          ...contactInfo,
+          address: res,
+        });
+      });
+    getSkillStudent().then((res) => {
+      setSkills(
+        res.data.map((item, index) => {
+          return {
+            id: index + 1,
+            name: item.skillName,
+            level:
+              item.level <= 2
+                ? "Beginner"
+                : item.level === 3
+                ? "Intermediate"
+                : item.level === 4
+                ? "Advanced"
+                : "Expert",
+          };
+        })
+      );
+    });
+  }, [student]);
+
+  useEffect(() => {
     if (existingCvData) {
       try {
         console.log("Loading existing CV data:", existingCvData);
-        
+
         // Load personal info
         if (existingCvData.personalInfo) {
-          setFullName(existingCvData.personalInfo.fullName || 'PHONG THANH');
-          setJobTitle(existingCvData.personalInfo.jobTitle || 'CHỨC DANH - 0 NĂM KINH NGHIỆM');
-          
+          setFullName(existingCvData.personalInfo.fullName || "PHONG THANH");
+          setJobTitle(
+            existingCvData.personalInfo.jobTitle ||
+              "CHỨC DANH - 0 NĂM KINH NGHIỆM"
+          );
+
           // Load career objective
           if (existingCvData.personalInfo.objective) {
             setCareerObjective(existingCvData.personalInfo.objective);
           }
-          
+
           // Load contact info
           setContactInfo({
             email: existingCvData.personalInfo.email || "",
             phone: existingCvData.personalInfo.phone || "",
             address: existingCvData.personalInfo.address || "",
           });
-          
+
           // Load additional personal info
           setPersonalInfo({
-            birthDate: existingCvData.personalInfo.birthDate || '',
-            nationality: existingCvData.personalInfo.nationality || 'Việt Nam',
-            maritalStatus: existingCvData.personalInfo.maritalStatus || 'Độc thân',
-            gender: existingCvData.personalInfo.gender || 'Nam'
+            birthDate: existingCvData.personalInfo.birthDate || "",
+            nationality: existingCvData.personalInfo.nationality || "Việt Nam",
+            maritalStatus:
+              existingCvData.personalInfo.maritalStatus || "Độc thân",
+            gender: existingCvData.personalInfo.gender || "Nam",
           });
-          
+
           if (existingCvData.personalInfo.photoUrl) {
             setProfilePhotoUrl(existingCvData.personalInfo.photoUrl);
           }
         }
-        
+
         // Load work experiences
-        if (existingCvData.workExperiences && existingCvData.workExperiences.length > 0) {
+        if (
+          existingCvData.workExperiences &&
+          existingCvData.workExperiences.length > 0
+        ) {
           setWorkExperiences(existingCvData.workExperiences);
         }
-        
+
         // Load certificates
-        if (existingCvData.certificates && existingCvData.certificates.length > 0) {
+        if (
+          existingCvData.certificates &&
+          existingCvData.certificates.length > 0
+        ) {
           setCertificates(existingCvData.certificates);
         }
-        
+
         // Load skills if they exist
         if (existingCvData.skills && existingCvData.skills.length > 0) {
           setSkills(existingCvData.skills);
         }
-        
+
         // Load custom sections
         if (existingCvData.sections) {
           setSections(existingCvData.sections);
         }
-        
+
         // Load theme settings
         if (existingCvData.theme) {
           setSelectedColor(
@@ -340,17 +389,17 @@ const CVBuilder = ({ onFinish, existingCvData = null }) => {
           );
           setSelectedFont(existingCvData.theme.font || FONT_OPTIONS[0].value);
           setFontSize(existingCvData.theme.fontSize || 12);
-          
+
           // Set template if it exists
           if (existingCvData.theme.id) {
             const templateId = existingCvData.theme.id;
-            const template = CV_TEMPLATES.find(t => t.id === templateId);
+            const template = CV_TEMPLATES.find((t) => t.id === templateId);
             if (template) {
               setSelectedTemplate(template);
             }
           }
         }
-        
+
         console.log("CV data loaded successfully");
       } catch (error) {
         console.error("Error loading existing CV data:", error);
@@ -479,7 +528,7 @@ const CVBuilder = ({ onFinish, existingCvData = null }) => {
       } else {
         response = await uploadCV(cvData);
       }
-      
+
       if (response.status === "OK") {
         message.success("Lưu CV thành công");
         if (onFinish) onFinish(response.data);
@@ -1858,7 +1907,7 @@ const CVBuilder = ({ onFinish, existingCvData = null }) => {
                     </div>
                     <div className="section-content timeline-section">
                       {workExperiences.map((exp, index) => (
-                        <div key={exp.id} className="timeline-item">
+                        <div key={exp.id} className="timeline-item group">
                           <div
                             className="timeline-point"
                             style={{ borderColor: selectedColor }}
@@ -1915,7 +1964,7 @@ const CVBuilder = ({ onFinish, existingCvData = null }) => {
                                 danger
                                 icon={<DeleteOutlined />}
                                 onClick={() => removeWorkExperience(exp.id)}
-                                className="remove-item-btn"
+                                className="invisible remove-item-btn group-hover:visible"
                               />
                             </div>
                             <div
@@ -1973,7 +2022,7 @@ const CVBuilder = ({ onFinish, existingCvData = null }) => {
                     </div>
                     <div className="section-content timeline-section">
                       {certificates.map((cert, index) => (
-                        <div key={cert.id} className="timeline-item">
+                        <div key={cert.id} className="timeline-item group">
                           <div
                             className="timeline-point"
                             style={{ borderColor: selectedColor }}
@@ -2015,7 +2064,7 @@ const CVBuilder = ({ onFinish, existingCvData = null }) => {
                                 danger
                                 icon={<DeleteOutlined />}
                                 onClick={() => removeCertificate(cert.id)}
-                                className="remove-item-btn"
+                                className="invisible remove-item-btn group-hover:visible"
                               />
                             </div>
                             <div
