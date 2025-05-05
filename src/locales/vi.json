@@ -701,6 +701,7 @@
   },
   "job": {
     "search": {
+      "search": "Tìm kiếm",
       "placeholder": "Tìm kiếm công việc, kỹ năng...",
       "noResults": "Không tìm thấy việc làm nào",
       "title": "Tìm kiếm việc làm",

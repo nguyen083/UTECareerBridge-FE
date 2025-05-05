@@ -1,4 +1,4 @@
-import { CloseOutlined, SearchOutlined, BarsOutlined } from "@ant-design/icons";
+import { CloseOutlined, SearchOutlined } from "@ant-design/icons";
 import {
   Card,
   Typography,
@@ -9,7 +9,6 @@ import {
   Tooltip,
   Input,
   Button,
-  Select,
 } from "antd";
 import { useEffect, useState } from "react";
 import Banner from "./Banner";
@@ -26,15 +25,12 @@ import {
   getAds,
   getJobsNewest,
   getJobUrgent,
-  getAllJobCategories,
 } from "../../../services/apiService";
-import IconChatBot from "../../Generate/ChatBot/Chatbot.jsx";
+import IconChatBot from "../../Generate/ChatBot/ChatBot.jsx";
 import { useTranslation } from "react-i18next";
 import { useDispatch } from "react-redux";
 import { setKeyword } from "../../../redux/action/webSlice";
 import { useNavigate } from "react-router-dom";
-
-const { Option } = Select;
 
 const HomePage = () => {
   const { t } = useTranslation();
@@ -42,9 +38,7 @@ const HomePage = () => {
   const [jobsUrgent, setJobsUrgent] = useState([]);
   const [jobsNewest, setJobsNewest] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [categories, setCategories] = useState([]);
   const [searchValue, setSearchValue] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -82,40 +76,20 @@ const HomePage = () => {
     }
   };
 
-  const fetchCategories = async () => {
-    try {
-      const res = await getAllJobCategories();
-      if (res.status === "OK") {
-        setCategories(res.data.filter((cat) => cat.active).slice(0, 5));
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   const handleSearch = () => {
     dispatch(setKeyword(searchValue));
-    navigate("/search", {
-      state: {
-        filters: {
-          categoryId: selectedCategory ? parseInt(selectedCategory) : undefined,
-        },
-      },
-    });
+    navigate("/search");
   };
 
   useEffect(() => {
     window.scrollTo(0, 0);
     setLoading(true);
 
-    Promise.all([
-      fetchAds(),
-      fetchJobUrgent(),
-      fetchJobsNewest(),
-      fetchCategories(),
-    ]).finally(() => {
-      setLoading(false);
-    });
+    Promise.all([fetchAds(), fetchJobUrgent(), fetchJobsNewest()]).finally(
+      () => {
+        setLoading(false);
+      }
+    );
   }, []);
 
   return (
@@ -164,29 +138,6 @@ const HomePage = () => {
                       onChange={(e) => setSearchValue(e.target.value)}
                       onPressEnter={handleSearch}
                     />
-                    <Select
-                      size="large"
-                      placeholder={
-                        <Flex align="center">
-                          <BarsOutlined />
-                          <span className="ml-2">
-                            {t("job.search.category")}
-                          </span>
-                        </Flex>
-                      }
-                      style={{ width: "30%" }}
-                      onChange={(value) => setSelectedCategory(value)}
-                      allowClear
-                    >
-                      {categories.map((category) => (
-                        <Option
-                          key={category.jobCategoryId}
-                          value={category.jobCategoryId}
-                        >
-                          {category.jobCategoryName}
-                        </Option>
-                      ))}
-                    </Select>
                     <Button
                       type="primary"
                       size="large"
