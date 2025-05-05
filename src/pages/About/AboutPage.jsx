@@ -40,7 +40,7 @@ export default function AboutPage() {
     <Layout>
       <Content>
         {/* Hero Section */}
-        <div className="relative py-32 text-center text-white bg-gradient-to-r from-blue-300 to-blue-400">
+        <div className="relative py-32 text-center text-white bg-gradient-to-r from-[#f6f6f6cc] to-[#baceeacc] via-[#1a4a83cc]">
           <div className="absolute inset-0 opacity-20"></div>
           <div className="relative z-10 max-w-3xl px-4 mx-auto">
             <Title level={1} className="mb-6 !text-white">
@@ -51,7 +51,7 @@ export default function AboutPage() {
               nghiệp tốt nhất
             </Paragraph>
           </div>
-          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-white to-transparent"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-200 to-transparent"></div>
         </div>
 
         {/* About Section */}
