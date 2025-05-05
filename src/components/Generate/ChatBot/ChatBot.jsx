@@ -106,7 +106,7 @@ const ChatBot = () => {
 
       chat.sendMessageToChatBot(stompClient, payload);
       setNewMessage("");
-    }, 100);
+    }, 300);
   };
 
   const generateSessionId = () => {
@@ -189,6 +189,10 @@ const ChatBot = () => {
   }, []);
 
   useEffect(() => {
+    console.log("isLoading", isLoading);
+  }, [isLoading]);
+
+  useEffect(() => {
     if (divRef.current) {
       divRef.current.scrollTop = divRef.current.scrollHeight;
     }
@@ -203,7 +207,7 @@ const ChatBot = () => {
 
   const sendMessage = () => {
     if (!newMessage.trim()) return;
-
+    setIsLoading(true);
     const userMessage = {
       content: newMessage,
       senderId: currentUserId,
@@ -255,17 +259,20 @@ const ChatBot = () => {
                             background: #555;
                         }
                     `}</style>
-          <WelcomeMessage
-            onSuggestedQuestionClick={handleSuggestedQuestionClick}
-          />
-          {messages.map((message, index) => {
-            if (message.senderId === currentUserId) {
-              return <SenderChat key={index} message={message} />;
-            }
-            return <ReceiverChat key={index} message={message} />;
-          })}
+          {messages.length === 0 ? (
+            <WelcomeMessage
+              onSuggestedQuestionClick={handleSuggestedQuestionClick}
+            />
+          ) : (
+            messages.map((message, index) => {
+              if (message.senderId === currentUserId) {
+                return <SenderChat key={index} message={message} />;
+              }
+              return <ReceiverChat key={index} message={message} />;
+            })
+          )}
           {isLoading && (
-            <div className="px-3 py-3 bg-gray-200 rounded-t-3xl rounded-e-3xl w-fit">
+            <div className="px-3 !mt-auto py-3 bg-gray-200 rounded-t-3xl rounded-e-3xl w-fit">
               <TypingIndicator />
             </div>
           )}
