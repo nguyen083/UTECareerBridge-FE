@@ -14,6 +14,7 @@ import {
   message,
   Tag,
   Badge,
+  Avatar,
 } from "antd";
 import {
   EnvironmentOutlined,
@@ -51,6 +52,7 @@ import { useSelector } from "react-redux";
 import "./ViewJob.scss";
 
 const { Text, Link, Title } = Typography;
+const { Meta } = Card;
 const ViewJob = () => {
   const user = useSelector((state) => state.user);
   const location = useLocation();
@@ -326,7 +328,6 @@ const ViewJob = () => {
                         style: "currency",
                         currency: "VND",
                       })}
-                      /tháng
                     </div>
 
                     <Flex wrap="wrap" gap={16} className="job-meta">
@@ -418,32 +419,22 @@ const ViewJob = () => {
                   </Flex>
 
                   <Flex vertical gap={12}>
-                    <div className="title2">Thông tin công ty</div>
-                    <Flex align="center" className="company-brief">
-                      <Image
-                        preview={false}
-                        src={
-                          company.companyLogo ||
-                          "https://images.vietnamworks.com/img/company-default-logo.svg"
+                    {jobSameCompany && jobSameCompany.length > 0 && (
+                      <Card
+                        className="shadow related-jobs-card"
+                        title={
+                          <div className="card-title">
+                            Việc làm cùng công ty
+                          </div>
                         }
-                        height={60}
-                        width={60}
-                        style={{ borderRadius: "8px", objectFit: "contain" }}
-                      />
-                      <Flex vertical style={{ marginLeft: 16 }}>
-                        <Text
-                          strong
-                          className="company-name-text"
-                          onClick={() => handleToCompany(company.id)}
-                        >
-                          {company.companyName}
-                        </Text>
-                        <Text type="secondary">
-                          <EnvironmentOutlined style={{ marginRight: 8 }} />
-                          {company.companyAddress}
-                        </Text>
-                      </Flex>
-                    </Flex>
+                      >
+                        <div className="related-jobs-list">
+                          {jobSameCompany.slice(0, 5).map((job) => (
+                            <JobCardSmall key={job.jobId} job={job} />
+                          ))}
+                        </div>
+                      </Card>
+                    )}
                   </Flex>
                 </Flex>
               </BoxContainer>
@@ -707,38 +698,54 @@ const ViewJob = () => {
                 >
                   <Carousel
                     autoplay
-                    autoplaySpeed={4000}
+                    autoplaySpeed={3000}
                     dots={true}
+                    arrows
                     pauseOnHover={true}
                     draggable={true}
                     ref={ref}
                     className="companies-carousel"
                   >
                     {carouselItems.map((item, index) => (
-                      <div key={index} className="carousel-item">
-                        <Flex vertical gap={12} align="center">
-                          <Image
-                            src={item.imgSrc}
-                            alt={item.title}
-                            preview={false}
-                            width={"80%"}
-                            className="company-logo-carousel"
-                          />
-                          <Text
-                            strong
-                            ellipsis={{ rows: 2, tooltip: item.title }}
-                          >
-                            {item.title}
-                          </Text>
-                          <Button
-                            onClick={() => navigate("/company/" + item.id)}
-                            type="primary"
-                            ghost
-                          >
-                            Xem chi tiết
-                          </Button>
-                        </Flex>
-                      </div>
+                      <Card
+                        key={index}
+                        className="card-company"
+                        style={{ width: "fit-content" }}
+                        hoverable
+                        cover={
+                          <div className="text-center">
+                            <Avatar
+                              size={200}
+                              shape="square"
+                              src={item.imgSrc}
+                              alt={item.title}
+                              loading="lazy"
+                            />
+                          </div>
+                        }
+                      >
+                        <Meta
+                          title={
+                            <div
+                              className="text-center"
+                              style={{ width: "100%" }}
+                            >
+                              <span className="company-name">{item.title}</span>
+                            </div>
+                          }
+                          description={
+                            <div className="text-center">
+                              <Button
+                                size="large"
+                                onClick={() => navigate("/company/" + item.id)}
+                                type="primary"
+                              >
+                                Xem thêm
+                              </Button>
+                            </div>
+                          }
+                        />
+                      </Card>
                     ))}
                   </Carousel>
                 </Card>
@@ -763,21 +770,6 @@ const ViewJob = () => {
                 >
                   <div className="related-jobs-list">
                     {similarJobs.map((job) => (
-                      <JobCardSmall key={job.jobId} job={job} />
-                    ))}
-                  </div>
-                </Card>
-              )}
-
-              {jobSameCompany && jobSameCompany.length > 0 && (
-                <Card
-                  className="shadow related-jobs-card"
-                  title={
-                    <div className="card-title">Việc làm cùng công ty</div>
-                  }
-                >
-                  <div className="related-jobs-list">
-                    {jobSameCompany.slice(0, 5).map((job) => (
                       <JobCardSmall key={job.jobId} job={job} />
                     ))}
                   </div>

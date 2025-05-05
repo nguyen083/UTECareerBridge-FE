@@ -147,22 +147,6 @@ const HomePage = () => {
                       {t("job.search.search")}
                     </Button>
                   </div>
-                  {/* <div className="popular-searches">
-                    <span>{t("job.search.popular")}:</span>
-                    {categories.slice(0, 3).map((cat) => (
-                      <Button
-                        key={cat.jobCategoryId}
-                        type="link"
-                        size="small"
-                        onClick={() => {
-                          setSelectedCategory(cat.jobCategoryId);
-                          handleSearch();
-                        }}
-                      >
-                        {cat.jobCategoryName}
-                      </Button>
-                    ))}
-                  </div> */}
                 </div>
               </div>
             </header>

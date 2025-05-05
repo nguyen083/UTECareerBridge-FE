@@ -1,19 +1,19 @@
 // Biến màu chính
 $primary-color: #1890ff;
-$secondary-color: #1E4F94;
+$secondary-color: #1e4f94;
 $text-color: #333333;
-$light-bg: #F8F9FA;
+$light-bg: #f8f9fa;
 $border-color: #e8e8e8;
 $salary-color: #ff4d4f;
 $shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 $gradient-primary: linear-gradient(135deg, #1890ff 0%, #0050b3 100%);
-$gradient-secondary: linear-gradient(135deg, #F8F9FA 0%, #e6f7ff 100%);
+$gradient-secondary: linear-gradient(135deg, #f8f9fa 0%, #e6f7ff 100%);
 
 // Mixin cho card shadow
 @mixin card-shadow {
   box-shadow: $shadow;
   transition: all 0.3s ease;
-  
+
   &:hover {
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     transform: translateY(-2px);
@@ -22,14 +22,26 @@ $gradient-secondary: linear-gradient(135deg, #F8F9FA 0%, #e6f7ff 100%);
 
 // Animation keyframes
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(24, 144, 255, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(24, 144, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(24, 144, 255, 0); }
+  0% {
+    box-shadow: 0 0 0 0 rgba(24, 144, 255, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(24, 144, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(24, 144, 255, 0);
+  }
 }
 
 // Mixin cho title
@@ -41,9 +53,9 @@ $gradient-secondary: linear-gradient(135deg, #F8F9FA 0%, #e6f7ff 100%);
   padding-bottom: 10px;
   border-bottom: 1px solid $border-color;
   position: relative;
-  
+
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     bottom: -1px;
@@ -68,7 +80,7 @@ $gradient-secondary: linear-gradient(135deg, #F8F9FA 0%, #e6f7ff 100%);
   background: #c1c1c1;
   border-radius: 10px;
   transition: all 0.3s;
-  
+
   &:hover {
     background: #a8a8a8;
   }
@@ -80,7 +92,7 @@ $gradient-secondary: linear-gradient(135deg, #F8F9FA 0%, #e6f7ff 100%);
   border-radius: 14px;
   transition: all 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.03);
-  
+
   &:hover {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
   }
@@ -95,9 +107,9 @@ $gradient-secondary: linear-gradient(135deg, #F8F9FA 0%, #e6f7ff 100%);
   padding-bottom: 8px;
   border-bottom: 1px solid $border-color;
   position: relative;
-  
+
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     bottom: -1px;
@@ -106,7 +118,7 @@ $gradient-secondary: linear-gradient(135deg, #F8F9FA 0%, #e6f7ff 100%);
     background: $primary-color;
     transition: width 0.3s ease;
   }
-  
+
   &:hover:after {
     width: 80px;
   }
@@ -122,9 +134,9 @@ $gradient-secondary: linear-gradient(135deg, #F8F9FA 0%, #e6f7ff 100%);
   background: rgba(255, 77, 79, 0.08);
   border-radius: 8px;
   margin-bottom: 12px;
-  
+
   &::before {
-    content: '💰';
+    content: "💰";
     margin-right: 8px;
     font-size: 1.2rem;
   }
@@ -138,7 +150,7 @@ $gradient-secondary: linear-gradient(135deg, #F8F9FA 0%, #e6f7ff 100%);
 .hover-effect {
   cursor: pointer;
   transition: all 0.3s;
-  
+
   &:hover {
     color: $primary-color;
   }
@@ -147,10 +159,10 @@ $gradient-secondary: linear-gradient(135deg, #F8F9FA 0%, #e6f7ff 100%);
 // Enhanced styling for BoxContainer component
 BoxContainer {
   animation: fadeIn 0.5s ease-out;
-  
+
   &.shadow {
     overflow: visible;
-    
+
     &:hover {
       transform: translateY(-3px);
     }
@@ -161,18 +173,23 @@ BoxContainer {
 .ant-descriptions {
   .ant-descriptions-item {
     padding-bottom: 16px;
-    
+
     &:not(:last-child) {
       position: relative;
-      
+
       &::after {
-        content: '';
+        content: "";
         position: absolute;
         bottom: 8px;
         left: 0;
         width: 100%;
         height: 1px;
-        background: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.06), transparent);
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(0, 0, 0, 0.06),
+          transparent
+        );
       }
     }
   }
@@ -185,7 +202,7 @@ BoxContainer {
   position: relative;
   overflow: hidden;
   z-index: 1;
-  
+
   &::before {
     content: "";
     position: absolute;
@@ -193,14 +210,19 @@ BoxContainer {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
     transition: left 0.7s;
     z-index: -1;
   }
-  
+
   &:hover {
     transform: translateY(-2px);
-    
+
     &::before {
       left: 100%;
     }
@@ -208,12 +230,12 @@ BoxContainer {
 }
 
 // Enhanced apply/save buttons
-[type='primary'][size='large'] {
+[type="primary"][size="large"] {
   height: 48px;
   font-weight: 600;
   font-size: 16px;
   box-shadow: 0 4px 12px rgba(24, 144, 255, 0.2);
-  
+
   &:hover {
     box-shadow: 0 8px 16px rgba(24, 144, 255, 0.3);
   }
@@ -222,24 +244,24 @@ BoxContainer {
 // Enhanced styling for company card in sidebar
 .ant-card {
   overflow: hidden;
-  
+
   .ant-image {
     transition: all 0.3s ease;
-    
+
     &:hover {
       transform: scale(1.05);
     }
   }
-  
+
   .ant-card-head {
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
     background: $gradient-secondary;
-    
+
     .ant-card-head-title {
       padding: 14px 0;
     }
   }
-  
+
   &.shadow {
     margin-bottom: 16px;
   }
@@ -250,20 +272,21 @@ BoxContainer {
   line-height: 1.8;
   color: rgba(0, 0, 0, 0.75);
   padding: 0 16px;
-  
-  ul, ol {
+
+  ul,
+  ol {
     padding-left: 24px;
-    
+
     li {
       margin-bottom: 8px;
       position: relative;
-      
+
       &::marker {
         color: $primary-color;
       }
     }
   }
-  
+
   p {
     margin-bottom: 16px;
   }
@@ -277,13 +300,13 @@ BoxContainer {
   margin-bottom: 12px;
   border-left: 4px solid $primary-color;
   transition: all 0.3s;
-  
+
   &:hover {
     background: #f0f5ff;
     transform: translateX(4px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
-  
+
   .benefit-title {
     font-weight: 600;
     color: $secondary-color;
@@ -291,13 +314,13 @@ BoxContainer {
     display: flex;
     align-items: center;
     margin-bottom: 8px;
-    
+
     .benefit-icon {
       margin-right: 10px;
       color: $primary-color;
     }
   }
-  
+
   .benefit-description {
     color: rgba(0, 0, 0, 0.65);
     font-size: 14px;

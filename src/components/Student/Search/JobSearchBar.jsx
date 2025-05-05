@@ -13,8 +13,8 @@ const JobSearchBar = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const handleSearch = (value) => {
-    dispatch(setKeyword(value));
+  const handleSearch = (e) => {
+    dispatch(setKeyword(e.target.value));
     if (location.pathname !== "/search") {
       navigate("/search");
     }
@@ -35,12 +35,12 @@ const JobSearchBar = () => {
           : "!flex items-center justify-center"
       )}
     >
-      <Input.Search
+      <Input
         placeholder={t("job.search.placeholder")}
         allowClear
-        enterButton={<SearchOutlined />}
+        prefix={<SearchOutlined />}
         size="large"
-        onSearch={(value) => handleSearch(value)}
+        onPressEnter={(value) => handleSearch(value)}
         style={{ width: "500px" }}
         onChange={(e) => handleChange(e)}
       />

@@ -53,8 +53,7 @@ const JobCardSmall = ({ job }) => {
                 {job?.jobMaxSalary?.toLocaleString("vi-VN", {
                   style: "currency",
                   currency: "VND",
-                })}{" "}
-                <div style={{ fontSize: 14 }}>{t("common.month")}</div>
+                })}
               </Flex>
               <Flex gap={5}>
                 <Text type="secondary">
