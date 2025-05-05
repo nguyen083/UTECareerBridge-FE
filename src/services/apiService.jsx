@@ -168,6 +168,11 @@ const getInforStudent = async () => {
 const uploadCV = async (values) => {
   return axios.post("students/upload/resumes", values);
 };
+
+const updateCV = async (id, values) => {
+  return axios.put(`students/resume/${id}`, values);
+};
+
 const getSkillStudent = async () => {
   return axios.get("students/skills");
 };
@@ -345,6 +350,7 @@ const loginGoogle = async () => {
 };
 export {
   uploadCV,
+  updateCV,
   setToken,
   removeAllToken,
   studentLogin,
