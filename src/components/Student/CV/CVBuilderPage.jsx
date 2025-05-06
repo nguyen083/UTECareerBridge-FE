@@ -38,6 +38,7 @@ const CVBuilderPage = () => {
 
   useEffect(() => {
     fetchCVs();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
   const fetchCVs = async () => {

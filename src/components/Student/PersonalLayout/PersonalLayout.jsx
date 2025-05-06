@@ -26,7 +26,6 @@ import { HiLightBulb } from "react-icons/hi";
 import { IoIosBusiness } from "react-icons/io";
 import BoxContainer from "../../Generate/BoxContainer";
 import {
-  getAllCV,
   updateFindjob,
   updateResumeActive,
 } from "../../../services/apiService";
@@ -36,6 +35,7 @@ import { apiService } from "../../../services/getAddressId";
 import { setFindJob } from "../../../redux/action/studentSlice";
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useResume } from "../../../composables/resume";
 const { Text } = Typography;
 const { Meta } = Card;
 
@@ -43,6 +43,7 @@ const PersonalLayout = () => {
   const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
+  const { data: resume, refetch: refetchResume } = useResume();
   const [listResume, setListResume] = useState([]);
   const [modalResume, setModalResume] = useState(false);
   const infor = useSelector((state) => state.student);
@@ -64,7 +65,11 @@ const PersonalLayout = () => {
     },
     {
       key: "/cv-builder",
-      label: <div className="text-base">{t("student.menu.cvBuilder") || "CV Builder"}</div>,
+      label: (
+        <div className="text-base">
+          {t("student.menu.cvBuilder") || "CV Builder"}
+        </div>
+      ),
       icon: <PaperClipOutlined />,
     },
     {
@@ -114,22 +119,7 @@ const PersonalLayout = () => {
   };
 
   const fetchCV = () => {
-    getAllCV().then((res) => {
-      console.log(res);
-      setListResume(
-        res?.data.map((item) => {
-          return {
-            key: item.resumeId,
-            id: item.resumeId,
-            title: item.resumeTitle || "",
-            description: item.resumeDescription || "",
-            lastUpdated: item.updatedAt || 0,
-            link: item.resumeFile || "",
-            acvite: item.isActive,
-          };
-        })
-      );
-    });
+    refetchResume();
   };
 
   useEffect(() => {
@@ -150,8 +140,22 @@ const PersonalLayout = () => {
   }, [infor]);
 
   useEffect(() => {
-    fetchCV();
-  }, []);
+    if (resume) {
+      setListResume(
+        resume.data.map((item) => {
+          return {
+            key: item.resumeId,
+            id: item.resumeId,
+            title: item.resumeTitle || "",
+            description: item.resumeDescription || "",
+            lastUpdated: item.updatedAt || 0,
+            link: item.resumeFile || "",
+            acvite: item.isActive,
+          };
+        })
+      );
+    }
+  }, [resume]);
 
   const handleFindJob = () => {
     updateResumeActive(formResume.getFieldValue("resumeId")).then((res) => {

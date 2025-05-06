@@ -32,7 +32,7 @@ const OrtherCard = () => {
       image:
         "https://cdn-new.topcv.vn/unsafe/https://static.topcv.vn/v4/image/welcome/sel-growth/cv-builder-desktop.png",
       onclick: () => {
-        isAuthenticated("/profile");
+        isAuthenticated("/cv-builder");
       },
     },
     {

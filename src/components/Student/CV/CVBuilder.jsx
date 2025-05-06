@@ -49,6 +49,7 @@ import CVPreview from "./CVPreview";
 import CVTemplateSelector from "./CVTemplateSelector";
 import { useSelector } from "react-redux";
 import { apiService } from "../../../services/getAddressId";
+import { useQueryClient } from "@tanstack/react-query";
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
@@ -217,6 +218,7 @@ class ErrorBoundary extends Component {
 
 const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
   const { t, i18n } = useTranslation();
+  const queryClient = useQueryClient();
   const user = useSelector((state) => state.user);
   const student = useSelector((state) => state.student);
   const [sections, setSections] = useState([]);
@@ -539,6 +541,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
       console.error("Error saving CV:", error);
       message.error("Có lỗi khi lưu CV");
     } finally {
+      queryClient.invalidateQueries({ queryKey: ["resume"] });
       setSaveLoading(false);
     }
   };
