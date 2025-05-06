@@ -7,19 +7,17 @@ import {
   Row,
   Col,
   Card,
-  Popconfirm,
   message,
-  Tooltip,
   Tag,
   Empty,
   Badge,
+  Modal,
 } from "antd";
 import {
   FileAddOutlined,
   EditOutlined,
   DeleteOutlined,
   CalendarOutlined,
-  DownloadOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
 import BoxContainer from "../../Generate/BoxContainer";
@@ -225,6 +223,32 @@ const CVBuilderPage = () => {
                               {t("cv.builder.view")}
                             </Button>
                           </div>
+                          <Button
+                            onClick={() => {
+                              Modal.confirm({
+                                centered: true,
+                                title: t("cv.builder.deleteConfirmTitle"),
+                                description: t("cv.builder.deleteConfirmDesc"),
+                                onOk: () => handleDeleteCV(cv.resumeId),
+                              });
+                            }}
+                            danger
+                            icon={<DeleteOutlined />}
+                            className="delete-button"
+                            style={{
+                              position: "absolute",
+                              top: "8px",
+                              right: "8px",
+                              zIndex: 10,
+                              width: "32px",
+                              height: "32px",
+                              padding: 0,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              borderRadius: "50%",
+                            }}
+                          />
                         </div>
                       ) : (
                         <div
@@ -358,58 +382,36 @@ const CVBuilderPage = () => {
                               {t("cv.builder.edit")}
                             </Button>
                           </div>
+
+                          <Button
+                            onClick={() => {
+                              Modal.confirm({
+                                centered: true,
+                                title: t("cv.builder.deleteConfirmTitle"),
+                                description: t("cv.builder.deleteConfirmDesc"),
+                                onOk: () => handleDeleteCV(cv.resumeId),
+                              });
+                            }}
+                            danger
+                            icon={<DeleteOutlined />}
+                            className="delete-button"
+                            style={{
+                              position: "absolute",
+                              top: "8px",
+                              right: "8px",
+                              zIndex: 10,
+                              width: "32px",
+                              height: "32px",
+                              padding: 0,
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              borderRadius: "50%",
+                            }}
+                          />
                         </div>
                       )
                     }
-                    actions={[
-                      <Tooltip key="view" title={t("cv.builder.view")}>
-                        <Button
-                          type="text"
-                          icon={<EyeOutlined />}
-                          onClick={() =>
-                            cv.resumeFile &&
-                            window.open(cv.resumeFile, "_blank")
-                          }
-                        />
-                      </Tooltip>,
-                      <Tooltip key="edit" title={t("cv.builder.edit")}>
-                        <Button
-                          type="text"
-                          icon={<EditOutlined />}
-                          onClick={() => handleEditCV(cv)}
-                        />
-                      </Tooltip>,
-                      <Tooltip
-                        key="download"
-                        title={t("cv.builder.download.title")}
-                      >
-                        <Button
-                          type="text"
-                          icon={<DownloadOutlined />}
-                          onClick={() =>
-                            cv.resumeFile &&
-                            window.open(cv.resumeFile, "_blank")
-                          }
-                          disabled={!cv.resumeFile}
-                        />
-                      </Tooltip>,
-                      <Popconfirm
-                        key="delete"
-                        title={t("cv.builder.deleteConfirmTitle")}
-                        description={t("cv.builder.deleteConfirmDesc")}
-                        onConfirm={() => handleDeleteCV(cv.resumeId)}
-                        okText={t("common.yes")}
-                        cancelText={t("common.no")}
-                      >
-                        <Tooltip key="delete" title={t("cv.builder.delete")}>
-                          <Button
-                            type="text"
-                            danger
-                            icon={<DeleteOutlined />}
-                          />
-                        </Tooltip>
-                      </Popconfirm>,
-                    ]}
                   >
                     <Card.Meta
                       title={
@@ -417,6 +419,7 @@ const CVBuilderPage = () => {
                           <span className="cv-title">
                             {cv.resumeTitle || t("cv.untitled")}
                           </span>
+
                           <div className="card-tags">
                             {cv.isPublic && (
                               <Tag color="green" className="cv-tag">

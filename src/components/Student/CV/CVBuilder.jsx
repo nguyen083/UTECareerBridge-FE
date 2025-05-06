@@ -1,8 +1,5 @@
 import { useEffect, useState, useRef, Component } from "react";
 import {
-  Row,
-  Col,
-  Card,
   Typography,
   Button,
   Divider,
@@ -10,7 +7,6 @@ import {
   Space,
   Spin,
   Modal,
-  Input,
   Tooltip,
   Select,
   Slider,
@@ -18,25 +14,19 @@ import {
   ColorPicker,
   Progress,
 } from "antd";
-import { DndProvider, useDrag, useDrop } from "react-dnd";
+import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import {
   DeleteOutlined,
   EyeOutlined,
   SaveOutlined,
   PlusOutlined,
-  LayoutOutlined,
-  EditOutlined,
-  DragOutlined,
   DownloadOutlined,
   CloseOutlined,
   FontSizeOutlined,
-  GlobalOutlined,
   CameraOutlined,
-  UploadOutlined,
   FileOutlined,
 } from "@ant-design/icons";
-import BoxContainer from "../../Generate/BoxContainer";
 import { useTranslation } from "react-i18next";
 import "./CVBuilder.scss";
 import {
@@ -51,9 +41,8 @@ import { useSelector } from "react-redux";
 import { apiService } from "../../../services/getAddressId";
 import { useQueryClient } from "@tanstack/react-query";
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text } = Typography;
 const { Option } = Select;
-const { TextArea } = Input;
 
 // Define item types for drag and drop
 const ItemTypes = {
@@ -110,10 +99,11 @@ const CV_COLOR_PRESETS = [
 // Font options
 const FONT_OPTIONS = [
   { value: "'Open Sans', sans-serif", label: "Open Sans" },
-  { value: "'Roboto', sans-serif", label: "Roboto" },
-  { value: "'Montserrat', sans-serif", label: "Montserrat" },
-  { value: "'Poppins', sans-serif", label: "Poppins" },
-  { value: "'Playfair Display', serif", label: "Playfair Display" },
+  { value: "'Arial', sans-serif", label: "Arial" },
+  { value: "'Times New Roman', serif", label: "Times New Roman" },
+  { value: "'Helvetica', sans-serif", label: "Helvetica" },
+  { value: "'Calibri', sans-serif", label: "Calibri" },
+  { value: "'BE Vietnam Pro', sans-serif", label: "BE VietNam Pro" },
 ];
 
 // Available sections that can be added to the CV
@@ -1912,7 +1902,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                       KINH NGHIỆM LÀM VIỆC
                     </div>
                     <div className="section-content timeline-section">
-                      {workExperiences.map((exp, index) => (
+                      {workExperiences.map((exp) => (
                         <div key={exp.id} className="timeline-item group">
                           <div
                             className="timeline-point"
@@ -2027,7 +2017,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                       CHỨNG CHỈ
                     </div>
                     <div className="section-content timeline-section">
-                      {certificates.map((cert, index) => (
+                      {certificates.map((cert) => (
                         <div key={cert.id} className="timeline-item group">
                           <div
                             className="timeline-point"

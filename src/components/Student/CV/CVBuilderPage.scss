@@ -108,10 +108,33 @@
 }
 
 .cv-card {
+  position: relative;
   transition: all 0.3s ease;
   overflow: hidden;
   border-radius: 8px;
   height: 100%;
+
+  .delete-button {
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  }
+
+  &:hover .delete-button {
+    opacity: 1;
+  }
+
+  .card-meta-title {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .card-actions {
+      display: flex;
+      gap: 4px;
+      margin-top: 4px;
+    }
+  }
 }
 
 .cv-card:hover {
@@ -202,4 +225,9 @@
 .date-icon {
   margin-right: 6px;
   opacity: 0.7;
+}
+
+.cv-thumbnail-container,
+.cv-card-preview {
+  position: relative;
 }
