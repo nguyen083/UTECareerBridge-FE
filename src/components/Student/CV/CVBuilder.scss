@@ -1266,3 +1266,13 @@ $timeline-color: $primary-color;
     }
   }
 }
+
+.skill-level-rate {
+  display: inline-flex;
+  align-items: center;
+
+  .ant-rate-star {
+    font-size: 16px;
+    margin-right: 2px;
+  }
+}

@@ -14,6 +14,7 @@ import {
   ColorPicker,
   Progress,
   AutoComplete,
+  Rate,
 } from "antd";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -299,14 +300,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
           return {
             id: index + 1,
             name: item.skillName,
-            level:
-              item.level <= 2
-                ? "Beginner"
-                : item.level === 3
-                ? "Intermediate"
-                : item.level === 4
-                ? "Advanced"
-                : "Expert",
+            level: item.level || 3,
           };
         })
       );
@@ -731,7 +725,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
   const addSkill = () => {
     const newId =
       skills.length > 0 ? Math.max(...skills.map((s) => s.id)) + 1 : 1;
-    setSkills([...skills, { id: newId, name: "Kỹ năng mới", level: 1 }]);
+    setSkills([...skills, { id: newId, name: "Kỹ năng mới", level: 3 }]);
   };
 
   const removeSkill = (skillId) => {
@@ -2142,21 +2136,14 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                             }
                           />
                           <div className="skill-controls">
-                            <Select
+                            <Rate
                               value={skill.level}
                               onChange={(value) =>
                                 updateSkill(skill.id, "level", value)
                               }
-                              className="skill-level-select"
-                              size="small"
-                              style={{ width: 120, marginRight: 8 }}
-                              dropdownStyle={{ zIndex: 1050 }}
-                            >
-                              <Option value="Beginner">Beginner</Option>
-                              <Option value="Intermediate">Intermediate</Option>
-                              <Option value="Advanced">Advanced</Option>
-                              <Option value="Expert">Expert</Option>
-                            </Select>
+                              className="skill-level-rate"
+                              style={{ marginRight: 8 }}
+                            />
                             <Button
                               type="text"
                               danger
