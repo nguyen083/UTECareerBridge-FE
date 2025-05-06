@@ -1525,36 +1525,30 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
               Đóng
             </Button>
             <Space size="middle">
-              <Tooltip title="Xem CV dưới dạng PDF">
-                <Button
-                  icon={<EyeOutlined />}
-                  onClick={handlePreview}
-                  className="toolbar-btn preview-btn"
-                  type={previewMode ? "primary" : "default"}
-                >
-                  {previewMode ? "Chỉnh sửa CV" : "Xem trước CV"}
-                </Button>
-              </Tooltip>
-              <Tooltip title="Tải CV xuống máy">
-                <Button
-                  icon={<DownloadOutlined />}
-                  onClick={handleDownload}
-                  className="toolbar-btn download-btn"
-                >
-                  Tải xuống
-                </Button>
-              </Tooltip>
-              <Tooltip title="Lưu CV vào hồ sơ của bạn">
-                <Button
-                  type="primary"
-                  icon={<SaveOutlined />}
-                  loading={saveLoading}
-                  onClick={handleSave}
-                  className="toolbar-btn save-btn"
-                >
-                  Lưu CV
-                </Button>
-              </Tooltip>
+              <Button
+                icon={<EyeOutlined />}
+                onClick={handlePreview}
+                className="toolbar-btn preview-btn"
+                type={previewMode ? "primary" : "default"}
+              >
+                {previewMode ? "Chỉnh sửa CV" : "Xem trước CV"}
+              </Button>
+              <Button
+                icon={<DownloadOutlined />}
+                onClick={handleDownload}
+                className="toolbar-btn download-btn"
+              >
+                Tải xuống
+              </Button>
+              <Button
+                type="primary"
+                icon={<SaveOutlined />}
+                loading={saveLoading}
+                onClick={handleSave}
+                className="toolbar-btn save-btn"
+              >
+                Lưu CV
+              </Button>
             </Space>
           </div>
 
@@ -1637,7 +1631,6 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                   </Modal>
 
                   <Divider />
-
                   <div className="color-controls">
                     <div className="control-label">Màu chủ đề</div>
                     <div className="color-options">
