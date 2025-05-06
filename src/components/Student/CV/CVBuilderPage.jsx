@@ -1,12 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { Typography, Button, Alert, Spin, Row, Col, Card, Popconfirm, message, Tooltip, Tag, Empty, Badge } from 'antd';
-import { FileAddOutlined, EditOutlined, DeleteOutlined, CalendarOutlined, FilePdfOutlined, DownloadOutlined, EyeOutlined } from '@ant-design/icons';
-import BoxContainer from '../../Generate/BoxContainer';
-import CVBuilder from './CVBuilder';
-import PDFThumbnail from './PDFThumbnail';
-import { useTranslation } from 'react-i18next';
-import { useSelector } from 'react-redux';
-import { getAllCV, deleteCV } from '../../../services/apiService';
+import React, { useState, useEffect } from "react";
+import {
+  Typography,
+  Button,
+  Alert,
+  Spin,
+  Row,
+  Col,
+  Card,
+  Popconfirm,
+  message,
+  Tooltip,
+  Tag,
+  Empty,
+  Badge,
+} from "antd";
+import {
+  FileAddOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  CalendarOutlined,
+  FilePdfOutlined,
+  DownloadOutlined,
+  EyeOutlined,
+} from "@ant-design/icons";
+import BoxContainer from "../../Generate/BoxContainer";
+import CVBuilder from "./CVBuilder";
+import PDFThumbnail from "./PDFThumbnail";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { getAllCV, deleteCV } from "../../../services/apiService";
 
 const { Title, Text } = Typography;
 
@@ -16,7 +38,7 @@ const CVBuilderPage = () => {
   const [existingCVs, setExistingCVs] = useState([]);
   const [showBuilder, setShowBuilder] = useState(false);
   const [selectedCV, setSelectedCV] = useState(null);
-  const user = useSelector(state => state.student);
+  const user = useSelector((state) => state.student);
 
   useEffect(() => {
     fetchCVs();
@@ -26,18 +48,21 @@ const CVBuilderPage = () => {
     try {
       setLoading(true);
       const response = await getAllCV();
-      
+
       if (response && response.data) {
-        const builderCVs = response.data.filter(cv => 
-          cv.theme !== null && 
-          !(Array.isArray(cv.theme) && cv.theme.length === 0) && 
-          !(typeof cv.theme === 'object' && Object.keys(cv.theme).length === 0)
+        const builderCVs = response.data.filter(
+          (cv) =>
+            cv.theme !== null &&
+            !(Array.isArray(cv.theme) && cv.theme.length === 0) &&
+            !(
+              typeof cv.theme === "object" && Object.keys(cv.theme).length === 0
+            )
         );
-        console.log('CVs:', response.data);
+        console.log("CVs:", response.data);
         setExistingCVs(builderCVs);
       }
     } catch (error) {
-      console.error('Error fetching CVs:', error);
+      console.error("Error fetching CVs:", error);
     } finally {
       setLoading(false);
     }
@@ -56,15 +81,15 @@ const CVBuilderPage = () => {
   const handleDeleteCV = async (cvId) => {
     try {
       const response = await deleteCV(cvId);
-      if (response && response.status === 'OK') {
-        message.success(t('cv.builder.deleteSuccess'));
+      if (response && response.status === "OK") {
+        message.success(t("cv.builder.deleteSuccess"));
         fetchCVs();
       } else {
-        message.error(t('cv.builder.deleteError'));
+        message.error(t("cv.builder.deleteError"));
       }
     } catch (error) {
-      console.error('Error deleting CV:', error);
-      message.error(t('cv.builder.deleteError'));
+      console.error("Error deleting CV:", error);
+      message.error(t("cv.builder.deleteError"));
     }
   };
 
@@ -86,9 +111,11 @@ const CVBuilderPage = () => {
   if (loading) {
     return (
       <BoxContainer className="shadow-md">
-        <div style={{ textAlign: 'center', padding: '60px 0' }}>
+        <div style={{ textAlign: "center", padding: "60px 0" }}>
           <Spin size="large" />
-          <Text style={{ display: 'block', marginTop: 16 }}>{t('common.loading')}</Text>
+          <Text style={{ display: "block", marginTop: 16 }}>
+            {t("common.loading")}
+          </Text>
         </div>
       </BoxContainer>
     );
@@ -103,29 +130,31 @@ const CVBuilderPage = () => {
       <BoxContainer className="shadow-md cv-builder-page">
         <div className="page-header">
           <div>
-            <Title level={3} className="page-title">
-              {t('cv.builder.pageTitle')}
-              <Badge 
-                count="Beta" 
-                style={{ 
-                  backgroundColor: '#52c41a', 
-                  marginLeft: 12, 
-                  marginTop: -2, 
-                  fontSize: '12px',
-                  fontWeight: 'bold'
-                }} 
+            <Title level={3} className="page-title !text-text-color">
+              {t("cv.builder.pageTitle")}
+              <Badge
+                count="Beta"
+                style={{
+                  backgroundColor: "#52c41a",
+                  marginLeft: 12,
+                  marginTop: -2,
+                  fontSize: "12px",
+                  fontWeight: "bold",
+                }}
               />
             </Title>
-            <Text type="secondary" className="page-description">{t('cv.builder.pageDescription')}</Text>
+            <Text type="secondary" className="page-description">
+              {t("cv.builder.pageDescription")}
+            </Text>
           </div>
-          <Button 
+          <Button
             type="primary"
             icon={<FileAddOutlined />}
             onClick={handleCreateNew}
             className="create-cv-button"
             size="large"
           >
-            {t('cv.builder.createNew')}
+            {t("cv.builder.createNew")}
           </Button>
         </div>
 
@@ -135,18 +164,26 @@ const CVBuilderPage = () => {
               image={Empty.PRESENTED_IMAGE_SIMPLE}
               description={
                 <div>
-                  <Text style={{ fontSize: '16px', display: 'block', marginBottom: 16 }}>{t('cv.builder.noExistingCVs')}</Text>
-                  <Text type="secondary">{t('cv.builder.createFirstCV')}</Text>
+                  <Text
+                    style={{
+                      fontSize: "16px",
+                      display: "block",
+                      marginBottom: 16,
+                    }}
+                  >
+                    {t("cv.builder.noExistingCVs")}
+                  </Text>
+                  <Text type="secondary">{t("cv.builder.createFirstCV")}</Text>
                 </div>
               }
             >
-              <Button 
-                type="primary" 
-                size="large" 
-                icon={<FileAddOutlined />} 
+              <Button
+                type="primary"
+                size="large"
+                icon={<FileAddOutlined />}
                 onClick={handleCreateNew}
               >
-                {t('cv.builder.createNew')}
+                {t("cv.builder.createNew")}
               </Button>
             </Empty>
           </div>
@@ -161,221 +198,236 @@ const CVBuilderPage = () => {
                     cover={
                       cv.resumeFile ? (
                         <div className="cv-thumbnail-container">
-                          <PDFThumbnail 
-                            pdfUrl={cv.resumeFile} 
-                            height={220}
-                          />
+                          <PDFThumbnail pdfUrl={cv.resumeFile} height={220} />
                           <div className="cv-thumbnail-overlay">
-                            <Button 
-                              type="primary" 
-                              icon={<EditOutlined />} 
+                            <Button
+                              type="primary"
+                              icon={<EditOutlined />}
                               onClick={() => handleEditCV(cv)}
                               className="overlay-button edit-button"
                             >
-                              {t('cv.builder.edit')}
+                              {t("cv.builder.edit")}
                             </Button>
-                            <Button 
-                              icon={<EyeOutlined />} 
-                              onClick={() => window.open(cv.resumeFile, '_blank')}
+                            <Button
+                              icon={<EyeOutlined />}
+                              onClick={() =>
+                                window.open(cv.resumeFile, "_blank")
+                              }
                               className="overlay-button view-button"
                             >
-                              {t('cv.builder.view')}
+                              {t("cv.builder.view")}
                             </Button>
                           </div>
                         </div>
                       ) : (
-                        <div 
-                          className="cv-card-preview" 
-                          style={{ 
-                            height: 220, 
-                            overflow: 'hidden', 
-                            background: cv.theme?.color 
-                              ? getRandomGradient(cv.theme.color) 
-                              : 'linear-gradient(135deg, #f5f7fa, #c3cfe2)',
-                            position: 'relative',
-                            borderBottom: '1px solid #f0f0f0',
-                            display: 'flex',
-                            flexDirection: 'column'
+                        <div
+                          className="cv-card-preview"
+                          style={{
+                            height: 220,
+                            overflow: "hidden",
+                            background: cv.theme?.color
+                              ? getRandomGradient(cv.theme.color)
+                              : "linear-gradient(135deg, #f5f7fa, #c3cfe2)",
+                            position: "relative",
+                            borderBottom: "1px solid #f0f0f0",
+                            display: "flex",
+                            flexDirection: "column",
                           }}
                         >
-                          <div 
-                            style={{ 
-                              height: '50px', 
-                              backgroundColor: cv.theme?.color || '#1890ff',
-                              width: '100%',
-                              position: 'relative'
+                          <div
+                            style={{
+                              height: "50px",
+                              backgroundColor: cv.theme?.color || "#1890ff",
+                              width: "100%",
+                              position: "relative",
                             }}
                           >
-                            <div 
-                              className="cv-template-badge" 
-                              style={{ 
-                                position: 'absolute',
-                                top: '8px',
-                                right: '8px',
-                                backgroundColor: '#ffffff',
-                                color: cv.theme?.color || '#1890ff',
-                                padding: '2px 10px',
-                                borderRadius: '12px',
-                                fontSize: '11px',
-                                fontWeight: 'bold',
-                                boxShadow: '0 1px 2px rgba(0,0,0,0.1)'
+                            <div
+                              className="cv-template-badge"
+                              style={{
+                                position: "absolute",
+                                top: "8px",
+                                right: "8px",
+                                backgroundColor: "#ffffff",
+                                color: cv.theme?.color || "#1890ff",
+                                padding: "2px 10px",
+                                borderRadius: "12px",
+                                fontSize: "11px",
+                                fontWeight: "bold",
+                                boxShadow: "0 1px 2px rgba(0,0,0,0.1)",
                               }}
                             >
-                              {cv.theme?.id || 'Modern'}
+                              {cv.theme?.id || "Modern"}
                             </div>
                           </div>
-                          
-                          <div 
-                            style={{ 
-                              display: 'flex', 
-                              padding: '16px',
-                              flex: '1',
-                              backgroundColor: 'rgba(255, 255, 255, 0.9)'
+
+                          <div
+                            style={{
+                              display: "flex",
+                              padding: "16px",
+                              flex: "1",
+                              backgroundColor: "rgba(255, 255, 255, 0.9)",
                             }}
                           >
-                            <div 
-                              style={{ 
-                                width: '70px', 
-                                height: '70px',
-                                backgroundColor: '#e8f2ff',
-                                borderRadius: '50%',
-                                marginRight: '16px',
-                                border: `2px solid ${cv.theme?.color || '#1890ff'}30`,
-                                overflow: 'hidden',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center'
+                            <div
+                              style={{
+                                width: "70px",
+                                height: "70px",
+                                backgroundColor: "#e8f2ff",
+                                borderRadius: "50%",
+                                marginRight: "16px",
+                                border: `2px solid ${
+                                  cv.theme?.color || "#1890ff"
+                                }30`,
+                                overflow: "hidden",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
                               }}
                             >
                               <svg width="24" height="24" viewBox="0 0 24 24">
-                                <path fill="currentColor" d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" />
+                                <path
+                                  fill="currentColor"
+                                  d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"
+                                />
                               </svg>
                             </div>
-                            
+
                             <div style={{ flex: 1 }}>
-                              <div 
-                                style={{ 
-                                  height: '12px', 
-                                  width: '80%', 
-                                  backgroundColor: '#ddd', 
-                                  borderRadius: '4px',
-                                  marginBottom: '12px'
+                              <div
+                                style={{
+                                  height: "12px",
+                                  width: "80%",
+                                  backgroundColor: "#ddd",
+                                  borderRadius: "4px",
+                                  marginBottom: "12px",
                                 }}
                               ></div>
-                              <div 
-                                style={{ 
-                                  height: '10px', 
-                                  width: '60%', 
-                                  backgroundColor: '#eee', 
-                                  borderRadius: '3px',
-                                  marginBottom: '12px'
+                              <div
+                                style={{
+                                  height: "10px",
+                                  width: "60%",
+                                  backgroundColor: "#eee",
+                                  borderRadius: "3px",
+                                  marginBottom: "12px",
                                 }}
                               ></div>
-                              <div 
-                                style={{ 
-                                  height: '6px', 
-                                  width: '90%', 
-                                  backgroundColor: '#f2f2f2', 
-                                  borderRadius: '2px',
-                                  marginBottom: '8px'
+                              <div
+                                style={{
+                                  height: "6px",
+                                  width: "90%",
+                                  backgroundColor: "#f2f2f2",
+                                  borderRadius: "2px",
+                                  marginBottom: "8px",
                                 }}
                               ></div>
-                              <div 
-                                style={{ 
-                                  height: '6px', 
-                                  width: '85%', 
-                                  backgroundColor: '#f2f2f2', 
-                                  borderRadius: '2px',
-                                  marginBottom: '8px'
+                              <div
+                                style={{
+                                  height: "6px",
+                                  width: "85%",
+                                  backgroundColor: "#f2f2f2",
+                                  borderRadius: "2px",
+                                  marginBottom: "8px",
                                 }}
                               ></div>
-                              <div 
-                                style={{ 
-                                  height: '6px', 
-                                  width: '70%', 
-                                  backgroundColor: '#f2f2f2', 
-                                  borderRadius: '2px' 
+                              <div
+                                style={{
+                                  height: "6px",
+                                  width: "70%",
+                                  backgroundColor: "#f2f2f2",
+                                  borderRadius: "2px",
                                 }}
                               ></div>
                             </div>
                           </div>
-                          
+
                           <div className="cv-thumbnail-overlay">
-                            <Button 
-                              type="primary" 
-                              icon={<EditOutlined />} 
+                            <Button
+                              type="primary"
+                              icon={<EditOutlined />}
                               onClick={() => handleEditCV(cv)}
                               className="overlay-button edit-button"
                             >
-                              {t('cv.builder.edit')}
+                              {t("cv.builder.edit")}
                             </Button>
                           </div>
                         </div>
                       )
                     }
                     actions={[
-                      <Tooltip title={t('cv.builder.view')}>
-                        <Button 
-                          type="text" 
-                          icon={<EyeOutlined />} 
-                          onClick={() => cv.resumeFile && window.open(cv.resumeFile, '_blank')}
+                      <Tooltip key="view" title={t("cv.builder.view")}>
+                        <Button
+                          type="text"
+                          icon={<EyeOutlined />}
+                          onClick={() =>
+                            cv.resumeFile &&
+                            window.open(cv.resumeFile, "_blank")
+                          }
                         />
                       </Tooltip>,
-                      <Tooltip title={t('cv.builder.edit')}>
-                        <Button 
-                          type="text" 
-                          icon={<EditOutlined />} 
+                      <Tooltip key="edit" title={t("cv.builder.edit")}>
+                        <Button
+                          type="text"
+                          icon={<EditOutlined />}
                           onClick={() => handleEditCV(cv)}
                         />
                       </Tooltip>,
-                      <Tooltip title={t('cv.builder.download')}>
-                        <Button 
-                          type="text" 
+                      <Tooltip
+                        key="download"
+                        title={t("cv.builder.download.title")}
+                      >
+                        <Button
+                          type="text"
                           icon={<DownloadOutlined />}
-                          onClick={() => cv.resumeFile && window.open(cv.resumeFile, '_blank')}
+                          onClick={() =>
+                            cv.resumeFile &&
+                            window.open(cv.resumeFile, "_blank")
+                          }
                           disabled={!cv.resumeFile}
                         />
                       </Tooltip>,
                       <Popconfirm
-                        title={t('cv.builder.deleteConfirmTitle')}
-                        description={t('cv.builder.deleteConfirmDesc')}
+                        key="delete"
+                        title={t("cv.builder.deleteConfirmTitle")}
+                        description={t("cv.builder.deleteConfirmDesc")}
                         onConfirm={() => handleDeleteCV(cv.resumeId)}
-                        okText={t('common.yes')}
-                        cancelText={t('common.no')}
+                        okText={t("common.yes")}
+                        cancelText={t("common.no")}
                       >
-                        <Tooltip title={t('cv.builder.delete')}>
-                          <Button 
-                            type="text" 
-                            danger 
+                        <Tooltip key="delete" title={t("cv.builder.delete")}>
+                          <Button
+                            type="text"
+                            danger
                             icon={<DeleteOutlined />}
                           />
                         </Tooltip>
-                      </Popconfirm>
+                      </Popconfirm>,
                     ]}
                   >
                     <Card.Meta
                       title={
                         <div className="card-meta-title">
                           <span className="cv-title">
-                            {cv.resumeTitle || t('cv.untitled')}
+                            {cv.resumeTitle || t("cv.untitled")}
                           </span>
                           <div className="card-tags">
                             {cv.isPublic && (
                               <Tag color="green" className="cv-tag">
-                                {t('cv.builder.public')}
+                                {t("cv.builder.public")}
                               </Tag>
                             )}
                             {cv.theme?.id && (
-                              <Tag 
-                                color={cv.theme.color} 
-                                className="cv-tag template-tag" 
-                                style={{ 
+                              <Tag
+                                color={cv.theme.color}
+                                className="cv-tag template-tag"
+                                style={{
                                   backgroundColor: `${cv.theme.color}15`,
                                   color: cv.theme.color,
-                                  border: `1px solid ${cv.theme.color}30`
+                                  border: `1px solid ${cv.theme.color}30`,
                                 }}
                               >
-                                {cv.theme.id.charAt(0).toUpperCase() + cv.theme.id.slice(1)}
+                                {cv.theme.id.charAt(0).toUpperCase() +
+                                  cv.theme.id.slice(1)}
                               </Tag>
                             )}
                           </div>
@@ -384,7 +436,9 @@ const CVBuilderPage = () => {
                       description={
                         <Text type="secondary" className="cv-date">
                           <CalendarOutlined className="date-icon" />
-                          {new Date(cv.updatedAt || cv.createdAt).toLocaleDateString()}
+                          {new Date(
+                            cv.updatedAt || cv.createdAt
+                          ).toLocaleDateString()}
                         </Text>
                       }
                     />
@@ -398,31 +452,37 @@ const CVBuilderPage = () => {
 
       <BoxContainer className="shadow-md features-container">
         <div className="features-section">
-          <Title level={4} className="features-title">{t('cv.builder.features.title')}</Title>
+          <Title level={4} className="features-title">
+            {t("cv.builder.features.title")}
+          </Title>
 
           <div className="features-grid">
             <div className="feature-item">
               <div className="feature-icon">✏️</div>
-              <Title level={5}>{t('cv.builder.features.dragDrop.title')}</Title>
-              <Text>{t('cv.builder.features.dragDrop.description')}</Text>
+              <Title level={5}>{t("cv.builder.features.dragDrop.title")}</Title>
+              <Text>{t("cv.builder.features.dragDrop.description")}</Text>
             </div>
-            
+
             <div className="feature-item">
               <div className="feature-icon">🎨</div>
-              <Title level={5}>{t('cv.builder.features.templates.title')}</Title>
-              <Text>{t('cv.builder.features.templates.description')}</Text>
+              <Title level={5}>
+                {t("cv.builder.features.templates.title")}
+              </Title>
+              <Text>{t("cv.builder.features.templates.description")}</Text>
             </div>
-            
+
             <div className="feature-item">
               <div className="feature-icon">📱</div>
-              <Title level={5}>{t('cv.builder.features.responsive.title')}</Title>
-              <Text>{t('cv.builder.features.responsive.description')}</Text>
+              <Title level={5}>
+                {t("cv.builder.features.responsive.title")}
+              </Title>
+              <Text>{t("cv.builder.features.responsive.description")}</Text>
             </div>
-            
+
             <div className="feature-item">
               <div className="feature-icon">💾</div>
-              <Title level={5}>{t('cv.builder.features.save.title')}</Title>
-              <Text>{t('cv.builder.features.save.description')}</Text>
+              <Title level={5}>{t("cv.builder.features.save.title")}</Title>
+              <Text>{t("cv.builder.features.save.description")}</Text>
             </div>
           </div>
         </div>
@@ -434,8 +494,14 @@ const CVBuilderPage = () => {
         }
 
         @keyframes fadeIn {
-          from { opacity: 0; transform: translateY(10px); }
-          to { opacity: 1; transform: translateY(0); }
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
 
         .page-title {
@@ -454,13 +520,13 @@ const CVBuilderPage = () => {
           height: 42px;
           border-radius: 8px;
           font-weight: 500;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
           transition: all 0.3s ease;
         }
 
         .create-cv-button:hover {
           transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .empty-state {
@@ -523,7 +589,7 @@ const CVBuilderPage = () => {
 
         .feature-item:hover {
           transform: translateY(-5px);
-          box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
           border-color: #e6f7ff;
         }
 
@@ -531,14 +597,14 @@ const CVBuilderPage = () => {
           font-size: 40px;
           margin-bottom: 16px;
         }
-        
+
         .cv-card {
           transition: all 0.3s ease;
           overflow: hidden;
           border-radius: 8px;
           height: 100%;
         }
-        
+
         .cv-card:hover {
           transform: translateY(-5px);
           box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
@@ -556,7 +622,7 @@ const CVBuilderPage = () => {
           left: 0;
           width: 100%;
           height: 100%;
-          background: rgba(0,0,0,0.5);
+          background: rgba(0, 0, 0, 0.5);
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -574,7 +640,7 @@ const CVBuilderPage = () => {
           border-radius: 6px;
           padding: 0 16px;
           height: 36px;
-          box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
         }
 
         .edit-button {
@@ -597,7 +663,7 @@ const CVBuilderPage = () => {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          max-width: 120px;
+          max-width: 300px;
           font-weight: 500;
         }
 
@@ -622,7 +688,6 @@ const CVBuilderPage = () => {
           display: flex;
           align-items: center;
           font-size: 12px;
-          margin-top: 4px;
         }
 
         .date-icon {

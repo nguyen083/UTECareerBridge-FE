@@ -1498,6 +1498,16 @@ const CVBuilder = ({ onFinish, existingCvData = null }) => {
     </div>
   );
 
+  const handleSectionContentChange = (sectionId, newContent) => {
+    setSections((prevSections) =>
+      prevSections.map((section) =>
+        section.id === sectionId
+          ? { ...section, content: { ...section.content, text: newContent } }
+          : section
+      )
+    );
+  };
+
   return (
     <ErrorBoundary>
       <DndProvider backend={HTML5Backend}>
@@ -2173,7 +2183,7 @@ const CVBuilder = ({ onFinish, existingCvData = null }) => {
                   </div>
 
                   {/* Draggable Sections */}
-                  {sections.map((section, index) => (
+                  {sections.map((section) => (
                     <div
                       key={section.id}
                       className="cv-section draggable-section"
@@ -2187,6 +2197,12 @@ const CVBuilder = ({ onFinish, existingCvData = null }) => {
                           style={{ borderBottomColor: selectedColor }}
                           contentEditable
                           suppressContentEditableWarning
+                          onBlur={(e) =>
+                            handleSectionContentChange(
+                              section.id,
+                              e.target.innerText
+                            )
+                          }
                         >
                           {section.title}
                         </div>
@@ -2202,8 +2218,14 @@ const CVBuilder = ({ onFinish, existingCvData = null }) => {
                         className="section-content"
                         contentEditable
                         suppressContentEditableWarning
+                        onBlur={(e) =>
+                          handleSectionContentChange(
+                            section.id,
+                            e.target.innerText
+                          )
+                        }
                       >
-                        Nhập nội dung cho mục {section.title}...
+                        {section.content.text || "Nhập nội dung cho mục này..."}
                       </div>
                     </div>
                   ))}
