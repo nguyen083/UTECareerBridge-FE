@@ -13,6 +13,7 @@ import {
   Upload,
   ColorPicker,
   Progress,
+  AutoComplete,
 } from "antd";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -26,6 +27,7 @@ import {
   FontSizeOutlined,
   CameraOutlined,
   FileOutlined,
+  DragOutlined,
 } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import "./CVBuilder.scss";
@@ -33,6 +35,7 @@ import {
   uploadCV,
   updateCV,
   getSkillStudent,
+  getAllSkills,
 } from "../../../services/apiService";
 import { uploadToCloudinary } from "../../../services/uploadCloudary";
 import CVPreview from "./CVPreview";
@@ -209,6 +212,7 @@ class ErrorBoundary extends Component {
 const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
   const { t, i18n } = useTranslation();
   const queryClient = useQueryClient();
+  const [listSkill, setListSkill] = useState([]);
   const user = useSelector((state) => state.user);
   const student = useSelector((state) => state.student);
   const [sections, setSections] = useState([]);
@@ -412,6 +416,12 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
       });
     }
   }, [selectedTemplate, selectedColor, selectedFont, fontSize]);
+
+  useEffect(() => {
+    getAllSkills().then((res) => {
+      setListSkill(res.data.map((item) => item.skillName));
+    });
+  }, []);
 
   const addSection = (sectionType) => {
     const sectionTemplate = AVAILABLE_SECTIONS.find(
@@ -721,10 +731,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
   const addSkill = () => {
     const newId =
       skills.length > 0 ? Math.max(...skills.map((s) => s.id)) + 1 : 1;
-    setSkills([
-      ...skills,
-      { id: newId, name: "Kỹ năng mới", level: "Beginner" },
-    ]);
+    setSkills([...skills, { id: newId, name: "Kỹ năng mới", level: 1 }]);
   };
 
   const removeSkill = (skillId) => {
@@ -2119,16 +2126,21 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     <div className="section-content skills-list">
                       {skills.map((skill) => (
                         <div key={skill.id} className="skill-item">
-                          <div
-                            className="skill-name"
-                            contentEditable
-                            suppressContentEditableWarning
-                            onBlur={(e) =>
-                              updateSkill(skill.id, "name", e.target.innerText)
+                          <AutoComplete
+                            className="skill-name-autocomplete"
+                            value={skill.name}
+                            options={listSkill.map((name) => ({ value: name }))}
+                            onChange={(value) =>
+                              updateSkill(skill.id, "name", value)
                             }
-                          >
-                            {skill.name}
-                          </div>
+                            placeholder="Nhập tên kỹ năng"
+                            style={{ width: "50%", marginRight: 8 }}
+                            filterOption={(inputValue, option) =>
+                              option.value
+                                .toLowerCase()
+                                .indexOf(inputValue.toLowerCase()) !== -1
+                            }
+                          />
                           <div className="skill-controls">
                             <Select
                               value={skill.level}

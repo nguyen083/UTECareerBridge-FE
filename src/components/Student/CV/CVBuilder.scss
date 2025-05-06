@@ -1172,3 +1172,97 @@ $timeline-color: $primary-color;
   outline: none;
   background-color: rgba(245, 124, 0, 0.05);
 }
+
+// Thêm các style cho skill-name-autocomplete
+.skill-name-autocomplete {
+  transition: all 0.3s;
+
+  .ant-select-selector {
+    border-radius: 4px;
+    border: none !important;
+    height: auto !important;
+    min-height: 32px;
+    padding: 2px 8px !important;
+  }
+
+  &.ant-select-focused {
+    .ant-select-selector {
+      box-shadow: none !important;
+    }
+  }
+
+  .ant-select-selection-search-input {
+    height: 28px;
+  }
+
+  &.ant-select-open {
+    .ant-select-selection-item {
+      color: #595959;
+    }
+  }
+
+  // Chỉnh style cho dropdown của AutoComplete
+  .ant-select-dropdown {
+    .ant-select-item {
+      padding: 8px 12px;
+
+      &:hover {
+        background-color: #f5f5f5;
+      }
+
+      &-option-active {
+        background-color: #e6f7ff;
+      }
+    }
+  }
+}
+
+// Chỉnh style cho skill-item để phù hợp với AutoComplete
+.skill-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background-color: #fafafa;
+  transition: all 0.3s;
+
+  &:hover {
+    background-color: #f0f0f0;
+
+    .remove-skill-btn {
+      opacity: 1;
+    }
+  }
+
+  .skill-controls {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+  }
+
+  .remove-skill-btn {
+    opacity: 0.5;
+    transition: opacity 0.3s;
+
+    &:hover {
+      opacity: 1;
+      background-color: #fff0f0;
+    }
+  }
+}
+
+// Cải thiện style cho skills-list
+.skills-list {
+  padding: 10px 0;
+
+  .add-skill-btn {
+    margin-top: 12px;
+    transition: all 0.3s;
+
+    &:hover {
+      border-color: #40a9ff;
+      color: #40a9ff;
+    }
+  }
+}
