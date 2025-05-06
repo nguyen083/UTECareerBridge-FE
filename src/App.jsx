@@ -259,12 +259,12 @@ const App = () => {
               labelColor: COLOR.textColor,
             },
             Button: {
-              colorLink: COLOR.textColor,
-              colorLinkHover: COLOR.textColorHover,
+              colorLink: "#1E4F94",
+              colorLinkHover: "#4478c0",
               defaultActiveBorderColor: COLOR.textColorHover,
               defaultActiveColor: COLOR.textColorHover,
               defaultBorderColor: COLOR.textColor,
-              defaultColor: COLOR.textColor,
+              // defaultColor: COLOR.textColor,
               defaultHoverBg: COLOR.cardColor,
               colorPrimaryBg:
                 "linear-gradient(135deg, #1890ff 0%, #0050b3 100%)",
