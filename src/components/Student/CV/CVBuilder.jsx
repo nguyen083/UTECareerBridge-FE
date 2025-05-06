@@ -215,7 +215,7 @@ class ErrorBoundary extends Component {
   }
 }
 
-const CVBuilder = ({ onFinish, existingCvData = null }) => {
+const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
   const { t, i18n } = useTranslation();
   const user = useSelector((state) => state.user);
   const student = useSelector((state) => state.student);
@@ -1516,7 +1516,7 @@ const CVBuilder = ({ onFinish, existingCvData = null }) => {
           <div className="cv-toolbar">
             <Button
               icon={<CloseOutlined />}
-              onClick={() => window.history.back()}
+              onClick={() => setShowBuilder(false)}
               className="toolbar-btn close-btn"
             >
               Đóng

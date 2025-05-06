@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Typography,
   Button,
-  Alert,
   Spin,
   Row,
   Col,
@@ -19,7 +18,6 @@ import {
   EditOutlined,
   DeleteOutlined,
   CalendarOutlined,
-  FilePdfOutlined,
   DownloadOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
@@ -27,7 +25,6 @@ import BoxContainer from "../../Generate/BoxContainer";
 import CVBuilder from "./CVBuilder";
 import PDFThumbnail from "./PDFThumbnail";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
 import { getAllCV, deleteCV } from "../../../services/apiService";
 
 const { Title, Text } = Typography;
@@ -38,7 +35,6 @@ const CVBuilderPage = () => {
   const [existingCVs, setExistingCVs] = useState([]);
   const [showBuilder, setShowBuilder] = useState(false);
   const [selectedCV, setSelectedCV] = useState(null);
-  const user = useSelector((state) => state.student);
 
   useEffect(() => {
     fetchCVs();
@@ -122,7 +118,13 @@ const CVBuilderPage = () => {
   }
 
   if (showBuilder) {
-    return <CVBuilder onFinish={handleFinish} existingCvData={selectedCV} />;
+    return (
+      <CVBuilder
+        setShowBuilder={setShowBuilder}
+        onFinish={handleFinish}
+        existingCvData={selectedCV}
+      />
+    );
   }
 
   return (
@@ -488,7 +490,7 @@ const CVBuilderPage = () => {
         </div>
       </BoxContainer>
 
-      <style jsx>{`
+      <style>{`
         .cv-builder-page {
           animation: fadeIn 0.5s ease-out;
         }
