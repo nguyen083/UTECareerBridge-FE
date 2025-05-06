@@ -1,203 +1,53 @@
 @import "../../styles/variables.scss";
 
-// Main container
-.login-container {
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-  background-color: #f5f8fa;
+.full-height-row {
+  min-height: 100vh;
 }
 
-// Row and column layout
-.login-row {
-  height: 100%;
-}
-
-// Form column styles
-.login-form-column {
+.left-column {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  background-color: #f5f8fa;
+  background-color: $background-color;
 }
 
-.login-form-wrapper {
-  width: 100%;
-  max-width: 480px;
-  padding: 1rem;
-}
-
-// Logo area
-.login-logo {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 1.5rem;
-  cursor: pointer;
-}
-
-// Card styling
-.login-card {
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  padding: 0.5rem;
-}
-
-// Form header
-.login-header {
-  margin-bottom: 1.5rem;
-  text-align: center;
-
-  h2 {
-    font-weight: 600;
-    color: $text-color;
-    margin-bottom: 0.5rem;
-  }
-}
-
-.welcome-text {
-  color: #6b7280;
-  margin-bottom: 0;
-}
-
-// Form styling
-.login-form {
-  .form-label {
-    font-weight: 500;
-    color: $text-color;
-    font-size: 0.95rem;
-  }
-
-  .custom-input {
-    height: 48px;
-    border-radius: 8px;
-    
-    &:focus, &:hover {
-      border-color: $text-color;
-    }
-  }
-
-  .input-icon {
-    color: #9ca3af;
-    margin-right: 8px;
-  }
-}
-
-// Login options
-.login-options {
-  margin-bottom: 1.5rem;
-}
-
-.forgot-password {
-  color: $text-color;
-  font-size: 0.9rem;
-  transition: color 0.2s ease;
-  
-  &:hover {
-    color: $text-color-hover;
-    text-decoration: underline;
-  }
-}
-
-// Buttons
-.login-button {
-  height: 48px;
-  font-weight: 600;
-  border-radius: 8px;
-  background-color: $text-color;
-  border: none;
-  
-  &:hover {
-    background-color: $text-color-hover;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-}
-
-.google-button {
-  height: 48px;
-  font-weight: 500;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-  background-color: white;
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  &:hover {
-    background-color: #f9fafb;
-    border-color: #d1d5db;
-  }
-  
-  .google-icon {
-    margin-right: 8px;
-  }
-}
-
-// Divider
-.login-divider {
-  color: #9ca3af;
-  
-  span {
-    font-size: 0.9rem;
-    padding: 0 12px;
-  }
-}
-
-// Registration link
-.register-link {
-  text-align: center;
-  margin-top: 1rem;
-}
-
-// Right side image column
-.image-column {
-  height: 100%;
-  position: relative;
-  overflow: hidden;
-}
-
-.image-content {
-  height: 100%;
-  width: 100%;
-  background-image: url('https://res.cloudinary.com/utejobhub/image/upload/v1744870441/background-website_zmcplv_77396e.webp');
+.right-column {
+  background-color: $background-color;
+  background-image: url("https://res.cloudinary.com/utejobhub/image/upload/v1744870441/background-website_zmcplv_77396e.webp");
   background-size: cover;
   background-position: center;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 2rem;
+  text-align: end;
   position: relative;
 }
 
-.image-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 2rem;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.75), transparent);
-  color: white;
-  
-  .image-title {
-    color: white;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-  }
-  
-  .image-description {
-    color: rgba(255, 255, 255, 0.9);
-    font-size: 1rem;
-    max-width: 80%;
+.card-title {
+  color: $text-color !important;
+}
+
+.form-label {
+  color: $text-color;
+}
+
+.input-field {
+  color: $text-color !important;
+}
+
+.login-button {
+  background-color: $text-color !important;
+
+  &:hover {
+    background-color: $text-color-hover !important;
   }
 }
 
-// Responsive styles
-@media (max-width: 992px) {
-  .login-form-wrapper {
-    max-width: 400px;
-  }
+.link-text {
+  color: $text-color !important;
 }
 
-@media (max-width: 768px) {
-  .login-form-wrapper {
-    max-width: 100%;
-  }
+.logo {
+  cursor: pointer !important;
 }
