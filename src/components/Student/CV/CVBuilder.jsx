@@ -202,10 +202,8 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
   const [fullName, setFullName] = useState(
     student.lastName + " " + student.firstName
   );
-  const [jobTitle, setJobTitle] = useState("CHỨC DANH - 0 NĂM KINH NGHIỆM");
-  const [careerObjective, setCareerObjective] = useState(
-    "Nhập mục tiêu nghề nghiệp của bạn tại đây..."
-  );
+  const [jobTitle, setJobTitle] = useState("");
+  const [careerObjective, setCareerObjective] = useState("");
   const [contactInfo, setContactInfo] = useState({
     email: user.email,
     phone: student.phoneNumber,
@@ -213,8 +211,8 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
   });
   const [personalInfo, setPersonalInfo] = useState({
     birthDate: student.dob,
-    nationality: "Việt Nam",
-    maritalStatus: "Độc thân",
+    nationality: "",
+    maritalStatus: "",
     gender: student.gender ? "Nữ" : "Nam",
   });
   const [skills, setSkills] = useState([]);
@@ -235,10 +233,10 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
   const [certificates, setCertificates] = useState([
     {
       id: 1,
-      organization: "Tổ chức",
-      name: "Tên chứng chỉ",
-      date: "YYYY",
-      description: "Đường dẫn",
+      organization: "",
+      name: "",
+      date: "",
+      description: "",
     },
   ]);
 
@@ -263,20 +261,21 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
   const [uploadPhotoProgress, setUploadPhotoProgress] = useState(0);
 
   useEffect(() => {
-    apiService
-      .getInforAddress(
-        student.address,
-        student.provinceId,
-        student.districtId,
-        student.wardId
-      )
-      .then((res) => {
-        setContactInfo({
-          ...contactInfo,
-          address: res,
-        });
-      });
     if (!existingCvData) {
+      apiService
+        .getInforAddress(
+          student.address,
+          student.provinceId,
+          student.districtId,
+          student.wardId
+        )
+        .then((res) => {
+          setContactInfo({
+            ...contactInfo,
+            address: res,
+          });
+        });
+
       getSkillStudent().then((res) => {
         setSkills(
           res.data.map((item, index) => {
@@ -762,10 +761,10 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
       ...certificates,
       {
         id: newId,
-        organization: "Tổ chức",
-        name: "Tên chứng chỉ",
-        date: "YYYY",
-        description: "Đường dẫn",
+        organization: "",
+        name: "",
+        date: "",
+        description: "",
       },
     ]);
   };
@@ -832,10 +831,22 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
 
               <div className="flex flex-col items-center flex-grow md:items-start">
                 <div
-                  className="mb-2 text-2xl font-bold md:text-3xl"
+                  className={`mb-2 text-2xl font-bold md:text-3xl ${
+                    !fullName ? "empty-content" : ""
+                  }`}
                   contentEditable
                   suppressContentEditableWarning
-                  onBlur={(e) => setFullName(e.target.innerText)}
+                  onBlur={(e) => {
+                    const inputValue = e.target.innerText.trim();
+                    if (!inputValue) {
+                      e.target.classList.add("empty-content");
+                      e.target.innerText = ""; // Đảm bảo phần tử thực sự trống
+                    } else {
+                      e.target.classList.remove("empty-content");
+                      setFullName(inputValue);
+                    }
+                  }}
+                  data-placeholder="Họ và tên"
                   style={{
                     color: selectedColor,
                     outline: "none",
@@ -843,7 +854,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     padding: "2px 5px",
                   }}
                 >
-                  {fullName}
+                  {fullName || ""}
                 </div>
 
                 <div
@@ -1408,15 +1419,19 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
 
               <div className="flex flex-col items-center flex-grow md:items-start">
                 <div
-                  className="mb-2 text-2xl font-bold md:text-3xl"
+                  className={`mb-2 text-2xl font-bold md:text-3xl ${
+                    !fullName ? "empty-content" : ""
+                  }`}
                   contentEditable
                   suppressContentEditableWarning
                   onBlur={(e) => {
-                    if (!e.target.innerText.trim()) {
+                    const inputValue = e.target.innerText.trim();
+                    if (!inputValue) {
                       e.target.classList.add("empty-content");
+                      e.target.innerText = ""; // Đảm bảo phần tử thực sự trống
                     } else {
                       e.target.classList.remove("empty-content");
-                      setFullName(e.target.innerText);
+                      setFullName(inputValue);
                     }
                   }}
                   data-placeholder="Họ và tên"
@@ -1662,6 +1677,69 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
       )
     );
   };
+
+  useEffect(() => {
+    // Áp dụng lớp empty-content cho tất cả các phần tử trống
+    document.querySelectorAll("[contenteditable]").forEach((el) => {
+      if (!el.textContent.trim()) {
+        el.classList.add("empty-content");
+      }
+    });
+  }, []);
+
+  // Thêm useEffect này để đảm bảo kiểm tra mọi trường khi component render
+  useEffect(() => {
+    // Xử lý các thông tin cá nhân
+    document.querySelectorAll("[contenteditable]").forEach((el) => {
+      const content = el.textContent.trim();
+      if (!content) {
+        el.classList.add("empty-content");
+      } else {
+        el.classList.remove("empty-content");
+      }
+    });
+
+    // Chạy lại kiểm tra sau khi component đã render hoàn toàn
+    setTimeout(() => {
+      document.querySelectorAll("[contenteditable]").forEach((el) => {
+        const content = el.textContent.trim();
+        if (!content) {
+          el.classList.add("empty-content");
+        } else {
+          el.classList.remove("empty-content");
+        }
+      });
+    }, 100);
+  }, [
+    fullName,
+    jobTitle,
+    contactInfo.phone,
+    contactInfo.email,
+    contactInfo.address,
+    personalInfo.birthDate,
+    personalInfo.nationality,
+    personalInfo.maritalStatus,
+    personalInfo.gender,
+    careerObjective,
+  ]);
+
+  // Thêm vào cuối useEffect xử lý dữ liệu hiện có
+  useEffect(() => {
+    if (existingCvData) {
+      // ... code hiện có
+
+      // Thêm đoạn này
+      setTimeout(() => {
+        document.querySelectorAll("[contenteditable]").forEach((el) => {
+          if (el.textContent.trim()) {
+            el.classList.remove("empty-content");
+          } else {
+            el.classList.add("empty-content");
+          }
+        });
+      }, 500);
+    }
+  }, [existingCvData]);
 
   return (
     <ErrorBoundary>
@@ -1969,7 +2047,15 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                       className="section-content"
                       contentEditable
                       suppressContentEditableWarning
-                      onBlur={(e) => setCareerObjective(e.target.innerText)}
+                      onBlur={(e) => {
+                        if (!e.target.innerText.trim()) {
+                          e.target.classList.add("empty-content");
+                        } else {
+                          e.target.classList.remove("empty-content");
+                          setCareerObjective(e.target.innerText);
+                        }
+                      }}
+                      data-placeholder="Nhập mục tiêu nghề nghiệp của bạn tại đây..."
                       style={{ minHeight: "80px" }}
                     >
                       {careerObjective}
@@ -1991,14 +2077,20 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                           className="info-value"
                           contentEditable
                           suppressContentEditableWarning
-                          onBlur={(e) =>
-                            setPersonalInfo({
-                              ...personalInfo,
-                              birthDate: e.target.innerText,
-                            })
-                          }
+                          onBlur={(e) => {
+                            if (!e.target.innerText.trim()) {
+                              e.target.classList.add("empty-content");
+                            } else {
+                              e.target.classList.remove("empty-content");
+                              setPersonalInfo({
+                                ...personalInfo,
+                                birthDate: e.target.innerText,
+                              });
+                            }
+                          }}
+                          data-placeholder="Ngày / tháng / năm"
                         >
-                          {personalInfo.birthDate || "DD/MM/YYYY"}
+                          {personalInfo.birthDate || ""}
                         </div>
                       </div>
 
@@ -2008,14 +2100,20 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                           className="info-value"
                           contentEditable
                           suppressContentEditableWarning
-                          onBlur={(e) =>
-                            setPersonalInfo({
-                              ...personalInfo,
-                              nationality: e.target.innerText,
-                            })
-                          }
+                          onBlur={(e) => {
+                            if (!e.target.innerText.trim()) {
+                              e.target.classList.add("empty-content");
+                            } else {
+                              e.target.classList.remove("empty-content");
+                              setPersonalInfo({
+                                ...personalInfo,
+                                nationality: e.target.innerText,
+                              });
+                            }
+                          }}
+                          data-placeholder="Quốc tịch"
                         >
-                          {personalInfo.nationality}
+                          {personalInfo.nationality || ""}
                         </div>
                       </div>
 
@@ -2025,14 +2123,20 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                           className="info-value"
                           contentEditable
                           suppressContentEditableWarning
-                          onBlur={(e) =>
-                            setPersonalInfo({
-                              ...personalInfo,
-                              maritalStatus: e.target.innerText,
-                            })
-                          }
+                          onBlur={(e) => {
+                            if (!e.target.innerText.trim()) {
+                              e.target.classList.add("empty-content");
+                            } else {
+                              e.target.classList.remove("empty-content");
+                              setPersonalInfo({
+                                ...personalInfo,
+                                maritalStatus: e.target.innerText,
+                              });
+                            }
+                          }}
+                          data-placeholder="Độc thân / Đã kết hôn"
                         >
-                          {personalInfo.maritalStatus}
+                          {personalInfo.maritalStatus || ""}
                         </div>
                       </div>
 
@@ -2042,14 +2146,20 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                           className="info-value"
                           contentEditable
                           suppressContentEditableWarning
-                          onBlur={(e) =>
-                            setPersonalInfo({
-                              ...personalInfo,
-                              gender: e.target.innerText,
-                            })
-                          }
+                          onBlur={(e) => {
+                            if (!e.target.innerText.trim()) {
+                              e.target.classList.add("empty-content");
+                            } else {
+                              e.target.classList.remove("empty-content");
+                              setPersonalInfo({
+                                ...personalInfo,
+                                gender: e.target.innerText,
+                              });
+                            }
+                          }}
+                          data-placeholder="Nam / Nữ"
                         >
-                          {personalInfo.gender}
+                          {personalInfo.gender || ""}
                         </div>
                       </div>
                     </div>
@@ -2074,31 +2184,43 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                             <span
                               contentEditable
                               suppressContentEditableWarning
-                              onBlur={(e) =>
-                                updateWorkExperience(
-                                  exp.id,
-                                  "startDate",
-                                  e.target.innerText
-                                )
-                              }
+                              onBlur={(e) => {
+                                if (!e.target.innerText.trim()) {
+                                  e.target.classList.add("empty-content");
+                                } else {
+                                  e.target.classList.remove("empty-content");
+                                  updateWorkExperience(
+                                    exp.id,
+                                    "startDate",
+                                    e.target.innerText
+                                  );
+                                }
+                              }}
+                              data-placeholder="Ngày bắt đầu"
                               className="date-field"
                             >
-                              {exp.startDate}
+                              {exp.startDate || ""}
                             </span>
                             <span className="date-separator">-</span>
                             <span
                               contentEditable
                               suppressContentEditableWarning
-                              onBlur={(e) =>
-                                updateWorkExperience(
-                                  exp.id,
-                                  "endDate",
-                                  e.target.innerText
-                                )
-                              }
+                              onBlur={(e) => {
+                                if (!e.target.innerText.trim()) {
+                                  e.target.classList.add("empty-content");
+                                } else {
+                                  e.target.classList.remove("empty-content");
+                                  updateWorkExperience(
+                                    exp.id,
+                                    "endDate",
+                                    e.target.innerText
+                                  );
+                                }
+                              }}
+                              data-placeholder="Ngày kết thúc"
                               className="date-field"
                             >
-                              {exp.endDate}
+                              {exp.endDate || ""}
                             </span>
                           </div>
                           <div className="timeline-content">
@@ -2106,16 +2228,22 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                               <div
                                 contentEditable
                                 suppressContentEditableWarning
-                                onBlur={(e) =>
-                                  updateWorkExperience(
-                                    exp.id,
-                                    "companyName",
-                                    e.target.innerText
-                                  )
-                                }
+                                onBlur={(e) => {
+                                  if (!e.target.innerText.trim()) {
+                                    e.target.classList.add("empty-content");
+                                  } else {
+                                    e.target.classList.remove("empty-content");
+                                    updateWorkExperience(
+                                      exp.id,
+                                      "companyName",
+                                      e.target.innerText
+                                    );
+                                  }
+                                }}
+                                data-placeholder="Tên công ty"
                                 className="company-name"
                               >
-                                {exp.companyName}
+                                {exp.companyName || ""}
                               </div>
                               <Button
                                 type="text"
@@ -2128,30 +2256,42 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                             <div
                               contentEditable
                               suppressContentEditableWarning
-                              onBlur={(e) =>
-                                updateWorkExperience(
-                                  exp.id,
-                                  "jobTitle",
-                                  e.target.innerText
-                                )
-                              }
+                              onBlur={(e) => {
+                                if (!e.target.innerText.trim()) {
+                                  e.target.classList.add("empty-content");
+                                } else {
+                                  e.target.classList.remove("empty-content");
+                                  updateWorkExperience(
+                                    exp.id,
+                                    "jobTitle",
+                                    e.target.innerText
+                                  );
+                                }
+                              }}
+                              data-placeholder="Vị trí công việc"
                               className="job-title"
                             >
-                              {exp.jobTitle}
+                              {exp.jobTitle || ""}
                             </div>
                             <div
                               contentEditable
                               suppressContentEditableWarning
-                              onBlur={(e) =>
-                                updateWorkExperience(
-                                  exp.id,
-                                  "description",
-                                  e.target.innerText
-                                )
-                              }
+                              onBlur={(e) => {
+                                if (!e.target.innerText.trim()) {
+                                  e.target.classList.add("empty-content");
+                                } else {
+                                  e.target.classList.remove("empty-content");
+                                  updateWorkExperience(
+                                    exp.id,
+                                    "description",
+                                    e.target.innerText
+                                  );
+                                }
+                              }}
+                              data-placeholder="Mô tả công việc"
                               className="description"
                             >
-                              {exp.description}
+                              {exp.description || ""}
                             </div>
                           </div>
                         </div>
@@ -2189,16 +2329,22 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                             <span
                               contentEditable
                               suppressContentEditableWarning
-                              onBlur={(e) =>
-                                updateCertificate(
-                                  cert.id,
-                                  "date",
-                                  e.target.innerText
-                                )
-                              }
+                              onBlur={(e) => {
+                                if (!e.target.innerText.trim()) {
+                                  e.target.classList.add("empty-content");
+                                } else {
+                                  e.target.classList.remove("empty-content");
+                                  updateCertificate(
+                                    cert.id,
+                                    "date",
+                                    e.target.innerText
+                                  );
+                                }
+                              }}
+                              data-placeholder="Ngày cấp"
                               className="date-field"
                             >
-                              {cert.date}
+                              {cert.date || ""}
                             </span>
                           </div>
                           <div className="timeline-content">
@@ -2206,16 +2352,22 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                               <div
                                 contentEditable
                                 suppressContentEditableWarning
-                                onBlur={(e) =>
-                                  updateCertificate(
-                                    cert.id,
-                                    "organization",
-                                    e.target.innerText
-                                  )
-                                }
+                                onBlur={(e) => {
+                                  if (!e.target.innerText.trim()) {
+                                    e.target.classList.add("empty-content");
+                                  } else {
+                                    e.target.classList.remove("empty-content");
+                                    updateCertificate(
+                                      cert.id,
+                                      "organization",
+                                      e.target.innerText
+                                    );
+                                  }
+                                }}
+                                data-placeholder="Tên tổ chức"
                                 className="organization-name"
                               >
-                                {cert.organization}
+                                {cert.organization || ""}
                               </div>
                               <Button
                                 type="text"

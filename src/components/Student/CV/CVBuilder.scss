@@ -1291,7 +1291,6 @@ $timeline-color: $primary-color;
 [contentEditable]:focus:before {
   content: "";
 }
-
 [contentEditable]:focus {
   background-color: rgba(0, 0, 0, 0.02);
 }
