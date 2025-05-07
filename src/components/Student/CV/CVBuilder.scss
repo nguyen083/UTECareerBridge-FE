@@ -1280,3 +1280,18 @@ $timeline-color: $primary-color;
 .ant-upload-select {
   border-radius: 50% !important;
 }
+
+[contentEditable].empty-content:before {
+  content: attr(data-placeholder);
+  color: #aaa;
+  font-style: italic;
+  cursor: text;
+}
+
+[contentEditable]:focus:before {
+  content: "";
+}
+
+[contentEditable]:focus {
+  background-color: rgba(0, 0, 0, 0.02);
+}

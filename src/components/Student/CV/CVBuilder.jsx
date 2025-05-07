@@ -296,11 +296,8 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
 
         // Load personal info
         if (existingCvData.personalInfo) {
-          setFullName(existingCvData.personalInfo.fullName || "PHONG THANH");
-          setJobTitle(
-            existingCvData.personalInfo.jobTitle ||
-              "CHỨC DANH - 0 NĂM KINH NGHIỆM"
-          );
+          setFullName(existingCvData.personalInfo.fullName || "");
+          setJobTitle(existingCvData.personalInfo.jobTitle || "");
 
           // Load career objective
           if (existingCvData.personalInfo.objective) {
@@ -317,10 +314,9 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
           // Load additional personal info
           setPersonalInfo({
             birthDate: existingCvData.personalInfo.birthDate || "",
-            nationality: existingCvData.personalInfo.nationality || "Việt Nam",
-            maritalStatus:
-              existingCvData.personalInfo.maritalStatus || "Độc thân",
-            gender: existingCvData.personalInfo.gender || "Nam",
+            nationality: existingCvData.personalInfo.nationality || "",
+            maritalStatus: existingCvData.personalInfo.maritalStatus || "",
+            gender: existingCvData.personalInfo.gender || "",
           });
 
           if (existingCvData.personalInfo.photoUrl) {
@@ -496,6 +492,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
         sections: sections,
         workExperiences: workExperiences,
         certificates: certificates,
+        skills: skills,
       };
 
       let response;
@@ -1178,7 +1175,16 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                   className="header-name"
                   contentEditable
                   suppressContentEditableWarning
-                  onBlur={(e) => setFullName(e.target.innerText)}
+                  onBlur={(e) => {
+                    // Xử lý trường hợp người dùng xóa hết nội dung
+                    if (!e.target.innerText.trim()) {
+                      e.target.classList.add("empty-content");
+                    } else {
+                      e.target.classList.remove("empty-content");
+                      setFullName(e.target.innerText);
+                    }
+                  }}
+                  data-placeholder="Họ và tên"
                   style={{
                     color: selectedColor,
                     fontSize: "28px",
@@ -1186,14 +1192,23 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     marginBottom: "5px",
                   }}
                 >
-                  {fullName}
+                  {fullName || ""}
                 </div>
 
                 <div
                   className="header-title"
                   contentEditable
                   suppressContentEditableWarning
-                  onBlur={(e) => setJobTitle(e.target.innerText)}
+                  onBlur={(e) => {
+                    // Xử lý trường hợp người dùng xóa hết nội dung
+                    if (!e.target.innerText.trim()) {
+                      e.target.classList.add("empty-content");
+                    } else {
+                      e.target.classList.remove("empty-content");
+                      setJobTitle(e.target.innerText);
+                    }
+                  }}
+                  data-placeholder="Chức danh - kinh nghiệm"
                   style={{
                     fontSize: "16px",
                     color: "#555",
@@ -1225,14 +1240,21 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                   <span
                     contentEditable
                     suppressContentEditableWarning
-                    onBlur={(e) =>
-                      setContactInfo({
-                        ...contactInfo,
-                        phone: e.target.innerText,
-                      })
-                    }
+                    onBlur={(e) => {
+                      // Xử lý trường hợp người dùng xóa hết nội dung
+                      if (!e.target.innerText.trim()) {
+                        e.target.classList.add("empty-content");
+                      } else {
+                        e.target.classList.remove("empty-content");
+                        setContactInfo({
+                          ...contactInfo,
+                          phone: e.target.innerText,
+                        });
+                      }
+                    }}
+                    data-placeholder="Số điện thoại"
                   >
-                    {contactInfo.phone || "Thêm số điện thoại"}
+                    {contactInfo.phone || ""}
                   </span>
                 </div>
 
@@ -1248,14 +1270,21 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                   <span
                     contentEditable
                     suppressContentEditableWarning
-                    onBlur={(e) =>
-                      setContactInfo({
-                        ...contactInfo,
-                        email: e.target.innerText,
-                      })
-                    }
+                    onBlur={(e) => {
+                      // Xử lý trường hợp người dùng xóa hết nội dung
+                      if (!e.target.innerText.trim()) {
+                        e.target.classList.add("empty-content");
+                      } else {
+                        e.target.classList.remove("empty-content");
+                        setContactInfo({
+                          ...contactInfo,
+                          email: e.target.innerText,
+                        });
+                      }
+                    }}
+                    data-placeholder="Địa chỉ Email"
                   >
-                    {contactInfo.email}
+                    {contactInfo.email || ""}
                   </span>
                 </div>
 
@@ -1271,12 +1300,19 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                   <span
                     contentEditable
                     suppressContentEditableWarning
-                    onBlur={(e) =>
-                      setContactInfo({
-                        ...contactInfo,
-                        address: e.target.innerText,
-                      })
-                    }
+                    onBlur={(e) => {
+                      // Xử lý trường hợp người dùng xóa hết nội dung
+                      if (!e.target.innerText.trim()) {
+                        e.target.classList.add("empty-content");
+                      } else {
+                        e.target.classList.remove("empty-content");
+                        setContactInfo({
+                          ...contactInfo,
+                          address: e.target.innerText,
+                        });
+                      }
+                    }}
+                    data-placeholder="Địa chỉ"
                   >
                     {contactInfo.address}
                   </span>
@@ -1373,7 +1409,15 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                   className="mb-2 text-2xl font-bold md:text-3xl"
                   contentEditable
                   suppressContentEditableWarning
-                  onBlur={(e) => setFullName(e.target.innerText)}
+                  onBlur={(e) => {
+                    if (!e.target.innerText.trim()) {
+                      e.target.classList.add("empty-content");
+                    } else {
+                      e.target.classList.remove("empty-content");
+                      setFullName(e.target.innerText);
+                    }
+                  }}
+                  data-placeholder="Họ và tên"
                   style={{
                     color: selectedColor,
                     outline: "none",
@@ -1381,14 +1425,22 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     padding: "2px 5px",
                   }}
                 >
-                  {fullName}
+                  {fullName || ""}
                 </div>
 
                 <div
                   className="mb-4 text-lg font-medium text-gray-700"
                   contentEditable
                   suppressContentEditableWarning
-                  onBlur={(e) => setJobTitle(e.target.innerText)}
+                  onBlur={(e) => {
+                    if (!e.target.innerText.trim()) {
+                      e.target.classList.add("empty-content");
+                    } else {
+                      e.target.classList.remove("empty-content");
+                      setJobTitle(e.target.innerText);
+                    }
+                  }}
+                  data-placeholder="Chức danh - kinh nghiệm"
                   style={{
                     outline: "none",
                     minWidth: "200px",
@@ -1409,12 +1461,18 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     <span
                       contentEditable
                       suppressContentEditableWarning
-                      onBlur={(e) =>
-                        setContactInfo({
-                          ...contactInfo,
-                          phone: e.target.innerText,
-                        })
-                      }
+                      onBlur={(e) => {
+                        if (!e.target.innerText.trim()) {
+                          e.target.classList.add("empty-content");
+                        } else {
+                          e.target.classList.remove("empty-content");
+                          setContactInfo({
+                            ...contactInfo,
+                            phone: e.target.innerText,
+                          });
+                        }
+                      }}
+                      data-placeholder="Số điện thoại"
                       style={{
                         outline: "none",
                         minWidth: "100px",
@@ -1422,7 +1480,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                         borderBottom: "1px dashed #f0f0f0",
                       }}
                     >
-                      {contactInfo.phone || "Thêm số điện thoại"}
+                      {contactInfo.phone || ""}
                     </span>
                   </div>
 
@@ -1436,12 +1494,18 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     <span
                       contentEditable
                       suppressContentEditableWarning
-                      onBlur={(e) =>
-                        setContactInfo({
-                          ...contactInfo,
-                          email: e.target.innerText,
-                        })
-                      }
+                      onBlur={(e) => {
+                        if (!e.target.innerText.trim()) {
+                          e.target.classList.add("empty-content");
+                        } else {
+                          e.target.classList.remove("empty-content");
+                          setContactInfo({
+                            ...contactInfo,
+                            email: e.target.innerText,
+                          });
+                        }
+                      }}
+                      data-placeholder="Địa chỉ Email"
                       style={{
                         outline: "none",
                         minWidth: "100px",
@@ -1449,7 +1513,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                         borderBottom: "1px dashed #f0f0f0",
                       }}
                     >
-                      {contactInfo.email || "example@email.com"}
+                      {contactInfo.email || ""}
                     </span>
                   </div>
 
@@ -1463,12 +1527,18 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     <span
                       contentEditable
                       suppressContentEditableWarning
-                      onBlur={(e) =>
-                        setContactInfo({
-                          ...contactInfo,
-                          address: e.target.innerText,
-                        })
-                      }
+                      onBlur={(e) => {
+                        if (!e.target.innerText.trim()) {
+                          e.target.classList.add("empty-content");
+                        } else {
+                          e.target.classList.remove("empty-content");
+                          setContactInfo({
+                            ...contactInfo,
+                            address: e.target.innerText,
+                          });
+                        }
+                      }}
+                      data-placeholder="Địa chỉ"
                       style={{
                         outline: "none",
                         minWidth: "100px",
@@ -1476,7 +1546,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                         borderBottom: "1px dashed #f0f0f0",
                       }}
                     >
-                      {contactInfo.address || "Thêm địa chỉ"}
+                      {contactInfo.address || ""}
                     </span>
                   </div>
                 </div>
