@@ -126,6 +126,7 @@
       "changePassword": "Change Password",
       "dashboard": "Dashboard",
       "cvBuilder": "Create CV",
+      "cvAnalysis": "CV Analysis",
       "logout": "Logout"
     },
     "layout": {
@@ -705,6 +706,42 @@
       "share": {
         "title": "Share CV",
         "description": "Share your CV with others."
+      }
+    },
+    "analysis": {
+      "title": "CV Analysis with AI",
+      "subtitle": "Let our AI analyze your CV and suggest suitable job opportunities for you",
+      "info": {
+        "title": "How it works",
+        "description": "Our AI system analyzes your CV to identify your skills, experience, and qualifications, then matches them with the most suitable job openings in our database."
+      },
+      "tabs": {
+        "existing": "Use Existing CV",
+        "upload": "Upload New CV"
+      },
+      "loading": "Loading CVs...",
+      "lastUpdated": "Last Updated",
+      "analyze": "Analyze CV",
+      "analyzing": "Analyzing...",
+      "warning": {
+        "noCV": "Please select a CV or upload a new one to analyze"
+      },
+      "error": "An error occurred while analyzing your CV. Please try again.",
+      "noExistingCV": "You don't have any CVs yet.",
+      "createCV": "Create a New CV",
+      "upload": {
+        "title": "Upload your CV for analysis",
+        "hint": "Upload a CV in PDF, DOC, or DOCX format (max 5MB)"
+      },
+      "result": {
+        "title": "Analysis Results",
+        "success": "CV Analysis Complete!",
+        "subtitle": "Your CV matched with jobs at {score}% match rate",
+        "jobMatches": "Job Matches",
+        "close": "Close",
+        "viewAll": "View All Recommendations",
+        "viewRecommended": "View Recommended Jobs",
+        "match": "Match"
       }
     }
   },

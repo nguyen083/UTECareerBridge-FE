@@ -248,7 +248,7 @@ const saveJob = async (id) => {
   return axios.post(`students/jobs/saved/${id}`, {});
 };
 const unSaveJob = async (id) => {
-  return axios.delete(`students/jobs/unsaved/${id}`, {});
+  return axios.delete(`students/jobs/unsaved/${id}`);
 };
 const getJobSaved = async () => {
   return axios.get(`students/jobs/saved`);
@@ -348,6 +348,12 @@ const registerEmployer = async (values) => {
 const loginGoogle = async () => {
   return axios.get("users/auth/social-login?login_type=google");
 };
+
+// CV Analysis
+export const getRecommendationsByResumeId = (resumeId) => {
+  return axios.get(`/cv/recommend/resume/${resumeId}`);
+};
+
 export {
   uploadCV,
   updateCV,

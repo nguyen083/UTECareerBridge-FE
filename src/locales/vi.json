@@ -124,6 +124,7 @@
       "changePassword": "Đổi mật khẩu",
       "dashboard": "Tổng quan",
       "cvBuilder": "Tạo CV",
+      "cvAnalysis": "Phân tích CV",
       "logout": "Đăng xuất"
     },
     "layout": {
@@ -699,6 +700,42 @@
       "share": {
         "title": "Chia sẻ hồ sơ",
         "description": "Chia sẻ hồ sơ của bạn với nhà tuyển dụng qua email hoặc mạng xã hội."
+      }
+    },
+    "analysis": {
+      "title": "Phân tích CV bằng AI",
+      "subtitle": "Để AI phân tích CV của bạn và đề xuất các cơ hội việc làm phù hợp",
+      "info": {
+        "title": "Cách thức hoạt động",
+        "description": "Hệ thống AI của chúng tôi phân tích CV để xác định kỹ năng, kinh nghiệm và bằng cấp của bạn, sau đó kết hợp chúng với các vị trí việc làm phù hợp nhất trong cơ sở dữ liệu của chúng tôi."
+      },
+      "tabs": {
+        "existing": "Sử dụng CV hiện có",
+        "upload": "Tải lên CV mới"
+      },
+      "loading": "Đang tải CV...",
+      "lastUpdated": "Cập nhật lần cuối",
+      "analyze": "Phân tích CV",
+      "analyzing": "Đang phân tích...",
+      "warning": {
+        "noCV": "Vui lòng chọn một CV hoặc tải lên CV mới để phân tích"
+      },
+      "error": "Đã xảy ra lỗi khi phân tích CV của bạn. Vui lòng thử lại.",
+      "noExistingCV": "Bạn chưa có CV nào.",
+      "createCV": "Tạo CV mới",
+      "upload": {
+        "title": "Tải lên CV của bạn để phân tích",
+        "hint": "Tải lên CV ở định dạng PDF, DOC hoặc DOCX (tối đa 5MB)"
+      },
+      "result": {
+        "title": "Kết quả phân tích",
+        "success": "Phân tích CV hoàn tất!",
+        "subtitle": "CV của bạn phù hợp với công việc ở mức độ {score}%",
+        "jobMatches": "Công việc phù hợp",
+        "close": "Đóng",
+        "viewAll": "Xem tất cả đề xuất",
+        "viewRecommended": "Xem công việc được đề xuất",
+        "match": "Phù hợp"
       }
     }
   },

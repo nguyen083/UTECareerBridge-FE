@@ -20,6 +20,7 @@ import {
   PaperClipOutlined,
   SettingOutlined,
   SolutionOutlined,
+  RobotOutlined,
 } from "@ant-design/icons";
 import { IoBriefcaseOutline } from "react-icons/io5";
 import { HiLightBulb } from "react-icons/hi";
@@ -71,6 +72,15 @@ const PersonalLayout = () => {
         </div>
       ),
       icon: <PaperClipOutlined />,
+    },
+    {
+      key: "/cv-analysis",
+      label: (
+        <div className="text-base">
+          {t("student.menu.cvAnalysis") || "CV Analysis"}
+        </div>
+      ),
+      icon: <RobotOutlined />,
     },
     {
       key: "/notification",

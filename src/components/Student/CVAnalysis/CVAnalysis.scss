@@ -1,0 +1,1476 @@
+@import "../../../index.css";
+
+// Variables
+$primary-color: #1890ff;
+$success-color: #52c41a;
+$warning-color: #faad14;
+$error-color: #ff4d4f;
+$text-color: #141414;
+$secondary-text: #8c8c8c;
+$border-color: #f0f0f0;
+$shadow-color: rgba(0, 0, 0, 0.08);
+$gradient-primary: linear-gradient(135deg, #1890ff 0%, #36cfc9 100%);
+$gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
+
+.cv-analysis-layout {
+  background-color: #f5f7fa;
+  padding: 24px;
+
+  @media (max-width: 768px) {
+    padding: 12px;
+  }
+
+  .cv-analysis-header {
+    margin-bottom: 24px;
+
+    .cv-analysis-header-container {
+      padding: 24px;
+      background-color: white;
+
+      .header-content {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+
+        .header-icon {
+          font-size: 32px;
+          color: $primary-color;
+          background-color: rgba($primary-color, 0.1);
+          padding: 12px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .analysis-title {
+          margin-bottom: 8px;
+        }
+
+        .analysis-subtitle {
+          color: $secondary-text;
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+  .cv-analysis-container {
+    padding: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+
+    .cv-analysis-header {
+      margin-bottom: 32px;
+      padding: 24px 32px;
+      background: $gradient-primary;
+      border-radius: 16px;
+      color: white;
+      box-shadow: 0 10px 30px rgba(24, 144, 255, 0.2);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      
+      &::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        right: -50%;
+        width: 100%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0) 60%);
+        transform: rotate(-15deg);
+        z-index: 1;
+      }
+      
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -30%;
+        left: -30%;
+        width: 80%;
+        height: 80%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+        z-index: 1;
+      }
+
+      h2.ant-typography {
+        color: white;
+        margin-bottom: 12px;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        position: relative;
+        z-index: 2;
+
+        .anticon {
+          font-size: 32px;
+          background: rgba(255, 255, 255, 0.2);
+          padding: 10px;
+          border-radius: 12px;
+          backdrop-filter: blur(5px);
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+      }
+
+      .ant-typography {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 16px;
+        max-width: 700px;
+        position: relative;
+        z-index: 2;
+      }
+      
+      .ant-btn {
+        position: relative;
+        z-index: 2;
+        padding: 0 24px;
+        height: 44px;
+        font-weight: 500;
+        border-radius: 8px;
+        border: 2px solid rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(10px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        
+        &:hover {
+          background: rgba(255, 255, 255, 0.25);
+          transform: translateY(-2px);
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        .anticon {
+          margin-right: 8px;
+        }
+      }
+    }
+
+    .ant-card {
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+      &:hover {
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      }
+
+      .ant-card-body {
+        padding: 24px;
+      }
+    }
+
+    .analysis-info-alert {
+      margin-bottom: 24px;
+    }
+
+    .cv-analysis-tabs {
+      .ant-tabs-nav {
+        margin-bottom: 20px;
+      }
+    }
+
+    .existing-cv-tab,
+    .upload-cv-tab {
+      min-height: 300px;
+
+      .loading-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 60px 0;
+
+        .ant-spin {
+          margin-bottom: 16px;
+        }
+
+        .loading-text {
+          color: $secondary-text;
+          font-size: 16px;
+        }
+      }
+
+      .cv-card {
+        cursor: pointer;
+        border: 1px solid $border-color;
+        transition: all 0.3s;
+
+        &.selected {
+          border-color: $primary-color;
+          box-shadow: 0 0 0 2px rgba($primary-color, 0.2);
+        }
+
+        .cv-card-content {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+
+          .cv-icon {
+            font-size: 24px;
+            color: $text-color;
+          }
+
+          .cv-info {
+            .cv-title {
+              font-size: 16px;
+              margin-bottom: 0;
+            }
+          }
+        }
+      }
+
+      .action-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 32px;
+
+        .analyze-button {
+          min-width: 180px;
+          height: 48px;
+          font-size: 16px;
+
+          .anticon {
+            margin-right: 8px;
+          }
+        }
+      }
+    }
+
+    .upload-cv-tab {
+      .ant-upload-drag {
+        margin: 24px 0;
+        padding: 32px;
+        border: 2px dashed #d9d9d9;
+        border-radius: 12px;
+        background: #fafafa;
+        transition: all 0.3s;
+
+        &:hover {
+          border-color: $primary-color;
+          background: rgba($primary-color, 0.02);
+        }
+
+        .ant-upload-drag-icon {
+          .anticon {
+            font-size: 48px;
+            color: $primary-color;
+          }
+        }
+
+        .ant-upload-text {
+          font-size: 16px;
+          margin: 16px 0 8px;
+          color: $text-color;
+        }
+
+        .ant-upload-hint {
+          color: $secondary-text;
+          max-width: 400px;
+          margin: 0 auto;
+        }
+      }
+    }
+
+    .resume-card {
+      display: flex;
+      align-items: flex-start;
+      padding: 20px;
+      margin-bottom: 16px;
+      transition: all 0.3s ease;
+      border: 1px solid #f0f0f0;
+      border-radius: 12px;
+      background: #ffffff;
+      position: relative;
+      overflow: hidden;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 4px;
+        background: transparent;
+        transition: all 0.3s ease;
+      }
+
+      &.selected {
+        border-color: $primary-color;
+        box-shadow: 0 0 0 2px rgba($primary-color, 0.1);
+        background-color: rgba($primary-color, 0.02);
+
+        &::before {
+          background: $primary-color;
+        }
+      }
+
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      }
+
+      .resume-radio {
+        margin-right: 16px;
+        margin-top: 8px;
+      }
+
+      .resume-info {
+        flex: 1;
+        min-width: 0; // Fix for text overflow in flexbox
+
+        .resume-header {
+          display: flex;
+          align-items: center;
+          flex-wrap: wrap;
+          margin-bottom: 8px;
+
+          .resume-title {
+            margin-bottom: 0;
+            margin-right: 12px;
+            font-weight: 600;
+            color: $text-color;
+          }
+        }
+
+        .resume-description {
+          margin-bottom: 12px;
+          color: $secondary-text;
+          font-size: 14px;
+        }
+
+        .resume-meta {
+          display: flex;
+          align-items: center;
+          color: $secondary-text;
+          font-size: 13px;
+
+          .anticon {
+            margin-right: 6px;
+            font-size: 14px;
+            color: $primary-color;
+            opacity: 0.7;
+          }
+
+          .last-updated {
+            display: flex;
+            align-items: center;
+          }
+        }
+      }
+
+      .resume-actions {
+        display: flex;
+        gap: 8px;
+        margin-left: auto;
+
+        .ant-btn {
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 36px;
+          height: 36px;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+          
+          &:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+          }
+        }
+      }
+
+      .active-badge {
+        display: inline-flex;
+        align-items: center;
+        background-color: rgba($success-color, 0.1);
+        color: $success-color;
+        padding: 2px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+
+        .anticon {
+          margin-right: 4px;
+          font-size: 12px;
+        }
+      }
+    }
+
+    .upload-section {
+      padding: 20px 0;
+
+      h4.ant-typography {
+        margin-bottom: 12px;
+        font-weight: 600;
+        color: $text-color;
+      }
+
+      .ant-upload-drag {
+        margin: 24px 0;
+        padding: 40px;
+        border: 2px dashed rgba($primary-color, 0.3);
+        border-radius: 16px;
+        background: linear-gradient(to bottom, rgba($primary-color, 0.02), rgba($primary-color, 0.05));
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+        
+        &::before {
+          content: '';
+          position: absolute;
+          top: -100px;
+          left: -100px;
+          width: 200px;
+          height: 200px;
+          background: radial-gradient(circle, rgba($primary-color, 0.1) 0%, rgba($primary-color, 0) 70%);
+          border-radius: 50%;
+          z-index: 0;
+        }
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -80px;
+          right: -80px;
+          width: 160px;
+          height: 160px;
+          background: radial-gradient(circle, rgba($primary-color, 0.1) 0%, rgba($primary-color, 0) 70%);
+          border-radius: 50%;
+          z-index: 0;
+        }
+
+        &:hover {
+          transform: translateY(-4px);
+          border-color: $primary-color;
+          background: linear-gradient(to bottom, rgba($primary-color, 0.03), rgba($primary-color, 0.07));
+          box-shadow: 0 8px 20px rgba($primary-color, 0.1);
+        }
+
+        .ant-upload-drag-icon {
+          position: relative;
+          z-index: 1;
+          
+          .anticon {
+            font-size: 52px;
+            color: $primary-color;
+            background: rgba($primary-color, 0.1);
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin: 0 auto;
+            transition: all 0.3s;
+            box-shadow: 0 6px 16px rgba($primary-color, 0.15);
+          }
+        }
+
+        .ant-upload-text {
+          position: relative;
+          z-index: 1;
+          font-size: 18px;
+          margin: 20px 0 12px;
+          font-weight: 600;
+          color: $text-color;
+        }
+
+        .ant-upload-hint {
+          position: relative;
+          z-index: 1;
+          color: $secondary-text;
+          max-width: 400px;
+          margin: 0 auto;
+          font-size: 14px;
+          line-height: 1.6;
+        }
+      }
+    }
+
+    .info-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(135deg, #f9f9f9, #ffffff);
+      border-left: 4px solid $primary-color;
+      position: relative;
+      overflow: hidden;
+      
+      &::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 150px;
+        height: 150px;
+        background: radial-gradient(circle, rgba($primary-color, 0.07) 0%, rgba($primary-color, 0) 70%);
+        z-index: 0;
+      }
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 200px;
+        height: 200px;
+        background: radial-gradient(circle, rgba($primary-color, 0.05) 0%, rgba($primary-color, 0) 70%);
+        z-index: 0;
+      }
+
+      .ant-card-body {
+        position: relative;
+        z-index: 1;
+      }
+
+      h4.ant-typography {
+        color: $primary-color;
+        margin-bottom: 16px;
+        font-weight: 600;
+        position: relative;
+      }
+
+      .info-card-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        position: relative;
+
+        .info-icon {
+          font-size: 26px;
+          color: $primary-color;
+          margin-right: 16px;
+          padding: 12px;
+          background: linear-gradient(135deg, rgba($primary-color, 0.1), rgba($primary-color, 0.2));
+          border-radius: 12px;
+          box-shadow: 0 4px 12px rgba($primary-color, 0.12);
+        }
+      }
+
+      .ant-alert {
+        border: none;
+        background: linear-gradient(to right, rgba($primary-color, 0.05), rgba($primary-color, 0.1));
+        box-shadow: 0 2px 8px rgba($primary-color, 0.1);
+        border-radius: 8px;
+        
+        .ant-alert-icon {
+          color: $primary-color;
+        }
+        
+        .ant-alert-message {
+          color: darken($primary-color, 10%);
+          font-weight: 600;
+        }
+        
+        .ant-alert-description {
+          color: darken($primary-color, 5%);
+        }
+      }
+
+      .benefits-list {
+        margin: 28px 0;
+
+        .benefit-item {
+          display: flex;
+          align-items: flex-start;
+          margin-bottom: 20px;
+          padding: 16px;
+          border-radius: 12px;
+          background: rgba(255, 255, 255, 0.7);
+          box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+          transition: all 0.3s;
+          
+          &:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+          }
+
+          .benefit-icon {
+            font-size: 22px;
+            color: $primary-color;
+            margin-right: 16px;
+            background: linear-gradient(135deg, rgba($primary-color, 0.1), rgba($primary-color, 0.2));
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba($primary-color, 0.1);
+          }
+          
+          .ant-typography {
+            margin-bottom: 6px;
+          }
+        }
+      }
+
+      .action-section {
+        margin-top: auto;
+        padding-top: 28px;
+
+        .ant-btn-primary {
+          height: 50px;
+          font-size: 17px;
+          font-weight: 500;
+          border-radius: 12px;
+          background: $gradient-primary;
+          border: none;
+          box-shadow: 0 8px 16px rgba($primary-color, 0.25);
+          transition: all 0.3s;
+
+          &:hover {
+            background: linear-gradient(135deg, lighten($primary-color, 5%) 0%, #36cfc9 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba($primary-color, 0.3);
+          }
+          
+          &:active {
+            transform: translateY(-1px);
+          }
+          
+          .anticon {
+            font-size: 18px;
+          }
+          
+          &:disabled {
+            background: #f5f5f5;
+            color: rgba(0, 0, 0, 0.25);
+            box-shadow: none;
+            border: 1px solid #d9d9d9;
+          }
+        }
+      }
+    }
+
+    .analysis-result-content {
+      animation: fadeIn 0.4s ease-out;
+
+      .result-success {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 32px;
+        padding: 24px;
+        background: $gradient-success;
+        border-radius: 12px;
+        animation: fadeIn 0.5s ease-out;
+
+        .success-icon {
+          font-size: 48px;
+          color: white;
+          margin-bottom: 16px;
+        }
+
+        h3.ant-typography {
+          color: white;
+          margin-bottom: 0;
+        }
+      }
+
+      .match-rate {
+        text-align: center;
+        font-size: 18px;
+        margin: 24px 0;
+        color: $text-color;
+      }
+
+      .score-visualization {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 32px;
+        animation: fadeIn 0.5s ease-out;
+
+        .ant-progress-circle {
+          .ant-progress-text {
+            font-size: 16px;
+            font-weight: 600;
+          }
+        }
+      }
+
+      .ant-list-item {
+        padding: 8px 0;
+      }
+
+      .job-match-card {
+        width: 100%;
+        cursor: pointer;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        animation: fadeIn 0.5s ease-out;
+        animation-delay: 0.1s;
+
+        &:nth-child(2) {
+          animation-delay: 0.2s;
+        }
+        &:nth-child(3) {
+          animation-delay: 0.3s;
+        }
+        &:nth-child(4) {
+          animation-delay: 0.4s;
+        }
+        &:nth-child(5) {
+          animation-delay: 0.5s;
+        }
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .job-match-info {
+          display: flex;
+          justify-content: space-between;
+
+          .job-company-info {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            flex: 1;
+
+            .company-logo {
+              width: 60px;
+              height: 60px;
+              object-fit: contain;
+              border-radius: 8px;
+              box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+              background-color: white;
+              padding: 4px;
+            }
+
+            .company-logo-placeholder {
+              width: 60px;
+              height: 60px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+              color: white;
+              font-size: 24px;
+              font-weight: 700;
+              border-radius: 8px;
+            }
+
+            .job-details {
+              flex: 1;
+
+              h5.ant-typography {
+                margin-bottom: 4px;
+                font-weight: 600;
+                color: $primary-color;
+              }
+
+              .job-metadata {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 16px;
+                margin: 12px 0;
+                color: $secondary-text;
+                font-size: 14px;
+
+                .location,
+                .salary {
+                  display: flex;
+                  align-items: center;
+                  gap: 6px;
+                  background-color: #f5f7fa;
+                  padding: 4px 10px;
+                  border-radius: 16px;
+
+                  .anticon {
+                    color: $primary-color;
+                  }
+                }
+              }
+
+              .skills-section {
+                margin-top: 12px;
+
+                .matched-skills,
+                .missing-skills {
+                  display: flex;
+                  flex-wrap: wrap;
+                  gap: 8px;
+                  margin-bottom: 8px;
+
+                  .ant-tag {
+                    margin-right: 0;
+                    border-radius: 4px;
+                    padding: 0 8px;
+                    font-size: 12px;
+
+                    &.ant-tag-green {
+                      background-color: rgba($success-color, 0.1);
+                      border-color: $success-color;
+                      color: darken($success-color, 10%);
+                    }
+
+                    &.ant-tag-orange {
+                      background-color: rgba($warning-color, 0.1);
+                      border-color: $warning-color;
+                      color: darken($warning-color, 10%);
+                    }
+                  }
+                }
+
+                .skills-tags {
+                  display: flex;
+                  flex-wrap: wrap;
+                  gap: 6px;
+                  margin-top: 4px;
+                }
+              }
+            }
+          }
+
+          .job-match-score {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-left: 16px;
+
+            .match-label {
+              margin-top: 8px;
+              font-size: 12px;
+              font-weight: 600;
+              color: $primary-color;
+            }
+          }
+        }
+
+        .job-match-header {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 12px;
+
+          .job-badges {
+            display: flex;
+            gap: 8px;
+          }
+
+          .job-deadline {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+
+            .anticon {
+              color: $text-color;
+            }
+          }
+        }
+      }
+    }
+
+    .job-recommendations-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .job-recommendation-card {
+      border-radius: 12px;
+      border: 1px solid #f0f0f0;
+      transition: all 0.3s ease;
+      margin-bottom: 0;
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      }
+
+      .ant-card-body {
+        padding: 16px;
+      }
+
+      .job-recommendation-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+
+        .job-badges {
+          display: flex;
+          gap: 8px;
+        }
+
+        .job-save-action {
+          .ant-btn {
+            color: #bfbfbf;
+            border-color: #f0f0f0;
+
+            &:hover {
+              color: $warning-color;
+              border-color: $warning-color;
+            }
+          }
+        }
+      }
+
+      .job-recommendation-content {
+        display: flex;
+        align-items: stretch;
+
+        .job-logo {
+          width: 60px;
+          height: 60px;
+          flex-shrink: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-right: 16px;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 8px;
+            border: 1px solid #f0f0f0;
+          }
+
+          .company-logo-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            border-radius: 8px;
+          }
+        }
+
+        .job-main-info {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+
+          .job-title {
+            margin-bottom: 4px;
+            font-weight: 600;
+            color: $text-color;
+          }
+
+          .company-name {
+            color: $secondary-text;
+            margin-bottom: 8px;
+            display: block;
+          }
+
+          .job-location,
+          .job-salary {
+            font-size: 14px;
+            color: $secondary-text;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+
+            .anticon {
+              color: $primary-color;
+              margin-right: 6px;
+              font-size: 14px;
+            }
+          }
+
+          .skills-section {
+            margin-top: 12px;
+
+            .skills-label {
+              color: $secondary-text;
+              font-size: 13px;
+              display: block;
+              margin-bottom: 4px;
+            }
+
+            .skills-tags {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 6px;
+
+              .skill-tag {
+                margin-right: 0;
+                background-color: rgba($success-color, 0.1);
+                border-color: rgba($success-color, 0.3);
+                color: darken($success-color, 10%);
+                border-radius: 12px;
+                font-size: 12px;
+                padding: 0 10px;
+              }
+
+              .more-tag {
+                background-color: #f5f5f5;
+                border-color: #d9d9d9;
+                color: $secondary-text;
+                border-radius: 12px;
+                font-size: 12px;
+                padding: 0 10px;
+              }
+            }
+          }
+        }
+
+        .job-match-indicator {
+          flex-shrink: 0;
+          margin-left: 16px;
+          display: flex;
+          align-items: center;
+
+          .progress-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            .ant-progress-circle .ant-progress-text {
+              font-size: 14px;
+              font-weight: 600;
+            }
+
+            .match-text {
+              margin-top: 8px;
+              font-size: 12px;
+              text-align: center;
+              color: $primary-color;
+              font-weight: 500;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  @media (max-width: 576px) {
+    .job-recommendation-content {
+      flex-direction: column;
+
+      .job-logo {
+        align-self: center;
+        margin-bottom: 16px;
+      }
+
+      .job-main-info {
+        margin-bottom: 16px;
+      }
+
+      .job-match-indicator {
+        align-self: center;
+        margin-left: 0 !important;
+      }
+    }
+  }
+
+  .resume-meta {
+    margin-top: 8px;
+
+    .anticon {
+      margin-right: 4px;
+    }
+  }
+
+  .divider-content {
+    display: flex;
+    align-items: center;
+    color: $primary-color;
+    font-weight: 600;
+  }
+
+  .view-more-section {
+    margin-top: 24px;
+
+    .ant-btn {
+      height: 44px;
+      font-size: 16px;
+    }
+  }
+
+  .text-right {
+    text-align: right;
+
+    @media (max-width: 768px) {
+      text-align: left;
+    }
+  }
+
+  .cv-selection-card {
+    .ant-card-body {
+      padding: 20px 24px;
+    }
+  }
+}
+
+// Results Modal Styling
+.analysis-result-modal {
+  .analysis-result-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    .result-icon {
+      color: $primary-color;
+      font-size: 20px;
+    }
+  }
+
+  .job-matches-container {
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 10px;
+
+    .job-match-card {
+      position: relative;
+      border: 1px solid $border-color;
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px $shadow-color;
+      transition: transform 0.2s;
+
+      &:hover {
+        transform: translateY(-2px);
+      }
+
+      .match-details {
+        padding-top: 12px;
+        margin-top: 12px;
+        border-top: 1px dashed #eee;
+
+        .match-score {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          .match-icon {
+            color: $success-color;
+            font-size: 14px;
+          }
+
+          .score-text {
+            color: $text-color;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+}
+
+// Modern styling for the CV Analysis Result Modal
+.cv-analysis-result-modal {
+  .ant-modal-content {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .ant-modal-header {
+    border-bottom: none;
+    padding: 0;
+  }
+
+  .ant-modal-body {
+    padding: 0;
+  }
+
+  .result-modal-header {
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+
+    .result-modal-title {
+      display: flex;
+      align-items: center;
+      font-size: 18px;
+      font-weight: 600;
+      color: $primary-color;
+
+      .result-logo {
+        height: 24px;
+        margin-right: 12px;
+      }
+    }
+
+    .close-button {
+      color: #999;
+
+      &:hover {
+        color: #666;
+        background: #f5f5f5;
+      }
+    }
+  }
+
+  .analysis-result-content {
+    padding: 20px 24px;
+
+    .analysis-success-container {
+      background-color: #f6ffed;
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+      margin-bottom: 24px;
+
+      .success-icon {
+        font-size: 32px;
+        color: $success-color;
+        margin-bottom: 12px;
+      }
+
+      .success-title {
+        margin: 0;
+        color: $success-color;
+      }
+    }
+
+    .match-score-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 32px;
+
+      .score-circle {
+        margin-bottom: 16px;
+
+        .ant-progress-text {
+          font-weight: 700;
+          font-size: 20px;
+        }
+      }
+
+      .match-description {
+        font-size: 16px;
+        color: $text-color;
+        text-align: center;
+        max-width: 80%;
+      }
+    }
+
+    .result-divider {
+      margin: 16px 0 24px;
+
+      .divider-content {
+        display: flex;
+        align-items: center;
+        color: $primary-color;
+        font-weight: 600;
+        font-size: 16px;
+
+        .anticon {
+          margin-right: 8px;
+          color: $warning-color;
+        }
+      }
+    }
+
+    .info-alert {
+      display: flex;
+      align-items: center;
+
+      .anticon {
+        margin-right: 8px;
+      }
+    }
+
+    .job-recommendations-container {
+      margin: 20px 0;
+    }
+
+    .job-recommendation-item {
+      margin-bottom: 16px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .job-card-wrapper {
+      display: flex;
+      padding: 16px;
+
+      .job-main-content {
+        display: flex;
+        flex: 1;
+
+        .company-logo-container {
+          width: 56px;
+          height: 56px;
+          flex-shrink: 0;
+          margin-right: 16px;
+
+          .company-logo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            border-radius: 4px;
+            border: 1px solid #eee;
+          }
+
+          .company-logo-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1890ff 0%, #096dd9 100%);
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+            border-radius: 4px;
+          }
+        }
+
+        .job-details {
+          flex: 1;
+          min-width: 0; // Fix for text overflow in flexbox
+
+          .job-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          .company-name {
+            display: block;
+            color: $secondary-text;
+            margin-bottom: 8px;
+            font-size: 14px;
+          }
+
+          .job-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 10px;
+
+            .location, .salary {
+              display: flex;
+              align-items: center;
+              font-size: 13px;
+              color: $secondary-text;
+
+              .anticon {
+                margin-right: 4px;
+                font-size: 14px;
+                color: $primary-color;
+              }
+            }
+          }
+
+          .matched-skills {
+            .skills-label {
+              display: block;
+              color: $secondary-text;
+              font-size: 13px;
+              margin-bottom: 6px;
+            }
+
+            .skills-list {
+              display: flex;
+              flex-wrap: wrap;
+              gap: 6px;
+
+              .ant-tag {
+                margin-right: 0;
+                border-radius: 12px;
+                padding: 2px 8px;
+                font-size: 12px;
+                line-height: 1.4;
+                border: none;
+                background-color: rgba($success-color, 0.15);
+                color: darken($success-color, 10%);
+
+                &.more-skills {
+                  background-color: #f5f5f5;
+                  color: $secondary-text;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      .match-percentage {
+        margin-left: 16px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        .match-label {
+          margin-top: 8px;
+          font-size: 13px;
+          color: $primary-color;
+          font-weight: 500;
+          text-align: center;
+        }
+      }
+    }
+
+    .view-more-container {
+      margin-top: 20px;
+    }
+  }
+
+  // Responsiveness for the results modal
+  @media (max-width: 576px) {
+    .job-card-wrapper {
+      flex-direction: column;
+
+      .job-main-content {
+        margin-bottom: 16px;
+      }
+
+      .match-percentage {
+        margin-left: 0 !important;
+      }
+    }
+
+    .match-score-container {
+      .match-description {
+        max-width: 100% !important;
+      }
+    }
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .cv-analysis-container {
+    padding: 16px;
+
+    .cv-analysis-header {
+      padding: 20px;
+    }
+
+    .job-match-info {
+      flex-direction: column;
+
+      .job-match-score {
+        margin: 16px 0 0 0;
+      }
+    }
+
+    .job-company-info {
+      flex-direction: column;
+
+      .company-logo {
+        align-self: center;
+      }
+    }
+  }
+}
+
+// Add animations for a more dynamic feel
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
