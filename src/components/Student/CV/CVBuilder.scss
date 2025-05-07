@@ -574,7 +574,7 @@ $timeline-color: $primary-color;
               outline: none;
               background: transparent;
               transition: all 0.3s ease;
-              padding: 2px 6px;
+              padding: 2px;
               border-radius: 4px;
               display: inline-block;
 
@@ -1275,4 +1275,8 @@ $timeline-color: $primary-color;
     font-size: 16px;
     margin-right: 2px;
   }
+}
+
+.ant-upload-select {
+  border-radius: 50% !important;
 }

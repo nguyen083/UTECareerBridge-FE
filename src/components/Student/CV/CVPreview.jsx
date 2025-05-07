@@ -1087,14 +1087,12 @@ const CVPreview = forwardRef(
       <>
         {/* Header with personal information */}
         <div
-          className="relative overflow-hidden cv-header"
+          className="relative overflow-hidden "
           style={{
             backgroundColor: themeColor,
             padding: "20px",
           }}
         >
-          <div className="absolute top-[-30px] right-[-30px] w-[150px] h-[150px] bg-white/15 rounded-full"></div>
-
           <div className="z-10 flex items-center">
             {personalInfo.photoUrl && (
               <div className="mr-5">
@@ -1108,7 +1106,7 @@ const CVPreview = forwardRef(
               </div>
             )}
 
-            <div className="header-text">
+            <div className="flex flex-col gap-2 header-text">
               <h2
                 className="mb-1 text-3xl font-bold text-white"
                 style={{ letterSpacing: "1px", textTransform: "uppercase" }}
@@ -1116,10 +1114,7 @@ const CVPreview = forwardRef(
                 {personalInfo.fullName || "Họ và tên"}
               </h2>
 
-              <div
-                className="inline-block px-2 py-1 text-white rounded bg-white/20"
-                style={{ marginTop: "10px" }}
-              >
+              <div className="px-2 py-1 text-white rounded w-fit bg-white/20">
                 {personalInfo.jobTitle || "Chức danh - Kinh nghiệm"}
               </div>
             </div>
@@ -1745,18 +1740,20 @@ const CVPreview = forwardRef(
           style={{ borderColor: themeColor }}
         >
           <div className="flex-1 pr-4">
-            <h2
-              className="mb-1 text-2xl font-semibold md:text-3xl"
-              style={{ color: themeColor }}
-            >
-              {personalInfo.fullName || "Họ và tên"}
-            </h2>
+            <div className="flex flex-col gap-2">
+              <h2
+                className="mb-1 text-2xl font-semibold md:text-3xl"
+                style={{ color: themeColor }}
+              >
+                {personalInfo.fullName || "Họ và tên"}
+              </h2>
 
-            <div className="mb-4 text-base italic text-gray-600">
-              {personalInfo.jobTitle || "Chức danh - Kinh nghiệm"}
+              <div className="mb-4 text-base italic text-gray-600">
+                {personalInfo.jobTitle || "Chức danh - Kinh nghiệm"}
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-2 text-sm md:grid-cols-2">
+            <div className="flex flex-wrap gap-2 ">
               {personalInfo.phone && (
                 <div className="flex items-center">
                   <span

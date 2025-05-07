@@ -29,6 +29,7 @@ import {
   CameraOutlined,
   FileOutlined,
   DragOutlined,
+  UploadOutlined,
 } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import "./CVBuilder.scss";
@@ -49,10 +50,10 @@ const { Title, Text } = Typography;
 const { Option } = Select;
 
 // Define item types for drag and drop
-const ItemTypes = {
-  CV_SECTION: "cv_section",
-  CV_ELEMENT: "cv_element",
-};
+// const ItemTypes = {
+//   CV_SECTION: "cv_section",
+//   CV_ELEMENT: "cv_element",
+// };
 
 // CV template options
 const CV_TEMPLATES = [
@@ -62,25 +63,6 @@ const CV_TEMPLATES = [
     color: "#3366FF",
     description:
       "Mẫu hiện đại với thiết kế sạch sẽ, phù hợp cho hầu hết ngành nghề",
-  },
-  {
-    id: "professional",
-    name: "Professional",
-    color: "#0078D7",
-    description:
-      "Mẫu chuyên nghiệp phù hợp với môi trường doanh nghiệp và lĩnh vực tài chính, luật",
-  },
-  {
-    id: "creative",
-    name: "Creative",
-    color: "#5C2D91",
-    description: "Mẫu sáng tạo cho ngành thiết kế, nghệ thuật và marketing",
-  },
-  {
-    id: "minimal",
-    name: "Minimal",
-    color: "#424242",
-    description: "Mẫu tối giản tập trung vào nội dung, dễ đọc và chuyên nghiệp",
   },
   {
     id: "elegant",
@@ -218,7 +200,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
   const student = useSelector((state) => state.student);
   const [sections, setSections] = useState([]);
   const [fullName, setFullName] = useState(
-    student.firstName + " " + student.lastName
+    student.lastName + " " + student.firstName
   );
   const [jobTitle, setJobTitle] = useState("CHỨC DANH - 0 NĂM KINH NGHIỆM");
   const [careerObjective, setCareerObjective] = useState(
@@ -458,19 +440,19 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
     message.success("Đã xóa mục");
   };
 
-  const moveSection = (dragIndex, hoverIndex) => {
-    setSections((prevSections) => {
-      const result = [...prevSections];
-      const [removed] = result.splice(dragIndex, 1);
-      result.splice(hoverIndex, 0, removed);
+  // const moveSection = (dragIndex, hoverIndex) => {
+  //   setSections((prevSections) => {
+  //     const result = [...prevSections];
+  //     const [removed] = result.splice(dragIndex, 1);
+  //     result.splice(hoverIndex, 0, removed);
 
-      // Update positions
-      return result.map((section, index) => ({
-        ...section,
-        position: index,
-      }));
-    });
-  };
+  //     // Update positions
+  //     return result.map((section, index) => ({
+  //       ...section,
+  //       position: index,
+  //     }));
+  //   });
+  // };
 
   const handleSave = async () => {
     try {
@@ -801,81 +783,167 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
     );
   };
 
-  const handleColorSelect = (color) => {
-    setSelectedColor(color);
-    setShowColorPicker(false);
-  };
+  // const handleColorSelect = (color) => {
+  //   setSelectedColor(color);
+  //   setShowColorPicker(false);
+  // };
 
   const renderEditableHeader = () => {
     switch (selectedTemplate.id) {
       case "professional":
         return (
           <div
-            className="cv-header"
-            style={{
-              backgroundColor: selectedColor,
-              padding: "20px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              color: "white",
-            }}
+            className="overflow-hidden rounded-lg shadow-md"
+            style={{ backgroundColor: `${selectedColor}15` }}
           >
-            <div className="header-content">
-              <div
-                className="header-name"
-                contentEditable
-                suppressContentEditableWarning
-                onBlur={(e) => setFullName(e.target.innerText)}
-                style={{
-                  fontSize: "24px",
-                  fontWeight: "bold",
-                  marginBottom: "8px",
-                }}
-              >
-                {fullName}
-              </div>
-
-              <div
-                className="header-title"
-                contentEditable
-                suppressContentEditableWarning
-                onBlur={(e) => setJobTitle(e.target.innerText)}
-                style={{ fontSize: "16px" }}
-              >
-                {jobTitle}
-              </div>
-            </div>
-
-            <div className="profile-photo-container">
-              <Upload
-                name="avatar"
-                listType="picture-card"
-                className="profile-photo-uploader"
-                showUploadList={false}
-                onChange={handleProfilePhotoChange}
-                beforeUpload={() => false} // prevent auto upload
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  display: "block",
-                  cursor: "pointer",
-                  position: "relative",
-                  zIndex: 20,
-                }}
-              >
-                {profilePhotoUrl ? (
-                  <div className="profile-photo" style={{ border: "none" }}>
+            <div className="flex flex-col items-center gap-6 p-6 md:flex-row md:items-start">
+              <div className="flex-shrink-0">
+                <Upload
+                  name="avatar"
+                  listType="picture-card"
+                  className="avatar-uploader"
+                  showUploadList={false}
+                  onChange={handleProfilePhotoChange}
+                  beforeUpload={() => false} // prevent auto upload
+                >
+                  {profilePhotoUrl ? (
                     <img
                       src={profilePhotoUrl}
                       alt="Profile"
-                      style={{ maxWidth: "100%", maxHeight: "100%" }}
+                      className="object-cover min-w-full min-h-full rounded-full"
                     />
+                  ) : (
+                    <div
+                      className="flex items-center justify-center w-32 h-32 bg-gray-100 rounded-full ring-4"
+                      style={{
+                        ringColor: selectedColor,
+                        border: `2px solid white`,
+                      }}
+                    >
+                      <div className="text-center">
+                        <div className="flex justify-center">
+                          <UploadOutlined style={{ fontSize: "24px" }} />
+                        </div>
+                        <div className="mt-2 text-xs">Tải lên ảnh</div>
+                      </div>
+                    </div>
+                  )}
+                </Upload>
+              </div>
+
+              <div className="flex flex-col items-center flex-grow md:items-start">
+                <div
+                  className="mb-2 text-2xl font-bold md:text-3xl"
+                  contentEditable
+                  suppressContentEditableWarning
+                  onBlur={(e) => setFullName(e.target.innerText)}
+                  style={{
+                    color: selectedColor,
+                    outline: "none",
+                    minWidth: "200px",
+                    padding: "2px 5px",
+                  }}
+                >
+                  {fullName}
+                </div>
+
+                <div
+                  className="mb-4 text-lg font-medium text-gray-700"
+                  contentEditable
+                  suppressContentEditableWarning
+                  onBlur={(e) => setJobTitle(e.target.innerText)}
+                  style={{
+                    outline: "none",
+                    minWidth: "200px",
+                    padding: "2px 5px",
+                  }}
+                >
+                  {jobTitle}
+                </div>
+
+                <div className="flex flex-col flex-wrap gap-4 md:flex-row">
+                  <div className="flex items-center">
+                    <span
+                      className="mr-2 text-xl"
+                      style={{ color: selectedColor }}
+                    >
+                      📱
+                    </span>
+                    <span
+                      contentEditable
+                      suppressContentEditableWarning
+                      onBlur={(e) =>
+                        setContactInfo({
+                          ...contactInfo,
+                          phone: e.target.innerText,
+                        })
+                      }
+                      style={{
+                        outline: "none",
+                        minWidth: "100px",
+                        padding: "2px 5px",
+                        borderBottom: "1px dashed #f0f0f0",
+                      }}
+                    >
+                      {contactInfo.phone || "Thêm số điện thoại"}
+                    </span>
                   </div>
-                ) : (
-                  uploadButton
-                )}
-              </Upload>
+
+                  <div className="flex items-center">
+                    <span
+                      className="mr-2 text-xl"
+                      style={{ color: selectedColor }}
+                    >
+                      ✉️
+                    </span>
+                    <span
+                      contentEditable
+                      suppressContentEditableWarning
+                      onBlur={(e) =>
+                        setContactInfo({
+                          ...contactInfo,
+                          email: e.target.innerText,
+                        })
+                      }
+                      style={{
+                        outline: "none",
+                        minWidth: "100px",
+                        padding: "2px 5px",
+                        borderBottom: "1px dashed #f0f0f0",
+                      }}
+                    >
+                      {contactInfo.email || "example@email.com"}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center">
+                    <span
+                      className="mr-2 text-xl"
+                      style={{ color: selectedColor }}
+                    >
+                      📍
+                    </span>
+                    <span
+                      contentEditable
+                      suppressContentEditableWarning
+                      onBlur={(e) =>
+                        setContactInfo({
+                          ...contactInfo,
+                          address: e.target.innerText,
+                        })
+                      }
+                      style={{
+                        outline: "none",
+                        minWidth: "100px",
+                        padding: "2px 5px",
+                        borderBottom: "1px dashed #f0f0f0",
+                      }}
+                    >
+                      {contactInfo.address || "Thêm địa chỉ"}
+                    </span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         );
@@ -953,7 +1021,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                 </Upload>
               </div>
 
-              <div className="header-text">
+              <div className="flex flex-col">
                 <div
                   className="header-name"
                   contentEditable
@@ -977,10 +1045,9 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                   onBlur={(e) => setJobTitle(e.target.innerText)}
                   style={{
                     color: "white",
+                    width: "fit-content",
+                    minWidth: "100px",
                     backgroundColor: "rgba(255,255,255,0.2)",
-                    padding: "4px 8px",
-                    display: "inline-block",
-                    marginTop: "10px",
                   }}
                 >
                   {jobTitle}
@@ -1106,34 +1173,36 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
             }}
           >
             <div className="header-content">
-              <div
-                className="header-name"
-                contentEditable
-                suppressContentEditableWarning
-                onBlur={(e) => setFullName(e.target.innerText)}
-                style={{
-                  color: selectedColor,
-                  fontSize: "28px",
-                  fontWeight: "600",
-                  marginBottom: "5px",
-                }}
-              >
-                {fullName}
-              </div>
+              <div className="flex flex-col">
+                <div
+                  className="header-name"
+                  contentEditable
+                  suppressContentEditableWarning
+                  onBlur={(e) => setFullName(e.target.innerText)}
+                  style={{
+                    color: selectedColor,
+                    fontSize: "28px",
+                    fontWeight: "600",
+                    marginBottom: "5px",
+                  }}
+                >
+                  {fullName}
+                </div>
 
-              <div
-                className="header-title"
-                contentEditable
-                suppressContentEditableWarning
-                onBlur={(e) => setJobTitle(e.target.innerText)}
-                style={{
-                  fontSize: "16px",
-                  color: "#555",
-                  marginBottom: "15px",
-                  fontStyle: "italic",
-                }}
-              >
-                {jobTitle}
+                <div
+                  className="header-title"
+                  contentEditable
+                  suppressContentEditableWarning
+                  onBlur={(e) => setJobTitle(e.target.innerText)}
+                  style={{
+                    fontSize: "16px",
+                    color: "#555",
+                    marginBottom: "15px",
+                    fontStyle: "italic",
+                  }}
+                >
+                  {jobTitle}
+                </div>
               </div>
 
               <div
@@ -1261,124 +1330,155 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
       default: // modern
         return (
           <div
-            className="cv-header"
-            style={{ backgroundColor: `${selectedColor}10` }}
+            className="overflow-hidden rounded-lg shadow-md"
+            style={{ backgroundColor: `${selectedColor}15` }}
           >
-            <div className="profile-photo-container">
-              <Upload
-                name="avatar"
-                listType="picture-card"
-                className="profile-photo-uploader"
-                showUploadList={false}
-                onChange={handleProfilePhotoChange}
-                beforeUpload={() => false} // prevent auto upload
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  display: "block",
-                  cursor: "pointer",
-                  position: "relative",
-                  zIndex: 20,
-                }}
-              >
-                {profilePhotoUrl ? (
-                  <div
-                    className="profile-photo"
-                    style={{ border: `3px solid ${selectedColor}` }}
-                  >
-                    <img src={profilePhotoUrl} alt="Profile" />
+            <div className="flex flex-col items-center gap-6 p-6 md:flex-row md:items-start">
+              <div className="flex-shrink-0">
+                <Upload
+                  name="avatar"
+                  listType="picture-card"
+                  className=" avatar-uploader"
+                  showUploadList={false}
+                  onChange={handleProfilePhotoChange}
+                  beforeUpload={() => false} // prevent auto upload
+                >
+                  {profilePhotoUrl ? (
+                    <img
+                      src={profilePhotoUrl}
+                      alt="Profile"
+                      className="object-cover min-w-full min-h-full rounded-full"
+                    />
+                  ) : (
+                    <div
+                      className="flex items-center justify-center w-32 h-32 bg-gray-100 rounded-full ring-4"
+                      style={{
+                        ringColor: selectedColor,
+                        border: `2px solid white`,
+                      }}
+                    >
+                      <div className="text-center">
+                        <div className="flex justify-center">
+                          <UploadOutlined style={{ fontSize: "24px" }} />
+                        </div>
+                        <div className="mt-2 text-xs">Tải lên ảnh</div>
+                      </div>
+                    </div>
+                  )}
+                </Upload>
+              </div>
+
+              <div className="flex flex-col items-center flex-grow md:items-start">
+                <div
+                  className="mb-2 text-2xl font-bold md:text-3xl"
+                  contentEditable
+                  suppressContentEditableWarning
+                  onBlur={(e) => setFullName(e.target.innerText)}
+                  style={{
+                    color: selectedColor,
+                    outline: "none",
+                    minWidth: "200px",
+                    padding: "2px 5px",
+                  }}
+                >
+                  {fullName}
+                </div>
+
+                <div
+                  className="mb-4 text-lg font-medium text-gray-700"
+                  contentEditable
+                  suppressContentEditableWarning
+                  onBlur={(e) => setJobTitle(e.target.innerText)}
+                  style={{
+                    outline: "none",
+                    minWidth: "200px",
+                    padding: "2px 5px",
+                  }}
+                >
+                  {jobTitle}
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  <div className="flex items-center">
+                    <span
+                      className="mr-2 text-xl"
+                      style={{ color: selectedColor }}
+                    >
+                      📱
+                    </span>
+                    <span
+                      contentEditable
+                      suppressContentEditableWarning
+                      onBlur={(e) =>
+                        setContactInfo({
+                          ...contactInfo,
+                          phone: e.target.innerText,
+                        })
+                      }
+                      style={{
+                        outline: "none",
+                        minWidth: "100px",
+                        padding: "2px 5px",
+                        borderBottom: "1px dashed #f0f0f0",
+                      }}
+                    >
+                      {contactInfo.phone || "Thêm số điện thoại"}
+                    </span>
                   </div>
-                ) : (
-                  uploadButton
-                )}
-              </Upload>
-            </div>
 
-            <div className="header-content">
-              <div
-                className="header-name"
-                contentEditable
-                suppressContentEditableWarning
-                onBlur={(e) => setFullName(e.target.innerText)}
-                style={{ color: selectedColor }}
-              >
-                {fullName}
-              </div>
+                  <div className="flex items-center">
+                    <span
+                      className="mr-2 text-xl"
+                      style={{ color: selectedColor }}
+                    >
+                      ✉️
+                    </span>
+                    <span
+                      contentEditable
+                      suppressContentEditableWarning
+                      onBlur={(e) =>
+                        setContactInfo({
+                          ...contactInfo,
+                          email: e.target.innerText,
+                        })
+                      }
+                      style={{
+                        outline: "none",
+                        minWidth: "100px",
+                        padding: "2px 5px",
+                        borderBottom: "1px dashed #f0f0f0",
+                      }}
+                    >
+                      {contactInfo.email || "example@email.com"}
+                    </span>
+                  </div>
 
-              <div
-                className="header-title"
-                contentEditable
-                suppressContentEditableWarning
-                onBlur={(e) => setJobTitle(e.target.innerText)}
-              >
-                {jobTitle}
-              </div>
-
-              <div className="contact-details">
-                <div className="contact-item">
-                  <span
-                    className="contact-icon"
-                    style={{ color: selectedColor }}
-                  >
-                    📱
-                  </span>
-                  <span
-                    className="contact-text"
-                    contentEditable
-                    suppressContentEditableWarning
-                    onBlur={(e) =>
-                      setContactInfo({
-                        ...contactInfo,
-                        phone: e.target.innerText,
-                      })
-                    }
-                  >
-                    {contactInfo.phone || "Thêm số điện thoại"}
-                  </span>
-                </div>
-
-                <div className="contact-item">
-                  <span
-                    className="contact-icon"
-                    style={{ color: selectedColor }}
-                  >
-                    ✉️
-                  </span>
-                  <span
-                    className="contact-text"
-                    contentEditable
-                    suppressContentEditableWarning
-                    onBlur={(e) =>
-                      setContactInfo({
-                        ...contactInfo,
-                        email: e.target.innerText,
-                      })
-                    }
-                  >
-                    {contactInfo.email}
-                  </span>
-                </div>
-
-                <div className="contact-item">
-                  <span
-                    className="contact-icon"
-                    style={{ color: selectedColor }}
-                  >
-                    📍
-                  </span>
-                  <span
-                    className="contact-text"
-                    contentEditable
-                    suppressContentEditableWarning
-                    onBlur={(e) =>
-                      setContactInfo({
-                        ...contactInfo,
-                        address: e.target.innerText,
-                      })
-                    }
-                  >
-                    {contactInfo.address}
-                  </span>
+                  <div className="flex items-center">
+                    <span
+                      className="mr-2 text-xl"
+                      style={{ color: selectedColor }}
+                    >
+                      📍
+                    </span>
+                    <span
+                      contentEditable
+                      suppressContentEditableWarning
+                      onBlur={(e) =>
+                        setContactInfo({
+                          ...contactInfo,
+                          address: e.target.innerText,
+                        })
+                      }
+                      style={{
+                        outline: "none",
+                        minWidth: "100px",
+                        padding: "2px 5px",
+                        borderBottom: "1px dashed #f0f0f0",
+                      }}
+                    >
+                      {contactInfo.address || "Thêm địa chỉ"}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1434,11 +1534,6 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
             }
 
             // Reapply styles based on the template
-            try {
-              updateElementStylesByTemplate(template.id);
-            } catch (error) {
-              console.error("Error updating styles:", error);
-            }
           }
         } catch (error) {
           console.error("Error in template change operation:", error);
@@ -1447,12 +1542,6 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
     } catch (error) {
       console.error("Fatal error in template change:", error);
     }
-  };
-
-  const cvTheme = {
-    color: selectedColor,
-    font: selectedFont,
-    fontSize: fontSize,
   };
 
   // Upload button for profile photo with loading indicator
