@@ -276,17 +276,19 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
           address: res,
         });
       });
-    getSkillStudent().then((res) => {
-      setSkills(
-        res.data.map((item, index) => {
-          return {
-            id: index + 1,
-            name: item.skillName,
-            level: item.level || 3,
-          };
-        })
-      );
-    });
+    if (!existingCvData) {
+      getSkillStudent().then((res) => {
+        setSkills(
+          res.data.map((item, index) => {
+            return {
+              id: index + 1,
+              name: item.skillName,
+              level: item.level || 3,
+            };
+          })
+        );
+      });
+    }
   }, [student]);
 
   useEffect(() => {
