@@ -17,31 +17,17 @@ const { Paragraph } = Typography;
 const getLevelPercentage = (level) => {
   switch (level) {
     case 1:
-      return "25%";
+      return "20%";
     case 2:
-      return "50%";
+      return "40%";
     case 3:
-      return "75%";
+      return "60%";
     case 4:
+      return "80%";
+    case 5:
       return "100%";
     default:
-      return "50%";
-  }
-};
-
-// Helper function to convert skill level to number of dots (1-5)
-const getLevelDots = (level) => {
-  switch (level) {
-    case 1:
-      return 1;
-    case 2:
-      return 2;
-    case 3:
-      return 3;
-    case 4:
-      return 4;
-    default:
-      return 3;
+      return "20%";
   }
 };
 
@@ -141,7 +127,6 @@ const CVPreview = forwardRef(
   ) => {
     const { t } = useTranslation();
     const contentRef = useRef(null);
-    const [isRendering, setIsRendering] = useState(false);
     const [currentTemplate, setCurrentTemplate] = useState(template);
     const [titles, setTitles] = useState(getSectionTitles(template.id));
 
@@ -178,8 +163,6 @@ const CVPreview = forwardRef(
     const createPDF = async () => {
       if (!contentRef.current) return false;
       try {
-        setIsRendering(true);
-
         // Lưu style gốc để khôi phục sau khi tạo PDF
         const originalDisplay = contentRef.current.style.display;
         const originalOpacity = contentRef.current.style.opacity;
@@ -470,11 +453,9 @@ const CVPreview = forwardRef(
         contentRef.current.style.transform = originalTransform;
         contentRef.current.style.maxWidth = originalMaxWidth;
 
-        setIsRendering(false);
         return pdf;
       } catch (error) {
         console.error("Error creating PDF:", error);
-        setIsRendering(false);
         return null;
       }
     };
@@ -602,67 +583,74 @@ const CVPreview = forwardRef(
 
     // Modern template (default)
     const renderModernTemplate = () => (
-      <>
+      <div className="flex flex-col space-y-6">
         {/* Header with personal information */}
         <div
-          className="cv-header"
-          style={{ backgroundColor: `${themeColor}10` }}
+          className="overflow-hidden rounded-lg shadow-md"
+          style={{ backgroundColor: `${themeColor}15` }}
         >
-          <div className="header-content">
+          <div className="flex flex-col items-center gap-6 p-6 md:flex-row md:items-start">
             {personalInfo.photoUrl && (
-              <div className="profile-photo-container">
+              <div className="flex-shrink-0">
                 <div
-                  className="profile-photo"
-                  style={{ border: `3px solid ${themeColor}` }}
+                  className="w-32 h-32 overflow-hidden rounded-full ring-4"
+                  style={{ ringColor: themeColor }}
                 >
-                  <img src={personalInfo.photoUrl} alt="Profile" />
+                  <img
+                    src={personalInfo.photoUrl}
+                    alt="Profile"
+                    className="object-cover w-full h-full"
+                  />
                 </div>
               </div>
             )}
 
-            <div className="personal-details">
-              <h2 className="full-name" style={{ color: themeColor }}>
+            <div className="flex flex-col items-center flex-grow md:items-start">
+              <h2
+                className="mb-2 text-2xl font-bold md:text-3xl"
+                style={{ color: themeColor }}
+              >
                 {personalInfo.fullName || "Họ và tên"}
               </h2>
 
-              <div className="job-title">
+              <div className="mb-4 text-lg font-medium text-gray-700">
                 {personalInfo.jobTitle || "Chức danh - Kinh nghiệm"}
               </div>
 
-              <div className="contact-info">
+              <div className="flex flex-col flex-wrap gap-4 md:flex-row">
                 {personalInfo.phone && (
-                  <div className="contact-item">
+                  <div className="flex items-center">
                     <span
-                      className="contact-icon"
+                      className="mr-2 text-xl"
                       style={{ color: themeColor }}
                     >
                       📱
                     </span>
-                    <span className="contact-text">{personalInfo.phone}</span>
+                    <span>{personalInfo.phone}</span>
                   </div>
                 )}
 
                 {personalInfo.email && (
-                  <div className="contact-item">
+                  <div className="flex items-center">
                     <span
-                      className="contact-icon"
+                      className="mr-2 text-xl"
                       style={{ color: themeColor }}
                     >
                       ✉️
                     </span>
-                    <span className="contact-text">{personalInfo.email}</span>
+                    <span>{personalInfo.email}</span>
                   </div>
                 )}
 
                 {personalInfo.address && (
-                  <div className="contact-item">
+                  <div className="flex items-center">
                     <span
-                      className="contact-icon"
+                      className="mr-2 text-xl"
                       style={{ color: themeColor }}
                     >
                       📍
                     </span>
-                    <span className="contact-text">{personalInfo.address}</span>
+                    <span>{personalInfo.address}</span>
                   </div>
                 )}
               </div>
@@ -671,14 +659,14 @@ const CVPreview = forwardRef(
         </div>
 
         {/* Career Objective Section */}
-        <div className="cv-section">
+        <div className="p-6 bg-white rounded-lg shadow-md">
           <div
-            className="section-title"
-            style={{ borderBottomColor: themeColor }}
+            className="pb-2 mb-4 text-xl font-bold"
+            style={{ borderBottom: `2px solid ${themeColor}` }}
           >
             {titles.objective}
           </div>
-          <div className="section-content">
+          <div className="prose max-w-none">
             <Paragraph>
               {personalInfo.objective ||
                 "Mục tiêu nghề nghiệp chưa được cập nhật."}
@@ -687,67 +675,79 @@ const CVPreview = forwardRef(
         </div>
 
         {/* Personal Information Section */}
-        <div className="cv-section">
+        <div className="p-6 bg-white rounded-lg shadow-md">
           <div
-            className="section-title"
-            style={{ borderBottomColor: themeColor }}
+            className="pb-2 mb-4 text-xl font-bold"
+            style={{ borderBottom: `2px solid ${themeColor}` }}
           >
             {titles.personalInfo}
           </div>
-          <div className="section-content">
-            <div className="personal-info-grid">
-              {personalInfo.birthDate && (
-                <div className="personal-info-item">
-                  <div className="info-label">{titles.dateLabel}</div>
-                  <div className="info-value">{personalInfo.birthDate}</div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            {personalInfo.birthDate && (
+              <div className="flex flex-col">
+                <div className="font-medium text-gray-600">
+                  {titles.dateLabel}
                 </div>
-              )}
-              {personalInfo.nationality && (
-                <div className="personal-info-item">
-                  <div className="info-label">{titles.localeLabel}</div>
-                  <div className="info-value">{personalInfo.nationality}</div>
+                <div>{personalInfo.birthDate}</div>
+              </div>
+            )}
+            {personalInfo.nationality && (
+              <div className="flex flex-col">
+                <div className="font-medium text-gray-600">
+                  {titles.localeLabel}
                 </div>
-              )}
-              {personalInfo.maritalStatus && (
-                <div className="personal-info-item">
-                  <div className="info-label">{titles.statusLabel}</div>
-                  <div className="info-value">{personalInfo.maritalStatus}</div>
+                <div>{personalInfo.nationality}</div>
+              </div>
+            )}
+            {personalInfo.maritalStatus && (
+              <div className="flex flex-col">
+                <div className="font-medium text-gray-600">
+                  {titles.statusLabel}
                 </div>
-              )}
-              {personalInfo.gender && (
-                <div className="personal-info-item">
-                  <div className="info-label">{titles.genderLabel}</div>
-                  <div className="info-value">{personalInfo.gender}</div>
+                <div>{personalInfo.maritalStatus}</div>
+              </div>
+            )}
+            {personalInfo.gender && (
+              <div className="flex flex-col">
+                <div className="font-medium text-gray-600">
+                  {titles.genderLabel}
                 </div>
-              )}
-            </div>
+                <div>{personalInfo.gender}</div>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Work Experience Section */}
         {workExperiences && workExperiences.length > 0 && (
-          <div className="cv-section">
+          <div className="p-6 bg-white rounded-lg shadow-md">
             <div
-              className="section-title"
-              style={{ borderBottomColor: themeColor }}
+              className="pb-2 mb-4 text-xl font-bold"
+              style={{ borderBottom: `2px solid ${themeColor}` }}
             >
               {titles.workExperience}
             </div>
-            <div className="section-content timeline-section">
+            <div className="space-y-6">
               {workExperiences.map((exp) => (
-                <div key={exp.id} className="timeline-item">
+                <div
+                  key={exp.id}
+                  className="relative pl-6 border-l-2"
+                  style={{ borderColor: themeColor }}
+                >
                   <div
-                    className="timeline-point"
-                    style={{ borderColor: themeColor }}
+                    className="absolute w-4 h-4 rounded-full -left-[9px] top-1"
+                    style={{ backgroundColor: themeColor }}
                   ></div>
-                  <div className="timeline-date">
+                  <div className="mb-1 text-sm font-medium text-gray-500">
                     {exp.startDate} - {exp.endDate}
                   </div>
-                  <div className="timeline-content">
-                    <div className="company-name">{exp.companyName}</div>
-                    <div className="job-title">{exp.jobTitle}</div>
-                    <div className="description">{exp.description}</div>
+                  <div className="mb-1 text-lg font-bold">
+                    {exp.companyName}
                   </div>
+                  <div className="mb-2 italic font-medium text-gray-700">
+                    {exp.jobTitle}
+                  </div>
+                  <div className="text-gray-600">{exp.description}</div>
                 </div>
               ))}
             </div>
@@ -756,20 +756,25 @@ const CVPreview = forwardRef(
 
         {/* Skills Section */}
         {skills && skills.length > 0 && (
-          <div className="cv-section">
+          <div className="p-6 bg-white rounded-lg shadow-md">
             <div
-              className="section-title"
-              style={{ borderBottomColor: themeColor }}
+              className="pb-2 mb-4 text-xl font-bold"
+              style={{ borderBottom: `2px solid ${themeColor}` }}
             >
               {titles.skills}
             </div>
-            <div className="section-content skills-list">
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
               {skills.map((skill) => (
-                <div key={skill.id} className="skill-item">
-                  <div className="skill-name">{skill.name}</div>
-                  <div className="skill-level">
+                <div key={skill.id} className="flex flex-col">
+                  <div className="flex justify-between mb-1">
+                    <div className="font-medium">{skill.name}</div>
+                    <div className="text-sm" style={{ color: themeColor }}>
+                      {getLevelPercentage(skill.level)}
+                    </div>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2.5">
                     <div
-                      className="skill-level-bar"
+                      className="h-2.5 rounded-full"
                       style={{
                         width: getLevelPercentage(skill.level),
                         backgroundColor: themeColor,
@@ -784,26 +789,32 @@ const CVPreview = forwardRef(
 
         {/* Certificates Section */}
         {certificates && certificates.length > 0 && (
-          <div className="cv-section">
+          <div className="p-6 bg-white rounded-lg shadow-md">
             <div
-              className="section-title"
-              style={{ borderBottomColor: themeColor }}
+              className="pb-2 mb-4 text-xl font-bold"
+              style={{ borderBottom: `2px solid ${themeColor}` }}
             >
               {titles.certificates}
             </div>
-            <div className="section-content timeline-section">
+            <div className="space-y-6">
               {certificates.map((cert) => (
-                <div key={cert.id} className="timeline-item">
+                <div
+                  key={cert.id}
+                  className="relative pl-6 border-l-2"
+                  style={{ borderColor: themeColor }}
+                >
                   <div
-                    className="timeline-point"
-                    style={{ borderColor: themeColor }}
+                    className="absolute w-4 h-4 rounded-full -left-[9px] top-1"
+                    style={{ backgroundColor: themeColor }}
                   ></div>
-                  <div className="timeline-date">{cert.date}</div>
-                  <div className="timeline-content">
-                    <div className="organization-name">{cert.organization}</div>
-                    <div className="certificate-name">{cert.name}</div>
-                    <div className="description">{cert.description}</div>
+                  <div className="mb-1 text-sm font-medium text-gray-500">
+                    {cert.date}
                   </div>
+                  <div className="mb-1 text-lg font-bold">{cert.name}</div>
+                  <div className="mb-2 italic font-medium text-gray-700">
+                    {cert.organization}
+                  </div>
+                  <div className="text-gray-600">{cert.description}</div>
                 </div>
               ))}
             </div>
@@ -812,7 +823,7 @@ const CVPreview = forwardRef(
 
         {/* Custom Sections */}
         {renderCustomSections()}
-      </>
+      </div>
     );
 
     // Professional template
@@ -820,40 +831,25 @@ const CVPreview = forwardRef(
       <>
         {/* Header with personal information */}
         <div
-          className="cv-header"
-          style={{
-            backgroundColor: themeColor,
-            padding: "20px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            color: "white",
-          }}
+          className="flex items-center justify-between p-6 rounded-t-lg shadow-md"
+          style={{ backgroundColor: themeColor }}
         >
-          <div className="header-content">
-            <h2
-              className="full-name"
-              style={{
-                color: "white",
-                fontWeight: "bold",
-                marginBottom: "8px",
-              }}
-            >
+          <div className="text-white">
+            <h2 className="mb-2 text-2xl font-bold md:text-3xl">
               {personalInfo.fullName || "Họ và tên"}
             </h2>
-
-            <div className="job-title" style={{ fontSize: "16px" }}>
+            <div className="text-lg opacity-90">
               {personalInfo.jobTitle || "Chức danh - Kinh nghiệm"}
             </div>
           </div>
 
           {personalInfo.photoUrl && (
-            <div className="profile-photo-container">
-              <div className="profile-photo" style={{ border: "none" }}>
+            <div className="ml-4">
+              <div className="w-24 h-24 overflow-hidden border-4 rounded-full md:w-28 md:h-28 border-white/30">
                 <img
                   src={personalInfo.photoUrl}
                   alt="Profile"
-                  style={{ maxWidth: "100%", maxHeight: "100%" }}
+                  className="object-cover w-full h-full"
                 />
               </div>
             </div>
@@ -861,138 +857,120 @@ const CVPreview = forwardRef(
         </div>
 
         {/* Two-column layout for Professional */}
-        <div
-          className="professional-layout"
-          style={{ display: "flex", marginTop: "20px" }}
-        >
+        <div className="flex flex-col gap-6 mt-6 md:flex-row">
           {/* Sidebar */}
-          <div
-            className="professional-sidebar"
-            style={{
-              width: "30%",
-              backgroundColor: `${themeColor}10`,
-              padding: "20px",
-              borderRadius: "5px",
-            }}
-          >
+          <div className="w-full space-y-6 md:w-1/3">
             {/* Contact Section */}
-            <div className="cv-section sidebar-section">
+            <div className="overflow-hidden bg-white rounded-lg shadow-md">
               <div
-                className="section-title"
-                style={{
-                  backgroundColor: themeColor,
-                  color: "white",
-                  padding: "10px 15px",
-                  marginBottom: "15px",
-                }}
+                className="p-4 font-bold text-white"
+                style={{ backgroundColor: themeColor }}
               >
                 {titles.contact}
               </div>
-              <div className="section-content contact-info-professional">
+              <div className="p-4 space-y-3">
                 {personalInfo.phone && (
-                  <div className="contact-item">
-                    <span className="contact-label">SĐT:</span>
-                    <span className="contact-value">{personalInfo.phone}</span>
+                  <div className="flex">
+                    <span className="w-20 font-medium text-gray-600">SĐT:</span>
+                    <span className="flex-1">{personalInfo.phone}</span>
                   </div>
                 )}
 
                 {personalInfo.email && (
-                  <div className="contact-item">
-                    <span className="contact-label">Email:</span>
-                    <span className="contact-value">{personalInfo.email}</span>
+                  <div className="flex">
+                    <span className="w-20 font-medium text-gray-600">
+                      Email:
+                    </span>
+                    <span className="flex-1 break-all">
+                      {personalInfo.email}
+                    </span>
                   </div>
                 )}
 
                 {personalInfo.address && (
-                  <div className="contact-item">
-                    <span className="contact-label">Địa chỉ:</span>
-                    <span className="contact-value">
-                      {personalInfo.address}
+                  <div className="flex">
+                    <span className="w-20 font-medium text-gray-600">
+                      Địa chỉ:
                     </span>
+                    <span className="flex-1">{personalInfo.address}</span>
                   </div>
                 )}
               </div>
             </div>
 
             {/* Personal Information Section */}
-            <div className="cv-section sidebar-section">
+            <div className="overflow-hidden bg-white rounded-lg shadow-md">
               <div
-                className="section-title"
-                style={{
-                  backgroundColor: themeColor,
-                  color: "white",
-                  padding: "10px 15px",
-                  marginBottom: "15px",
-                }}
+                className="p-4 font-bold text-white"
+                style={{ backgroundColor: themeColor }}
               >
                 {titles.personalInfo}
               </div>
-              <div className="section-content">
-                <div className="personal-info-list">
-                  {personalInfo.birthDate && (
-                    <div className="personal-info-item">
-                      <div className="info-label">{titles.dateLabel}</div>
-                      <div className="info-value">{personalInfo.birthDate}</div>
+              <div className="p-4 space-y-3">
+                {personalInfo.birthDate && (
+                  <div className="flex flex-col">
+                    <div className="font-medium" style={{ color: themeColor }}>
+                      {titles.dateLabel}
                     </div>
-                  )}
-                  {personalInfo.nationality && (
-                    <div className="personal-info-item">
-                      <div className="info-label">{titles.localeLabel}</div>
-                      <div className="info-value">
-                        {personalInfo.nationality}
-                      </div>
+                    <div className="mt-1">{personalInfo.birthDate}</div>
+                  </div>
+                )}
+                {personalInfo.nationality && (
+                  <div className="flex flex-col mt-3">
+                    <div className="font-medium" style={{ color: themeColor }}>
+                      {titles.localeLabel}
                     </div>
-                  )}
-                  {personalInfo.maritalStatus && (
-                    <div className="personal-info-item">
-                      <div className="info-label">{titles.statusLabel}</div>
-                      <div className="info-value">
-                        {personalInfo.maritalStatus}
-                      </div>
+                    <div className="mt-1">{personalInfo.nationality}</div>
+                  </div>
+                )}
+                {personalInfo.maritalStatus && (
+                  <div className="flex flex-col mt-3">
+                    <div className="font-medium" style={{ color: themeColor }}>
+                      {titles.statusLabel}
                     </div>
-                  )}
-                  {personalInfo.gender && (
-                    <div className="personal-info-item">
-                      <div className="info-label">{titles.genderLabel}</div>
-                      <div className="info-value">{personalInfo.gender}</div>
+                    <div className="mt-1">{personalInfo.maritalStatus}</div>
+                  </div>
+                )}
+                {personalInfo.gender && (
+                  <div className="flex flex-col mt-3">
+                    <div className="font-medium" style={{ color: themeColor }}>
+                      {titles.genderLabel}
                     </div>
-                  )}
-                </div>
+                    <div className="mt-1">{personalInfo.gender}</div>
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Skills Section */}
             {skills && skills.length > 0 && (
-              <div className="cv-section sidebar-section">
+              <div className="overflow-hidden bg-white rounded-lg shadow-md">
                 <div
-                  className="section-title"
-                  style={{
-                    backgroundColor: themeColor,
-                    color: "white",
-                    padding: "10px 15px",
-                    marginBottom: "15px",
-                  }}
+                  className="p-4 font-bold text-white"
+                  style={{ backgroundColor: themeColor }}
                 >
                   {titles.skills}
                 </div>
-                <div className="section-content skills-list-professional">
+                <div className="p-4 space-y-4">
                   {skills.map((skill) => (
-                    <div key={skill.id} className="skill-item-professional">
-                      <div className="skill-name">{skill.name}</div>
-                      <div className="skill-level-dots">
+                    <div key={skill.id} className="skill-item">
+                      <div className="flex justify-between mb-2">
+                        <div className="font-medium">{skill.name}</div>
+                        <div className="text-sm opacity-75">
+                          {getLevelPercentage(skill.level)}
+                        </div>
+                      </div>
+                      <div className="flex gap-1.5">
                         {Array.from({ length: 5 }).map((_, i) => (
-                          <span
+                          <div
                             key={i}
-                            className={`skill-dot ${
-                              i < getLevelDots(skill.level) ? "filled" : ""
-                            }`}
+                            className={`h-2.5 w-full rounded`}
                             style={{
                               backgroundColor:
-                                i < getLevelDots(skill.level)
-                                  ? themeColor
-                                  : "#e0e0e0",
+                                i < skill.level ? themeColor : "#e0e0e0",
+                              opacity: i < skill.level ? 1 : 0.5,
                             }}
-                          ></span>
+                          ></div>
                         ))}
                       </div>
                     </div>
@@ -1003,25 +981,17 @@ const CVPreview = forwardRef(
           </div>
 
           {/* Main Content */}
-          <div
-            className="professional-main"
-            style={{ width: "70%", padding: "0 0 0 20px" }}
-          >
+          <div className="w-full space-y-6 md:w-2/3">
             {/* Career Objective Section */}
-            <div className="cv-section">
+            <div className="overflow-hidden bg-white rounded-lg shadow-md">
               <div
-                className="section-title"
-                style={{
-                  backgroundColor: themeColor,
-                  color: "white",
-                  padding: "10px 15px",
-                  marginBottom: "15px",
-                }}
+                className="p-4 font-bold text-white"
+                style={{ backgroundColor: themeColor }}
               >
                 {titles.objective}
               </div>
-              <div className="section-content">
-                <Paragraph>
+              <div className="p-4">
+                <Paragraph className="text-gray-700">
                   {personalInfo.objective ||
                     "Mục tiêu nghề nghiệp chưa được cập nhật."}
                 </Paragraph>
@@ -1030,29 +1000,34 @@ const CVPreview = forwardRef(
 
             {/* Work Experience Section */}
             {workExperiences && workExperiences.length > 0 && (
-              <div className="cv-section">
+              <div className="overflow-hidden bg-white rounded-lg shadow-md">
                 <div
-                  className="section-title"
-                  style={{
-                    backgroundColor: themeColor,
-                    color: "white",
-                    padding: "10px 15px",
-                    marginBottom: "15px",
-                  }}
+                  className="p-4 font-bold text-white"
+                  style={{ backgroundColor: themeColor }}
                 >
                   {titles.workExperience}
                 </div>
-                <div className="section-content professional-timeline">
+                <div className="p-4 space-y-6">
                   {workExperiences.map((exp) => (
-                    <div key={exp.id} className="professional-experience-item">
-                      <div className="experience-header">
-                        <div className="company-name">{exp.companyName}</div>
-                        <div className="experience-date">
+                    <div
+                      key={exp.id}
+                      className="pb-4 border-b border-gray-200 last:border-b-0"
+                    >
+                      <div className="flex flex-wrap justify-between mb-2">
+                        <div
+                          className="text-lg font-bold"
+                          style={{ color: themeColor }}
+                        >
+                          {exp.companyName}
+                        </div>
+                        <div className="px-2 py-1 text-sm bg-gray-100 rounded">
                           {exp.startDate} - {exp.endDate}
                         </div>
                       </div>
-                      <div className="job-title">{exp.jobTitle}</div>
-                      <div className="description">{exp.description}</div>
+                      <div className="mb-2 italic font-medium">
+                        {exp.jobTitle}
+                      </div>
+                      <div className="text-gray-700">{exp.description}</div>
                     </div>
                   ))}
                 </div>
@@ -1061,36 +1036,46 @@ const CVPreview = forwardRef(
 
             {/* Certificates Section */}
             {certificates && certificates.length > 0 && (
-              <div className="cv-section">
+              <div className="overflow-hidden bg-white rounded-lg shadow-md">
                 <div
-                  className="section-title"
-                  style={{
-                    backgroundColor: themeColor,
-                    color: "white",
-                    padding: "10px 15px",
-                    marginBottom: "15px",
-                  }}
+                  className="p-4 font-bold text-white"
+                  style={{ backgroundColor: themeColor }}
                 >
                   {titles.certificates}
                 </div>
-                <div className="section-content professional-certificates">
-                  {certificates.map((cert) => (
-                    <div key={cert.id} className="certificate-item">
-                      <div className="certificate-header">
-                        <div className="certificate-name">{cert.name}</div>
-                        <div className="certificate-date">{cert.date}</div>
+                <div className="p-4">
+                  <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                    {certificates.map((cert) => (
+                      <div
+                        key={cert.id}
+                        className="p-3 border rounded-lg"
+                        style={{ borderColor: `${themeColor}40` }}
+                      >
+                        <div className="flex justify-between mb-2">
+                          <div
+                            className="font-bold"
+                            style={{ color: themeColor }}
+                          >
+                            {cert.name}
+                          </div>
+                          <div className="text-sm text-gray-500">
+                            {cert.date}
+                          </div>
+                        </div>
+                        <div className="mb-2 text-sm font-medium">
+                          {cert.organization}
+                        </div>
+                        <div className="text-sm text-gray-600">
+                          {cert.description}
+                        </div>
                       </div>
-                      <div className="organization-name">
-                        {cert.organization}
-                      </div>
-                      <div className="description">{cert.description}</div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
 
-            {/* Custom Sections - only those not shown in sidebar */}
+            {/* Custom Sections */}
             {renderCustomSections()}
           </div>
         </div>
@@ -1102,53 +1087,22 @@ const CVPreview = forwardRef(
       <>
         {/* Header with personal information */}
         <div
-          className="cv-header"
+          className="relative overflow-hidden cv-header"
           style={{
             backgroundColor: themeColor,
             padding: "20px",
-            position: "relative",
-            overflow: "hidden",
           }}
         >
-          <div
-            style={{
-              position: "absolute",
-              top: "-30px",
-              right: "-30px",
-              width: "150px",
-              height: "150px",
-              backgroundColor: "rgba(255,255,255,0.15)",
-              borderRadius: "50%",
-            }}
-          ></div>
+          <div className="absolute top-[-30px] right-[-30px] w-[150px] h-[150px] bg-white/15 rounded-full"></div>
 
-          <div
-            className="header-content"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              position: "relative",
-              zIndex: 2,
-            }}
-          >
+          <div className="z-10 flex items-center">
             {personalInfo.photoUrl && (
-              <div
-                className="profile-photo-container"
-                style={{ marginRight: "20px" }}
-              >
-                <div
-                  className="profile-photo"
-                  style={{
-                    border: "none",
-                    borderRadius: "0",
-                    overflow: "hidden",
-                    boxShadow: "5px 5px 0px rgba(0,0,0,0.2)",
-                  }}
-                >
+              <div className="mr-5">
+                <div className="w-32 h-32 overflow-hidden rounded-full shadow-lg">
                   <img
                     src={personalInfo.photoUrl}
                     alt="Profile"
-                    style={{ width: "100%" }}
+                    className="object-cover w-full h-full"
                   />
                 </div>
               </div>
@@ -1156,27 +1110,15 @@ const CVPreview = forwardRef(
 
             <div className="header-text">
               <h2
-                className="full-name"
-                style={{
-                  color: "white",
-                  fontWeight: "800",
-                  letterSpacing: "1px",
-                  textTransform: "uppercase",
-                  fontSize: "24px",
-                }}
+                className="mb-1 text-3xl font-bold text-white"
+                style={{ letterSpacing: "1px", textTransform: "uppercase" }}
               >
                 {personalInfo.fullName || "Họ và tên"}
               </h2>
 
               <div
-                className="job-title"
-                style={{
-                  color: "white",
-                  backgroundColor: "rgba(255,255,255,0.2)",
-                  padding: "4px 8px",
-                  display: "inline-block",
-                  marginTop: "10px",
-                }}
+                className="inline-block px-2 py-1 text-white rounded bg-white/20"
+                style={{ marginTop: "10px" }}
               >
                 {personalInfo.jobTitle || "Chức danh - Kinh nghiệm"}
               </div>
@@ -1185,23 +1127,16 @@ const CVPreview = forwardRef(
         </div>
 
         {/* Two-column layout for Creative */}
-        <div
-          className="creative-content"
-          style={{ display: "flex", marginTop: "20px" }}
-        >
+        <div className="flex mt-6">
           {/* Sidebar */}
           <div
-            className="creative-sidebar"
-            style={{
-              width: "35%",
-              backgroundColor: `${themeColor}20`,
-              padding: "20px",
-            }}
+            className="w-1/3 p-5 bg-white rounded-lg shadow-md creative-sidebar"
+            style={{ backgroundColor: `${themeColor}20` }}
           >
             {/* Contact Info */}
             <div className="cv-section sidebar-section">
               <div
-                className="section-title"
+                className="text-lg font-bold section-title"
                 style={{
                   borderLeft: `4px solid ${themeColor}`,
                   padding: "10px 15px",
@@ -1212,40 +1147,29 @@ const CVPreview = forwardRef(
               </div>
               <div className="section-content contact-info-creative">
                 {personalInfo.phone && (
-                  <div className="contact-item">
-                    <span
-                      className="contact-icon"
-                      style={{ color: themeColor }}
-                    >
+                  <div className="flex items-center contact-item">
+                    <span className="text-xl" style={{ color: themeColor }}>
                       📱
                     </span>
-                    <span className="contact-value">{personalInfo.phone}</span>
+                    <span className="ml-2">{personalInfo.phone}</span>
                   </div>
                 )}
 
                 {personalInfo.email && (
-                  <div className="contact-item">
-                    <span
-                      className="contact-icon"
-                      style={{ color: themeColor }}
-                    >
+                  <div className="flex items-center contact-item">
+                    <span className="text-xl" style={{ color: themeColor }}>
                       ✉️
                     </span>
-                    <span className="contact-value">{personalInfo.email}</span>
+                    <span className="ml-2">{personalInfo.email}</span>
                   </div>
                 )}
 
                 {personalInfo.address && (
-                  <div className="contact-item">
-                    <span
-                      className="contact-icon"
-                      style={{ color: themeColor }}
-                    >
+                  <div className="flex items-center contact-item">
+                    <span className="text-xl" style={{ color: themeColor }}>
                       📍
                     </span>
-                    <span className="contact-value">
-                      {personalInfo.address}
-                    </span>
+                    <span className="ml-2">{personalInfo.address}</span>
                   </div>
                 )}
               </div>
@@ -1254,7 +1178,7 @@ const CVPreview = forwardRef(
             {/* Personal Information */}
             <div className="cv-section sidebar-section">
               <div
-                className="section-title"
+                className="text-lg font-bold section-title"
                 style={{
                   borderLeft: `4px solid ${themeColor}`,
                   padding: "10px 15px",
@@ -1309,7 +1233,7 @@ const CVPreview = forwardRef(
             {skills && skills.length > 0 && (
               <div className="cv-section sidebar-section">
                 <div
-                  className="section-title"
+                  className="text-lg font-bold section-title"
                   style={{
                     borderLeft: `4px solid ${themeColor}`,
                     padding: "10px 15px",
@@ -1341,14 +1265,11 @@ const CVPreview = forwardRef(
           </div>
 
           {/* Main Content */}
-          <div
-            className="creative-main"
-            style={{ width: "65%", padding: "20px" }}
-          >
+          <div className="w-2/3 p-5 creative-main">
             {/* Career Objective */}
             <div className="cv-section">
               <div
-                className="section-title"
+                className="text-lg font-bold section-title"
                 style={{
                   borderLeft: `4px solid ${themeColor}`,
                   padding: "10px 15px",
@@ -1369,7 +1290,7 @@ const CVPreview = forwardRef(
             {workExperiences && workExperiences.length > 0 && (
               <div className="cv-section">
                 <div
-                  className="section-title"
+                  className="text-lg font-bold section-title"
                   style={{
                     borderLeft: `4px solid ${themeColor}`,
                     padding: "10px 15px",
@@ -1418,7 +1339,7 @@ const CVPreview = forwardRef(
             {certificates && certificates.length > 0 && (
               <div className="cv-section">
                 <div
-                  className="section-title"
+                  className="text-lg font-bold section-title"
                   style={{
                     borderLeft: `4px solid ${themeColor}`,
                     padding: "10px 15px",
@@ -1432,11 +1353,10 @@ const CVPreview = forwardRef(
                     {certificates.map((cert) => (
                       <div
                         key={cert.id}
-                        className="certificate-card"
+                        className="p-3 border rounded-lg certificate-card"
                         style={{
                           border: `1px solid ${themeColor}30`,
                           borderLeft: `3px solid ${themeColor}`,
-                          padding: "15px",
                           marginBottom: "15px",
                         }}
                       >
@@ -1478,162 +1398,233 @@ const CVPreview = forwardRef(
 
     // Minimal template
     const renderMinimalTemplate = () => (
-      <>
-        {/* Header with personal information */}
-        <div
-          className="cv-header"
-          style={{
-            borderBottom: `2px solid ${themeColor}`,
-            padding: "20px",
-            textAlign: "center",
-          }}
-        >
-          <h2
-            className="full-name"
-            style={{
-              color: themeColor,
-              fontWeight: "600",
-              fontSize: "28px",
-            }}
-          >
-            {personalInfo.fullName || "Họ và tên"}
-          </h2>
+      <div className="flex flex-col overflow-hidden bg-white rounded-lg shadow-sm">
+        {/* Header với thông tin cá nhân */}
+        <div className="p-6 border-b-2" style={{ borderColor: themeColor }}>
+          <div className="flex flex-col items-center md:flex-row md:justify-between">
+            <div className="mb-4 text-center md:text-left md:mb-0">
+              <h2
+                className="mb-2 text-2xl font-bold md:text-3xl"
+                style={{ color: themeColor }}
+              >
+                {personalInfo.fullName || "Họ và tên"}
+              </h2>
 
-          <div
-            className="job-title"
-            style={{
-              fontFamily: "'Courier New', monospace",
-              marginTop: "10px",
-              fontSize: "16px",
-            }}
-          >
-            {"<"}
-            {personalInfo.jobTitle || "Chức danh - Kinh nghiệm"}
-            {">"}
+              <div className="mb-2 font-mono text-sm md:text-base">
+                <span className="px-2 py-1 bg-gray-100 rounded-md">
+                  {personalInfo.jobTitle || "Chức danh - Kinh nghiệm"}
+                </span>
+              </div>
+            </div>
+
+            {personalInfo.photoUrl && (
+              <div className="mb-4 md:mb-0">
+                <div
+                  className="w-24 h-24 mx-auto overflow-hidden border-2 rounded-full"
+                  style={{ borderColor: themeColor }}
+                >
+                  <img
+                    src={personalInfo.photoUrl}
+                    alt="Profile"
+                    className="object-cover w-full h-full"
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
-          <div
-            className="contact-details"
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              gap: "20px",
-              marginTop: "15px",
-              padding: "10px",
-              backgroundColor: "#f7f7f7",
-              borderRadius: "4px",
-              flexWrap: "wrap",
-            }}
-          >
+          {/* Contact Information */}
+          <div className="flex flex-wrap items-center justify-center gap-4 p-3 pt-4 mt-4 rounded-lg md:justify-start bg-gray-50">
             {personalInfo.phone && (
-              <div className="contact-item">
-                <code style={{ color: themeColor }}># </code>
-                <span>{personalInfo.phone}</span>
+              <div className="flex items-center text-sm">
+                <span
+                  className="inline-flex items-center justify-center w-8 h-8 mr-2 rounded-full"
+                  style={{
+                    backgroundColor: `${themeColor}15`,
+                    color: themeColor,
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
+                  </svg>
+                </span>
+                <span className="font-mono">{personalInfo.phone}</span>
               </div>
             )}
 
             {personalInfo.email && (
-              <div className="contact-item">
-                <code style={{ color: themeColor }}>@ </code>
-                <span>{personalInfo.email}</span>
+              <div className="flex items-center text-sm">
+                <span
+                  className="inline-flex items-center justify-center w-8 h-8 mr-2 rounded-full"
+                  style={{
+                    backgroundColor: `${themeColor}15`,
+                    color: themeColor,
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                  </svg>
+                </span>
+                <span className="font-mono">{personalInfo.email}</span>
               </div>
             )}
 
             {personalInfo.address && (
-              <div className="contact-item">
-                <code style={{ color: themeColor }}>~ </code>
-                <span>{personalInfo.address}</span>
+              <div className="flex items-center text-sm">
+                <span
+                  className="inline-flex items-center justify-center w-8 h-8 mr-2 rounded-full"
+                  style={{
+                    backgroundColor: `${themeColor}15`,
+                    color: themeColor,
+                  }}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-4 h-4"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </span>
+                <span className="font-mono">{personalInfo.address}</span>
               </div>
             )}
           </div>
         </div>
 
-        {/* Single-column content for Minimal */}
-        <div
-          className="minimal-content"
-          style={{ padding: "0 20px", marginTop: "20px" }}
-        >
+        {/* Main content */}
+        <div className="p-6 space-y-8">
           {/* Career Objective Section */}
           <div className="cv-section">
-            <div
-              className="section-title"
-              style={{
-                borderBottom: `1px solid ${themeColor}`,
-                color: themeColor,
-                letterSpacing: "2px",
-                textTransform: "uppercase",
-                fontSize: "14px",
-                fontWeight: "bold",
-              }}
-            >
-              {titles.objective}
+            <div className="flex items-center mb-4">
+              <div
+                className="w-1 h-6 mr-2 rounded"
+                style={{ backgroundColor: themeColor }}
+              ></div>
+              <h3
+                className="text-sm font-bold tracking-wider uppercase"
+                style={{ color: themeColor }}
+              >
+                {titles.objective}
+              </h3>
             </div>
-            <div className="section-content">
-              <Paragraph style={{ fontFamily: "'Courier New', monospace" }}>
+            <div className="pl-3 border-l-2 border-gray-100">
+              <Paragraph className="font-mono text-gray-700">
                 {personalInfo.objective ||
                   "Mục tiêu nghề nghiệp chưa được cập nhật."}
               </Paragraph>
             </div>
           </div>
 
+          {/* Personal Information Section */}
+          <div className="cv-section">
+            <div className="flex items-center mb-4">
+              <div
+                className="w-1 h-6 mr-2 rounded"
+                style={{ backgroundColor: themeColor }}
+              ></div>
+              <h3
+                className="text-sm font-bold tracking-wider uppercase"
+                style={{ color: themeColor }}
+              >
+                {titles.personalInfo}
+              </h3>
+            </div>
+            <div className="pl-3 border-l-2 border-gray-100">
+              <div className="grid grid-cols-1 gap-4 p-4 font-mono text-sm rounded-md md:grid-cols-2 bg-gray-50">
+                {personalInfo.birthDate && (
+                  <div className="flex items-center">
+                    <div
+                      className="w-3 h-3 mr-2 rounded-full"
+                      style={{ backgroundColor: themeColor }}
+                    ></div>
+                    <span className="mr-2 font-medium">Ngày sinh:</span>
+                    <span>{personalInfo.birthDate}</span>
+                  </div>
+                )}
+                {personalInfo.nationality && (
+                  <div className="flex items-center">
+                    <div
+                      className="w-3 h-3 mr-2 rounded-full"
+                      style={{ backgroundColor: themeColor }}
+                    ></div>
+                    <span className="mr-2 font-medium">Quốc tịch:</span>
+                    <span>{personalInfo.nationality}</span>
+                  </div>
+                )}
+                {personalInfo.maritalStatus && (
+                  <div className="flex items-center">
+                    <div
+                      className="w-3 h-3 mr-2 rounded-full"
+                      style={{ backgroundColor: themeColor }}
+                    ></div>
+                    <span className="mr-2 font-medium">Tình trạng:</span>
+                    <span>{personalInfo.maritalStatus}</span>
+                  </div>
+                )}
+                {personalInfo.gender && (
+                  <div className="flex items-center">
+                    <div
+                      className="w-3 h-3 mr-2 rounded-full"
+                      style={{ backgroundColor: themeColor }}
+                    ></div>
+                    <span className="mr-2 font-medium">Giới tính:</span>
+                    <span>{personalInfo.gender}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
           {/* Work Experience Section */}
           {workExperiences && workExperiences.length > 0 && (
             <div className="cv-section">
-              <div
-                className="section-title"
-                style={{
-                  borderBottom: `1px solid ${themeColor}`,
-                  color: themeColor,
-                  letterSpacing: "2px",
-                  textTransform: "uppercase",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                }}
-              >
-                {titles.workExperience}
+              <div className="flex items-center mb-4">
+                <div
+                  className="w-1 h-6 mr-2 rounded"
+                  style={{ backgroundColor: themeColor }}
+                ></div>
+                <h3
+                  className="text-sm font-bold tracking-wider uppercase"
+                  style={{ color: themeColor }}
+                >
+                  {titles.workExperience}
+                </h3>
               </div>
-              <div className="section-content minimal-experience">
+              <div className="pl-3 space-y-6 border-l-2 border-gray-100">
                 {workExperiences.map((exp) => (
                   <div key={exp.id} className="minimal-experience-item">
-                    <div
-                      className="experience-header"
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                      }}
-                    >
+                    <div className="flex flex-col mb-2 md:flex-row md:items-center md:justify-between">
                       <div
-                        className="company-name"
-                        style={{ fontWeight: "bold" }}
+                        className="text-base font-bold md:text-lg"
+                        style={{ color: themeColor }}
                       >
-                        <code style={{ color: themeColor }}></code>{" "}
                         {exp.companyName}
                       </div>
-                      <div
-                        className="experience-date"
-                        style={{ fontFamily: "'Courier New', monospace" }}
-                      >
+                      <div className="inline-block px-2 py-1 mt-1 font-mono text-xs bg-gray-100 rounded md:mt-0">
                         {exp.startDate} - {exp.endDate}
                       </div>
                     </div>
-                    <div
-                      className="job-title"
-                      style={{
-                        marginLeft: "15px",
-                        fontStyle: "italic",
-                        marginBottom: "5px",
-                      }}
-                    >
+                    <div className="mb-2 text-sm italic font-medium text-gray-600">
                       {exp.jobTitle}
                     </div>
-                    <div
-                      className="description"
-                      style={{
-                        marginLeft: "15px",
-                        paddingLeft: "10px",
-                        borderLeft: `1px solid #eee`,
-                      }}
-                    >
+                    <div className="pl-0 mt-2 text-sm text-gray-700 md:pl-4">
                       {exp.description}
                     </div>
                   </div>
@@ -1642,231 +1633,162 @@ const CVPreview = forwardRef(
             </div>
           )}
 
-          {/* Skills Section */}
-          {skills && skills.length > 0 && (
-            <div className="cv-section">
-              <div
-                className="section-title"
-                style={{
-                  borderBottom: `1px solid ${themeColor}`,
-                  color: themeColor,
-                  letterSpacing: "2px",
-                  textTransform: "uppercase",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                }}
-              >
-                {titles.skills}
-              </div>
-              <div
-                className="section-content minimal-skills"
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "10px",
-                }}
-              >
-                {skills.map((skill) => (
+          {/* Two-column layout for skills and certificates */}
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
+            {/* Skills Section */}
+            {skills && skills.length > 0 && (
+              <div className="cv-section">
+                <div className="flex items-center mb-4">
                   <div
-                    key={skill.id}
-                    className="minimal-skill-tag"
-                    style={{
-                      border: `1px solid ${themeColor}`,
-                      padding: "5px 10px",
-                      borderRadius: "3px",
-                      display: "inline-flex",
-                      alignItems: "center",
-                      gap: "5px",
-                    }}
+                    className="w-1 h-6 mr-2 rounded"
+                    style={{ backgroundColor: themeColor }}
+                  ></div>
+                  <h3
+                    className="text-sm font-bold tracking-wider uppercase"
+                    style={{ color: themeColor }}
                   >
-                    <span className="skill-name">{skill.name}</span>
-                    <span
-                      className="skill-level"
+                    {titles.skills}
+                  </h3>
+                </div>
+                <div className="flex flex-wrap gap-2 pl-3 border-l-2 border-gray-100">
+                  {skills.map((skill) => (
+                    <div
+                      key={skill.id}
+                      className="relative px-3 py-2 transition-all duration-200 rounded-md group hover:shadow-md bg-gray-50"
                       style={{
-                        fontSize: "0.8em",
-                        backgroundColor: `${themeColor}20`,
-                        padding: "2px 5px",
-                        borderRadius: "2px",
+                        borderLeft: `2px solid ${themeColor}`,
                       }}
                     >
-                      {skill.level}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
+                      <div className="flex items-center justify-between">
+                        <div className="text-sm font-medium">{skill.name}</div>
+                        <div
+                          className="ml-2 text-xs px-1.5 py-0.5 rounded-sm"
+                          style={{
+                            backgroundColor: `${themeColor}15`,
+                            color: themeColor,
+                          }}
+                        >
+                          {skill.level}/5
+                        </div>
+                      </div>
 
-          {/* Certificates Section */}
-          {certificates && certificates.length > 0 && (
-            <div className="cv-section">
-              <div
-                className="section-title"
-                style={{
-                  borderBottom: `1px solid ${themeColor}`,
-                  color: themeColor,
-                  letterSpacing: "2px",
-                  textTransform: "uppercase",
-                  fontSize: "14px",
-                  fontWeight: "bold",
-                }}
-              >
-                {titles.certificates}
-              </div>
-              <div className="section-content minimal-certificates">
-                <ul
-                  style={{
-                    listStyleType: "none",
-                    paddingLeft: 0,
-                    fontFamily: "'Courier New', monospace",
-                  }}
-                >
-                  {certificates.map((cert) => (
-                    <li key={cert.id} style={{ marginBottom: "10px" }}>
-                      <code style={{ color: themeColor }}>*</code> {cert.name}
-                      <span
-                        className="certificate-meta"
-                        style={{ display: "block", marginLeft: "15px" }}
-                      >
-                        <span className="organization-name">
-                          {cert.organization}
-                        </span>
-                        <span className="certificate-date"> | {cert.date}</span>
-                      </span>
-                    </li>
+                      <div className="mt-1.5 w-full bg-gray-200 rounded-full h-1">
+                        <div
+                          className="h-1 transition-all duration-200 rounded-full"
+                          style={{
+                            width: getLevelPercentage(skill.level),
+                            backgroundColor: themeColor,
+                          }}
+                        ></div>
+                      </div>
+                    </div>
                   ))}
-                </ul>
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Personal Information Section */}
-          <div className="cv-section">
-            <div
-              className="section-title"
-              style={{
-                borderBottom: `1px solid ${themeColor}`,
-                color: themeColor,
-                letterSpacing: "2px",
-                textTransform: "uppercase",
-                fontSize: "14px",
-                fontWeight: "bold",
-              }}
-            >
-              {titles.personalInfo}
-            </div>
-            <div className="section-content">
-              <pre
-                style={{
-                  fontFamily: "'Courier New', monospace",
-                  backgroundColor: "#f7f7f7",
-                  padding: "10px",
-                  borderRadius: "4px",
-                }}
-              >
-                {`// Personal info
-const developer = {
-  birthDate: "${personalInfo.birthDate || "N/A"}",
-  nationality: "${personalInfo.nationality || "N/A"}",
-  status: "${personalInfo.maritalStatus || "N/A"}",
-  gender: "${personalInfo.gender || "N/A"}"
-};`}
-              </pre>
-            </div>
+            {/* Certificates Section */}
+            {certificates && certificates.length > 0 && (
+              <div className="cv-section">
+                <div className="flex items-center mb-4">
+                  <div
+                    className="w-1 h-6 mr-2 rounded"
+                    style={{ backgroundColor: themeColor }}
+                  ></div>
+                  <h3
+                    className="text-sm font-bold tracking-wider uppercase"
+                    style={{ color: themeColor }}
+                  >
+                    {titles.certificates}
+                  </h3>
+                </div>
+                <div className="pl-3 space-y-3 border-l-2 border-gray-100">
+                  {certificates.map((cert) => (
+                    <div
+                      key={cert.id}
+                      className="p-3 transition-shadow duration-200 rounded-md bg-gray-50 hover:shadow-md"
+                    >
+                      <div
+                        className="font-medium"
+                        style={{ color: themeColor }}
+                      >
+                        {cert.name}
+                      </div>
+                      <div className="flex justify-between mt-1 text-xs text-gray-500">
+                        <span>{cert.organization}</span>
+                        <span className="font-mono">{cert.date}</span>
+                      </div>
+                      {cert.description && (
+                        <div className="mt-2 text-sm text-gray-600">
+                          {cert.description}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Custom Sections */}
           {renderCustomSections()}
         </div>
-      </>
+      </div>
     );
 
     // Elegant template
     const renderElegantTemplate = () => (
       <>
-        {/* Header with personal information */}
+        {/* Header với thông tin cá nhân - được sắp xếp lại */}
         <div
-          className="cv-header"
-          style={{
-            borderBottom: `2px solid ${themeColor}`,
-            paddingBottom: "20px",
-            marginBottom: "30px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "flex-start",
-          }}
+          className="flex items-start justify-between pb-5 mb-6 border-b-2"
+          style={{ borderColor: themeColor }}
         >
-          <div className="header-content">
+          <div className="flex-1 pr-4">
             <h2
-              className="full-name"
-              style={{
-                color: themeColor,
-                fontSize: "28px",
-                fontWeight: "600",
-                marginBottom: "5px",
-              }}
+              className="mb-1 text-2xl font-semibold md:text-3xl"
+              style={{ color: themeColor }}
             >
               {personalInfo.fullName || "Họ và tên"}
             </h2>
 
-            <div
-              className="job-title"
-              style={{
-                fontSize: "16px",
-                color: "#555",
-                marginBottom: "15px",
-                fontStyle: "italic",
-              }}
-            >
+            <div className="mb-4 text-base italic text-gray-600">
               {personalInfo.jobTitle || "Chức danh - Kinh nghiệm"}
             </div>
 
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: "15px",
-                fontSize: "14px",
-              }}
-            >
+            <div className="grid grid-cols-1 gap-2 text-sm md:grid-cols-2">
               {personalInfo.phone && (
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <div
-                    style={{
-                      color: themeColor,
-                      marginRight: "5px",
-                    }}
+                <div className="flex items-center">
+                  <span
+                    className="mr-2 font-medium"
+                    style={{ color: themeColor }}
                   >
                     Điện thoại:
-                  </div>
+                  </span>
                   <span>{personalInfo.phone}</span>
                 </div>
               )}
 
               {personalInfo.email && (
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <div
-                    style={{
-                      color: themeColor,
-                      marginRight: "5px",
-                    }}
+                <div className="flex items-center">
+                  <span
+                    className="mr-2 font-medium"
+                    style={{ color: themeColor }}
                   >
                     Email:
-                  </div>
-                  <span>{personalInfo.email}</span>
+                  </span>
+                  <span className="break-all">{personalInfo.email}</span>
                 </div>
               )}
 
               {personalInfo.address && (
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <div
-                    style={{
-                      color: themeColor,
-                      marginRight: "5px",
-                    }}
+                <div className="flex items-center col-span-1 md:col-span-2">
+                  <span
+                    className="mr-2 font-medium"
+                    style={{ color: themeColor }}
                   >
                     Địa chỉ:
-                  </div>
+                  </span>
                   <span>{personalInfo.address}</span>
                 </div>
               )}
@@ -1874,54 +1796,34 @@ const developer = {
           </div>
 
           {personalInfo.photoUrl && (
-            <div
-              style={{
-                width: "100px",
-                height: "100px",
-                borderRadius: "50%",
-                overflow: "hidden",
-                border: `2px solid ${themeColor}`,
-              }}
-            >
-              <img
-                src={personalInfo.photoUrl}
-                alt="Profile"
-                style={{
-                  width: "100%",
-                  height: "100%",
-                  objectFit: "cover",
-                  borderRadius: "50%",
-                }}
-              />
+            <div className="flex-shrink-0">
+              <div
+                className="w-24 h-24 overflow-hidden rounded-full md:w-28 md:h-28 ring-2"
+                style={{ ringColor: themeColor }}
+              >
+                <img
+                  src={personalInfo.photoUrl}
+                  alt="Profile"
+                  className="object-cover w-full h-full"
+                />
+              </div>
             </div>
           )}
         </div>
 
         {/* Two-column layout for Elegant */}
-        <div
-          className="elegant-two-column"
-          style={{
-            display: "flex",
-            gap: "30px",
-            marginTop: "20px",
-          }}
-        >
+        <div className="flex flex-col gap-6 md:flex-row">
           {/* Left Column */}
-          <div className="elegant-left-column" style={{ width: "35%" }}>
+          <div className="w-full md:w-1/3">
             {/* Career Objective Section */}
-            <div className="cv-section">
+            <div className="mb-6">
               <div
-                className="section-title"
-                style={{
-                  color: themeColor,
-                  borderBottom: `2px solid ${themeColor}`,
-                  paddingBottom: "5px",
-                  marginBottom: "15px",
-                }}
+                className="pb-2 mb-3 text-lg font-bold border-b-2"
+                style={{ borderColor: themeColor, color: themeColor }}
               >
                 {titles.objective}
               </div>
-              <div className="section-content">
+              <div className="prose max-w-none">
                 <Paragraph>
                   {personalInfo.objective ||
                     "Mục tiêu nghề nghiệp chưa được cập nhật."}
@@ -1930,131 +1832,68 @@ const developer = {
             </div>
 
             {/* Personal Information Section */}
-            <div className="cv-section">
+            <div className="mb-6">
               <div
-                className="section-title"
-                style={{
-                  color: themeColor,
-                  borderBottom: `2px solid ${themeColor}`,
-                  paddingBottom: "5px",
-                  marginBottom: "15px",
-                }}
+                className="pb-2 mb-3 text-lg font-bold border-b-2"
+                style={{ borderColor: themeColor, color: themeColor }}
               >
                 {titles.personalInfo}
               </div>
-              <div className="section-content elegant-personal-info">
-                <div className="personal-info-list">
-                  {personalInfo.birthDate && (
-                    <div className="personal-info-item">
-                      <div
-                        className="info-label"
-                        style={{ fontWeight: "bold" }}
-                      >
-                        {titles.dateLabel}
-                      </div>
-                      <div className="info-value">{personalInfo.birthDate}</div>
-                    </div>
-                  )}
-                  {personalInfo.nationality && (
-                    <div className="personal-info-item">
-                      <div
-                        className="info-label"
-                        style={{ fontWeight: "bold" }}
-                      >
-                        {titles.localeLabel}
-                      </div>
-                      <div className="info-value">
-                        {personalInfo.nationality}
-                      </div>
-                    </div>
-                  )}
-                  {personalInfo.maritalStatus && (
-                    <div className="personal-info-item">
-                      <div
-                        className="info-label"
-                        style={{ fontWeight: "bold" }}
-                      >
-                        {titles.statusLabel}
-                      </div>
-                      <div className="info-value">
-                        {personalInfo.maritalStatus}
-                      </div>
-                    </div>
-                  )}
-                  {personalInfo.gender && (
-                    <div className="personal-info-item">
-                      <div
-                        className="info-label"
-                        style={{ fontWeight: "bold" }}
-                      >
-                        {titles.genderLabel}
-                      </div>
-                      <div className="info-value">{personalInfo.gender}</div>
-                    </div>
-                  )}
-                </div>
+              <div className="space-y-3">
+                {personalInfo.birthDate && (
+                  <div>
+                    <div className="mb-1 font-bold">{titles.dateLabel}</div>
+                    <div>{personalInfo.birthDate}</div>
+                  </div>
+                )}
+                {personalInfo.nationality && (
+                  <div>
+                    <div className="mb-1 font-bold">{titles.localeLabel}</div>
+                    <div>{personalInfo.nationality}</div>
+                  </div>
+                )}
+                {personalInfo.maritalStatus && (
+                  <div>
+                    <div className="mb-1 font-bold">{titles.statusLabel}</div>
+                    <div>{personalInfo.maritalStatus}</div>
+                  </div>
+                )}
+                {personalInfo.gender && (
+                  <div>
+                    <div className="mb-1 font-bold">{titles.genderLabel}</div>
+                    <div>{personalInfo.gender}</div>
+                  </div>
+                )}
               </div>
             </div>
 
             {/* Skills Section */}
             {skills && skills.length > 0 && (
-              <div className="cv-section">
+              <div className="mb-6">
                 <div
-                  className="section-title"
-                  style={{
-                    color: themeColor,
-                    borderBottom: `2px solid ${themeColor}`,
-                    paddingBottom: "5px",
-                    marginBottom: "15px",
-                  }}
+                  className="pb-2 mb-3 text-lg font-bold border-b-2"
+                  style={{ borderColor: themeColor, color: themeColor }}
                 >
                   {titles.skills}
                 </div>
-                <div className="section-content elegant-skills">
+                <div className="space-y-4">
                   {skills.map((skill) => (
-                    <div key={skill.id} className="elegant-skill-item">
-                      <div
-                        className="skill-header"
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          marginBottom: "5px",
-                          alignItems: "center",
-                        }}
-                      >
+                    <div key={skill.id}>
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="font-bold">{skill.name}</div>
                         <div
-                          className="skill-name"
-                          style={{ fontWeight: "bold" }}
+                          className="text-sm italic"
+                          style={{ color: themeColor }}
                         >
-                          {skill.name}
-                        </div>
-                        <div
-                          className="skill-level"
-                          style={{
-                            fontStyle: "italic",
-                            color: themeColor,
-                            fontSize: "0.9em",
-                          }}
-                        >
-                          {skill.level}
+                          {skill.level}/5
                         </div>
                       </div>
-                      <div
-                        className="skill-bar-container"
-                        style={{
-                          backgroundColor: "#f0f0f0",
-                          height: "3px",
-                          borderRadius: "1.5px",
-                          marginBottom: "15px",
-                        }}
-                      >
+                      <div className="bg-gray-100 h-1.5 rounded-full w-full">
                         <div
-                          className="skill-level-bar"
+                          className="h-1.5 rounded-full skill-level-bar"
                           style={{
                             width: getLevelPercentage(skill.level),
                             backgroundColor: themeColor,
-                            height: "100%",
-                            borderRadius: "1.5px",
                           }}
                         ></div>
                       </div>
@@ -2067,68 +1906,39 @@ const developer = {
 
           {/* Right Column */}
           <div
-            className="elegant-right-column"
-            style={{
-              width: "65%",
-              borderLeft: `1px solid ${themeColor}30`,
-              paddingLeft: "25px",
-            }}
+            className="w-full md:w-2/3 md:border-l md:pl-6"
+            style={{ borderColor: `${themeColor}30` }}
           >
             {/* Work Experience Section */}
             {workExperiences && workExperiences.length > 0 && (
-              <div className="cv-section">
+              <div className="mb-6">
                 <div
-                  className="section-title"
-                  style={{
-                    color: themeColor,
-                    borderBottom: `2px solid ${themeColor}`,
-                    paddingBottom: "5px",
-                    marginBottom: "15px",
-                  }}
+                  className="pb-2 mb-3 text-lg font-bold border-b-2"
+                  style={{ borderColor: themeColor, color: themeColor }}
                 >
                   {titles.workExperience}
                 </div>
-                <div className="section-content elegant-experience">
+                <div className="p-4 space-y-6">
                   {workExperiences.map((exp) => (
-                    <div key={exp.id} className="elegant-experience-item">
-                      <div className="experience-header">
+                    <div
+                      key={exp.id}
+                      className="pb-4 border-b border-gray-200 last:border-b-0"
+                    >
+                      <div className="flex flex-wrap justify-between mb-2">
                         <div
-                          className="company-name"
-                          style={{
-                            fontWeight: "bold",
-                            borderLeft: `3px solid ${themeColor}`,
-                            paddingLeft: "10px",
-                          }}
+                          className="text-lg font-bold"
+                          style={{ color: themeColor }}
                         >
                           {exp.companyName}
                         </div>
-                        <div
-                          className="experience-date"
-                          style={{
-                            color: "#777",
-                            fontSize: "0.9em",
-                            marginTop: "3px",
-                            marginLeft: "13px",
-                          }}
-                        >
+                        <div className="px-2 py-1 text-sm bg-gray-100 rounded">
                           {exp.startDate} - {exp.endDate}
                         </div>
                       </div>
-                      <div
-                        className="job-title"
-                        style={{
-                          fontStyle: "italic",
-                          margin: "10px 0 5px 13px",
-                        }}
-                      >
+                      <div className="mb-2 italic font-medium">
                         {exp.jobTitle}
                       </div>
-                      <div
-                        className="description"
-                        style={{ marginLeft: "13px" }}
-                      >
-                        {exp.description}
-                      </div>
+                      <div className="text-gray-700">{exp.description}</div>
                     </div>
                   ))}
                 </div>
@@ -2137,74 +1947,30 @@ const developer = {
 
             {/* Certificates Section */}
             {certificates && certificates.length > 0 && (
-              <div className="cv-section">
+              <div className="mb-6">
                 <div
-                  className="section-title"
-                  style={{
-                    color: themeColor,
-                    borderBottom: `2px solid ${themeColor}`,
-                    paddingBottom: "5px",
-                    marginBottom: "15px",
-                  }}
+                  className="pb-2 mb-3 text-lg font-bold border-b-2"
+                  style={{ borderColor: themeColor, color: themeColor }}
                 >
                   {titles.certificates}
                 </div>
-                <div className="section-content elegant-certificates">
+                <div className="space-y-4">
                   {certificates.map((cert) => (
-                    <div
-                      key={cert.id}
-                      className="elegant-certificate-item"
-                      style={{
-                        marginBottom: "15px",
-                        position: "relative",
-                      }}
-                    >
+                    <div key={cert.id} className="relative pl-5">
                       <div
-                        style={{
-                          position: "absolute",
-                          left: "-5px",
-                          top: "5px",
-                          width: "10px",
-                          height: "10px",
-                          backgroundColor: themeColor,
-                          borderRadius: "50%",
-                        }}
+                        className="absolute w-2.5 h-2.5 rounded-full left-0 top-1.5"
+                        style={{ backgroundColor: themeColor }}
                       ></div>
-                      <div style={{ marginLeft: "15px" }}>
-                        <div
-                          className="certificate-name"
-                          style={{ fontWeight: "bold" }}
-                        >
-                          {cert.name}
-                        </div>
-                        <div
-                          className="certificate-meta"
-                          style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            marginTop: "3px",
-                            color: "#777",
-                            fontSize: "0.9em",
-                          }}
-                        >
-                          <span className="organization-name">
-                            {cert.organization}
-                          </span>
-                          <span className="certificate-date">{cert.date}</span>
-                        </div>
-                        {cert.description && (
-                          <div
-                            className="description"
-                            style={{
-                              marginTop: "5px",
-                              fontSize: "0.9em",
-                              fontStyle: "italic",
-                            }}
-                          >
-                            {cert.description}
-                          </div>
-                        )}
+                      <div className="font-bold">{cert.name}</div>
+                      <div className="flex justify-between mt-1 text-sm text-gray-500">
+                        <span>{cert.organization}</span>
+                        <span className="font-mono">{cert.date}</span>
                       </div>
+                      {cert.description && (
+                        <div className="mt-1 text-sm italic text-gray-600">
+                          {cert.description}
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>

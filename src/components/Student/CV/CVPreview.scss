@@ -1,7 +1,7 @@
 // A4 page dimensions
 $a4-width: 210mm;
 $a4-height: 297mm;
-$a4-padding: 20mm;
+$a4-padding: 1rem;
 
 .cv-preview {
   background-color: #ffffff;
@@ -10,7 +10,7 @@ $a4-padding: 20mm;
   width: $a4-width;
   min-height: $a4-height;
   margin: 0 auto;
-  padding: 0;
+  padding: $a4-padding;
   background-color: white;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
   position: relative;
@@ -18,17 +18,19 @@ $a4-padding: 20mm;
   page-break-after: always;
 
   /* Remove template-specific font families to use the one applied to preview-content */
-  &.template-modern, &.template-classic, &.template-minimal {
+  &.template-modern,
+  &.template-classic,
+  &.template-minimal {
     /* Font will be inherited from preview-content */
   }
-  
+
   .preview-content {
     width: 100%;
     height: 100%;
-    padding: 20px;
+    // padding: 20px;
     box-sizing: border-box;
     position: relative;
-    
+
     /* Make sure all elements inherit the font-family and font-size */
     * {
       font-family: inherit;
@@ -142,12 +144,14 @@ $a4-padding: 20mm;
       }
 
       .timeline-content {
-        .company-name, .organization-name {
+        .company-name,
+        .organization-name {
           font-weight: 600;
           font-size: 16px;
         }
 
-        .job-title, .certificate-name {
+        .job-title,
+        .certificate-name {
           font-weight: 600;
           font-style: italic;
           margin-bottom: 5px;
@@ -200,7 +204,7 @@ $a4-padding: 20mm;
 
     .personal-info-item {
       margin-bottom: 10px;
-      
+
       .info-label {
         font-weight: 600;
         margin-bottom: 5px;
@@ -247,7 +251,7 @@ $a4-padding: 20mm;
   margin: 0 auto;
   background-color: #fff;
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.15);
-  
+
   .preview-content {
     width: 100%;
     height: 100%;
@@ -264,19 +268,23 @@ $a4-padding: 20mm;
     border-radius: 10px;
     margin-bottom: 24px;
     display: flex;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.02), rgba(0, 0, 0, 0));
-    
+    background-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.02),
+      rgba(0, 0, 0, 0)
+    );
+
     .header-content {
       display: flex;
       flex-direction: column;
       width: 100%;
     }
-    
+
     .profile-photo-container {
       width: 130px;
       height: 130px;
       margin-right: 28px;
-      
+
       .profile-photo {
         width: 100%;
         height: 100%;
@@ -285,7 +293,7 @@ $a4-padding: 20mm;
         border: 4px solid;
         transition: all 0.3s ease;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        
+
         img {
           width: 100%;
           height: 100%;
@@ -293,7 +301,7 @@ $a4-padding: 20mm;
         }
       }
     }
-    
+
     .header-name {
       font-size: 32px;
       font-weight: 700;
@@ -301,26 +309,26 @@ $a4-padding: 20mm;
       line-height: 1.1;
       letter-spacing: 0.5px;
     }
-    
+
     .header-title {
       font-size: 18px;
       font-weight: 500;
       margin-bottom: 16px;
       color: rgba(0, 0, 0, 0.7);
     }
-    
+
     .contact-details {
       display: flex;
       flex-wrap: wrap;
       margin-top: 8px;
-      
+
       .contact-item {
         margin-right: 20px;
         margin-bottom: 8px;
         display: flex;
         align-items: center;
         font-size: 15px;
-        
+
         .contact-icon {
           margin-right: 8px;
         }
@@ -330,7 +338,7 @@ $a4-padding: 20mm;
 
   .cv-section {
     margin-bottom: 30px;
-    
+
     .section-title {
       font-size: 18px;
       font-weight: 600;
@@ -343,20 +351,20 @@ $a4-padding: 20mm;
 
   .timeline-section {
     position: relative;
-    
+
     .timeline-item {
       position: relative;
       padding-left: 32px;
       margin-bottom: 25px;
       border-left: 2px dashed rgba(0, 0, 0, 0.1);
       padding-bottom: 18px;
-      
+
       &:last-child {
         margin-bottom: 0;
         padding-bottom: 0;
         border-left: none;
       }
-      
+
       .timeline-point {
         position: absolute;
         left: -8px;
@@ -379,13 +387,15 @@ $a4-padding: 20mm;
       }
 
       .timeline-content {
-        .company-name, .organization-name {
+        .company-name,
+        .organization-name {
           font-weight: 600;
           font-size: 17px;
           margin-bottom: 4px;
         }
 
-        .job-title, .certificate-name {
+        .job-title,
+        .certificate-name {
           font-weight: 600;
           font-style: italic;
           margin-bottom: 8px;
@@ -399,23 +409,23 @@ $a4-padding: 20mm;
       }
     }
   }
-  
+
   .skills-list {
     .skill-item {
       margin-bottom: 14px;
-      
+
       .skill-name {
         font-weight: 600;
         margin-bottom: 6px;
       }
-      
+
       .skill-level {
         position: relative;
         height: 8px;
         background-color: rgba(0, 0, 0, 0.08);
         border-radius: 4px;
         overflow: hidden;
-        
+
         .skill-level-bar {
           position: absolute;
           left: 0;
@@ -440,12 +450,12 @@ $a4-padding: 20mm;
       width: 100%;
       padding-right: 10px;
       box-sizing: border-box;
-      
+
       .info-label {
         width: 100%;
         display: block;
       }
-      
+
       .info-value {
         width: 100%;
         display: block;
@@ -481,7 +491,7 @@ $a4-padding: 20mm;
   .professional-header {
     padding: 30px;
     color: white;
-    
+
     .header-content {
       .header-name {
         font-size: 28px;
@@ -489,13 +499,13 @@ $a4-padding: 20mm;
         margin-bottom: 5px;
         text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
       }
-      
+
       .header-title {
         font-size: 16px;
         opacity: 0.9;
       }
     }
-    
+
     .profile-photo-container {
       .profile-photo {
         border: 3px solid white;
@@ -503,73 +513,73 @@ $a4-padding: 20mm;
       }
     }
   }
-  
+
   .professional-sidebar {
     .sidebar-section {
       margin-bottom: 30px;
-      
+
       .section-title {
         font-weight: 700;
         font-size: 16px;
         text-transform: uppercase;
         margin-bottom: 20px;
       }
-      
+
       .contact-info-professional {
         margin-bottom: 20px;
-        
+
         .contact-item {
           display: flex;
           align-items: center;
           margin-bottom: 12px;
-          
+
           .contact-icon {
             margin-right: 10px;
             font-size: 16px;
           }
-          
+
           .contact-value {
             font-size: 14px;
           }
         }
       }
-      
+
       .personal-info-list-professional {
         .personal-info-item {
           margin-bottom: 15px;
-          
+
           .info-label {
             display: block;
             width: 100%;
             font-weight: 600;
             margin-bottom: 4px;
           }
-          
+
           .info-value {
             display: block;
             width: 100%;
           }
         }
       }
-      
+
       .skills-list-professional {
         .skill-item-professional {
           margin-bottom: 15px;
-          
+
           .skill-name {
             font-weight: 600;
             margin-bottom: 6px;
           }
-          
+
           .skill-level-dots {
             display: flex;
             gap: 5px;
-            
+
             .skill-dot {
               width: 12px;
               height: 12px;
               border-radius: 50%;
-              
+
               &.filled {
                 transform: scale(1.1);
               }
@@ -579,7 +589,7 @@ $a4-padding: 20mm;
       }
     }
   }
-  
+
   .professional-main {
     .section-title {
       font-size: 16px;
@@ -587,37 +597,37 @@ $a4-padding: 20mm;
       text-transform: uppercase;
       margin-bottom: 20px;
     }
-    
+
     .section-content {
       margin-bottom: 30px;
     }
-    
+
     .professional-experience {
       .experience-item {
         margin-bottom: 25px;
         padding-bottom: 20px;
         border-bottom: 1px dashed #eee;
-        
+
         &:last-child {
           border-bottom: none;
         }
-        
+
         .experience-header {
           display: flex;
           justify-content: space-between;
           margin-bottom: 8px;
-          
+
           .experience-title {
             font-weight: 700;
             font-size: 16px;
           }
-          
+
           .experience-date {
             font-size: 14px;
             color: #666;
           }
         }
-        
+
         .experience-company {
           font-style: italic;
           margin-bottom: 8px;
@@ -625,40 +635,40 @@ $a4-padding: 20mm;
           font-weight: 500;
           color: rgba(0, 0, 0, 0.7);
         }
-        
+
         .description {
           color: rgba(0, 0, 0, 0.7);
           line-height: 1.5;
         }
       }
     }
-    
+
     .professional-certificates {
       .certificate-item {
         margin-bottom: 20px;
         padding-bottom: 15px;
         border-bottom: 1px dashed #eee;
-        
+
         &:last-child {
           border-bottom: none;
         }
-        
+
         .certificate-header {
           display: flex;
           justify-content: space-between;
           margin-bottom: 8px;
-          
+
           .certificate-name {
             font-weight: 700;
             font-size: 16px;
           }
-          
+
           .certificate-date {
             font-size: 14px;
             color: #666;
           }
         }
-        
+
         .organization-name {
           font-style: italic;
           margin-bottom: 8px;
@@ -666,7 +676,7 @@ $a4-padding: 20mm;
           font-weight: 500;
           color: rgba(0, 0, 0, 0.7);
         }
-        
+
         .description {
           color: rgba(0, 0, 0, 0.7);
           line-height: 1.5;
@@ -682,18 +692,22 @@ $a4-padding: 20mm;
     padding: 30px;
     color: white;
     position: relative;
-    
+
     &::before {
-      content: '';
+      content: "";
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       bottom: 0;
-      background: radial-gradient(circle at top right, rgba(255,255,255,0.2), transparent 60%);
+      background: radial-gradient(
+        circle at top right,
+        rgba(255, 255, 255, 0.2),
+        transparent 60%
+      );
       z-index: 0;
     }
-    
+
     .header-content {
       display: flex;
       justify-content: space-between;
@@ -701,20 +715,20 @@ $a4-padding: 20mm;
       position: relative;
       z-index: 1;
     }
-    
+
     .profile-photo {
       width: 120px;
       height: 120px;
       border: none;
       box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.2);
-      
+
       img {
         width: 100%;
         height: 100%;
         object-fit: cover;
       }
     }
-    
+
     .personal-details {
       .full-name {
         font-size: 34px;
@@ -724,7 +738,7 @@ $a4-padding: 20mm;
         margin-bottom: 5px;
         text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
       }
-      
+
       .job-title {
         font-size: 18px;
         background-color: rgba(255, 255, 255, 0.2);
@@ -734,20 +748,20 @@ $a4-padding: 20mm;
       }
     }
   }
-  
+
   .creative-sidebar {
     .cv-section.sidebar-section {
       margin-bottom: 30px;
-      
+
       .section-title {
         font-weight: 700;
         margin-bottom: 20px;
         font-size: 18px;
         text-transform: uppercase;
         position: relative;
-        
+
         &::after {
-          content: '';
+          content: "";
           position: absolute;
           bottom: -5px;
           left: 15px;
@@ -756,13 +770,13 @@ $a4-padding: 20mm;
           background-color: currentColor;
         }
       }
-      
+
       .contact-info-creative {
         .contact-item {
           display: flex;
           align-items: center;
           margin-bottom: 15px;
-          
+
           .contact-icon {
             width: 25px;
             height: 25px;
@@ -773,32 +787,32 @@ $a4-padding: 20mm;
           }
         }
       }
-      
+
       .personal-info-list-creative {
         .personal-info-item {
           margin-bottom: 15px;
-          
+
           .info-label {
             display: block;
             width: 100%;
           }
-          
+
           .info-value {
             display: block;
             width: 100%;
           }
         }
       }
-      
+
       .skills-list-creative {
         .skill-item-creative {
           margin-bottom: 20px;
-          
+
           .skill-name {
             font-weight: 600;
             margin-bottom: 10px;
           }
-          
+
           .skill-level-creative {
             background-color: rgba(0, 0, 0, 0.1);
             height: 5px;
@@ -809,20 +823,20 @@ $a4-padding: 20mm;
       }
     }
   }
-  
+
   .creative-main {
     .cv-section {
       margin-bottom: 30px;
-      
+
       .section-title {
         font-weight: 700;
         margin-bottom: 20px;
         font-size: 18px;
         text-transform: uppercase;
         position: relative;
-        
+
         &::after {
-          content: '';
+          content: "";
           position: absolute;
           bottom: -5px;
           left: 15px;
@@ -832,31 +846,31 @@ $a4-padding: 20mm;
         }
       }
     }
-    
+
     .creative-experience {
       .creative-experience-item {
         margin-bottom: 30px;
-        
+
         .experience-date-badge {
           border-radius: 3px;
           font-size: 14px;
           font-weight: 500;
           box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.1);
         }
-        
+
         .experience-content {
           padding-left: 10px;
-          
+
           .company-name {
             font-size: 18px;
             letter-spacing: 0.5px;
           }
-          
+
           .job-title {
             font-size: 16px;
             color: rgba(0, 0, 0, 0.7);
           }
-          
+
           .description {
             line-height: 1.6;
             color: rgba(0, 0, 0, 0.7);
@@ -864,29 +878,29 @@ $a4-padding: 20mm;
         }
       }
     }
-    
+
     .creative-certificates {
       .certificates-grid {
         .certificate-card {
           background-color: white;
           transition: all 0.3s ease;
-          
+
           .certificate-name {
             font-size: 16px;
             letter-spacing: 0.3px;
           }
-          
+
           .certificate-meta {
             font-size: 14px;
             color: rgba(0, 0, 0, 0.7);
             margin-bottom: 8px;
-            
+
             .organization-name {
               font-style: italic;
               margin-right: 5px;
             }
           }
-          
+
           .description {
             line-height: 1.6;
             color: rgba(0, 0, 0, 0.7);
@@ -900,25 +914,25 @@ $a4-padding: 20mm;
 /* Minimal Template */
 .template-minimal {
   padding: 40px;
-  
+
   .minimal-header {
     text-align: center;
     margin-bottom: 40px;
-    
+
     .minimal-name {
       font-size: 36px;
       font-weight: 700;
       margin-bottom: 10px;
       letter-spacing: 1px;
     }
-    
+
     .minimal-title {
-      font-family: 'Courier New', monospace;
+      font-family: "Courier New", monospace;
       margin-bottom: 15px;
       font-size: 18px;
       opacity: 0.8;
     }
-    
+
     .minimal-contact {
       display: flex;
       justify-content: center;
@@ -928,24 +942,24 @@ $a4-padding: 20mm;
       margin-top: 20px;
       background-color: #f7f7f7;
       border-radius: 4px;
-      
+
       .contact-item {
         display: flex;
         align-items: center;
         gap: 5px;
         font-size: 14px;
-        
+
         code {
-          font-family: 'Courier New', monospace;
+          font-family: "Courier New", monospace;
           opacity: 0.8;
         }
       }
     }
   }
-  
+
   .cv-section {
     margin-bottom: 35px;
-    
+
     .section-title {
       color: inherit;
       letter-spacing: 2px;
@@ -955,10 +969,10 @@ $a4-padding: 20mm;
       margin-bottom: 20px;
       padding-bottom: 5px;
     }
-    
+
     .section-content {
-      font-family: 'Courier New', monospace;
-      
+      font-family: "Courier New", monospace;
+
       pre {
         margin: 0;
         padding: 15px;
@@ -968,37 +982,37 @@ $a4-padding: 20mm;
       }
     }
   }
-  
+
   .minimal-experience {
     .minimal-experience-item {
       margin-bottom: 25px;
-      
+
       .experience-header {
         .company-name {
           position: relative;
           padding-left: 15px;
           font-weight: 700;
           font-size: 16px;
-          
+
           code {
             position: absolute;
             left: 0;
           }
         }
-        
+
         .experience-date {
-          font-family: 'Courier New', monospace;
+          font-family: "Courier New", monospace;
           opacity: 0.8;
         }
       }
-      
+
       .job-title {
         margin-left: 15px;
         font-style: italic;
         margin-bottom: 8px;
         opacity: 0.8;
       }
-      
+
       .description {
         margin-left: 15px;
         padding-left: 10px;
@@ -1009,44 +1023,44 @@ $a4-padding: 20mm;
       }
     }
   }
-  
+
   .minimal-skills {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    
+
     .minimal-skill-tag {
       transition: all 0.3s ease;
-      
+
       .skill-name {
         font-weight: 500;
       }
-      
+
       .skill-level {
         background-color: rgba(0, 0, 0, 0.05);
         opacity: 0.8;
       }
     }
   }
-  
+
   .minimal-certificates {
     ul {
       padding-left: 0;
-      
+
       li {
         margin-bottom: 15px;
         position: relative;
         padding-left: 15px;
-        
+
         code {
           position: absolute;
           left: 0;
         }
-        
+
         .certificate-meta {
           opacity: 0.8;
           font-size: 14px;
-          
+
           .organization-name {
             font-style: italic;
           }
@@ -1059,7 +1073,7 @@ $a4-padding: 20mm;
 /* Elegant Template */
 .template-elegant {
   padding: 30px;
-  
+
   .elegant-header {
     display: flex;
     justify-content: space-between;
@@ -1067,7 +1081,7 @@ $a4-padding: 20mm;
     padding: 0 0 25px;
     border-bottom: 3px solid;
     margin-bottom: 30px;
-    
+
     .elegant-header-left {
       .full-name {
         font-size: 36px;
@@ -1075,24 +1089,24 @@ $a4-padding: 20mm;
         margin-bottom: 8px;
         letter-spacing: 0.5px;
       }
-      
+
       .job-title {
         font-size: 18px;
         font-style: italic;
         opacity: 0.8;
       }
-      
+
       .contact-details {
         display: flex;
         flex-wrap: wrap;
         margin-top: 15px;
         gap: 15px;
         font-size: 14px;
-        
+
         div {
           display: flex;
           align-items: center;
-          
+
           span:first-child {
             font-weight: 700;
             margin-right: 5px;
@@ -1100,7 +1114,7 @@ $a4-padding: 20mm;
         }
       }
     }
-    
+
     .profile-photo {
       width: 100px;
       height: 100px;
@@ -1108,7 +1122,7 @@ $a4-padding: 20mm;
       overflow: hidden;
       border: 3px solid;
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-      
+
       img {
         width: 100%;
         height: 100%;
@@ -1116,15 +1130,15 @@ $a4-padding: 20mm;
       }
     }
   }
-  
+
   .elegant-two-column {
     display: flex;
     gap: 30px;
-    
+
     .elegant-left-column {
       .cv-section {
         margin-bottom: 30px;
-        
+
         .section-title {
           font-size: 18px;
           font-weight: 700;
@@ -1133,40 +1147,40 @@ $a4-padding: 20mm;
           padding-bottom: 8px;
         }
       }
-      
+
       .elegant-personal-info {
         .personal-info-item {
           margin-bottom: 15px;
-          
+
           .info-label {
             display: block;
             width: 100%;
           }
-          
+
           .info-value {
             display: block;
             width: 100%;
           }
         }
       }
-      
+
       .elegant-skills {
         .elegant-skill-item {
           margin-bottom: 15px;
-          
+
           .skill-header {
             .skill-name {
               font-size: 15px;
               letter-spacing: 0.3px;
             }
-            
+
             .skill-level {
               font-style: italic;
               opacity: 0.8;
               font-size: 13px;
             }
           }
-          
+
           .skill-bar-container {
             .skill-level-bar {
               transition: width 1s ease-in-out;
@@ -1175,11 +1189,11 @@ $a4-padding: 20mm;
         }
       }
     }
-    
+
     .elegant-right-column {
       .cv-section {
         margin-bottom: 30px;
-        
+
         .section-title {
           font-size: 18px;
           font-weight: 700;
@@ -1188,38 +1202,43 @@ $a4-padding: 20mm;
           padding-bottom: 8px;
         }
       }
-      
-      .elegant-experience, .elegant-certificates {
-        .elegant-experience-item, .elegant-certificate-item {
+
+      .elegant-experience,
+      .elegant-certificates {
+        .elegant-experience-item,
+        .elegant-certificate-item {
           margin-bottom: 25px;
           padding-bottom: 20px;
           border-bottom: 1px solid #eee;
-          
+
           &:last-child {
             border-bottom: none;
             padding-bottom: 0;
           }
-          
-          .experience-header, .certificate-header {
-            .company-name, .certificate-name {
+
+          .experience-header,
+          .certificate-header {
+            .company-name,
+            .certificate-name {
               font-size: 17px;
               font-weight: 700;
               position: relative;
             }
-            
-            .experience-date, .certificate-date {
+
+            .experience-date,
+            .certificate-date {
               font-size: 14px;
               opacity: 0.8;
             }
           }
-          
+
           .job-title {
             font-style: italic;
             margin: 10px 0 8px;
             opacity: 0.8;
             font-weight: 500;
           }
-          
+
           .description {
             line-height: 1.6;
             opacity: 0.8;
