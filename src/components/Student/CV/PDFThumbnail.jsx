@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Spin } from 'antd';
-import { FilePdfOutlined } from '@ant-design/icons';
+import { useState, useEffect } from "react";
+import { Spin } from "antd";
+import { FilePdfOutlined } from "@ant-design/icons";
 
-const PDFThumbnail = ({ pdfUrl, width = '100%', height = 200 }) => {
+const PDFThumbnail = ({ pdfUrl, width = "100%", height = 200 }) => {
   const [thumbnail, setThumbnail] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -20,7 +20,7 @@ const PDFThumbnail = ({ pdfUrl, width = '100%', height = 200 }) => {
         setThumbnail(pdfUrl);
         setLoading(false);
       } catch (error) {
-        console.error('Error loading PDF thumbnail:', error);
+        console.error("Error loading PDF thumbnail:", error);
         setError(true);
         setLoading(false);
       }
@@ -35,10 +35,10 @@ const PDFThumbnail = ({ pdfUrl, width = '100%', height = 200 }) => {
         style={{
           width,
           height,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: '#f5f5f5',
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#f5f5f5",
         }}
       >
         <Spin />
@@ -52,12 +52,12 @@ const PDFThumbnail = ({ pdfUrl, width = '100%', height = 200 }) => {
         style={{
           width,
           height,
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: '#f5f5f5',
-          color: '#999',
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          backgroundColor: "#f5f5f5",
+          color: "#999",
         }}
       >
         <FilePdfOutlined style={{ fontSize: 36, marginBottom: 8 }} />
@@ -67,16 +67,16 @@ const PDFThumbnail = ({ pdfUrl, width = '100%', height = 200 }) => {
   }
 
   return (
-    <div style={{ width, height, overflow: 'hidden', position: 'relative' }}>
+    <div style={{ width, height, overflow: "hidden", position: "relative" }}>
       <iframe
         src={`${thumbnail}#toolbar=0&navpanes=0&scrollbar=0&view=FitH`}
         title="PDF Thumbnail"
         width="100%"
         height="100%"
         style={{
-          border: 'none',
-          transform: 'scale(1.2)',
-          transformOrigin: 'top center',
+          border: "none",
+          transform: "scale(1.2)",
+          transformOrigin: "top center",
         }}
       />
     </div>

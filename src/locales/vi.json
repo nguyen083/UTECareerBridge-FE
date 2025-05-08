@@ -664,6 +664,42 @@
       "okText": "Xóa",
       "cancelText": "Hủy"
     },
+    "sections": {
+      "objective": "MỤC TIÊU NGHỀ NGHIỆP",
+      "objective.minimal": "PROFILE",
+      "objective.elegant": "LỜI GIỚI THIỆU",
+      "personalInfo": "THÔNG TIN CÁ NHÂN",
+      "workExperience": "KINH NGHIỆM LÀM VIỆC",
+      "workExperience.creative": "KINH NGHIỆM SÁNG TẠO",
+      "workExperience.minimal": "EXPERIENCE",
+      "workExperience.elegant": "KINH NGHIỆM CHUYÊN MÔN",
+      "skills": "KỸ NĂNG",
+      "skills.creative": "KỸ NĂNG THIẾT KẾ",
+      "skills.minimal": "TECH STACK",
+      "certificates": "CHỨNG CHỈ",
+      "certificates.minimal": "CERTIFICATIONS",
+      "certificates.elegant": "CHỨNG CHỈ & BẰNG CẤP",
+      "contact": "LIÊN HỆ",
+      "contact.minimal": "CONTACT",
+      "contact.elegant": "THÔNG TIN LIÊN HỆ"
+    },
+    "labels": {
+      "profileLabel": {
+        "professional": "Hồ sơ chuyên môn",
+        "creative": "Tiểu sử sáng tạo",
+        "minimal": "Developer Profile",
+        "elegant": "Chuyên môn",
+        "modern": "Hồ sơ"
+      },
+      "dateLabel": "Ngày sinh:",
+      "dateLabel.minimal": "Date:",
+      "localeLabel": "Quốc tịch:",
+      "localeLabel.minimal": "Locale:",
+      "genderLabel": "Giới tính:",
+      "genderLabel.minimal": "Gender:",
+      "statusLabel": "Tình trạng hôn nhân:",
+      "statusLabel.minimal": "Status:"
+    },
     "builder": {
       "edit": "Chỉnh sửa hồ sơ",
       "view": "Xem hồ sơ",
@@ -725,6 +761,18 @@
         "elegant": {
           "name": "Elegant",
           "description": "Mẫu sang trọng với bố cục thanh lịch, phù hợp cho những người muốn tạo ấn tượng cao cấp"
+        },
+        "professional": {
+          "name": "Professional",
+          "description": "Mẫu chuyên nghiệp phù hợp với các vị trí quản lý và lãnh đạo cấp cao"
+        },
+        "creative": {
+          "name": "Creative",
+          "description": "Mẫu sáng tạo phù hợp với các ngành sáng tạo như thiết kế, marketing, truyền thông"
+        },
+        "minimal": {
+          "name": "Minimal",
+          "description": "Mẫu tối giản, tập trung vào nội dung, phù hợp với ngành công nghệ"
         }
       },
       "colorTheme": "Màu chủ đề",
@@ -835,6 +883,13 @@
         "email": "Email:",
         "addressLabel": "Địa chỉ:"
       }
+    },
+    "preview": {
+      "error": "Không thể tạo bản xem trước",
+      "close": "Đóng",
+      "download": "Tải xuống PDF",
+      "emptyMessage": "Không có nội dung để xem trước",
+      "loading": "Đang tải CV..."
     }
   },
   "job": {

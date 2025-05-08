@@ -666,6 +666,42 @@
       "okText": "Delete",
       "cancelText": "Cancel"
     },
+    "sections": {
+      "objective": "CAREER OBJECTIVES",
+      "objective.minimal": "PROFILE",
+      "objective.elegant": "INTRODUCTION",
+      "personalInfo": "PERSONAL INFORMATION",
+      "workExperience": "WORK EXPERIENCE",
+      "workExperience.creative": "CREATIVE EXPERIENCE",
+      "workExperience.minimal": "EXPERIENCE",
+      "workExperience.elegant": "PROFESSIONAL EXPERIENCE",
+      "skills": "SKILLS",
+      "skills.creative": "DESIGN SKILLS",
+      "skills.minimal": "TECH STACK",
+      "certificates": "CERTIFICATES",
+      "certificates.minimal": "CERTIFICATIONS",
+      "certificates.elegant": "CERTIFICATES & QUALIFICATIONS",
+      "contact": "CONTACT",
+      "contact.minimal": "CONTACT",
+      "contact.elegant": "CONTACT INFORMATION"
+    },
+    "labels": {
+      "profileLabel": {
+        "professional": "Professional Profile",
+        "creative": "Creative Biography",
+        "minimal": "Developer Profile",
+        "elegant": "Professional Experience",
+        "modern": "Profile"
+      },
+      "dateLabel": "Date of Birth:",
+      "dateLabel.minimal": "Date:",
+      "localeLabel": "Nationality:",
+      "localeLabel.minimal": "Locale:",
+      "genderLabel": "Gender:",
+      "genderLabel.minimal": "Gender:",
+      "statusLabel": "Marital Status:",
+      "statusLabel.minimal": "Status:"
+    },
     "builder": {
       "edit": "Edit CV",
       "view": "View CV",
@@ -727,6 +763,18 @@
         "elegant": {
           "name": "Elegant",
           "description": "An elegant template with refined layout, perfect for those wanting to make a premium impression"
+        },
+        "professional": {
+          "name": "Professional",
+          "description": "A professional template suitable for management and senior leadership positions"
+        },
+        "creative": {
+          "name": "Creative",
+          "description": "A creative template suitable for design, marketing, and communication industries"
+        },
+        "minimal": {
+          "name": "Minimal",
+          "description": "A minimalist template that focuses on content, suitable for tech industries"
         }
       },
       "colorTheme": "Theme Color",
@@ -837,6 +885,13 @@
         "email": "Email:",
         "addressLabel": "Address:"
       }
+    },
+    "preview": {
+      "error": "Unable to generate preview",
+      "close": "Close",
+      "download": "Download PDF",
+      "emptyMessage": "No content to preview",
+      "loading": "Loading CV..."
     }
   },
   "job": {

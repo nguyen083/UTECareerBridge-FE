@@ -31,83 +31,6 @@ const getLevelPercentage = (level) => {
   }
 };
 
-// Helper function to get section titles based on template
-const getSectionTitles = (templateId) => {
-  switch (templateId) {
-    case "professional":
-      return {
-        objective: "MỤC TIÊU NGHỀ NGHIỆP",
-        personalInfo: "THÔNG TIN CÁ NHÂN",
-        workExperience: "KINH NGHIỆM LÀM VIỆC",
-        skills: "KỸ NĂNG CHUYÊN MÔN",
-        certificates: "CHỨNG CHỈ CHUYÊN MÔN",
-        contact: "LIÊN HỆ",
-        profileLabel: "Hồ sơ chuyên môn",
-        dateLabel: "Ngày:",
-        localeLabel: "Quốc tịch:",
-        genderLabel: "Giới tính:",
-        statusLabel: "Tình trạng:",
-      };
-    case "creative":
-      return {
-        objective: "MỤC TIÊU NGHỀ NGHIỆP",
-        personalInfo: "THÔNG TIN CÁ NHÂN",
-        workExperience: "KINH NGHIỆM SÁNG TẠO",
-        skills: "KỸ NĂNG THIẾT KẾ",
-        certificates: "CHỨNG CHỈ CHUYÊN MÔN",
-        contact: "LIÊN HỆ",
-        profileLabel: "Tiểu sử sáng tạo",
-        dateLabel: "Ngày sinh:",
-        localeLabel: "Quốc tịch:",
-        genderLabel: "Giới tính:",
-        statusLabel: "Tình trạng hôn nhân:",
-      };
-    case "minimal":
-      return {
-        objective: "PROFILE",
-        personalInfo: "THÔNG TIN CÁ NHÂN",
-        workExperience: "EXPERIENCE",
-        skills: "TECH STACK",
-        certificates: "CERTIFICATIONS",
-        contact: "CONTACT",
-        profileLabel: "Developer Profile",
-        dateLabel: "Date:",
-        localeLabel: "Locale:",
-        genderLabel: "Gender:",
-        statusLabel: "Status:",
-      };
-    case "elegant":
-      return {
-        objective: "LỜI GIỚI THIỆU",
-        personalInfo: "THÔNG TIN CÁ NHÂN",
-        workExperience: "KINH NGHIỆM CHUYÊN MÔN",
-        skills: "KỸ NĂNG CHUYÊN MÔN",
-        certificates: "CHỨNG CHỈ & BẰNG CẤP",
-        contact: "THÔNG TIN LIÊN HỆ",
-        profileLabel: "Chuyên môn",
-        dateLabel: "Ngày sinh:",
-        localeLabel: "Quốc tịch:",
-        genderLabel: "Giới tính:",
-        statusLabel: "Tình trạng hôn nhân:",
-      };
-    case "modern":
-    default:
-      return {
-        objective: "MỤC TIÊU NGHỀ NGHIỆP",
-        personalInfo: "THÔNG TIN CÁ NHÂN",
-        workExperience: "KINH NGHIỆM LÀM VIỆC",
-        skills: "KỸ NĂNG",
-        certificates: "CHỨNG CHỈ",
-        contact: "LIÊN HỆ",
-        profileLabel: "Hồ sơ",
-        dateLabel: "Ngày sinh:",
-        localeLabel: "Quốc tịch:",
-        genderLabel: "Giới tính:",
-        statusLabel: "Tình trạng hôn nhân:",
-      };
-  }
-};
-
 const CVPreview = forwardRef(
   (
     {
@@ -125,9 +48,103 @@ const CVPreview = forwardRef(
     },
     ref
   ) => {
-    const { t } = useTranslation();
+    const { t } = useTranslation("cv");
     const contentRef = useRef(null);
     const [currentTemplate, setCurrentTemplate] = useState(template);
+    // Helper function to get section titles based on template
+    const getSectionTitles = (templateId) => {
+      switch (templateId) {
+        case "professional":
+          return {
+            objective: t("sections.objective", "MỤC TIÊU NGHỀ NGHIỆP"),
+            personalInfo: t("sections.personalInfo", "THÔNG TIN CÁ NHÂN"),
+            workExperience: t(
+              "sections.workExperience",
+              "KINH NGHIỆM LÀM VIỆC"
+            ),
+            skills: t("sections.skills", "KỸ NĂNG CHUYÊN MÔN"),
+            certificates: t("sections.certificates", "CHỨNG CHỈ CHUYÊN MÔN"),
+            contact: t("sections.contact", "LIÊN HỆ"),
+            profileLabel: t(
+              "labels.profileLabel.professional",
+              "Hồ sơ chuyên môn"
+            ),
+            dateLabel: t("labels.dateLabel", "Ngày:"),
+            localeLabel: t("labels.localeLabel", "Quốc tịch:"),
+            genderLabel: t("labels.genderLabel", "Giới tính:"),
+            statusLabel: t("labels.statusLabel", "Tình trạng:"),
+          };
+        case "creative":
+          return {
+            objective: t("sections.objective", "MỤC TIÊU NGHỀ NGHIỆP"),
+            personalInfo: t("sections.personalInfo", "THÔNG TIN CÁ NHÂN"),
+            workExperience: t(
+              "sections.workExperience.creative",
+              "KINH NGHIỆM SÁNG TẠO"
+            ),
+            skills: t("sections.skills.creative", "KỸ NĂNG THIẾT KẾ"),
+            certificates: t("sections.certificates", "CHỨNG CHỈ CHUYÊN MÔN"),
+            contact: t("sections.contact", "LIÊN HỆ"),
+            profileLabel: t("labels.profileLabel.creative", "Tiểu sử sáng tạo"),
+            dateLabel: t("labels.dateLabel", "Ngày sinh:"),
+            localeLabel: t("labels.localeLabel", "Quốc tịch:"),
+            genderLabel: t("labels.genderLabel", "Giới tính:"),
+            statusLabel: t("labels.statusLabel", "Tình trạng hôn nhân:"),
+          };
+        case "minimal":
+          return {
+            objective: t("sections.objective.minimal", "PROFILE"),
+            personalInfo: t("sections.personalInfo", "THÔNG TIN CÁ NHÂN"),
+            workExperience: t("sections.workExperience.minimal", "EXPERIENCE"),
+            skills: t("sections.skills.minimal", "TECH STACK"),
+            certificates: t("sections.certificates.minimal", "CERTIFICATIONS"),
+            contact: t("sections.contact.minimal", "CONTACT"),
+            profileLabel: t("labels.profileLabel.minimal", "Developer Profile"),
+            dateLabel: t("labels.dateLabel.minimal", "Date:"),
+            localeLabel: t("labels.localeLabel.minimal", "Locale:"),
+            genderLabel: t("labels.genderLabel.minimal", "Gender:"),
+            statusLabel: t("labels.statusLabel.minimal", "Status:"),
+          };
+        case "elegant":
+          return {
+            objective: t("sections.objective.elegant", "LỜI GIỚI THIỆU"),
+            personalInfo: t("sections.personalInfo", "THÔNG TIN CÁ NHÂN"),
+            workExperience: t(
+              "sections.workExperience.elegant",
+              "KINH NGHIỆM CHUYÊN MÔN"
+            ),
+            skills: t("sections.skills", "KỸ NĂNG CHUYÊN MÔN"),
+            certificates: t(
+              "sections.certificates.elegant",
+              "CHỨNG CHỈ & BẰNG CẤP"
+            ),
+            contact: t("sections.contact.elegant", "THÔNG TIN LIÊN HỆ"),
+            profileLabel: t("labels.profileLabel.elegant", "Chuyên môn"),
+            dateLabel: t("labels.dateLabel", "Ngày sinh:"),
+            localeLabel: t("labels.localeLabel", "Quốc tịch:"),
+            genderLabel: t("labels.genderLabel", "Giới tính:"),
+            statusLabel: t("labels.statusLabel", "Tình trạng hôn nhân:"),
+          };
+        case "modern":
+        default:
+          return {
+            objective: t("sections.objective", "MỤC TIÊU NGHỀ NGHIỆP"),
+            personalInfo: t("sections.personalInfo", "THÔNG TIN CÁ NHÂN"),
+            workExperience: t(
+              "sections.workExperience",
+              "KINH NGHIỆM LÀM VIỆC"
+            ),
+            skills: t("sections.skills", "KỸ NĂNG"),
+            certificates: t("sections.certificates", "CHỨNG CHỈ"),
+            contact: t("sections.contact", "LIÊN HỆ"),
+            profileLabel: t("labels.profileLabel.modern", "Hồ sơ"),
+            dateLabel: t("labels.dateLabel", "Ngày sinh:"),
+            localeLabel: t("labels.localeLabel", "Quốc tịch:"),
+            genderLabel: t("labels.genderLabel", "Giới tính:"),
+            statusLabel: t("labels.statusLabel", "Tình trạng hôn nhân:"),
+          };
+      }
+    };
     const [titles, setTitles] = useState(getSectionTitles(template.id));
 
     // Force apply styles to the preview content
