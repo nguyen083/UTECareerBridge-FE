@@ -74,7 +74,14 @@
     "weekAgo": "{{value}} tuần trước",
     "weeksAgo": "{{value}} tuần trước",
     "monthAgo": "{{value}} tháng trước",
-    "monthsAgo": "{{value}} tháng trước"
+    "monthsAgo": "{{value}} tháng trước",
+    "active": "Đang sử dụng",
+    "justNow": "Vừa xong",
+    "minuteAgo": "phút trước",
+    "minutesAgo": "phút trước",
+    "hourAgo": "giờ trước",
+    "hoursAgo": "giờ trước",
+    "more": "nữa"
   },
   "role": {
     "STUDENT": "Sinh viên",
@@ -208,6 +215,125 @@
       "title": "Việc được đề xuất",
       "description": "Việc làm được đề xuất cho bạn dựa trên các hoạt động của bạn trên hệ thống. Vui lòng chọn việc làm để xem chi tiết!"
     }
+  },
+  "cv": {
+    "chooseResume": "Vui lòng chọn hồ sơ",
+    "upload": {
+      "success": "Tải lên thành công!",
+      "error": "Tải lên thất bại. Vui lòng thử lại.",
+      "deleteSuccess": "Xóa hồ sơ thành công!",
+      "deleteError": "Xóa hồ sơ thất bại",
+      "updateError": "Cập nhật hồ sơ thất bại",
+      "fileChoose": "Chọn hoặc kéo thả hồ sơ từ máy của bạn",
+      "fileSupport": "Chỉ hỗ trợ định dạng .doc, .docx, .pdf có kích thước dưới 5MB",
+      "fileType": "Chỉ hỗ trợ định dạng .doc, .docx, .pdf",
+      "fileMax": "Kích thước tệp vượt quá 5MB",
+      "fileSizeLimit": "Kích thước tệp tối đa là 5MB"
+    },
+    "form": {
+      "title": "Tiêu đề",
+      "titleRequired": "Vui lòng nhập tiêu đề!",
+      "description": "Mô tả",
+      "descriptionRequired": "Vui lòng nhập mô tả!",
+      "descriptionPlaceholder": "Nhập mô tả resume",
+      "level": "Cấp độ",
+      "levelRequired": "Vui lòng chọn cấp độ!"
+    },
+    "confirmModal": {
+      "title": "Xác nhận",
+      "content": "Bạn chắc chắn muốn xóa hồ sơ này?",
+      "okText": "Xóa",
+      "cancelText": "Hủy"
+    },
+    "builder": {
+      "edit": "Chỉnh sửa hồ sơ",
+      "view": "Xem hồ sơ",
+      "delete": "Xóa hồ sơ",
+      "pageTitle": "Xây dựng hồ sơ",
+      "pageDescription": "Tạo và quản lý hồ sơ của bạn một cách dễ dàng.",
+      "createNew": "Tạo mới",
+      "noExistingCVs": "Không có hồ sơ nào",
+      "createFirstCV": "Tạo hồ sơ của bạn tại đây.",
+      "features": {
+        "title": "Tính năng",
+        "save": {
+          "title": "Lưu hồ sơ",
+          "description": "Lưu hồ sơ của bạn để có thể chỉnh sửa sau này."
+        },
+        "responsive": {
+          "title": "Tương thích với mọi thiết bị",
+          "description": "Hồ sơ của bạn sẽ hiển thị tốt trên mọi thiết bị, từ máy tính đến điện thoại di động."
+        },
+        "templates": {
+          "title": "Mẫu hồ sơ",
+          "description": "Chọn từ nhiều mẫu hồ sơ khác nhau để thể hiện phong cách cá nhân của bạn."
+        },
+        "dragDrop": {
+          "title": "Tùy chỉnh dễ dàng",
+          "description": "Có thể tự thêm các mục thông tin cần thiết."
+        }
+      },
+      "download": {
+        "title": "Tải xuống hồ sơ",
+        "description": "Tải xuống hồ sơ của bạn dưới dạng PDF hoặc DOCX để gửi cho nhà tuyển dụng."
+      },
+      "share": {
+        "title": "Chia sẻ hồ sơ",
+        "description": "Chia sẻ hồ sơ của bạn với nhà tuyển dụng qua email hoặc mạng xã hội."
+      }
+    },
+    "analysis": {
+      "title": "Phân tích CV bằng AI",
+      "subtitle": "Để AI phân tích CV của bạn và đề xuất các cơ hội việc làm phù hợp",
+      "createCV": "Tạo CV mới",
+      "info": {
+        "title": "Cách thức hoạt động",
+        "description": "Hệ thống AI của chúng tôi phân tích CV để xác định kỹ năng, kinh nghiệm và bằng cấp của bạn, sau đó kết hợp chúng với các vị trí việc làm phù hợp nhất trong cơ sở dữ liệu của chúng tôi.",
+        "privacyTitle": "Bảo mật thông tin",
+        "privacyDescription": "Dữ liệu CV của bạn được bảo mật hoàn toàn và chỉ được sử dụng để đề xuất việc làm phù hợp."
+      },
+      "tabs": {
+        "existing": "Sử dụng CV hiện có",
+        "upload": "Tải lên CV mới"
+      },
+      "loading": "Đang tải CV...",
+      "noExistingCV": "Bạn chưa có CV nào.",
+      "createYourCV": "Bạn có thể tạo CV mới tại đây.",
+      "lastUpdated": "Cập nhật lần cuối",
+      "analyze": "Phân tích CV",
+      "analyzing": "Đang phân tích...",
+      "pleaseWait": "Vui lòng đợi trong giây lát...",
+      "warning": {
+        "noCV": "Vui lòng chọn một CV hoặc tải lên CV mới để phân tích"
+      },
+      "error": "Đã xảy ra lỗi khi phân tích CV của bạn. Vui lòng thử lại.",
+      "upload": {
+        "title": "Tải lên CV của bạn để phân tích",
+        "hint": "Tải lên CV ở định dạng PDF, DOC hoặc DOCX (tối đa 5MB)"
+      },
+      "result": {
+        "title": "Kết quả phân tích",
+        "success": "Phân tích CV hoàn tất!",
+        "subtitle": "CV của bạn phù hợp với công việc ở mức độ {score}%",
+        "jobMatches": "Công việc phù hợp",
+        "matchedSkills": "Kỹ năng phù hợp",
+        "missingSkills": "Kỹ năng còn thiếu",
+        "clickJobAlert": "Nhấp vào công việc để xem chi tiết",
+        "close": "Đóng",
+        "viewAll": "Xem tất cả",
+        "viewRecommended": "Xem tất cả công việc đề xuất",
+        "match": "phù hợp"
+      },
+      "benefits": {
+        "aiTitle": "Công nghệ AI tiên tiến",
+        "aiDesc": "Sử dụng công nghệ AI tiên tiến để phân tích kỹ năng và kinh nghiệm trong CV của bạn",
+        "matchTitle": "Tỷ lệ phù hợp chính xác",
+        "matchDesc": "Xác định mức độ phù hợp với từng công việc dựa trên hồ sơ của bạn",
+        "insightsTitle": "Đề xuất cải thiện",
+        "insightsDesc": "Nhận đề xuất về các kỹ năng cần phát triển để tăng cơ hội nghề nghiệp"
+      }
+    },
+    "noDescription": "Không có mô tả"
   },
   "employer": {
     "applicant": {
@@ -635,108 +761,6 @@
       "currentPassword": "Mật khẩu hiện tại",
       "newPassword": "Mật khẩu mới",
       "confirmNewPassword": "Nhập lại mật khẩu mới"
-    }
-  },
-  "cv": {
-    "chooseResume": "Vui lòng chọn hồ sơ",
-    "upload": {
-      "success": "Tải lên thành công!",
-      "error": "Tải lên thất bại. Vui lòng thử lại.",
-      "deleteSuccess": "Xóa hồ sơ thành công!",
-      "deleteError": "Xóa hồ sơ thất bại",
-      "updateError": "Cập nhật hồ sơ thất bại",
-      "fileChoose": "Chọn hoặc kéo thả hồ sơ từ máy của bạn",
-      "fileSupport": "Chỉ hỗ trợ định dạng .doc, .docx, .pdf có kích thước dưới 5MB",
-      "fileType": "Chỉ hỗ trợ định dạng .doc, .docx, .pdf",
-      "fileMax": "Kích thước tệp vượt quá 5MB"
-    },
-    "form": {
-      "title": "Tiêu đề",
-      "titleRequired": "Vui lòng nhập tiêu đề!",
-      "description": "Mô tả",
-      "descriptionRequired": "Vui lòng nhập mô tả!",
-      "descriptionPlaceholder": "Nhập mô tả resume",
-      "level": "Cấp độ",
-      "levelRequired": "Vui lòng chọn cấp độ!"
-    },
-    "confirmModal": {
-      "title": "Xác nhận",
-      "content": "Bạn chắc chắn muốn xóa hồ sơ này?",
-      "okText": "Xóa",
-      "cancelText": "Hủy"
-    },
-    "builder": {
-      "edit": "Chỉnh sửa hồ sơ",
-      "view": "Xem hồ sơ",
-      "delete": "Xóa hồ sơ",
-      "pageTitle": "Xây dựng hồ sơ",
-      "pageDescription": "Tạo và quản lý hồ sơ của bạn một cách dễ dàng.",
-      "createNew": "Tạo mới",
-      "noExistingCVs": "Không có hồ sơ nào",
-      "createFirstCV": "Tạo hồ sơ của bạn tại đây.",
-      "features": {
-        "title": "Tính năng",
-        "save": {
-          "title": "Lưu hồ sơ",
-          "description": "Lưu hồ sơ của bạn để có thể chỉnh sửa sau này."
-        },
-        "responsive": {
-          "title": "Tương thích với mọi thiết bị",
-          "description": "Hồ sơ của bạn sẽ hiển thị tốt trên mọi thiết bị, từ máy tính đến điện thoại di động."
-        },
-        "templates": {
-          "title": "Mẫu hồ sơ",
-          "description": "Chọn từ nhiều mẫu hồ sơ khác nhau để thể hiện phong cách cá nhân của bạn."
-        },
-        "dragDrop": {
-          "title": "Tùy chỉnh dễ dàng",
-          "description": "Có thể tự thêm các mục thông tin cần thiết."
-        }
-      },
-      "download": {
-        "title": "Tải xuống hồ sơ",
-        "description": "Tải xuống hồ sơ của bạn dưới dạng PDF hoặc DOCX để gửi cho nhà tuyển dụng."
-      },
-      "share": {
-        "title": "Chia sẻ hồ sơ",
-        "description": "Chia sẻ hồ sơ của bạn với nhà tuyển dụng qua email hoặc mạng xã hội."
-      }
-    },
-    "analysis": {
-      "title": "Phân tích CV bằng AI",
-      "subtitle": "Để AI phân tích CV của bạn và đề xuất các cơ hội việc làm phù hợp",
-      "info": {
-        "title": "Cách thức hoạt động",
-        "description": "Hệ thống AI của chúng tôi phân tích CV để xác định kỹ năng, kinh nghiệm và bằng cấp của bạn, sau đó kết hợp chúng với các vị trí việc làm phù hợp nhất trong cơ sở dữ liệu của chúng tôi."
-      },
-      "tabs": {
-        "existing": "Sử dụng CV hiện có",
-        "upload": "Tải lên CV mới"
-      },
-      "loading": "Đang tải CV...",
-      "lastUpdated": "Cập nhật lần cuối",
-      "analyze": "Phân tích CV",
-      "analyzing": "Đang phân tích...",
-      "warning": {
-        "noCV": "Vui lòng chọn một CV hoặc tải lên CV mới để phân tích"
-      },
-      "error": "Đã xảy ra lỗi khi phân tích CV của bạn. Vui lòng thử lại.",
-      "noExistingCV": "Bạn chưa có CV nào.",
-      "createCV": "Tạo CV mới",
-      "upload": {
-        "title": "Tải lên CV của bạn để phân tích",
-        "hint": "Tải lên CV ở định dạng PDF, DOC hoặc DOCX (tối đa 5MB)"
-      },
-      "result": {
-        "title": "Kết quả phân tích",
-        "success": "Phân tích CV hoàn tất!",
-        "subtitle": "CV của bạn phù hợp với công việc ở mức độ {score}%",
-        "jobMatches": "Công việc phù hợp",
-        "close": "Đóng",
-        "viewAll": "Xem tất cả đề xuất",
-        "viewRecommended": "Xem công việc được đề xuất",
-        "match": "Phù hợp"
-      }
     }
   },
   "job": {

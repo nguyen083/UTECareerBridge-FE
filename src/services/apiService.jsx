@@ -349,6 +349,11 @@ const loginGoogle = async () => {
   return axios.get("users/auth/social-login?login_type=google");
 };
 
+// Student Dashboard Activity API
+const getStudentActivity = async () => {
+  return axios.get(`students/activity`);
+};
+
 // CV Analysis
 export const getRecommendationsByResumeId = (resumeId) => {
   return axios.get(`/cv/recommend/resume/${resumeId}`);
@@ -454,4 +459,5 @@ export {
   deleteCoupon,
   registerEmployer,
   loginGoogle,
+  getStudentActivity,
 };
