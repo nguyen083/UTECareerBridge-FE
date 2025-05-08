@@ -15,6 +15,7 @@ import {
   Progress,
   AutoComplete,
   Rate,
+  Input,
 } from "antd";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
@@ -84,11 +85,27 @@ const CV_COLOR_PRESETS = [
 
 // Font options
 const FONT_OPTIONS = [
-  { value: "'Open Sans', sans-serif", label: "Open Sans" },
-  { value: "'Arial', sans-serif", label: "Arial" },
-  { value: "'Times New Roman', serif", label: "Times New Roman" },
-  { value: "'Helvetica', sans-serif", label: "Helvetica" },
-  { value: "'Calibri', sans-serif", label: "Calibri" },
+  {
+    value: "'Open Sans', sans-serif",
+    label: "Open Sans",
+    className: "font-open-sans",
+  },
+  { value: "'Arial', sans-serif", label: "Arial", className: "font-arial" },
+  {
+    value: "'Times New Roman', serif",
+    label: "Times New Roman",
+    className: "font-times-new-roman",
+  },
+  {
+    value: "'Helvetica', sans-serif",
+    label: "Helvetica",
+    className: "font-helvetica",
+  },
+  {
+    value: "'Calibri', sans-serif",
+    label: "Calibri",
+    className: "font-calibri",
+  },
   { value: "'BE Vietnam Pro', sans-serif", label: "BE VietNam Pro" },
 ];
 
@@ -221,11 +238,11 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
   const [workExperiences, setWorkExperiences] = useState([
     {
       id: 1,
-      companyName: "Tên công ty",
-      jobTitle: "Chức danh",
-      startDate: "MM/YYYY",
-      endDate: "MM/YYYY",
-      description: "Mô tả",
+      companyName: "",
+      jobTitle: "",
+      startDate: "",
+      endDate: "",
+      description: "",
     },
   ]);
 
@@ -730,11 +747,11 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
       ...workExperiences,
       {
         id: newId,
-        companyName: "Tên công ty",
-        jobTitle: "Chức danh",
-        startDate: "MM/YYYY",
-        endDate: "MM/YYYY",
-        description: "Mô tả",
+        companyName: "",
+        jobTitle: "",
+        startDate: "",
+        endDate: "",
+        description: "",
       },
     ]);
   };
@@ -2181,70 +2198,82 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                             style={{ borderColor: selectedColor }}
                           ></div>
                           <div className="timeline-date">
-                            <span
-                              contentEditable
-                              suppressContentEditableWarning
-                              onBlur={(e) => {
-                                if (!e.target.innerText.trim()) {
-                                  e.target.classList.add("empty-content");
-                                } else {
-                                  e.target.classList.remove("empty-content");
+                            <div className="flex items-center">
+                              <Input
+                                placeholder="Ngày bắt đầu"
+                                value={exp.startDate || ""}
+                                onChange={(e) =>
                                   updateWorkExperience(
                                     exp.id,
                                     "startDate",
-                                    e.target.innerText
-                                  );
+                                    e.target.value
+                                  )
                                 }
-                              }}
-                              data-placeholder="Ngày bắt đầu"
-                              className="date-field"
-                            >
-                              {exp.startDate || ""}
-                            </span>
-                            <span className="date-separator">-</span>
-                            <span
-                              contentEditable
-                              suppressContentEditableWarning
-                              onBlur={(e) => {
-                                if (!e.target.innerText.trim()) {
-                                  e.target.classList.add("empty-content");
-                                } else {
-                                  e.target.classList.remove("empty-content");
+                                size="small"
+                                className={`w-full border-none ${
+                                  exp.startDate
+                                    ? "border-transparent"
+                                    : "border-gray-300"
+                                } rounded-md bg-transparent text-base font-normal px-2 py-1 experience-date-input !shadow-none`}
+                                style={{
+                                  fontFamily: selectedFont,
+                                  fontSize: `${fontSize}px`,
+                                }}
+                              />
+                              <span className="mx-2 date-separator">-</span>
+                              <Input
+                                placeholder="Ngày kết thúc"
+                                value={exp.endDate || ""}
+                                onChange={(e) =>
                                   updateWorkExperience(
                                     exp.id,
                                     "endDate",
-                                    e.target.innerText
-                                  );
+                                    e.target.value
+                                  )
                                 }
-                              }}
-                              data-placeholder="Ngày kết thúc"
-                              className="date-field"
-                            >
-                              {exp.endDate || ""}
-                            </span>
+                                size="small"
+                                className={`w-full border-none ${
+                                  exp.endDate
+                                    ? "border-transparent"
+                                    : "border-gray-300"
+                                } rounded-md bg-transparent text-base font-normal px-2 py-1 experience-date-input !shadow-none`}
+                                style={{
+                                  fontFamily: selectedFont,
+                                  fontSize: `${fontSize}px`,
+                                }}
+                              />
+                            </div>
                           </div>
                           <div className="timeline-content">
-                            <div className="timeline-item-header">
-                              <div
-                                contentEditable
-                                suppressContentEditableWarning
-                                onBlur={(e) => {
-                                  if (!e.target.innerText.trim()) {
-                                    e.target.classList.add("empty-content");
-                                  } else {
-                                    e.target.classList.remove("empty-content");
-                                    updateWorkExperience(
-                                      exp.id,
-                                      "companyName",
-                                      e.target.innerText
-                                    );
-                                  }
+                            <div
+                              className="timeline-item-header"
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Input
+                                placeholder="Tên công ty"
+                                value={exp.companyName || ""}
+                                onChange={(e) =>
+                                  updateWorkExperience(
+                                    exp.id,
+                                    "companyName",
+                                    e.target.value
+                                  )
+                                }
+                                size="middle"
+                                className={`company-name-input ${
+                                  exp.companyName
+                                    ? "border-transparent"
+                                    : "border-gray-300"
+                                } rounded-md bg-transparent text-base font-normal px-2.5 py-1.5 !shadow-none !border-none border-color-transparent`}
+                                style={{
+                                  fontFamily: selectedFont,
+                                  fontSize: `${fontSize}px`,
                                 }}
-                                data-placeholder="Tên công ty"
-                                className="company-name"
-                              >
-                                {exp.companyName || ""}
-                              </div>
+                              />
                               <Button
                                 type="text"
                                 danger
@@ -2253,46 +2282,48 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                                 className="invisible remove-item-btn group-hover:visible"
                               />
                             </div>
-                            <div
-                              contentEditable
-                              suppressContentEditableWarning
-                              onBlur={(e) => {
-                                if (!e.target.innerText.trim()) {
-                                  e.target.classList.add("empty-content");
-                                } else {
-                                  e.target.classList.remove("empty-content");
-                                  updateWorkExperience(
-                                    exp.id,
-                                    "jobTitle",
-                                    e.target.innerText
-                                  );
-                                }
+                            <Input
+                              placeholder="Vị trí công việc"
+                              value={exp.jobTitle || ""}
+                              onChange={(e) =>
+                                updateWorkExperience(
+                                  exp.id,
+                                  "jobTitle",
+                                  e.target.value
+                                )
+                              }
+                              size="middle"
+                              className={`${
+                                exp.jobTitle
+                                  ? "border-transparent"
+                                  : "border-d9d9d9"
+                              } border-none !hover:bg-transparent rounded-md bg-transparent text-base font-normal px-2 py-1 italic text-gray-600 !shadow-none`}
+                              style={{
+                                fontFamily: selectedFont,
+                                fontSize: `${fontSize}px`,
                               }}
-                              data-placeholder="Vị trí công việc"
-                              className="job-title"
-                            >
-                              {exp.jobTitle || ""}
-                            </div>
-                            <div
-                              contentEditable
-                              suppressContentEditableWarning
-                              onBlur={(e) => {
-                                if (!e.target.innerText.trim()) {
-                                  e.target.classList.add("empty-content");
-                                } else {
-                                  e.target.classList.remove("empty-content");
-                                  updateWorkExperience(
-                                    exp.id,
-                                    "description",
-                                    e.target.innerText
-                                  );
-                                }
+                            />
+                            <Input.TextArea
+                              placeholder="Mô tả công việc"
+                              value={exp.description || ""}
+                              onChange={(e) =>
+                                updateWorkExperience(
+                                  exp.id,
+                                  "description",
+                                  e.target.value
+                                )
+                              }
+                              autoSize={{ minRows: 2, maxRows: 6 }}
+                              className={`w-full border ${
+                                exp.description
+                                  ? "border-transparent"
+                                  : "border-d9d9d9"
+                              } rounded-md bg-transparent text-base font-normal px-2 py-1 resize-none !shadow-none !border-none border-color-transparent`}
+                              style={{
+                                fontFamily: selectedFont,
+                                fontSize: `${fontSize}px`,
                               }}
-                              data-placeholder="Mô tả công việc"
-                              className="description"
-                            >
-                              {exp.description || ""}
-                            </div>
+                            />
                           </div>
                         </div>
                       ))}
@@ -2326,49 +2357,58 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                             style={{ borderColor: selectedColor }}
                           ></div>
                           <div className="timeline-date">
-                            <span
-                              contentEditable
-                              suppressContentEditableWarning
-                              onBlur={(e) => {
-                                if (!e.target.innerText.trim()) {
-                                  e.target.classList.add("empty-content");
-                                } else {
-                                  e.target.classList.remove("empty-content");
-                                  updateCertificate(
-                                    cert.id,
-                                    "date",
-                                    e.target.innerText
-                                  );
-                                }
+                            <Input
+                              placeholder="Ngày cấp"
+                              value={cert.date || ""}
+                              onChange={(e) =>
+                                updateCertificate(
+                                  cert.id,
+                                  "date",
+                                  e.target.value
+                                )
+                              }
+                              size="small"
+                              style={{
+                                fontFamily: selectedFont,
+                                fontSize: `${fontSize}px`,
                               }}
-                              data-placeholder="Ngày cấp"
-                              className="date-field"
-                            >
-                              {cert.date || ""}
-                            </span>
+                              className={`w-fit border-none ${
+                                cert.date
+                                  ? "border-transparent"
+                                  : "border-gray-300"
+                              } rounded-md bg-transparent text-base font-normal px-2 py-1 certificate-date-input !shadow-none`}
+                            />
                           </div>
                           <div className="timeline-content">
-                            <div className="timeline-item-header">
-                              <div
-                                contentEditable
-                                suppressContentEditableWarning
-                                onBlur={(e) => {
-                                  if (!e.target.innerText.trim()) {
-                                    e.target.classList.add("empty-content");
-                                  } else {
-                                    e.target.classList.remove("empty-content");
-                                    updateCertificate(
-                                      cert.id,
-                                      "organization",
-                                      e.target.innerText
-                                    );
-                                  }
+                            <div
+                              className="timeline-item-header"
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                              }}
+                            >
+                              <Input
+                                placeholder="Tên tổ chức"
+                                value={cert.organization || ""}
+                                onChange={(e) =>
+                                  updateCertificate(
+                                    cert.id,
+                                    "organization",
+                                    e.target.value
+                                  )
+                                }
+                                size="middle"
+                                className={`organization-name-input ${
+                                  cert.organization
+                                    ? "border-transparent"
+                                    : "border-gray-300"
+                                }  rounded-md bg-transparent text-base font-normal px-2.5 py-1.5 !shadow-none !border-none border-color-transparent`}
+                                style={{
+                                  fontFamily: selectedFont,
+                                  fontSize: `${fontSize}px`,
                                 }}
-                                data-placeholder="Tên tổ chức"
-                                className="organization-name"
-                              >
-                                {cert.organization || ""}
-                              </div>
+                              />
                               <Button
                                 type="text"
                                 danger
@@ -2377,34 +2417,48 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                                 className="invisible remove-item-btn group-hover:visible"
                               />
                             </div>
-                            <div
-                              contentEditable
-                              suppressContentEditableWarning
-                              onBlur={(e) =>
+                            <Input
+                              placeholder="Tên chứng chỉ"
+                              value={cert.name || ""}
+                              onChange={(e) =>
                                 updateCertificate(
                                   cert.id,
                                   "name",
-                                  e.target.innerText
+                                  e.target.value
                                 )
                               }
-                              className="certificate-name"
-                            >
-                              {cert.name}
-                            </div>
-                            <div
-                              contentEditable
-                              suppressContentEditableWarning
-                              onBlur={(e) =>
+                              size="middle"
+                              className={` ${
+                                cert.name
+                                  ? "border-transparent"
+                                  : "border-d9d9d9"
+                              } border-none !hover:bg-transparent rounded-md bg-transparent text-base font-normal px-2 py-1 italic text-gray-600 !shadow-none`}
+                              style={{
+                                fontFamily: selectedFont,
+                                fontSize: `${fontSize}px`,
+                              }}
+                            />
+                            <Input.TextArea
+                              placeholder="Mô tả về chứng chỉ"
+                              value={cert.description || ""}
+                              onChange={(e) =>
                                 updateCertificate(
                                   cert.id,
                                   "description",
-                                  e.target.innerText
+                                  e.target.value
                                 )
                               }
-                              className="description"
-                            >
-                              {cert.description}
-                            </div>
+                              autoSize={{ minRows: 2, maxRows: 6 }}
+                              className={`w-full border ${
+                                cert.description
+                                  ? "border-transparent"
+                                  : "border-d9d9d9"
+                              } rounded-md bg-transparent text-base font-normal px-2 py-1 resize-none !shadow-none !border-none border-color-transparent`}
+                              style={{
+                                fontFamily: selectedFont,
+                                fontSize: `${fontSize}px`,
+                              }}
+                            />
                           </div>
                         </div>
                       ))}
