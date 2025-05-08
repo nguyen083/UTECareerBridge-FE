@@ -699,6 +699,141 @@
       "share": {
         "title": "Chia sẻ hồ sơ",
         "description": "Chia sẻ hồ sơ của bạn với nhà tuyển dụng qua email hoặc mạng xã hội."
+      },
+      "close": "Đóng",
+      "preview": "Xem trước CV",
+      "editCV": "Chỉnh sửa CV",
+      "save": "Lưu CV",
+      "previewLoading": "Đang chuẩn bị xem trước...",
+      "previewGenerating": "Đang tạo bản xem trước PDF...",
+      "previewSuccess": "Đã mở bản xem trước CV trong tab mới",
+      "previewError": "Không thể xem trước CV. Vui lòng thử lại sau.",
+      "downloadPreparing": "Đang chuẩn bị tải xuống...",
+      "downloadSuccess": "Tải xuống thành công!",
+      "downloadError": "Không thể tải xuống CV. Vui lòng thử lại sau.",
+      "uploadingPhoto": "Đang tải ảnh lên...",
+      "uploadPhotoSuccess": "Tải ảnh thành công!",
+      "uploadPhotoError": "Không thể tải lên ảnh. Vui lòng thử lại sau.",
+      "templates": {
+        "selectTemplate": "Chọn mẫu CV",
+        "currentTemplate": "Mẫu hiện tại:",
+        "apply": "Áp dụng",
+        "modern": {
+          "name": "Modern",
+          "description": "Mẫu hiện đại với thiết kế sạch sẽ, phù hợp cho hầu hết ngành nghề"
+        },
+        "elegant": {
+          "name": "Elegant",
+          "description": "Mẫu sang trọng với bố cục thanh lịch, phù hợp cho những người muốn tạo ấn tượng cao cấp"
+        }
+      },
+      "colorTheme": "Màu chủ đề",
+      "customColor": "Chọn màu tùy chỉnh",
+      "cancel": "Hủy",
+      "font": "Font chữ",
+      "fontSize": "Cỡ chữ",
+      "language": "Ngôn ngữ",
+      "addSection": "Thêm mục",
+      "sections": {
+        "workExperience": {
+          "name": "Kinh nghiệm làm việc",
+          "description": "Mô tả các kinh nghiệm làm việc của bạn càng chi tiết càng tốt."
+        },
+        "education": {
+          "name": "Học vấn",
+          "description": "Mô tả toàn bộ quá trình học vấn của bạn, cùng như các bằng cấp bạn đã đạt được."
+        },
+        "languages": {
+          "name": "Ngoại ngữ",
+          "description": "Liệt kê các chứng chỉ ngoại ngữ mà bạn đã đạt được."
+        },
+        "references": {
+          "name": "Người tham khảo",
+          "description": "Thông tin người tham khảo giúp tăng độ tin cậy cho hồ sơ của bạn."
+        },
+        "activities": {
+          "name": "Hoạt động",
+          "description": "Liệt kê những hoạt động bạn đã tham gia trong quá trình học hoặc làm việc."
+        },
+        "skills": {
+          "name": "Kỹ năng",
+          "description": "Danh sách các kỹ năng chuyên môn và mức độ thành thạo."
+        },
+        "projects": {
+          "name": "Dự án",
+          "description": "Mô tả các dự án bạn đã tham gia hoặc thực hiện."
+        },
+        "certificates": {
+          "name": "Chứng chỉ",
+          "description": "Liệt kê các chứng chỉ chuyên môn bạn đã đạt được."
+        }
+      },
+      "personalInfo": {
+        "fullName": "Họ và tên",
+        "jobTitle": "Chức danh - kinh nghiệm",
+        "phone": "Số điện thoại",
+        "email": "Địa chỉ Email",
+        "address": "Địa chỉ",
+        "addPhoto": "Tải lên ảnh",
+        "uploadProgress": "Đang tải... {{progress}}%",
+        "birthDate": "Ngày sinh",
+        "birthDatePlaceholder": "Ngày / tháng / năm",
+        "nationality": "Quốc tịch",
+        "nationalityPlaceholder": "Quốc tịch",
+        "maritalStatus": "Tình trạng hôn nhân",
+        "maritalStatusPlaceholder": "Độc thân / Đã kết hôn",
+        "gender": "Giới tính",
+        "genderPlaceholder": "Nam / Nữ"
+      },
+      "objectives": {
+        "title": "MỤC TIÊU NGHỀ NGHIỆP",
+        "placeholder": "Nhập mục tiêu nghề nghiệp của bạn tại đây..."
+      },
+      "personalDetails": {
+        "title": "THÔNG TIN CÁ NHÂN",
+        "birthDate": "Ngày sinh",
+        "birthDatePlaceholder": "Ngày / tháng / năm",
+        "nationality": "Quốc tịch",
+        "nationalityPlaceholder": "Quốc tịch",
+        "maritalStatus": "Tình trạng hôn nhân",
+        "maritalStatusPlaceholder": "Độc thân / Đã kết hôn",
+        "gender": "Giới tính",
+        "genderPlaceholder": "Nam / Nữ"
+      },
+      "workExperience": {
+        "title": "KINH NGHIỆM LÀM VIỆC",
+        "startDate": "Ngày bắt đầu",
+        "endDate": "Ngày kết thúc",
+        "companyName": "Tên công ty",
+        "jobTitle": "Vị trí công việc",
+        "description": "Mô tả công việc",
+        "add": "Thêm kinh nghiệm làm việc"
+      },
+      "certificates": {
+        "title": "CHỨNG CHỈ",
+        "date": "Ngày cấp",
+        "organization": "Tên tổ chức",
+        "name": "Tên chứng chỉ",
+        "score": "Điểm",
+        "description": "Mô tả về chứng chỉ",
+        "add": "Thêm chứng chỉ"
+      },
+      "skills": {
+        "title": "KỸ NĂNG",
+        "skillName": "Nhập tên kỹ năng",
+        "add": "Thêm kỹ năng"
+      },
+      "sectionContent": "Nhập nội dung cho mục này...",
+      "header": {
+        "uploadImage": "Tải lên ảnh",
+        "fullName": "Họ và tên",
+        "jobTitle": "Chức danh - kinh nghiệm",
+        "phoneNumber": "Số điện thoại",
+        "emailAddress": "Địa chỉ Email",
+        "address": "Địa chỉ",
+        "phone": "Điện thoại:",
+        "email": "Email:",
+        "addressLabel": "Địa chỉ:"
       }
     }
   },

@@ -675,14 +675,10 @@
       "createNew": "Create New CV",
       "noExistingCVs": "No existing CVs found.",
       "createFirstCV": "Create your first CV here.",
-      "deleteConfirmTitle": "Are you sure you want to delete this CV?",
-      "deleteConfirmDesc": "This action cannot be undone.",
-      "deleteSuccess": "CV deleted successfully!",
-      "deleteError": "Failed to delete CV",
       "features": {
         "title": "Features",
         "save": {
-          "title": "Save",
+          "title": "Save CV",
           "description": "Save your CV to access it later."
         },
         "responsive": {
@@ -694,8 +690,8 @@
           "description": "Choose from a variety of templates."
         },
         "dragDrop": {
-          "title": "Drag and Drop",
-          "description": "Easily drag and drop elements to create your CV."
+          "title": "Easy Customization",
+          "description": "You can add custom sections as needed."
         }
       },
       "download": {
@@ -704,7 +700,142 @@
       },
       "share": {
         "title": "Share CV",
-        "description": "Share your CV with others."
+        "description": "Share your CV with employers via email or social media."
+      },
+      "close": "Close",
+      "preview": "Preview CV",
+      "editCV": "Edit CV",
+      "save": "Save CV",
+      "previewLoading": "Preparing preview...",
+      "previewGenerating": "Generating PDF preview...",
+      "previewSuccess": "CV preview opened in new tab",
+      "previewError": "Cannot preview CV. Please try again later.",
+      "downloadPreparing": "Preparing download...",
+      "downloadSuccess": "Download successful!",
+      "downloadError": "Cannot download CV. Please try again later.",
+      "uploadingPhoto": "Uploading photo...",
+      "uploadPhotoSuccess": "Photo upload successful!",
+      "uploadPhotoError": "Cannot upload photo. Please try again later.",
+      "templates": {
+        "selectTemplate": "Select CV Template",
+        "currentTemplate": "Current template:",
+        "apply": "Apply",
+        "modern": {
+          "name": "Modern",
+          "description": "A modern template with clean design, suitable for most industries"
+        },
+        "elegant": {
+          "name": "Elegant",
+          "description": "An elegant template with refined layout, perfect for those wanting to make a premium impression"
+        }
+      },
+      "colorTheme": "Theme Color",
+      "customColor": "Choose Custom Color",
+      "cancel": "Cancel",
+      "font": "Font",
+      "fontSize": "Font Size",
+      "language": "Language",
+      "addSection": "Add Section",
+      "sections": {
+        "workExperience": {
+          "name": "Work Experience",
+          "description": "Describe your work experiences in as much detail as possible."
+        },
+        "education": {
+          "name": "Education",
+          "description": "Describe your entire educational background and qualifications you've achieved."
+        },
+        "languages": {
+          "name": "Languages",
+          "description": "List the language certificates you have achieved."
+        },
+        "references": {
+          "name": "References",
+          "description": "Reference information helps increase the credibility of your resume."
+        },
+        "activities": {
+          "name": "Activities",
+          "description": "List the activities you have participated in during your studies or work."
+        },
+        "skills": {
+          "name": "Skills",
+          "description": "List of professional skills and proficiency levels."
+        },
+        "projects": {
+          "name": "Projects",
+          "description": "Describe the projects you have participated in or implemented."
+        },
+        "certificates": {
+          "name": "Certificates",
+          "description": "List the professional certificates you have achieved."
+        }
+      },
+      "personalInfo": {
+        "fullName": "Full Name",
+        "jobTitle": "Job Title - Experience",
+        "phone": "Phone Number",
+        "email": "Email Address",
+        "address": "Address",
+        "addPhoto": "Upload Photo",
+        "uploadProgress": "Uploading... {{progress}}%",
+        "birthDate": "Date of Birth",
+        "birthDatePlaceholder": "Day / Month / Year",
+        "nationality": "Nationality",
+        "nationalityPlaceholder": "Nationality",
+        "maritalStatus": "Marital Status",
+        "maritalStatusPlaceholder": "Single / Married",
+        "gender": "Gender",
+        "genderPlaceholder": "Male / Female"
+      },
+      "objectives": {
+        "title": "CAREER OBJECTIVES",
+        "placeholder": "Enter your career objectives here..."
+      },
+      "personalDetails": {
+        "title": "PERSONAL INFORMATION",
+        "birthDate": "Date of Birth",
+        "birthDatePlaceholder": "Day / Month / Year",
+        "nationality": "Nationality",
+        "nationalityPlaceholder": "Nationality",
+        "maritalStatus": "Marital Status",
+        "maritalStatusPlaceholder": "Single / Married",
+        "gender": "Gender",
+        "genderPlaceholder": "Male / Female"
+      },
+      "workExperience": {
+        "title": "WORK EXPERIENCE",
+        "startDate": "Start Date",
+        "endDate": "End Date",
+        "companyName": "Company Name",
+        "jobTitle": "Job Position",
+        "description": "Job Description",
+        "add": "Add Work Experience"
+      },
+      "certificates": {
+        "title": "CERTIFICATES",
+        "date": "Issue Date",
+        "organization": "Organization Name",
+        "name": "Certificate Name",
+        "score": "Score",
+        "description": "Certificate Description",
+        "add": "Add Certificate"
+      },
+      "skills": {
+        "title": "SKILLS",
+        "skillName": "Enter skill name",
+        "add": "Add Skill"
+      },
+      "sectionContent": "Enter content for this section...",
+      "header": {
+        "uploadImage": "Upload Image",
+        "fullName": "Full Name",
+        "jobTitle": "Job Title - Experience",
+        "phoneNumber": "Phone Number",
+        "emailAddress": "Email Address",
+        "address": "Address",
+        "phone": "Phone:",
+        "email": "Email:",
+        "addressLabel": "Address:"
       }
     }
   },

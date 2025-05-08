@@ -63,15 +63,13 @@ const CV_TEMPLATES = [
     id: "modern",
     name: "Modern",
     color: "#3366FF",
-    description:
-      "Mẫu hiện đại với thiết kế sạch sẽ, phù hợp cho hầu hết ngành nghề",
+    description: "templates.modern.description",
   },
   {
     id: "elegant",
     name: "Elegant",
     color: "#107C41",
-    description:
-      "Mẫu sang trọng với bố cục thanh lịch, phù hợp cho những người muốn tạo ấn tượng cao cấp",
+    description: "templates.elegant.description",
   },
 ];
 
@@ -114,47 +112,43 @@ const FONT_OPTIONS = [
 const AVAILABLE_SECTIONS = [
   {
     id: "workExperience",
-    name: "Kinh nghiệm làm việc",
-    description:
-      "Mô tả các kinh nghiệm làm việc của bạn càng chi tiết càng tốt.",
+    name: "sections.workExperience.name",
+    description: "sections.workExperience.description",
   },
   {
     id: "education",
-    name: "Học vấn",
-    description:
-      "Mô tả toàn bộ quá trình học vấn của bạn, cùng như các bằng cấp bạn đã đạt được.",
+    name: "sections.education.name",
+    description: "sections.education.description",
   },
   {
     id: "languages",
-    name: "Ngoại ngữ",
-    description: "Liệt kê các chứng chỉ ngoại ngữ mà bạn đã đạt được.",
+    name: "sections.languages.name",
+    description: "sections.languages.description",
   },
   {
     id: "references",
-    name: "Người tham khảo",
-    description:
-      "Thông tin người tham khảo giúp tăng độ tin cậy cho hồ sơ của bạn.",
+    name: "sections.references.name",
+    description: "sections.references.description",
   },
   {
     id: "activities",
-    name: "Hoạt động",
-    description:
-      "Liệt kê những hoạt động bạn đã tham gia trong quá trình học hoặc làm việc.",
+    name: "sections.activities.name",
+    description: "sections.activities.description",
   },
   {
     id: "skills",
-    name: "Kỹ năng",
-    description: "Danh sách các kỹ năng chuyên môn và mức độ thành thạo.",
+    name: "sections.skills.name",
+    description: "sections.skills.description",
   },
   {
     id: "projects",
-    name: "Dự án",
-    description: "Mô tả các dự án bạn đã tham gia hoặc thực hiện.",
+    name: "sections.projects.name",
+    description: "sections.projects.description",
   },
   {
     id: "certificates",
-    name: "Chứng chỉ",
-    description: "Liệt kê các chứng chỉ chuyên môn bạn đã đạt được.",
+    name: "sections.certificates.name",
+    description: "sections.certificates.description",
   },
 ];
 
@@ -194,11 +188,8 @@ class ErrorBoundary extends Component {
             borderRadius: "4px",
           }}
         >
-          <h4>Oops! Something went wrong with the CV Builder</h4>
-          <p>
-            The application encountered an error while updating the template.
-            Please try again.
-          </p>
+          <h4>Có lỗi khi tạo CV</h4>
+          <p>Có lỗi khi tạo CV</p>
           <p style={{ fontSize: "12px", color: "#888" }}>
             Error: {this.state.error && this.state.error.toString()}
           </p>
@@ -523,7 +514,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
       message.open({
         key: messageKey,
         type: "loading",
-        content: "Đang chuẩn bị xem trước...",
+        content: t("cv.builder.previewLoading"),
         duration: 0,
       });
 
@@ -554,7 +545,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
           message.open({
             key: messageKey,
             type: "loading",
-            content: "Đang tạo bản xem trước PDF...",
+            content: t("cv.builder.previewGenerating"),
             duration: 0,
           });
 
@@ -566,7 +557,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
             message.open({
               key: messageKey,
               type: "success",
-              content: "Đã mở bản xem trước CV trong tab mới",
+              content: t("cv.builder.previewSuccess"),
               duration: 2,
             });
           } else {
@@ -577,7 +568,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
           message.open({
             key: messageKey,
             type: "error",
-            content: "Không thể xem trước CV. Vui lòng thử lại sau.",
+            content: t("cv.builder.previewError"),
             duration: 3,
           });
         }
@@ -594,7 +585,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
       message.open({
         key: messageKey,
         type: "loading",
-        content: "Đang chuẩn bị tải xuống...",
+        content: t("cv.builder.downloadPreparing"),
         duration: 0,
       });
 
@@ -623,7 +614,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
         message.open({
           key: messageKey,
           type: "success",
-          content: "Tải xuống thành công!",
+          content: t("cv.builder.downloadSuccess"),
           duration: 3,
         });
       } else {
@@ -631,7 +622,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
       }
     } catch (error) {
       console.error("Error downloading PDF:", error);
-      message.error("Không thể tải xuống CV. Vui lòng thử lại sau.");
+      message.error(t("cv.builder.downloadError"));
     }
   };
 
@@ -656,7 +647,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
 
         const messageKey = "uploading-photo";
         message.loading({
-          content: "Đang tải ảnh lên...",
+          content: t("cv.builder.uploadingPhoto"),
           key: messageKey,
           duration: 0,
         });
@@ -671,7 +662,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
 
         setProfilePhotoUrl(uploadedUrl);
         message.success({
-          content: "Tải ảnh thành công!",
+          content: t("cv.builder.uploadPhotoSuccess"),
           key: messageKey,
           duration: 2,
         });
@@ -688,7 +679,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
       }
     } catch (error) {
       console.error("Error processing profile photo:", error);
-      message.error("Không thể tải lên ảnh. Vui lòng thử lại sau.", 3);
+      message.error(t("cv.builder.uploadPhotoError"), 3);
       setUploadingPhoto(false);
     }
 
@@ -1163,7 +1154,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
               <div className="flex-grow header-content">
                 <div className="flex flex-col">
                   <Input
-                    placeholder="Họ và tên"
+                    placeholder={t("cv.builder.header.fullName")}
                     value={fullName || ""}
                     onChange={(e) => setFullName(e.target.value)}
                     size="small"
@@ -1178,7 +1169,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                   />
 
                   <Input
-                    placeholder="Chức danh - kinh nghiệm"
+                    placeholder={t("cv.builder.header.jobTitle")}
                     value={jobTitle || ""}
                     onChange={(e) => setJobTitle(e.target.value)}
                     size="small"
@@ -1200,10 +1191,10 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                         color: selectedColor,
                       }}
                     >
-                      Điện thoại:
+                      {t("cv.builder.header.phone")}
                     </div>
                     <AutoResizingInput
-                      placeholder="Số điện thoại"
+                      placeholder={t("cv.builder.header.phoneNumber")}
                       value={contactInfo.phone || ""}
                       onChange={(e) =>
                         setContactInfo({
@@ -1228,10 +1219,10 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                         color: selectedColor,
                       }}
                     >
-                      Email:
+                      {t("cv.builder.header.email")}
                     </div>
                     <AutoResizingInput
-                      placeholder="Địa chỉ Email"
+                      placeholder={t("cv.builder.header.emailAddress")}
                       value={contactInfo.email || ""}
                       onChange={(e) =>
                         setContactInfo({
@@ -1256,10 +1247,10 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                         color: selectedColor,
                       }}
                     >
-                      Địa chỉ:
+                      {t("cv.builder.header.addressLabel")}
                     </div>
                     <AutoResizingInput
-                      placeholder="Địa chỉ"
+                      placeholder={t("cv.builder.header.address")}
                       value={contactInfo.address || ""}
                       onChange={(e) =>
                         setContactInfo({
@@ -1312,7 +1303,9 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                         <div className="flex justify-center">
                           <UploadOutlined style={{ fontSize: "20px" }} />
                         </div>
-                        <div className="mt-1 text-xs">Tải lên ảnh</div>
+                        <div className="mt-1 text-xs">
+                          {t("cv.builder.header.uploadImage")}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -1355,7 +1348,9 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                         <div className="flex justify-center">
                           <UploadOutlined style={{ fontSize: "24px" }} />
                         </div>
-                        <div className="mt-2 text-xs">Tải lên ảnh</div>
+                        <div className="mt-2 text-xs">
+                          {t("cv.builder.header.uploadImage")}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -1364,7 +1359,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
 
               <div className="flex flex-col items-center flex-grow md:items-start">
                 <Input
-                  placeholder="Họ và tên"
+                  placeholder={t("cv.builder.header.fullName")}
                   value={fullName || ""}
                   onChange={(e) => setFullName(e.target.value)}
                   size="small"
@@ -1378,7 +1373,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                 />
 
                 <Input
-                  placeholder="Chức danh - kinh nghiệm"
+                  placeholder={t("cv.builder.header.jobTitle")}
                   value={jobTitle || ""}
                   onChange={(e) => setJobTitle(e.target.value)}
                   size="middle"
@@ -1398,7 +1393,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                       📱
                     </span>
                     <AutoResizingInput
-                      placeholder="Số điện thoại"
+                      placeholder={t("cv.builder.header.phoneNumber")}
                       value={contactInfo.phone || ""}
                       onChange={(e) =>
                         setContactInfo({
@@ -1424,7 +1419,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                       ✉️
                     </span>
                     <AutoResizingInput
-                      placeholder="Địa chỉ Email"
+                      placeholder={t("cv.builder.header.emailAddress")}
                       value={contactInfo.email || ""}
                       onChange={(e) =>
                         setContactInfo({
@@ -1450,7 +1445,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                       📍
                     </span>
                     <AutoResizingInput
-                      placeholder="Địa chỉ"
+                      placeholder={t("cv.builder.header.address")}
                       value={contactInfo.address || ""}
                       onChange={(e) =>
                         setContactInfo({
@@ -1653,7 +1648,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
               onClick={() => setShowBuilder(false)}
               className="toolbar-btn close-btn"
             >
-              Đóng
+              {t("cv.builder.close")}
             </Button>
             <Space size="middle">
               <Button
@@ -1662,14 +1657,14 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                 className="toolbar-btn preview-btn"
                 type={previewMode ? "primary" : "default"}
               >
-                {previewMode ? "Chỉnh sửa CV" : "Xem trước CV"}
+                {previewMode ? t("cv.builder.editCV") : t("cv.builder.preview")}
               </Button>
               <Button
                 icon={<DownloadOutlined />}
                 onClick={handleDownload}
                 className="toolbar-btn download-btn"
               >
-                Tải xuống
+                {t("cv.builder.download.title")}
               </Button>
               <Button
                 type="primary"
@@ -1678,7 +1673,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                 onClick={handleSave}
                 className="toolbar-btn save-btn"
               >
-                Lưu CV
+                {t("cv.builder.save")}
               </Button>
             </Space>
           </div>
@@ -1715,7 +1710,9 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
               {/* Left sidebar: Theme and section options */}
               <div className="cv-sidebar">
                 <div className="sidebar-section">
-                  <Title level={5}>Thiết kế CV</Title>
+                  <Title level={5}>
+                    {t("cv.builder.templates.selectTemplate")}
+                  </Title>
 
                   <Button
                     className="template-button"
@@ -1723,11 +1720,11 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     onClick={() => setShowTemplateSelector(true)}
                     icon={<FileOutlined />}
                   >
-                    Chọn mẫu CV
+                    {t("cv.builder.templates.selectTemplate")}
                   </Button>
 
                   <Modal
-                    title="Chọn mẫu CV"
+                    title={t("cv.builder.templates.selectTemplate")}
                     open={showTemplateSelector}
                     onCancel={() => setShowTemplateSelector(false)}
                     width={700}
@@ -1736,25 +1733,35 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                         key="back"
                         onClick={() => setShowTemplateSelector(false)}
                       >
-                        Đóng
+                        {t("common.cancel")}
                       </Button>,
                       <Button
                         key="submit"
                         type="primary"
                         onClick={() => setShowTemplateSelector(false)}
                       >
-                        Áp dụng
+                        {t("cv.builder.templates.apply")}
                       </Button>,
                     ]}
                   >
                     <div style={{ padding: "10px 0" }}>
                       <Text>
-                        Mẫu hiện tại:{" "}
-                        <Text strong>{selectedTemplate.name}</Text>
+                        {t("cv.builder.templates.currentTemplate")}{" "}
+                        <Text strong>
+                          {t(
+                            `cv.builder.templates.${selectedTemplate.id}.name`
+                          )}
+                        </Text>
                       </Text>
                       <Divider />
                       <CVTemplateSelector
-                        templates={CV_TEMPLATES}
+                        templates={CV_TEMPLATES.map((template) => ({
+                          ...template,
+                          name: t(`cv.builder.templates.${template.id}.name`),
+                          description: t(
+                            `cv.builder.templates.${template.id}.description`
+                          ),
+                        }))}
                         selectedTemplate={selectedTemplate}
                         onSelect={handleTemplateChange}
                       />
@@ -1763,7 +1770,9 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
 
                   <Divider />
                   <div className="color-controls">
-                    <div className="control-label">Màu chủ đề</div>
+                    <div className="control-label">
+                      {t("cv.builder.colorTheme")}
+                    </div>
                     <div className="color-options">
                       {CV_COLOR_PRESETS.map((preset) => (
                         <Tooltip key={preset.color} title={preset.name}>
@@ -1786,7 +1795,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
 
                     {/* Modal chọn màu tùy chỉnh */}
                     <Modal
-                      title="Chọn màu tùy chỉnh"
+                      title={t("cv.builder.customColor")}
                       open={showColorPicker}
                       onCancel={() => setShowColorPicker(false)}
                       footer={[
@@ -1794,14 +1803,14 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                           key="back"
                           onClick={() => setShowColorPicker(false)}
                         >
-                          Hủy
+                          {t("cv.builder.cancel")}
                         </Button>,
                         <Button
                           key="submit"
                           type="primary"
                           onClick={() => setShowColorPicker(false)}
                         >
-                          Áp dụng
+                          {t("cv.builder.templates.apply")}
                         </Button>,
                       ]}
                     >
@@ -1838,7 +1847,9 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
 
                   <div className="font-controls">
                     <div className="control-group">
-                      <div className="control-label">Font chữ</div>
+                      <div className="control-label">
+                        {t("cv.builder.font")}
+                      </div>
                       <Select
                         value={selectedFont}
                         onChange={setSelectedFont}
@@ -1860,7 +1871,9 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     </div>
 
                     <div className="control-group">
-                      <div className="control-label">Cỡ chữ</div>
+                      <div className="control-label">
+                        {t("cv.builder.fontSize")}
+                      </div>
                       <div className="font-size-control">
                         <FontSizeOutlined />
                         <Slider
@@ -1876,7 +1889,9 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     </div>
 
                     <div className="control-group">
-                      <div className="control-label">Ngôn ngữ</div>
+                      <div className="control-label">
+                        {t("cv.builder.language")}
+                      </div>
                       <Select
                         value={i18n.language.startsWith("vi") ? "vi" : "en"}
                         onChange={(value) => {
@@ -1898,7 +1913,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                 <Divider />
 
                 <div className="sidebar-section">
-                  <Title level={5}>Thêm mục</Title>
+                  <Title level={5}>{t("cv.builder.addSection")}</Title>
                   <div className="section-list">
                     {AVAILABLE_SECTIONS.map((section) => (
                       <div key={section.id} className="section-item">
@@ -1909,10 +1924,10 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                         >
                           <div className="section-btn-content">
                             <div className="section-btn-title">
-                              {section.name}
+                              {t(`cv.builder.${section.name}`)}
                             </div>
                             <div className="section-btn-desc">
-                              {section.description}
+                              {t(`cv.builder.${section.description}`)}
                             </div>
                           </div>
                           <PlusOutlined className="section-btn-icon" />
@@ -1942,11 +1957,11 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                       className="section-title"
                       style={{ borderBottomColor: selectedColor }}
                     >
-                      MỤC TIÊU NGHỀ NGHIỆP
+                      {t("cv.builder.objectives.title")}
                     </div>
                     <div className="section-content">
                       <Input.TextArea
-                        placeholder="Nhập mục tiêu nghề nghiệp của bạn tại đây..."
+                        placeholder={t("cv.builder.objectives.placeholder")}
                         value={careerObjective || ""}
                         onChange={(e) => setCareerObjective(e.target.value)}
                         autoSize={{ minRows: 2, maxRows: 6 }}
@@ -1968,13 +1983,17 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                       className="section-title"
                       style={{ borderBottomColor: selectedColor }}
                     >
-                      THÔNG TIN CÁ NHÂN
+                      {t("cv.builder.personalDetails.title")}
                     </div>
                     <div className="section-content personal-info">
                       <div className="personal-info-item">
-                        <div className="info-label">Ngày sinh</div>
+                        <div className="info-label">
+                          {t("cv.builder.personalInfo.birthDate")}
+                        </div>
                         <Input
-                          placeholder="Ngày / tháng / năm"
+                          placeholder={t(
+                            "cv.builder.personalInfo.birthDatePlaceholder"
+                          )}
                           value={personalInfo.birthDate || ""}
                           onChange={(e) =>
                             setPersonalInfo({
@@ -1996,9 +2015,13 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                       </div>
 
                       <div className="personal-info-item">
-                        <div className="info-label">Quốc tịch</div>
+                        <div className="info-label">
+                          {t("cv.builder.personalInfo.nationality")}
+                        </div>
                         <Input
-                          placeholder="Quốc tịch"
+                          placeholder={t(
+                            "cv.builder.personalInfo.nationalityPlaceholder"
+                          )}
                           value={personalInfo.nationality || ""}
                           onChange={(e) =>
                             setPersonalInfo({
@@ -2020,9 +2043,13 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                       </div>
 
                       <div className="personal-info-item">
-                        <div className="info-label">Tình trạng hôn nhân</div>
+                        <div className="info-label">
+                          {t("cv.builder.personalInfo.maritalStatus")}
+                        </div>
                         <Input
-                          placeholder="Độc thân / Đã kết hôn"
+                          placeholder={t(
+                            "cv.builder.personalInfo.maritalStatusPlaceholder"
+                          )}
                           value={personalInfo.maritalStatus || ""}
                           onChange={(e) =>
                             setPersonalInfo({
@@ -2044,9 +2071,13 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                       </div>
 
                       <div className="personal-info-item">
-                        <div className="info-label">Giới tính</div>
+                        <div className="info-label">
+                          {t("cv.builder.personalInfo.gender")}
+                        </div>
                         <Input
-                          placeholder="Nam / Nữ"
+                          placeholder={t(
+                            "cv.builder.personalInfo.genderPlaceholder"
+                          )}
                           value={personalInfo.gender || ""}
                           onChange={(e) =>
                             setPersonalInfo({
@@ -2075,7 +2106,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                       className="section-title"
                       style={{ borderBottomColor: selectedColor }}
                     >
-                      KINH NGHIỆM LÀM VIỆC
+                      {t("cv.builder.workExperience.title")}
                     </div>
                     <div className="section-content timeline-section">
                       {workExperiences.map((exp) => (
@@ -2087,7 +2118,9 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                           <div className="timeline-date">
                             <div className="flex items-center">
                               <Input
-                                placeholder="Ngày bắt đầu"
+                                placeholder={t(
+                                  "cv.builder.workExperience.startDate"
+                                )}
                                 value={exp.startDate || ""}
                                 onChange={(e) =>
                                   updateWorkExperience(
@@ -2109,7 +2142,9 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                               />
                               <span className="mx-2 date-separator">-</span>
                               <Input
-                                placeholder="Ngày kết thúc"
+                                placeholder={t(
+                                  "cv.builder.workExperience.endDate"
+                                )}
                                 value={exp.endDate || ""}
                                 onChange={(e) =>
                                   updateWorkExperience(
@@ -2141,7 +2176,9 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                               }}
                             >
                               <Input
-                                placeholder="Tên công ty"
+                                placeholder={t(
+                                  "cv.builder.workExperience.companyName"
+                                )}
                                 value={exp.companyName || ""}
                                 onChange={(e) =>
                                   updateWorkExperience(
@@ -2170,7 +2207,9 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                               />
                             </div>
                             <Input
-                              placeholder="Vị trí công việc"
+                              placeholder={t(
+                                "cv.builder.workExperience.jobTitle"
+                              )}
                               value={exp.jobTitle || ""}
                               onChange={(e) =>
                                 updateWorkExperience(
@@ -2191,7 +2230,9 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                               }}
                             />
                             <Input.TextArea
-                              placeholder="Mô tả công việc"
+                              placeholder={t(
+                                "cv.builder.workExperience.description"
+                              )}
                               value={exp.description || ""}
                               onChange={(e) =>
                                 updateWorkExperience(
@@ -2223,7 +2264,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                         className="add-timeline-btn"
                         style={{ marginTop: "15px" }}
                       >
-                        Thêm kinh nghiệm làm việc
+                        {t("cv.builder.workExperience.add")}
                       </Button>
                     </div>
                   </div>
@@ -2234,7 +2275,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                       className="section-title"
                       style={{ borderBottomColor: selectedColor }}
                     >
-                      CHỨNG CHỈ
+                      {t("cv.builder.certificates.title")}
                     </div>
                     <div className="section-content timeline-section">
                       {certificates.map((cert) => (
@@ -2245,7 +2286,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                           ></div>
                           <div className="timeline-date">
                             <Input
-                              placeholder="Ngày cấp"
+                              placeholder={t("cv.builder.certificates.date")}
                               value={cert.date || ""}
                               onChange={(e) =>
                                 updateCertificate(
@@ -2276,7 +2317,9 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                               }}
                             >
                               <Input
-                                placeholder="Tên tổ chức"
+                                placeholder={t(
+                                  "cv.builder.certificates.organization"
+                                )}
                                 value={cert.organization || ""}
                                 onChange={(e) =>
                                   updateCertificate(
@@ -2306,7 +2349,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                             </div>
                             <div className="flex items-center justify-between">
                               <AutoResizingInput
-                                placeholder="Tên chứng chỉ"
+                                placeholder={t("cv.builder.certificates.name")}
                                 value={cert.name || ""}
                                 onChange={(e) =>
                                   updateCertificate(
@@ -2328,7 +2371,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                                 minWidth={150}
                               />
                               <AutoResizingInput
-                                placeholder="Điểm"
+                                placeholder={t("cv.builder.certificates.score")}
                                 value={cert.score || ""}
                                 onChange={(e) =>
                                   updateCertificate(
@@ -2352,7 +2395,9 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                             </div>
 
                             <Input.TextArea
-                              placeholder="Mô tả về chứng chỉ"
+                              placeholder={t(
+                                "cv.builder.certificates.description"
+                              )}
                               value={cert.description || ""}
                               onChange={(e) =>
                                 updateCertificate(
@@ -2384,7 +2429,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                         className="add-timeline-btn"
                         style={{ marginTop: "15px" }}
                       >
-                        Thêm chứng chỉ
+                        {t("cv.builder.certificates.add")}
                       </Button>
                     </div>
                   </div>
@@ -2395,7 +2440,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                       className="section-title"
                       style={{ borderBottomColor: selectedColor }}
                     >
-                      KỸ NĂNG
+                      {t("cv.builder.skills.title")}
                     </div>
                     <div className="section-content skills-list">
                       {skills.map((skill) => (
@@ -2407,7 +2452,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                             onChange={(value) =>
                               updateSkill(skill.id, "name", value)
                             }
-                            placeholder="Nhập tên kỹ năng"
+                            placeholder={t("cv.builder.skills.skillName")}
                             style={{ width: "50%", marginRight: 8 }}
                             filterOption={(inputValue, option) =>
                               option.value
@@ -2442,7 +2487,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                         onClick={addSkill}
                         className="add-skill-btn"
                       >
-                        Thêm kỹ năng
+                        {t("cv.builder.skills.add")}
                       </Button>
                     </div>
                   </div>
@@ -2487,7 +2532,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                       </div>
                       <Input.TextArea
                         value={section.content?.text || ""}
-                        placeholder="Nhập nội dung cho mục này..."
+                        placeholder={t("cv.builder.sectionContent")}
                         onChange={(e) => {
                           handleSectionContentChange(
                             section.id,
