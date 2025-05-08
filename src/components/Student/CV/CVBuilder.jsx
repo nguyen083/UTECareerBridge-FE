@@ -46,6 +46,7 @@ import CVTemplateSelector from "./CVTemplateSelector";
 import { useSelector } from "react-redux";
 import { apiService } from "../../../services/getAddressId";
 import { useQueryClient } from "@tanstack/react-query";
+import AutoResizingInput from "./AutoResizingInput";
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -235,27 +236,10 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
   const [skills, setSkills] = useState([]);
 
   // Work Experience
-  const [workExperiences, setWorkExperiences] = useState([
-    {
-      id: 1,
-      companyName: "",
-      jobTitle: "",
-      startDate: "",
-      endDate: "",
-      description: "",
-    },
-  ]);
+  const [workExperiences, setWorkExperiences] = useState([]);
 
   // Certificates
-  const [certificates, setCertificates] = useState([
-    {
-      id: 1,
-      organization: "",
-      name: "",
-      date: "",
-      description: "",
-    },
-  ]);
+  const [certificates, setCertificates] = useState([]);
 
   const [selectedColor, setSelectedColor] = useState(CV_COLOR_PRESETS[0].color);
   const [selectedFont, setSelectedFont] = useState(FONT_OPTIONS[0].value);
@@ -318,8 +302,8 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
           setJobTitle(existingCvData.personalInfo.jobTitle || "");
 
           // Load career objective
-          if (existingCvData.personalInfo.objective) {
-            setCareerObjective(existingCvData.personalInfo.objective);
+          if (existingCvData.personalInfo.careerObjective) {
+            setCareerObjective(existingCvData.personalInfo.careerObjective);
           }
 
           // Load contact info
@@ -375,6 +359,13 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
           );
           setSelectedFont(existingCvData.theme.font || FONT_OPTIONS[0].value);
           setFontSize(existingCvData.theme.fontSize || 12);
+          console.log(
+            CV_TEMPLATES.find((t) => t.id === existingCvData.theme.id)
+          );
+          setSelectedTemplate(
+            CV_TEMPLATES.find((t) => t.id === existingCvData.theme.id) ||
+              CV_TEMPLATES[0]
+          );
 
           // Set template if it exists
           if (existingCvData.theme.id) {
@@ -454,20 +445,6 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
     message.success("Đã xóa mục");
   };
 
-  // const moveSection = (dragIndex, hoverIndex) => {
-  //   setSections((prevSections) => {
-  //     const result = [...prevSections];
-  //     const [removed] = result.splice(dragIndex, 1);
-  //     result.splice(hoverIndex, 0, removed);
-
-  //     // Update positions
-  //     return result.map((section, index) => ({
-  //       ...section,
-  //       position: index,
-  //     }));
-  //   });
-  // };
-
   const handleSave = async () => {
     try {
       setSaveLoading(true);
@@ -496,6 +473,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
         resumeFile: pdfUrl,
         levelId: 1,
         theme: {
+          id: selectedTemplate.id,
           color: selectedColor,
           font: selectedFont,
           fontSize: fontSize,
@@ -505,6 +483,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
           jobTitle,
           ...contactInfo,
           ...personalInfo,
+          careerObjective,
           photoUrl: photoUrl,
         },
         sections: sections,
@@ -780,6 +759,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
         id: newId,
         organization: "",
         name: "",
+        score: "",
         date: "",
         description: "",
       },
@@ -847,48 +827,37 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
               </div>
 
               <div className="flex flex-col items-center flex-grow md:items-start">
-                <div
+                <Input
+                  placeholder="Họ và tên"
+                  value={fullName || ""}
+                  onChange={(e) => setFullName(e.target.value)}
+                  size="large"
                   className={`mb-2 text-2xl font-bold md:text-3xl ${
-                    !fullName ? "empty-content" : ""
-                  }`}
-                  contentEditable
-                  suppressContentEditableWarning
-                  onBlur={(e) => {
-                    const inputValue = e.target.innerText.trim();
-                    if (!inputValue) {
-                      e.target.classList.add("empty-content");
-                      e.target.innerText = ""; // Đảm bảo phần tử thực sự trống
-                    } else {
-                      e.target.classList.remove("empty-content");
-                      setFullName(inputValue);
-                    }
-                  }}
-                  data-placeholder="Họ và tên"
+                    !fullName ? "empty-input" : ""
+                  } border-none bg-transparent px-2 py-1 !shadow-none`}
                   style={{
+                    fontFamily: selectedFont,
+                    fontSize: `${fontSize + 8}px`,
                     color: selectedColor,
-                    outline: "none",
-                    minWidth: "200px",
-                    padding: "2px 5px",
+                    fontWeight: "bold",
                   }}
-                >
-                  {fullName || ""}
-                </div>
+                />
 
-                <div
-                  className="mb-4 text-lg font-medium text-gray-700"
-                  contentEditable
-                  suppressContentEditableWarning
-                  onBlur={(e) => setJobTitle(e.target.innerText)}
+                <Input
+                  placeholder="Chức danh - kinh nghiệm"
+                  value={jobTitle || ""}
+                  onChange={(e) => setJobTitle(e.target.value)}
+                  size="middle"
+                  className={`mb-4 text-lg font-medium text-gray-700 ${
+                    !jobTitle ? "empty-input" : ""
+                  } border-none bg-transparent px-2 py-1 !shadow-none`}
                   style={{
-                    outline: "none",
-                    minWidth: "200px",
-                    padding: "2px 5px",
+                    fontFamily: selectedFont,
+                    fontSize: `${fontSize + 2}px`,
                   }}
-                >
-                  {jobTitle}
-                </div>
+                />
 
-                <div className="flex flex-col flex-wrap gap-4 md:flex-row">
+                <div className="flex flex-wrap gap-2">
                   <div className="flex items-center">
                     <span
                       className="mr-2 text-xl"
@@ -896,24 +865,22 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     >
                       📱
                     </span>
-                    <span
-                      contentEditable
-                      suppressContentEditableWarning
-                      onBlur={(e) =>
+                    <Input
+                      placeholder="Số điện thoại"
+                      value={contactInfo.phone || ""}
+                      onChange={(e) =>
                         setContactInfo({
                           ...contactInfo,
-                          phone: e.target.innerText,
+                          phone: e.target.value,
                         })
                       }
+                      size="small"
+                      className="border-none bg-transparent !shadow-none"
                       style={{
-                        outline: "none",
-                        minWidth: "100px",
-                        padding: "2px 5px",
-                        borderBottom: "1px dashed #f0f0f0",
+                        fontFamily: selectedFont,
+                        fontSize: `${fontSize}px`,
                       }}
-                    >
-                      {contactInfo.phone || "Thêm số điện thoại"}
-                    </span>
+                    />
                   </div>
 
                   <div className="flex items-center">
@@ -923,24 +890,22 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     >
                       ✉️
                     </span>
-                    <span
-                      contentEditable
-                      suppressContentEditableWarning
-                      onBlur={(e) =>
+                    <Input
+                      placeholder="Địa chỉ Email"
+                      value={contactInfo.email || ""}
+                      onChange={(e) =>
                         setContactInfo({
                           ...contactInfo,
-                          email: e.target.innerText,
+                          email: e.target.value,
                         })
                       }
+                      size="small"
+                      className="border-none bg-transparent !shadow-none"
                       style={{
-                        outline: "none",
-                        minWidth: "100px",
-                        padding: "2px 5px",
-                        borderBottom: "1px dashed #f0f0f0",
+                        fontFamily: selectedFont,
+                        fontSize: `${fontSize}px`,
                       }}
-                    >
-                      {contactInfo.email || "example@email.com"}
-                    </span>
+                    />
                   </div>
 
                   <div className="flex items-center">
@@ -950,24 +915,24 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     >
                       📍
                     </span>
-                    <span
-                      contentEditable
-                      suppressContentEditableWarning
-                      onBlur={(e) =>
+                    <Input
+                      placeholder="Địa chỉ"
+                      value={contactInfo.address || ""}
+                      onChange={(e) =>
                         setContactInfo({
                           ...contactInfo,
-                          address: e.target.innerText,
+                          address: e.target.value,
                         })
                       }
+                      size="small"
+                      className="border-none bg-transparent !shadow-none"
                       style={{
-                        outline: "none",
-                        minWidth: "100px",
-                        padding: "2px 5px",
+                        fontFamily: selectedFont,
+                        fontSize: `${fontSize}px`,
                         borderBottom: "1px dashed #f0f0f0",
+                        minWidth: "100px",
                       }}
-                    >
-                      {contactInfo.address || "Thêm địa chỉ"}
-                    </span>
+                    />
                   </div>
                 </div>
               </div>
@@ -1189,208 +1154,171 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
       case "elegant":
         return (
           <div
-            className="cv-header"
+            className="overflow-hidden shadow-sm cv-header"
             style={{
               borderBottom: `2px solid ${selectedColor}`,
-              paddingBottom: "20px",
-              marginBottom: "30px",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "flex-start",
             }}
           >
-            <div className="header-content">
-              <div className="flex flex-col">
-                <div
-                  className="header-name"
-                  contentEditable
-                  suppressContentEditableWarning
-                  onBlur={(e) => {
-                    // Xử lý trường hợp người dùng xóa hết nội dung
-                    if (!e.target.innerText.trim()) {
-                      e.target.classList.add("empty-content");
-                    } else {
-                      e.target.classList.remove("empty-content");
-                      setFullName(e.target.innerText);
-                    }
-                  }}
-                  data-placeholder="Họ và tên"
-                  style={{
-                    color: selectedColor,
-                    fontSize: "28px",
-                    fontWeight: "600",
-                    marginBottom: "5px",
-                  }}
-                >
-                  {fullName || ""}
-                </div>
-
-                <div
-                  className="header-title"
-                  contentEditable
-                  suppressContentEditableWarning
-                  onBlur={(e) => {
-                    // Xử lý trường hợp người dùng xóa hết nội dung
-                    if (!e.target.innerText.trim()) {
-                      e.target.classList.add("empty-content");
-                    } else {
-                      e.target.classList.remove("empty-content");
-                      setJobTitle(e.target.innerText);
-                    }
-                  }}
-                  data-placeholder="Chức danh - kinh nghiệm"
-                  style={{
-                    fontSize: "16px",
-                    color: "#555",
-                    marginBottom: "15px",
-                    fontStyle: "italic",
-                  }}
-                >
-                  {jobTitle}
-                </div>
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "15px",
-                  fontSize: "14px",
-                }}
-              >
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <div
+            <div className="flex items-start justify-between">
+              <div className="flex-grow header-content">
+                <div className="flex flex-col">
+                  <Input
+                    placeholder="Họ và tên"
+                    value={fullName || ""}
+                    onChange={(e) => setFullName(e.target.value)}
+                    size="small"
+                    className="border-none !bg-transparent !shadow-none"
                     style={{
                       color: selectedColor,
-                      marginRight: "5px",
+                      fontSize: "28px",
+                      fontWeight: "600",
                     }}
-                  >
-                    Điện thoại:
-                  </div>
-                  <span
-                    contentEditable
-                    suppressContentEditableWarning
-                    onBlur={(e) => {
-                      // Xử lý trường hợp người dùng xóa hết nội dung
-                      if (!e.target.innerText.trim()) {
-                        e.target.classList.add("empty-content");
-                      } else {
-                        e.target.classList.remove("empty-content");
-                        setContactInfo({
-                          ...contactInfo,
-                          phone: e.target.innerText,
-                        });
-                      }
-                    }}
-                    data-placeholder="Số điện thoại"
-                  >
-                    {contactInfo.phone || ""}
-                  </span>
-                </div>
+                    minWidth={150}
+                    maxWidth={400}
+                  />
 
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <div
+                  <Input
+                    placeholder="Chức danh - kinh nghiệm"
+                    value={jobTitle || ""}
+                    onChange={(e) => setJobTitle(e.target.value)}
+                    size="small"
+                    className="border-none !bg-transparent !shadow-none mb-4 italic text-gray-600"
                     style={{
-                      color: selectedColor,
-                      marginRight: "5px",
+                      fontSize: "16px",
+                      fontFamily: selectedFont,
                     }}
-                  >
-                    Email:
-                  </div>
-                  <span
-                    contentEditable
-                    suppressContentEditableWarning
-                    onBlur={(e) => {
-                      // Xử lý trường hợp người dùng xóa hết nội dung
-                      if (!e.target.innerText.trim()) {
-                        e.target.classList.add("empty-content");
-                      } else {
-                        e.target.classList.remove("empty-content");
-                        setContactInfo({
-                          ...contactInfo,
-                          email: e.target.innerText,
-                        });
-                      }
-                    }}
-                    data-placeholder="Địa chỉ Email"
-                  >
-                    {contactInfo.email || ""}
-                  </span>
-                </div>
-
-                <div style={{ display: "flex", alignItems: "center" }}>
-                  <div
-                    style={{
-                      color: selectedColor,
-                      marginRight: "5px",
-                    }}
-                  >
-                    Địa chỉ:
-                  </div>
-                  <span
-                    contentEditable
-                    suppressContentEditableWarning
-                    onBlur={(e) => {
-                      // Xử lý trường hợp người dùng xóa hết nội dung
-                      if (!e.target.innerText.trim()) {
-                        e.target.classList.add("empty-content");
-                      } else {
-                        e.target.classList.remove("empty-content");
-                        setContactInfo({
-                          ...contactInfo,
-                          address: e.target.innerText,
-                        });
-                      }
-                    }}
-                    data-placeholder="Địa chỉ"
-                  >
-                    {contactInfo.address}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <Upload
-              name="avatar"
-              listType="picture-card"
-              className="profile-photo-uploader"
-              showUploadList={false}
-              onChange={handleProfilePhotoChange}
-              beforeUpload={() => false} // prevent auto upload
-              style={{
-                width: "100%",
-                height: "100%",
-                display: "block",
-                cursor: "pointer",
-                position: "relative",
-                zIndex: 20,
-              }}
-            >
-              {profilePhotoUrl ? (
-                <div
-                  style={{
-                    width: "100px",
-                    height: "100px",
-                    borderRadius: "50%",
-                    overflow: "hidden",
-                    border: `2px solid ${selectedColor}`,
-                  }}
-                >
-                  <img
-                    src={profilePhotoUrl}
-                    alt="Profile"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                      borderRadius: "50%",
-                    }}
+                    minWidth={180}
+                    maxWidth={400}
                   />
                 </div>
-              ) : (
-                uploadButton
-              )}
-            </Upload>
+
+                <div className="flex flex-wrap mt-2 mb-2 text-sm">
+                  <div className="flex items-center">
+                    <div
+                      className="font-medium"
+                      style={{
+                        color: selectedColor,
+                      }}
+                    >
+                      Điện thoại:
+                    </div>
+                    <AutoResizingInput
+                      placeholder="Số điện thoại"
+                      value={contactInfo.phone || ""}
+                      onChange={(e) =>
+                        setContactInfo({
+                          ...contactInfo,
+                          phone: e.target.value,
+                        })
+                      }
+                      size="small"
+                      className="border-none !bg-transparent !shadow-none"
+                      style={{
+                        fontFamily: selectedFont,
+                        fontSize: `${fontSize}px`,
+                      }}
+                      minWidth={100}
+                    />
+                  </div>
+
+                  <div className="flex items-center">
+                    <div
+                      className="font-medium"
+                      style={{
+                        color: selectedColor,
+                      }}
+                    >
+                      Email:
+                    </div>
+                    <AutoResizingInput
+                      placeholder="Địa chỉ Email"
+                      value={contactInfo.email || ""}
+                      onChange={(e) =>
+                        setContactInfo({
+                          ...contactInfo,
+                          email: e.target.value,
+                        })
+                      }
+                      size="small"
+                      className="border-none !bg-transparent !shadow-none"
+                      style={{
+                        fontFamily: selectedFont,
+                        fontSize: `${fontSize}px`,
+                      }}
+                      minWidth={120}
+                    />
+                  </div>
+
+                  <div className="flex items-center">
+                    <div
+                      className="font-medium"
+                      style={{
+                        color: selectedColor,
+                      }}
+                    >
+                      Địa chỉ:
+                    </div>
+                    <AutoResizingInput
+                      placeholder="Địa chỉ"
+                      value={contactInfo.address || ""}
+                      onChange={(e) =>
+                        setContactInfo({
+                          ...contactInfo,
+                          address: e.target.value,
+                        })
+                      }
+                      size="small"
+                      className="border-none !bg-transparent !shadow-none"
+                      style={{
+                        fontFamily: selectedFont,
+                        fontSize: `${fontSize}px`,
+                      }}
+                      minWidth={120}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex-shrink-0 ml-4">
+                <Upload
+                  name="avatar"
+                  listType="picture-card"
+                  className="profile-photo-uploader"
+                  showUploadList={false}
+                  onChange={handleProfilePhotoChange}
+                  beforeUpload={() => false} // prevent auto upload
+                >
+                  {profilePhotoUrl ? (
+                    <div
+                      className="w-24 h-24 overflow-hidden border-2 rounded-full"
+                      style={{
+                        borderColor: selectedColor,
+                      }}
+                    >
+                      <img
+                        src={profilePhotoUrl}
+                        alt="Profile"
+                        className="object-cover w-full h-full rounded-full"
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      className="flex items-center justify-center w-24 h-24 bg-gray-100 border-2 rounded-full"
+                      style={{
+                        borderColor: selectedColor,
+                      }}
+                    >
+                      <div className="text-center">
+                        <div className="flex justify-center">
+                          <UploadOutlined style={{ fontSize: "20px" }} />
+                        </div>
+                        <div className="mt-1 text-xs">Tải lên ảnh</div>
+                      </div>
+                    </div>
+                  )}
+                </Upload>
+              </div>
+            </div>
           </div>
         );
       default: // modern
@@ -1399,7 +1327,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
             className="overflow-hidden rounded-lg shadow-md"
             style={{ backgroundColor: `${selectedColor}15` }}
           >
-            <div className="flex flex-col items-center gap-6 p-6 md:flex-row md:items-start">
+            <div className="flex flex-col items-center gap-4 p-6 md:flex-row md:items-start">
               <div className="flex-shrink-0">
                 <Upload
                   name="avatar"
@@ -1435,54 +1363,31 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
               </div>
 
               <div className="flex flex-col items-center flex-grow md:items-start">
-                <div
-                  className={`mb-2 text-2xl font-bold md:text-3xl ${
-                    !fullName ? "empty-content" : ""
-                  }`}
-                  contentEditable
-                  suppressContentEditableWarning
-                  onBlur={(e) => {
-                    const inputValue = e.target.innerText.trim();
-                    if (!inputValue) {
-                      e.target.classList.add("empty-content");
-                      e.target.innerText = ""; // Đảm bảo phần tử thực sự trống
-                    } else {
-                      e.target.classList.remove("empty-content");
-                      setFullName(inputValue);
-                    }
-                  }}
-                  data-placeholder="Họ và tên"
+                <Input
+                  placeholder="Họ và tên"
+                  value={fullName || ""}
+                  onChange={(e) => setFullName(e.target.value)}
+                  size="small"
+                  className="border-none !bg-transparent !shadow-none mb-1"
                   style={{
+                    fontFamily: selectedFont,
+                    fontSize: `${fontSize + 8}px`,
                     color: selectedColor,
-                    outline: "none",
-                    minWidth: "200px",
-                    padding: "2px 5px",
+                    fontWeight: "bold",
                   }}
-                >
-                  {fullName || ""}
-                </div>
+                />
 
-                <div
-                  className="mb-4 text-lg font-medium text-gray-700"
-                  contentEditable
-                  suppressContentEditableWarning
-                  onBlur={(e) => {
-                    if (!e.target.innerText.trim()) {
-                      e.target.classList.add("empty-content");
-                    } else {
-                      e.target.classList.remove("empty-content");
-                      setJobTitle(e.target.innerText);
-                    }
-                  }}
-                  data-placeholder="Chức danh - kinh nghiệm"
+                <Input
+                  placeholder="Chức danh - kinh nghiệm"
+                  value={jobTitle || ""}
+                  onChange={(e) => setJobTitle(e.target.value)}
+                  size="middle"
+                  className="border-none !bg-transparent !shadow-none mb-1"
                   style={{
-                    outline: "none",
-                    minWidth: "200px",
-                    padding: "2px 5px",
+                    fontFamily: selectedFont,
+                    fontSize: `${fontSize + 2}px`,
                   }}
-                >
-                  {jobTitle}
-                </div>
+                />
 
                 <div className="flex flex-wrap gap-2">
                   <div className="flex items-center">
@@ -1492,30 +1397,23 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     >
                       📱
                     </span>
-                    <span
-                      contentEditable
-                      suppressContentEditableWarning
-                      onBlur={(e) => {
-                        if (!e.target.innerText.trim()) {
-                          e.target.classList.add("empty-content");
-                        } else {
-                          e.target.classList.remove("empty-content");
-                          setContactInfo({
-                            ...contactInfo,
-                            phone: e.target.innerText,
-                          });
-                        }
-                      }}
-                      data-placeholder="Số điện thoại"
+                    <AutoResizingInput
+                      placeholder="Số điện thoại"
+                      value={contactInfo.phone || ""}
+                      onChange={(e) =>
+                        setContactInfo({
+                          ...contactInfo,
+                          phone: e.target.value,
+                        })
+                      }
+                      size="small"
+                      className="border-none !bg-transparent !shadow-none"
                       style={{
-                        outline: "none",
-                        minWidth: "100px",
-                        padding: "2px 5px",
-                        borderBottom: "1px dashed #f0f0f0",
+                        fontFamily: selectedFont,
+                        fontSize: `${fontSize}px`,
                       }}
-                    >
-                      {contactInfo.phone || ""}
-                    </span>
+                      minWidth={100}
+                    />
                   </div>
 
                   <div className="flex items-center">
@@ -1525,30 +1423,23 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     >
                       ✉️
                     </span>
-                    <span
-                      contentEditable
-                      suppressContentEditableWarning
-                      onBlur={(e) => {
-                        if (!e.target.innerText.trim()) {
-                          e.target.classList.add("empty-content");
-                        } else {
-                          e.target.classList.remove("empty-content");
-                          setContactInfo({
-                            ...contactInfo,
-                            email: e.target.innerText,
-                          });
-                        }
-                      }}
-                      data-placeholder="Địa chỉ Email"
+                    <AutoResizingInput
+                      placeholder="Địa chỉ Email"
+                      value={contactInfo.email || ""}
+                      onChange={(e) =>
+                        setContactInfo({
+                          ...contactInfo,
+                          email: e.target.value,
+                        })
+                      }
+                      size="small"
+                      className="border-none !bg-transparent !shadow-none"
                       style={{
-                        outline: "none",
-                        minWidth: "100px",
-                        padding: "2px 5px",
-                        borderBottom: "1px dashed #f0f0f0",
+                        fontFamily: selectedFont,
+                        fontSize: `${fontSize}px`,
                       }}
-                    >
-                      {contactInfo.email || ""}
-                    </span>
+                      minWidth={120}
+                    />
                   </div>
 
                   <div className="flex items-center">
@@ -1558,30 +1449,23 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     >
                       📍
                     </span>
-                    <span
-                      contentEditable
-                      suppressContentEditableWarning
-                      onBlur={(e) => {
-                        if (!e.target.innerText.trim()) {
-                          e.target.classList.add("empty-content");
-                        } else {
-                          e.target.classList.remove("empty-content");
-                          setContactInfo({
-                            ...contactInfo,
-                            address: e.target.innerText,
-                          });
-                        }
-                      }}
-                      data-placeholder="Địa chỉ"
+                    <AutoResizingInput
+                      placeholder="Địa chỉ"
+                      value={contactInfo.address || ""}
+                      onChange={(e) =>
+                        setContactInfo({
+                          ...contactInfo,
+                          address: e.target.value,
+                        })
+                      }
+                      size="small"
+                      className="border-none !bg-transparent !shadow-none"
                       style={{
-                        outline: "none",
-                        minWidth: "100px",
-                        padding: "2px 5px",
-                        borderBottom: "1px dashed #f0f0f0",
+                        fontFamily: selectedFont,
+                        fontSize: `${fontSize}px`,
                       }}
-                    >
-                      {contactInfo.address || ""}
-                    </span>
+                      minWidth={120}
+                    />
                   </div>
                 </div>
               </div>
@@ -2060,22 +1944,21 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     >
                       MỤC TIÊU NGHỀ NGHIỆP
                     </div>
-                    <div
-                      className="section-content"
-                      contentEditable
-                      suppressContentEditableWarning
-                      onBlur={(e) => {
-                        if (!e.target.innerText.trim()) {
-                          e.target.classList.add("empty-content");
-                        } else {
-                          e.target.classList.remove("empty-content");
-                          setCareerObjective(e.target.innerText);
-                        }
-                      }}
-                      data-placeholder="Nhập mục tiêu nghề nghiệp của bạn tại đây..."
-                      style={{ minHeight: "80px" }}
-                    >
-                      {careerObjective}
+                    <div className="section-content">
+                      <Input.TextArea
+                        placeholder="Nhập mục tiêu nghề nghiệp của bạn tại đây..."
+                        value={careerObjective || ""}
+                        onChange={(e) => setCareerObjective(e.target.value)}
+                        autoSize={{ minRows: 2, maxRows: 6 }}
+                        className={`w-full ${
+                          careerObjective ? "border-transparent" : "empty-input"
+                        } border-none bg-transparent px-2 py-1 resize-none !shadow-none`}
+                        style={{
+                          fontFamily: selectedFont,
+                          fontSize: `${fontSize}px`,
+                          minHeight: "80px",
+                        }}
+                      />
                     </div>
                   </div>
 
@@ -2090,94 +1973,98 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     <div className="section-content personal-info">
                       <div className="personal-info-item">
                         <div className="info-label">Ngày sinh</div>
-                        <div
-                          className="info-value"
-                          contentEditable
-                          suppressContentEditableWarning
-                          onBlur={(e) => {
-                            if (!e.target.innerText.trim()) {
-                              e.target.classList.add("empty-content");
-                            } else {
-                              e.target.classList.remove("empty-content");
-                              setPersonalInfo({
-                                ...personalInfo,
-                                birthDate: e.target.innerText,
-                              });
-                            }
+                        <Input
+                          placeholder="Ngày / tháng / năm"
+                          value={personalInfo.birthDate || ""}
+                          onChange={(e) =>
+                            setPersonalInfo({
+                              ...personalInfo,
+                              birthDate: e.target.value,
+                            })
+                          }
+                          size="small"
+                          className={`info-value ${
+                            personalInfo.birthDate
+                              ? "border-transparent"
+                              : "empty-input"
+                          } border-none bg-transparent px-2 py-1 !shadow-none`}
+                          style={{
+                            fontFamily: selectedFont,
+                            fontSize: `${fontSize}px`,
                           }}
-                          data-placeholder="Ngày / tháng / năm"
-                        >
-                          {personalInfo.birthDate || ""}
-                        </div>
+                        />
                       </div>
 
                       <div className="personal-info-item">
                         <div className="info-label">Quốc tịch</div>
-                        <div
-                          className="info-value"
-                          contentEditable
-                          suppressContentEditableWarning
-                          onBlur={(e) => {
-                            if (!e.target.innerText.trim()) {
-                              e.target.classList.add("empty-content");
-                            } else {
-                              e.target.classList.remove("empty-content");
-                              setPersonalInfo({
-                                ...personalInfo,
-                                nationality: e.target.innerText,
-                              });
-                            }
+                        <Input
+                          placeholder="Quốc tịch"
+                          value={personalInfo.nationality || ""}
+                          onChange={(e) =>
+                            setPersonalInfo({
+                              ...personalInfo,
+                              nationality: e.target.value,
+                            })
+                          }
+                          size="small"
+                          className={`info-value ${
+                            personalInfo.nationality
+                              ? "border-transparent"
+                              : "empty-input"
+                          } border-none bg-transparent px-2 py-1 !shadow-none`}
+                          style={{
+                            fontFamily: selectedFont,
+                            fontSize: `${fontSize}px`,
                           }}
-                          data-placeholder="Quốc tịch"
-                        >
-                          {personalInfo.nationality || ""}
-                        </div>
+                        />
                       </div>
 
                       <div className="personal-info-item">
                         <div className="info-label">Tình trạng hôn nhân</div>
-                        <div
-                          className="info-value"
-                          contentEditable
-                          suppressContentEditableWarning
-                          onBlur={(e) => {
-                            if (!e.target.innerText.trim()) {
-                              e.target.classList.add("empty-content");
-                            } else {
-                              e.target.classList.remove("empty-content");
-                              setPersonalInfo({
-                                ...personalInfo,
-                                maritalStatus: e.target.innerText,
-                              });
-                            }
+                        <Input
+                          placeholder="Độc thân / Đã kết hôn"
+                          value={personalInfo.maritalStatus || ""}
+                          onChange={(e) =>
+                            setPersonalInfo({
+                              ...personalInfo,
+                              maritalStatus: e.target.value,
+                            })
+                          }
+                          size="small"
+                          className={`info-value ${
+                            personalInfo.maritalStatus
+                              ? "border-transparent"
+                              : "empty-input"
+                          } border-none bg-transparent px-2 py-1 !shadow-none`}
+                          style={{
+                            fontFamily: selectedFont,
+                            fontSize: `${fontSize}px`,
                           }}
-                          data-placeholder="Độc thân / Đã kết hôn"
-                        >
-                          {personalInfo.maritalStatus || ""}
-                        </div>
+                        />
                       </div>
 
                       <div className="personal-info-item">
                         <div className="info-label">Giới tính</div>
-                        <div
-                          className="info-value"
-                          contentEditable
-                          suppressContentEditableWarning
-                          onBlur={(e) => {
-                            if (!e.target.innerText.trim()) {
-                              e.target.classList.add("empty-content");
-                            } else {
-                              e.target.classList.remove("empty-content");
-                              setPersonalInfo({
-                                ...personalInfo,
-                                gender: e.target.innerText,
-                              });
-                            }
+                        <Input
+                          placeholder="Nam / Nữ"
+                          value={personalInfo.gender || ""}
+                          onChange={(e) =>
+                            setPersonalInfo({
+                              ...personalInfo,
+                              gender: e.target.value,
+                            })
+                          }
+                          size="small"
+                          className={`info-value ${
+                            personalInfo.gender
+                              ? "border-transparent"
+                              : "empty-input"
+                          } border-none bg-transparent px-2 py-1 !shadow-none`}
+                          style={{
+                            fontFamily: selectedFont,
+                            fontSize: `${fontSize}px`,
                           }}
-                          data-placeholder="Nam / Nữ"
-                        >
-                          {personalInfo.gender || ""}
-                        </div>
+                        />
                       </div>
                     </div>
                   </div>
@@ -2268,7 +2155,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                                   exp.companyName
                                     ? "border-transparent"
                                     : "border-gray-300"
-                                } rounded-md bg-transparent text-base font-normal px-2.5 py-1.5 !shadow-none !border-none border-color-transparent`}
+                                } rounded-md bg-transparent text-base !font-semibold px-2.5 py-1.5 !shadow-none !border-none border-color-transparent`}
                                 style={{
                                   fontFamily: selectedFont,
                                   fontSize: `${fontSize}px`,
@@ -2297,7 +2184,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                                 exp.jobTitle
                                   ? "border-transparent"
                                   : "border-d9d9d9"
-                              } border-none !hover:bg-transparent rounded-md bg-transparent text-base font-normal px-2 py-1 italic text-gray-600 !shadow-none`}
+                              } border-none !hover:bg-transparent rounded-md bg-transparent text-base font-normal px-2 py-1 text-gray-600 !shadow-none`}
                               style={{
                                 fontFamily: selectedFont,
                                 fontSize: `${fontSize}px`,
@@ -2403,7 +2290,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                                   cert.organization
                                     ? "border-transparent"
                                     : "border-gray-300"
-                                }  rounded-md bg-transparent text-base font-normal px-2.5 py-1.5 !shadow-none !border-none border-color-transparent`}
+                                }  rounded-md bg-transparent text-base !font-semibold px-2.5 py-1.5 !shadow-none !border-none border-color-transparent`}
                                 style={{
                                   fontFamily: selectedFont,
                                   fontSize: `${fontSize}px`,
@@ -2417,27 +2304,53 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                                 className="invisible remove-item-btn group-hover:visible"
                               />
                             </div>
-                            <Input
-                              placeholder="Tên chứng chỉ"
-                              value={cert.name || ""}
-                              onChange={(e) =>
-                                updateCertificate(
-                                  cert.id,
-                                  "name",
-                                  e.target.value
-                                )
-                              }
-                              size="middle"
-                              className={` ${
-                                cert.name
-                                  ? "border-transparent"
-                                  : "border-d9d9d9"
-                              } border-none !hover:bg-transparent rounded-md bg-transparent text-base font-normal px-2 py-1 italic text-gray-600 !shadow-none`}
-                              style={{
-                                fontFamily: selectedFont,
-                                fontSize: `${fontSize}px`,
-                              }}
-                            />
+                            <div className="flex items-center justify-between">
+                              <AutoResizingInput
+                                placeholder="Tên chứng chỉ"
+                                value={cert.name || ""}
+                                onChange={(e) =>
+                                  updateCertificate(
+                                    cert.id,
+                                    "name",
+                                    e.target.value
+                                  )
+                                }
+                                size="middle"
+                                className={` ${
+                                  cert.name
+                                    ? "border-transparent"
+                                    : "border-d9d9d9"
+                                } border-none !hover:bg-transparent rounded-md bg-transparent text-base font-normal px-2 py-1 text-gray-600 !shadow-none`}
+                                style={{
+                                  fontFamily: selectedFont,
+                                  fontSize: `${fontSize}px`,
+                                }}
+                                minWidth={150}
+                              />
+                              <AutoResizingInput
+                                placeholder="Điểm"
+                                value={cert.score || ""}
+                                onChange={(e) =>
+                                  updateCertificate(
+                                    cert.id,
+                                    "score",
+                                    e.target.value
+                                  )
+                                }
+                                size="middle"
+                                className={` ${
+                                  cert.score
+                                    ? "border-transparent"
+                                    : "border-d9d9d9"
+                                } border-none !hover:bg-transparent rounded-md bg-transparent text-base font-normal px-2 py-1 text-gray-600 !shadow-none`}
+                                style={{
+                                  fontFamily: selectedFont,
+                                  fontSize: `${fontSize}px`,
+                                }}
+                                minWidth={150}
+                              />
+                            </div>
+
                             <Input.TextArea
                               placeholder="Mô tả về chứng chỉ"
                               value={cert.description || ""}
@@ -2544,20 +2457,26 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                         <div className="section-drag-handle">
                           <DragOutlined />
                         </div>
-                        <div
-                          className="section-title"
-                          style={{ borderBottomColor: selectedColor }}
-                          contentEditable
-                          suppressContentEditableWarning
-                          onBlur={(e) =>
-                            handleSectionContentChange(
-                              section.id,
-                              e.target.innerText
-                            )
-                          }
-                        >
-                          {section.title}
-                        </div>
+                        <Input
+                          value={section.title || ""}
+                          onChange={(e) => {
+                            setSections((prevSections) =>
+                              prevSections.map((s) =>
+                                s.id === section.id
+                                  ? { ...s, title: e.target.value }
+                                  : s
+                              )
+                            );
+                          }}
+                          className="section-title border-none bg-transparent px-2 py-1 !shadow-none"
+                          style={{
+                            fontFamily: selectedFont,
+                            fontSize: `${fontSize + 2}px`,
+                            fontWeight: "bold",
+                            borderBottomColor: selectedColor,
+                            borderBottom: `2px solid ${selectedColor}`,
+                          }}
+                        />
                         <Button
                           type="text"
                           danger
@@ -2566,48 +2485,24 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                           className="remove-section-btn"
                         />
                       </div>
-                      <div
-                        className="section-content"
-                        contentEditable
-                        suppressContentEditableWarning
-                        onBlur={(e) =>
+                      <Input.TextArea
+                        value={section.content?.text || ""}
+                        placeholder="Nhập nội dung cho mục này..."
+                        onChange={(e) => {
                           handleSectionContentChange(
                             section.id,
-                            e.target.innerText
-                          )
-                        }
-                      >
-                        {section.content.text || "Nhập nội dung cho mục này..."}
-                      </div>
+                            e.target.value
+                          );
+                        }}
+                        autoSize={{ minRows: 3, maxRows: 10 }}
+                        className="section-content border-none bg-transparent px-2 py-1 !shadow-none"
+                        style={{
+                          fontFamily: selectedFont,
+                          fontSize: `${fontSize}px`,
+                        }}
+                      />
                     </div>
                   ))}
-
-                  <Button
-                    className="add-section-btn"
-                    type="dashed"
-                    block
-                    icon={<PlusOutlined />}
-                    onClick={() => {
-                      // Tạo ID ngẫu nhiên cho mục mới
-                      const sectionId = `custom-${Date.now()}`;
-                      // Thêm mục mới vào danh sách các mục
-                      setSections((prevSections) => [
-                        ...prevSections,
-                        {
-                          id: sectionId,
-                          type: "custom",
-                          title: "MỤC MỚI",
-                          position: prevSections.length,
-                          content: {
-                            text: "Nhập nội dung cho mục mới tại đây...",
-                          },
-                        },
-                      ]);
-                      message.success("Đã thêm mục mới");
-                    }}
-                  >
-                    Thêm mục mới
-                  </Button>
                 </div>
               </div>
             </div>
