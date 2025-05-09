@@ -38,6 +38,7 @@ const AboutPage = lazy(() => import("./pages/About/AboutPage.jsx"));
 import CreateJobAlert from "./components/Student/JobAlert/CreateJobAlert.jsx";
 import ManageJobAlerts from "./components/Student/JobAlert/ManageJobAlerts.jsx";
 import EditJobAlert from "./components/Student/JobAlert/EditJobAlert.jsx";
+import { refreshToken, setupTokenRefresh } from "./utils/axiosCustomize.jsx";
 // import CreatePostPage from './pages/Forum/create/CreatePostPage.jsx';
 
 const GoogleAuthCallback = lazy(() =>
@@ -214,13 +215,54 @@ const App = () => {
   const queryClient = new QueryClient();
 
   useEffect(() => {
-    connectStomp(() => {
-      console.log("WebSocket connected after token refresh");
-    });
-    return () => {
-      disconnectStomp();
-    };
+    const token = localStorage.getItem("accessToken");
+    connectStomp(() => {});
+    if (token) {
+      // Kiểm tra token hiện tại và refresh nếu cần
+      const isExpired = isTokenExpired(token);
+
+      if (isExpired) {
+        refreshToken()
+          .then(() => {
+            console.log("Token refreshed successfully");
+            // Kết nối WebSocket sau khi refresh token thành công
+            connectStomp(() => {
+              console.log("WebSocket connected after token refresh");
+            });
+          })
+          .catch((error) => {
+            console.error("Failed to refresh token:", error);
+            // Không kết nối WebSocket với token không hợp lệ
+          });
+      } else {
+        // Token hợp lệ, kết nối WebSocket
+        connectStomp(() => {
+          console.log("WebSocket connected with valid token");
+        });
+      }
+
+      // Thiết lập cơ chế tự động refresh token trước khi hết hạn
+      const cleanupTokenRefresh = setupTokenRefresh();
+
+      return () => {
+        // Dọn dẹp khi component unmount
+        disconnectStomp();
+        cleanupTokenRefresh();
+      };
+    }
   }, []);
+
+  const isTokenExpired = (token) => {
+    if (!token) return true;
+
+    try {
+      const payload = JSON.parse(atob(token.split(".")[1]));
+      return payload.exp * 1000 < Date.now();
+    } catch (e) {
+      console.error("Error parsing token:", e);
+      return true;
+    }
+  };
   return (
     <QueryClientProvider client={queryClient}>
       <ConfigProvider
