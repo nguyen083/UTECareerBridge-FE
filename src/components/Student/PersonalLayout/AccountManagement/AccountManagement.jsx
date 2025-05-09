@@ -23,10 +23,10 @@ const AccountManagement = () => {
     }
     return (
         <Flex vertical gap={8}>
-            <BoxContainer className="box_shadow">
+            <BoxContainer className="shadow">
                 <div className="title1">Đổi mật khẩu</div>
             </BoxContainer>
-            <BoxContainer className="box_shadow">
+            <BoxContainer className="shadow">
                 <Form form={form} onFinish={onFinish} layout="horizontal" size="large" requiredMark={false} autoComplete="false"
                     labelCol={{
                         md: { span: 4 },

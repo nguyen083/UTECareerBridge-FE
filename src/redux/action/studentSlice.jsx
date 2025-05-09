@@ -20,7 +20,7 @@ const initialState = {
 };
 
 export const studentSlice = createSlice({
-    name: 'student', //tên của reducer
+    name: 'student',
     initialState,
     reducers: {
         setInforStudent: (state, action) => {

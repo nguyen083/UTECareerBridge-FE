@@ -1,11 +1,14 @@
-import { Alert, Flex, List, Typography } from "antd";
+import { Alert, List, Typography } from "antd";
 import { JobCardLargeApplicant } from "../../Generate/JobCard";
 import { useEffect, useState } from "react";
 import { getJobsByStatus } from "../../../services/apiService";
+import { useTranslation } from "react-i18next";
+import ListApplicantDrawer from "./ListApplicantDrawer";
 const { Text } = Typography;
 const ListJob = () => {
+    const {t} = useTranslation();
     const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
+    const [selectedJob, setSelectedJob] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [totalRecords, setTotalRecords] = useState(0);
@@ -31,22 +34,22 @@ const ListJob = () => {
     return (
         <>
             <Alert
-                message={<Text className="f-16" strong>Chú ý</Text>}
+                message={<Text className="text-base" strong>{t('common.notice')}</Text>}
                 type="info"
                 showIcon
                 closable
-                description="Vui lòng chọn việc làm để xem danh sách ứng viên"
+                description={t('employer.applicant.listJob.notice')}
                 className="mb-3"
             />
 
             <List
                 split={false}
-                loading={loading}
+                // loading={loading}
                 dataSource={data}
                 renderItem={job => (
                     <List.Item>
                         <div style={{ width: '100%' }}>
-                            <JobCardLargeApplicant job={job} />
+                            <JobCardLargeApplicant job={job} setSelectedJob={setSelectedJob} />
                         </div>
                     </List.Item>
                 )}
@@ -61,7 +64,7 @@ const ListJob = () => {
                     },
                 }}
             />
-
+            <ListApplicantDrawer open={selectedJob !== null} setSelectedJob={setSelectedJob} jobId={selectedJob} />
         </>
     )
 }

@@ -1,10 +1,5 @@
 @import "../../../styles/_variables.scss";
 
-.title {
-    font-size  : 24px;
-    font-weight: 600;
-}
-
 .icon_edit {
     cursor   : pointer;
     color    : $divider-color;
@@ -15,15 +10,10 @@
     }
 }
 
-.box_shadow {
-    box-shadow: 5px 5px 5px #ebebeb;
-}
+// .box_shadow {
+//     box-shadow: 5px 5px 5px #ebebeb;
+// }
 
-.space_list {
-    max-height: 100vh;
-    margin-top: 2rem;
-    width     : 100%;
-}
 
 .list_item {
     .ant-col {

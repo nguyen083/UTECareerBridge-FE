@@ -1,15 +1,17 @@
 
 import { Button, Card, Carousel } from "antd";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import "./JobCategory.scss";
 import { FaNewspaper, FaMicrochip } from "react-icons/fa6";
 import { FaCogs, FaCar, FaCalculator, FaHotel, FaRoute, FaBullhorn, FaLaptopCode, } from "react-icons/fa";
 import { BankOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const JobCategory = () => {
   const carouselRef = useRef(null);
   const navigate = useNavigate();
+  const {t} = useTranslation();
 
   const categories = [
     { name: "Báo chí/ truyền hình", icon: <FaNewspaper />, key: 4 },
@@ -38,7 +40,7 @@ const JobCategory = () => {
 
   return (
     <section className="job-category">
-      <h2>Ngành nghề trọng điểm</h2>
+      <h2>{t('hot_categories')}</h2>
       <div className="job-category__carousel-wrapper">
         <Button
           icon={<LeftOutlined />}
@@ -49,8 +51,8 @@ const JobCategory = () => {
           ref={carouselRef}
           dots={false}
           slidesToShow={4}
-          slidesToScroll={4} // Cuộn đồng thời 4 card
-          infinite={true} // Dừng cuộn khi hết nội dung
+          slidesToScroll={4}
+          infinite={true}
           className="job-category__carousel"
           style={{ maxWidth: 1200, margin: "0 auto" }}
         >
@@ -59,11 +61,11 @@ const JobCategory = () => {
               key={index}
               onClick={() => handleCategoryClick(category.key)}
               hoverable
-              className="job-category__item box_shadow"
+              className="shadow job-category__item"
               style={{ textAlign: "center" }}
             >
               <div className="job-category__icon">{category.icon}</div>
-              <div className="job-category__name">{category.name}</div>
+              <div className="text-base font-medium job-category__name">{category.name}</div>
 
             </Card>
           ))}

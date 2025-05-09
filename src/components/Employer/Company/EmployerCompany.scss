@@ -1,3 +1,114 @@
-.div-form-company {
-    // max-width: 900px;
+.company-header {
+  margin-bottom: 1rem;
+}
+
+.company-content {
+  .company-card {
+    border-radius: 8px;
+    box-shadow: none !important;
+    
+    .company-form {
+      .company-tabs {
+        margin-bottom: 1.5rem;
+        
+        .ant-tabs-nav {
+          margin-bottom: 1.5rem;
+        }
+        
+        .ant-tabs-tab {
+          padding: 0.5rem 1.25rem;
+          transition: all 0.3s ease;
+          
+          &:hover {
+            color: #1890ff;
+          }
+          
+          .tab-label {
+            font-weight: 500;
+            font-size: 1rem;
+          }
+        }
+        
+        .ant-tabs-tab-active {
+          background-color: #f0f7ff;
+          border-bottom-color: transparent;
+          
+          .tab-label {
+            color: #1890ff;
+          }
+        }
+      }
+      
+      .benefits-container {
+        margin-top: 0.5rem;
+        
+        .benefits-list {
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          
+          .benefit-item {
+            padding: 1rem;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            position: relative;
+            align-items: flex-start;
+            
+            .benefit-type {
+              flex: 1;
+              min-width: 200px;
+              margin-bottom: 0;
+            }
+            
+            .benefit-description {
+              flex: 2;
+              margin-bottom: 0;
+            }
+            
+            .remove-benefit-btn {
+              margin-top: 0.5rem;
+            }
+          }
+          
+          .add-benefit-btn {
+            margin-top: 0.5rem;
+            font-weight: 500;
+            
+            &:hover {
+              background-color: #f0f7ff;
+            }
+          }
+        }
+      }
+      
+      .upload-field {
+        .ant-upload-wrapper {
+          .ant-upload-select {
+            width: 100%;
+          }
+        }
+      }
+      
+      .form-actions {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #f0f0f0;
+        
+        button {
+          min-width: 120px;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .benefit-item {
+    flex-direction: column !important;
+    
+    .benefit-type,
+    .benefit-description {
+      width: 100% !important;
+    }
+  }
 }

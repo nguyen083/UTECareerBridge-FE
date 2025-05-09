@@ -1,7 +1,6 @@
 @import "../../styles/variables.scss";
 
-.row {
-    padding: 1rem;
+
 
     .box_shadow {
         box-shadow: 5px 5px 5px #ebebeb;
@@ -43,14 +42,11 @@
         }
     }
 
-    .col_r {}
-}
-
 
 
 .ant_list {
     .ant-list-items {
-        // gap           : rem;
+       
         display       : flex;
         flex-direction: column;
         padding       : 0 !important;

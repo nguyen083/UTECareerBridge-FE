@@ -2,11 +2,14 @@ import './LoginPage.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { employerLogin, setToken } from '../../services/apiService';
 import { UserOutlined, UnlockOutlined } from '@ant-design/icons';
-import { IoIosArrowRoundBack } from "react-icons/io";
-import { Button, Flex, Form, Input, Typography, message } from 'antd';
+import { Button, Divider, Flex, Form, Image, Input, Typography, message } from 'antd';
 import { useDispatch } from 'react-redux';
 import { loading, stop } from '../../redux/action/webSlice';
 import { setInfor } from '../../redux/action/userSlice';
+import { FcGoogle } from 'react-icons/fc';
+import path from '../../constant/path';
+import auth from '../../services/api/auth';
+import { useTranslation } from 'react-i18next';
 
 const { Text } = Typography;
 const LoginPage = () => {
@@ -15,6 +18,7 @@ const LoginPage = () => {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const phoneRegex = /^[0-9]{10,11}$/;
     const dispatch = useDispatch();
+    const { t } = useTranslation();
 
     const checkUserName = (value) => {
         if (emailRegex.test(value)) {
@@ -38,14 +42,15 @@ const LoginPage = () => {
         try {
             const res = await employerLogin(updatedValues);
             if (res.status === 'OK') {
-                message.success(res.message);
+                message.success(t('auth.login.loginSuccess'));
                 setToken(res.data.token, res.data.refreshToken);
                 dispatch(setInfor({ userId: res.data.id, role: res.data.roles.roleName, email: res.data.username }));
                 navigate('/employer');
 
             } else {
-                message.error(res.message);
+                message.error(t('auth.login.loginError'));
             }
+
 
         } catch (error) {
             console.log(error);
@@ -53,14 +58,33 @@ const LoginPage = () => {
             dispatch(stop());
         }
     }
-
+    const handleLoginWithGoogle = () => {
+        auth.loginGoogle('employer').then(res => {
+            window.open(res);
+        }).catch(() => {
+            message.error(t('common.error'));
+        });
+    }
     return (
-        <div className="login-page d-flex">
-            <div className="image col-lg-5 d-none d-lg-block"></div>
-            <div className="col-12 p-sm-5 p-0 col-lg-7">
-                <div className="login-form mt-4 p-5 shadow">
-                    <span className="d-flex justify-content-center title">Đăng Nhập</span>
-                    <div className="col-md-12 form-group mt-5 mb-4">
+        <div className="flex login-page">
+            <div className="hidden image lg:w-5/12 lg:block"></div>
+            <div className="flex flex-col items-center justify-center w-full h-screen p-0 sm:p-5 lg:w-7/12">
+                <Link to='/home' className='flex items-center'>
+                    <Image
+                        className='logo'
+                        src={path.logo}
+                        alt=""
+                        preview={false}
+                        width={200}
+                        onClick={() => navigate('/home')}
+                    />
+                </Link>
+                <div className="p-8 mt-6 shadow-2xl login-form h-fit lg:w-8/12 rounded-xl">
+                    <span className="flex justify-center welcome-text">{t('auth.login.welcome')}</span>
+                    <span className="flex justify-center title">{t('auth.login.title')}</span>
+                    <p className="text-center subtitle">{t('auth.login.subtitle')}</p>
+                    
+                    <div className="mt-8 mb-4 md:w-full form-group">
                         <Form
                             size='large'
                             requiredMark={false}
@@ -71,15 +95,15 @@ const LoginPage = () => {
                             validateTrigger={['onBlur']}>
                             <Form.Item
                                 name="username"
-                                label="Email/ SĐT"
+                                label={<span className="label-text">{t('auth.login.email/phone')}</span>}
                                 rules={[{
                                     required: true,
-                                    message: 'Vui lòng nhập email hoặc số điện thoại của bạn',
+                                    message: t('auth.register.emailRequired'),
                                 },
-                                ({ getFieldValue }) => ({
+                                () => ({
                                     validator(_, value) {
                                         if (!value) {
-                                            return Promise.reject('Vui lòng nhập email hoặc số điện thoại của bạn');
+                                            return Promise.reject(t('auth.register.emailRequired'));
                                         }
                                         if (emailRegex.test(value)) {
                                             return Promise.resolve();
@@ -87,42 +111,60 @@ const LoginPage = () => {
                                         if (phoneRegex.test(value)) {
                                             return Promise.resolve();
                                         }
-                                        return Promise.reject('Vui lòng nhập đúng định dạng email hoặc số điện thoại');
+                                        return Promise.reject(t('admin.employer.register.invalidEmail'));
                                     },
                                 })
                                 ]} validateFirst >
-                                <Input prefix={<UserOutlined />} />
+                                <Input 
+                                    prefix={<UserOutlined className="input-icon" />} 
+                                    placeholder={t('auth.login.emailPlaceholder')} 
+                                    className="input-field"
+                                />
                             </Form.Item>
                             <Form.Item
-                                label={<span className='lable-text'>Mật khẩu</span>}
+                                label={<span className="label-text">{t('auth.register.password')}</span>}
                                 required
                                 name="password"
                                 rules={[{
                                     required: true,
-                                    message: 'Vui lòng nhập mật khẩu của bạn',
+                                    message: t('auth.register.passwordRequired'),
                                 }]}>
-                                <Input.Password prefix={<UnlockOutlined />} className='input-field' />
+                                <Input.Password 
+                                    prefix={<UnlockOutlined className="input-icon" />} 
+                                    placeholder={t('auth.login.passwordPlaceholder')} 
+                                    className="input-field"
+                                />
                             </Form.Item>
 
                             <Form.Item>
                                 <Flex justify='space-between'>
-                                    <Text>Bạn chưa đăng ký? <Link to='/employer/register'>Đăng ký ngay</Link></Text>
-                                    <Link to='/forgot-password' target='_blank'>Quên mật khẩu?</Link>
+                                    <Flex gap={7} align='center' justify='center'>
+                                        <Text className="text-secondary">{t('auth.login.dont_have_an_account')}</Text>
+                                        <Link to='/employer/register' className="register-link">{t('auth.register.title')}</Link>
+                                    </Flex>
+                                    <Link to='/forgot-password' target='_blank' className="forgot-password">{t('auth.login.forgotPassword')}</Link>
                                 </Flex>
                             </Form.Item>
-                            <Flex align='center' justify='space-between'>
-                                <Link to='/home'>
-                                    <IoIosArrowRoundBack className='fs-4' />Quay lại trang chủ
-                                </Link>
-                                <Button style={{ backgroundColor: "#1E4F94" }} size='large' className='w-25' type="primary" htmlType='submit'>
-                                    Đăng nhập
+                            <Form.Item>
+                                <Button size='large' className='w-full login-button' type="primary" htmlType='submit'>
+                                    {t('auth.login.title')}
                                 </Button>
-                            </Flex>
+                            </Form.Item>
+                            <Divider className='mb-6 mt-6'><div className='text-gray-500'>{t('common.or')}</div></Divider>
+
+                            <Form.Item className='mb-1'>
+                                <Button className='w-full google-button' type="default" onClick={handleLoginWithGoogle}>
+                                    <FcGoogle size={24} className='mr-1' />{t('auth.login.googleLogin')}
+                                </Button>
+                            </Form.Item>
                         </Form>
                     </div>
                 </div>
+                <div className="mt-4 text-center text-sm text-gray-500 footer-text">
+                    © {new Date().getFullYear()} UTECareerBridge. {t('auth.login.rights')}
+                </div>
             </div>
-        </div>
+        </div >
     );
 }
 export default LoginPage;

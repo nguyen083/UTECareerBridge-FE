@@ -1,57 +1,52 @@
-import React, { useState } from 'react';
-import { Button, DatePicker, Form, Input, Modal, Select, Tabs, message } from 'antd';
-import { UserOutlined, LockOutlined, StopOutlined } from '@ant-design/icons';
+import { useState } from 'react';
+import { Button, DatePicker, Form, Input, Modal, Select, message } from 'antd';
 import TableListUser from './TableListUser';
 import BoxContainer from '../../Generate/BoxContainer';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 import { updateUser } from '../../../services/apiService';
+import { useTranslation } from 'react-i18next';
 
-const { TabPane } = Tabs;
 const { Option } = Select;
 
 const ManageListEmployer = () => {
-    const [activeStatus, setActiveStatus] = useState('active');
+    const { t } = useTranslation();
     const [form] = Form.useForm();
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
     const [res, setRes] = useState(null);
 
-    // Handle additional columns based on status
-    const getAdditionalColumns = (status) => {
-        const columns = [];
+    // const getAdditionalColumns = (status) => {
+    //     const columns = [];
 
-        if (status === 'pending') {
-            columns.push({
-                title: 'Ngày đăng ký',
-                dataIndex: 'registrationDate',
-                key: 'registrationDate',
-            });
-        }
+    //     if (status === 'pending') {
+    //         columns.push({
+    //             title: t('admin.employer.table.columns.registrationDate'),
+    //             dataIndex: 'registrationDate',
+    //             key: 'registrationDate',
+    //         });
+    //     }
 
-        if (status === 'blocked') {
-            columns.push({
-                title: 'Lý do khóa',
-                dataIndex: 'blockReason',
-                key: 'blockReason',
-            });
-        }
+    //     if (status === 'blocked') {
+    //         columns.push({
+    //             title: t('admin.employer.table.columns.blockReason'),
+    //             dataIndex: 'blockReason',
+    //             key: 'blockReason',
+    //         });
+    //     }
 
-        if (status === 'inactive') {
-            columns.push({
-                title: 'Lần đăng nhập cuối',
-                dataIndex: 'lastLoginDate',
-                key: 'lastLoginDate',
-            });
-        }
+    //     if (status === 'inactive') {
+    //         columns.push({
+    //             title: t('admin.employer.table.columns.lastLoginDate'),
+    //             dataIndex: 'lastLoginDate',
+    //             key: 'lastLoginDate',
+    //         });
+    //     }
 
-        return columns;
-    };
+    //     return columns;
+    // };
 
 
-    const handleStatusChange = (newStatus) => {
-        setActiveStatus(newStatus);
-    };
 
     const handleEdit = async (record) => {
         form.setFieldsValue({
@@ -65,14 +60,9 @@ const ManageListEmployer = () => {
         });
         setSelectedUser(record.userId);
         setIsModalVisible(true);
-        // Handle edit logic
-        console.log('Editing user:', record);
     }
 
-    const handleDelete = async (userId) => {
-        // Handle delete logic
-        console.log('Deleting user:', userId);
-    };
+
     const handleModalCancel = () => {
         form.resetFields();
         setIsModalVisible(false);
@@ -81,51 +71,49 @@ const ManageListEmployer = () => {
 
     const handleModalOk = async (values) => {
         try {
-            // định dạng dob thành string
             dayjs.extend(customParseFormat);
             values.dob = dayjs(values.dob, 'YYYY-MM-DD').format('DD/MM/YYYY');
             updateUser(selectedUser, values).then((res) => {
                 if (res.status === 'OK') {
                     setRes(res.data);
-                    message.success(res.message);
+                    message.success(t('admin.employer.messages.updateSuccess'));
                 }
                 else
-                    message.error('Cập nhật thông tin người dùng thất bại');
+                    message.error(t('admin.employer.messages.updateError'));
             });
-            // message.success('Cập nhật thông tin người dùng thành công');
             handleModalCancel();
         } catch (error) {
-            message.error('Vui lòng kiểm tra lại thông tin');
+            console.log(error);
+            message.error(t('admin.employer.messages.validateError'));
         }
     };
 
     return (
         <>
-            <BoxContainer>
-                <div className="title1">Quản lý doanh nghiệp</div>
+            <BoxContainer className='shadow-md'>
+                <div className="title1">{t('admin.employer.title')}</div>
             </BoxContainer>
-            <BoxContainer>
+            <BoxContainer className='shadow-md'>
                 <TableListUser
                     fetch={res}
                     userType="employer"
                     onEdit={handleEdit}
-                    onDelete={handleDelete}
                 />
             </BoxContainer>
             <Modal
-                title="Chỉnh sửa thông tin người dùng"
+                title={t('admin.employer.modal.title')}
                 open={isModalVisible}
                 onCancel={handleModalCancel}
                 footer={[
                     <Button key="back" onClick={handleModalCancel}>
-                        Hủy
+                        {t('admin.employer.modal.buttons.cancel')}
                     </Button>,
                     <Button
                         key="submit"
                         type="primary"
                         onClick={form.submit}
                     >
-                        Lưu thay đổi
+                        {t('admin.employer.modal.buttons.save')}
                     </Button>
                 ]}
                 width={720}
@@ -138,7 +126,7 @@ const ManageListEmployer = () => {
                     <div style={{ display: 'flex', gap: '1rem' }}>
                         <Form.Item
                             name="lastName"
-                            label="Họ"
+                            label={t('admin.employer.modal.form.lastName.label')}
                             style={{ flex: 1 }}
                         >
                             <Input disabled />
@@ -146,7 +134,7 @@ const ManageListEmployer = () => {
 
                         <Form.Item
                             name="firstName"
-                            label="Tên"
+                            label={t('admin.employer.modal.form.firstName.label')}
                             style={{ flex: 1 }}
                         >
                             <Input disabled />
@@ -155,33 +143,32 @@ const ManageListEmployer = () => {
 
                     <Form.Item
                         name="email"
-                        label="Email"
-
+                        label={t('admin.employer.modal.form.email.label')}
                     >
                         <Input disabled />
                     </Form.Item>
 
                     <Form.Item
                         name="phone"
-                        label="Số điện thoại"
+                        label={t('admin.employer.modal.form.phone.label')}
                     >
                         <Input disabled />
                     </Form.Item>
 
                     <Form.Item
                         name="dob"
-                        label="Ngày sinh"
+                        label={t('admin.employer.modal.form.dob.label')}
                     >
                         <DatePicker format={'DD/MM/YYYY'} style={{ width: '100%' }} disabled />
                     </Form.Item>
 
                     <Form.Item
                         name="active"
-                        label="Trạng thái"
+                        label={t('admin.employer.modal.form.status.label')}
                     >
                         <Select defaultValue={true}>
-                            <Option value={true}>Hoạt động</Option>
-                            <Option value={false}>Khóa</Option>
+                            <Option value={true}>{t('admin.employer.modal.form.status.options.active')}</Option>
+                            <Option value={false}>{t('admin.employer.modal.form.status.options.blocked')}</Option>
                         </Select>
                     </Form.Item>
                 </Form>

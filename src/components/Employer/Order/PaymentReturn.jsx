@@ -1,10 +1,12 @@
 import { message } from 'antd';
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from "react-i18next";
 
 const PaymentReturn = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -14,14 +16,14 @@ const PaymentReturn = () => {
     if (responseCode === '00' && transactionStatus === '00') {
       navigate('/employer/cart'); 
       
-      message.success('Thanh toán thành công!');
+      message.success(t('employer.orders.paymentSuccess'));
     } else {
-      navigate('/payment-failed'); // Optional: redirect to a failure page
-      message.error('Thanh toán không thành công');
+      navigate('/payment-failed');
+      message.error(t('employer.orders.paymentError'));
     }
-  }, [location, navigate]);
+  }, [location, navigate, t]);
 
-  return null; // This component doesn't render anything
+  return null;
 };
 
 export default PaymentReturn;

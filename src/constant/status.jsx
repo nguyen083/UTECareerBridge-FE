@@ -3,15 +3,15 @@ import { Tag } from "antd";
 const Status = ({ status }) => {
     switch (status) {
         case "PENDING":
-            return <Tag color="default">Đang chờ</Tag>;
+            return <Tag className="!mx-auto w-fit" color="default">Đang chờ</Tag>;
         case "VIEWED":
-            return <Tag color="blue">Đã xem</Tag>;
+            return <Tag className="!mx-auto w-fit" color="blue">Đã xem</Tag>;
         case "APPROVED":
-            return <Tag color="success">Đã duyệt</Tag>;
+            return <Tag className="!mx-auto w-fit" color="success">Đã duyệt</Tag>;
         case "REJECTED":
-            return <Tag color="error">Bị từ chối</Tag>;
+            return <Tag className="!mx-auto w-fit" color="error">Bị từ chối</Tag>;
         default:
-            return <Tag color="default">Không xác định</Tag>;
+            return <Tag className="!mx-auto w-fit" color="default">Không xác định</Tag>;
     }
 }
 

@@ -1,16 +1,14 @@
-import React from 'react';
-
-const BackgroundIcon = ({ children, lable }) => {
+const BackgroundIcon = ({ children, lable, Bgcolor = '#f0f0f0' }) => {
     return (
         <>
             <div style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: 25, // Diameter of the circle
-                height: 25, // Diameter of the circle
+                width: 25,
+                height: 25,
                 borderRadius: '50%',
-                backgroundColor: '#f0f0f0' // Light gray background
+                backgroundColor: Bgcolor
             }}>
                 {children}
             </div>

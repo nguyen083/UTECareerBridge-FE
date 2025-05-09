@@ -1,0 +1,8 @@
+.list-applicant-drawer{
+    .ant-collapse{
+        @apply border-none
+    }
+    .ant-collapse-header{
+        @apply bg-card-color
+    }
+}

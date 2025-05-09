@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Upload, Avatar } from 'antd';
 import { InboxOutlined, UserOutlined } from '@ant-design/icons';
+import { useTranslation } from 'react-i18next';
 const { Dragger } = Upload;
 
 
 const PicturesWall = (props) => {
+    const { t } = useTranslation();
     const [defaultImage, setDefaultImage] = useState(props.defaultImage);
     const [fileList, setFileList] = useState([]);
     const handleUpload = (({ file, fileList }) => {
         setDefaultImage(null);
-        console.log('file', file);
         setFileList(fileList);
         props.onChange(file);
     });
 
-    const onRemove = (file) => {
-        console.log('onRemove', file);
+    const onRemove = () => {
         setFileList([]);
     }
-    const onDrop = (e) => {
-        console.log('onDrop', e.dataTransfer.files[0]);
-    }
+
     return (
         <Dragger
-            onChange={handleUpload} onDrop={onDrop} onRemove={onRemove}
+            onChange={handleUpload} 
+            // onDrop={onDrop} 
+            onRemove={onRemove}
             beforeUpload={() => false} maxCount={1}
             showUploadList={false}
             listType={props.listType} fileList={fileList}>
@@ -33,7 +33,7 @@ const PicturesWall = (props) => {
                         <InboxOutlined />
                     </p>
                     <p className="ant-upload-hint">
-                        Kéo thả hoặc nhấn vào đây để tải ảnh lên
+                        {t('common.dragAndDrop')}
                     </p>
                 </>
             ) : (
@@ -52,33 +52,30 @@ const AvatarUploader = (props) => {
     const [fileList, setFileList] = useState([]);
 
     const handleUpload = ({ file, fileList }) => {
-        setDefaultImage(null); // Xóa ảnh mặc định khi chọn ảnh mới
-        setFileList(fileList); // Cập nhật danh sách file
-        props.onChange && props.onChange(file); // Truyền file đã chọn ra ngoài qua props (nếu cần)
+        setDefaultImage(null);
+        setFileList(fileList);
+        props.onChange && props.onChange(file);
     };
 
     const onRemove = () => {
-        setFileList([]); // Xóa danh sách file
-        setDefaultImage(props.defaultImage || null); // Đặt lại ảnh mặc định
-    };
-
-    const onDrop = (e) => {
-        console.log('File dropped:', e.dataTransfer.files[0]);
+        setFileList([]);
+        setDefaultImage(props.defaultImage || null);
     };
 
     return (
-        <div style={{ textAlign: 'center' }}>
+        <div className='flex items-center justify-center'>
 
             <Upload
                 onChange={handleUpload}
-                onDrop={onDrop}
+                // onDrop={onDrop}
                 onRemove={onRemove}
-                beforeUpload={() => false} // Ngăn không cho upload tự động
-                maxCount={1} // Giới hạn chỉ upload 1 file
-                listType="picture" // Định dạng danh sách file là ảnh
+                beforeUpload={() => false}
+                maxCount={1}
+                listType="picture"
                 fileList={fileList}
-                showUploadList={false} // Không hiển thị danh sách file tải lên
+                showUploadList={false}
                 style={{ border: '1px dashed #d9d9d9', padding: 16 }}
+                clssName="flex items-center justify-center"
             >
                 <Avatar
                     size={128}

@@ -8,23 +8,23 @@
             padding-bottom: 0px;
         }
 
-        // Thêm màu cho đường timeline
+       
         .ant-timeline-item-tail {
-            border-left    : 2px solid $text-color-hover; // Màu xanh mặc định của Ant Design
-            // Hoặc có thể dùng gradient
-            // border-image: linear-gradient(to bottom, #1890ff, #69c0ff) 1;
+            border-left    : 2px solid $text-color-hover;
+           
+           
         }
 
-        // Tăng khoảng cách cho label (thời gian)
+       
         .ant-timeline-item-label {
-            padding-right: 30px; // Cho label bên phải
-            padding-left : 30px; // Cho label bên trái
+            padding-right: 30px;
+            padding-left : 30px;
         }
 
-        // Tăng khoảng cách cho nội dung (children)
+       
         .ant-timeline-item-content {
-            padding-right: 30px; // Cho content bên phải
-            padding-left : 30px; // Cho content bên trái
+            padding-right: 30px;
+            padding-left : 30px;
         }
     }
 }
@@ -56,11 +56,11 @@
         background-color: rgba(255, 255, 255, 0.8);
     }
 
-    // Thêm style cho title và nội dung
+   
     .ant-card-head,
     .ant-card-body {
         position: relative;
-        z-index : 1; // Đưa nội dung lên trên lớp overlay
+        z-index : 1;
     }
 }
 

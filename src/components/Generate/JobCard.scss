@@ -1,17 +1,49 @@
-.meta-description {
+@import "../styles/variables.scss";
+
+
+.job-card-small{
+    .ant-list-item-meta-avatar{
+        @apply flex items-center 
+    }
+    .meta-description {
     display    : flex;
     align-items: stretch;
-
-
-
+}
+    .item-company {
+        border-radius: 10px;
+        border       : 1px solid #e5e5e5;
+        margin-bottom: 16px;
+    
+        &:last-child {
+            margin-bottom: 0;
+        }
+    
+        &:hover {
+            background-color   : $background-color;
+            cursor             : pointer;
+            transition         : all 0.3s ease;
+            @apply shadow-md;
+            transform: translateY(-1px);
+      
+        }
+    
+        .limit-text {
+            display           : -webkit-box !important;
+            -webkit-line-clamp: 1 !important;
+            -webkit-box-orient: vertical !important;
+            overflow          : hidden !important;
+            word-wrap         : break-all !important;
+            word-break        : break-word !important;
+            text-overflow     : ellipsis !important;
+        }
+    }
 }
 
-.limit-text {
-    display           : -webkit-box !important;
-    -webkit-line-clamp: 1 !important;
-    -webkit-box-orient: vertical !important;
-    overflow          : hidden !important;
-    word-wrap         : break-all !important;
-    word-break        : break-word !important;
-    text-overflow     : ellipsis !important;
+
+
+.job-card-large {
+    .ant-card-body {
+        padding: 16px;
+        width  : 100%;
+    }
 }

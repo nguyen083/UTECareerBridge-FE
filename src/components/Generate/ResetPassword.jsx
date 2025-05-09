@@ -1,48 +1,47 @@
-import React, { useEffect, useState } from "react";
-import { Button, Card, Form, Input, Space, message } from 'antd';
+import { useEffect, useState } from "react";
+import { Button, Card, Col, Form, Input, Row, Space, message } from 'antd';
 import { useLocation } from 'react-router-dom';
 import "./ResetPassword.scss";
 import { userResetPassword } from "../../services/apiService";
 import COLOR from "../styles/_variables";
+import { useTranslation } from "react-i18next";
 
 
 const ResetPassword = () => {
-
+    const { t } = useTranslation();
     const [email, setEmail] = useState("");
     const [submit, setSubmit] = useState(false);
     const [form] = Form.useForm();
     const location = useLocation();
-    const [message, setMessage] = useState("");
+    const [notice, setNotice] = useState("");
     let token = "";
     useEffect(() => {
         const queryParams = new URLSearchParams(location.search);
         token = queryParams.get('token');
         setEmail(queryParams.get('email'));
-    }, []);
+    }, [location]);
 
     const onFinish = async (values) => {
         const res = await userResetPassword(token, values.password);
-        // Gọi API để cập nhật mật khẩu mới cho người dùng abc@gmail
         if (res.status === 'OK') {
-            setMessage(res.message);
-            message.success("Đặt lại mật khẩu thành công");
+            setNotice(res.message);
+            message.success(t('auth.resetPassword.success'));
             setSubmit(true);
         }
         else {
-            message.error("Đặt lại mật khẩu thất bại. Vui long thử lại sau");
+            message.error(t('auth.resetPassword.error'));
         }
-
     };
     return (
         <div className="form-change-password">
-            <Card style={{ backgroundColor: COLOR.cardColor }} className="box_shadow">
+            <Card style={{ backgroundColor: COLOR.cardColor }} className="shadow">
                 <div className="title" style={{ color: COLOR.textColor }}>
-                    Đặt lại mật khẩu
+                    {t('auth.resetPassword.title')}
                 </div>
-                <div className={`${submit && "d-none"}`}>
+                <div className={`${submit && "hidden"}`}>
 
                     <div className="description form-text">
-                        Hãy nhập mật khẩu mới cho người dùng: <span style={{ color: "blue" }}>{email}</span>
+                        {t('auth.resetPassword.description')}: <span style={{ color: "blue" }}>{email}</span>
                     </div>
                     <Form
                         size="large"
@@ -52,67 +51,70 @@ const ResetPassword = () => {
                         onFinish={onFinish}
                         layout="vertical"
                         autoComplete="off">
-                        <div className="form-group row g-3">
-                            <Form.Item
-                                label={<span>Mật khẩu mới <span style={{ color: "red" }}> *</span></span>}
-                                required
-                                name="password"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Vui lòng nhập mật khẩu của bạn',
-                                    },
-                                    {
-                                        min: 8,
-                                        message: 'Mật khẩu phải có ít nhất 8 ký tự'
-                                    },
-                                    {
-                                        pattern: new RegExp(/^(?=.*[A-Z])/),
-                                        message: 'Mật khẩu phải chứa ít nhất 1 chữ cái viết hoa'
-                                    },
-                                    {
-                                        pattern: new RegExp(/^(?=.*[0-9])/),
-                                        message: 'Mật khẩu phải chứa ít nhất 1 chữ số'
-                                    },
-                                    {
-                                        pattern: new RegExp(/^(?=.*[!@#$%^&*(),.?":{}|<>])/),
-                                        message: 'Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt'
-                                    }
-                                ]} validateFirst>
-                                <Input.Password className="form-control d-flex" />
-                            </Form.Item>
-
-
-                            <Form.Item
-                                label={<span>Nhập lại mật khẩu <span style={{ color: "red" }}> *</span></span>}
-                                required
-                                name="repassword"
-                                rules={[
-                                    {
-                                        required: true,
-                                        message: 'Vui lòng xác nhận lại mật khẩu của bạn',
-                                    },
-                                    ({ getFieldValue }) => ({
-                                        validator(_, value) {
-                                            if (!value || getFieldValue('password') === value) {
-                                                return Promise.resolve();
-                                            }
-                                            return Promise.reject(new Error('Mật khẩu xác nhận không khớp!'));
+                        <Row gutter={16}>
+                            <Col span={24}>
+                                <Form.Item
+                                    label={<span>{t('profile.accountManagement.newPassword')} <span className='text-red-500'> *</span></span>}
+                                    required
+                                    name="password"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: t('employer.changePassword.newPassword.required'),
                                         },
-                                    }),
-                                ]} validateFirst>
-                                <Input.Password />
-                            </Form.Item>
-                        </div>
+                                        {
+                                            min: 8,
+                                            message: t('employer.changePassword.newPassword.minLength')
+                                        },
+                                        {
+                                            pattern: new RegExp(/^(?=.*[A-Z])/),
+                                            message: t('employer.changePassword.newPassword.uppercase')
+                                        },
+                                        {
+                                            pattern: new RegExp(/^(?=.*[0-9])/),
+                                            message: t('employer.changePassword.newPassword.number')
+                                        },
+                                        {
+                                            pattern: new RegExp(/^(?=.*[!@#$%^&*(),.?":{}|<>])/),
+                                            message: t('employer.changePassword.newPassword.special')
+                                        }
+                                    ]} validateFirst>
+                                    <Input.Password />
+                                </Form.Item>
+                            </Col>
+
+                            <Col span={24}>
+                                <Form.Item
+                                    label={<span>{t('profile.accountManagement.confirmNewPassword')} <span className='text-red-500'> *</span></span>}
+                                    required
+                                    name="repassword"
+                                    rules={[
+                                        {
+                                            required: true,
+                                            message: t('employer.changePassword.confirmPassword.required'),
+                                        },
+                                        ({ getFieldValue }) => ({
+                                            validator(_, value) {
+                                                if (!value || getFieldValue('password') === value) {
+                                                    return Promise.resolve();
+                                                }
+                                                return Promise.reject(new Error(t('employer.changePassword.confirmPassword.mismatch')));
+                                            },
+                                        }),
+                                    ]} validateFirst>
+                                    <Input.Password />
+                                </Form.Item>
+                            </Col>
+                        </Row>
                         <Form.Item>
-                            <Space className="d-flex justify-content-end mt-3">
-                                <Button className="font-size" type="primary" htmlType="submit">Tiếp tục</Button>
+                            <Space className="flex justify-end mt-3">
+                                <Button className="text-base" type="primary" htmlType="submit">{t('common.complete')}</Button>
                             </Space>
                         </Form.Item>
                     </Form>
                 </div>
-                <div className={`message ${!submit && "d-none"}`}>
-                    {message}
+                <div className={`message ${!submit && "hidden"}`}>
+                    {notice}
                 </div>
             </Card>
         </div>

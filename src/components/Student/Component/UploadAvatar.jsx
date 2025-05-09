@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import styles from './UploadAvatar.module.scss';
+import { useState, useEffect } from "react";
+import './UploadAvatar.scss';
 import { Avatar, Image, Progress, Upload, message, Typography } from "antd";
 import { UploadOutlined, UserOutlined } from "@ant-design/icons";
 import { uploadToCloudinary } from "../../../services/uploadCloudary";
@@ -11,25 +11,24 @@ const UploadAvatar = ({ src, setSrc }) => {
     const [uploadProgress, setUploadProgress] = useState(0);
     const [uploading, setUploading] = useState(false);
     let [urlImage, setUrlImage] = useState(src);
-    const uploadRef = useRef(null);
 
     const handleImageChange = async (file) => {
         if (!file) return;
-        setUploading(true); // Bắt đầu upload
-        setUploadProgress(0); // Đặt lại tiến trình về 0
+        setUploading(true);
+        setUploadProgress(0);
         try {
-            // Gọi hàm upload với callback để cập nhật tiến trình   ----> Department này là tạo thư mục trên cloud để biết ảnh ở thư mục nào á
+           
             const url = await uploadToCloudinary(file, "student", (progress) => {
                 setUploadProgress(progress);
             });
-            setSrc(url); // Lưu URL ảnh sau khi upload
+            setSrc(url);
             setUrlImage(url);
             message.success("Upload thành công!");
         } catch (error) {
             message.error("Upload thất bại. Vui lòng thử lại.");
             console.error(error);
         } finally {
-            setUploading(false); // Kết thúc upload
+            setUploading(false);
         }
     };
 
@@ -55,21 +54,21 @@ const UploadAvatar = ({ src, setSrc }) => {
                         handleImageChange(file)
                         return false
                     }}>
-                    <div className={styles["container"]}>
-                        <div className={`${styles.div} ${uploading ? 'uploading' : ''}`} >
+                    <div className="container">
+                        <div className={`div ${uploading ? 'uploading' : ''}`}  >
 
                             <Avatar
-                                className={styles["avatar-upload"]}
+                                className="avatar-upload"
                                 icon={<UserOutlined />}
 
                                 src={urlImage}
                                 alt="Uploaded"
                                 size={200}
                             ></Avatar>
-                            <UploadOutlined className={styles["upload-icon"]} />
+                            <UploadOutlined className="upload-icon" />
                         </div>
                         {uploading && (
-                            <div className={styles["progress-container"]}>
+                            <div className="progress-container">
                                 <Progress percent={uploadProgress} status="active" size="small" percentPosition={{ align: "center", type: "outer" }} />
                             </div>
                         )}
@@ -80,7 +79,7 @@ const UploadAvatar = ({ src, setSrc }) => {
     );
 }
 
-const UploadImage = ({ value, onChange }) => {
+const UploadImage = ({ value, onChange, link = "admin/event" }) => {
     const [uploadProgress, setUploadProgress] = useState(0);
     const [uploading, setUploading] = useState(false);
     let [urlImage, setUrlImage] = useState(null);
@@ -94,10 +93,10 @@ const UploadImage = ({ value, onChange }) => {
         setUploading(true);
         setUploadProgress(0);
         try {
-            const url = await uploadToCloudinary(file, "admin/event", (progress) => {
+            const url = await uploadToCloudinary(file, link, (progress) => {
                 setUploadProgress(progress);
             });
-            onChange(url); // Lưu URL ảnh sau khi upload
+            onChange(url);
             setUrlImage(url);
             message.success("Upload thành công!");
         } catch (error) {
@@ -131,12 +130,12 @@ const UploadImage = ({ value, onChange }) => {
                         return false;
                     }}
                 >
-                    <div className={styles["container"]}>
-                        <div className={`${styles.div} ${uploading ? 'uploading' : ''}`}>
+                    <div className="container">
+                        <div className={`div ${uploading ? 'uploading' : ''}`}>
                             {urlImage ? (
                                 <Image
                                     preview={false}
-                                    width={"200px"}
+                                    height={"200px"}
                                     src={urlImage}
                                     alt="Uploaded"
                                 />
@@ -145,7 +144,7 @@ const UploadImage = ({ value, onChange }) => {
                             )}
                         </div>
                         {uploading && (
-                            <div className={styles["progress-container"]}>
+                            <div className="progress-container">
                                 <Progress percent={uploadProgress} status="active" size="small" percentPosition={{ align: "center", type: "outer" }} />
                             </div>
                         )}

@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { getOrderList } from "../../../services/apiService";
 import BoxContainer from "../../Generate/BoxContainer";
-import { Button, Table, Tag, Tooltip, Typography, message } from "antd";
+import { Button, Table, Tag, Tooltip, message } from "antd";
 import ModalDetailOrder from "./ModalDetailOrder";
 import { FaMoneyCheckDollar } from "react-icons/fa6";
 import { EyeOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 
-const { Title } = Typography;
 const ListOrder = () => {
+    const { t } = useTranslation();
     const [orders, setOrders] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
@@ -18,13 +19,13 @@ const ListOrder = () => {
     const [status, setStatus] = useState('PENDING');
 
     const fetchOrders = async (page, size) => {
-        setLoading(true);
+        setLoading(true);           
         try {
             const response = await getOrderList(page - 1, size);
             setOrders(response.data.orders);
             setTotal(response.data.totalPage * size);
-        } catch (error) {
-            message.error("Lỗi khi tải danh sách đơn hàng");
+        } catch {
+            message.error(t('employer.orders.loadError'));
         } finally {
             setLoading(false);
         }
@@ -41,49 +42,49 @@ const ListOrder = () => {
 
     const columns = [
         {
-            title: 'ID Đơn hàng',
+            title: t('employer.orders.orderId'),
             dataIndex: 'orderId',
             key: 'orderId',
         },
         {
-            title: 'Ngày đặt hàng',
+            title: t('employer.orders.orderDate'),
             dataIndex: 'orderDate',
             key: 'orderDate',
         },
         {
-            title: 'Mã Coupon',
+            title: t('employer.orders.couponCode'),
             dataIndex: 'couponCode',
             key: 'couponCode',
         },
         {
-            title: 'Tổng tiền',
+            title: t('employer.orders.total'),
             dataIndex: 'total',
             key: 'total',
             render: (text) => text.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }),
         },
 
         {
-            title: 'Trạng thái',
+            title: t('employer.orders.status'),
             dataIndex: 'paymentStatus',
             key: 'paymentStatus',
-            render: (text) => text === 'PENDING' ? <Tag color="default">Chờ thanh toán</Tag> : <Tag color="green">Đã thanh toán</Tag>,
+            render: (text) => text === 'PENDING' ? <Tag className="text-sm font-normal w-fit" color="default">{t('employer.orders.pending')}</Tag> : <Tag className="text-sm font-normal w-fit" color="green">{t('employer.orders.paid')}</Tag>,
         },
         {
-            title: ' Xem / Thanh toán',
+            title: t('employer.orders.actions'),
             align: 'center',
             width: 200,
-            render: (_, record) => record.paymentStatus === 'PENDING' ? <Tooltip color="blue" title="Thanh toán"><Button icon={<FaMoneyCheckDollar size={20} />} type="text" onClick={() => { setOrder(record); setOpenOrderModal(true); setStatus(record.paymentStatus) }}></Button></Tooltip> :
-                <Tooltip color="blue" title="Xem chi tiết"><Button icon={<EyeOutlined size={20} />} type="text" onClick={() => { setOrder(record); setOpenOrderModal(true); setStatus(record.paymentStatus) }}></Button></Tooltip>,
+            render: (_, record) => record.paymentStatus === 'PENDING' ? <Tooltip color="blue" title={t('employer.orders.pay')}><Button icon={<FaMoneyCheckDollar size={20} />} type="text" onClick={() => { setOrder(record); setOpenOrderModal(true); setStatus(record.paymentStatus) }}></Button></Tooltip> :
+                <Tooltip color="blue" title={t('employer.orders.view')}><Button icon={<EyeOutlined size={20} />} type="text" onClick={() => { setOrder(record); setOpenOrderModal(true); setStatus(record.paymentStatus) }}></Button></Tooltip>,
         },
 
     ];
 
     return (
         <>
-            <BoxContainer>
-                <div className="title1">Đơn hàng</div>
+            <BoxContainer className="shadow-md">
+                <div className="title1">{t('employer.orders.title')}</div>
             </BoxContainer>
-            <BoxContainer>
+            <BoxContainer className="shadow-md">
                 <Table
                     columns={columns}
                     dataSource={orders}

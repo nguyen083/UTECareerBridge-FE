@@ -1,8 +1,5 @@
 @import '../../../components/styles/variables.scss';
 
-.popover-avatar {
-    cursor: pointer;
-}
 
 .ant-popover-inner {
     min-width: 300px;
@@ -20,5 +17,11 @@
             border-color    : $text-color-hover !important;
             background-color: $background-color !important;
         }
+    }
+}
+.popover-menu {
+    .ant-menu-item-selected {
+        background-color: transparent !important;
+        color: black !important;
     }
 }

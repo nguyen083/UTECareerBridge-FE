@@ -1,120 +1,220 @@
-import React, { useEffect, useState } from 'react';
-import './StudentLayout.scss';
-import '../Generate/CustomizePopover.scss';
-import { Layout, theme, Image, Button, Flex, Popover, Row, Col, Typography } from 'antd';
-import { MenuOutlined } from '@ant-design/icons';
-import { Outlet, useNavigate } from 'react-router-dom';
-import { FaUser } from 'react-icons/fa6';
-import FooterComponent from '../Generate/Footer.jsx';
-import Notification from '../Generate/Notification.jsx';
-import { useDispatch, useSelector } from 'react-redux';
-import PopoverAvatar from './Header/PopoverAvatar.jsx';
-import { setInforStudent } from '../../redux/action/studentSlice.jsx';
-import { getInforStudent } from '../../services/apiService.jsx';
-import JobSearchBar from './Search/JobSearchBar.jsx';
+import { useEffect } from "react";
+import "./StudentLayout.scss";
+import "../Generate/CustomizePopover.scss";
+import {
+  Layout,
+  Image,
+  Button,
+  Flex,
+  Popover,
+  Row,
+  Col,
+  Typography,
+} from "antd";
+import { MenuOutlined } from "@ant-design/icons";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { FaUser } from "react-icons/fa6";
+import FooterComponent from "../Generate/Footer.jsx";
+import NotificationIcon from "../Generate/NotificationIcon.jsx";
+import { useDispatch, useSelector } from "react-redux";
+import PopoverAvatar from "./Header/PopoverAvatar.jsx";
+import { setInforStudent } from "../../redux/action/studentSlice.jsx";
+import { getInforStudent } from "../../services/apiService.jsx";
+import JobSearchBar from "./Search/JobSearchBar.jsx";
+import path from "../../constant/path.jsx";
+import { useTranslation } from "react-i18next";
+import ChangeLanguageBtn from "../Generate/ChangeLanguageBtn.jsx";
+import { BsChatLeftText } from "react-icons/bs";
+
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
-const PopoverCategory = () => {
-    const navigate = useNavigate();
-    const infor = useSelector(state => state?.user);
-    return (
-        <div className="dropdown-content">
-            <Row gutter={[32, 16]}>
-                <Col span={8}>
-                    <Title level={5}>Việc làm</Title>
-                    <Button size='large' type="text" onClick={() => navigate('/search', { state: { filters: { jobStatus: 'newest' } } })} >Việc làm mới nhất</Button>
-                    <Button size='large' type="text" onClick={() => navigate('/search')} >Tìm việc làm</Button>
-                    {/* <Button size='large' type="text" onClick={() => navigate('/search')} >Việc làm quản lý</Button> */}
-                </Col>
-                <Col span={8}>
-                    <Title level={5}>Việc của tôi</Title>
-                    <Button size='large' type="text" onClick={() => { infor.role === 'student' ? navigate('/my-job#job-saved') : navigate('login') }} >Việc đã lưu</Button>
-                    <Button size='large' type="text" onClick={() => { infor.role === 'student' ? navigate('/my-job#job-applied') : navigate('login') }} >Việc đã ứng tuyển</Button>
-                    {/* <Button size='large' type="text"  >Thông báo việc làm</Button>
-                    <Button size='large' type="text"  >Việc dành cho bạn</Button> */}
-                </Col>
-                <Col span={8}>
-                    <Title level={5}>Sự kiện</Title>
-                    <Button size='large' type="text" onClick={() => navigate('/event')}>Tất cả sự kiện</Button>
-                </Col>
-            </Row>
 
-        </div>
-    )
-}
+const PopoverCategory = () => {
+  const navigate = useNavigate();
+  const infor = useSelector((state) => state?.user);
+  const { t } = useTranslation();
+
+  return (
+    <div className="dropdown-content">
+      <Row gutter={[32, 16]}>
+        <Col span={8}>
+          <Title level={5}>{t("student.layout.jobs.title")}</Title>
+          <Button
+            size="large"
+            type="text"
+            onClick={() =>
+              navigate("/search", {
+                state: { filters: { jobStatus: "newest" } },
+              })
+            }
+          >
+            {t("student.layout.jobs.newest")}
+          </Button>
+          <Button size="large" type="text" onClick={() => navigate("/search")}>
+            {t("student.layout.jobs.search")}
+          </Button>
+        </Col>
+        <Col span={8}>
+          <Title level={5}>{t("student.layout.myJobs.title")}</Title>
+          <Button
+            size="large"
+            type="text"
+            onClick={() => {
+              infor.role === "student"
+                ? navigate("/my-job#job-saved")
+                : navigate("login");
+            }}
+          >
+            {t("student.layout.myJobs.saved")}
+          </Button>
+          <Button
+            size="large"
+            type="text"
+            onClick={() => {
+              infor.role === "student"
+                ? navigate("/my-job#job-applied")
+                : navigate("login");
+            }}
+          >
+            {t("student.layout.myJobs.applied")}
+          </Button>
+          <Button
+            size="large"
+            type="text"
+            onClick={() => {
+              infor.role === "student"
+                ? navigate("/recommend-job")
+                : navigate("login");
+            }}
+          >
+            {t("student.layout.myJobs.recommend")}
+          </Button>
+        </Col>
+        <Col span={8}>
+          <Title level={5}>{t("student.layout.events.title")}</Title>
+          <Button size="large" type="text" onClick={() => navigate("/event")}>
+            {t("student.layout.events.all")}
+          </Button>
+        </Col>
+      </Row>
+    </div>
+  );
+};
 
 const StudentLayout = () => {
-    const navigate = useNavigate();
-    const infor = useSelector(state => state?.user);
-    const dispatch = useDispatch();
-    // const {
-    //     token: { colorBgContainer, borderRadiusLG },
-    // } = theme.useToken();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const infor = useSelector((state) => state?.user);
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("accessToken");
 
-    useEffect(() => {
-        if (infor.role === 'student') {
-            getInforStudent().then(res => {
-                if (res.status === 'OK') {
-                    dispatch(setInforStudent(res.data));
-                }
-            }).catch(err => {
-                console.log(err);
-            })
-        }
-
-    }, []);
-
-    const nagigateLogin = () => {
-        infor.role === 'employer' ? navigate('/employer') : navigate('/employer/login');
+  useEffect(() => {
+    if (infor.role === "student") {
+      getInforStudent()
+        .then((res) => {
+          if (res.status === "OK") {
+            dispatch(setInforStudent(res.data));
+          }
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
+  }, []);
 
-    return (
-        <Layout className='layout-student'>
-            <Header
-                className='header-student'
+  const nagigateLogin = () => {
+    infor.role === "employer"
+      ? navigate("/employer")
+      : navigate("/employer/login");
+  };
+
+  return (
+    <Layout className="layout-student">
+      <Header className="py-1 header-student">
+        <Flex align="center" justify="space-between" className="w-full">
+          <Image
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate("/")}
+            src={path.logo}
+            alt="Website Logo"
+            preview={false}
+            width={150}
+          />
+          <JobSearchBar onSearch={() => {}} />
+          <Flex gap={"1rem"} align="center">
+            <Button className="rounded-full btn-header" size="large">
+              <Flex gap={4}>
+                <Link to="/forums">{t("student.layout.forum")}</Link>
+              </Flex>
+            </Button>
+            <Popover
+              overlayClassName="customize-popover"
+              placement="bottomRight"
+              arrow={false}
+              content={PopoverCategory}
+              trigger={["click"]}
             >
-                <Flex align='center' justify='space-between' className='w-100'>
-                    <Image
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => navigate('/')}
-                        src="https://res.cloudinary.com/utejobhub/image/upload/v1723888103/rg2do6iommv6wp840ixr.png"
-                        alt="Website Logo"
-                        preview={false}
-                        width={150}
-                    />
-                    <JobSearchBar onSearch={() => { }} />
-                    <Flex gap={"1rem"}>
-                        <Popover
-                            overlayClassName='customize-popover'
-                            placement='bottomRight'
-                            arrow={false}
-                            content={PopoverCategory}
-                            trigger={['click']}
-                        >
-                            <Button className='rounded-pill btn-header' size='large'><Flex gap={4}><MenuOutlined /> <div className='d-none d-md-block'>Tất cả danh mục</div></Flex></Button>
-                        </Popover>
-                        <Button onClick={nagigateLogin} className='rounded-pill btn-header' size='large'>Nhà tuyển dụng</Button>
-                        <Flex gap={"0.5rem"}>
-                            <Notification userId={useSelector(state => state.user.userId)} />
-                            {infor.role !== 'student'
-                                ? <Button
-                                    onClick={() => navigate('/login')}
-                                    className='rounded-pill btn-header btn-login' size='large'>
-                                    <Flex gap={4} align='center'> <FaUser /><div className='d-none d-md-block'> Đăng nhập</div></Flex></Button> :
-                                <PopoverAvatar />}
-                        </Flex>
-                    </Flex>
+              <Button className="rounded-full btn-header" size="large">
+                <Flex gap={4}>
+                  <MenuOutlined />
+                  <div className="hidden md:block">
+                    {t("all_categories.title")}
+                  </div>
                 </Flex>
-            </Header>
-            <Content
-                className='content-student'
+              </Button>
+            </Popover>
+            <Button
+              onClick={nagigateLogin}
+              className="rounded-full btn-header"
+              size="large"
             >
-                <Outlet />
-            </Content>
-            <Footer className='p-0'>
-                <FooterComponent />
-            </Footer>
-        </Layout>
-    );
+              {t("role.EMPLOYER")}
+            </Button>
+            <Flex
+              gap={"0.5rem"}
+              className="p-1 border rounded-full border-text-color"
+            >
+              <Button
+                icon={<BsChatLeftText />}
+                shape="circle"
+                onClick={() => {
+                  token ? navigate("/chat") : navigate("/login");
+                }}
+                className="ease-out transform rounded-full btn-header hover:scale-105"
+                size="large"
+              />
+              <NotificationIcon
+                userId={useSelector((state) => state.user.userId)}
+              />
+              <ChangeLanguageBtn />
+              {infor.role !== "student" ? (
+                <Button
+                  onClick={() => navigate("/login")}
+                  className="rounded-full btn-header btn-login hover:"
+                  size="large"
+                >
+                  <Flex gap={4} align="center">
+                    <FaUser />
+                    <div className="hidden md:block">
+                      {t("auth.login.title")}
+                    </div>
+                  </Flex>
+                </Button>
+              ) : (
+                <PopoverAvatar />
+              )}
+            </Flex>
+          </Flex>
+        </Flex>
+      </Header>
+      <Content className="content-student">
+        <Outlet />
+      </Content>
+      <Footer className="p-0">
+        <FooterComponent />
+      </Footer>
+    </Layout>
+  );
 };
+
 export default StudentLayout;

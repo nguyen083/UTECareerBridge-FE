@@ -1,57 +1,67 @@
+// Admin Logo
 .admin-logo {
-    padding   : 16px;
-    text-align: left;
+    padding: 20px 16px;
+    text-align: center;
     background: #fff;
-
+    border-bottom: 1px solid #f0f0f0;
+    
     &-img {
-        width     : 80%;
-        height    : auto;
+        width: 80%;
+        height: auto;
         max-height: 60px;
         object-fit: contain;
+        transition: all 0.3s ease;
     }
 }
 
+// Admin Header
 .admin-header {
-    height         : 64px;
-    padding        : 0 24px;
-    background     : #fff;
-    box-shadow     : 0 1px 4px rgba(0, 0, 0, 0.1);
-    display        : flex;
-    align-items    : center;
+    height: 64px;
+    padding: 0 24px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    display: flex;
+    align-items: center;
     justify-content: space-between;
-    position       : sticky;
-    top            : 0;
-    z-index        : 100;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    transition: all 0.3s;
 
-    // Search Container
     .search-container {
-        display      : flex;
-        align-items  : center;
-        width        : 350px;
-        height       : 42px; // Thêm chiều cao cố định
-        border       : 1px solid #ced4da;
-        border-radius: 0.4rem;
-        background   : #F5F5F5;
-        padding      : 0 5px;
-        margin-left  : 15%;
+        display: flex;
+        align-items: center;
+        width: 350px;
+        height: 42px; 
+        border: 1px solid #e8e8e8;
+        border-radius: 8px;
+        background: #F9F9F9;
+        padding: 0 12px;
+        margin-left: 15%;
+        transition: all 0.3s ease;
+        
+        &:focus-within {
+            border-color: #1890ff;
+            box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+        }
 
         .search-icon {
-            font-size: 16px; // Giảm kích thước icon
-            color    : #595959;
+            font-size: 16px;
+            color: #8c8c8c;
         }
 
         .search-bar {
-            flex       : 1;
+            flex: 1;
             margin-left: 8px;
 
             .search-input {
-                width     : 100%;
-                height    : 100%;
-                border    : none;
-                outline   : none;
+                width: 100%;
+                height: 100%;
+                border: none;
+                outline: none;
                 background: transparent;
-                font-size : 14px;
-                color     : #595959;
+                font-size: 14px;
+                color: #595959;
 
                 &::placeholder {
                     color: #bfbfbf;
@@ -60,17 +70,17 @@
         }
     }
 
-    // Icons styling
     %icon-shared {
-        // Tạo placeholder cho các thuộc tính chung của icon
-        font-size : 18px;
-        cursor    : pointer;
-        color     : #595959;
-        margin    : 0 12px;
-        transition: color 0.3s;
+        font-size: 20px;
+        cursor: pointer;
+        color: #595959;
+        margin: 0 12px;
+        transition: all 0.3s;
+        position: relative;
 
         &:hover {
             color: #1890ff;
+            transform: translateY(-1px);
         }
     }
 
@@ -82,59 +92,541 @@
         @extend %icon-shared;
     }
 
-    // Admin section
     .admin-section {
-        display    : flex;
+        display: flex;
         align-items: center;
-        gap        : 12px;
+        gap: 12px;
 
         .admin-avatar {
             cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            
+            &:hover {
+                border-color: #1890ff;
+            }
         }
 
         .admin-name {
-            font-size  : 14px;
-            color      : #262626;
+            font-size: 14px;
+            color: #262626;
             font-weight: 500;
+            margin-left: 8px;
         }
     }
 }
 
+// Admin Menu
 .admin-menu {
     border-right: none;
+    padding: 8px 0;
 
     .ant-menu-item,
-    .ant-menu-submenu-title {}
+    .ant-menu-submenu-title {
+        margin: 4px 0;
+        border-radius: 6px;
+        transition: all 0.3s;
+        
+        &:hover {
+            background-color: rgba(24, 144, 255, 0.05);
+        }
+    }
+
+    .ant-menu-item-selected {
+        background-color: #e6f7ff;
+        font-weight: 500;
+        
+        &::after {
+            opacity: 1;
+        }
+    }
 
     .ant-menu-item-icon {
         font-size: 18px;
     }
+    
+    .ant-menu-submenu {
+        &-title {
+            font-weight: 500;
+        }
+        
+        &-arrow {
+            transition: all 0.3s;
+        }
+        
+        &-open > .ant-menu-submenu-title .ant-menu-submenu-arrow {
+            transform: translateY(-2px);
+        }
+    }
 }
 
+// Admin Content
 .admin-content {
-    padding   : 24px;
-    background: #f0f2f5;
-    min-height: calc(100vh - 64px - 69px); // viewport height - header - footer
+    padding: 24px;
+    background: #f5f7fa;
+    min-height: calc(100vh - 64px - 69px);
+    transition: all 0.3s;
 }
 
+// Admin Footer
 .admin-footer {
     text-align: center;
-    padding   : 24px;
+    padding: 20px 24px;
     background: #fff;
-    font-size : 14px;
-    color     : #8c8c8c;
+    font-size: 14px;
+    color: #8c8c8c;
+    border-top: 1px solid #f0f0f0;
+}
+
+// Admin Card
+.admin-card {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s ease;
+    
+    &:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        transform: translateY(-2px);
+    }
+    
+    .ant-card-head {
+        min-height: 48px;
+        padding: 0 16px;
+        border-bottom: 1px solid #f0f0f0;
+        
+        &-title {
+            font-weight: 600;
+        }
+    }
+    
+    .ant-card-body {
+        padding: 20px;
+    }
+}
+
+// Admin Stats Card
+.admin-stats-card {
+    padding: 16px;
+    border-radius: 12px;
+    transition: all 0.3s;
+    background: linear-gradient(135deg, #ffffff 0%, #f9f9f9 100%);
+    
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        margin-bottom: 12px;
+        
+        svg {
+            font-size: 24px;
+        }
+    }
+    
+    .stat-value {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 4px;
+    }
+    
+    .stat-label {
+        color: #8c8c8c;
+        font-size: 14px;
+    }
+}
+
+// Badge Status
+.badge-status {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    
+    &-pending {
+        background-color: #fff7e6;
+        color: #fa8c16;
+    }
+    
+    &-approved {
+        background-color: #f6ffed;
+        color: #52c41a;
+    }
+    
+    &-rejected {
+        background-color: #fff1f0;
+        color: #ff4d4f;
+    }
+}
+
+// Admin Table
+.admin-table {
+    .ant-table {
+        border-radius: 12px;
+        overflow: hidden;
+        
+        &-thead > tr > th {
+            background-color: #fafafa;
+            font-weight: 600;
+            padding: 16px;
+        }
+        
+        &-tbody > tr > td {
+            padding: 16px;
+        }
+    }
+}
+
+// Admin Dashboard Styles
+.admin-dashboard {
+    .admin-breadcrumb {
+        margin-bottom: 16px;
+    }
+    
+    .mb-5 {
+        margin-bottom: 16px;
+    }
+    
+    .h-full {
+        height: 100%;
+    }
+    
+    .recent-activities-list {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-height: 340px;
+        overflow-y: auto;
+        
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        &::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+    }
+    
+    .recent-activity-item {
+        display: flex;
+        align-items: flex-start;
+        padding: 12px;
+        border-radius: 8px;
+        background-color: #fafafa;
+        transition: all 0.3s;
+        
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            background-color: #f5f5f5;
+        }
+        
+        .activity-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 36px;
+            height: 36px;
+            background-color: rgba(24, 144, 255, 0.1);
+            border-radius: 50%;
+            margin-right: 12px;
+            flex-shrink: 0;
+            
+            svg {
+                font-size: 18px;
+            }
+        }
+        
+        .activity-content {
+            flex: 1;
+            
+            .activity-message {
+                font-size: 14px;
+                color: rgba(0, 0, 0, 0.85);
+                margin-bottom: 4px;
+                font-weight: 500;
+            }
+            
+            .activity-time {
+                font-size: 12px;
+                color: rgba(0, 0, 0, 0.45);
+            }
+        }
+    }
+    
+    .ant-tabs-nav {
+        margin-bottom: 16px;
+        
+        .ant-tabs-tab {
+            padding: 8px 16px;
+            
+            &.ant-tabs-tab-active .ant-tabs-tab-btn {
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+// Notification Styles
+.admin-notification-popover {
+    width: 350px;
+    
+    .ant-popover-inner {
+        border-radius: 12px;
+        box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 
+                    0 3px 6px -4px rgba(0, 0, 0, 0.12), 
+                    0 9px 28px 8px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+    }
+    
+    .ant-popover-arrow {
+        display: none;
+    }
+}
+
+.notification-popover-content {
+    width: 350px;
+    
+    .notification-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        
+        .mark-read-btn {
+            padding: 4px 8px;
+            font-size: 12px;
+            height: auto;
+            
+            &:hover {
+                color: #1890ff;
+                background: rgba(24, 144, 255, 0.1);
+            }
+        }
+    }
+    
+    .notification-list-container {
+        max-height: 400px;
+        overflow-y: auto;
+        padding: 0 2px; // Adds slight padding to avoid scrollbar touching content
+        
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        &::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        &::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 4px;
+        }
+        
+        .notification-item {
+            padding: 12px 16px;
+            border-radius: 8px;
+            margin-bottom: 4px;
+            transition: background-color 0.3s;
+            border: none;
+            
+            &:hover {
+                background-color: rgba(0, 0, 0, 0.02);
+            }
+            
+            &.unread {
+                background-color: rgba(24, 144, 255, 0.05);
+                
+                &:hover {
+                    background-color: rgba(24, 144, 255, 0.1);
+                }
+            }
+            
+            .notification-avatar {
+                background-color: #f5f5f5;
+                
+                &.info {
+                    background-color: #e6f7ff;
+                }
+                
+                &.success {
+                    background-color: #f6ffed;
+                }
+                
+                &.warning {
+                    background-color: #fffbe6;
+                }
+                
+                &.error {
+                    background-color: #fff2f0;
+                }
+            }
+            
+            .notification-title {
+                width: 100%;
+                justify-content: space-between;
+                
+                .notification-badge {
+                    font-size: 10px;
+                    padding: 0 6px;
+                    line-height: 16px;
+                    border-radius: 10px;
+                }
+            }
+            
+            .notification-description {
+                .notification-content {
+                    margin-bottom: 4px;
+                    font-size: 13px;
+                    line-height: 1.4;
+                    color: rgba(0, 0, 0, 0.65);
+                }
+                
+                .notification-time {
+                    display: flex;
+                    align-items: center;
+                    color: rgba(0, 0, 0, 0.45);
+                }
+            }
+        }
+    }
+    
+    .notification-footer {
+        display: flex;
+        justify-content: center;
+        padding: 8px 0;
+        
+        .view-all-btn {
+            width: 100%;
+            text-align: center;
+            padding: 4px;
+            
+            &:hover {
+                background-color: rgba(24, 144, 255, 0.05);
+                border-radius: 4px;
+            }
+        }
+    }
+}
+
+// Responsive Utility Classes
+.flex {
+    display: flex;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.items-start {
+    align-items: flex-start;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.gap-4 {
+    gap: 16px;
+}
+
+.ml-6 {
+    margin-left: 24px;
+}
+
+.mb-4 {
+    margin-bottom: 16px;
+}
+
+.mt-1 {
+    margin-top: 4px;
+}
+
+// Screen Size Media Queries
+@media (max-width: 992px) {
+    .admin-dashboard {
+        .ant-card-head-title {
+            font-size: 16px;
+        }
+        
+        .stat-value {
+            font-size: 20px;
+        }
+        
+        .stat-icon {
+            width: 40px;
+            height: 40px;
+            
+            svg {
+                font-size: 20px;
+            }
+        }
+    }
 }
 
 @media (max-width: 768px) {
     .admin-header {
-        padding: 0 12px;
+        padding: 0 16px;
 
         .admin-name {
             display: none;
         }
+        
+        .search-container {
+            width: 200px;
+            margin-left: 8px;
+        }
     }
 
     .admin-content {
-        padding: 12px;
+        padding: 16px;
+    }
+    
+    .notification-popover-content {
+        width: 300px;
+    }
+    
+    .admin-dashboard {
+        .ant-card {
+            .ant-card-head {
+                padding: 0 12px;
+            }
+            
+            .ant-card-body {
+                padding: 16px;
+            }
+        }
+        
+        .recent-activity-item {
+            padding: 10px;
+            
+            .activity-icon {
+                width: 32px;
+                height: 32px;
+                
+                svg {
+                    font-size: 16px;
+                }
+            }
+            
+            .activity-message {
+                font-size: 13px;
+            }
+        }
     }
 }
