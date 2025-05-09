@@ -37,10 +37,17 @@ const PostListAdmin = lazy(() => import("./pages/Post/Admin/PostList.jsx"));
 const TopicList = lazy(() => import("./pages/Topic/User/TopicList.jsx"));
 const PostDetail = lazy(() => import("./pages/Post/PostDetail.jsx"));
 const AboutPage = lazy(() => import("./pages/About/AboutPage.jsx"));
-// import { refreshToken } from "./utils/axiosCustomize.jsx";
-import CreateJobAlert from "./components/Student/JobAlert/CreateJobAlert.jsx";
-import ManageJobAlerts from "./components/Student/JobAlert/ManageJobAlerts.jsx";
-import EditJobAlert from "./components/Student/JobAlert/EditJobAlert.jsx";
+const CreateJobAlert = lazy(() =>
+  import("./components/Student/JobAlert/CreateJobAlert.jsx")
+);
+const ManageJobAlerts = lazy(() =>
+  import("./components/Student/JobAlert/ManageJobAlerts.jsx")
+);
+const EditJobAlert = lazy(() =>
+  import("./components/Student/JobAlert/EditJobAlert.jsx")
+);
+const TermsOfUse = lazy(() => import("./components/Generate/TermsOfUse.jsx"));
+import Policy from "./components/Generate/Policy.jsx";
 import { refreshToken, setupTokenRefresh } from "./utils/axiosCustomize.jsx";
 // import CreatePostPage from './pages/Forum/create/CreatePostPage.jsx';
 
@@ -475,6 +482,8 @@ const App = () => {
                       />
                     </Route>
                     <Route path="/about" element={<AboutPage />} />
+                    <Route path="/privacy-policy" element={<Policy />} />
+                    <Route path="/terms-of-use" element={<TermsOfUse />} />
                   </Route>
                   <Route element={<ViewLayout />}>
                     <Route path="view/company/:id" element={<InforCompany />} />

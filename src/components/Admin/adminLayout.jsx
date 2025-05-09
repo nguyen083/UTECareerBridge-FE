@@ -75,7 +75,7 @@ const AdminLayout = () => {
       label: t("admin.sidebar.overview"),
     },
     {
-      key: "2",
+      key: "1",
       icon: <TeamOutlined />,
       label: t("admin.sidebar.userManagement"),
       children: [
@@ -84,7 +84,7 @@ const AdminLayout = () => {
       ],
     },
     {
-      key: "3",
+      key: "2",
       icon: <FileTextOutlined />,
       label: t("admin.sidebar.companyManagement"),
       children: [
@@ -212,7 +212,7 @@ const AdminLayout = () => {
         dispatch(stop());
       }
     } else {
-      message.error(t("admin.messages.error"));
+      navigate(key.key);
     }
   };
 

@@ -113,7 +113,48 @@
       "interviewTip": "Research the company thoroughly and prepare answers to common questions before your interview.",
       "networkingSkills": "Networking Skills",
       "networkingTip": "Build your professional network to discover hidden job opportunities and career advice.",
-      "learnMore": "Learn more"
+      "learnMore": "Learn more",
+      "privacyPolicy": {
+        "title": "Privacy Policy",
+        "introduction": {
+          "title": "Introduction",
+          "content": "Welcome to UTECareerBridge. We respect your privacy and are committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you."
+        },
+        "dataCollection": {
+          "title": "Information We Collect",
+          "intro": "We may collect, use, store and transfer different kinds of personal data about you which we have grouped together as follows:",
+          "identity": "Identity Data includes first name, last name, username or similar identifier, date of birth and gender.",
+          "contact": "Contact Data includes email address, telephone numbers, and physical address.",
+          "education": "Education Data includes your educational background, qualifications, and certifications.",
+          "professional": "Professional Data includes your work experience, skills, and career preferences."
+        },
+        "howWeUse": {
+          "title": "How We Use Your Information",
+          "intro": "We will only use your personal data when the law allows us to. Most commonly, we will use your personal data in the following circumstances:",
+          "provision": "To provide and maintain our services, including to monitor the usage of our service.",
+          "communication": "To communicate with you about opportunities, updates, and other information related to our services.",
+          "improvement": "To improve our services, products, marketing, and user experience."
+        },
+        "dataSecurity": {
+          "title": "Data Security",
+          "content": "We have put in place appropriate security measures to prevent your personal data from being accidentally lost, used, or accessed in an unauthorized way, altered, or disclosed. In addition, we limit access to your personal data to those employees, agents, contractors, and other third parties who have a business need to know."
+        },
+        "yourRights": {
+          "title": "Your Rights",
+          "intro": "Under certain circumstances, you have rights under data protection laws in relation to your personal data, including the right to:",
+          "access": "Request access to your personal data.",
+          "correction": "Request correction of your personal data.",
+          "erasure": "Request erasure of your personal data.",
+          "restriction": "Request restriction of processing your personal data.",
+          "portability": "Request transfer of your personal data.",
+          "withdraw": "Withdraw consent at any time where we are relying on consent to process your personal data."
+        },
+        "contact": {
+          "title": "Contact Us",
+          "content": "If you have any questions about this privacy policy or our privacy practices, please contact us at: support@utecareerbridge.com"
+        },
+        "lastUpdated": "Last updated: January 2024"
+      }
     },
     "menu": {
       "updateProfile": "Update profile",
@@ -150,6 +191,27 @@
       "events": {
         "title": "Events",
         "all": "All Events"
+      },
+      "footer": {
+        "footerDescription": "Connecting talented students with career opportunities across industries. Your bridge to professional success.",
+        "address": "1 Vo Van Ngan, Thu Duc City, Ho Chi Minh City",
+        "aboutUs": "About Us",
+        "aboutUteCareerbridge": "About UTE CareerBridge",
+        "aboutUteinTECH": "About UTEinTECH",
+        "contact": "Contact",
+        "faq": "FAQ",
+        "termsOfUse": "Terms of Use",
+        "privacyPolicy": "Privacy Policy",
+        "forEmployer": "For Employer",
+        "postJob": "Post Job",
+        "searchResume": "Search Resume",
+        "jobsByIndustry": "Jobs by Industry",
+        "accounting": "Accounting",
+        "banking": "Banking",
+        "automotiveTechnology": "Automotive Technology",
+        "informationTechnology": "Information Technology",
+        "construction": "Construction",
+        "findJob": "Find Job"
       }
     },
     "jobAlerts": {
@@ -209,6 +271,47 @@
     "recommend": {
       "title": "Recommend Jobs",
       "description": "Recommend jobs for you based on your activity on the system. Please select a job to view details!"
+    },
+    "privacyPolicy": {
+      "title": "Privacy Policy",
+      "introduction": {
+        "title": "Introduction",
+        "content": "Welcome to UTECareerBridge. We respect your privacy and are committed to protecting your personal data. This privacy policy will inform you about how we look after your personal data when you visit our website and tell you about your privacy rights and how the law protects you."
+      },
+      "dataCollection": {
+        "title": "Information We Collect",
+        "intro": "We may collect, use, store and transfer different kinds of personal data about you which we have grouped together as follows:",
+        "identity": "Identity Data includes first name, last name, username or similar identifier, date of birth and gender.",
+        "contact": "Contact Data includes email address, telephone numbers, and physical address.",
+        "education": "Education Data includes your educational background, qualifications, and certifications.",
+        "professional": "Professional Data includes your work experience, skills, and career preferences."
+      },
+      "howWeUse": {
+        "title": "How We Use Your Information",
+        "intro": "We will only use your personal data when the law allows us to. Most commonly, we will use your personal data in the following circumstances:",
+        "provision": "To provide and maintain our services, including to monitor the usage of our service.",
+        "communication": "To communicate with you about opportunities, updates, and other information related to our services.",
+        "improvement": "To improve our services, products, marketing, and user experience."
+      },
+      "dataSecurity": {
+        "title": "Data Security",
+        "content": "We have put in place appropriate security measures to prevent your personal data from being accidentally lost, used, or accessed in an unauthorized way, altered, or disclosed. In addition, we limit access to your personal data to those employees, agents, contractors, and other third parties who have a business need to know."
+      },
+      "yourRights": {
+        "title": "Your Rights",
+        "intro": "Under certain circumstances, you have rights under data protection laws in relation to your personal data, including the right to:",
+        "access": "Request access to your personal data.",
+        "correction": "Request correction of your personal data.",
+        "erasure": "Request erasure of your personal data.",
+        "restriction": "Request restriction of processing your personal data.",
+        "portability": "Request transfer of your personal data.",
+        "withdraw": "Withdraw consent at any time where we are relying on consent to process your personal data."
+      },
+      "contact": {
+        "title": "Contact Us",
+        "content": "If you have any questions about this privacy policy or our privacy practices, please contact us at: support@utecareerbridge.com"
+      },
+      "lastUpdated": "Last updated: January 2024"
     }
   },
   "employer": {
@@ -1631,5 +1734,48 @@
     "delete": "Delete tag",
     "createSuccess": "Create tag successfully",
     "createError": "Create tag failed"
+  },
+  "termsOfUse": {
+    "title": "Terms of Use",
+    "introduction": {
+      "title": "Introduction",
+      "content": "Welcome to UTECareerBridge. By accessing or using our platform, you agree to comply with and be bound by these Terms of Use."
+    },
+    "userAgreement": {
+      "title": "User Agreement",
+      "content": "By registering for an account, you confirm that you understand and agree to these terms."
+    },
+    "accountResponsibility": {
+      "title": "Account Responsibility",
+      "content": "You are responsible for maintaining the confidentiality of your account information and for all activities that occur under your account."
+    },
+    "contentGuidelines": {
+      "title": "Content Guidelines",
+      "content": "When using our platform, you agree not to post or share content that:",
+      "item1": "Is illegal, harmful, threatening, or discriminatory",
+      "item2": "Infringes on intellectual property rights",
+      "item3": "Contains false information or impersonates others",
+      "item4": "Contains malware or is designed to interrupt service"
+    },
+    "intellectualProperty": {
+      "title": "Intellectual Property",
+      "content": "All content on UTECareerBridge, including text, graphics, logos, and software, is the property of UTECareerBridge and is protected by copyright and other intellectual property laws."
+    },
+    "limitation": {
+      "title": "Limitation of Liability",
+      "content": "UTECareerBridge is not liable for any direct, indirect, incidental, or consequential damages resulting from your use of our platform."
+    },
+    "termination": {
+      "title": "Termination",
+      "content": "We reserve the right to terminate or suspend your account and access to our services at our discretion, without notice, for conduct that we believe violates these Terms of Use."
+    },
+    "changes": {
+      "title": "Changes to Terms",
+      "content": "We may modify these Terms of Use at any time. Continued use of the platform after changes constitutes acceptance of the modified terms."
+    },
+    "contactUs": {
+      "title": "Contact Us",
+      "content": "If you have any questions about these Terms of Use, please contact us through the provided channels on our platform."
+    }
   }
 }

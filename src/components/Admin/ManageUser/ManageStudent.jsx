@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import { 
-  Modal, 
-  Form, 
-  Input, 
-  DatePicker, 
-  Select, 
-  Button, 
-  message, 
+import {
+  Modal,
+  Form,
+  Input,
+  DatePicker,
+  Select,
+  Button,
+  message,
   Flex,
   Typography,
   Card,
@@ -14,24 +14,24 @@ import {
   Row,
   Col,
   Badge,
-  Avatar
+  Avatar,
 } from "antd";
 import {
   UserOutlined,
   TeamOutlined,
   CheckCircleOutlined,
   StopOutlined,
-  ReloadOutlined,
-  DownloadOutlined,
-  PlusOutlined
 } from "@ant-design/icons";
 import TableListUser from "./TableListUser";
 import BoxContainer from "../../Generate/BoxContainer";
-import { getUserByUserId, updateUser, getAllUsers } from "../../../services/apiService";
+import {
+  getUserByUserId,
+  updateUser,
+  getAllUsers,
+} from "../../../services/apiService";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useTranslation } from "react-i18next";
-import "./ManageStudent.scss";
 
 const { Option } = Select;
 const { Title, Text } = Typography;
@@ -55,13 +55,17 @@ const ManageListUser = () => {
 
   const fetchUserStats = async () => {
     try {
-      const response = await getAllUsers({ role: "student", page: 0, size: 1000 });
+      const response = await getAllUsers({
+        role: "student",
+        page: 0,
+        size: 1000,
+      });
       if (response.status === "OK") {
         const users = response.data.userResponses;
         setStats({
           total: users.length,
-          active: users.filter(user => user.active).length,
-          blocked: users.filter(user => !user.active).length,
+          active: users.filter((user) => user.active).length,
+          blocked: users.filter((user) => !user.active).length,
         });
       }
     } catch (error) {
@@ -146,8 +150,9 @@ const ManageListUser = () => {
     <>
       <BoxContainer className="shadow-md admin-header">
         <Flex align="center" justify="space-between">
-          <Title level={3} className="m-0">{t("admin.student.title")}</Title>
-          
+          <Title level={3} className="m-0">
+            {t("admin.student.title")}
+          </Title>
         </Flex>
       </BoxContainer>
 
@@ -158,7 +163,7 @@ const ManageListUser = () => {
               title={t("admin.student.stats.total")}
               value={stats.total}
               prefix={<TeamOutlined />}
-              valueStyle={{ color: '#1890ff' }}
+              valueStyle={{ color: "#1890ff" }}
             />
           </Card>
         </Col>
@@ -168,7 +173,7 @@ const ManageListUser = () => {
               title={t("admin.student.stats.active")}
               value={stats.active}
               prefix={<CheckCircleOutlined />}
-              valueStyle={{ color: '#52c41a' }}
+              valueStyle={{ color: "#52c41a" }}
             />
           </Card>
         </Col>
@@ -178,7 +183,7 @@ const ManageListUser = () => {
               title={t("admin.student.stats.blocked")}
               value={stats.blocked}
               prefix={<StopOutlined />}
-              valueStyle={{ color: '#ff4d4f' }}
+              valueStyle={{ color: "#ff4d4f" }}
             />
           </Card>
         </Col>
@@ -192,7 +197,7 @@ const ManageListUser = () => {
           onDelete={handleDelete}
         />
       </BoxContainer>
-      
+
       <Modal
         title={
           <div className="modal-header">
@@ -220,26 +225,34 @@ const ManageListUser = () => {
       >
         {selectedUser && (
           <div className="user-profile-header">
-            <Avatar 
-              size={80} 
-              icon={<UserOutlined />} 
+            <Avatar
+              size={80}
+              icon={<UserOutlined />}
               src={selectedUser.avatar}
               className="user-avatar"
             />
             <div className="user-info">
-              <Title level={4}>{`${selectedUser.lastName} ${selectedUser.firstName}`}</Title>
-              <Badge 
-                status={selectedUser.active ? "success" : "error"} 
-                text={selectedUser.active ? 
-                  t("admin.student.modal.form.status.options.active") : 
-                  t("admin.student.modal.form.status.options.blocked")
-                } 
+              <Title
+                level={4}
+              >{`${selectedUser.lastName} ${selectedUser.firstName}`}</Title>
+              <Badge
+                status={selectedUser.active ? "success" : "error"}
+                text={
+                  selectedUser.active
+                    ? t("admin.student.modal.form.status.options.active")
+                    : t("admin.student.modal.form.status.options.blocked")
+                }
               />
             </div>
           </div>
         )}
-        
-        <Form form={form} onFinish={handleModalOk} layout="vertical" className="edit-student-form">
+
+        <Form
+          form={form}
+          onFinish={handleModalOk}
+          layout="vertical"
+          className="edit-student-form"
+        >
           <div style={{ display: "flex", gap: "20px" }}>
             <Form.Item
               name="lastName"

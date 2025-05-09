@@ -287,8 +287,7 @@ const createOrder = async (couponCode) => {
   return axios.post(`orders/create-order`, formData);
 };
 const createPayment = async (orderId) => {
-  const param = new URLSearchParams({ orderId }).toString();
-  return axios.post(`orders/create-payment${param}`);
+  return axios.post(`orders/create-payment?orderId=${orderId}`);
 };
 const getOrderList = async (page, pageSize) => {
   return axios.get(`orders/get-orders?page=${page}&limit=${pageSize}`);

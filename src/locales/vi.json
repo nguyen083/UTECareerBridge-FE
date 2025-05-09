@@ -155,6 +155,27 @@
       "events": {
         "title": "Sự kiện",
         "all": "Tất cả sự kiện"
+      },
+      "footer": {
+        "footerDescription": "Kết nối sinh viên tài năng với cơ hội nghề nghiệp trong nhiều ngành. Đường cầu để thành công nghề nghiệp của bạn.",
+        "address": "Số 1 Võ Văn Ngân, Quận Thủ Đức, Thành phố Hồ Chí Minh",
+        "aboutUs": "Về chúng tôi",
+        "aboutUteCareerbridge": "Về UTE CareerBridge",
+        "aboutUteinTECH": "Về UTEinTECH",
+        "contact": "Liên hệ",
+        "faq": "Hỏi đáp",
+        "termsOfUse": "Điều khoản sử dụng",
+        "privacyPolicy": "Chính sách bảo mật",
+        "forEmployer": "Cho nhà tuyển dụng",
+        "postJob": "Đăng việc làm",
+        "searchResume": "Tìm hồ sơ",
+        "jobsByIndustry": "Việc làm theo ngành",
+        "accounting": "Kế toán",
+        "banking": "Ngân hàng",
+        "automotiveTechnology": "Công nghệ ô tô",
+        "informationTechnology": "Công nghệ thông tin",
+        "construction": "Xây dựng",
+        "findJob": "Tìm việc"
       }
     },
     "jobAlerts": {
@@ -214,126 +235,48 @@
     "recommend": {
       "title": "Việc được đề xuất",
       "description": "Việc làm được đề xuất cho bạn dựa trên các hoạt động của bạn trên hệ thống. Vui lòng chọn việc làm để xem chi tiết!"
+    },
+    "privacyPolicy": {
+      "title": "Chính sách bảo mật",
+      "introduction": {
+        "title": "Giới thiệu",
+        "content": "Chào mừng đến với UTECareerBridge. Chúng tôi tôn trọng quyền riêng tư của bạn và cam kết bảo vệ dữ liệu cá nhân của bạn. Chính sách bảo mật này sẽ thông báo cho bạn cách chúng tôi bảo vệ dữ liệu cá nhân của bạn khi bạn truy cập vào trang web của chúng tôi và giải thích cho bạn về quyền riêng tư của bạn và cách pháp luật bảo vệ bạn."
+      },
+      "dataCollection": {
+        "title": "Thông tin chúng tôi thu thập",
+        "intro": "Chúng tôi có thể thu thập, sử dụng, lưu trữ và chuyển tiếp các loại dữ liệu cá nhân khác nhau về bạn, được nhóm lại như sau:",
+        "identity": "Dữ liệu nhận dạng bao gồm tên, họ, tên đăng nhập hoặc tương tự, ngày sinh và giới tính.",
+        "contact": "Dữ liệu liên hệ bao gồm địa chỉ email, số điện thoại và địa chỉ cơ quan.",
+        "education": "Dữ liệu giáo dục bao gồm học vấn, trình độ và chứng chỉ của bạn.",
+        "professional": "Dữ liệu chuyên môn bao gồm kinh nghiệm làm việc, kỹ năng và sở thích nghề nghiệp của bạn."
+      },
+      "howWeUse": {
+        "title": "Cách chúng tôi sử dụng thông tin của bạn",
+        "intro": "Chúng tôi chỉ sử dụng dữ liệu cá nhân của bạn khi pháp luật cho phép chúng tôi làm điều đó. Thông thường, chúng tôi sẽ sử dụng dữ liệu cá nhân của bạn trong các trường hợp sau:",
+        "provision": "Cung cấp và duy trì các dịch vụ của chúng tôi, bao gồm việc theo dõi việc sử dụng dịch vụ của chúng tôi.",
+        "communication": "Để liên lạc với bạn về cơ hội, cập nhật và các thông tin khác liên quan đến dịch vụ của chúng tôi.",
+        "improvement": "Để cải thiện dịch vụ, sản phẩm, marketing và trải nghiệm người dùng."
+      },
+      "dataSecurity": {
+        "title": "Bảo mật dữ liệu",
+        "content": "Chúng tôi đã thực hiện các biện pháp bảo mật thích hợp để ngăn chặn việc mất mát, sử dụng hoặc truy cập dữ liệu cá nhân của bạn một cách không được phép, thay đổi hoặc tiết lộ. Ngoài ra, chúng tôi giới hạn truy cập vào dữ liệu cá nhân của bạn cho những nhân viên, đại lý, nhà thầu và những người thứ ba khác có nhu cầu kinh doanh."
+      },
+      "yourRights": {
+        "title": "Quyền của bạn",
+        "intro": "Trong một số trường hợp, bạn có quyền dưới pháp luật bảo vệ dữ liệu liên quan đến dữ liệu cá nhân của bạn, bao gồm quyền:",
+        "access": "Yêu cầu truy cập dữ liệu cá nhân của bạn.",
+        "correction": "Yêu cầu sửa chữa dữ liệu cá nhân của bạn.",
+        "erasure": "Yêu cầu xóa bỏ dữ liệu cá nhân của bạn.",
+        "restriction": "Yêu cầu hạn chế xử lý dữ liệu cá nhân của bạn.",
+        "portability": "Yêu cầu chuyển dữ liệu cá nhân của bạn.",
+        "withdraw": "Rút lại sự đồng ý bất cứ lúc nào khi chúng tôi đang dựa vào sự đồng ý để xử lý dữ liệu cá nhân của bạn."
+      },
+      "contact": {
+        "title": "Liên hệ chúng tôi",
+        "content": "Nếu bạn có bất kỳ câu hỏi nào về chính sách bảo mật này hoặc thực hành bảo mật của chúng tôi, vui lòng liên hệ chúng tôi tại: support@utecareerbridge.com"
+      },
+      "lastUpdated": "Cập nhật lần cuối: Tháng 1 năm 2024"
     }
-  },
-  "cv": {
-    "chooseResume": "Vui lòng chọn hồ sơ",
-    "upload": {
-      "success": "Tải lên thành công!",
-      "error": "Tải lên thất bại. Vui lòng thử lại.",
-      "deleteSuccess": "Xóa hồ sơ thành công!",
-      "deleteError": "Xóa hồ sơ thất bại",
-      "updateError": "Cập nhật hồ sơ thất bại",
-      "fileChoose": "Chọn hoặc kéo thả hồ sơ từ máy của bạn",
-      "fileSupport": "Chỉ hỗ trợ định dạng .doc, .docx, .pdf có kích thước dưới 5MB",
-      "fileType": "Chỉ hỗ trợ định dạng .doc, .docx, .pdf",
-      "fileMax": "Kích thước tệp vượt quá 5MB",
-      "fileSizeLimit": "Kích thước tệp tối đa là 5MB"
-    },
-    "form": {
-      "title": "Tiêu đề",
-      "titleRequired": "Vui lòng nhập tiêu đề!",
-      "description": "Mô tả",
-      "descriptionRequired": "Vui lòng nhập mô tả!",
-      "descriptionPlaceholder": "Nhập mô tả resume",
-      "level": "Cấp độ",
-      "levelRequired": "Vui lòng chọn cấp độ!"
-    },
-    "confirmModal": {
-      "title": "Xác nhận",
-      "content": "Bạn chắc chắn muốn xóa hồ sơ này?",
-      "okText": "Xóa",
-      "cancelText": "Hủy"
-    },
-    "builder": {
-      "edit": "Chỉnh sửa hồ sơ",
-      "view": "Xem hồ sơ",
-      "delete": "Xóa hồ sơ",
-      "pageTitle": "Xây dựng hồ sơ",
-      "pageDescription": "Tạo và quản lý hồ sơ của bạn một cách dễ dàng.",
-      "createNew": "Tạo mới",
-      "noExistingCVs": "Không có hồ sơ nào",
-      "createFirstCV": "Tạo hồ sơ của bạn tại đây.",
-      "features": {
-        "title": "Tính năng",
-        "save": {
-          "title": "Lưu hồ sơ",
-          "description": "Lưu hồ sơ của bạn để có thể chỉnh sửa sau này."
-        },
-        "responsive": {
-          "title": "Tương thích với mọi thiết bị",
-          "description": "Hồ sơ của bạn sẽ hiển thị tốt trên mọi thiết bị, từ máy tính đến điện thoại di động."
-        },
-        "templates": {
-          "title": "Mẫu hồ sơ",
-          "description": "Chọn từ nhiều mẫu hồ sơ khác nhau để thể hiện phong cách cá nhân của bạn."
-        },
-        "dragDrop": {
-          "title": "Tùy chỉnh dễ dàng",
-          "description": "Có thể tự thêm các mục thông tin cần thiết."
-        }
-      },
-      "download": {
-        "title": "Tải xuống hồ sơ",
-        "description": "Tải xuống hồ sơ của bạn dưới dạng PDF hoặc DOCX để gửi cho nhà tuyển dụng."
-      },
-      "share": {
-        "title": "Chia sẻ hồ sơ",
-        "description": "Chia sẻ hồ sơ của bạn với nhà tuyển dụng qua email hoặc mạng xã hội."
-      }
-    },
-    "analysis": {
-      "title": "Phân tích CV bằng AI",
-      "subtitle": "Để AI phân tích CV của bạn và đề xuất các cơ hội việc làm phù hợp",
-      "createCV": "Tạo CV mới",
-      "info": {
-        "title": "Cách thức hoạt động",
-        "description": "Hệ thống AI của chúng tôi phân tích CV để xác định kỹ năng, kinh nghiệm và bằng cấp của bạn, sau đó kết hợp chúng với các vị trí việc làm phù hợp nhất trong cơ sở dữ liệu của chúng tôi.",
-        "privacyTitle": "Bảo mật thông tin",
-        "privacyDescription": "Dữ liệu CV của bạn được bảo mật hoàn toàn và chỉ được sử dụng để đề xuất việc làm phù hợp."
-      },
-      "tabs": {
-        "existing": "Sử dụng CV hiện có",
-        "upload": "Tải lên CV mới"
-      },
-      "loading": "Đang tải CV...",
-      "noExistingCV": "Bạn chưa có CV nào.",
-      "createYourCV": "Bạn có thể tạo CV mới tại đây.",
-      "lastUpdated": "Cập nhật lần cuối",
-      "analyze": "Phân tích CV",
-      "analyzing": "Đang phân tích...",
-      "pleaseWait": "Vui lòng đợi trong giây lát...",
-      "warning": {
-        "noCV": "Vui lòng chọn một CV hoặc tải lên CV mới để phân tích"
-      },
-      "error": "Đã xảy ra lỗi khi phân tích CV của bạn. Vui lòng thử lại.",
-      "upload": {
-        "title": "Tải lên CV của bạn để phân tích",
-        "hint": "Tải lên CV ở định dạng PDF, DOC hoặc DOCX (tối đa 5MB)"
-      },
-      "result": {
-        "title": "Kết quả phân tích",
-        "success": "Phân tích CV hoàn tất!",
-        "subtitle": "CV của bạn phù hợp với công việc ở mức độ {score}%",
-        "jobMatches": "Công việc phù hợp",
-        "matchedSkills": "Kỹ năng phù hợp",
-        "missingSkills": "Kỹ năng còn thiếu",
-        "clickJobAlert": "Nhấp vào công việc để xem chi tiết",
-        "close": "Đóng",
-        "viewAll": "Xem tất cả",
-        "viewRecommended": "Xem tất cả công việc đề xuất",
-        "match": "phù hợp"
-      },
-      "benefits": {
-        "aiTitle": "Công nghệ AI tiên tiến",
-        "aiDesc": "Sử dụng công nghệ AI tiên tiến để phân tích kỹ năng và kinh nghiệm trong CV của bạn",
-        "matchTitle": "Tỷ lệ phù hợp chính xác",
-        "matchDesc": "Xác định mức độ phù hợp với từng công việc dựa trên hồ sơ của bạn",
-        "insightsTitle": "Đề xuất cải thiện",
-        "insightsDesc": "Nhận đề xuất về các kỹ năng cần phát triển để tăng cơ hội nghề nghiệp"
-      }
-    },
-    "noDescription": "Không có mô tả"
   },
   "employer": {
     "applicant": {
