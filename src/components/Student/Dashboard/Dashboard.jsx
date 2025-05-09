@@ -30,7 +30,7 @@ import {
 } from "@ant-design/icons";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
-import * as apiService from "../../../services/apiService";
+import axios from "../../../utils/axiosCustomize";
 import "./Dashboard.scss";
 import {
   BarChart,
@@ -50,6 +50,7 @@ import {
   PolarAngleAxis,
   PolarRadiusAxis,
 } from "recharts";
+import { getStudentActivity } from "../../../services/apiService";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -75,45 +76,88 @@ const StudentDashboard = () => {
     const fetchDashboardData = async () => {
       setLoading(true);
       try {
-        // In a real application, these would be separate API calls to get the data
-        // For demonstration, we'll simulate the API response
+        console.log("Fetching dashboard data...");
 
         // Get job applications
-        const applicationResponse = await apiService.get(
+        const applicationResponse = await axios.get(
           "/student/applications"
         );
 
         // Get saved jobs
-        const savedJobsResponse = await apiService.get("/student/saved-jobs");
+        const savedJobsResponse = await axios.get("/student/saved-jobs");
 
         // Get recommended jobs
-        const recommendedResponse = await apiService.get(
+        const recommendedResponse = await axios.get(
           "/student/recommended-jobs"
         );
 
         // Get upcoming events
-        const eventsResponse = await apiService.get("/events/upcoming");
+        const eventsResponse = await axios.get("/events/upcoming");
 
-        // Get activity history
-        const activitiesResponse = await apiService.get("/student/activities");
+        // Get activity history - Using direct axios call
+        const activitiesResponse = await axios.get("/students/activity");
+        console.log("Activity response:", activitiesResponse);
+
+        // Process the activities data based on the actual API response format
+        // activitiesResponse is an object that contains { data } which itself contains { data, message, status }
+        // We need to access the inner data array: activitiesResponse.data.data
+        const processedActivities = activitiesResponse?.data?.data 
+          ? activitiesResponse.data.data.map((activity, index) => ({
+              id: index + 1, // Generate ID if not present
+              type: activity.type || "application", 
+              description: activity.description || "Activity",
+              date: activity.date || dayjs().format('YYYY-MM-DD'),
+            }))
+          : [];
+
+        console.log("Processed activities:", processedActivities);
 
         // Get profile completion status
-        const profileResponse = await apiService.get(
+        const profileResponse = await axios.get(
           "/student/profile-completion"
         );
 
         // Combine all data
         setDashboardData({
-          applications: applicationResponse.data,
-          savedJobs: savedJobsResponse.data.slice(0, 3), // Only display top 3
-          recommendedJobs: recommendedResponse.data.slice(0, 3), // Only display top 3
-          upcomingEvents: eventsResponse.data.slice(0, 2), // Only display top 2
-          activities: activitiesResponse.data.slice(0, 5), // Only display top 5
-          profileCompletion: profileResponse.data.completionPercentage,
+          applications: applicationResponse.data || {
+            total: 0,
+            pending: 0,
+            accepted: 0,
+            rejected: 0,
+          },
+          savedJobs: savedJobsResponse.data?.slice(0, 3) || [], // Only display top 3
+          recommendedJobs: recommendedResponse.data?.slice(0, 3) || [], // Only display top 3
+          upcomingEvents: eventsResponse.data?.slice(0, 2) || [], // Only display top 2
+          activities: processedActivities || [], // Use all activities for charts
+          profileCompletion: profileResponse.data?.completionPercentage || 0,
         });
       } catch (error) {
         console.error("Error fetching dashboard data:", error);
-        // Set fallback demo data
+        
+        // Try to extract activities data from the error response if possible
+        let activities = [];
+        
+        try {
+          // Check if we can get any activities data even when other API calls fail
+          const activitiesResponse = await getStudentActivity();
+          
+          activities = activitiesResponse?.data 
+            ? activitiesResponse.data.map((activity, index) => ({
+                id: index + 1,
+                type: activity.type || "application", 
+                description: activity.description || "Activity",
+                date: activity.date || dayjs().format('YYYY-MM-DD'),
+              }))
+            : [];
+            
+          console.log("Activities retrieved in error handler:", activities);
+        } catch (activityError) {
+          console.error("Failed to fetch activities in error handler:", activityError);
+          // If activities fetch also fails, use empty array
+          activities = [];
+        }
+        
+        // Set fallback demo data but use real activities data if available
         setDashboardData({
           applications: {
             total: 5,
@@ -183,39 +227,7 @@ const StudentDashboard = () => {
               image: "https://via.placeholder.com/100x60",
             },
           ],
-          activities: [
-            {
-              id: 1,
-              type: "application",
-              description:
-                "Applied for Software Developer position at ABC Tech",
-              date: "2025-05-01",
-            },
-            {
-              id: 2,
-              type: "interview",
-              description: "Interview scheduled with Design Co for UX Designer",
-              date: "2025-05-03",
-            },
-            {
-              id: 3,
-              type: "resume",
-              description: "Updated your resume",
-              date: "2025-05-04",
-            },
-            {
-              id: 4,
-              type: "saved",
-              description: "Saved 2 new job positions",
-              date: "2025-05-05",
-            },
-            {
-              id: 5,
-              type: "viewed",
-              description: "Web Developer position viewed your profile",
-              date: "2025-05-06",
-            },
-          ],
+          activities: activities, // Use real activities data if available
           profileCompletion: 75,
         });
       }
@@ -335,7 +347,7 @@ const StudentDashboard = () => {
                 avatar={
                   <Avatar
                     icon={getActivityIcon(item.type)}
-                    style={{ background: ACTIVITY_COLORS[item.type] }}
+                    style={{ background: ACTIVITY_COLORS[item.type] || "#1890ff" }}
                   />
                 }
                 title={

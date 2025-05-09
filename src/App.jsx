@@ -15,6 +15,9 @@ const StudentDashboard = lazy(() =>
 const RecommendJob = lazy(() =>
   import("./components/Student/Recommend/RecommendJob.jsx")
 );
+const CVAnalysis = lazy(() =>
+  import("./components/Student/CVAnalysis/CVAnalysis.jsx")
+);
 const InterviewList = lazy(() =>
   import("./components/Employer/Interview/InterviewPage.jsx")
 );
@@ -442,6 +445,7 @@ const App = () => {
                         path="/student/job-alerts/edit/:id"
                         element={<EditJobAlert />}
                       />
+                      <Route path="/cv-analysis" element={<CVAnalysis />} />
                     </Route>
                     <Route element={<ViewLayout width="90%" />}>
                       <Route path="/job/:id" element={<ViewJob />} />
