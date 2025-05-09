@@ -44,37 +44,7 @@ const CVTemplateSelector = ({ templates, selectedTemplate, onSelect }) => {
 
                   {/* Template preview mockup */}
                   <div className="template-content">
-                    {/* Header area */}
-                    <div
-                      className="template-header"
-                      style={{
-                        backgroundColor: `${template.color}40`,
-                      }}
-                    ></div>
-
-                    {/* Body content */}
-                    <div className="template-body">
-                      <div
-                        className="template-section"
-                        style={{
-                          width: "60%",
-                          backgroundColor: `${template.color}20`,
-                        }}
-                      ></div>
-                      <div
-                        className="template-section"
-                        style={{
-                          width: "100%",
-                          backgroundColor: `${template.color}20`,
-                        }}
-                      ></div>
-
-                      <div className="template-lines">
-                        <div className="template-line"></div>
-                        <div className="template-line"></div>
-                        <div className="template-line"></div>
-                      </div>
-                    </div>
+                    <img src={template.image} alt={template.name} />
                   </div>
                 </div>
 

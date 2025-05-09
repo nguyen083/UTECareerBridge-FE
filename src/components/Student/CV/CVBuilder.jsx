@@ -64,12 +64,16 @@ const CV_TEMPLATES = [
     name: "Modern",
     color: "#3366FF",
     description: "templates.modern.description",
+    image:
+      "https://res.cloudinary.com/utejobhub/image/upload/v1746790384/admin/cv-template/qf4y9nwayodybjctbqld.png",
   },
   {
     id: "elegant",
     name: "Elegant",
     color: "#107C41",
     description: "templates.elegant.description",
+    image:
+      "https://res.cloudinary.com/utejobhub/image/upload/v1746790384/admin/cv-template/xaomxnvasnoqepq9or4v.png",
   },
 ];
 
@@ -1728,21 +1732,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     open={showTemplateSelector}
                     onCancel={() => setShowTemplateSelector(false)}
                     width={700}
-                    footer={[
-                      <Button
-                        key="back"
-                        onClick={() => setShowTemplateSelector(false)}
-                      >
-                        {t("common.cancel")}
-                      </Button>,
-                      <Button
-                        key="submit"
-                        type="primary"
-                        onClick={() => setShowTemplateSelector(false)}
-                      >
-                        {t("cv.builder.templates.apply")}
-                      </Button>,
-                    ]}
+                    footer={null}
                   >
                     <div style={{ padding: "10px 0" }}>
                       <Text>
@@ -1761,6 +1751,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                           description: t(
                             `cv.builder.templates.${template.id}.description`
                           ),
+                          image: template.image,
                         }))}
                         selectedTemplate={selectedTemplate}
                         onSelect={handleTemplateChange}
