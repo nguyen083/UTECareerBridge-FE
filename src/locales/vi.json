@@ -666,6 +666,7 @@
     },
     "sections": {
       "objective": "MỤC TIÊU NGHỀ NGHIỆP",
+      "objectivePlaceholder": "Mục tiêu nghề nghiệp chưa được cập nhật.",
       "objective.minimal": "PROFILE",
       "objective.elegant": "LỜI GIỚI THIỆU",
       "personalInfo": "THÔNG TIN CÁ NHÂN",
@@ -691,14 +692,20 @@
         "elegant": "Chuyên môn",
         "modern": "Hồ sơ"
       },
+      "fullNameLabel": "Họ và tên",
+      "jobTitleLabel": "Chức danh - Kinh nghiệm",
+      "phoneLabel": "Số điện thoại:",
+      "emailLabel": "Email:",
+      "addressLabel": "Địa chỉ:",
       "dateLabel": "Ngày sinh:",
-      "dateLabel.minimal": "Date:",
+      "dateLabel.minimal": "Ngày:",
       "localeLabel": "Quốc tịch:",
-      "localeLabel.minimal": "Locale:",
+      "localeLabel.minimal": "Quốc gia:",
       "genderLabel": "Giới tính:",
-      "genderLabel.minimal": "Gender:",
+      "genderLabel.minimal": "Giới tính:",
       "statusLabel": "Tình trạng hôn nhân:",
-      "statusLabel.minimal": "Status:"
+      "statusLabel.minimal": "Tình trạng:",
+      "scoreLabel": "Điểm:"
     },
     "builder": {
       "edit": "Chỉnh sửa hồ sơ",

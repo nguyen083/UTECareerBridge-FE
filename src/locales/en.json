@@ -668,13 +668,14 @@
     },
     "sections": {
       "objective": "CAREER OBJECTIVES",
+      "objectivePlaceholder": "Career objective not updated.",
       "objective.minimal": "PROFILE",
       "objective.elegant": "INTRODUCTION",
       "personalInfo": "PERSONAL INFORMATION",
       "workExperience": "WORK EXPERIENCE",
       "workExperience.creative": "CREATIVE EXPERIENCE",
       "workExperience.minimal": "EXPERIENCE",
-      "workExperience.elegant": "PROFESSIONAL EXPERIENCE",
+      "workExperience.elegant": "WORK EXPERIENCE",
       "skills": "SKILLS",
       "skills.creative": "DESIGN SKILLS",
       "skills.minimal": "TECH STACK",
@@ -693,6 +694,11 @@
         "elegant": "Professional Experience",
         "modern": "Profile"
       },
+      "fullNameLabel": "Full Name",
+      "jobTitleLabel": "Job Title - Experience",
+      "phoneLabel": "Phone:",
+      "emailLabel": "Email:",
+      "addressLabel": "Address:",
       "dateLabel": "Date of Birth:",
       "dateLabel.minimal": "Date:",
       "localeLabel": "Nationality:",
@@ -700,7 +706,8 @@
       "genderLabel": "Gender:",
       "genderLabel.minimal": "Gender:",
       "statusLabel": "Marital Status:",
-      "statusLabel.minimal": "Status:"
+      "statusLabel.minimal": "Status:",
+      "scoreLabel": "Score:"
     },
     "builder": {
       "edit": "Edit CV",
