@@ -1,5 +1,5 @@
 import React, { useMemo } from "react";
-import { Card, Typography, Tooltip } from "antd";
+import { Card, Typography } from "antd";
 import * as Icons from "react-icons/fa";
 import "./BenefitCard.scss";
 
@@ -103,25 +103,23 @@ const BenefitCard = ({
 
   return (
     <div className={`benefit-card-wrapper theme-${theme}`}>
-      <Tooltip title={description}>
-        <Card className={`benefit-card ${size}`} bordered={false}>
-          <div className="benefit-content">
-            <div className="benefit-icon-wrapper">
-              <span className="benefit-icon">{IconComponent}</span>
-            </div>
-
-            <div className="benefit-text">
-              <Title level={5} className="benefit-title">
-                {benefitName}
-              </Title>
-              <Text className="benefit-description">{description}</Text>
-            </div>
+      <Card className={`benefit-card ${size}`} bordered={false}>
+        <div className="benefit-content">
+          <div className="benefit-icon-wrapper">
+            <span className="benefit-icon">{IconComponent}</span>
           </div>
 
-          {/* Background thẩm mỹ */}
-          <div className="benefit-bg"></div>
-        </Card>
-      </Tooltip>
+          <div className="benefit-text">
+            <Title level={5} className="benefit-title">
+              {benefitName}
+            </Title>
+            <Text className="benefit-description">{description}</Text>
+          </div>
+        </div>
+
+        {/* Background thẩm mỹ */}
+        <div className="benefit-bg"></div>
+      </Card>
     </div>
   );
 };
