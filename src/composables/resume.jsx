@@ -5,6 +5,7 @@ export const useResume = () => {
   return useQuery({
     queryKey: ["resume"],
     queryFn: () => getAllCV(),
+    refetchOnWindowFocus: false,
   });
 };
 export const useUploadResume = () => {

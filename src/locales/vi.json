@@ -93,7 +93,7 @@
     "allowSearch": "Cho phép tìm kiếm hồ sơ",
     "setupResume": "Thiết lập hồ sơ",
     "dashboard": {
-      "welcome": "Xin chào, {{name}}!",
+      "welcome": "Xin chào {{name}}! Chào mừng đến với UTE Career",
       "subtitle": "Theo dõi hồ sơ ứng tuyển và sự phát triển nghề nghiệp của bạn",
       "student": "Sinh viên",
       "joinDate": "Ngày tham gia",
@@ -108,7 +108,9 @@
       "savedJobs": "Công việc đã lưu",
       "viewSavedJobs": "Xem công việc đã lưu",
       "recommendedJobs": "Công việc được đề xuất",
+      "viewRecommendedJobs": "Xem công việc được đề xuất",
       "upcomingEvents": "Sự kiện sắp diễn ra",
+      "viewUpcomingEvents": "Xem sự kiện sắp diễn ra",
       "recentActivities": "Hoạt động gần đây",
       "noActivities": "Không có hoạt động nào gần đây",
       "careerTips": "Mẹo nghề nghiệp",
@@ -118,7 +120,18 @@
       "interviewTip": "Hãy nghiên cứu kỹ về công ty và chuẩn bị câu trả lời cho các câu hỏi phổ biến trước buổi phỏng vấn.",
       "networkingSkills": "Kỹ năng networking",
       "networkingTip": "Xây dựng mạng lưới chuyên nghiệp để khám phá cơ hội nghề nghiệp tiềm ẩn và lời khuyên về sự nghiệp.",
-      "learnMore": "Tìm hiểu thêm"
+      "learnMore": "Tìm hiểu thêm",
+      "noRecommendedJobs": "Không tìm thấy công việc được đề xuất",
+      "noSavedJobs": "Không tìm thấy công việc đã lưu",
+      "list": "Danh sách",
+      "barChart": "Biểu đồ cột",
+      "pieChart": "Biểu đồ tròn",
+      "radarChart": "Biểu đồ radar",
+      "applied": "Đã ứng tuyển",
+      "interview": "Phỏng vấn",
+      "resume": "Hồ sơ",
+      "saved": "Đã lưu",
+      "viewed": "Đã xem"
     },
     "menu": {
       "updateProfile": "Cập nhật hồ sơ",
