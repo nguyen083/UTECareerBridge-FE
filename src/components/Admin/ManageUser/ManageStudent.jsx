@@ -31,7 +31,6 @@ import { getUserByUserId, updateUser, getAllUsers } from "../../../services/apiS
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useTranslation } from "react-i18next";
-import "./ManageStudent.scss";
 
 const { Option } = Select;
 const { Title, Text } = Typography;

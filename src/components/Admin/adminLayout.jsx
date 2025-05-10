@@ -212,7 +212,7 @@ const AdminLayout = () => {
         dispatch(stop());
       }
     } else {
-      message.error(t("admin.messages.error"));
+      navigate(key.key);
     }
   };
 

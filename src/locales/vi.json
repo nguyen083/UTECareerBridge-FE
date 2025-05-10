@@ -365,6 +365,16 @@
       }
     },
     "dashboard": {
+      "charts": {
+        "title": "Biểu đồ",
+        "views": "Lượt xem",
+        "applications": "Đơn ứng tuyển",
+        "applicationsOverview": "Tổng quan công việc",
+        "interviews": {
+          "title": "Lịch phỏng vấn",
+          "unit": "lịch"
+        }
+      },
       "title": "Thống kê",
       "stats": {
         "followers": {
@@ -537,6 +547,10 @@
       "paid": "Đã thanh toán",
       "pay": "Thanh toán",
       "view": "Xem chi tiết",
+      "printInvoice": "In hóa đơn",
+      "invoice": "HÓA ĐƠN",
+      "invoiceSuccess": "Tạo hóa đơn thành công",
+      "invoiceError": "Lỗi khi tạo hóa đơn",
       "loadError": "Lỗi tải danh sách đơn hàng",
       "orderDetail": "Chi tiết đơn hàng",
       "orderInfo": "Thông tin đơn hàng",
@@ -550,7 +564,10 @@
       "paymentMethod": "Chọn phương thức thanh toán",
       "vnpay": "Ví điện tử VNPAY",
       "paymentSuccess": "Thanh toán thành công!",
-      "paymentError": "Thanh toán thất bại"
+      "paymentError": "Thanh toán thất bại",
+      "customerInfo": "Thông tin khách hàng",
+      "subTotal": "Tạm tính",
+      "thankYouMessage": "Cảm ơn quý khách đã sử dụng dịch vụ!"
     },
     "services": {
       "title": "Gói dịch vụ",

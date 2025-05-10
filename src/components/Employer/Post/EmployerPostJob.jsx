@@ -138,6 +138,10 @@ const EmployerPostJob = () => {
     }, []);
 
     const onFinish = (values) => {
+        values = {
+            ...values,
+            ...formData,
+          };
         setLoading(true);
         dayjs.extend(customParseFormat);
         values.jobDeadline = dayjs(values.jobDeadline, 'YYYY-MM-DD').format('DD/MM/YYYY');
