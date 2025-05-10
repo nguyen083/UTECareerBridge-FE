@@ -9,6 +9,7 @@ import {
   Statistic,
   Space,
   Image,
+  Skeleton,
 } from "antd";
 import {
   CalendarOutlined,
@@ -31,11 +32,13 @@ import {
   RightOutlined,
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
-
+import { useAbout } from "../../composables/about";
 const { Content } = Layout;
 const { Title, Text, Paragraph } = Typography;
 
-export default function AboutPage() {
+const AboutPage = () => {
+  const { data, isLoading } = useAbout();
+  console.log(data);
   return (
     <Layout>
       <Content>
@@ -56,7 +59,7 @@ export default function AboutPage() {
 
         {/* About Section */}
         <div className="py-16">
-          <div className="container px-4 mx-auto max-w-7xl">
+          <div className="container w-3/4 px-4 mx-auto">
             <Row gutter={[48, 48]} align="middle">
               <Col xs={24} md={12}>
                 <Title level={2} className="mb-6 !text-text-color">
@@ -73,11 +76,23 @@ export default function AboutPage() {
                   <Col xs={12}>
                     <Card className="h-full bg-card-color">
                       <Space>
-                        <UserOutlined className="text-xl text-blue-500" />
+                        <UserOutlined className="text-xl text-text-color-hover" />
                         <Statistic
-                          title="Sinh viên đã tìm được việc làm"
-                          value="5,000+"
-                          valueStyle={{ fontSize: "16px", fontWeight: "bold" }}
+                          className="ml-4"
+                          title={
+                            <Title level={5} className="!text-text-color">
+                              Sinh viên đã tìm được việc làm
+                            </Title>
+                          }
+                          valueRender={() =>
+                            isLoading ? (
+                              <Skeleton paragraph={{ rows: 0 }} active />
+                            ) : (
+                              <Text className="!text-text-color text-2xl font-bold">
+                                5000+
+                              </Text>
+                            )
+                          }
                         />
                       </Space>
                     </Card>
@@ -85,11 +100,23 @@ export default function AboutPage() {
                   <Col xs={12}>
                     <Card className="h-full bg-card-color">
                       <Space>
-                        <BankOutlined className="text-xl text-blue-500" />
+                        <BankOutlined className="text-xl text-text-color-hover" />
                         <Statistic
-                          title="Doanh nghiệp đối tác"
-                          value="200+"
-                          valueStyle={{ fontSize: "16px", fontWeight: "bold" }}
+                          className="ml-4"
+                          title={
+                            <Title level={5} className="!text-text-color">
+                              Doanh nghiệp đối tác
+                            </Title>
+                          }
+                          valueRender={() =>
+                            isLoading ? (
+                              <Skeleton paragraph={{ rows: 0 }} active />
+                            ) : (
+                              <Text className="!text-text-color text-2xl font-bold">
+                                {data?.data?.countEmployers}
+                              </Text>
+                            )
+                          }
                         />
                       </Space>
                     </Card>
@@ -97,11 +124,23 @@ export default function AboutPage() {
                   <Col xs={12}>
                     <Card className="h-full bg-card-color">
                       <Space>
-                        <TrophyOutlined className="text-xl text-blue-500" />
+                        <TrophyOutlined className="text-xl text-text-color-hover" />
                         <Statistic
-                          title="Sự kiện tuyển dụng mỗi năm"
-                          value="50+"
-                          valueStyle={{ fontSize: "16px", fontWeight: "bold" }}
+                          className="ml-4"
+                          title={
+                            <Title level={5} className="!text-text-color">
+                              Sự kiện tuyển dụng mỗi năm
+                            </Title>
+                          }
+                          valueRender={() =>
+                            isLoading ? (
+                              <Skeleton paragraph={{ rows: 0 }} active />
+                            ) : (
+                              <Text className="!text-text-color text-2xl font-bold">
+                                {data?.data?.eventsByYear}
+                              </Text>
+                            )
+                          }
                         />
                       </Space>
                     </Card>
@@ -109,11 +148,23 @@ export default function AboutPage() {
                   <Col xs={12}>
                     <Card className="h-full bg-card-color">
                       <Space>
-                        <BookOutlined className="text-xl text-blue-500" />
+                        <BookOutlined className="text-xl text-text-color-hover" />
                         <Statistic
-                          title="Workshop kỹ năng"
-                          value="100+"
-                          valueStyle={{ fontSize: "16px", fontWeight: "bold" }}
+                          className="ml-4"
+                          title={
+                            <Title level={5} className="!text-text-color">
+                              Số công việc
+                            </Title>
+                          }
+                          valueRender={() =>
+                            isLoading ? (
+                              <Skeleton paragraph={{ rows: 0 }} active />
+                            ) : (
+                              <Text className="!text-text-color text-2xl font-bold">
+                                {data?.data?.countJob}
+                              </Text>
+                            )
+                          }
                         />
                       </Space>
                     </Card>
@@ -674,4 +725,5 @@ export default function AboutPage() {
       </Content>
     </Layout>
   );
-}
+};
+export default AboutPage;
