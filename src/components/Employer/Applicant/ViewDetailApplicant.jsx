@@ -148,7 +148,10 @@ export const ModalInterview = ({
         candidateEmail: email,
         title: values.jobPosition,
         description: values.description,
-        startTime: dayjs(values.interviewDate).toISOString(),
+        startTime: dayjs(values.interviewDate)
+          .clone()
+          .add(7, "hour")
+          .toISOString(),
         link: values.link,
         durationMinutes: values.durationMinutes,
         attendeeEmails: [email],
