@@ -1,4 +1,4 @@
-import { Row, Col, Typography, Divider, Space, Flex } from "antd";
+import { Row, Col, Typography, Divider, Space, Flex, Button } from "antd";
 import { useTranslation } from "react-i18next";
 import {
   FacebookOutlined,
@@ -10,10 +10,11 @@ import {
   PhoneOutlined,
   EnvironmentOutlined,
 } from "@ant-design/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 const { Title, Text, Paragraph } = Typography;
 
 const FooterComponent = () => {
+  const navigate = useNavigate();
   const { t } = useTranslation();
   return (
     <footer className="bg-[#E1EDFC] py-[60px] pb-5 text-[#444] font-['Segoe_UI',Tahoma,Geneva,Verdana,sans-serif]">
@@ -114,44 +115,89 @@ const FooterComponent = () => {
                 </Title>
                 <ul className="gap-4 p-0 m-0 list-none columns-2 sm:columns-1">
                   <li className="mb-3">
-                    <Link
-                      to="#"
+                    <Button
+                      type="link"
+                      onClick={() => {
+                        navigate("/search", {
+                          state: {
+                            filters: {
+                              categoryId: 46,
+                            },
+                          },
+                        });
+                      }}
                       className="!text-text-color-hover hover:!text-text-color transition-all duration-200 pl-0 hover:pl-2 relative hover:before:content-[''] hover:before:absolute hover:before:left-0 hover:before:top-1/2 hover:before:-translate-y-1/2 hover:before:w-1 hover:before:h-1 hover:before:bg-[#1E4F94] hover:before:rounded-full"
                     >
                       {t("student.layout.footer.accounting")}
-                    </Link>
+                    </Button>
                   </li>
                   <li className="mb-3">
-                    <Link
-                      to="#"
+                    <Button
+                      type="link"
+                      onClick={() => {
+                        navigate("/search", {
+                          state: {
+                            filters: {
+                              categoryId: 42,
+                            },
+                          },
+                        });
+                      }}
                       className="!text-text-color-hover hover:!text-text-color transition-all duration-200 pl-0 hover:pl-2 relative hover:before:content-[''] hover:before:absolute hover:before:left-0 hover:before:top-1/2 hover:before:-translate-y-1/2 hover:before:w-1 hover:before:h-1 hover:before:bg-[#1E4F94] hover:before:rounded-full"
                     >
                       {t("student.layout.footer.banking")}
-                    </Link>
+                    </Button>
                   </li>
                   <li className="mb-3">
-                    <Link
-                      to="#"
+                    <Button
+                      type="link"
+                      onClick={() => {
+                        navigate("/search", {
+                          state: {
+                            filters: {
+                              categoryId: 11,
+                            },
+                          },
+                        });
+                      }}
                       className="!text-text-color-hover hover:!text-text-color transition-all duration-200 pl-0 hover:pl-2 relative hover:before:content-[''] hover:before:absolute hover:before:left-0 hover:before:top-1/2 hover:before:-translate-y-1/2 hover:before:w-1 hover:before:h-1 hover:before:bg-[#1E4F94] hover:before:rounded-full"
                     >
                       {t("student.layout.footer.automotiveTechnology")}
-                    </Link>
+                    </Button>
                   </li>
                   <li className="mb-3">
-                    <Link
-                      to="#"
+                    <Button
+                      type="link"
+                      onClick={() => {
+                        navigate("/search", {
+                          state: {
+                            filters: {
+                              categoryId: 14,
+                            },
+                          },
+                        });
+                      }}
                       className="!text-text-color-hover hover:!text-text-color transition-all duration-200 pl-0 hover:pl-2 relative hover:before:content-[''] hover:before:absolute hover:before:left-0 hover:before:top-1/2 hover:before:-translate-y-1/2 hover:before:w-1 hover:before:h-1 hover:before:bg-[#1E4F94] hover:before:rounded-full"
                     >
                       {t("student.layout.footer.informationTechnology")}
-                    </Link>
+                    </Button>
                   </li>
                   <li className="mb-3">
-                    <Link
-                      to="#"
+                    <Button
+                      type="link"
+                      onClick={() => {
+                        navigate("/search", {
+                          state: {
+                            filters: {
+                              categoryId: 51,
+                            },
+                          },
+                        });
+                      }}
                       className="!text-text-color-hover hover:!text-text-color transition-all duration-200 pl-0 hover:pl-2 relative hover:before:content-[''] hover:before:absolute hover:before:left-0 hover:before:top-1/2 hover:before:-translate-y-1/2 hover:before:w-1 hover:before:h-1 hover:before:bg-[#1E4F94] hover:before:rounded-full"
                     >
                       {t("student.layout.footer.construction")}
-                    </Link>
+                    </Button>
                   </li>
                   <li className="mb-3">
                     <Link
