@@ -1,15 +1,18 @@
 import { useEffect, useRef } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { ZegoSuperBoardManager } from "zego-superboard-web";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import meeting from "../../../services/api/meeting";
 import interview from "../../../services/api/interview";
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 const VideoCall = () => {
   const rootRef = useRef(null);
-  const { roomID, interviewId, date } = useParams();
+  const { roomID } = useParams();
+  const [searchParams] = useSearchParams();
+  const interviewId = searchParams.get("interviewId");
+  // const date = searchParams.get("date");
   const { t } = useTranslation();
   const user = useSelector((state) => state.user);
   const student = useSelector((state) => state.student);
@@ -38,15 +41,16 @@ const VideoCall = () => {
   const URLToRedirect = () => {
     if (user.role === "student") {
       return navigate("/my-job");
-    } else if (user.role === "employer") {
-      if (date === dayjs().format("DD/MM/YYYY", "vi-VN") && interviewId) {
-        interview.updateStatus(interviewId, "COMPLETED");
-      }
+    } else if (user.role === "employer" && interviewId) {
+      interview.updateStatus(interviewId, "COMPLETED");
       return navigate("/employer/profile");
     } else {
       navigate("/");
     }
   };
+  useEffect(() => {
+    console.log(interviewId);
+  }, [interviewId]);
 
   useEffect(() => {
     const userID = user.userId.toString();
@@ -66,11 +70,7 @@ const VideoCall = () => {
         zp.addPlugins({ ZegoSuperBoardManager });
         zp.joinRoom({
           onJoinRoom: () => {
-            if (
-              user.role === "employer" &&
-              date === dayjs().format("DD/MM/YYYY", "vi-VN") &&
-              interviewId
-            ) {
+            if (user.role === "employer" && interviewId) {
               interview.updateStatus(interviewId, "IN_PROGRESS");
             }
           },
