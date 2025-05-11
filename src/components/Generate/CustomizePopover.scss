@@ -1,102 +1,137 @@
-@import '../styles/variables.scss';
+@import "../styles/variables.scss";
 
 .customize-popover {
+  .ant-popover-inner {
+    padding: 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s ease;
 
-    .ant-popover-inner {
-        padding: 0;
+    .dropdown-content {
+      padding: 24px;
+      width: 50vw;
+      max-width: 800px;
+      background: $background-color;
+      border-radius: 8px;
 
-        .dropdown-content {
-            padding      : 20px;
-            width        : 50vw;
-            background   : $background-color;
-            border-radius: 8px;
-            box-shadow   : 0 4px 8px rgba(0, 0, 0, 0.1);
+      h5 {
+        color: $text-color !important;
+        margin-bottom: 16px;
+        font-weight: 600;
+        font-size: 18px;
+        position: relative;
 
-            h5 {
-                color        : $text-color !important;
-                margin-bottom: 12px;
-                font-weight  : bold;
-                color        : #1d1d1d;
-            }
+        &::after {
+          content: "";
+          position: absolute;
+          bottom: -8px;
+          left: 0;
+          width: 40px;
+          height: 3px;
+          background: $primary-color;
+          border-radius: 2px;
+        }
+      }
 
-            button {
-                width          : 100% !important;
-                justify-content: start !important;
-                align-items    : center;
-                border         : 0;
-                color          : $text-color;
+      button {
+        width: 100% !important;
+        justify-content: flex-start !important;
+        align-items: center;
+        border: 0;
+        color: $text-color;
+        padding: 12px 16px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.25s ease;
+        position: relative;
+        overflow: hidden;
 
-                &:hover {
-                    color           : $text-color-hover;
-                    background-color: $card-color;
-                }
-            }
+        &::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 0;
+          height: 100%;
+          width: 4px;
+          background: transparent;
+          transition: all 0.25s ease;
         }
 
+        &:hover {
+          color: $text-color-hover;
+          background-color: rgba(225, 237, 252, 0.7);
+          transform: translateX(4px);
+
+          &::before {
+            background: $primary-color;
+          }
+        }
+
+        &:active {
+          transform: scale(0.98);
+        }
+      }
     }
+  }
+
+  .ant-popover-arrow {
+    display: none;
+  }
 }
 
 .notification-popover {
+  .notification-list {
+    overflow: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 
-   
-    .notification-list {
-        overflow          : auto;
-        scrollbar-width   : none;
-        -ms-overflow-style: none;
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
-
-        .ant-list-item {
-            width: 500px;
-        }
-
-        .ant-divider {
-            margin: 0 !important;
-        }
-
-        .ant-typography {
-            font-size: 12px;
-        }
+    &::-webkit-scrollbar {
+      display: none;
     }
 
-   
-    .btn-header {
-        color       : $text-color;
-        border-color: $text-color;
+    .ant-list-item {
+      width: 500px;
     }
 
-    .btn-bell {
-        background-color: $text-color;
-        color           : white;
-        border          : 0px;
-        height          : 40px;
-        width           : 40px;
-
-        &:hover {
-            background-color: $text-color-hover !important;
-            color           : white !important;
-        }
+    .ant-divider {
+      margin: 0 !important;
     }
 
-
-
-   
-    .login-button-notification {
-
-        width     : fit-content;
-        background: $text-color;
-
-        &:hover {
-            background: $text-color-hover !important;
-        }
-
-
+    .ant-typography {
+      font-size: 12px;
     }
+  }
 
-   
-    .notification-login-text {
-        font-size: 14px !important;
+  .btn-header {
+    color: $text-color;
+    border-color: $text-color;
+  }
+
+  .btn-bell {
+    background-color: $text-color;
+    color: white;
+    border: 0px;
+    height: 40px;
+    width: 40px;
+
+    &:hover {
+      background-color: $text-color-hover !important;
+      color: white !important;
     }
+  }
+
+  .login-button-notification {
+    width: fit-content;
+    background: $text-color;
+
+    &:hover {
+      background: $text-color-hover !important;
+    }
+  }
+
+  .notification-login-text {
+    font-size: 14px !important;
+  }
 }
