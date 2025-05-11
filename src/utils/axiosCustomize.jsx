@@ -95,7 +95,7 @@ const logout = () => {
 
   // Chuyển hướng người dùng đến trang đăng nhập
   setTimeout(() => {
-    window.location.href = "/login";
+    // window.location.href = "/login";
   }, 100);
 };
 

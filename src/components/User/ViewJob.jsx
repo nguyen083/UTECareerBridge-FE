@@ -196,11 +196,15 @@ const ViewJob = () => {
             <FaReact />
           </BackgroundIcon>
         ),
-        children: job.jobSkills?.split(",").map((skill, index) => (
-          <Tag key={index} color="purple" style={{ margin: "2px" }}>
-            {skill.trim()}
-          </Tag>
-        )),
+        children: (
+          <div className="flex flex-wrap gap-2">
+            {job.jobSkills?.split(",").map((skill, index) => (
+              <Tag key={index} color="purple" style={{ margin: "2px" }}>
+                {skill.trim()}
+              </Tag>
+            ))}
+          </div>
+        ),
       },
       {
         key: "5",

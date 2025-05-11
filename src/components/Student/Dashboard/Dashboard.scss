@@ -1,3 +1,4 @@
+@import "../../styles/_variables.scss";
 .student-dashboard {
   padding: 24px;
   min-height: 100%;
@@ -57,7 +58,7 @@
             border-radius: 6px;
 
             &:first-child {
-              background: linear-gradient(135deg, #4ECDC4 0%, #1A535C 100%);
+              background: linear-gradient(135deg, #4ecdc4 0%, #1a535c 100%);
               border: none;
               &:hover {
                 background: linear-gradient(135deg, #3dbdb5 0%, #14464e 100%);
@@ -158,7 +159,7 @@
         }
 
         .ant-statistic-content {
-          color: #4ECDC4;
+          color: $primary-color;
           font-weight: bold;
         }
       }
@@ -331,13 +332,13 @@
 
         &.ant-tabs-tab-active {
           .ant-tabs-tab-btn {
-            color: #4ECDC4;
+            color: $linear-color;
           }
         }
       }
 
       .ant-tabs-ink-bar {
-        background-color: #4ECDC4;
+        background-color: $linear-color !important;
       }
     }
 
@@ -362,12 +363,12 @@
 
           .tip-icon {
             font-size: 20px;
-            color: #4ECDC4;
+            color: $text-color-hover;
           }
 
           h5 {
             margin: 0;
-            color: #333;
+            color: $text-color;
           }
         }
 
@@ -382,10 +383,10 @@
         display: block;
         text-align: right;
         padding: 0;
-        color: #4ECDC4;
+        color: $text-color;
 
         &:hover {
-          color: #3dbdb5;
+          color: $text-color-hover;
         }
       }
     }

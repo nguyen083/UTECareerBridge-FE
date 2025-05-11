@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   Row,
   Col,
@@ -9,13 +8,10 @@ import {
   List,
   Divider,
   Avatar,
-  Tag,
   Skeleton,
   Tabs,
   Empty,
 } from "antd";
-import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
 import {
   CalendarOutlined,
   FileOutlined,
@@ -28,10 +24,6 @@ import {
   BarChartOutlined,
   UnorderedListOutlined,
 } from "@ant-design/icons";
-import { useSelector } from "react-redux";
-import dayjs from "dayjs";
-import axios from "../../../utils/axiosCustomize";
-import "./Dashboard.scss";
 import {
   BarChart,
   Bar,
@@ -50,195 +42,39 @@ import {
   PolarAngleAxis,
   PolarRadiusAxis,
 } from "recharts";
-import { getStudentActivity } from "../../../services/apiService";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import "./Dashboard.scss";
+import dayjs from "dayjs";
+import {
+  useActivity,
+  useEventStatistics,
+  useJobSaved,
+  useJobStatistics,
+  useRecommendedJobs,
+} from "../../../composables/student-dashboard";
 
 const { Title, Text, Paragraph } = Typography;
 
 const StudentDashboard = () => {
   const { t } = useTranslation();
-  const user = useSelector((state) => state.user.user);
-  const [loading, setLoading] = useState(true);
-  const [dashboardData, setDashboardData] = useState({
-    applications: {
-      total: 0,
-      pending: 0,
-      accepted: 0,
-      rejected: 0,
-    },
-    savedJobs: [],
-    recommendedJobs: [],
-    upcomingEvents: [],
-    activities: [],
-    profileCompletion: 0,
-  });
+  const user = useSelector((state) => state.user);
+  const student = useSelector((state) => state.student);
+  const { data: jobStatistics, isLoading: jobStatisticsLoading } =
+    useJobStatistics();
+  const { data: eventStatistics, isLoading: eventStatisticsLoading } =
+    useEventStatistics();
+  const { data: activity, isLoading: activityLoading } = useActivity();
+  const { data: jobSaved, isLoading: jobSavedLoading } = useJobSaved();
+  const { data: recommendedJobs, isLoading: recommendedJobsLoading } =
+    useRecommendedJobs(user.userId);
 
-  useEffect(() => {
-    const fetchDashboardData = async () => {
-      setLoading(true);
-      try {
-        console.log("Fetching dashboard data...");
-
-        // Get job applications
-        const applicationResponse = await axios.get(
-          "/student/applications"
-        );
-
-        // Get saved jobs
-        const savedJobsResponse = await axios.get("/student/saved-jobs");
-
-        // Get recommended jobs
-        const recommendedResponse = await axios.get(
-          "/student/recommended-jobs"
-        );
-
-        // Get upcoming events
-        const eventsResponse = await axios.get("/events/upcoming");
-
-        // Get activity history - Using direct axios call
-        const activitiesResponse = await axios.get("/students/activity");
-        console.log("Activity response:", activitiesResponse);
-
-        // Process the activities data based on the actual API response format
-        // activitiesResponse is an object that contains { data } which itself contains { data, message, status }
-        // We need to access the inner data array: activitiesResponse.data.data
-        const processedActivities = activitiesResponse?.data?.data 
-          ? activitiesResponse.data.data.map((activity, index) => ({
-              id: index + 1, // Generate ID if not present
-              type: activity.type || "application", 
-              description: activity.description || "Activity",
-              date: activity.date || dayjs().format('YYYY-MM-DD'),
-            }))
-          : [];
-
-        console.log("Processed activities:", processedActivities);
-
-        // Get profile completion status
-        const profileResponse = await axios.get(
-          "/student/profile-completion"
-        );
-
-        // Combine all data
-        setDashboardData({
-          applications: applicationResponse.data || {
-            total: 0,
-            pending: 0,
-            accepted: 0,
-            rejected: 0,
-          },
-          savedJobs: savedJobsResponse.data?.slice(0, 3) || [], // Only display top 3
-          recommendedJobs: recommendedResponse.data?.slice(0, 3) || [], // Only display top 3
-          upcomingEvents: eventsResponse.data?.slice(0, 2) || [], // Only display top 2
-          activities: processedActivities || [], // Use all activities for charts
-          profileCompletion: profileResponse.data?.completionPercentage || 0,
-        });
-      } catch (error) {
-        console.error("Error fetching dashboard data:", error);
-        
-        // Try to extract activities data from the error response if possible
-        let activities = [];
-        
-        try {
-          // Check if we can get any activities data even when other API calls fail
-          const activitiesResponse = await getStudentActivity();
-          
-          activities = activitiesResponse?.data 
-            ? activitiesResponse.data.map((activity, index) => ({
-                id: index + 1,
-                type: activity.type || "application", 
-                description: activity.description || "Activity",
-                date: activity.date || dayjs().format('YYYY-MM-DD'),
-              }))
-            : [];
-            
-          console.log("Activities retrieved in error handler:", activities);
-        } catch (activityError) {
-          console.error("Failed to fetch activities in error handler:", activityError);
-          // If activities fetch also fails, use empty array
-          activities = [];
-        }
-        
-        // Set fallback demo data but use real activities data if available
-        setDashboardData({
-          applications: {
-            total: 5,
-            pending: 2,
-            accepted: 2,
-            rejected: 1,
-          },
-          savedJobs: [
-            {
-              id: 1,
-              title: "Software Developer",
-              company: "ABC Tech",
-              companyLogo: "https://via.placeholder.com/40",
-              deadline: "2025-06-01",
-            },
-            {
-              id: 2,
-              title: "UX Designer",
-              company: "Design Co",
-              companyLogo: "https://via.placeholder.com/40",
-              deadline: "2025-05-25",
-            },
-            {
-              id: 3,
-              title: "Frontend Developer",
-              company: "Web Solutions",
-              companyLogo: "https://via.placeholder.com/40",
-              deadline: "2025-05-30",
-            },
-          ],
-          recommendedJobs: [
-            {
-              id: 4,
-              title: "React Developer",
-              company: "Tech Innovations",
-              companyLogo: "https://via.placeholder.com/40",
-              matchPercentage: 95,
-            },
-            {
-              id: 5,
-              title: "Web Developer",
-              company: "Digital Agency",
-              companyLogo: "https://via.placeholder.com/40",
-              matchPercentage: 88,
-            },
-            {
-              id: 6,
-              title: "JavaScript Developer",
-              company: "JavaScript Solutions",
-              companyLogo: "https://via.placeholder.com/40",
-              matchPercentage: 82,
-            },
-          ],
-          upcomingEvents: [
-            {
-              id: 1,
-              title: "Career Fair 2025",
-              date: "2025-05-15",
-              location: "UTE Campus",
-              image: "https://via.placeholder.com/100x60",
-            },
-            {
-              id: 2,
-              title: "Tech Industry Workshop",
-              date: "2025-05-20",
-              location: "Online",
-              image: "https://via.placeholder.com/100x60",
-            },
-          ],
-          activities: activities, // Use real activities data if available
-          profileCompletion: 75,
-        });
-      }
-      setLoading(false);
-    };
-
-    fetchDashboardData();
-  }, [user?.id]); // Sử dụng optional chaining để tránh lỗi khi user là undefined
-
-  // Get current date formatted
-  const today = dayjs().format("YYYY-MM-DD");
+  // Convert date from YYYY-MM-DD to DD-MM-YYYY format
+  const convertDate = (dateString) => {
+    if (!dateString) return "";
+    return dayjs(dateString, "YYYY-MM-DD").format("DD/MM/YYYY");
+  };
 
   // Helper function to get icon by activity type
   const getActivityIcon = (type) => {
@@ -246,13 +82,13 @@ const StudentDashboard = () => {
       case "application":
         return <FileOutlined style={{ color: "#1890ff" }} />;
       case "interview":
-        return <CalendarOutlined style={{ color: "#52c41a" }} />;
+        return <CalendarOutlined style={{ color: "#FAF3DD" }} />;
       case "resume":
-        return <SolutionOutlined style={{ color: "#faad14" }} />;
+        return <SolutionOutlined style={{ color: "#073B4C" }} />;
       case "saved":
-        return <BookOutlined style={{ color: "#722ed1" }} />;
+        return <BookOutlined style={{ color: "#FFD166" }} />;
       case "viewed":
-        return <UserOutlined style={{ color: "#eb2f96" }} />;
+        return <UserOutlined style={{ color: "#FFFFFF" }} />;
       default:
         return <FileOutlined />;
     }
@@ -262,9 +98,9 @@ const StudentDashboard = () => {
   const prepareBarChartData = () => {
     // Group activities by date
     const groupedByDate = {};
-    dashboardData.activities.forEach((activity) => {
+    activity?.data?.forEach((activity) => {
       if (!groupedByDate[activity.date]) {
-        groupedByDate[activity.date] = { date: activity.date };
+        groupedByDate[activity.date] = { date: convertDate(activity.date) };
       }
 
       if (!groupedByDate[activity.date][activity.type]) {
@@ -283,7 +119,7 @@ const StudentDashboard = () => {
   const preparePieChartData = () => {
     // Count activities by type
     const countByType = {};
-    dashboardData.activities.forEach((activity) => {
+    activity?.data?.forEach((activity) => {
       if (!countByType[activity.type]) {
         countByType[activity.type] = 0;
       }
@@ -299,29 +135,29 @@ const StudentDashboard = () => {
 
   // Color mapping for activities with nicer color palette
   const ACTIVITY_COLORS = {
-    application: "#4ECDC4", // Teal
-    interview: "#FF6B6B", // Coral
-    resume: "#FFD166", // Yellow
-    saved: "#118AB2", // Blue
-    viewed: "#073B4C", // Dark blue
+    applied: "#1677ff", // Primary blue
+    interview: "#9B2226", // Đỏ đậm
+    resume: "#FFD166", // Vàng
+    saved: "#1e4f94", // Xanh đậm (text-color)
+    viewed: "#2EC4B6", // Xanh lá
   };
 
   // Enhanced gradient colors for charts
   const GRADIENT_COLORS = {
-    application: ["#4ECDC4", "#1A535C"],
-    interview: ["#FF6B6B", "#C1292E"],
-    resume: ["#FFD166", "#F4A261"],
-    saved: ["#118AB2", "#073B4C"],
-    viewed: ["#073B4C", "#06292F"],
+    applied: ["#4d9fff", "#1677ff"], // footer → primary
+    interview: ["#ff6a00", "#9B2226"], // cam đậm → đỏ đậm
+    resume: ["#FFD166", "#F4A261"], // vàng → cam nhạt
+    saved: ["#5fd1f9", "#1e4f94"], // xanh nhạt → xanh đậm
+    viewed: ["#2EC4B6", "#073B4C"], // xanh lá → xanh đậm
   };
 
   // Activity type mapping for UI
   const ACTIVITY_TYPES = {
-    application: "Ứng tuyển",
-    interview: "Phỏng vấn",
-    resume: "Hồ sơ",
-    saved: "Đã lưu",
-    viewed: "Đã xem",
+    applied: "student.dashboard.applied",
+    interview: "student.dashboard.interview",
+    resume: "student.dashboard.resume",
+    saved: "student.dashboard.saved",
+    viewed: "student.dashboard.viewed",
   };
 
   // Tab icons and better labels
@@ -330,12 +166,13 @@ const StudentDashboard = () => {
       key: "list",
       label: (
         <span>
-          <UnorderedListOutlined /> Danh sách
+          <UnorderedListOutlined /> {t("student.dashboard.list")}
         </span>
       ),
       children: (
         <List
-          dataSource={dashboardData.activities}
+          className="max-h-[300px] overflow-y-auto scrollbar-thin scrollbar-webkit"
+          dataSource={activity?.data}
           locale={{
             emptyText: (
               <Empty description={t("student.dashboard.noActivities")} />
@@ -347,13 +184,19 @@ const StudentDashboard = () => {
                 avatar={
                   <Avatar
                     icon={getActivityIcon(item.type)}
-                    style={{ background: ACTIVITY_COLORS[item.type] || "#1890ff" }}
+                    style={{
+                      background: ACTIVITY_COLORS[item.type] || "#1890ff",
+                    }}
                   />
                 }
                 title={
                   <span className="activity-title">{item.description}</span>
                 }
-                description={<span className="activity-date">{item.date}</span>}
+                description={
+                  <span className="activity-date">
+                    {convertDate(item.date)}
+                  </span>
+                }
               />
             </List.Item>
           )}
@@ -364,7 +207,7 @@ const StudentDashboard = () => {
       key: "barChart",
       label: (
         <span>
-          <BarChartOutlined /> Biểu đồ cột
+          <BarChartOutlined /> {t("student.dashboard.barChart")}
         </span>
       ),
       children: (
@@ -405,15 +248,15 @@ const StudentDashboard = () => {
                 labelStyle={{ fontWeight: "bold" }}
               />
               <Legend
-                formatter={(value) => ACTIVITY_TYPES[value] || value}
+                formatter={(value) => t(ACTIVITY_TYPES[value]) || value}
                 iconType="circle"
                 wrapperStyle={{ paddingTop: "10px" }}
               />
               <Bar
-                dataKey="application"
-                name="application"
+                dataKey="applied"
+                name="applied"
                 stackId="a"
-                fill="url(#colorapplication)"
+                fill="url(#colorapplied)"
                 radius={[4, 4, 0, 0]}
                 animationDuration={1500}
                 animationEasing="ease-out"
@@ -463,7 +306,7 @@ const StudentDashboard = () => {
       key: "pieChart",
       label: (
         <span>
-          <PieChartOutlined /> Biểu đồ tròn
+          <PieChartOutlined /> {t("student.dashboard.pieChart")}
         </span>
       ),
       children: (
@@ -493,9 +336,7 @@ const StudentDashboard = () => {
                 cy="50%"
                 labelLine={false}
                 label={({ type, percent }) =>
-                  `${ACTIVITY_TYPES[type] || type}: ${(percent * 100).toFixed(
-                    0
-                  )}%`
+                  `${t(ACTIVITY_TYPES[type])}: ${(percent * 100).toFixed(0)}%`
                 }
                 outerRadius={100}
                 fill="#8884d8"
@@ -513,10 +354,7 @@ const StudentDashboard = () => {
                 ))}
               </Pie>
               <RechartsTooltip
-                formatter={(value, name) => [
-                  `${value} hoạt động`,
-                  ACTIVITY_TYPES[name] || name,
-                ]}
+                formatter={(value) => [`${value} hoạt động`]}
                 labelFormatter={() => ""}
                 contentStyle={{
                   backgroundColor: "rgba(255, 255, 255, 0.9)",
@@ -524,14 +362,7 @@ const StudentDashboard = () => {
                   border: "none",
                   boxShadow: "0 4px 12px rgba(0,0,0,0.15)",
                 }}
-              />
-              <Legend
-                formatter={(value) => ACTIVITY_TYPES[value] || value}
-                iconType="circle"
-                layout="horizontal"
-                verticalAlign="bottom"
-                align="center"
-              />
+              />{" "}
             </PieChart>
           </ResponsiveContainer>
         </div>
@@ -541,7 +372,7 @@ const StudentDashboard = () => {
       key: "radarChart",
       label: (
         <span>
-          <SolutionOutlined /> Biểu đồ radar
+          <SolutionOutlined /> {t("student.dashboard.radarChart")}
         </span>
       ),
       children: (
@@ -557,7 +388,7 @@ const StudentDashboard = () => {
               <PolarAngleAxis
                 dataKey="type"
                 tick={{ fill: "#666" }}
-                tickFormatter={(value) => ACTIVITY_TYPES[value] || value}
+                tickFormatter={(value) => t(ACTIVITY_TYPES[value]) || value}
               />
               <PolarRadiusAxis angle={30} domain={[0, "auto"]} />
               <Radar
@@ -572,7 +403,7 @@ const StudentDashboard = () => {
               <RechartsTooltip
                 formatter={(value, name, props) => [
                   `${value} hoạt động`,
-                  ACTIVITY_TYPES[props.payload.type] || props.payload.type,
+                  t(ACTIVITY_TYPES[props.payload.type]) || props.payload.type,
                 ]}
                 contentStyle={{
                   backgroundColor: "rgba(255, 255, 255, 0.9)",
@@ -591,30 +422,23 @@ const StudentDashboard = () => {
 
   return (
     <div className="student-dashboard">
-      {/* Welcome Header */}
       <Row gutter={[16, 16]} className="dashboard-header">
         <Col span={24}>
           <Card bordered={false} className="welcome-card">
             <div className="welcome-content">
               <div>
-                <Title level={2}>
+                <Title level={3} className="!text-text-color">
                   {t("student.dashboard.welcome", {
-                    name: user?.firstName || "Student",
+                    name: student?.firstName || "Student",
                   })}
                 </Title>
-                <Text className="subtitle">
+                <Text className="subtitle !text-text-color-hover">
                   {t("student.dashboard.subtitle")}
                 </Text>
-                <div className="user-info">
-                  <Tag color="blue">{t("student.dashboard.student")}</Tag>
-                  <Tag color="default" icon={<CalendarOutlined />}>
-                    {t("student.dashboard.joinDate")}: {today}
-                  </Tag>
-                </div>
               </div>
               <div className="profile-completion-wrapper">
                 <div className="profile-actions">
-                  <Button type="primary" className="action-button">
+                  <Button type="primary">
                     <Link to="/profile">
                       {t("student.dashboard.viewResume")}
                     </Link>
@@ -625,33 +449,40 @@ const StudentDashboard = () => {
           </Card>
         </Col>
       </Row>
-
       <Row gutter={[16, 16]} className="dashboard-stats">
         {/* Job Applications Stats */}
         <Col xs={24} md={12} lg={6}>
           <Card className="stats-card">
-            <Skeleton loading={loading} active paragraph={{ rows: 2 }}>
+            <Skeleton
+              active
+              paragraph={{ rows: 2 }}
+              loading={jobStatisticsLoading}
+            >
               <Statistic
                 title={t("student.dashboard.jobsApplied")}
-                value={dashboardData.applications.total}
+                value={jobStatistics?.data?.totalApplications}
                 className="main-statistic"
               />
               <div className="sub-stats">
                 <div className="sub-stat">
                   <Text>{t("student.dashboard.pending")}</Text>
-                  <Text strong>{dashboardData.applications.pending}</Text>
+                  <Text strong>{jobStatistics?.data?.pendingApplications}</Text>
                 </div>
                 <div className="sub-stat">
                   <Text>{t("student.dashboard.accepted")}</Text>
-                  <Text strong>{dashboardData.applications.accepted}</Text>
+                  <Text strong>
+                    {jobStatistics?.data?.approvedApplications}
+                  </Text>
                 </div>
                 <div className="sub-stat">
                   <Text>{t("student.dashboard.rejected")}</Text>
-                  <Text strong>{dashboardData.applications.rejected}</Text>
+                  <Text strong>
+                    {jobStatistics?.data?.rejectedApplications}
+                  </Text>
                 </div>
               </div>
               <Button type="link" className="view-all-link">
-                <Link to="/applications">
+                <Link to="/my-job">
                   {t("student.dashboard.viewAllApplications")}
                 </Link>
               </Button>
@@ -661,23 +492,29 @@ const StudentDashboard = () => {
 
         {/* Saved Jobs */}
         <Col xs={24} md={12} lg={6}>
-          <Card className="stats-card">
-            <Skeleton loading={loading} active paragraph={{ rows: 2 }}>
+          <Card className="stats-card job-saved-card">
+            <Skeleton active paragraph={{ rows: 2 }} loading={jobSavedLoading}>
               <Statistic
                 title={t("student.dashboard.savedJobs")}
-                value={dashboardData.savedJobs.length}
+                value={jobSaved?.data?.totalElements}
                 className="main-statistic"
               />
               <div className="sub-stats job-list">
-                {dashboardData.savedJobs.slice(0, 2).map((job) => (
-                  <div key={job.id} className="job-item">
-                    <div className="job-title">{job.title}</div>
-                    <div className="job-company">{job.company}</div>
-                  </div>
-                ))}
+                {jobSaved?.data?.content?.length > 0 ? (
+                  jobSaved?.data?.content?.slice(0, 2).map((job) => (
+                    <div key={job?.jobId} className="job-item">
+                      <div className="job-title">{job?.jobTitle}</div>
+                      <div className="job-company">
+                        {job?.employerResponse?.companyName}
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <Empty description={t("student.dashboard.noSavedJobs")} />
+                )}
               </div>
               <Button type="link" className="view-all-link">
-                <Link to="/saved-jobs">
+                <Link to="/my-job#job-saved">
                   {t("student.dashboard.viewSavedJobs")}
                 </Link>
               </Button>
@@ -688,27 +525,38 @@ const StudentDashboard = () => {
         {/* Recommended Jobs */}
         <Col xs={24} md={12} lg={6}>
           <Card className="stats-card">
-            <Skeleton loading={loading} active paragraph={{ rows: 2 }}>
-              <Title level={5}>{t("student.dashboard.recommendedJobs")}</Title>
-              <div className="job-recommendations">
-                {dashboardData.recommendedJobs.slice(0, 2).map((job) => (
-                  <Link
-                    to={`/jobs/${job.id}`}
-                    key={job.id}
-                    className="recommended-job"
-                  >
-                    <Avatar src={job.companyLogo} size="small" />
-                    <div className="job-details">
-                      <div className="job-title">{job.title}</div>
-                      <div className="job-company">{job.company}</div>
-                    </div>
-                    <Tag color="green">{job.matchPercentage}%</Tag>
-                  </Link>
-                ))}
+            <Skeleton
+              active
+              paragraph={{ rows: 2 }}
+              loading={recommendedJobsLoading}
+            >
+              <Title className="!text-lg !font-semibold !text-[#666]">
+                {t("student.dashboard.recommendedJobs")}
+              </Title>
+              <div className="mb-4 job-recommendations">
+                {recommendedJobs?.data.length === 0 ? (
+                  <Empty
+                    description={t("student.dashboard.noRecommendedJobs")}
+                  />
+                ) : (
+                  recommendedJobs?.data?.slice(0, 2).map((job) => (
+                    <Link
+                      to={`/jobs/${job.id}`}
+                      key={job.id}
+                      className="recommended-job"
+                    >
+                      <Avatar src={job.companyLogo} size="small" />
+                      <div className="job-details">
+                        <div className="job-title">{job.title}</div>
+                        <div className="job-company">{job.company}</div>
+                      </div>
+                    </Link>
+                  ))
+                )}
               </div>
               <Button type="link" className="view-all-link">
                 <Link to="/recommended-jobs">
-                  {t("student.dashboard.recommendedJobs")}
+                  {t("student.dashboard.viewRecommendedJobs")}
                 </Link>
               </Button>
             </Skeleton>
@@ -718,41 +566,52 @@ const StudentDashboard = () => {
         {/* Upcoming Events */}
         <Col xs={24} md={12} lg={6}>
           <Card className="stats-card">
-            <Skeleton loading={loading} active paragraph={{ rows: 2 }}>
+            <Skeleton
+              active
+              paragraph={{ rows: 2 }}
+              loading={eventStatisticsLoading}
+            >
               <Title level={5}>{t("student.dashboard.upcomingEvents")}</Title>
-              <div className="upcoming-events">
-                {dashboardData.upcomingEvents.map((event) => (
-                  <Link
-                    to={`/events/${event.id}`}
-                    key={event.id}
-                    className="event-item"
-                  >
-                    <img
-                      src={event.image}
-                      alt={event.title}
-                      className="event-image"
-                    />
-                    <div className="event-details">
-                      <div className="event-title">{event.title}</div>
-                      <div className="event-meta">
-                        <CalendarOutlined /> {event.date} • {event.location}
+              <div className="mb-4 upcoming-events">
+                {eventStatistics?.data?.eventResponses
+                  ?.slice(0, 2)
+                  .map((event) => (
+                    <Link
+                      to={`/event-detail/${event.eventId}`}
+                      key={event.eventId}
+                      className="event-item"
+                    >
+                      <img
+                        src={event.eventImage}
+                        alt={event.eventTitle}
+                        className="event-image"
+                      />
+                      <div className="event-details">
+                        <div className="event-title">{event.eventTitle}</div>
+                        <div className="event-meta">
+                          <CalendarOutlined /> {event.eventDate} •{" "}
+                          {event.eventLocation}
+                        </div>
                       </div>
-                    </div>
-                  </Link>
-                ))}
+                    </Link>
+                  ))}
               </div>
+              <Button type="link" className="view-all-link">
+                <Link to="/event">
+                  {t("student.dashboard.viewUpcomingEvents")}
+                </Link>
+              </Button>
             </Skeleton>
           </Card>
         </Col>
       </Row>
-
       <Row gutter={[16, 16]} className="dashboard-content">
         <Col xs={24} lg={16}>
           <Card
             title={t("student.dashboard.recentActivities")}
             className="activities-card"
           >
-            <Skeleton loading={loading} active paragraph={{ rows: 5 }}>
+            <Skeleton active paragraph={{ rows: 5 }} loading={activityLoading}>
               <Tabs items={activityTabItems} />
             </Skeleton>
           </Card>
