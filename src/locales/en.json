@@ -1713,6 +1713,7 @@
     "createError": "Create topic failed"
   },
   "post": {
+    "placeholder": "Enter content your post",
     "create": "Create post",
     "topic": "Topic",
     "description": "Description",

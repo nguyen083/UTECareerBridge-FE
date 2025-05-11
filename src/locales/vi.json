@@ -1640,6 +1640,7 @@
     "createError": "Tạo chủ đề thất bại"
   },
   "post": {
+    "placeholder": "Nhập nội dung bài viết của bạn",
     "create": "Tạo bài viết",
     "topic": "Chủ đề",
     "description": "Mô tả",
