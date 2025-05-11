@@ -5,10 +5,11 @@ import { useSelector } from "react-redux";
 import { ZegoSuperBoardManager } from "zego-superboard-web";
 import { ZegoUIKitPrebuilt } from "@zegocloud/zego-uikit-prebuilt";
 import meeting from "../../../services/api/meeting";
-
+import interview from "../../../services/api/interview";
+import dayjs from "dayjs";
 const VideoCall = () => {
   const rootRef = useRef(null);
-  const { roomID } = useParams();
+  const { roomID, interviewId, date } = useParams();
   const { t } = useTranslation();
   const user = useSelector((state) => state.user);
   const student = useSelector((state) => state.student);
@@ -38,6 +39,9 @@ const VideoCall = () => {
     if (user.role === "student") {
       return navigate("/my-job");
     } else if (user.role === "employer") {
+      if (date === dayjs().format("DD/MM/YYYY", "vi-VN") && interviewId) {
+        interview.updateStatus(interviewId, "COMPLETED");
+      }
       return navigate("/employer/profile");
     } else {
       navigate("/");
@@ -61,6 +65,15 @@ const VideoCall = () => {
         const zp = ZegoUIKitPrebuilt.create(kitToken);
         zp.addPlugins({ ZegoSuperBoardManager });
         zp.joinRoom({
+          onJoinRoom: () => {
+            if (
+              user.role === "employer" &&
+              date === dayjs().format("DD/MM/YYYY", "vi-VN") &&
+              interviewId
+            ) {
+              interview.updateStatus(interviewId, "IN_PROGRESS");
+            }
+          },
           container: rootRef.current,
           sharedLinks: [
             {
