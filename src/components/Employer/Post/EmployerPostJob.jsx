@@ -174,7 +174,6 @@ const EmployerPostJob = () => {
     };
     setLoading(true);
     dayjs.extend(customParseFormat);
-    console.log("values.jobDeadline", values.jobDeadline);
     values.jobDeadline = dayjs(values.jobDeadline, "YYYY-MM-DD").format(
       "DD/MM/YYYY"
     );
@@ -711,7 +710,7 @@ const EmployerPostJob = () => {
       <BoxContainer className="shadow-md form-container">
         <Steps
           current={currentStep}
-          items={steps.map((step) => ({
+          items={steps.map((step, index) => ({
             title: step.title,
             icon: step.icon,
           }))}

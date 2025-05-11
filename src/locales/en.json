@@ -681,6 +681,10 @@
       "paid": "Paid",
       "pay": "Pay",
       "view": "View details",
+      "printInvoice": "Print Invoice",
+      "invoice": "INVOICE",
+      "invoiceSuccess": "Invoice generated successfully",
+      "invoiceError": "Error generating invoice",
       "loadError": "Error loading order list",
       "orderDetail": "Order Details",
       "orderInfo": "Order Information",
@@ -694,7 +698,10 @@
       "paymentMethod": "Select Payment Method",
       "vnpay": "VNPAY e-Wallet",
       "paymentSuccess": "Payment successful!",
-      "paymentError": "Payment failed"
+      "paymentError": "Payment failed",
+      "customerInfo": "Customer Information",
+      "subTotal": "Subtotal",
+      "thankYouMessage": "Thank you for your business!"
     },
     "services": {
       "title": "Service Packages",
