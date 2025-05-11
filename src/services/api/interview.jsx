@@ -11,5 +11,16 @@ const interview = {
   updateStatus: async (interviewId, status) => {
     return axios.put(`/interviews/${interviewId}/status?status=${status}`);
   },
+  getInterviewById: async (id) => {
+    const response = await axios.get(`/interviews/${id}`);
+    return response;
+  },
+  submitEvaluation: async (data) => {
+    const response = await axios.post(
+      `/interviews/${data.interviewId}/evaluation`,
+      data
+    );
+    return response;
+  },
 };
 export default interview;

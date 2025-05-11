@@ -39,10 +39,15 @@ const VideoCall = () => {
     if (user.role === "student") {
       return navigate("/my-job");
     } else if (user.role === "employer") {
-      if (date === dayjs().format("DD/MM/YYYY", "vi-VN") && interviewId) {
-        interview.updateStatus(interviewId, "COMPLETED");
-      }
-      return navigate("/employer/profile");
+      // Get interview ID from roomID (assuming roomID contains interview information)
+      const interviewId = roomID.split("-").pop();
+      // Redirect to candidate evaluation page with interview ID
+      return navigate(`/employer/interview/evaluation/${interviewId}`, {
+        state: {
+          fromMeeting: true,
+          roomId: roomID,
+        },
+      });
     } else {
       navigate("/");
     }

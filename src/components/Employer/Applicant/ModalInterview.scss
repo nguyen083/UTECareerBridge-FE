@@ -1,5 +1,171 @@
 .modal_interview {
+    .ant-modal-content {
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+    
+    .ant-modal-header {
+        padding: 16px 24px;
+        background-color: #f8f9fa;
+        border-bottom: 1px solid #eaeaea;
+        margin-bottom: 0;
+        
+        .ant-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1890ff;
+        }
+    }
+    
     .ant-modal-body {
-        padding: 1rem;
+        padding: 24px;
+    }
+    
+    .ant-modal-footer {
+        border-top: 1px solid #eaeaea;
+        padding: 12px 24px;
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+        
+        .ant-btn {
+            border-radius: 6px;
+            height: 40px;
+            padding: 0 20px;
+            font-weight: 500;
+        }
+    }
+    
+    .ant-form-item-label {
+        font-weight: 500;
+    }
+    
+    .ant-radio-wrapper {
+        margin-right: 24px;
+    }
+    
+    .interview-type-selector {
+        margin-bottom: 24px;
+        display: flex;
+        gap: 16px;
+        
+        .type-option {
+            flex: 1;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            
+            &.active {
+                border-color: #1890ff;
+                background-color: #e6f7ff;
+            }
+            
+            .type-icon {
+                font-size: 20px;
+                color: #1890ff;
+            }
+            
+            .type-label {
+                font-weight: 500;
+                flex: 1;
+            }
+        }
+    }
+    
+    .ant-input,
+    .ant-input-number,
+    .ant-picker {
+        border-radius: 6px;
+    }
+    
+    .ant-form-item-has-error {
+        animation: shake 0.5s;
+    }
+    
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20%, 60% { transform: translateX(-5px); }
+        40%, 80% { transform: translateX(5px); }
+    }
+    
+    // Thêm styles mới cho các phần tử form
+    .interview-modal-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        
+        .interview-icon {
+            font-size: 20px;
+        }
+    }
+    
+    .interview-form-container {
+        .form-section {
+            margin-bottom: 24px;
+            border: 1px solid #f0f0f0;
+            border-radius: 8px;
+            padding: 16px;
+            background-color: #fafafa;
+            
+            &:last-child {
+                margin-bottom: 0;
+            }
+            
+            .section-header {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-bottom: 16px;
+                padding-bottom: 8px;
+                border-bottom: 1px dashed #e8e8e8;
+                
+                .section-icon {
+                    font-size: 18px;
+                    background-color: #1890ff;
+                    color: white;
+                    width: 28px;
+                    height: 28px;
+                    border-radius: 50%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+                
+                .section-title {
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #333;
+                }
+            }
+        }
+    }
+    
+    .contact-prefix {
+        margin-right: 8px;
+    }
+    
+    // Hiệu ứng hover cho nút
+    button.ant-btn {
+        transition: all 0.3s;
+        
+        &.ant-btn-primary {
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 12px rgba(24, 144, 255, 0.15);
+            }
+        }
+    }
+    
+    // Responsive
+    @media (max-width: 576px) {
+        .interview-type-selector {
+            flex-direction: column;
+        }
     }
 }

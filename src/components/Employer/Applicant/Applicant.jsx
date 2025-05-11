@@ -6,9 +6,7 @@ const Applicant = () => {
     const {t} = useTranslation();
     return (
         <>
-            <BoxContainer className='shadow-md'>
-                <div className='title1'>{t('list_applicant')}</div>
-            </BoxContainer>
+            
             <BoxContainer className='shadow-md'>
                 <Outlet />
             </BoxContainer>

@@ -519,9 +519,34 @@
     },
     "interview": {
       "title": "Interview Calendar",
+      "calendar_view": "Calendar View",
+      "list_view": "List View",
+      "subtitle": "Manage your interview schedule",
+      "evaluation": {
+        "title": "Candidate Evaluation",
+        "fromMeetingDescription": "Please evaluate the candidate you just interviewed.",
+        "description": "Evaluate candidate performance after the interview.",
+        "skills": "Technical Skills",
+        "skillsRating": "Technical Skills Rating",
+        "skillsFeedback": "Technical Skills Feedback",
+        "communication": "Communication Skills",
+        "communicationRating": "Communication Rating",
+        "communicationFeedback": "Communication Feedback",
+        "cultureFit": "Culture Fit",
+        "cultureFitRating": "Culture Fit Rating",
+        "cultureFitFeedback": "Culture Fit Feedback",
+        "overall": "Overall Assessment",
+        "overallRating": "Overall Rating",
+        "hiringDecision": "Hiring Decision",
+        "hire": "Hire",
+        "consider": "Consider",
+        "reject": "Reject",
+        "additionalFeedback": "Additional Feedback",
+        "submit": "Submit Evaluation"
+      },
       "create": {
         "title": "Create Interview",
-        "description": "Create an interview to reach the candidate",
+        "description": "Create an interview to contact candidates",
         "jobPosition": "Job Position",
         "interviewDate": "Interview Date",
         "interviewTime": "Interview Time",
@@ -529,7 +554,7 @@
         "meetingLink": "Meeting Link",
         "message": {
           "success": "Interview created successfully",
-          "error": "Interview creation failed"
+          "error": "Failed to create interview"
         }
       }
     },

@@ -52,7 +52,8 @@ const ListApplicantDrawer = ({open, setSelectedJob, jobId}) => {
         width={700}
         closable
         destroyOnClose
-        title={<Flex justify='space-between' align='center'><Text>{t('list_applicant')}</Text>
+        title={<Flex justify='space-between' align='center'>
+            <Text>{t('employer.applicant.listDrawer.title', 'Danh sách ứng viên')}</Text>
             <Button icon={<IoIosRefresh size={20}/>} type="text" onClick={handleRefresh}>
             </Button>
         </Flex>}

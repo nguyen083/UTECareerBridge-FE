@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { Card, Col, Row, Typography, Flex, Statistic, Progress, Button, Table, Tag, Empty, Spin, Tooltip, Divider, List, Avatar } from "antd";
+import { Card, Col, Row, Typography, Flex, Statistic, Progress, Button, Table, Tag, Empty, Spin, Tooltip, Divider, List, Avatar, Space, Select, DatePicker } from "antd";
 import BoxContainer from "../../Generate/BoxContainer";
 import { useTranslation } from "react-i18next";
 import { getInfor, getJobsByStatus, getJobPackage, getCountStudentApplied } from "../../../services/apiService";
-import { FaCalendarAlt, FaBriefcase, FaChartLine, FaUsers, FaBell, FaRegClock } from "react-icons/fa";
+import { FaCalendarAlt, FaBriefcase, FaChartLine, FaUsers, FaBell, FaRegClock, FaFilter } from "react-icons/fa";
 import { SlUserFollowing } from "react-icons/sl";
 import { ImUserTie } from "react-icons/im";
 import { LiaBriefcaseSolid } from "react-icons/lia";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, PieChart, Pie, Cell, Legend, AreaChart, Area } from 'recharts';
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { UpOutlined, DownOutlined, RiseOutlined, ReloadOutlined, CalendarOutlined } from '@ant-design/icons';
 import "./DashBoard.scss";
 
 const { Text, Title } = Typography;
+const { RangePicker } = DatePicker;
+const { Option } = Select;
 
 const COLORS = ['#4478c0', '#52c41a', '#fa8c16', '#f5222d', '#722ed1', '#eb2f96'];
 
@@ -222,6 +225,66 @@ const ListPackage = () => {
   );
 };
 
+// Generate sample conversion and performance data
+const generateJobPerformanceData = () => {
+  return [
+    { id: 1, title: 'Senior Frontend Developer', views: 145, applications: 28, interviews: 12, conversionRate: 19.3 },
+    { id: 2, title: 'Full Stack Developer', views: 210, applications: 35, interviews: 15, conversionRate: 16.7 },
+    { id: 3, title: 'UX Designer', views: 120, applications: 18, interviews: 8, conversionRate: 15.0 },
+    { id: 4, title: 'DevOps Engineer', views: 90, applications: 12, interviews: 5, conversionRate: 13.3 },
+    { id: 5, title: 'Product Manager', views: 180, applications: 22, interviews: 9, conversionRate: 12.2 },
+  ];
+};
+
+// Generated hiring time data
+const generateHiringData = () => {
+  return { avgDays: 23.5, last3MonthsAvg: 25.2 };
+};
+
+// Filter controls component
+const FilterControls = ({ timePeriod, setTimePeriod, onRefresh }) => {
+  const { t } = useTranslation();
+  
+  return (
+    <Space size={12}>
+      <Select
+        placeholder={t("employer.dashboard.filters.selectPeriod") || "Select Period"}
+        style={{ width: 120 }}
+        value={timePeriod}
+        onChange={(value) => setTimePeriod(value)}
+      >
+        <Option value="week">{t("employer.dashboard.filters.week") || "Week"}</Option>
+        <Option value="month">{t("employer.dashboard.filters.month") || "Month"}</Option>
+        <Option value="quarter">{t("employer.dashboard.filters.quarter") || "Quarter"}</Option>
+        <Option value="year">{t("employer.dashboard.filters.year") || "Year"}</Option>
+        <Option value="all">{t("employer.dashboard.filters.allTime") || "All Time"}</Option>
+      </Select>
+      
+      <Button 
+        icon={<ReloadOutlined />} 
+        onClick={onRefresh}
+        tooltip={t("employer.dashboard.refresh") || "Refresh Data"}
+      >
+        {t("employer.dashboard.refresh") || "Refresh"}
+      </Button>
+    </Space>
+  );
+};
+
+// Generate skill distribution data
+const generateSkillDistributionData = () => {
+  return [
+    { name: 'JavaScript', value: 45 },
+    { name: 'React', value: 38 },
+    { name: 'Node.js', value: 32 },
+    { name: 'TypeScript', value: 28 },
+    { name: 'SQL', value: 25 },
+    { name: 'Python', value: 22 },
+    { name: 'Java', value: 18 },
+    { name: 'AWS', value: 15 }
+  ];
+};
+
 const DashBoard = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -230,12 +293,22 @@ const DashBoard = () => {
   const [applicationData, setApplicationData] = useState(generateSampleData());
   const [jobStatusData, setJobStatusData] = useState([]);
   const [upcomingInterviews, setUpcomingInterviews] = useState(generateInterviews());
+  const [timePeriod, setTimePeriod] = useState("month");
+  const [jobPerformanceData, setJobPerformanceData] = useState(generateJobPerformanceData());
+  const [hiringData, setHiringData] = useState(generateHiringData());
+  const [skillDistributionData, setSkillDistributionData] = useState(generateSkillDistributionData());
+  const [chartView, setChartView] = useState('area');
   
   // Get data from Redux store
   const { countJob, countFollower } = useSelector((state) => state.employer);
   
   const applicationRate = countJob > 0 
     ? Math.round((countStudentApplied / countJob) * 100) 
+    : 0;
+    
+  // Calculate conversion rate
+  const conversionRate = countStudentApplied > 0 
+    ? Math.round((upcomingInterviews.length / countStudentApplied) * 100) 
     : 0;
 
   useEffect(() => {
@@ -286,7 +359,7 @@ const DashBoard = () => {
     .finally(() => {
       setLoading(false);
     });
-  }, [t]);
+  }, [t, timePeriod]);
 
   const goToPostJob = () => {
     navigate("/employer/post-job");
@@ -303,6 +376,34 @@ const DashBoard = () => {
   const goToApplicants = () => {
     navigate("/employer/applicant");
   };
+  
+  const handleRefresh = () => {
+    setLoading(true);
+    // Refresh all data sources
+    Promise.all([
+      getCountStudentApplied(),
+      getJobsByStatus({ jobStatus: "ACTIVE", page: 0, limit: 100 }),
+      getJobsByStatus({ jobStatus: "INACTIVE", page: 0, limit: 100 }),
+      getJobsByStatus({ jobStatus: "PENDING", page: 0, limit: 100 }),
+      getJobsByStatus({ jobStatus: "REJECTED", page: 0, limit: 100 })
+    ])
+    .then(([studentsRes, activeJobsRes, inactiveJobsRes, pendingJobsRes, rejectedJobsRes]) => {
+      // Update state with fresh data
+      if (studentsRes.status === "OK") {
+        setCountStudentApplied(studentsRes.data);
+      }
+      
+      // Update job status data
+      // Similar to the code in useEffect
+      // ...
+    })
+    .catch((error) => {
+      console.error("Error refreshing dashboard data:", error);
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+  };
 
   if (loading && !countJob && !countFollower) {
     return (
@@ -316,21 +417,28 @@ const DashBoard = () => {
   return (
     <>
       <BoxContainer className="shadow-md dashboard-header">
-        <Flex align="center" justify="space-between">
+        <Flex align="center" justify="space-between" className="dashboard-header-content">
           <div className="welcome-container">
             <Title level={3}>{t("employer.dashboard.welcome") || "Welcome to your Dashboard"}</Title>
             <Text type="secondary" className="date-display">
               {new Date().toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
             </Text>
           </div>
-          <div className="dashboard-actions">
-            <Button type="primary" onClick={goToPostJob} icon={<FaBriefcase />} className="action-button post-job-btn">
-              {t("employer.dashboard.postJob") || "Post a New Job"}
-            </Button>
-            <Button onClick={goToPackages} className="action-button">
-              {t("employer.dashboard.buyPackages") || "Buy Packages"}
-            </Button>
-          </div>
+          <Flex align="center" gap={16}>
+            <FilterControls 
+              timePeriod={timePeriod} 
+              setTimePeriod={setTimePeriod} 
+              onRefresh={handleRefresh}
+            />
+            <div className="dashboard-actions">
+              <Button type="primary" onClick={goToPostJob} icon={<FaBriefcase />} className="action-button post-job-btn">
+                {t("employer.dashboard.postJob") || "Post a New Job"}
+              </Button>
+              <Button onClick={goToPackages} className="action-button">
+                {t("employer.dashboard.buyPackages") || "Buy Packages"}
+              </Button>
+            </div>
+          </Flex>
         </Flex>
       </BoxContainer>
       
@@ -403,7 +511,7 @@ const DashBoard = () => {
         <Col xs={24} sm={12} lg={6}>
           <Card className="dashboard-stat-card interviews-card">
             <Statistic
-              title={<Text strong>{t("employer.dashboard.stats.interviews.title") || "Interviews"}</Text>}
+              title={<Text>{t("employer.dashboard.stats.interviews.title") || "Interviews"}</Text>}
               value={upcomingInterviews.length || 0}
               prefix={<FaCalendarAlt className="stat-icon" />}
               suffix={<Text>{t("employer.dashboard.stats.interviews.unit") || ""}</Text>}
@@ -424,6 +532,81 @@ const DashBoard = () => {
           </Card>
         </Col>
         
+        {/* Conversion Rate Card */}
+        <Col xs={24} md={12} lg={8}>
+          <Card className="dashboard-chart-card conversion-card">
+            <Flex align="center" justify="space-between" className="card-header">
+              <Flex align="center" gap="small">
+                <RiseOutlined className="card-title-icon" />
+                <Text strong>{t("employer.dashboard.stats.conversionRate") || "Applicant Conversion"}</Text>
+              </Flex>
+            </Flex>
+            <div className="conversion-stats">
+              <Progress
+                type="dashboard"
+                percent={conversionRate}
+                format={(percent) => `${percent}%`}
+                strokeColor={{
+                  '0%': '#4478c0',
+                  '100%': '#1E4F94',
+                }}
+              />
+              <div className="conversion-detail">
+                <Statistic
+                  title={<Text>{t("employer.dashboard.stats.applications") || "Applications"}</Text>}
+                  value={countStudentApplied}
+                  className="conversion-stat"
+                />
+                <Statistic
+                  title={<Text>{t("employer.dashboard.stats.interviews.title") || "Interviews"}</Text>}
+                  value={upcomingInterviews.length}
+                  className="conversion-stat"
+                />
+              </div>
+            </div>
+          </Card>
+        </Col>
+        
+        {/* Average Hiring Time Card */}
+        <Col xs={24} md={12} lg={8}>
+          <Card className="dashboard-chart-card hiring-time-card">
+            <Flex align="center" gap="small" className="card-header">
+              <FaRegClock className="card-title-icon" />
+              <Text strong>{t("employer.dashboard.hiringTime") || "Average Hiring Time"}</Text>
+            </Flex>
+            <div className="hiring-time-content">
+              <Statistic
+                value={hiringData.avgDays}
+                suffix={t("employer.dashboard.days") || "days"}
+                precision={1}
+                valueStyle={{ color: hiringData.avgDays < 30 ? "#52c41a" : "#ff4d4f" }}
+              />
+              <Progress
+                percent={(30 - Math.min(hiringData.avgDays, 30)) / 30 * 100}
+                steps={15}
+                strokeColor={hiringData.avgDays < 15 ? "#52c41a" : hiringData.avgDays < 30 ? "#faad14" : "#ff4d4f"}
+                size="small"
+              />
+              <Flex align="center" justify="space-between" className="hiring-comparison">
+                <Text type="secondary">{t("employer.dashboard.hiringTimeDesc") || "Average time from job posting to successful hire"}</Text>
+                <Tag color={hiringData.avgDays < hiringData.last3MonthsAvg ? "success" : "warning"}>
+                  {hiringData.avgDays < hiringData.last3MonthsAvg ? 
+                    <Flex align="center" gap={4}>
+                      <DownOutlined />
+                      <span>{(hiringData.last3MonthsAvg - hiringData.avgDays).toFixed(1)} {t("employer.dashboard.days") || "days"}</span>
+                    </Flex>
+                    :
+                    <Flex align="center" gap={4}>
+                      <UpOutlined />
+                      <span>{(hiringData.avgDays - hiringData.last3MonthsAvg).toFixed(1)} {t("employer.dashboard.days") || "days"}</span>
+                    </Flex>
+                  }
+                </Tag>
+              </Flex>
+            </div>
+          </Card>
+        </Col>
+        
         {/* Main Chart Section */}
         <Col xs={24} lg={16}>
           <Card 
@@ -435,68 +618,189 @@ const DashBoard = () => {
             }
             className="dashboard-chart-card main-chart"
             extra={
-              <Flex gap="small">
-                <Tag color="#4478c0">{t("employer.dashboard.charts.views") || "Views"}</Tag>
-                <Tag color="#52c41a">{t("employer.dashboard.charts.applications") || "Applications"}</Tag>
-              </Flex>
+              <Space>
+                <Select 
+                  value={chartView} 
+                  onChange={setChartView}
+                  dropdownMatchSelectWidth={false}
+                >
+                  <Option value="area">{t("employer.dashboard.chartTypes.area") || "Area"}</Option>
+                  <Option value="line">{t("employer.dashboard.chartTypes.line") || "Line"}</Option>
+                  <Option value="bar">{t("employer.dashboard.chartTypes.bar") || "Bar"}</Option>
+                </Select>
+                <Flex gap="small">
+                  <Tag color="#4478c0">{t("employer.dashboard.charts.views") || "Views"}</Tag>
+                  <Tag color="#52c41a">{t("employer.dashboard.charts.applications") || "Applications"}</Tag>
+                </Flex>
+              </Space>
             }
           >
             {applicationData.length > 0 ? (
               <ResponsiveContainer width="100%" height={320}>
-                <AreaChart
-                  data={applicationData}
-                  margin={{
-                    top: 20,
-                    right: 30,
-                    left: 20,
-                    bottom: 30,
-                  }}
-                >
-                  <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                  <XAxis 
-                    dataKey="date" 
-                    tick={{fontSize: 12}} 
-                    angle={-30} 
-                    textAnchor="end" 
-                    height={60}
-                    tickFormatter={(tick) => {
-                      const date = new Date(tick);
-                      return `${date.getDate()}/${date.getMonth() + 1}`;
+                {chartView === 'area' ? (
+                  <AreaChart
+                    data={applicationData}
+                    margin={{
+                      top: 20,
+                      right: 30,
+                      left: 20,
+                      bottom: 30,
                     }}
-                  />
-                  <YAxis yAxisId="left" />
-                  <YAxis yAxisId="right" orientation="right" />
-                  <RechartsTooltip
-                    formatter={(value, name) => [
-                      value,
-                      name === "views" 
-                        ? t("employer.dashboard.charts.views") || "Views"
-                        : t("employer.dashboard.charts.applications") || "Applications"
-                    ]}
-                    labelFormatter={(label) => {
-                      const date = new Date(label);
-                      return `${date.toLocaleDateString()}`;
+                  >
+                    <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                    <XAxis 
+                      dataKey="date" 
+                      tick={{fontSize: 12}} 
+                      angle={-30} 
+                      textAnchor="end" 
+                      height={60}
+                      tickFormatter={(tick) => {
+                        const date = new Date(tick);
+                        return `${date.getDate()}/${date.getMonth() + 1}`;
+                      }}
+                    />
+                    <YAxis yAxisId="left" />
+                    <YAxis yAxisId="right" orientation="right" />
+                    <RechartsTooltip
+                      formatter={(value, name) => [
+                        value,
+                        name === "views" 
+                          ? t("employer.dashboard.charts.views") || "Views"
+                          : t("employer.dashboard.charts.applications") || "Applications"
+                      ]}
+                      labelFormatter={(label) => {
+                        const date = new Date(label);
+                        return `${date.toLocaleDateString()}`;
+                      }}
+                    />
+                    <Area 
+                      yAxisId="left"
+                      type="monotone" 
+                      dataKey="views" 
+                      stroke="#4478c0" 
+                      fill="#4478c0" 
+                      fillOpacity={0.2}
+                      name={t("employer.dashboard.charts.views") || "Views"}
+                    />
+                    <Area 
+                      yAxisId="right"
+                      type="monotone" 
+                      dataKey="applications" 
+                      stroke="#52c41a" 
+                      fill="#52c41a"
+                      fillOpacity={0.2}
+                      name={t("employer.dashboard.charts.applications") || "Applications"}
+                    />
+                  </AreaChart>
+                ) : chartView === 'line' ? (
+                  <LineChart
+                    data={applicationData}
+                    margin={{
+                      top: 20,
+                      right: 30,
+                      left: 20,
+                      bottom: 30,
                     }}
-                  />
-                  <Area 
-                    yAxisId="left"
-                    type="monotone" 
-                    dataKey="views" 
-                    stroke="#4478c0" 
-                    fill="#4478c0" 
-                    fillOpacity={0.2}
-                    name={t("employer.dashboard.charts.views") || "Views"}
-                  />
-                  <Area 
-                    yAxisId="right"
-                    type="monotone" 
-                    dataKey="applications" 
-                    stroke="#52c41a" 
-                    fill="#52c41a"
-                    fillOpacity={0.2}
-                    name={t("employer.dashboard.charts.applications") || "Applications"}
-                  />
-                </AreaChart>
+                  >
+                    <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                    <XAxis 
+                      dataKey="date" 
+                      tick={{fontSize: 12}} 
+                      angle={-30} 
+                      textAnchor="end" 
+                      height={60}
+                      tickFormatter={(tick) => {
+                        const date = new Date(tick);
+                        return `${date.getDate()}/${date.getMonth() + 1}`;
+                      }}
+                    />
+                    <YAxis yAxisId="left" />
+                    <YAxis yAxisId="right" orientation="right" />
+                    <RechartsTooltip
+                      formatter={(value, name) => [
+                        value,
+                        name === "views" 
+                          ? t("employer.dashboard.charts.views") || "Views"
+                          : t("employer.dashboard.charts.applications") || "Applications"
+                      ]}
+                      labelFormatter={(label) => {
+                        const date = new Date(label);
+                        return `${date.toLocaleDateString()}`;
+                      }}
+                    />
+                    <Line 
+                      yAxisId="left"
+                      type="monotone" 
+                      dataKey="views" 
+                      stroke="#4478c0" 
+                      name={t("employer.dashboard.charts.views") || "Views"}
+                      strokeWidth={2}
+                      dot={{ r: 3 }}
+                      activeDot={{ r: 5 }}
+                    />
+                    <Line 
+                      yAxisId="right"
+                      type="monotone" 
+                      dataKey="applications" 
+                      stroke="#52c41a" 
+                      name={t("employer.dashboard.charts.applications") || "Applications"}
+                      strokeWidth={2}
+                      dot={{ r: 3 }}
+                      activeDot={{ r: 5 }}
+                    />
+                  </LineChart>
+                ) : (
+                  <BarChart
+                    data={applicationData}
+                    margin={{
+                      top: 20,
+                      right: 30,
+                      left: 20,
+                      bottom: 30,
+                    }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
+                    <XAxis 
+                      dataKey="date" 
+                      tick={{fontSize: 12}} 
+                      angle={-30} 
+                      textAnchor="end" 
+                      height={60}
+                      tickFormatter={(tick) => {
+                        const date = new Date(tick);
+                        return `${date.getDate()}/${date.getMonth() + 1}`;
+                      }}
+                    />
+                    <YAxis yAxisId="left" />
+                    <YAxis yAxisId="right" orientation="right" />
+                    <RechartsTooltip
+                      formatter={(value, name) => [
+                        value,
+                        name === "views" 
+                          ? t("employer.dashboard.charts.views") || "Views"
+                          : t("employer.dashboard.charts.applications") || "Applications"
+                      ]}
+                      labelFormatter={(label) => {
+                        const date = new Date(label);
+                        return `${date.toLocaleDateString()}`;
+                      }}
+                    />
+                    <Bar 
+                      yAxisId="left"
+                      dataKey="views" 
+                      fill="#4478c0" 
+                      name={t("employer.dashboard.charts.views") || "Views"}
+                      barSize={10}
+                    />
+                    <Bar 
+                      yAxisId="right"
+                      dataKey="applications" 
+                      fill="#52c41a" 
+                      name={t("employer.dashboard.charts.applications") || "Applications"}
+                      barSize={10}
+                    />
+                  </BarChart>
+                )}
               </ResponsiveContainer>
             ) : (
               <Empty 
@@ -554,6 +858,101 @@ const DashBoard = () => {
                 </Button>
               </Empty>
             )}
+          </Card>
+        </Col>
+        
+        {/* Skill Distribution Chart */}
+        <Col xs={24} md={12} lg={8}>
+          <Card 
+            title={
+              <Flex align="center" gap="small">
+                <FaUsers className="card-title-icon" />
+                <Text strong>{t("employer.dashboard.skillDistribution") || "Candidate Skill Distribution"}</Text>
+              </Flex>
+            }
+            className="dashboard-chart-card skills-distribution-card"
+          >
+            <ResponsiveContainer width="100%" height={320}>
+              <BarChart
+                data={skillDistributionData}
+                layout="vertical"
+                margin={{
+                  top: 20,
+                  right: 30,
+                  left: 80,
+                  bottom: 10,
+                }}
+              >
+                <CartesianGrid strokeDasharray="3 3" horizontal={true} vertical={false} />
+                <XAxis type="number" />
+                <YAxis 
+                  dataKey="name" 
+                  type="category" 
+                  tickLine={false} 
+                  axisLine={false}
+                  width={80}
+                />
+                <Tooltip />
+                <Bar dataKey="value" fill="#4478c0" radius={[0, 4, 4, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </Card>
+        </Col>
+        
+        {/* Job Performance Table */}
+        <Col xs={24} md={12} lg={16}>
+          <Card 
+            title={
+              <Flex align="center" gap="small">
+                <RiseOutlined className="card-title-icon" />
+                <Text strong>{t("employer.dashboard.jobPerformance") || "Job Post Performance"}</Text>
+              </Flex>
+            }
+            className="dashboard-chart-card job-performance-card"
+            extra={
+              <Select defaultValue="applications" style={{ width: 120 }}>
+                <Option value="views">{t("employer.dashboard.sortBy.views") || "Sort by Views"}</Option>
+                <Option value="applications">{t("employer.dashboard.sortBy.applications") || "Sort by Applications"}</Option>
+                <Option value="conversionRate">{t("employer.dashboard.sortBy.conversionRate") || "Sort by Conversion"}</Option>
+              </Select>
+            }
+          >
+            <Table 
+              dataSource={jobPerformanceData}
+              pagination={false}
+              className="job-performance-table"
+              columns={[
+                {
+                  title: t("employer.dashboard.jobTitle") || "Job Title",
+                  dataIndex: "title",
+                  key: "title",
+                  ellipsis: true,
+                  render: text => <Text strong>{text}</Text>
+                },
+                {
+                  title: t("employer.dashboard.metrics.views") || "Views",
+                  dataIndex: "views",
+                  key: "views",
+                  align: "right",
+                  sorter: (a, b) => a.views - b.views,
+                },
+                {
+                  title: t("employer.dashboard.metrics.applications") || "Applications",
+                  dataIndex: "applications",
+                  key: "applications",
+                  align: "right",
+                  sorter: (a, b) => a.applications - b.applications,
+                },
+                {
+                  title: t("employer.dashboard.conversionRate") || "Conversion",
+                  dataIndex: "conversionRate",
+                  key: "conversionRate",
+                  align: "right",
+                  render: (text) => <Text type={text > 10 ? "success" : "danger"}>{text}%</Text>,
+                  sorter: (a, b) => a.conversionRate - b.conversionRate,
+                }
+              ]}
+            />
           </Card>
         </Col>
         
