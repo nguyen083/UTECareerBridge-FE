@@ -58,9 +58,13 @@
     "hot": "Hot",
     "urgent": "Gấp",
     "ok": "OK",
+    "close": "Đóng",
     "loading": "Đang tải...",
     "collapse": "Thu gọn",
     "month": "tháng",
+    "day": "ngày",
+    "hour": "giờ",
+    "minutes": "phút",
     "dragAndDrop": "Kéo thả hoặc nhấp để tải ảnh lên",
     "view": "Xem",
     "of": "của",
@@ -77,11 +81,10 @@
     "monthsAgo": "{{value}} tháng trước",
     "active": "Đang sử dụng",
     "justNow": "Vừa xong",
-    "minuteAgo": "phút trước",
     "minutesAgo": "phút trước",
-    "hourAgo": "giờ trước",
     "hoursAgo": "giờ trước",
-    "more": "nữa"
+    "more": "nữa",
+    "actions": "Hành động"
   },
   "role": {
     "STUDENT": "Sinh viên",
@@ -450,7 +453,11 @@
         }
       }
     },
+    "header": {
+      "cart": "Giỏ hàng"
+    },
     "dashboard": {
+      "today": "Hôm nay: {{date}}",
       "hiringTime": "Thời gian tuyển dụng",
       "hiringTimeDesc": "Thời gian trung bình từ khi đăng tin đến khi tuyển được ứng viên",
       "days": "ngày",
@@ -462,10 +469,13 @@
       "viewAll": "Xem tất cả",
       "welcome": "Chào mừng bạn đến với UTE-Career",
       "charts": {
+        "jobStatus": "Trạng thái công việc",
         "title": "Biểu đồ",
         "views": "Lượt xem",
         "applications": "Đơn ứng tuyển",
         "applicationsOverview": "Tổng quan công việc",
+        "noJobsData": "Không có dữ liệu công việc",
+        "jobs": "công việc",
         "interviews": {
           "title": "Lịch phỏng vấn",
           "unit": "lịch"
@@ -484,12 +494,11 @@
       "noInterviews": "Không có cuộc phỏng vấn sắp tới",
       "filters": {
         "selectPeriod": "Chọn thời gian",
-        "allTime": "Tất cả",
-        "today": "Hôm nay",
-        "week": "Tuần này",
-        "month": "Tháng này",
-        "year": "Năm này",
-        "quarter": "Quý này"
+        "week": "Tuần",
+        "month": "Tháng",
+        "quarter": "Quý",
+        "year": "Năm",
+        "allTime": "Tất cả"
       },
       "sortBy": {
         "views": "Sắp xếp theo lượt xem",
@@ -507,7 +516,7 @@
         "interviews": "Phỏng vấn"
       },
       "stats": {
-        "conversionRate": "Tỷ lệ chuyển đổi",
+        "applicationRate": "Tỷ lệ ứng tuyển",
         "applications": "Lượt ứng tuyển",
         "interviews": {
           "title": "Số cuộc phỏng vấn",
@@ -528,11 +537,21 @@
       },
       "servicePackage": {
         "title": "Gói dịch vụ",
+        "active": "Hoạt động",
+        "inactive": "Không hoạt động",
         "table": {
           "packageName": "Tên gói",
           "amount": "Số lượng",
           "expiredAt": "Ngày hết hạn",
           "emptyText": "Không tìm thấy gói dịch vụ nào"
+        },
+        "detail": {
+          "duration": "Thời hạn",
+          "description": "Mô tả",
+          "information": "Thông tin chi tiết",
+          "quantity": "Số lượng",
+          "expiredAt": "Ngày hết hạn",
+          "feature": "Tính năng"
         }
       }
     },
@@ -588,10 +607,10 @@
     "manageJobs": {
       "listJobs": "Danh sách việc làm",
       "tabs": {
-        "active": "Đang hoạt động",
+        "active": "Đang hiện",
         "inactive": "Đã ẩn",
         "pending": "Đang chờ",
-        "rejected": "Đã từ chối"
+        "rejected": "Bị từ chối"
       },
       "deleteConfirm": "Bạn có chắc chắn muốn xóa bài đăng này?",
       "hideConfirm": "Bạn có chắc chắn muốn ẩn bài đăng này?",
@@ -1165,7 +1184,7 @@
         "totalCandidates": "Tổng ứng viên",
         "totalEmployers": "Tổng nhà tuyển dụng",
         "totalJobs": "Tổng số việc làm",
-        "conversionRate": "Tỷ lệ chuyển đổi",
+        "conversionRate": "Tỷ lệ ứng tuyển",
         "newCandidates": "Ứng viên mới",
         "newEmployers": "Nhà tuyển dụng mới"
       },

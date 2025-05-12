@@ -60,9 +60,13 @@
     "hot": "Hot",
     "urgent": "Urgent",
     "ok": "OK",
+    "close": "Close",
     "loading": "Loading...",
     "collapse": "Collapse",
     "month": "month",
+    "day": "day",
+    "hour": "hour",
+    "minutes": "minutes",
     "dragAndDrop": "Drag and drop or click to upload image",
     "view": "View",
     "of": "of",
@@ -76,7 +80,13 @@
     "weekAgo": "{{value}} week ago",
     "weeksAgo": "{{value}} weeks ago",
     "monthAgo": "{{value}} month ago",
-    "monthsAgo": "{{value}} months ago"
+    "monthsAgo": "{{value}} months ago",
+    "active": "Active",
+    "justNow": "Just now",
+    "minutesAgo": "minutes ago",
+    "hoursAgo": "hours ago",
+    "more": "more",
+    "actions": "Actions"
   },
   "role": {
     "ADMIN": "Admin",
@@ -470,6 +480,7 @@
       "websitePlaceholder": "Company website URL",
       "video": "Company Video",
       "videoPlaceholder": "Copy and paste your YouTube link here",
+      "address": "Company Address",
       "addressPlaceholder": "Example: 130 Suong Nguyet Anh, Ben Thanh Ward, District 1",
       "certificate": {
         "title": "Business Certificate",
@@ -483,9 +494,75 @@
         }
       }
     },
+    "header": {
+      "cart": "Cart"
+    },
     "dashboard": {
+      "today": "Today: {{date}}",
+      "hiringTime": "Hiring Time",
+      "hiringTimeDesc": "Average time from job posting to successful hiring",
+      "days": "days",
+      "buyPackages": "Buy Service Packages",
+      "postJob": "Post a Job",
+      "refresh": "Refresh",
+      "schedule": "Interview Schedule",
+      "manageJobs": "Manage Job Posts",
+      "viewAll": "View All",
+      "welcome": "Welcome to UTE-Career",
+      "charts": {
+        "jobStatus": "Job Status",
+        "title": "Charts",
+        "views": "Views",
+        "applications": "Applications",
+        "applicationsOverview": "Job Overview",
+        "noJobsData": "No job data",
+        "jobs": "jobs",
+        "interviews": {
+          "title": "Interview Schedule",
+          "unit": "schedules"
+        }
+      },
       "title": "Statistics",
+      "postFirstJob": "Post your first job",
+      "getStarted": "Get Started",
+      "buyMore": "Buy More",
+      "skillDistribution": "Skill Distribution",
+      "jobPerformance": "Recruitment Performance",
+      "jobTitle": "Job Title",
+      "conversionRate": "Conversion Rate",
+      "topSkills": "Top Candidate Skills",
+      "upcomingInterviews": "Upcoming Interviews",
+      "noInterviews": "No upcoming interviews",
+      "filters": {
+        "selectPeriod": "Select Period",
+        "week": "Week",
+        "month": "Month",
+        "quarter": "Quarter",
+        "year": "Year",
+        "allTime": "All Time"
+      },
+      "sortBy": {
+        "views": "Sort by views",
+        "applications": "Sort by applications",
+        "conversionRate": "Sort by conversion rate"
+      },
+      "chartTypes": {
+        "area": "Area Chart",
+        "line": "Line Chart",
+        "bar": "Bar Chart"
+      },
+      "metrics": {
+        "views": "Views",
+        "applications": "Applications",
+        "interviews": "Interviews"
+      },
       "stats": {
+        "applicationRate": "Application Rate",
+        "applications": "Applications",
+        "interviews": {
+          "title": "Number of Interviews",
+          "unit": "interviews"
+        },
         "followers": {
           "title": "Number of Followers",
           "unit": "people"
@@ -495,17 +572,27 @@
           "unit": "people"
         },
         "jobs": {
-          "title": "Posted Jobs",
-          "unit": "jobs"
+          "title": "Job Postings",
+          "unit": "posts"
         }
       },
       "servicePackage": {
         "title": "Service Packages",
+        "active": "Active",
+        "inactive": "Inactive",
         "table": {
           "packageName": "Package Name",
           "amount": "Amount",
           "expiredAt": "Expiry Date",
           "emptyText": "No service packages found"
+        },
+        "detail": {
+          "duration": "Duration",
+          "description": "Description",
+          "information": "Detail information",
+          "quantity": "Quantity",
+          "expiredAt": "Expiry date",
+          "feature": "Feature"
         }
       }
     },

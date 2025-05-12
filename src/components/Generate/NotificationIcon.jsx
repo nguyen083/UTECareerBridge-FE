@@ -27,12 +27,25 @@ import sound from "../../assets/sounds/notification.mp3";
 import icon from "../../assets/bell-ringing.png";
 import { Check } from "lucide-react";
 import { clsx } from "clsx";
+import { useSelector } from "react-redux";
 
 const { Text } = Typography;
 const ListNotification = ({ notification, userId }) => {
   const notificationMutation = useNotificationRead();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const user = useSelector((state) => state.user);
+
+  const handleSeeMore = () => {
+    if (user.role === "admin") {
+      navigate("admin/notification");
+    } else if (user.role === "employer") {
+      navigate("/employer/notification");
+    } else {
+      navigate("/notification");
+    }
+  };
+
   return (
     <List
       split={false}
@@ -115,7 +128,7 @@ const ListNotification = ({ notification, userId }) => {
           variant="outlined"
           type="text"
           className="w-full"
-          onClick={() => navigate("/notification")}
+          onClick={handleSeeMore}
         >
           {t("common.seeMore")}
         </Button>

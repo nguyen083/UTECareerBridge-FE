@@ -6,5 +6,11 @@ const job = {
   getJobSaved: async () => {
     return axios.get(`/students/jobs/saved`);
   },
+  getRecruimentAverage: async () => {
+    return axios.get(`/jobs/recruiment-average`);
+  },
+  getRecruimentPerformance: async () => {
+    return axios.get(`jobs/recruitment-performance`);
+  },
 };
 export default job;

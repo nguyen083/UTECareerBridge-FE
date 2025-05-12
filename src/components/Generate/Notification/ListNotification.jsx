@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { connectStomp } from "../../../utils/stompConfig";
 
 import { useNavigate } from "react-router-dom";
+import clsx from "clsx";
 const { Text } = Typography;
 
 const ListNotification = ({ type = "system" }) => {
@@ -30,8 +31,13 @@ const ListNotification = ({ type = "system" }) => {
       key: "title",
       ellipsis: true,
       width: "80%",
-      render: (text) => (
-        <Text className=" hover:underline hover:text-text-color-hover">
+      render: (text, record) => (
+        <Text
+          className={clsx(
+            "text-base transition-colors duration-200 hover:underline hover:text-blue-600",
+            !record.read && "font-semibold"
+          )}
+        >
           {text}
         </Text>
       ),
@@ -40,9 +46,9 @@ const ListNotification = ({ type = "system" }) => {
       title: t("notification.table.time"),
       dataIndex: "notificationDate",
       key: "notificationDate",
-      width: "15%",
+      width: "20%",
       render: (text) => (
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-500 whitespace-nowrap">
           {new Date(text).toLocaleString()}
         </p>
       ),
@@ -154,19 +160,19 @@ const ListNotification = ({ type = "system" }) => {
         loading={loading}
         rowKey="notificationId"
         rowClassName={(record, index) =>
-          (index % 2 === 0 ? "" : "bg-gray-50") + " cursor-pointer"
+          `${index % 2 === 0 ? "bg-white" : "bg-gray-50"} 
+          cursor-pointer hover:bg-blue-50 transition-colors duration-200`
         }
-        onRow={(record) => {
-          return {
-            onClick: () => {
-              if (role === "student") {
-                navigate(`/notification/${record.notificationId}`);
-              } else {
-                navigate(`/employer/notification/${record.notificationId}`);
-              }
-            },
-          };
-        }}
+        onRow={(record) => ({
+          onClick: () => {
+            if (role === "student") {
+              navigate(`/notification/${record.notificationId}`);
+            } else {
+              navigate(`/employer/notification/${record.notificationId}`);
+            }
+          },
+          className: "hover:shadow-sm transition-shadow duration-200",
+        })}
         pagination={{
           current: page,
           pageSize: size,
@@ -181,7 +187,10 @@ const ListNotification = ({ type = "system" }) => {
             setSize(pageSize);
           },
           pageSizeOptions: [10, 20, 50, 100],
+          className: "mt-6",
+          style: { marginBottom: 24 },
         }}
+        className="overflow-hidden "
       />
     </>
   );

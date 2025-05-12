@@ -25,7 +25,6 @@ import {
   MenuOutlined,
   ShoppingCartOutlined,
   BellOutlined,
-  SearchOutlined,
 } from "@ant-design/icons";
 import {
   Layout,
@@ -36,7 +35,6 @@ import {
   Button,
   Tooltip,
   message,
-  Input,
   Dropdown,
   Space,
   Typography,
@@ -77,7 +75,6 @@ const EmployerLayout = () => {
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
-  const [searchVisible, setSearchVisible] = useState(false);
 
   const itemSider = [
     {
@@ -245,15 +242,23 @@ const EmployerLayout = () => {
 
   const userMenu = (
     <Menu>
-      <Menu.Item key="profile" onClick={() => navigate("/employer/profile")}>
-        <UserOutlined /> {t("admin.employer.sidebar.account.profile")}
+      <Menu.Item
+        icon={<UserOutlined />}
+        key="profile"
+        onClick={() => navigate("/employer/profile")}
+      >
+        {t("admin.employer.sidebar.account.profile")}
       </Menu.Item>
-      <Menu.Item key="company" onClick={() => navigate("/employer/company")}>
-        <IoBusinessOutline /> {t("admin.employer.sidebar.company.info")}
+      <Menu.Item
+        icon={<IoBusinessOutline />}
+        key="company"
+        onClick={() => navigate("/employer/company")}
+      >
+        {t("admin.employer.sidebar.company.info")}
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="logout" onClick={logout} danger>
-        <LogoutOutlined /> {t("admin.employer.sidebar.logout")}
+      <Menu.Item icon={<LogoutOutlined />} key="logout" onClick={logout} danger>
+        {t("admin.employer.sidebar.logout")}
       </Menu.Item>
     </Menu>
   );
@@ -304,32 +309,15 @@ const EmployerLayout = () => {
                 className="menu-trigger"
               />
               <div className="company-info">
-                {!collapsed && companyName && (
+                {
                   <Text strong className="company-name">
                     {companyName}
                   </Text>
-                )}
+                }
               </div>
             </div>
 
             <div className="header-right">
-              {searchVisible ? (
-                <Input
-                  className="search-input"
-                  placeholder={t("common.search")}
-                  prefix={<SearchOutlined />}
-                  onBlur={() => setSearchVisible(false)}
-                  autoFocus
-                />
-              ) : (
-                <Button
-                  onClick={() => setSearchVisible(true)}
-                  className="search-button"
-                  type="text"
-                  icon={<SearchOutlined />}
-                />
-              )}
-
               <Tooltip title={t("employer.header.cart")}>
                 <Badge count={0} size="small">
                   <Button
@@ -357,16 +345,15 @@ const EmployerLayout = () => {
                     icon={<UserOutlined />}
                     src={avatar}
                   />
-                  {!collapsed && (
-                    <Space direction="vertical" size={0} className="user-info">
-                      <Text strong className="username">{`${
-                        employerInfo?.firstName || ""
-                      } ${employerInfo?.lastName || ""}`}</Text>
-                      <Text type="secondary" className="user-role">
-                        {t("role.EMPLOYER")}
-                      </Text>
-                    </Space>
-                  )}
+
+                  <Space direction="vertical" size={0} className="user-info">
+                    <Text strong className="username">{`${
+                      employerInfo?.firstName || ""
+                    } ${employerInfo?.lastName || ""}`}</Text>
+                    <Text type="secondary" className="user-role">
+                      {t("role.EMPLOYER")}
+                    </Text>
+                  </Space>
                 </div>
               </Dropdown>
             </div>

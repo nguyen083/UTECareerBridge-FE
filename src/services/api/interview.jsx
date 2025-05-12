@@ -1,26 +1,22 @@
 import axios from "../../utils/axiosCustomize.jsx";
 const interview = {
   createInterview: async (data) => {
-    const response = await axios.post(`/interviews/schedule`, data);
-    return response;
+    return axios.post(`/interviews/schedule`, data);
   },
-  getListInterviewEmployer: async () => {
-    const response = await axios.get(`/interviews/employers/calendar`);
-    return response;
+  getListInterviewEmployer: async (params) => {
+    return axios.get(`/interviews/employers/calendar`, { params });
   },
   updateStatus: async (interviewId, status) => {
     return axios.put(`/interviews/${interviewId}/status?status=${status}`);
   },
   getInterviewById: async (id) => {
-    const response = await axios.get(`/interviews/${id}`);
-    return response;
+    return axios.get(`/interviews/${id}`);
   },
   submitEvaluation: async (data) => {
-    const response = await axios.post(
-      `/interviews/${data.interviewId}/evaluation`,
-      data
-    );
-    return response;
+    return axios.post(`/interviews/${data.interviewId}/evaluation`, data);
+  },
+  countInterview: async () => {
+    return axios.get(`employers/count-interview`);
   },
 };
 export default interview;
