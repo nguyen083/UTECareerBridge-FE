@@ -297,8 +297,160 @@
       },
       "lastUpdated": "Cập nhật lần cuối: Tháng 1 năm 2024"
     }
-  },
-  "employer": {
+  },  "employer": {    "evaluation": {
+      "title": "Đánh giá ứng viên",
+      "subtitle": "Đánh giá ứng viên dựa trên kết quả phỏng vấn",
+      "jobs": {
+        "title": "Danh sách công việc có đánh giá",
+        "subtitle": "Xem đánh giá ứng viên theo từng công việc",
+        "list_title": "Công việc có đánh giá",
+        "search": "Tìm kiếm công việc...",
+        "loading": "Đang tải danh sách công việc...",
+        "empty": "Không có công việc nào có đánh giá"
+      },      "compare": {
+        "title": "So sánh ứng viên",
+        "criteria": "Tiêu chí",
+        "max_limit": "Chỉ có thể so sánh tối đa 3 ứng viên",
+        "min_required": "Vui lòng chọn ít nhất 2 ứng viên để so sánh",
+        "clear_all": "Xóa lựa chọn",
+        "overall": "Đánh giá tổng quan",
+        "notes": "Ghi chú"
+      },
+      "skills": {
+        "title": "Đánh giá kỹ năng",
+        "technical": "Kỹ năng chuyên môn",
+        "communication": "Kỹ năng giao tiếp",
+        "culture_fit": "Phù hợp văn hóa",
+        "problem_solving": "Kỹ năng giải quyết vấn đề",
+        "attitude": "Thái độ ứng viên",
+        "technical_1": "Rất kém - Thiếu hiểu biết cơ bản",
+        "technical_2": "Kém - Còn nhiều thiếu sót cơ bản",
+        "technical_3": "Dưới trung bình - Hiểu biết cơ bản nhưng có hạn chế",
+        "technical_4": "Trung bình - Kiến thức chuyên môn đủ dùng",
+        "technical_5": "Khá - Năng lực chuyên môn tốt",
+        "technical_6": "Tốt - Thành thạo chuyên môn",
+        "technical_7": "Rất tốt - Kỹ năng chuyên môn mạnh",
+        "technical_8": "Xuất sắc - Chuyên môn cao cấp",
+        "technical_9": "Nổi bật - Làm chủ chuyên môn đặc biệt",
+        "technical_10": "Hoàn hảo - Chuyên môn cấp chuyên gia",
+        "communication_1": "Rất kém - Không thể giao tiếp rõ ràng",
+        "communication_2": "Kém - Khó hiểu khi giao tiếp",
+        "communication_3": "Dưới trung bình - Giao tiếp cần cải thiện",
+        "communication_4": "Trung bình - Giao tiếp ý tưởng đủ rõ",
+        "communication_5": "Khá - Kỹ năng giao tiếp tốt",
+        "communication_6": "Tốt - Giao tiếp rõ ràng và hiệu quả",
+        "communication_7": "Rất tốt - Trình bày rõ ràng và thuyết phục",
+        "communication_8": "Xuất sắc - Khả năng giao tiếp nổi trội",
+        "communication_9": "Nổi bật - Giao tiếp thành thạo",
+        "communication_10": "Hoàn hảo - Kỹ năng giao tiếp cấp chuyên gia",
+        "culture_1": "Rất kém - Không phù hợp với văn hóa đội",
+        "culture_2": "Kém - Nhiều vấn đề về sự phù hợp văn hóa",
+        "culture_3": "Dưới trung bình - Có một số lo ngại về sự phù hợp văn hóa",
+        "culture_4": "Trung bình - Sự phù hợp văn hóa chấp nhận được",
+        "culture_5": "Khá - Khả năng tương thích văn hóa tốt",
+        "culture_6": "Tốt - Phù hợp tốt với giá trị đội nhóm",
+        "culture_7": "Rất tốt - Sự phù hợp văn hóa mạnh mẽ",
+        "culture_8": "Xuất sắc - Phù hợp văn hóa nổi trội",
+        "culture_9": "Nổi bật - Phù hợp hoàn toàn với giá trị",
+        "culture_10": "Hoàn hảo - Sẽ nâng cao văn hóa đội nhóm",
+        "problem_1": "Rất kém - Không thể giải quyết vấn đề cơ bản",
+        "problem_2": "Kém - Gặp khó khăn khi giải quyết vấn đề",
+        "problem_3": "Dưới trung bình - Kỹ năng giải quyết vấn đề có hạn",
+        "problem_4": "Trung bình - Khả năng giải quyết vấn đề đủ dùng",
+        "problem_5": "Khá - Kỹ năng giải quyết vấn đề tốt",
+        "problem_6": "Tốt - Giải quyết vấn đề hiệu quả",
+        "problem_7": "Rất tốt - Khả năng phân tích mạnh mẽ",
+        "problem_8": "Xuất sắc - Giải quyết vấn đề sáng tạo và hiệu quả",
+        "problem_9": "Nổi bật - Khả năng giải quyết vấn đề đặc biệt",
+        "problem_10": "Hoàn hảo - Chuyên gia giải quyết vấn đề",
+        "attitude_1": "Rất kém - Thái độ tiêu cực",
+        "attitude_2": "Kém - Thái độ chung kém",
+        "attitude_3": "Dưới trung bình - Thái độ cần cải thiện",
+        "attitude_4": "Trung bình - Thái độ chấp nhận được",
+        "attitude_5": "Khá - Thái độ tích cực phần lớn thời gian",
+        "attitude_6": "Tốt - Thái độ tích cực nhất quán",
+        "attitude_7": "Rất tốt - Thái độ tuyệt vời và nhiệt tình",
+        "attitude_8": "Xuất sắc - Thái độ xuất sắc và động lực cao",
+        "attitude_9": "Nổi bật - Thái độ tích cực đặc biệt",
+        "attitude_10": "Hoàn hảo - Thái độ và phong thái truyền cảm hứng"
+      },
+      "notes": {        "title": "Ghi chú đánh giá",
+        "strengths": "Điểm mạnh",
+        "strengths_placeholder": "Nhập điểm mạnh của ứng viên",
+        "strengths_required": "Vui lòng nhập điểm mạnh của ứng viên",
+        "weaknesses": "Điểm cần cải thiện",
+        "weaknesses_placeholder": "Nhập điểm cần cải thiện của ứng viên",
+        "weaknesses_required": "Vui lòng nhập điểm cần cải thiện của ứng viên",
+        "overall": "Ghi chú tổng quát",
+        "overall_placeholder": "Nhập nhận xét tổng quát về ứng viên",
+        "overall_required": "Vui lòng nhập nhận xét tổng quát về ứng viên"
+      },
+      "recommendation": {        "title": "Khuyến nghị",
+        "recommend": "Đề xuất tuyển dụng",
+        "hire": "Đề xuất tuyển dụng",
+        "position": "Vị trí đề xuất",
+        "position_placeholder": "Nhập vị trí đề xuất cho ứng viên",
+        "position_required": "Vui lòng nhập vị trí đề xuất!",
+        "salary": "Mức lương đề xuất (VND)",
+        "salary_required": "Vui lòng nhập mức lương đề xuất!",
+        "notes": "Ghi chú đề xuất",
+        "notes_placeholder": "Nhập các đề xuất bổ sung (đào tạo, lộ trình phát triển...)"
+      },      "rating": {
+        "title": "Đánh giá tổng thể",
+        "excellent": "Xuất sắc",
+        "veryGood": "Rất tốt",
+        "average": "Trung bình",
+        "belowAverage": "Dưới trung bình",
+        "poor": "Kém"
+      },
+      "overall": {
+        "title": "Đánh giá tổng quát"
+      },
+      "buttons": {
+        "submit": "Gửi đánh giá",
+        "cancel": "Hủy"
+      },      "note": "Lưu ý",
+      "note_description": "Đánh giá của bạn sẽ được lưu lại để tham khảo và sử dụng cho quá trình đánh giá ứng viên.",
+      "submit": "Gửi đánh giá",
+      "success": "Đã gửi đánh giá thành công!",
+      "list": {
+        "title": "Danh sách đánh giá ứng viên",
+        "subtitle": "Tổng hợp đánh giá ứng viên cho công việc",
+        "loading": "Đang tải dữ liệu đánh giá...",
+        "empty": "Chưa có đánh giá nào cho công việc này",
+        "recommended": "Đề xuất tuyển dụng",
+        "not_recommended": "Không đề xuất",
+        "job_info": "Thông tin công việc",
+        "view_details": "Xem chi tiết",
+        "detail_title": "Chi tiết đánh giá",
+        "filter": {
+          "recommended": "Được đề xuất",
+          "not_recommended": "Không được đề xuất"
+        },
+        "table": {
+          "candidate": "Ứng viên",
+          "overall_rating": "Đánh giá chung",
+          "recommended": "Đề xuất",
+          "evaluator": "Người đánh giá", 
+          "date": "Ngày đánh giá",
+          "actions": "Hành động"
+        },
+        "stats": {
+          "average": "Đánh giá trung bình",
+          "total": "Tổng số đánh giá",
+          "recommended": "Đề xuất tuyển dụng",
+          "not_recommended": "Không đề xuất"
+        },
+        "error": {
+          "loading": "Lỗi khi tải danh sách đánh giá"
+        }
+      },
+      "error": {
+        "loading": "Lỗi khi tải thông tin phỏng vấn",
+        "invalid_id": "ID phỏng vấn không hợp lệ",
+        "submission": "Lỗi khi gửi đánh giá. Vui lòng thử lại."
+      }
+    },
     "applicant": {
       "listJob": {
         "notice": "Vui lòng đăng bài tuyển dụng để xem danh sách ứng viên"
@@ -1622,9 +1774,9 @@
         },
         "postJob": "Đăng tuyển",
         "applicant": "Ứng viên",
-        "manageJobs": "Việc làm",
-        "resumes": "Hồ sơ",
+        "manageJobs": "Việc làm",        "resumes": "Hồ sơ",
         "interview": "Phỏng vấn",
+        "evaluation": "Đánh giá ứng viên",
         "orders": "Đơn hàng",
         "messages": "Tin nhắn",
         "services": "Gói dịch vụ",

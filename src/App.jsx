@@ -21,6 +21,15 @@ const CVAnalysis = lazy(() =>
 const InterviewList = lazy(() =>
   import("./components/Employer/Interview/InterviewPage.jsx")
 );
+const CandidateEvaluation = lazy(() =>
+  import("./components/Employer/Interview/CandidateEvaluation.jsx")
+);
+const JobEvaluations = lazy(() =>
+  import("./components/Employer/Interview/JobEvaluations.jsx")
+);
+const JobEvaluationList = lazy(() =>
+  import("./components/Employer/Interview/JobEvaluationList.jsx")
+);
 const Notification = lazy(() =>
   import("./components/Generate/Notification/Notification.jsx")
 );
@@ -525,7 +534,15 @@ const App = () => {
                     <Route path="interview" element={<InterviewList />} />
                     <Route
                       path="interview/evaluation/:interviewId"
-                      element={<InterviewEvaluation />}
+                      element={<CandidateEvaluation />}
+                    />
+                    <Route
+                      path="interview/evaluations"
+                      element={<JobEvaluationList />}
+                    />
+                    <Route
+                      path="interview/evaluations/job/:jobId"
+                      element={<JobEvaluations />}
                     />
                     <Route path="list-order" element={<ListOrder />} />
                     <Route path="detail-resume" element={<DetailResume />} />

@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import {
   Calendar,
   Badge,
@@ -22,6 +24,7 @@ import {
   CalendarOutlined,
   UserOutlined,
   FieldTimeOutlined,
+  FileSearchOutlined,
 } from "@ant-design/icons";
 import { useListInterviewEmployer } from "../../../composables/interview";
 import dayjs from "dayjs";
@@ -40,6 +43,8 @@ dayjs.locale("vi");
 
 const InterviewCalendar = ({ viewMode = "calendar" }) => {
   const { data: interviewsData, isLoading } = useListInterviewEmployer();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedInterview, setSelectedInterview] = useState(null);
 
@@ -61,6 +66,7 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
         status: interview.status.toLowerCase(),
         candidate_name: interview.studentName,
         job_title: interview.jobTitle || "Job Position",
+        job_id: interview.jobId, // Thêm job_id để sử dụng cho trang đánh giá
         candidate_avatar: interview.studentAvatar,
         position: interview.position || "Position",
         key: interview.interviewId, // For table component
@@ -375,8 +381,7 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
       ],
       onFilter: (value, record) => record.status === value,
     },
-    {
-      title: "Action",
+    {      title: "Action",
       key: "action",
       render: (_, record) => (
         <Space size="middle">
@@ -389,6 +394,15 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
           >
             {record.status === "in_progress" ? "Join Now" : "Details"}
           </Button>
+          {record.job_id && (
+            <Button
+              icon={<FileSearchOutlined />}
+              size="small"
+              onClick={() => navigate(`/employer/interview/evaluations/job/${record.job_id}`)}
+            >
+              {t('employer.interview.view_evaluations') || "Xem đánh giá"}
+            </Button>
+          )}
         </Space>
       ),
     },

@@ -152,11 +152,16 @@ const EmployerLayout = () => {
       icon: <SolutionOutlined />,
       label: t("admin.employer.sidebar.resumes"),
       className: "sidebar-item",
-    },
-    {
+    },    {
       key: "/employer/interview",
       icon: <IoMdChatboxes />,
       label: t("admin.employer.sidebar.interview"),
+      className: "sidebar-item",
+    },
+    {
+      key: "/employer/interview/evaluations",
+      icon: <SolutionOutlined />,
+      label: t("admin.employer.sidebar.evaluation") || "Job Evaluation",
       className: "sidebar-item",
     },
     {

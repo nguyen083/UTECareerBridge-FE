@@ -18,5 +18,19 @@ const interview = {
   countInterview: async () => {
     return axios.get(`employers/count-interview`);
   },
+  evaluateCandidate: async (interviewId, evaluationData) => {
+    return axios.post(`/interviews/evaluation`, {
+      ...evaluationData,
+      interviewId,
+    });
+  },
+  getEvaluationsByJobId: async (jobId) => {
+    const response = await axios.get(`/interviews/evaluation/job/${jobId}`);
+    return response;
+  },
+  getJobsWithEvaluations: async () => {
+    const response = await axios.get(`/jobs/interview-complete`);
+    return response;
+  },
 };
 export default interview;

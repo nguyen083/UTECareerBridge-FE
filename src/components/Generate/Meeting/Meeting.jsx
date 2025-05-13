@@ -37,13 +37,12 @@ const VideoCall = () => {
       return "UserName_" + Math.floor(Math.random() * 10000);
     }
   };
-
   const URLToRedirect = () => {
     if (user.role === "student") {
       return navigate("/my-job");
     } else if (user.role === "employer" && interviewId) {
       interview.updateStatus(interviewId, "COMPLETED");
-      return navigate("/employer/profile");
+      return navigate(`/employer/interview/evaluation/${interviewId}`);
     } else {
       navigate("/");
     }
