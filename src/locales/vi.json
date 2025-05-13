@@ -1150,7 +1150,8 @@
     "404": "Xin lỗi, trang bạn đang tìm kiếm không tồn tại.",
     "403": "Xin lỗi, bạn không có quyền truy cập trang này.",
     "500": "Xin lỗi, trang bạn đang truy cập hiện không hoạt động.",
-    "backToHome": "Quay lại trang chủ"
+    "backToHome": "Quay lại trang chủ",
+    "loginFailed": "Đăng nhập thất bại"
   },
   "admin": {
     "search": {

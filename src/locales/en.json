@@ -1226,7 +1226,8 @@
     "404": "Sorry, the page you are looking for does not exist.",
     "403": "Sorry, you do not have permission to access this page.",
     "500": "Sorry, the page you are trying to access is currently not working.",
-    "backToHome": "Back to Home"
+    "backToHome": "Back to Home",
+    "loginFailed": "Login failed"
   },
   "admin": {
     "companyApproval": {
