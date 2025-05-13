@@ -9,10 +9,7 @@ import {
   message,
   Row,
   Col,
-  Card,
-  Typography,
-  Tooltip,
-  Avatar,
+  Divider,
 } from "antd";
 import BoxContainer from "../../Generate/BoxContainer";
 import { useState } from "react";
@@ -22,15 +19,8 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import { updateEmployerProfile } from "../../../services/apiService";
 import { setInfor } from "../../../redux/action/employerSlice";
 import { useTranslation } from "react-i18next";
-import {
-  UserOutlined,
-  EditOutlined,
-  SaveOutlined,
-  CloseOutlined,
-} from "@ant-design/icons";
+import { EditOutlined, SaveOutlined, CloseOutlined } from "@ant-design/icons";
 import "./EmployerProfile.scss";
-
-const { Text, Title } = Typography;
 
 const EmployerProfile = () => {
   const { t } = useTranslation();
@@ -78,20 +68,19 @@ const EmployerProfile = () => {
       <BoxContainer className="shadow-md profile-content">
         <Flex justify="space-between" align="center">
           <div className="title1">{t("employer.profile.title")}</div>
-          <Tooltip title={enableEdit ? t("common.edit") : t("common.cancel")}>
-            <Button
-              type={enableEdit ? "primary" : "default"}
-              icon={enableEdit ? <EditOutlined /> : <CloseOutlined />}
-              onClick={() => {
-                if (!enableEdit) handleReset();
-                else setEnableEdit(false);
-              }}
-              shape="round"
-            >
-              {enableEdit ? t("common.edit") : t("common.cancel")}
-            </Button>
-          </Tooltip>
+          <Button
+            type={enableEdit ? "primary" : "default"}
+            icon={enableEdit ? <EditOutlined /> : <CloseOutlined />}
+            onClick={() => {
+              if (!enableEdit) handleReset();
+              else setEnableEdit(false);
+            }}
+            shape="round"
+          >
+            {enableEdit ? t("common.edit") : t("common.cancel")}
+          </Button>
         </Flex>
+        <Divider />
         <div className="profile-overview">
           <Form
             onFinish={handleSubmit}

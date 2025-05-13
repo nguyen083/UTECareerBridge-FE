@@ -40,6 +40,10 @@
     "title": "Tất cả danh mục"
   },
   "common": {
+    "reset": "Đặt lại",
+    "back": "Trở lại",
+    "yes": "Có",
+    "no": "Không",
     "home": "Trang chủ",
     "save": "Lưu",
     "edit": "Chỉnh sửa",
@@ -417,6 +421,7 @@
       "save": "Lưu"
     },
     "company": {
+      "next": "Tiếp tục",
       "email": "Email công ty",
       "mediaAndDescription": "Phương tiện và mô tả",
       "basicInfo": "Thông tin cơ bản",

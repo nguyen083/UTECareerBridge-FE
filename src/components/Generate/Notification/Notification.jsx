@@ -1,4 +1,4 @@
-import { Tabs } from "antd";
+import { Divider, Tabs } from "antd";
 import BoxContainer from "../BoxContainer";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -40,9 +40,10 @@ const Notification = () => {
 
   return (
     <BoxContainer className="bg-white rounded-lg shadow-md">
-      <div className="px-6 py-4 text-2xl font-bold border-b title1 ">
+      <div className="px-6 pt-4 font-bold title1 ">
         {t("notification.title")}
       </div>
+      <Divider />
       <Tabs
         defaultActiveKey="system"
         size="large"

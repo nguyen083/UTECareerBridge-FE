@@ -710,7 +710,7 @@ const EmployerPostJob = () => {
       <BoxContainer className="shadow-md form-container">
         <Steps
           current={currentStep}
-          items={steps.map((step, index) => ({
+          items={steps.map((step) => ({
             title: step.title,
             icon: step.icon,
           }))}

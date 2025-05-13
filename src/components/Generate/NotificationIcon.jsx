@@ -72,7 +72,7 @@ const ListNotification = ({ notification, userId }) => {
           </Typography.Text>
         ),
       }}
-      className="notification-list"
+      className="notification-list min-w-[250px]"
       itemLayout="horizontal"
       dataSource={notification}
       renderItem={(item) => (

@@ -40,6 +40,9 @@
     "title": "All Categories"
   },
   "common": {
+    "next": "Next",
+    "reset": "Reset",
+    "back": "Back",
     "yes": "Yes",
     "no": "No",
     "home": "Home",
@@ -460,6 +463,8 @@
       "save": "Save"
     },
     "company": {
+      "mediaAndDescription": "Media and Description",
+      "basicInfo": "Basic Information",
       "title": "Company",
       "info": "Company Information",
       "size": "Company Size",
@@ -666,6 +671,8 @@
       }
     },
     "job": {
+      "packageSelection": "Package Selection",
+      "postJobDescription": "Post a job to find the right candidate",
       "title": "Title",
       "titleRequired": "Please enter a title",
       "location": "Work Location",
