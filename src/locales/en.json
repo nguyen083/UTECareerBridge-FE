@@ -40,6 +40,7 @@
     "title": "All Categories"
   },
   "common": {
+    "previous": "Previous",
     "next": "Next",
     "reset": "Reset",
     "back": "Back",
@@ -651,7 +652,17 @@
       }
     },
     "manageJobs": {
+      "hide": "Hide",
+      "show": "Show",
+      "totalItems": "Total items: {{total}}",
+      "createJob": "Create Job",
+      "totalJobs": "Total Jobs",
+      "activeDescription": "Job posting is currently active",
+      "inactiveDescription": "Job posting is currently hidden",
+      "pendingDescription": "Job posting is currently pending",
+      "rejectedDescription": "Job posting is currently rejected",
       "listJobs": "Job List",
+      "description": "Manage your job postings",
       "tabs": {
         "active": "Active",
         "inactive": "Hidden",
@@ -663,7 +674,7 @@
       "showConfirm": "Are you sure you want to show this job?",
       "hideShow": "Hide/Show",
       "search": {
-        "placeholder": "Search {field}",
+        "placeholder": "Search",
         "search": "Search",
         "reset": "Reset",
         "filter": "Filter",
@@ -671,6 +682,14 @@
       }
     },
     "job": {
+      "requirementsRequired": "Please enter job requirements",
+      "descriptionRequired": "Please enter job description",
+      "packageRequired": "Please select a service package",
+      "titlePlaceholder": "Enter job title",
+      "locationPlaceholder": "Enter job location",
+      "minSalaryPlaceholder": "Please enter minimum salary",
+      "maxSalaryPlaceholder": "Please enter maximum salary",
+      "quantityPlaceholder": "Please enter the number of positions",
       "packageSelection": "Package Selection",
       "postJobDescription": "Post a job to find the right candidate",
       "title": "Title",
@@ -1388,6 +1407,7 @@
     "post": {
       "table": {
         "columns": {
+          "actions": "Action",
           "no": "No.",
           "title": "Title",
           "category": "Category",

@@ -40,6 +40,7 @@
     "title": "Tất cả danh mục"
   },
   "common": {
+    "previous": "Trước",
     "reset": "Đặt lại",
     "back": "Trở lại",
     "yes": "Có",
@@ -297,7 +298,9 @@
       },
       "lastUpdated": "Cập nhật lần cuối: Tháng 1 năm 2024"
     }
-  },  "employer": {    "evaluation": {
+  },
+  "employer": {
+    "evaluation": {
       "title": "Đánh giá ứng viên",
       "subtitle": "Đánh giá ứng viên dựa trên kết quả phỏng vấn",
       "jobs": {
@@ -307,7 +310,8 @@
         "search": "Tìm kiếm công việc...",
         "loading": "Đang tải danh sách công việc...",
         "empty": "Không có công việc nào có đánh giá"
-      },      "compare": {
+      },
+      "compare": {
         "title": "So sánh ứng viên",
         "criteria": "Tiêu chí",
         "max_limit": "Chỉ có thể so sánh tối đa 3 ứng viên",
@@ -374,7 +378,8 @@
         "attitude_9": "Nổi bật - Thái độ tích cực đặc biệt",
         "attitude_10": "Hoàn hảo - Thái độ và phong thái truyền cảm hứng"
       },
-      "notes": {        "title": "Ghi chú đánh giá",
+      "notes": {
+        "title": "Ghi chú đánh giá",
         "strengths": "Điểm mạnh",
         "strengths_placeholder": "Nhập điểm mạnh của ứng viên",
         "strengths_required": "Vui lòng nhập điểm mạnh của ứng viên",
@@ -385,7 +390,8 @@
         "overall_placeholder": "Nhập nhận xét tổng quát về ứng viên",
         "overall_required": "Vui lòng nhập nhận xét tổng quát về ứng viên"
       },
-      "recommendation": {        "title": "Khuyến nghị",
+      "recommendation": {
+        "title": "Khuyến nghị",
         "recommend": "Đề xuất tuyển dụng",
         "hire": "Đề xuất tuyển dụng",
         "position": "Vị trí đề xuất",
@@ -395,7 +401,8 @@
         "salary_required": "Vui lòng nhập mức lương đề xuất!",
         "notes": "Ghi chú đề xuất",
         "notes_placeholder": "Nhập các đề xuất bổ sung (đào tạo, lộ trình phát triển...)"
-      },      "rating": {
+      },
+      "rating": {
         "title": "Đánh giá tổng thể",
         "excellent": "Xuất sắc",
         "veryGood": "Rất tốt",
@@ -409,7 +416,8 @@
       "buttons": {
         "submit": "Gửi đánh giá",
         "cancel": "Hủy"
-      },      "note": "Lưu ý",
+      },
+      "note": "Lưu ý",
       "note_description": "Đánh giá của bạn sẽ được lưu lại để tham khảo và sử dụng cho quá trình đánh giá ứng viên.",
       "submit": "Gửi đánh giá",
       "success": "Đã gửi đánh giá thành công!",
@@ -431,7 +439,7 @@
           "candidate": "Ứng viên",
           "overall_rating": "Đánh giá chung",
           "recommended": "Đề xuất",
-          "evaluator": "Người đánh giá", 
+          "evaluator": "Người đánh giá",
           "date": "Ngày đánh giá",
           "actions": "Hành động"
         },
@@ -762,7 +770,17 @@
       }
     },
     "manageJobs": {
+      "hide": "Ẩn",
+      "show": "Hiện",
+      "totalItems": "Tổng số bài đăng: {{total}}",
+      "createJob": "Tạo bài đăng",
+      "totalJobs": "Tổng số bài đăng",
+      "activeDescription": "Bài đăng tuyển dụng đang hiện",
+      "inactiveDescription": "Bài đăng tuyển dụng đã ẩn",
+      "pendingDescription": "Bài đăng tuyển dụng đang chờ",
+      "rejectedDescription": "Bài đăng tuyển dụng đã bị từ chối",
       "listJobs": "Danh sách việc làm",
+      "description": "Quản lý bài đăng tuyển dụng của bạn",
       "tabs": {
         "active": "Đang hiện",
         "inactive": "Đã ẩn",
@@ -774,7 +792,7 @@
       "showConfirm": "Bạn có chắc chắn muốn hiển thị bài đăng này?",
       "hideShow": "Ẩn/Hiện",
       "search": {
-        "placeholder": "Tìm kiếm {field}",
+        "placeholder": "Tìm kiếm",
         "search": "Tìm kiếm",
         "reset": "Đặt lại",
         "filter": "Lọc",
@@ -782,6 +800,14 @@
       }
     },
     "job": {
+      "requirementsRequired": "Vui lòng nhập yêu cầu công việc",
+      "descriptionRequired": "Vui lòng nhập mô tả công việc",
+      "packageRequired": "Vui lòng chọn gói dịch vụ",
+      "titlePlaceholder": "Nhập tiêu đề công việc",
+      "locationPlaceholder": "Nhập địa điểm làm việc",
+      "minSalaryPlaceholder": "Vui lòng nhập mức lương tối thiểu",
+      "maxSalaryPlaceholder": "Vui lòng nhập mức lương tối đa",
+      "quantityPlaceholder": "Vui lòng nhập số lượng vị trí",
       "packageSelection": "Chọn gói dịch vụ",
       "postJobDescription": "Đăng bài tuyển dụng để tìm kiếm ứng viên",
       "title": "Tiêu đề",
@@ -1588,6 +1614,7 @@
     "post": {
       "table": {
         "columns": {
+          "actions": "Hành động",
           "no": "No.",
           "title": "Tiêu đề",
           "category": "Lĩnh vực",
@@ -1774,7 +1801,8 @@
         },
         "postJob": "Đăng tuyển",
         "applicant": "Ứng viên",
-        "manageJobs": "Việc làm",        "resumes": "Hồ sơ",
+        "manageJobs": "Việc làm",
+        "resumes": "Hồ sơ",
         "interview": "Phỏng vấn",
         "evaluation": "Đánh giá ứng viên",
         "orders": "Đơn hàng",

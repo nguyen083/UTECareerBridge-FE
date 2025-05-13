@@ -13,7 +13,6 @@ import {
   Typography,
   Steps,
   Divider,
-  Tooltip,
 } from "antd";
 import BoxContainer from "../../Generate/BoxContainer";
 import dayjs from "dayjs";
@@ -700,13 +699,14 @@ const EmployerPostJob = () => {
   return (
     <>
       <BoxContainer className="shadow-md form-header">
-        <Title level={3}>{t("employer.job.postJob")}</Title>
+        <Title level={3} className="!text-text-color">
+          {t("employer.job.postJob")}
+        </Title>
         <Text type="secondary">
           {t("employer.job.postJobDescription") ||
             "Create a new job posting to find the perfect candidates"}
         </Text>
       </BoxContainer>
-
       <BoxContainer className="shadow-md form-container">
         <Steps
           current={currentStep}
@@ -714,9 +714,7 @@ const EmployerPostJob = () => {
             title: step.title,
             icon: step.icon,
           }))}
-          className="job-post-steps"
         />
-
         <Divider className="step-divider" />
 
         <Form
@@ -744,31 +742,21 @@ const EmployerPostJob = () => {
             )}
 
             {currentStep < steps.length - 1 && (
-              <Button
-                type="primary"
-                onClick={next}
-                icon={<ArrowRightOutlined />}
-              >
+              <Button type="primary" onClick={next}>
                 {t("common.next")}
+                <ArrowRightOutlined />
               </Button>
             )}
 
             {currentStep === steps.length - 1 && (
-              <Tooltip
-                title={
-                  t("employer.job.finalReviewTip") ||
-                  "Review all information before submitting"
-                }
+              <Button
+                type="primary"
+                loading={loading}
+                htmlType="submit"
+                icon={<SaveOutlined />}
               >
-                <Button
-                  type="primary"
-                  loading={loading}
-                  htmlType="submit"
-                  icon={<SaveOutlined />}
-                >
-                  {t("employer.job.post")}
-                </Button>
-              </Tooltip>
+                {t("employer.job.post")}
+              </Button>
             )}
           </div>
         </Form>
