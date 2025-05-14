@@ -1,8 +1,8 @@
 // src/components/PdfIcon.js
-const PdfIcon = () => (
+const PdfIcon = (size = 20) => (
   <svg
-    height="800px"
-    width="800px"
+    height={size}
+    width={size}
     version="1.1"
     id="Capa_1"
     xmlns="http://www.w3.org/2000/svg"
