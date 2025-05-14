@@ -49,26 +49,21 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
   const [selectedInterview, setSelectedInterview] = useState(null);
 
   const formatInterviewData = (data) => {
-    if (!data || !data.data || !data.data.content) return [];
-    return data.data.content.map((interview) => {
-      const parsedUtc = dayjs.utc(
-        interview.scheduleDate,
-        "DD/MM/YYYY HH:mm:ss"
-      );
-      const vietnamTime = parsedUtc.tz("Asia/Ho_Chi_Minh");
-      const formattedDate = vietnamTime.format("DD/MM/YYYY HH:mm:ss");
-
+    console.log(data);
+    if (!data?.content) return [];
+    return data?.content.map((interview) => {
       return {
         interview_id: interview.interviewId,
-        schedule_date: formattedDate,
+        schedule_date: interview.scheduleDate,
         duration: interview.duration,
         meeting_link: interview.meetingLink,
         status: interview.status.toLowerCase(),
         candidate_name: interview.studentName,
-        job_title: interview.jobTitle || "Job Position",
+        job_title: interview.jobTitle || t("employer.job.title"),
         job_id: interview.jobId, // Thêm job_id để sử dụng cho trang đánh giá
         candidate_avatar: interview.studentAvatar,
-        position: interview.position || "Position",
+        position:
+          interview.position || t("employer.applicant.viewDetail.position"),
         key: interview.interviewId, // For table component
       };
     });
@@ -131,11 +126,11 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
   const getStatusText = (status) => {
     switch (status) {
       case "scheduled":
-        return "Scheduled";
+        return t("employer.interview.scheduled");
       case "in_progress":
-        return "In Progress";
+        return t("employer.interview.in_progress");
       case "completed":
-        return "Completed";
+        return t("employer.interview.completed");
       default:
         return status;
     }
@@ -242,25 +237,32 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
     return (
       <div className="p-2">
         <p className="font-medium">
-          Total: {monthInterviews.length} interviews
+          {t("common.total")}: {monthInterviews.length}{" "}
+          {t("employer.interview.interviews")}
         </p>
         <ul className="p-0 list-none">
           <li>
             <Badge
               color="#1890ff"
-              text={`Scheduled: ${statusCounts.scheduled}`}
+              text={`${t("employer.interview.scheduled")}: ${
+                statusCounts.scheduled
+              }`}
             />
           </li>
           <li>
             <Badge
               color="#fa8c16"
-              text={`In Progress: ${statusCounts.in_progress}`}
+              text={`${t("employer.interview.in_progress")}: ${
+                statusCounts.in_progress
+              }`}
             />
           </li>
           <li>
             <Badge
               color="#52c41a"
-              text={`Completed: ${statusCounts.completed}`}
+              text={`${t("employer.interview.completed")}: ${
+                statusCounts.completed
+              }`}
             />
           </li>
         </ul>
@@ -311,7 +313,7 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
   // Table columns for list view
   const columns = [
     {
-      title: "Candidate",
+      title: t("employer.applicant.viewDetail.candidate"),
       dataIndex: "candidate_name",
       key: "candidate_name",
       render: (text, record) => (
@@ -332,13 +334,13 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
       ),
     },
     {
-      title: "Job Position",
+      title: t("employer.job.title"),
       dataIndex: "job_title",
       key: "job_title",
       render: (text) => <Text ellipsis={{ tooltip: text }}>{text}</Text>,
     },
     {
-      title: "Schedule Date",
+      title: t("employer.interview.schedule_time"),
       dataIndex: "schedule_date",
       key: "schedule_date",
       render: (text) => (
@@ -357,31 +359,36 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
       },
     },
     {
-      title: "Duration",
+      title: t("employer.interview.duration"),
       dataIndex: "duration",
       key: "duration",
       render: (text) => (
         <Flex align="center" gap={6}>
           <FieldTimeOutlined />
-          <Text>{text} min</Text>
+          <Text>
+            {text} {t("common.minutes")}
+          </Text>
         </Flex>
       ),
     },
     {
-      title: "Status",
+      title: t("employer.orders.status"),
       key: "status",
       dataIndex: "status",
       render: (status) => (
-        <Tag color={getStatusColor(status)}>{getStatusText(status)}</Tag>
+        <Tag className="w-fit" color={getStatusColor(status)}>
+          {getStatusText(status)}
+        </Tag>
       ),
       filters: [
-        { text: "Scheduled", value: "scheduled" },
-        { text: "In Progress", value: "in_progress" },
-        { text: "Completed", value: "completed" },
+        { text: t("employer.interview.scheduled"), value: "scheduled" },
+        { text: t("employer.interview.in_progress"), value: "in_progress" },
+        { text: t("employer.interview.completed"), value: "completed" },
       ],
       onFilter: (value, record) => record.status === value,
     },
-    {      title: "Action",
+    {
+      title: t("common.actions"),
       key: "action",
       render: (_, record) => (
         <Space size="middle">
@@ -392,15 +399,19 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
             disabled={record.status === "completed"}
             onClick={() => handleStartInterview(record)}
           >
-            {record.status === "in_progress" ? "Join Now" : "Details"}
+            {record.status === "in_progress"
+              ? t("meeting.join_link")
+              : t("common.join")}
           </Button>
           {record.job_id && (
             <Button
               icon={<FileSearchOutlined />}
               size="small"
-              onClick={() => navigate(`/employer/interview/evaluations/job/${record.job_id}`)}
+              onClick={() =>
+                navigate(`/employer/interview/evaluations/job/${record.job_id}`)
+              }
             >
-              {t('employer.interview.view_evaluations') || "Xem đánh giá"}
+              {t("employer.interview.view_evaluations")}
             </Button>
           )}
         </Space>
@@ -412,7 +423,7 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
     <div className="p-6 interview-calendar">
       <Flex className="flex-wrap items-center justify-between gap-4 mb-4">
         <Title level={4} className="m-0">
-          Interview Calendar
+          {t("employer.interview.interview_calendar")}
         </Title>
         <Flex gap={16}>
           <Badge
@@ -424,7 +435,7 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
               icon={<ClockCircleOutlined />}
               className="mr-2 bg-[#e6f7ff] border-[#91caff]"
             >
-              Scheduled
+              {t("employer.interview.scheduled")}
             </Button>
           </Badge>
           <Badge
@@ -436,7 +447,7 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
               icon={<VideoCameraOutlined />}
               className="mr-2 bg-[#fff7e6] border-[#ffcb8b]"
             >
-              In Progress
+              {t("employer.interview.in_progress")}
             </Button>
           </Badge>
           <Badge
@@ -448,7 +459,7 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
               icon={<CheckCircleOutlined />}
               className="bg-[#f6ffed] border-[#b7eb8f]"
             >
-              Completed
+              {t("employer.interview.completed")}
             </Button>
           </Badge>
         </Flex>
@@ -468,7 +479,7 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
     <div className="p-6 interview-list">
       <Flex className="flex-wrap items-center justify-between gap-4 mb-4">
         <Title level={4} className="m-0">
-          Interview Schedule
+          {t("employer.interview.interview_schedule")}
         </Title>
         <Flex gap={16}>
           <Badge
@@ -480,7 +491,7 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
               icon={<ClockCircleOutlined />}
               className="mr-2 bg-[#e6f7ff] border-[#91caff]"
             >
-              Scheduled
+              {t("employer.interview.scheduled")}
             </Button>
           </Badge>
           <Badge
@@ -492,7 +503,7 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
               icon={<VideoCameraOutlined />}
               className="mr-2 bg-[#fff7e6] border-[#ffcb8b]"
             >
-              In Progress
+              {t("employer.interview.in_progress")}
             </Button>
           </Badge>
           <Badge
@@ -504,7 +515,7 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
               icon={<CheckCircleOutlined />}
               className="bg-[#f6ffed] border-[#b7eb8f]"
             >
-              Completed
+              {t("employer.interview.completed")}
             </Button>
           </Badge>
         </Flex>
@@ -523,7 +534,7 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
       ) : (
         <Card>
           <Empty
-            description="No interviews scheduled"
+            description={t("employer.interview.no_interviews_scheduled")}
             image={Empty.PRESENTED_IMAGE_SIMPLE}
           />
         </Card>
@@ -536,11 +547,14 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
       {viewMode === "calendar" ? renderCalendarView() : renderListView()}
 
       <Modal
+        closable={false}
         centered
         title={
           selectedInterview
-            ? getStatusText(selectedInterview.status) + " Interview"
-            : "Interview Details"
+            ? getStatusText(selectedInterview.status) +
+              " " +
+              t("employer.interview.interview")
+            : t("employer.interview.interview_details")
         }
         open={isModalVisible}
         onOk={
@@ -551,8 +565,8 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
         onCancel={() => setIsModalVisible(false)}
         okText={
           selectedInterview && selectedInterview.status !== "completed"
-            ? "Start Interview"
-            : "OK"
+            ? t("employer.interview.start_interview")
+            : t("employer.interview.ok")
         }
         okButtonProps={{
           type:
@@ -566,7 +580,7 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
               <VideoCameraOutlined />
             ) : null,
         }}
-        cancelText="Close"
+        cancelText={t("common.close")}
         className="interview-modal"
       >
         {selectedInterview && (
@@ -582,8 +596,9 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
                     {selectedInterview.candidate_name}
                   </Title>
                   <Text type="secondary">
-                    {selectedInterview.position || "Candidate"} •{" "}
-                    {selectedInterview.job_title}
+                    {selectedInterview.position ||
+                      t("employer.applicant.viewDetail.candidate")}{" "}
+                    • {selectedInterview.job_title}
                   </Text>
                 </div>
                 <Tag
@@ -600,7 +615,7 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
                 <CalendarOutlined className="text-lg text-blue-500" />
                 <div>
                   <Text strong className="block">
-                    Schedule Time
+                    {t("employer.interview.schedule_time")}
                   </Text>
                   <Text>
                     {dayjs(
@@ -633,9 +648,11 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
                 <FieldTimeOutlined className="text-lg text-green-500" />
                 <div>
                   <Text strong className="block">
-                    Duration
+                    {t("employer.interview.duration")}
                   </Text>
-                  <Text>{selectedInterview.duration} minutes</Text>
+                  <Text>
+                    {selectedInterview.duration} {t("common.minutes")}
+                  </Text>
                 </div>
               </Flex>
 
@@ -643,7 +660,7 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
                 <VideoCameraOutlined className="text-lg text-purple-500" />
                 <div>
                   <Text strong className="block">
-                    Meeting Link
+                    {t("employer.interview.meeting_link")}
                   </Text>
                   <a
                     className="text-blue-500 hover:underline"
@@ -667,7 +684,7 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
                 className="mt-6"
                 size="large"
               >
-                Join Interview Now
+                {t("employer.interview.join_interview_now")}
               </Button>
             )}
           </div>

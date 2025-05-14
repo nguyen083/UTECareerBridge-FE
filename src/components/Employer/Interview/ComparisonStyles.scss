@@ -1,11 +1,8 @@
 // Comparison styles
 // Modal styles
-.ant-modal {
-  .ant-modal-content {
-    border-radius: 12px;
-    overflow: hidden;
-  }
 
+// Candidate comparison modal
+.candidate-comparison-modal {
   .ant-modal-header {
     padding: 16px 24px;
     background: linear-gradient(90deg, #1677ff, #4096ff);
@@ -21,22 +18,8 @@
       }
     }
   }
-
-  .ant-modal-body {
-    padding: 24px;
-  }
-
-  .ant-modal-footer {
-    border-top: 1px solid #f0f0f0;
-    padding: 12px 24px;
-  }
-}
-
-// Candidate comparison modal
-.candidate-comparison-modal {
   .ant-modal-content {
     max-width: 100%;
-    max-height: 90vh;
     overflow-y: auto;
 
     &::-webkit-scrollbar {
@@ -50,6 +33,10 @@
   }
   .ant-modal-body {
     padding: 30px 40px;
+  }
+  .ant-modal-footer {
+    border-top: 1px solid #f0f0f0;
+    padding: 12px 24px;
   }
   // Ensure the content uses the full available width
   .comparison-row {

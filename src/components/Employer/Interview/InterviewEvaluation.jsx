@@ -1,12 +1,32 @@
 import { useState, useEffect } from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
-import { Card, Typography, Form, Input, Rate, Button, Space, Divider, message, Select, Avatar, Flex, Tag } from "antd";
-import { UserOutlined, CheckCircleOutlined, StarOutlined, FileTextOutlined, TeamOutlined, StarFilled } from "@ant-design/icons";
+import {
+  Card,
+  Typography,
+  Form,
+  Input,
+  Rate,
+  Button,
+  Space,
+  Divider,
+  message,
+  Select,
+  Avatar,
+  Flex,
+  Tag,
+} from "antd";
+import {
+  UserOutlined,
+  StarOutlined,
+  FileTextOutlined,
+  TeamOutlined,
+  StarFilled,
+} from "@ant-design/icons";
 import BoxContainer from "../../Generate/BoxContainer";
 import { useTranslation } from "react-i18next";
 import interview from "../../../services/api/interview";
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text } = Typography;
 const { TextArea } = Input;
 const { Option } = Select;
 
@@ -21,7 +41,6 @@ const InterviewEvaluation = () => {
 
   // Check if coming from a meeting
   const fromMeeting = location.state?.fromMeeting || false;
-  const roomId = location.state?.roomId;
 
   useEffect(() => {
     // Fetch interview details when component mounts
@@ -59,7 +78,7 @@ const InterviewEvaluation = () => {
 
       // Call API to save evaluation
       const response = await interview.submitEvaluation(evaluationData);
-      
+
       if (response && response.status === "OK") {
         message.success("Evaluation submitted successfully");
         // Navigate back to interview list after successful submission
@@ -82,11 +101,15 @@ const InterviewEvaluation = () => {
   return (
     <Flex vertical gap={20}>
       <BoxContainer className="shadow-md">
-        <Title level={4}>{t('employer.interview.evaluation.title') || "Candidate Evaluation"}</Title>
+        <Title level={4}>
+          {t("employer.interview.evaluation.title") || "Candidate Evaluation"}
+        </Title>
         <Text type="secondary">
-          {fromMeeting ? 
-            (t('employer.interview.evaluation.fromMeetingDescription') || "Please evaluate the candidate you just interviewed.") : 
-            (t('employer.interview.evaluation.description') || "Evaluate candidate performance after the interview.")}
+          {fromMeeting
+            ? t("employer.interview.evaluation.fromMeetingDescription") ||
+              "Please evaluate the candidate you just interviewed."
+            : t("employer.interview.evaluation.description") ||
+              "Evaluate candidate performance after the interview."}
         </Text>
       </BoxContainer>
 
@@ -94,10 +117,10 @@ const InterviewEvaluation = () => {
         {interviewData ? (
           <Card bordered={false}>
             <Flex align="center" gap={16} className="mb-6">
-              <Avatar 
-                size={64} 
-                icon={<UserOutlined />} 
-                src={interviewData.candidateAvatar} 
+              <Avatar
+                size={64}
+                icon={<UserOutlined />}
+                src={interviewData.candidateAvatar}
               />
               <div>
                 <Title level={4} style={{ margin: 0 }}>
@@ -120,111 +143,196 @@ const InterviewEvaluation = () => {
                 communicationRating: 3,
                 cultureFitRating: 3,
                 overallRating: 3,
-                hiringDecision: "consider"
+                hiringDecision: "consider",
               }}
             >
               <Flex vertical gap={24}>
                 <div className="evaluation-section">
                   <Title level={5}>
-                    <StarOutlined /> {t('employer.interview.evaluation.skills') || "Technical Skills"}
+                    <StarOutlined />{" "}
+                    {t("employer.interview.evaluation.skills") ||
+                      "Technical Skills"}
                   </Title>
                   <Form.Item
                     name="technicalSkillRating"
-                    label={t('employer.interview.evaluation.skillsRating') || "Technical Skills Rating"}
-                    rules={[{ required: true, message: "Please rate the candidate's technical skills" }]}
+                    label={
+                      t("employer.interview.evaluation.skillsRating") ||
+                      "Technical Skills Rating"
+                    }
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please rate the candidate's technical skills",
+                      },
+                    ]}
                   >
                     <Rate allowHalf />
                   </Form.Item>
                   <Form.Item
                     name="technicalFeedback"
-                    label={t('employer.interview.evaluation.skillsFeedback') || "Technical Skills Feedback"}
+                    label={
+                      t("employer.interview.evaluation.skillsFeedback") ||
+                      "Technical Skills Feedback"
+                    }
                   >
-                    <TextArea rows={3} placeholder="Comments about candidate's technical skills and knowledge..." />
+                    <TextArea
+                      rows={3}
+                      placeholder="Comments about candidate's technical skills and knowledge..."
+                    />
                   </Form.Item>
                 </div>
 
                 <div className="evaluation-section">
                   <Title level={5}>
-                    <FileTextOutlined /> {t('employer.interview.evaluation.communication') || "Communication Skills"}
+                    <FileTextOutlined />{" "}
+                    {t("employer.interview.evaluation.communication") ||
+                      "Communication Skills"}
                   </Title>
                   <Form.Item
                     name="communicationRating"
-                    label={t('employer.interview.evaluation.communicationRating') || "Communication Rating"}
-                    rules={[{ required: true, message: "Please rate the candidate's communication skills" }]}
+                    label={
+                      t("employer.interview.evaluation.communicationRating") ||
+                      "Communication Rating"
+                    }
+                    rules={[
+                      {
+                        required: true,
+                        message:
+                          "Please rate the candidate's communication skills",
+                      },
+                    ]}
                   >
                     <Rate allowHalf />
                   </Form.Item>
                   <Form.Item
                     name="communicationFeedback"
-                    label={t('employer.interview.evaluation.communicationFeedback') || "Communication Feedback"}
+                    label={
+                      t(
+                        "employer.interview.evaluation.communicationFeedback"
+                      ) || "Communication Feedback"
+                    }
                   >
-                    <TextArea rows={3} placeholder="Comments about candidate's communication skills..." />
+                    <TextArea
+                      rows={3}
+                      placeholder="Comments about candidate's communication skills..."
+                    />
                   </Form.Item>
                 </div>
 
                 <div className="evaluation-section">
                   <Title level={5}>
-                    <TeamOutlined /> {t('employer.interview.evaluation.cultureFit') || "Culture Fit"}
+                    <TeamOutlined />{" "}
+                    {t("employer.interview.evaluation.cultureFit") ||
+                      "Culture Fit"}
                   </Title>
                   <Form.Item
                     name="cultureFitRating"
-                    label={t('employer.interview.evaluation.cultureFitRating') || "Culture Fit Rating"}
-                    rules={[{ required: true, message: "Please rate how well the candidate would fit your company culture" }]}
+                    label={
+                      t("employer.interview.evaluation.cultureFitRating") ||
+                      "Culture Fit Rating"
+                    }
+                    rules={[
+                      {
+                        required: true,
+                        message:
+                          "Please rate how well the candidate would fit your company culture",
+                      },
+                    ]}
                   >
                     <Rate allowHalf />
                   </Form.Item>
                   <Form.Item
                     name="cultureFitFeedback"
-                    label={t('employer.interview.evaluation.cultureFitFeedback') || "Culture Fit Feedback"}
+                    label={
+                      t("employer.interview.evaluation.cultureFitFeedback") ||
+                      "Culture Fit Feedback"
+                    }
                   >
-                    <TextArea rows={3} placeholder="Comments about candidate's cultural fit..." />
+                    <TextArea
+                      rows={3}
+                      placeholder="Comments about candidate's cultural fit..."
+                    />
                   </Form.Item>
                 </div>
 
                 <div className="evaluation-section">
                   <Title level={5}>
-                    <StarFilled /> {t('employer.interview.evaluation.overall') || "Overall Assessment"}
+                    <StarFilled />{" "}
+                    {t("employer.interview.evaluation.overall") ||
+                      "Overall Assessment"}
                   </Title>
                   <Form.Item
                     name="overallRating"
-                    label={t('employer.interview.evaluation.overallRating') || "Overall Rating"}
-                    rules={[{ required: true, message: "Please provide an overall rating for the candidate" }]}
+                    label={
+                      t("employer.interview.evaluation.overallRating") ||
+                      "Overall Rating"
+                    }
+                    rules={[
+                      {
+                        required: true,
+                        message:
+                          "Please provide an overall rating for the candidate",
+                      },
+                    ]}
                   >
                     <Rate allowHalf />
                   </Form.Item>
 
                   <Form.Item
                     name="hiringDecision"
-                    label={t('employer.interview.evaluation.hiringDecision') || "Hiring Decision"}
-                    rules={[{ required: true, message: "Please make a hiring decision" }]}
+                    label={
+                      t("employer.interview.evaluation.hiringDecision") ||
+                      "Hiring Decision"
+                    }
+                    rules={[
+                      {
+                        required: true,
+                        message: "Please make a hiring decision",
+                      },
+                    ]}
                   >
                     <Select>
                       <Option value="hire">
-                        <Tag color="green">{t('employer.interview.evaluation.hire') || "Hire"}</Tag>
+                        <Tag color="green">
+                          {t("employer.interview.evaluation.hire") || "Hire"}
+                        </Tag>
                       </Option>
                       <Option value="consider">
-                        <Tag color="blue">{t('employer.interview.evaluation.consider') || "Consider"}</Tag>
+                        <Tag color="blue">
+                          {t("employer.interview.evaluation.consider") ||
+                            "Consider"}
+                        </Tag>
                       </Option>
                       <Option value="reject">
-                        <Tag color="red">{t('employer.interview.evaluation.reject') || "Reject"}</Tag>
+                        <Tag color="red">
+                          {t("employer.interview.evaluation.reject") ||
+                            "Reject"}
+                        </Tag>
                       </Option>
                     </Select>
                   </Form.Item>
                   <Form.Item
                     name="additionalFeedback"
-                    label={t('employer.interview.evaluation.additionalFeedback') || "Additional Feedback"}
+                    label={
+                      t("employer.interview.evaluation.additionalFeedback") ||
+                      "Additional Feedback"
+                    }
                   >
-                    <TextArea rows={4} placeholder="Any additional comments or feedback..." />
+                    <TextArea
+                      rows={4}
+                      placeholder="Any additional comments or feedback..."
+                    />
                   </Form.Item>
                 </div>
 
                 <Form.Item>
                   <Space>
                     <Button type="primary" htmlType="submit" loading={loading}>
-                      {t('employer.interview.evaluation.submit') || "Submit Evaluation"}
+                      {t("employer.interview.evaluation.submit") ||
+                        "Submit Evaluation"}
                     </Button>
                     <Button onClick={handleCancel}>
-                      {t('common.cancel') || "Cancel"}
+                      {t("common.cancel") || "Cancel"}
                     </Button>
                   </Space>
                 </Form.Item>
@@ -232,9 +340,11 @@ const InterviewEvaluation = () => {
             </Form>
           </Card>
         ) : (
-          <div className="text-center p-8">
+          <div className="p-8 text-center">
             <Text type="secondary">
-              {loading ? "Loading interview details..." : "Interview information not available"}
+              {loading
+                ? "Loading interview details..."
+                : "Interview information not available"}
             </Text>
           </div>
         )}

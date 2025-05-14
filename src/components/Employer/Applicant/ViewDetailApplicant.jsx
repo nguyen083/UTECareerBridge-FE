@@ -18,7 +18,7 @@ import BoxContainer from "../../Generate/BoxContainer";
 import ViewCV from "../../Student/CV/ViewCV";
 import styles from "./ViewDetailApplicant.module.scss";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import { convertStatus } from "../../../services/apiService";
 import { useEffect, useState } from "react";
 import "./ModalInterview.scss";
@@ -28,6 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loading, stop } from "../../../redux/action/webSlice";
 import { useTranslation } from "react-i18next";
 import interview from "../../../services/api/interview";
+import { useJobDetail } from "../../../composables/job";
 
 const { Text } = Typography;
 const ViewDetailApplicant = () => {
@@ -67,7 +68,6 @@ const ViewDetailApplicant = () => {
                   icon={<CheckOutlined />}
                   size="large"
                   type="primary"
-                  className={styles.btn_success}
                   onClick={() => setOpen(true)}
                 >
                   {t("employer.applicant.viewDetail.approve")}
@@ -76,7 +76,6 @@ const ViewDetailApplicant = () => {
                   <Button
                     icon={<CloseOutlined />}
                     size="large"
-                    type="primary"
                     danger
                     onClick={handleReject}
                   >
@@ -119,6 +118,8 @@ export const ModalInterview = ({
   const dispatch = useDispatch();
   const load = useSelector((state) => state.web.loading);
   const { id } = useParams();
+  const { data: jobData } = useJobDetail(location.state?.jobId);
+  const navigate = useNavigate();
 
   const generateLink = () => {
     const link =
@@ -129,6 +130,15 @@ export const ModalInterview = ({
       Math.floor(100000 + Math.random() * 900000);
     return link;
   };
+
+  useEffect(() => {
+    if (jobData && open) {
+      form.setFieldsValue({
+        jobPosition: jobData.jobTitle,
+        interviewDate: dayjs(),
+      });
+    }
+  }, [open]);
 
   const handleOk = () => {
     form.submit();
@@ -156,7 +166,6 @@ export const ModalInterview = ({
         durationMinutes: values.durationMinutes,
         attendeeEmails: [email],
       };
-      console.log(payload);
       dispatch(loading());
       interview
         .createInterview(payload)
@@ -184,6 +193,8 @@ export const ModalInterview = ({
             .finally(() => {
               dispatch(stop());
               form.resetFields();
+              setOpen(false);
+              navigate("/employer/applicant/list-job");
             });
         });
     } else {
