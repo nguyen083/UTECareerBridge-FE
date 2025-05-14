@@ -1177,6 +1177,7 @@
       },
       "fullNameLabel": "Full Name",
       "jobTitleLabel": "Job Title - Experience",
+      "objectiveLabel": "CAREER OBJECTIVES",
       "phoneLabel": "Phone:",
       "emailLabel": "Email:",
       "addressLabel": "Address:",
@@ -1191,6 +1192,9 @@
       "scoreLabel": "Score:"
     },
     "builder": {
+      "sectionAlreadyExists": "This section already exists",
+      "newSection": "NEW SECTION",
+      "addNewSection": "Add New Section",
       "edit": "Edit CV",
       "view": "View CV",
       "delete": "Delete CV",

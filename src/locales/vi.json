@@ -1137,6 +1137,7 @@
       },
       "fullNameLabel": "Họ và tên",
       "jobTitleLabel": "Chức danh - Kinh nghiệm",
+      "objectiveLabel": "MỤC TIÊU NGHỀ NGHIỆP",
       "phoneLabel": "Số điện thoại:",
       "emailLabel": "Email:",
       "addressLabel": "Địa chỉ:",
@@ -1151,6 +1152,9 @@
       "scoreLabel": "Điểm:"
     },
     "builder": {
+      "sectionAlreadyExists": "Mục này đã tồn tại",
+      "newSection": "MỤC MỚI",
+      "addNewSection": "Thêm mục mới",
       "edit": "Chỉnh sửa hồ sơ",
       "view": "Xem hồ sơ",
       "delete": "Xóa hồ sơ",

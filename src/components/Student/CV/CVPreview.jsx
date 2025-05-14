@@ -5,13 +5,10 @@ import {
   useState,
   useEffect,
 } from "react";
-import { Typography } from "antd";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import { useTranslation } from "react-i18next";
 import "./CVPreview.scss";
-
-const { Paragraph } = Typography;
 
 // Helper function to convert skill level to percentage
 const getLevelPercentage = (level) => {
@@ -498,17 +495,17 @@ const CVPreview = forwardRef(
     const themeColor = currentTemplate?.color || "#f57c00";
 
     // Helper function to render custom sections
-    const renderCustomSections = () => (
+    const renderCustomSectionsModern = () => (
       <>
         {sections.map((section) => (
-          <div key={section.id} className="cv-section">
+          <div key={section.id} className="p-6 bg-white rounded-lg shadow-md">
             <div
-              className="section-title"
-              style={{ borderBottomColor: themeColor }}
+              className="pb-2 mb-4 text-xl font-bold"
+              style={{ borderBottom: `2px solid ${themeColor}` }}
             >
               {section.title}
             </div>
-            <div className="section-content custom-section-content">
+            <div className="space-y-6">
               {section.content?.items?.length > 0 ? (
                 section.content.items.map((item, index) => (
                   <div key={index} className="custom-item">
@@ -528,8 +525,49 @@ const CVPreview = forwardRef(
                   </div>
                 ))
               ) : (
-                <div>
-                  {section.content?.text || "Nội dung chưa được cập nhật."}
+                <pre className="break-words whitespace-pre-wrap">
+                  {section.content?.text}
+                </pre>
+              )}
+            </div>
+          </div>
+        ))}
+      </>
+    );
+    const renderCustomSectionsElegant = () => (
+      <>
+        {sections.map((section) => (
+          <div key={section.id} className="mb-6">
+            <div
+              className="pb-2 mb-3 text-lg font-bold border-b-2"
+              style={{ borderColor: themeColor, color: themeColor }}
+            >
+              {section.title}
+            </div>
+            <div className="space-y-4">
+              {section.content?.items?.length > 0 ? (
+                section.content.items.map((item, index) => (
+                  <div key={index} className="custom-item">
+                    {item.title && (
+                      <div className="custom-item-title">{item.title}</div>
+                    )}
+                    {item.subtitle && (
+                      <div className="custom-item-subtitle">
+                        {item.subtitle}
+                      </div>
+                    )}
+                    {item.description && (
+                      <div className="custom-item-description">
+                        {item.description}
+                      </div>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <div className="relative pl-5">
+                  <pre className="mt-1 text-sm break-words whitespace-pre-wrap">
+                    {section.content?.text}
+                  </pre>
                 </div>
               )}
             </div>
@@ -624,9 +662,9 @@ const CVPreview = forwardRef(
             {t(titles.objective)}
           </div>
           <div className="prose max-w-none">
-            <Paragraph>
+            <pre className="break-words whitespace-pre-wrap">
               {personalInfo.objective || t("cv.labels.objectiveLabel")}
-            </Paragraph>
+            </pre>
           </div>
         </div>
 
@@ -703,7 +741,9 @@ const CVPreview = forwardRef(
                   <div className="mb-2 italic font-medium text-gray-700">
                     {exp.jobTitle}
                   </div>
-                  <div className="text-gray-600">{exp.description}</div>
+                  <pre className="text-gray-600 break-words whitespace-pre-wrap">
+                    {exp.description}
+                  </pre>
                 </div>
               ))}
             </div>
@@ -770,7 +810,9 @@ const CVPreview = forwardRef(
                   <div className="mb-2 italic font-medium text-gray-700">
                     {cert.organization}
                   </div>
-                  <div className="text-gray-600">{cert.description}</div>
+                  <pre className="text-gray-600 break-words whitespace-pre-wrap">
+                    {cert.description}
+                  </pre>
                 </div>
               ))}
             </div>
@@ -778,7 +820,7 @@ const CVPreview = forwardRef(
         )}
 
         {/* Custom Sections */}
-        {renderCustomSections()}
+        {renderCustomSectionsModern()}
       </div>
     );
 
@@ -871,10 +913,10 @@ const CVPreview = forwardRef(
                 {t(titles.objective)}
               </div>
               <div className="prose max-w-none">
-                <Paragraph>
+                <pre className="break-words whitespace-pre-wrap">
                   {personalInfo.objective ||
                     t("cv.sections.objectivePlaceholder")}
-                </Paragraph>
+                </pre>
               </div>
             </div>
 
@@ -991,7 +1033,9 @@ const CVPreview = forwardRef(
                       <div className="mb-2 italic font-medium">
                         {exp.jobTitle}
                       </div>
-                      <div className="text-gray-700">{exp.description}</div>
+                      <pre className="text-gray-700 break-words whitespace-pre-wrap">
+                        {exp.description}
+                      </pre>
                     </div>
                   ))}
                 </div>
@@ -1026,9 +1070,9 @@ const CVPreview = forwardRef(
                         </div>
                       </div>
                       {cert.description && (
-                        <div className="mt-1 text-sm italic text-gray-600">
+                        <pre className="mt-1 text-sm italic text-gray-600 break-words whitespace-pre-wrap">
                           {cert.description}
-                        </div>
+                        </pre>
                       )}
                     </div>
                   ))}
@@ -1037,7 +1081,7 @@ const CVPreview = forwardRef(
             )}
 
             {/* Custom Sections */}
-            {renderCustomSections()}
+            {renderCustomSectionsElegant()}
           </div>
         </div>
       </>
