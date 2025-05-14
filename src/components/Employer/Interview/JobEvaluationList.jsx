@@ -1,39 +1,38 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { 
-  Card, 
-  Typography, 
-  Button, 
-  Empty, 
-  Spin, 
-  Tag, 
-  Space, 
-  Flex, 
+import {
+  Card,
+  Typography,
+  Button,
+  Empty,
+  Spin,
+  Tag,
+  Space,
+  Flex,
   Tooltip,
   Input,
   Row,
   Col,
   Badge,
-  Avatar
+  Avatar,
 } from "antd";
-import { 
-  FileSearchOutlined, 
-  SearchOutlined, 
+import {
+  FileSearchOutlined,
+  SearchOutlined,
   BarChartOutlined,
   SolutionOutlined,
   EnvironmentOutlined,
   UserOutlined,
   CalendarOutlined,
   IdcardOutlined,
-  DollarOutlined
+  DollarOutlined,
 } from "@ant-design/icons";
 import BoxContainer from "../../Generate/BoxContainer";
 import interview from "../../../services/api/interview";
 import "./CandidateEvaluation.scss";
 
 const { Title, Text } = Typography;
-const { Search } = Input;
 
 const JobEvaluationList = () => {
   const { t } = useTranslation();
@@ -49,11 +48,16 @@ const JobEvaluationList = () => {
         setLoading(true);
         // Cần thêm API này ở backend hoặc thay thế bằng API hiện có
         const response = await interview.getJobsWithEvaluations();
-        
+
         console.log("API Response:", response);
-        
-        if (response && response.status === "OK") {          // Kiểm tra cấu trúc dữ liệu API trả về
-          if (response.data && typeof response.data === 'object' && Array.isArray(response.data.jobResponses)) {
+
+        if (response && response.status === "OK") {
+          // Kiểm tra cấu trúc dữ liệu API trả về
+          if (
+            response.data &&
+            typeof response.data === "object" &&
+            Array.isArray(response.data.jobResponses)
+          ) {
             // Cấu trúc API mới: { jobResponses: [ ...jobs ], totalPages: number, totalElements: number }
             setJobs(response.data.jobResponses);
             console.log("Jobs array:", response.data.jobResponses);
@@ -63,7 +67,10 @@ const JobEvaluationList = () => {
             console.log("Jobs array (legacy format):", response.data);
           } else {
             // Không tìm thấy dữ liệu hợp lệ
-            console.error("API response data is not in expected format:", response.data);
+            console.error(
+              "API response data is not in expected format:",
+              response.data
+            );
             setJobs([]);
           }
         }
@@ -81,56 +88,66 @@ const JobEvaluationList = () => {
   const handleSearch = (value) => {
     setSearchText(value);
   };
-  
+
   // Filter jobs dựa trên từ khóa tìm kiếm, đảm bảo jobs là một mảng
-  const filteredJobs = Array.isArray(jobs) 
-    ? jobs.filter(job => {
+  const filteredJobs = Array.isArray(jobs)
+    ? jobs.filter((job) => {
         const searchTermLower = searchText.toLowerCase();
         // Tìm kiếm trong cả title và thông tin công ty với cấu trúc dữ liệu mới
-        const jobTitle = job.jobTitle || job.title || '';
-        const companyName = job.employerResponse?.companyName || job.company || '';
-        const jobLocation = job.jobLocation || job.location || '';
-        
-        return jobTitle.toLowerCase().includes(searchTermLower) || 
-               companyName.toLowerCase().includes(searchTermLower) ||
-               jobLocation.toLowerCase().includes(searchTermLower);
+        const jobTitle = job.jobTitle || job.title || "";
+        const companyName =
+          job.employerResponse?.companyName || job.company || "";
+        const jobLocation = job.jobLocation || job.location || "";
+
+        return (
+          jobTitle.toLowerCase().includes(searchTermLower) ||
+          companyName.toLowerCase().includes(searchTermLower) ||
+          jobLocation.toLowerCase().includes(searchTermLower)
+        );
       })
-    : [];  // Render thẻ job
+    : []; // Render thẻ job
   const renderJobCard = (job) => {
     // Xử lý cấu trúc dữ liệu mới từ API
     const jobId = job.jobId || job.id || Math.random().toString();
-    const jobTitle = job.jobTitle || job.title || '';
-    const companyName = job.employerResponse?.companyName || job.company || '';
-    const jobLocation = job.jobLocation || job.location || '';
-    const jobType = job.jobLevel?.nameLevel || job.jobType || '';
+    const jobTitle = job.jobTitle || job.title || "";
+    const companyName = job.employerResponse?.companyName || job.company || "";
+    const jobLocation = job.jobLocation || job.location || "";
+    const jobType = job.jobLevel?.nameLevel || job.jobType || "";
     const evaluationCount = job.evaluationCount || 0;
-    const companyLogo = job.employerResponse?.companyLogo || '';
-    const jobMinSalary = job.jobMinSalary || '';
-    const jobMaxSalary = job.jobMaxSalary || '';
-    const jobDeadline = job.jobDeadline || '';
-    
+    const companyLogo = job.employerResponse?.companyLogo || "";
+    const jobMinSalary = job.jobMinSalary || "";
+    const jobMaxSalary = job.jobMaxSalary || "";
+    const jobDeadline = job.jobDeadline || "";
+
     // Hiển thị lương nếu có
-    const salaryText = (jobMinSalary && jobMaxSalary) 
-      ? `${jobMinSalary} - ${jobMaxSalary}`
-      : jobMinSalary || jobMaxSalary || "Thương lượng";
-    
+    const salaryText =
+      jobMinSalary && jobMaxSalary
+        ? `${jobMinSalary} - ${jobMaxSalary}`
+        : jobMinSalary || jobMaxSalary || "Thương lượng";
+
     return (
       <Col xs={24} sm={12} md={8} lg={8} xl={6} key={jobId}>
-        <Card 
-          className="job-evaluation-card" 
+        <Card
+          className="job-evaluation-card"
           hoverable
           cover={
-            <div className="card-cover" style={{ 
-              height: '120px', 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center' 
-            }}>
-              <SolutionOutlined className="card-icon" style={{ fontSize: '40px', color: '#1677ff' }} />
+            <div
+              className="card-cover"
+              style={{
+                height: "120px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <SolutionOutlined
+                className="card-icon"
+                style={{ fontSize: "40px", color: "#1677ff" }}
+              />
               {companyLogo && (
-                <Avatar 
-                  className="company-logo" 
-                  size={36} 
+                <Avatar
+                  className="company-logo"
+                  size={36}
                   src={companyLogo}
                   icon={<UserOutlined />}
                 />
@@ -139,53 +156,75 @@ const JobEvaluationList = () => {
           }
           actions={[
             <Button
+              key={jobId}
               type="primary"
               icon={<FileSearchOutlined />}
-              onClick={() => navigate(`/employer/interview/evaluations/job/${jobId}`)}
+              onClick={() =>
+                navigate(`/employer/interview/evaluations/job/${jobId}`)
+              }
             >
-              {t("employer.evaluation.list.view_evaluations") || "Xem đánh giá"}
-            </Button>
+              {t("employer.evaluation.list.view_evaluations")}
+            </Button>,
           ]}
         >
           <Card.Meta
-            title={<Text strong style={{ fontSize: '16px' }}>{jobTitle}</Text>}
+            title={
+              <Text strong style={{ fontSize: "16px" }}>
+                {jobTitle}
+              </Text>
+            }
             description={
-              <Space direction="vertical" size={4} style={{ width: '100%' }}>
+              <Space direction="vertical" size={4} style={{ width: "100%" }}>
                 <div className="job-meta-info">
                   <IdcardOutlined className="meta-icon" />
-                  <Text type="secondary" ellipsis>{companyName}</Text>
+                  <Text type="secondary" ellipsis>
+                    {companyName}
+                  </Text>
                 </div>
-                
+
                 <div className="job-meta-info">
                   <EnvironmentOutlined className="meta-icon" />
-                  <Text type="secondary" ellipsis>{jobLocation}</Text>
+                  <Text type="secondary" ellipsis>
+                    {jobLocation}
+                  </Text>
                 </div>
-                
+
                 {jobDeadline && (
                   <div className="job-meta-info">
                     <CalendarOutlined className="meta-icon" />
                     <Text type="secondary">Hạn: {jobDeadline}</Text>
                   </div>
                 )}
-                
-                <div style={{ 
-                  marginTop: '10px', 
-                  display: 'flex', 
-                  justifyContent: 'space-between', 
-                  alignItems: 'center' 
-                }}>
-                  <Tag color="blue" className="job-tag">{jobType}</Tag>
-                  <Tooltip title={t("employer.evaluation.list.table.total_evaluations") || "Số đánh giá"}>
-                    <Badge 
-                      className="evaluation-badge" 
-                      count={evaluationCount} 
-                      style={{ backgroundColor: '#52c41a' }} 
+
+                <div
+                  style={{
+                    marginTop: "10px",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <Tag color="blue" className="job-tag">
+                    {jobType}
+                  </Tag>
+                  <Tooltip
+                    title={t(
+                      "employer.evaluation.list.table.total_evaluations"
+                    )}
+                  >
+                    <Badge
+                      className="evaluation-badge !w-fit"
+                      count={evaluationCount}
+                      style={{ backgroundColor: "#52c41a" }}
                     />
                   </Tooltip>
                 </div>
-                
-                <div className="job-meta-info" style={{ marginTop: '6px' }}>
-                  <DollarOutlined className="meta-icon" style={{ color: '#52c41a' }} />
+
+                <div className="job-meta-info" style={{ marginTop: "6px" }}>
+                  <DollarOutlined
+                    className="meta-icon"
+                    style={{ color: "#52c41a" }}
+                  />
                   <Text type="secondary">{salaryText}</Text>
                 </div>
               </Space>
@@ -199,25 +238,23 @@ const JobEvaluationList = () => {
     <Flex vertical gap={20}>
       <BoxContainer className="shadow-md">
         <Flex align="center" gap={16}>
-          <div 
+          <div
             style={{
               width: 50,
               height: 50,
-              borderRadius: '50%',
-              backgroundColor: '#e6f7ff',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
+              borderRadius: "50%",
+              backgroundColor: "#e6f7ff",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <SolutionOutlined style={{ fontSize: '28px', color: '#1677ff' }} />
+            <SolutionOutlined style={{ fontSize: "28px", color: "#1677ff" }} />
           </div>
           <div>
-            <div className="title1">
-              {t("employer.evaluation.jobs.title") || "Danh sách công việc có đánh giá"}
-            </div>
-            <p className="text-gray-500 mt-2">
-              {t("employer.evaluation.jobs.subtitle") || "Xem đánh giá ứng viên theo từng công việc"}
+            <div className="title1">{t("employer.evaluation.jobs.title")}</div>
+            <p className="mt-2 text-gray-500">
+              {t("employer.evaluation.jobs.subtitle")}
             </p>
           </div>
         </Flex>
@@ -226,50 +263,49 @@ const JobEvaluationList = () => {
       <BoxContainer className="shadow-md">
         <Flex justify="space-between" align="center" className="mb-4">
           <Space>
-            <BarChartOutlined style={{ fontSize: '24px', color: '#1677ff' }} />
+            <BarChartOutlined style={{ fontSize: "24px", color: "#1677ff" }} />
             <Title level={4} style={{ margin: 0 }}>
-              {t("employer.evaluation.jobs.list_title") || "Công việc có đánh giá"}
-              {jobs.length > 0 && (
-                <Tag 
-                  color="processing" 
-                  style={{ marginLeft: 10, fontSize: '14px', fontWeight: 'normal' }}
-                >
-                  {jobs.length} công việc
-                </Tag>
-              )}
+              {t("employer.evaluation.jobs.list_title")}
             </Title>
+            {jobs.length > 0 && (
+              <Tag color="processing">
+                {jobs.length} {t("employer.evaluation.jobs.items")}
+              </Tag>
+            )}
           </Space>
-          <Search
-            placeholder={t("employer.evaluation.jobs.search") || "Tìm kiếm công việc..."}
+          <Input
+            placeholder={t("employer.evaluation.jobs.search")}
             allowClear
-            enterButton={<SearchOutlined />}
+            prefix={<SearchOutlined />}
             onSearch={handleSearch}
             onChange={(e) => setSearchText(e.target.value)}
             style={{ width: 300 }}
             size="large"
           />
         </Flex>
-          {loading ? (
-          <div className="text-center py-8">
+        {loading ? (
+          <div className="py-8 text-center">
             <Spin size="large" />
             <div className="mt-4">
-              {t("employer.evaluation.jobs.loading") || "Đang tải danh sách công việc..."}
+              {t("employer.evaluation.jobs.loading") ||
+                "Đang tải danh sách công việc..."}
             </div>
-          </div>        ) : (
-            filteredJobs.length > 0 ? (
-            <Row gutter={[16, 16]}>
-              {filteredJobs.map(job => renderJobCard(job))}
-            </Row>
-            ) : (
-            <Empty
-              image={Empty.PRESENTED_IMAGE_SIMPLE}
-              description={
-                jobs.length > 0 
-                  ? t("employer.evaluation.jobs.no_results") || "Không tìm thấy công việc phù hợp"
-                  : t("employer.evaluation.jobs.empty") || "Không có công việc nào có đánh giá"
-              }
-            />
-          )
+          </div>
+        ) : filteredJobs.length > 0 ? (
+          <Row gutter={[16, 16]}>
+            {filteredJobs.map((job) => renderJobCard(job))}
+          </Row>
+        ) : (
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={
+              jobs.length > 0
+                ? t("employer.evaluation.jobs.no_results") ||
+                  "Không tìm thấy công việc phù hợp"
+                : t("employer.evaluation.jobs.empty") ||
+                  "Không có công việc nào có đánh giá"
+            }
+          />
         )}
       </BoxContainer>
     </Flex>

@@ -40,6 +40,7 @@
     "title": "All Categories"
   },
   "common": {
+    "noSkills": "No skills",
     "previous": "Previous",
     "next": "Next",
     "reset": "Reset",
@@ -74,7 +75,7 @@
     "dragAndDrop": "Drag and drop or click to upload image",
     "view": "View",
     "of": "of",
-    "item": "item",
+    "item": "items",
     "login": "Login",
     "continue": "Continue",
     "viewDetail": "View detail",
@@ -342,9 +343,184 @@
     }
   },
   "employer": {
+    "evaluation": {
+      "title": "Candidate Evaluation",
+      "subtitle": "Evaluate candidates based on interview results",
+      "note": "Note",
+      "note_description": "Your evaluation will be saved for reference and use in the candidate evaluation process.",
+      "submit": "Submit",
+      "success": "Evaluation sent successfully!",
+      "jobs": {
+        "no_results": "No jobs with evaluations",
+        "title": "List of jobs with evaluations",
+        "subtitle": "View candidate evaluations by job",
+        "list_title": "Jobs with evaluations",
+        "items": "jobs",
+        "search": "Search jobs...",
+        "loading": "Loading job list...",
+        "empty": "No jobs with evaluations"
+      },
+      "compare": {
+        "title": "Compare candidates",
+        "criteria": "Criteria",
+        "max_limit": "Only 3 candidates can be compared",
+        "min_required": "Please select at least 2 candidates to compare",
+        "clear_all": "Clear selection",
+        "overall": "Overall evaluation",
+        "notes": "Notes"
+      },
+      "skills": {
+        "title": "Skill evaluation",
+        "technical": "Technical skills",
+        "communication": "Communication skills",
+        "culture_fit": "Culture fit",
+        "problem_solving": "Problem solving",
+        "attitude": "Attitude",
+        "technical_1": "Very poor - Lack of basic knowledge",
+        "technical_2": "Poor - Still many basic mistakes",
+        "technical_3": "Below average - Basic knowledge but limited",
+        "technical_4": "Average - Sufficient professional knowledge",
+        "technical_5": "Good - Proficient professional skills",
+        "technical_6": "Excellent - Mastering professional skills",
+        "technical_7": "Very good - Strong professional skills",
+        "technical_8": "Excellent - High level professional skills",
+        "technical_9": "Outstanding - Mastering special professional skills",
+        "technical_10": "Excellent - Expert level professional skills",
+        "communication_1": "Very poor - Cannot communicate clearly",
+        "communication_2": "Poor - Difficult to understand when communicating",
+        "communication_3": "Below average - Needs improvement in communication",
+        "communication_4": "Average - Sufficient communication ideas",
+        "communication_5": "Good - Good communication skills",
+        "communication_6": "Excellent - Clear and effective communication",
+        "communication_7": "Very good - Clear and convincing presentation",
+        "communication_8": "Excellent - Outstanding communication skills",
+        "communication_9": "Outstanding - Proficient communication skills",
+        "communication_10": "Excellent - Expert level communication skills",
+        "culture_1": "Very poor - Not suitable with company culture",
+        "culture_2": "Poor - Many issues with cultural fit",
+        "culture_3": "Below average - Some concerns about cultural fit",
+        "culture_4": "Average - Acceptable cultural fit",
+        "culture_5": "Good - Good cultural fit",
+        "culture_6": "Excellent - Excellent cultural fit",
+        "culture_7": "Very good - Strong cultural fit",
+        "culture_8": "Excellent - Outstanding cultural fit",
+        "culture_9": "Outstanding - Fully compatible with company values",
+        "culture_10": "Excellent - Will enhance company culture",
+        "problem_1": "Very poor - Cannot solve basic problems",
+        "problem_2": "Poor - Difficulty solving problems",
+        "problem_3": "Below average - Limited problem-solving skills",
+        "problem_4": "Average - Adequate problem-solving skills",
+        "problem_5": "Good - Good problem-solving skills",
+        "problem_6": "Excellent - Effective problem-solving skills",
+        "problem_7": "Very good - Strong problem-solving skills",
+        "problem_8": "Excellent - Creative and effective problem-solving skills",
+        "problem_9": "Outstanding - Special problem-solving skills",
+        "problem_10": "Excellent - Expert problem-solving skills",
+        "attitude_1": "Very poor - Negative attitude",
+        "attitude_2": "Poor - Poor attitude",
+        "attitude_3": "Below average - Needs improvement",
+        "attitude_4": "Average - Acceptable attitude",
+        "attitude_5": "Fair - Positive attitude most of the time",
+        "attitude_6": "Excellent - Consistent positive attitude",
+        "attitude_7": "Very good - Excellent and enthusiastic attitude",
+        "attitude_8": "Excellent - Excellent attitude and high motivation",
+        "attitude_9": "Outstanding - Exceptional positive attitude",
+        "attitude_10": "Excellent - Attitude and style inspiring motivation"
+      },
+      "notes": {
+        "title": "Notes",
+        "strengths": "Strengths",
+        "strengths_placeholder": "Enter candidate strengths",
+        "strengths_required": "Please enter candidate strengths",
+        "weaknesses": "Weaknesses",
+        "weaknesses_placeholder": "Enter candidate weaknesses",
+        "weaknesses_required": "Please enter candidate weaknesses",
+        "overall": "Overall evaluation",
+        "overall_placeholder": "Enter overall evaluation of candidate",
+        "overall_required": "Please enter overall evaluation of candidate"
+      },
+      "recommendation": {
+        "title": "Recommendation",
+        "recommend": "Recommend",
+        "hire": "Hire",
+        "position": "Position",
+        "position_placeholder": "Enter position recommendation for candidate",
+        "position_required": "Please enter position recommendation!",
+        "salary": "Salary recommendation",
+        "salary_required": "Please enter salary recommendation!",
+        "notes": "Notes",
+        "notes_placeholder": "Enter additional recommendations (training, development...)"
+      },
+      "rating": {
+        "title": "Overall evaluation",
+        "excellent": "Excellent",
+        "veryGood": "Very good",
+        "average": "Average",
+        "belowAverage": "Below average",
+        "poor": "Poor"
+      },
+      "overall": {
+        "title": "Overall evaluation"
+      },
+      "buttons": {
+        "submit": "Submit",
+        "cancel": "Cancel"
+      },
+      "list": {
+        "date": "Evaluation date: {date}",
+        "evaluator": "Evaluated by: {name}",
+        "evaluation_list": "Evaluation list",
+        "view_evaluations": "View evaluations",
+        "title": "Candidate evaluation list",
+        "subtitle": "Total candidate evaluation for job",
+        "loading": "Loading evaluation data...",
+        "empty": "No evaluation for this job",
+        "recommended": "Recommendation",
+        "not_recommended": "Not recommended",
+        "job_info": "Job information",
+        "view_details": "View details",
+        "detail_title": "Evaluation details",
+        "filter": {
+          "recommended": "Recommended",
+          "not_recommended": "Not recommended"
+        },
+        "table": {
+          "candidate": "Candidate",
+          "overall_rating": "Overall evaluation",
+          "recommended": "Recommendation",
+          "evaluator": "Evaluator",
+          "date": "Evaluation date",
+          "actions": "Actions"
+        },
+        "stats": {
+          "average": "Average evaluation",
+          "total": "Total evaluation",
+          "recommended": "Recommendation",
+          "not_recommended": "Not recommended"
+        },
+        "error": {
+          "loading": "Error loading evaluation list"
+        }
+      },
+      "error": {
+        "loading": "Error loading evaluation information",
+        "invalid_id": "Invalid interview ID",
+        "submission": "Error sending evaluation. Please try again."
+      }
+    },
     "applicant": {
       "listJob": {
-        "notice": "Please post a job to view applicants"
+        "title": "Manage Applicants by Job",
+        "notice": "Please post a job to view applicants",
+        "totalJob": "Total Job",
+        "clickJob": "Click job to view applicant list",
+        "loadingJob": "Loading jobs...",
+        "noJob": "No job found",
+        "titleCard": "Job List",
+        "status": {
+          "active": "Active",
+          "expired": "Expired"
+        }
       },
       "tabs": {
         "pending": "Unread",
@@ -1200,6 +1376,9 @@
     }
   },
   "job": {
+    "noDeadline": "No deadline",
+    "expired": "Expired",
+    "daysLeft": "days left",
     "search": {
       "search": "Search",
       "category": "Category",
@@ -1597,6 +1776,7 @@
         "manageJobs": "Jobs",
         "resumes": "Resumes",
         "interview": "Interview",
+        "evaluation": "Candidate Evaluation",
         "orders": "Orders",
         "messages": "Messages",
         "services": "Service Packages",

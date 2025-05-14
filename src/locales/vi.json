@@ -40,6 +40,7 @@
     "title": "Tất cả danh mục"
   },
   "common": {
+    "noSkills": "Không có kỹ năng",
     "previous": "Trước",
     "reset": "Đặt lại",
     "back": "Trở lại",
@@ -304,13 +305,19 @@
       "title": "Đánh giá ứng viên",
       "subtitle": "Đánh giá ứng viên dựa trên kết quả phỏng vấn",
       "jobs": {
+        "no_results": "Không có công việc nào có đánh giá",
         "title": "Danh sách công việc có đánh giá",
         "subtitle": "Xem đánh giá ứng viên theo từng công việc",
         "list_title": "Công việc có đánh giá",
+        "items": "công việc",
         "search": "Tìm kiếm công việc...",
         "loading": "Đang tải danh sách công việc...",
         "empty": "Không có công việc nào có đánh giá"
       },
+      "note": "Lưu ý",
+      "note_description": "Đánh giá của bạn sẽ được lưu lại để tham khảo và sử dụng cho quá trình đánh giá ứng viên.",
+      "submit": "Gửi đánh giá",
+      "success": "Đã gửi đánh giá thành công!",
       "compare": {
         "title": "So sánh ứng viên",
         "criteria": "Tiêu chí",
@@ -417,11 +424,11 @@
         "submit": "Gửi đánh giá",
         "cancel": "Hủy"
       },
-      "note": "Lưu ý",
-      "note_description": "Đánh giá của bạn sẽ được lưu lại để tham khảo và sử dụng cho quá trình đánh giá ứng viên.",
-      "submit": "Gửi đánh giá",
-      "success": "Đã gửi đánh giá thành công!",
       "list": {
+        "date": "Ngày đánh giá: {date}",
+        "evaluator": "Đánh giá bởi: {name}",
+        "evaluation_list": "Danh sách đánh giá",
+        "view_evaluations": "Xem đánh giá",
         "title": "Danh sách đánh giá ứng viên",
         "subtitle": "Tổng hợp đánh giá ứng viên cho công việc",
         "loading": "Đang tải dữ liệu đánh giá...",
@@ -461,7 +468,17 @@
     },
     "applicant": {
       "listJob": {
-        "notice": "Vui lòng đăng bài tuyển dụng để xem danh sách ứng viên"
+        "title": "Quản lý ứng viên theo tin tuyển dụng",
+        "notice": "Vui lòng đăng bài tuyển dụng để xem danh sách ứng viên",
+        "totalJob": "Tổng tin tuyển dụng",
+        "clickJob": "Nhấp vào tin tuyển dụng để xem danh sách ứng viên",
+        "loadingJob": "Đang tải tin tuyển dụng...",
+        "noJob": "Không tìm thấy tin tuyển dụng nào",
+        "titleCard": "Danh sách tin tuyển dụng",
+        "status": {
+          "active": "Đang hoạt động",
+          "expired": "Đã hết hạn"
+        }
       },
       "tabs": {
         "pending": "Chưa đọc",
@@ -1282,6 +1299,9 @@
     }
   },
   "job": {
+    "noDeadline": "Không có hạn nộp",
+    "expired": "Đã hết hạn",
+    "daysLeft": "ngày còn lại",
     "search": {
       "search": "Tìm kiếm",
       "placeholder": "Tìm kiếm công việc, kỹ năng...",
