@@ -14,7 +14,7 @@
     .ant-modal-title {
       color: white;
       font-weight: 600;
-      
+
       .anticon {
         margin-right: 8px;
         font-size: 18px;
@@ -38,36 +38,31 @@
     max-width: 100%;
     max-height: 90vh;
     overflow-y: auto;
-    
+
     &::-webkit-scrollbar {
       width: 8px;
     }
-    
+
     &::-webkit-scrollbar-thumb {
       background-color: rgba(0, 0, 0, 0.15);
       border-radius: 4px;
     }
-  }  .ant-modal-body {
+  }
+  .ant-modal-body {
     padding: 30px 40px;
   }
-    // Ensure the content uses the full available width
+  // Ensure the content uses the full available width
   .comparison-row {
     width: 100%;
     margin: 0;
     display: flex;
     flex-wrap: nowrap;
-    
-    .ant-col-4 {
-      flex: 0 0 250px;
-      max-width: 250px;
-      width: 250px;
-    }
-    
+
     .ant-col {
       padding: 12px 20px;
     }
   }
-    // Title column layout
+  // Title column layout
   .criteria-label {
     padding: 16px 22px;
     background-color: #f5f7fa;
@@ -80,7 +75,7 @@
     font-size: 17px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   }
-    // Improve card layout
+  // Improve card layout
   .comparison-candidate-card {
     transition: all 0.3s ease;
     border-radius: 10px;
@@ -88,16 +83,16 @@
     height: 100%;
     padding: 20px 24px;
     min-height: 200px;
-    
+
     &:hover {
       transform: translateY(-3px);
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     }
-    
+
     .ant-avatar {
       margin-bottom: 18px;
     }
-    
+
     // Make candidate name more prominent
     .ant-typography strong {
       font-size: 18px;
@@ -105,53 +100,53 @@
       display: block;
     }
   }
-  
+
   // Skill cards
   .skill-rating-card {
     border-radius: 8px;
     transition: all 0.3s ease;
     padding: 16px;
     height: 100%;
-    
+
     &:hover {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
-    
+
     .skill-score {
       font-size: 28px;
     }
-    
+
     .ant-rate {
       font-size: 18px;
     }
   }
-  
+
   // Better use of full width
   .ant-col {
     padding: 10px 15px;
   }
-  
+
   // Make the rating circles bigger
   .rating-circle {
     width: 100px;
     height: 100px;
-    
+
     .rating-value {
       font-size: 28px;
-      
+
       .rating-max {
         right: -20px;
       }
     }
   }
-  
+
   // Better use of space in notes cards
   .comparison-notes-card {
     .ant-card-head {
       min-height: 48px;
       padding: 0 16px;
     }
-    
+
     .ant-card-body {
       max-height: 180px;
       padding: 16px 20px;
@@ -171,8 +166,9 @@
   color: #1677ff;
   font-weight: 600;
   font-size: 18px;
-  
-  &::before, &::after {
+
+  &::before,
+  &::after {
     border-top-color: rgba(22, 119, 255, 0.2);
   }
 }
@@ -185,13 +181,13 @@
   height: 100%;
   transition: all 0.3s ease;
   border: 1px solid transparent;
-  
+
   &:hover {
     border-color: #1677ff;
     box-shadow: 0 6px 16px rgba(22, 119, 255, 0.15);
     transform: translateY(-3px);
   }
-  
+
   .ant-avatar {
     margin-bottom: 8px;
     border: 3px solid white;
@@ -205,19 +201,7 @@
   display: flex;
   align-items: center;
   animation: fadeIn 0.4s ease;
-  
-  .ant-col:first-child {
-    background-color: #f0f7ff;
-    padding: 14px;
-    border-radius: 8px;
-    font-weight: 500;
-    color: #1677ff;
-    box-shadow: 0 2px 0 rgba(22, 119, 255, 0.1);
-    min-height: 54px;
-    display: flex;
-    align-items: center;
-  }
-  
+
   .ant-rate {
     font-size: 16px;
   }
@@ -232,75 +216,64 @@
   transition: all 0.3s ease;
   min-height: 180px;
   min-width: 200px;
-  
+
   &:hover {
     border-color: #d9d9d9;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
     transform: translateY(-3px);
   }
-  
+
   &.weakness-card {
     &:hover {
       box-shadow: 0 3px 8px rgba(250, 140, 22, 0.08);
     }
-    
+
     .ant-typography {
       position: relative;
       padding-left: 2px;
-      
-      &::before {
-        content: "";
-        position: absolute;
-        left: -2px;
-        top: 0;
-        bottom: 0;
-        width: 2px;
-        background-color: #fa8c16;
-        opacity: 0.4;
-      }
     }
   }
-  
+
   .ant-card-head {
     min-height: 48px;
     padding: 0 16px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    
+
     .ant-card-head-title {
       padding: 12px 0;
       display: flex;
       align-items: center;
-      
+
       .anticon {
         margin-right: 8px;
       }
     }
   }
-  
+
   .ant-card-body {
     padding: 18px;
     max-height: 180px;
     overflow-y: auto;
     font-size: 15px;
     line-height: 1.8;
-    
+
     .ant-typography {
       margin-bottom: 0;
     }
-    
+
     &::-webkit-scrollbar {
       width: 6px;
     }
-    
+
     &::-webkit-scrollbar-track {
       background: #f0f0f0;
       border-radius: 3px;
     }
-    
+
     &::-webkit-scrollbar-thumb {
       background: #d9d9d9;
       border-radius: 3px;
-      
+
       &:hover {
         background: #bfbfbf;
       }
@@ -321,7 +294,7 @@
   background: white;
   box-shadow: 0 4px 12px rgba(22, 119, 255, 0.2);
   text-align: center;
-  
+
   .circle-value {
     font-size: 20px;
     font-weight: 600;
@@ -333,7 +306,7 @@
   font-weight: 600;
   color: #1677ff;
   position: relative;
-  
+
   .rating-max {
     font-size: 16px;
     font-weight: normal;
@@ -342,25 +315,25 @@
     bottom: 6px;
     right: -22px;
   }
-}// Skill rating card
-  .skill-rating-card {
-    border-radius: 12px;
-    padding: 20px 16px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-    transition: all 0.3s ease;
-    min-height: 140px;
-    min-width: 180px;
-    
-    &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    }
+} // Skill rating card
+.skill-rating-card {
+  border-radius: 12px;
+  padding: 20px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  transition: all 0.3s ease;
+  min-height: 140px;
+  min-width: 180px;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   }
-  .skill-score {
-    font-size: 40px;
-    font-weight: 600;
-    margin-bottom: 10px;
-  }
+}
+.skill-score {
+  font-size: 40px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
 
 // Note label container
 .note-label-container {
@@ -369,24 +342,23 @@
   border-radius: 8px;
   border-left: 4px solid #1677ff;
   width: 100%;
-  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.03);
   font-size: 16px;
   transition: all 0.3s ease;
-  
+
   &:hover {
     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.08);
   }
-  
+
   &.weakness-label {
     border-left: 4px solid #fa8c16;
   }
-  
+
   .anticon {
     margin-right: 8px;
     position: relative;
     top: 1px;
   }
-  
+
   .ant-space {
     width: 100%;
   }
@@ -398,7 +370,7 @@
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
   transition: all 0.25s ease;
-  
+
   &:hover {
     background: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
@@ -422,9 +394,9 @@
   padding: 12px 16px;
   height: 100%;
   position: relative;
-  
+
   &:before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: 0;
@@ -432,16 +404,16 @@
     height: 100%;
     border-radius: 4px 0 0 4px;
   }
-  
+
   .notes-content {
     max-height: 180px;
     overflow-y: auto;
     padding-right: 8px;
-    
+
     &::-webkit-scrollbar {
       width: 6px;
     }
-    
+
     &::-webkit-scrollbar-thumb {
       background-color: rgba(0, 0, 0, 0.1);
       border-radius: 3px;
@@ -455,7 +427,7 @@
   flex-direction: column;
   align-items: center;
   margin: 12px 0;
-  
+
   .ant-rate {
     font-size: 18px;
     margin: 8px 0;
@@ -476,37 +448,21 @@
 .comparison-table {
   width: 100%;
   table-layout: fixed;
-  
+
   th {
     background: #f0f7ff;
     padding: 12px 16px;
     text-align: left;
   }
-  
+
   td {
     padding: 12px 16px;
     vertical-align: top;
     border-bottom: 1px solid #f0f0f0;
   }
-  
+
   tr:last-child td {
     border-bottom: none;
-  }
-}
-
-// Modal responsive styles
-@media (max-width: 992px) {
-  .comparison-row {
-    .ant-col:first-child {
-      width: 100%;
-      margin-bottom: 12px;
-    }
-  }
-  
-  .comparison-header {
-    .ant-col:first-child {
-      display: none;
-    }
   }
 }
 
@@ -518,25 +474,25 @@
         flex: 0 0 calc(100% / 3);
         max-width: calc(100% / 3);
       }
-      
+
       .ant-col-12 {
         flex: 0 0 50%;
         max-width: 50%;
       }
     }
   }
-}    // Optimize for extra wide modal (1600px+)
+} // Optimize for extra wide modal (1600px+)
 @media (min-width: 1600px) {
   .candidate-comparison-modal {
     // Make content more comfortable to read
     .ant-modal-body {
       padding: 40px 80px;
     }
-    
+
     // Increase spacing between rows
     .comparison-row {
       margin-bottom: 35px;
-      
+
       // Fixed-width criteria column
       .ant-col-4 {
         flex: 0 0 260px;
@@ -544,26 +500,26 @@
         width: 260px;
       }
     }
-    
+
     // Improve card appearances with more spacing
     .skill-rating-card {
       padding: 20px;
     }
-    
+
     // Make dividers more prominent
     .ant-divider {
       margin: 35px 0;
       font-size: 18px;
     }
-    
+
     // Larger rating circles
     .rating-circle {
       width: 110px;
       height: 110px;
-      
+
       .rating-value {
         font-size: 32px;
-        
+
         .rating-max {
           right: -22px;
           bottom: 3px;
@@ -579,77 +535,77 @@
     border-radius: 12px;
     overflow: hidden;
   }
-  
+
   .ant-modal-header {
     background: linear-gradient(90deg, #1677ff, #4096ff);
     border-bottom: none;
     padding: 20px 24px;
-    
+
     .ant-modal-title {
       color: white;
       font-weight: 600;
       font-size: 18px;
       display: flex;
       align-items: center;
-      
+
       .anticon {
         margin-right: 10px;
         font-size: 20px;
       }
     }
   }
-  
+
   .ant-modal-body {
     padding: 30px 40px;
   }
-  
+
   .ant-modal-footer {
     border-top: none;
     padding: 16px 24px 24px;
   }
-  
+
   .candidate-info-card {
     margin-bottom: 16px;
     border-radius: 8px;
     background: linear-gradient(135deg, #f8f9fa, #ffffff);
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-    
+
     .rating-circle {
       animation: pulse 2s infinite ease-in-out;
     }
   }
-  
+
   .skill-detail-card {
     transition: all 0.3s ease;
-    
+
     &:hover {
       transform: translateY(-3px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     }
   }
-  
+
   .note-detail-card {
     min-height: 150px;
     transition: all 0.3s ease;
-    
+
     &:hover {
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
-    
+
     .ant-typography {
       line-height: 1.8;
     }
   }
-  
+
   .recommendation-detail-card {
     transition: all 0.3s ease;
-    
+
     &:hover {
       transform: translateY(-3px);
       box-shadow: 0 4px 12px rgba(82, 196, 26, 0.15);
     }
   }
-  
+
   // Pulse animation for rating circle
   @keyframes pulse {
     0% {
@@ -662,24 +618,24 @@
       box-shadow: 0 0 0 0 rgba(22, 119, 255, 0);
     }
   }
-  
+
   // Responsive styles
   @media (max-width: 992px) {
     .ant-modal-body {
       padding: 20px;
     }
-    
+
     .rating-circle {
       width: 100px !important;
       height: 100px !important;
     }
   }
-  
+
   @media (max-width: 768px) {
     .candidate-info-card {
       .ant-row {
         flex-direction: column;
-        
+
         .ant-col {
           text-align: center;
           width: 100%;
@@ -690,20 +646,20 @@
       }
     }
   }
-  
+
   @media (max-width: 576px) {
     .ant-modal-body {
       padding: 15px;
     }
-    
+
     .ant-card-head-title {
       font-size: 16px !important;
     }
-    
+
     .rating-circle {
       width: 80px !important;
       height: 80px !important;
-      
+
       div {
         font-size: 24px !important;
       }
@@ -713,11 +669,23 @@
 
 // Animations
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes slideDown {
-  from { opacity: 0; transform: translateY(-15px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

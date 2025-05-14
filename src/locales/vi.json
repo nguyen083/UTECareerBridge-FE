@@ -425,7 +425,7 @@
         "cancel": "Hủy"
       },
       "list": {
-        "date": "Ngày đánh giá: {date}",
+        "date": "Ngày đánh giá {date}",
         "evaluator": "Đánh giá bởi: {name}",
         "evaluation_list": "Danh sách đánh giá",
         "view_evaluations": "Xem đánh giá",

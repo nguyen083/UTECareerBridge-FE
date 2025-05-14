@@ -28,11 +28,10 @@ import {
   BarChartOutlined,
   FileSearchOutlined,
   LeftOutlined,
-  MailOutlined,
   CalendarOutlined,
   LikeOutlined,
   PlusCircleOutlined,
-  CodeOutlined,
+  FileDoneOutlined,
   MinusCircleOutlined,
 } from "@ant-design/icons";
 import BoxContainer from "../../Generate/BoxContainer";
@@ -43,17 +42,6 @@ import { getTimeAgo } from "../../../utils/day";
 import dayjs from "dayjs";
 
 const { Title, Text, Paragraph } = Typography;
-
-// Trợ giúp chuyển đổi định dạng ngày tháng
-const formatDate = (dateString) => {
-  if (!dateString) return "";
-  const date = new Date(dateString);
-  return date.toLocaleDateString("vi-VN", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  });
-};
 
 const JobEvaluations = () => {
   const { t } = useTranslation();
@@ -120,7 +108,7 @@ const JobEvaluations = () => {
     if (jobId) {
       fetchEvaluations();
     }
-  }, [jobId, t]);
+  }, [jobId]);
 
   // Hiển thị modal chi tiết đánh giá
   const showDetailModal = (evaluation) => {
@@ -356,15 +344,12 @@ const JobEvaluations = () => {
                   <Title level={3} style={{ marginTop: 0, marginBottom: 8 }}>
                     {currentEvaluation?.studentName || ""}
                   </Title>
-                  <Paragraph style={{ fontSize: "16px", marginBottom: 5 }}>
-                    <MailOutlined style={{ marginRight: 8 }} />
-                    {currentEvaluation?.studentEmail || ""}
-                  </Paragraph>
+
                   <Tag
                     color={
                       currentEvaluation.isRecommended ? "success" : "error"
                     }
-                    style={{ fontSize: "14px", padding: "4px 12px" }}
+                    className="w-fit"
                   >
                     {currentEvaluation.isRecommended
                       ? t("employer.evaluation.list.recommended")
@@ -387,27 +372,18 @@ const JobEvaluations = () => {
                         boxShadow: "0 4px 12px rgba(22, 119, 255, 0.1)",
                       }}
                     >
-                      <div
-                        style={{
-                          fontSize: "32px",
-                          fontWeight: "600",
-                          color: "#1677ff",
-                          position: "relative",
-                        }}
-                      >
-                        {currentEvaluation.overallRating}
-                        <span
+                      <div className="flex items-end justify-center">
+                        <div
                           style={{
-                            fontSize: "16px",
-                            fontWeight: "normal",
-                            color: "#8c8c8c",
-                            position: "absolute",
-                            bottom: "0",
-                            right: "-12px",
+                            lineHeight: "1",
+                            fontSize: "32px",
+                            fontWeight: "600",
+                            color: "#1677ff",
                           }}
                         >
-                          /10
-                        </span>
+                          {currentEvaluation.overallRating}
+                        </div>
+                        <span className="text-sm">/10</span>
                       </div>
                     </div>
                     <Rate
@@ -762,26 +738,29 @@ const JobEvaluations = () => {
           )}
           {/* Thông tin đánh giá */}
           <Col span={24}>
-            <Card>
+            <Card
+              title={
+                <span style={{ fontSize: "18px" }}>
+                  <FileDoneOutlined
+                    style={{ marginRight: 8, color: "#1677ff" }}
+                  />
+                  {t("employer.evaluation.recommendation.title")}
+                </span>
+              }
+            >
               <Flex justify="space-between" align="center">
                 <Space>
                   <UserOutlined
                     style={{ fontSize: "18px", color: "#1677ff" }}
                   />
-                  <Text strong>
-                    {t("employer.evaluation.list.evaluator", {
-                      name: currentEvaluation?.evaluatedByName || "",
-                    })}
-                  </Text>
+                  <Text strong>{currentEvaluation?.evaluatedByName}</Text>
                 </Space>
                 <Space>
                   <CalendarOutlined
                     style={{ fontSize: "16px", color: "#1677ff" }}
                   />
                   <Text style={{ fontSize: "15px" }}>
-                    {t("employer.evaluation.list.date", {
-                      date: formatDate(currentEvaluation.createdAt),
-                    })}
+                    {currentEvaluation?.createdAt}
                   </Text>
                 </Space>
               </Flex>
@@ -906,6 +885,7 @@ const JobEvaluations = () => {
       {renderDetailModal()}
       {/* Modal so sánh ứng viên */}{" "}
       <Modal
+        closable={false}
         title={
           <Space>
             <BarChartOutlined />
@@ -931,15 +911,8 @@ const JobEvaluations = () => {
           <>
             {" "}
             <Row gutter={[24, 24]} className="comparison-header">
-              <Col span={4}>
-                <div className="criteria-label">
-                  <Text strong>
-                    {t("employer.evaluation.compare.criteria")}
-                  </Text>
-                </div>
-              </Col>
               {selectedEvaluations.map((evaluation) => (
-                <Col span={20 / selectedEvaluations.length} key={evaluation.id}>
+                <Col span={24 / selectedEvaluations.length} key={evaluation.id}>
                   <Card
                     size="small"
                     className="comparison-candidate-card"
@@ -978,10 +951,8 @@ const JobEvaluations = () => {
                         }}
                       >
                         {evaluation.isRecommended
-                          ? t("employer.evaluation.list.recommended") ||
-                            "Đề xuất tuyển dụng"
-                          : t("employer.evaluation.list.not_recommended") ||
-                            "Không đề xuất"}
+                          ? t("employer.evaluation.list.recommended")
+                          : t("employer.evaluation.list.not_recommended")}
                       </Tag>
                     </Flex>
                   </Card>
@@ -989,33 +960,50 @@ const JobEvaluations = () => {
               ))}
             </Row>
             <Divider>{t("employer.evaluation.compare.overall")}</Divider>{" "}
-            <Row gutter={[24, 16]} className="comparison-row">
-              <Col span={4}>
-                <Text strong>
-                  {t("employer.evaluation.list.table.overall_rating")}
-                </Text>
-              </Col>
+            <Row
+              gutter={[24, 16]}
+              className="flex justify-around comparison-row !mx-0"
+            >
               {selectedEvaluations.map((evaluation) => (
-                <Col span={20 / selectedEvaluations.length} key={evaluation.id}>
+                <Col
+                  className="flex items-center justify-center"
+                  span={20 / selectedEvaluations.length}
+                  key={evaluation.id}
+                >
                   <Flex vertical align="center">
-                    {" "}
                     <div
                       className="rating-circle"
                       style={{
-                        borderColor: "#1677ff",
-                        boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+                        width: "120px",
+                        height: "120px",
+                        borderRadius: "50%",
+                        border: "4px solid #1677ff",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        background: "white",
+                        boxShadow: "0 4px 12px rgba(22, 119, 255, 0.1)",
                       }}
                     >
-                      <div className="rating-value">
-                        {evaluation.overallRating}
-                        <span className="rating-max">/10</span>
+                      <div className="flex items-end justify-center">
+                        <div
+                          style={{
+                            lineHeight: "1",
+                            fontSize: "32px",
+                            fontWeight: "600",
+                            color: "#1677ff",
+                          }}
+                        >
+                          {evaluation.overallRating}
+                        </div>
+                        <span className="text-sm">/10</span>
                       </div>
-                    </div>{" "}
+                    </div>
                     <Rate
                       disabled
                       allowHalf
                       value={evaluation.overallRating / 2}
-                      style={{ fontSize: "18px", marginTop: "10px" }}
+                      style={{ fontSize: "20px", marginTop: "12px" }}
                     />
                   </Flex>
                 </Col>
@@ -1023,17 +1011,12 @@ const JobEvaluations = () => {
             </Row>
             <Divider>{t("employer.evaluation.skills.title")}</Divider>
             {/* Kỹ năng chuyên môn */}
-            <Row gutter={[24, 16]} className="comparison-row">
-              <Col span={4}>
-                <div className="skill-label-container">
-                  <Tag color="blue" className="skill-tag">
-                    <CodeOutlined style={{ marginRight: 6 }} />
-                    {t("employer.evaluation.skills.technical")}
-                  </Tag>
-                </div>
-              </Col>
+            <div className="mb-4 w-fit">
+              <Text strong>{t("employer.evaluation.skills.technical")}</Text>
+            </div>
+            <Row gutter={[24, 16]} className="comparison-row !mx-0">
               {selectedEvaluations.map((evaluation) => (
-                <Col span={20 / selectedEvaluations.length} key={evaluation.id}>
+                <Col span={24 / selectedEvaluations.length} key={evaluation.id}>
                   <Card
                     className="skill-rating-card"
                     bordered={false}
@@ -1068,15 +1051,15 @@ const JobEvaluations = () => {
                 </Col>
               ))}
             </Row>{" "}
-            {/* Kỹ năng giao tiếp */}{" "}
-            <Row gutter={[24, 16]} className="comparison-row">
-              <Col span={4}>
-                <Text strong>
-                  {t("employer.evaluation.skills.communication")}
-                </Text>
-              </Col>
+            {/* Kỹ năng giao tiếp */}
+            <div className="mb-4 w-fit">
+              <Text strong>
+                {t("employer.evaluation.skills.communication")}
+              </Text>
+            </div>
+            <Row gutter={[24, 16]} className="comparison-row !mx-0">
               {selectedEvaluations.map((evaluation) => (
-                <Col span={20 / selectedEvaluations.length} key={evaluation.id}>
+                <Col span={24 / selectedEvaluations.length} key={evaluation.id}>
                   <Card
                     className="skill-rating-card"
                     bordered={false}
@@ -1109,14 +1092,12 @@ const JobEvaluations = () => {
               ))}
             </Row>{" "}
             {/* Phù hợp văn hóa */}{" "}
-            <Row gutter={[24, 16]} className="comparison-row">
-              <Col span={4}>
-                <Text strong>
-                  {t("employer.evaluation.skills.culture_fit")}
-                </Text>
-              </Col>
+            <div className="mb-4 w-fit">
+              <Text strong>{t("employer.evaluation.skills.culture_fit")}</Text>
+            </div>
+            <Row gutter={[24, 16]} className="comparison-row !mx-0">
               {selectedEvaluations.map((evaluation) => (
-                <Col span={20 / selectedEvaluations.length} key={evaluation.id}>
+                <Col span={24 / selectedEvaluations.length} key={evaluation.id}>
                   <Card
                     className="skill-rating-card"
                     bordered={false}
@@ -1149,14 +1130,14 @@ const JobEvaluations = () => {
               ))}
             </Row>{" "}
             {/* Giải quyết vấn đề */}{" "}
-            <Row gutter={[24, 16]} className="comparison-row">
-              <Col span={4}>
-                <Text strong>
-                  {t("employer.evaluation.skills.problem_solving")}
-                </Text>
-              </Col>
+            <div className="mb-4 w-fit">
+              <Text strong>
+                {t("employer.evaluation.skills.problem_solving")}
+              </Text>
+            </div>
+            <Row gutter={[24, 16]} className="comparison-row !mx-0">
               {selectedEvaluations.map((evaluation) => (
-                <Col span={20 / selectedEvaluations.length} key={evaluation.id}>
+                <Col span={24 / selectedEvaluations.length} key={evaluation.id}>
                   <Card
                     className="skill-rating-card"
                     bordered={false}
@@ -1189,12 +1170,12 @@ const JobEvaluations = () => {
               ))}
             </Row>{" "}
             {/* Thái độ làm việc */}{" "}
-            <Row gutter={[24, 16]} className="comparison-row">
-              <Col span={4}>
-                <Text strong>{t("employer.evaluation.skills.attitude")}</Text>
-              </Col>
+            <div className="mb-4 w-fit">
+              <Text strong>{t("employer.evaluation.skills.attitude")}</Text>
+            </div>
+            <Row gutter={[24, 16]} className="comparison-row !mx-0">
               {selectedEvaluations.map((evaluation) => (
-                <Col span={20 / selectedEvaluations.length} key={evaluation.id}>
+                <Col span={24 / selectedEvaluations.length} key={evaluation.id}>
                   <Card
                     className="skill-rating-card"
                     bordered={false}
@@ -1228,23 +1209,23 @@ const JobEvaluations = () => {
             </Row>
             <Divider>{t("employer.evaluation.compare.notes")}</Divider>{" "}
             {/* Điểm mạnh */}
-            <Row gutter={[24, 24]} className="comparison-row">
-              <Col span={4}>
-                <Flex align="center" style={{ height: "100%" }}>
-                  <div className="note-label-container">
-                    <Space>
-                      <PlusCircleOutlined
-                        style={{ color: "#52c41a", fontSize: "18px" }}
-                      />
-                      <Text strong style={{ fontSize: "16px" }}>
-                        {t("employer.evaluation.notes.strengths")}
-                      </Text>
-                    </Space>
-                  </div>
-                </Flex>
-              </Col>
+            <div>
+              <Flex align="center" style={{ height: "100%" }}>
+                <div className="note-label-container !border-l-4 !border-[#52c41a]">
+                  <Space>
+                    <PlusCircleOutlined
+                      style={{ color: "#52c41a", fontSize: "18px" }}
+                    />
+                    <Text strong style={{ fontSize: "16px" }}>
+                      {t("employer.evaluation.notes.strengths")}
+                    </Text>
+                  </Space>
+                </div>
+              </Flex>
+            </div>
+            <Row gutter={[24, 24]} className="comparison-row !mx-0">
               {selectedEvaluations.map((evaluation) => (
-                <Col span={20 / selectedEvaluations.length} key={evaluation.id}>
+                <Col span={24 / selectedEvaluations.length} key={evaluation.id}>
                   <Card
                     size="small"
                     className="comparison-notes-card"
@@ -1283,23 +1264,23 @@ const JobEvaluations = () => {
               ))}
             </Row>
             {/* Điểm cần cải thiện */}{" "}
-            <Row gutter={[24, 24]} className="comparison-row">
-              <Col span={4}>
-                <Flex align="center" style={{ height: "100%" }}>
-                  <div className="note-label-container weakness-label">
-                    <Space>
-                      <MinusCircleOutlined
-                        style={{ color: "#fa8c16", fontSize: "18px" }}
-                      />
-                      <Text strong style={{ fontSize: "16px" }}>
-                        {t("employer.evaluation.notes.weaknesses")}
-                      </Text>
-                    </Space>
-                  </div>
-                </Flex>
-              </Col>
+            <div>
+              <Flex align="center" style={{ height: "100%" }}>
+                <div className="note-label-container weakness-label">
+                  <Space>
+                    <MinusCircleOutlined
+                      style={{ color: "#fa8c16", fontSize: "18px" }}
+                    />
+                    <Text strong style={{ fontSize: "16px" }}>
+                      {t("employer.evaluation.notes.weaknesses")}
+                    </Text>
+                  </Space>
+                </div>
+              </Flex>
+            </div>
+            <Row gutter={[24, 24]} className="comparison-row !mx-0">
               {selectedEvaluations.map((evaluation) => (
-                <Col span={20 / selectedEvaluations.length} key={evaluation.id}>
+                <Col span={24 / selectedEvaluations.length} key={evaluation.id}>
                   <Card
                     size="small"
                     className="comparison-notes-card weakness-card"
@@ -1344,19 +1325,19 @@ const JobEvaluations = () => {
                   {t("employer.evaluation.recommendation.title")}
                 </Divider>
                 {/* Vị trí đề xuất */}{" "}
-                <Row gutter={[24, 16]} className="comparison-row">
-                  <Col span={4}>
-                    <Flex align="center" style={{ height: "100%" }}>
-                      <div className="note-label-container">
-                        <Text strong>
-                          {t("employer.evaluation.recommendation.position")}
-                        </Text>
-                      </div>
-                    </Flex>
-                  </Col>
+                <div>
+                  <Flex align="center" style={{ height: "100%" }}>
+                    <div className="note-label-container">
+                      <Text strong>
+                        {t("employer.evaluation.recommendation.position")}
+                      </Text>
+                    </div>
+                  </Flex>
+                </div>
+                <Row gutter={[24, 16]} className="comparison-row !mx-0">
                   {selectedEvaluations.map((evaluation) => (
                     <Col
-                      span={20 / selectedEvaluations.length}
+                      span={24 / selectedEvaluations.length}
                       key={evaluation.id}
                     >
                       <Card
@@ -1391,19 +1372,19 @@ const JobEvaluations = () => {
                   ))}
                 </Row>
                 {/* Mức lương đề xuất */}{" "}
-                <Row gutter={[24, 16]} className="comparison-row">
-                  <Col span={4}>
-                    <Flex align="center" style={{ height: "100%" }}>
-                      <div className="note-label-container">
-                        <Text strong>
-                          {t("employer.evaluation.recommendation.salary")}
-                        </Text>
-                      </div>
-                    </Flex>
-                  </Col>
+                <div>
+                  <Flex align="center" style={{ height: "100%" }}>
+                    <div className="note-label-container">
+                      <Text strong>
+                        {t("employer.evaluation.recommendation.salary")}
+                      </Text>
+                    </div>
+                  </Flex>
+                </div>
+                <Row gutter={[24, 16]} className="comparison-row !mx-0">
                   {selectedEvaluations.map((evaluation) => (
                     <Col
-                      span={20 / selectedEvaluations.length}
+                      span={24 / selectedEvaluations.length}
                       key={evaluation.id}
                     >
                       <Card

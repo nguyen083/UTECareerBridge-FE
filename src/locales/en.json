@@ -467,7 +467,7 @@
         "cancel": "Cancel"
       },
       "list": {
-        "date": "Evaluation date: {date}",
+        "date": "Evaluation date {date}",
         "evaluator": "Evaluated by: {name}",
         "evaluation_list": "Evaluation list",
         "view_evaluations": "View evaluations",
