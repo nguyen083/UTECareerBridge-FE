@@ -994,12 +994,30 @@
     },
     "services": {
       "title": "Service Packages",
+      "subtitle": "Choose the service package that suits your needs",
+      "viewCart": "View Cart",
       "importantNotice": "Important Notice",
       "noticeDescription": "To avoid identity theft and fraud, we recommend that you do not transfer funds to any personal account and only make payments to our official accounts.",
       "addToCart": "Add to Cart",
       "buyNow": "Buy Now",
       "addToCartError": "Cannot add product to cart.",
-      "addToCartErrorGeneric": "An error occurred while adding product to cart."
+      "addToCartErrorGeneric": "An error occurred while adding product to cart.",
+      "needHelp": "Need help?",
+      "contactSales": "Contact Sales",
+      "availablePackages": "Available Packages",
+      "comparePackages": "Compare Packages",
+      "bestValue": "Best Value",
+      "jobPostings": "Job Postings",
+      "validFor": "Valid for {{period}} months",
+      "faq": {
+        "title": "Frequently Asked Questions",
+        "q1": "How long does a job posting package remain active?",
+        "a1": "Our job posting packages remain active for the specified duration from the date of purchase. During this time, you can post jobs until you've used all the job postings included in your package.",
+        "q2": "Can I use the remaining job postings in my package at any time during its validity period?",
+        "a2": "Yes, your package remains valid for its full duration, and any remaining job postings can be used anytime within that period.",
+        "q3": "What happens if I exceed the number of job postings included in my package?",
+        "a3": "Contact our customer support team through the Help Center, and they can assist you with upgrading to a larger package."
+      }
     },
     "voucher": {
       "selectTitle": "Select voucher",

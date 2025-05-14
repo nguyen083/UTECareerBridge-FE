@@ -953,12 +953,30 @@
     },
     "services": {
       "title": "Gói dịch vụ",
+      "subtitle": "Chọn gói dịch vụ phù hợp với nhu cầu của bạn",
+      "viewCart": "Xem giỏ hàng",
       "importantNotice": "Thông báo quan trọng",
       "noticeDescription": "Để tránh lừa đảo và gian lận, chúng tôi khuyến nghị bạn không chuyển tiền vào bất kỳ tài khoản cá nhân nào và chỉ thanh toán vào các tài khoản chính thức của chúng tôi.",
       "addToCart": "Thêm vào giỏ",
       "buyNow": "Mua ngay",
       "addToCartError": "Không thể thêm sản phẩm vào giỏ.",
-      "addToCartErrorGeneric": "Đã xảy ra lỗi khi thêm sản phẩm vào giỏ."
+      "addToCartErrorGeneric": "Đã xảy ra lỗi khi thêm sản phẩm vào giỏ.",
+      "needHelp": "Cần trợ giúp?",
+      "contactSales": "Liên hệ bộ phận bán hàng",
+      "availablePackages": "Gói dịch vụ hiện có",
+      "comparePackages": "So sánh gói dịch vụ",
+      "bestValue": "Giá trị tốt nhất",
+      "jobPostings": "Bài đăng việc làm",
+      "validFor": "Hạn sử dụng {{period}} tháng",
+      "faq": {
+        "title": "Câu hỏi thường gặp",
+        "q1": "Hạn sử dụng gói dịch vụ là bao lâu?",
+        "a1": "Gói dịch vụ của bạn sẽ còn hiệu lực trong thời gian được chỉ định từ ngày mua. Trong thời gian này, bạn có thể đăng bài việc làm cho đến khi đã sử dụng hết số bài đăng được bao gồm trong gói dịch vụ của bạn.",
+        "q2": "Có thể sử dụng các bài đăng còn lại trong gói dịch vụ của tôi trong bất kỳ thời gian nào trong khoảng thời gian hữu hiệu của nó không?",
+        "a2": "Có, gói dịch vụ của bạn vẫn còn hiệu lực trong suốt thời gian hữu hiệu của nó, và bạn có thể sử dụng các bài đăng còn lại bất cứ lúc nào trong khoảng thời gian đó.",
+        "q3": "Nếu tôi vượt quá số bài đăng được bao gồm trong gói dịch vụ của tôi, điều gì sẽ xảy ra?",
+        "a3": "Liên hệ với đội hỗ trợ khách hàng của chúng tôi qua Trung tâm trợ giúp, và họ có thể giúp bạn nâng cấp lên gói dịch vụ lớn hơn."
+      }
     },
     "voucher": {
       "selectTitle": "Chọn voucher",
