@@ -9,3 +9,12 @@ export const useEmployerDashboard = () => {
     refetchOnWindowFocus: false,
   });
 };
+
+export const useApplicantRate = () => {
+  return useQuery({
+    queryKey: ["applicant-rate"],
+    queryFn: () => employerDashboard.getApplicantRate(),
+    select: (data) => data.data,
+    refetchOnWindowFocus: false,
+  });
+};

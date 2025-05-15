@@ -1085,6 +1085,7 @@
       "title": "Register",
       "firstName": "First Name",
       "lastName": "Last Name",
+      "address": "Address",
       "birthday": "Birthday",
       "birthdayPlaceholder": "Select birthday",
       "phone": "Phone Number",

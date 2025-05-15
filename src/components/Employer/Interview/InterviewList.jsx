@@ -334,12 +334,6 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
       ),
     },
     {
-      title: t("employer.job.title"),
-      dataIndex: "job_title",
-      key: "job_title",
-      render: (text) => <Text ellipsis={{ tooltip: text }}>{text}</Text>,
-    },
-    {
       title: t("employer.interview.schedule_time"),
       dataIndex: "schedule_date",
       key: "schedule_date",

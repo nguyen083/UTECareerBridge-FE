@@ -1,4 +1,4 @@
-import { Button, Flex, Form, Image, Modal, message } from "antd";
+import { Button, Divider, Flex, Form, Image, Modal, message } from "antd";
 import BoxContainer from "../../Generate/BoxContainer";
 import { useState } from "react";
 import IconLoading from "../../Generate/IconLoading";
@@ -60,8 +60,7 @@ const BusinessCertificate = () => {
     <>
       <BoxContainer className="shadow-md">
         <div className="title1">{t("employer.company.certificate.title")}</div>
-      </BoxContainer>
-      <BoxContainer className="shadow-md">
+        <Divider />
         <Flex gap="1rem" align="center">
           <Form
             className="w-full md:w-7/12"

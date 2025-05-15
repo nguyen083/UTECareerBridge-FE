@@ -65,7 +65,10 @@ import {
   useRecruimentAverage,
   useRecruimentPerformance,
 } from "./../../../composables/job";
-import { useEmployerDashboard } from "../../../composables/employer-dashboard";
+import {
+  useApplicantRate,
+  useEmployerDashboard,
+} from "../../../composables/employer-dashboard";
 import { useTopSkill, useTopStudentSkill } from "../../../composables/skill";
 
 const { Text, Title } = Typography;
@@ -104,7 +107,9 @@ const TopSkills = () => {
             <Text strong>{item.skillName}</Text>
             <div className="skill-progress">
               <Progress
-                percent={(item.value / totalSkill) * 100}
+                percent={
+                  Math.round((item.value / totalSkill) * 100 * 100) / 100
+                }
                 size="small"
                 format={(percent) => `${percent}%`}
                 strokeColor={{
@@ -385,7 +390,8 @@ const DashBoard = () => {
   const [loading, setLoading] = useState(true);
   const { data: applicationData } = useEmployerDashboard();
   const [jobStatusData, setJobStatusData] = useState([]);
-  const { data: upcomingInterviews } = useListInterviewEmployer();
+  const { data: interviews } = useListInterviewEmployer();
+  const [upcomingInterviews, setUpcomingInterviews] = useState([]);
   const [time, setTime] = useState(null);
 
   const { data: skillDistributionData } = useTopSkill();
@@ -396,12 +402,7 @@ const DashBoard = () => {
   const { countJob, countFollower } = useSelector((state) => state.employer);
   const { data: countInterview } = useCountInterview();
   const { data: hiringData } = useRecruimentAverage();
-
-  // Calculate conversion rate
-  const conversionRate =
-    countStudentApplied > 0
-      ? Math.round((upcomingInterviews.length / countStudentApplied) * 100)
-      : 0;
+  const { data: applicantRate } = useApplicantRate();
 
   useEffect(() => {
     setLoading(true);
@@ -472,6 +473,16 @@ const DashBoard = () => {
         setLoading(false);
       });
   }, [time]);
+
+  useEffect(() => {
+    setUpcomingInterviews(
+      interviews?.content?.filter(
+        (item) =>
+          item.status === "SCHEDULED" &&
+          item.scheduleDate > dayjs().format("DD-MM-YYYY HH:mm:ss")
+      )
+    );
+  }, [interviews]);
 
   const goToPostJob = () => {
     navigate("/employer/post-job");
@@ -659,7 +670,14 @@ const DashBoard = () => {
             <div className="conversion-stats">
               <Progress
                 type="dashboard"
-                percent={conversionRate}
+                percent={
+                  Math.round(
+                    (applicantRate?.totalInterviews /
+                      applicantRate?.totalApplications) *
+                      100 *
+                      100
+                  ) / 100 || 0
+                }
                 format={(percent) => `${percent}%`}
                 strokeColor={{
                   "0%": "#4478c0",
@@ -671,7 +689,7 @@ const DashBoard = () => {
                   title={
                     <Text>{t("employer.dashboard.stats.applications")}</Text>
                   }
-                  value={countStudentApplied || 0}
+                  value={applicantRate?.totalApplications || 0}
                   className="conversion-stat"
                 />
                 <Statistic
@@ -680,7 +698,7 @@ const DashBoard = () => {
                       {t("employer.dashboard.stats.interviews.title")}
                     </Text>
                   }
-                  value={countInterview || 0}
+                  value={applicantRate?.totalInterviews || 0}
                   className="conversion-stat"
                 />
               </div>
@@ -1106,10 +1124,10 @@ const DashBoard = () => {
               </Button>
             }
           >
-            {upcomingInterviews?.content?.length > 0 ? (
+            {upcomingInterviews?.length > 0 ? (
               <List
                 className="interviews-list"
-                dataSource={upcomingInterviews?.content}
+                dataSource={upcomingInterviews}
                 renderItem={(item) => (
                   <List.Item key={item.id} className="interview-item">
                     <List.Item.Meta

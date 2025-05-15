@@ -7,6 +7,9 @@ const employerDashboard = {
     const year = currentDate.getFullYear();
     return axios.get(`/jobs/activity-stats?month=${month}&year=${year}`);
   },
+  getApplicantRate: async () => {
+    return axios.get(`/employers/application-rate`);
+  },
 };
 
 export default employerDashboard;
