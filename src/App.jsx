@@ -36,9 +36,6 @@ const Notification = lazy(() =>
 const CreateNotification = lazy(() =>
   import("./components/Admin/Notification/CreateNotification.jsx")
 );
-const NotificationList = lazy(() =>
-  import("./components/Admin/Notification/NotificationList.jsx")
-);
 const ForumPage = lazy(() => import("./pages/Forum/ForumPage.jsx"));
 const TopicListAdmin = lazy(() => import("./pages/Topic/Admin/TopicPage.jsx"));
 const PostList = lazy(() => import("./pages/Post/User/PostList.jsx"));
@@ -617,9 +614,10 @@ const App = () => {
                       path="create-notification"
                       element={<CreateNotification />}
                     />
+                    <Route path="notification" element={<Notification />} />
                     <Route
-                      path="notification-list"
-                      element={<NotificationList />}
+                      path="notification/:id"
+                      element={<DetailNotification />}
                     />
                   </Route>
 

@@ -165,11 +165,11 @@ const ListNotification = ({ type = "system" }) => {
         }
         onRow={(record) => ({
           onClick: () => {
-            if (role === "student") {
-              navigate(`/notification/${record.notificationId}`);
-            } else {
+            if (role === "admin")
+              navigate(`/admin/notification/${record.notificationId}`);
+            else if (role === "employer")
               navigate(`/employer/notification/${record.notificationId}`);
-            }
+            else navigate(`/notification/${record.notificationId}`);
           },
           className: "hover:shadow-sm transition-shadow duration-200",
         })}

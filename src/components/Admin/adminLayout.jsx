@@ -11,9 +11,6 @@ import {
   GlobalOutlined,
   MenuOutlined,
   NotificationOutlined,
-  SearchOutlined,
-  BellOutlined,
-  SettingOutlined,
 } from "@ant-design/icons";
 import {
   Layout,
@@ -22,8 +19,6 @@ import {
   Flex,
   Space,
   message,
-  Input,
-  Badge,
   Breadcrumb,
   Dropdown,
   Card,
@@ -34,8 +29,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { logOut, removeAllToken } from "../../services/apiService";
 import { loading, stop } from "../../redux/action/webSlice";
 import { useRedux } from "../../utils/useRedux.jsx";
-import NotificationPopover from "./NotificationPopover";
 import ChangeLanguageBtn from "../Generate/ChangeLanguageBtn";
+import NotificationIcon from "../Generate/NotificationIcon.jsx";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -59,15 +54,12 @@ const AdminLayout = () => {
   const [defaultImage, setDefaultImage] = useState(null);
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
   const adminInfo = useSelector((state) => state.admin);
   const name = `${adminInfo?.firstName || ""} ${adminInfo?.lastName || ""}`;
   const avatar = adminInfo?.avatar;
   const [breadcrumbItems, setBreadcrumbItems] = useState([]);
 
-  const notifications = useSelector(
-    (state) => state.notifications?.unread || 0
-  );
+  const user = useSelector((state) => state.user);
 
   const itemSider = [
     {
@@ -90,101 +82,61 @@ const AdminLayout = () => {
       label: t("admin.sidebar.companyManagement"),
       children: [
         {
-          key: "/admin/dashboard",
-          icon: <DashboardOutlined />,
-          label: t("admin.sidebar.overview"),
+          key: "/admin/company-approval",
+          label: t("admin.sidebar.companyApproval"),
         },
         {
-          key: "2",
-          icon: <TeamOutlined />,
-          label: t("admin.sidebar.userManagement"),
-          children: [
-            {
-              key: "/admin/manage-students",
-              label: t("admin.sidebar.candidates"),
-            },
-            {
-              key: "/admin/manage-employers",
-              label: t("admin.sidebar.employers"),
-            },
-          ],
-        },
-        {
-          key: "3",
-          icon: <FileTextOutlined />,
-          label: t("admin.sidebar.companyManagement"),
-          children: [
-            {
-              key: "/admin/company-approval",
-              label: t("admin.sidebar.companyApproval"),
-            },
-            {
-              key: "/admin/post-approval",
-              label: t("admin.sidebar.postApproval"),
-            },
-          ],
-        },
-        {
-          key: "4",
-          icon: <DollarOutlined />,
-          label: t("admin.sidebar.transactionManagement"),
-          children: [
-            {
-              key: "/admin/service-packages",
-              label: t("admin.sidebar.servicePackages"),
-            },
-            { key: "/admin/coupons", label: t("admin.sidebar.coupons") },
-          ],
-        },
-        {
-          key: "6",
-          icon: <GlobalOutlined />,
-          label: t("admin.sidebar.contentManagement"),
-          children: [
-            {
-              key: "/admin/news-events",
-              label: t("admin.sidebar.newsAndEvents"),
-            },
-          ],
-        },
-        {
-          key: "7",
-          icon: <NotificationOutlined />,
-          label: t("admin.sidebar.notification"),
-          children: [
-            {
-              key: "/admin/create-notification",
-              label: t("admin.sidebar.createNotification"),
-            },
-            {
-              key: "/admin/notification-list",
-              label: t("admin.sidebar.notificationList"),
-            },
-          ],
-        },
-        {
-          key: "logout",
-          icon: <LogoutOutlined />,
-          label: t("admin.sidebar.logout"),
+          key: "/admin/post-approval",
+          label: t("admin.sidebar.postApproval"),
         },
       ],
+    },
+    {
+      key: "4",
+      icon: <DollarOutlined />,
+      label: t("admin.sidebar.transactionManagement"),
+      children: [
+        {
+          key: "/admin/service-packages",
+          label: t("admin.sidebar.servicePackages"),
+        },
+        { key: "/admin/coupons", label: t("admin.sidebar.coupons") },
+      ],
+    },
+    {
+      key: "6",
+      icon: <GlobalOutlined />,
+      label: t("admin.sidebar.contentManagement"),
+      children: [
+        {
+          key: "/admin/news-events",
+          label: t("admin.sidebar.newsAndEvents"),
+        },
+      ],
+    },
+    {
+      key: "7",
+      icon: <NotificationOutlined />,
+      label: t("admin.sidebar.notification"),
+      children: [
+        {
+          key: "/admin/create-notification",
+          label: t("admin.sidebar.createNotification"),
+        },
+        {
+          key: "/admin/notification",
+          label: t("admin.sidebar.notificationList"),
+        },
+      ],
+    },
+    {
+      key: "logout",
+      icon: <LogoutOutlined />,
+      label: t("admin.sidebar.logout"),
     },
   ];
 
   const userMenuItems = [
-    {
-      key: "profile",
-      label: t("admin.profile.view"),
-      icon: <UserOutlined />,
-    },
-    {
-      key: "settings",
-      label: t("admin.profile.settings"),
-      icon: <SettingOutlined />,
-    },
-    {
-      type: "divider",
-    },
     {
       key: "logout",
       label: t("admin.sidebar.logout"),
@@ -250,11 +202,6 @@ const AdminLayout = () => {
     }
   };
 
-  const handleSearch = (e) => {
-    setSearchValue(e.target.value);
-    // Implement search functionality as needed
-  };
-
   const handleUserMenuClick = ({ key }) => {
     if (key === "logout") {
       handleNavigation({ key: "logout" });
@@ -310,29 +257,12 @@ const AdminLayout = () => {
                 onClick={() => setCollapsed(!collapsed)}
               />
             </Tooltip>
-
-            <div className="ml-6 search-container">
-              <SearchOutlined className="search-icon" />
-              <div className="search-bar">
-                <Input
-                  className="search-input"
-                  placeholder={t("admin.search.placeholder")}
-                  value={searchValue}
-                  onChange={handleSearch}
-                  bordered={false}
-                />
-              </div>
-            </div>
           </Flex>
 
-          <Space size={24}>
+          <div className="flex !items-center gap-6">
             <ChangeLanguageBtn />
 
-            <NotificationPopover userId={adminInfo?.id}>
-              <Badge count={notifications} size="small">
-                <BellOutlined className="notification-icon" />
-              </Badge>
-            </NotificationPopover>
+            <NotificationIcon userId={user.userId} />
 
             <Dropdown
               menu={{ items: userMenuItems, onClick: handleUserMenuClick }}
@@ -350,7 +280,7 @@ const AdminLayout = () => {
                 <span className="admin-name">{name}</span>
               </Space>
             </Dropdown>
-          </Space>
+          </div>
         </Header>
         <Content className="admin-content">
           <Card className="mb-4 admin-breadcrumb">

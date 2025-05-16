@@ -50,9 +50,11 @@ const DetailNotification = () => {
             icon={<ArrowLeftOutlined />}
             size="small"
             onClick={() => {
-              role === "student"
-                ? navigate("/notification")
-                : navigate("/employer/notification");
+              role === "admin"
+                ? navigate("/admin/notification")
+                : role === "employer"
+                ? navigate("/employer/notification")
+                : navigate("/notification");
             }}
           >
             {t("common.back")}

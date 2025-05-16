@@ -38,7 +38,7 @@ const ListNotification = ({ notification, userId }) => {
 
   const handleSeeMore = () => {
     if (user.role === "admin") {
-      navigate("admin/notification");
+      navigate("/admin/notification");
     } else if (user.role === "employer") {
       navigate("/employer/notification");
     } else {
