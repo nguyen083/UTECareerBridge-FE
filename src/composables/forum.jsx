@@ -14,10 +14,10 @@ export const useForumActive = (page = 1, size = 12) => {
   });
 };
 
-export const useAllForum = () => {
+export const useAllForum = (page = 1, size = 12) => {
   return useQuery({
-    queryKey: ["forums"],
-    queryFn: () => forum.getAllForum(),
+    queryKey: ["forums", page, size],
+    queryFn: () => forum.getAllForum({ page: page - 1, size }),
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: false,
   });
@@ -51,14 +51,8 @@ export const useCreateForumMutation = () => {
   });
 };
 export const useUpdateForumMutation = () => {
-  const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id, params) => forum.updateForum(id, params),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["searchForums", "forums", " forumsActive"],
-      });
-    },
+    mutationFn: ({ id, ...params }) => forum.updateForum(id, params),
   });
 };
 export const useDeleteForumMutation = () => {
@@ -70,5 +64,11 @@ export const useDeleteForumMutation = () => {
         queryKey: ["searchForums", "forums", " forumsActive"],
       });
     },
+  });
+};
+
+export const useCreateForum = () => {
+  return useMutation({
+    mutationFn: (params) => forum.createForum(params),
   });
 };

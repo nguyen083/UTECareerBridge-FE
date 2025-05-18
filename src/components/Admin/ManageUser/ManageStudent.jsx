@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { Modal, Form, Input, DatePicker, Select, Button, message } from "antd";
+import {
+  Modal,
+  Form,
+  Input,
+  DatePicker,
+  Select,
+  Button,
+  message,
+  Divider,
+} from "antd";
 import TableListUser from "./TableListUser";
 import BoxContainer from "../../Generate/BoxContainer";
 import { getUserByUserId, updateUser } from "../../../services/apiService";
@@ -135,8 +144,7 @@ const ManageStudent = () => {
         <div className="title1">
           {t("admin.student.title", "Quản lý người tìm việc")}
         </div>
-      </BoxContainer>
-      <BoxContainer className="shadow-md">
+        <Divider />
         <TableListUser
           fetch={res}
           userType="student"

@@ -21,6 +21,10 @@
   "my_company": "My company",
   "marquee": "Kickstart your career, find a job with ease - Career opportunities await you today!",
   "explore_opportunities": "Explore opportunities",
+  "cutImage": "Cut image",
+  "uploadSuccess": "Upload successfully!",
+  "uploadError": "Upload failed. Please try again.",
+  "dragAndDrop": "Drag and drop or click to upload image",
   "notification": {
     "title": "Notification",
     "titleDetail": "Notification Detail",
@@ -40,6 +44,7 @@
     "title": "All Categories"
   },
   "common": {
+    "confirm": "Confirm",
     "noSkills": "No skills",
     "previous": "Previous",
     "next": "Next",
@@ -470,7 +475,7 @@
       },
       "list": {
         "date": "Evaluation date {date}",
-        "evaluator": "Evaluated by: {name}",
+        "evaluator": "Evaluated by",
         "evaluation_list": "Evaluation list",
         "view_evaluations": "View evaluations",
         "title": "Candidate evaluation list",
@@ -511,6 +516,7 @@
       }
     },
     "applicant": {
+      "analyze": "Analyze CVs",
       "listJob": {
         "title": "Manage Applicants by Job",
         "notice": "Please post a job to view applicants",
@@ -611,6 +617,9 @@
             }
           }
         }
+      },
+      "listDrawer": {
+        "title": "List of applicants"
       }
     },
     "chat": {
@@ -1483,6 +1492,10 @@
     "loginFailed": "Login failed"
   },
   "admin": {
+    "search": {
+      "placeholder": "Search for companies, candidates...",
+      "noResults": "No results found"
+    },
     "companyApproval": {
       "title": "Company Approval",
       "tabs": {
@@ -1493,25 +1506,131 @@
     },
     "dashboard": {
       "title": "Overview",
+      "subtitle": "Overview as of {{date}}",
+      "refresh": "Refresh",
       "filters": {
+        "selectMonth": "Select month",
+        "selectYear": "Select year",
         "allMonths": "All months",
         "month": "Month {month}",
-        "allYears": "All years"
+        "allYears": "All years",
+        "last30Days": "Last 30 days",
+        "last6Months": "Last 6 months",
+        "lastYear": "Last year"
       },
       "stats": {
         "currentMonthRevenue": "Current Month Revenue",
         "totalCandidates": "Total Candidates",
         "totalEmployers": "Total Employers",
-        "conversionRate": "Conversion Rate"
+        "totalJobs": "Total Jobs",
+        "conversionRate": "Conversion Rate",
+        "newCandidates": "New Candidates",
+        "newEmployers": "New Employers"
       },
       "charts": {
+        "employers": "Employers",
+        "candidates": "Candidates",
         "monthlyRevenue": "Monthly Revenue",
         "revenue": "Revenue (VND)",
         "packageCount": "Package Count",
         "topPackages": "Top Selling Packages",
         "jobsByCategory": "Jobs by Category",
         "packages": "{value} packages - {percentage}%",
-        "jobs": "{value} jobs - {percentage}%"
+        "jobs": "{value} jobs - {percentage}%",
+        "userGrowth": "User Growth Trend"
+      },
+      "platform": {
+        "performance": "Platform Performance",
+        "activeUsers": "Active Users (Daily)",
+        "avgSessionDuration": "Average Session Duration",
+        "bounceRate": "Bounce Rate",
+        "conversionRate": "Conversion Rate"
+      },
+      "insights": {
+        "title": "Platform Insights",
+        "engagementTitle": "Increased Engagement",
+        "engagementDesc": "User sessions increased by 12% compared to last month, indicating higher engagement with the platform.",
+        "mobileTitle": "Mobile Usage Trends",
+        "mobileDesc": "Mobile usage is increasing but conversion rates are 5% lower on mobile compared to desktop. Consider optimizing the mobile experience.",
+        "categoriesTitle": "Popular Job Categories",
+        "categoriesDesc": "IT/Software Development and Data Analysis are the fastest growing job categories this month."
+      },
+      "jobApproval": {
+        "title": "Job Approval Status",
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "total": "Total",
+        "approvedPercent": "{percent}% approved"
+      },
+      "metrics": {
+        "monthlyRevenue": "Monthly Revenue",
+        "totalUsers": "Total Users",
+        "activeJobs": "Active Jobs",
+        "conversionRate": "Conversion Rate",
+        "vsLastMonth": "vs last month"
+      },
+      "recentActivities": {
+        "title": "Recent Activities",
+        "newUser": "New employer registered: {company}",
+        "newJob": "New job posted: {position}",
+        "newPackage": "Package purchased: {package}",
+        "approval": "Company profile approved: {company}",
+        "newApplication": "{count} new applications received today",
+        "timeAgo": "{time} ago"
+      },
+      "tables": {
+        "recentOrders": "Recent Orders",
+        "topEmployers": "Top Employers",
+        "systemAlerts": "System Alerts",
+        "columns": {
+          "id": "ID",
+          "company": "Company",
+          "package": "Package",
+          "amount": "Amount",
+          "date": "Date",
+          "status": "Status",
+          "jobsPosted": "Jobs Posted",
+          "hires": "Successful Hires",
+          "rating": "Rating"
+        },
+        "statuses": {
+          "completed": "Completed",
+          "processing": "Processing"
+        },
+        "action": "Action"
+      },
+      "skills": {
+        "title": "Top Requested Skills",
+        "viewAll": "View all skills",
+        "distribution": "Skill Distribution Analysis"
+      },
+      "geographic": {
+        "title": "Geographic Distribution",
+        "employers": "Employers",
+        "candidates": "Candidates",
+        "jobs": "Jobs"
+      },
+      "chartTypes": {
+        "pie": "Pie Chart",
+        "bar": "Bar Chart"
+      },
+      "tabViews": {
+        "chart": "Chart View",
+        "data": "Data View"
+      },
+      "alerts": {
+        "systemNotice": "System Notice",
+        "pendingJobs": "There are {{count}} new job postings pending approval. Please review to maintain platform quality.",
+        "reviewNow": "Review Now",
+        "packageExpiration": "{{count}} employer packages will expire in the next 7 days",
+        "systemLoad": "Server CPU usage peaked at {percent}% at {{time}}",
+        "securityAlert": "Unusual login activity detected from IP {{ip}}",
+        "backupStatus": "Daily backup completed successfully at {{time}}"
+      },
+      "search": {
+        "title": "Top Search Keywords",
+        "searches": "searches"
       },
       "errors": {
         "loadData": "Error loading data"
@@ -1533,6 +1652,7 @@
       "notification": "Notification",
       "createNotification": "Create Notification",
       "notificationList": "Notification List",
+      "forums": "Forums",
       "logout": "Logout"
     },
     "messages": {
@@ -1548,10 +1668,13 @@
       "delete": "Delete",
       "deleteError": "Failed to delete coupon",
       "voucher": "Voucher",
-      "discount": "{discount}% Off",
+      "discount": "{{discount}} off",
       "code": "Code:",
       "remaining": "Remaining:",
-      "expireDate": "Expire Date:",
+      "expireDate": "Expire date:",
+      "active": "Active",
+      "inactive": "Inactive",
+      "maxUsage": "Maximum usage",
       "form": {
         "code": {
           "label": "Coupon Code",
@@ -1589,10 +1712,21 @@
           "create": "Create",
           "cancel": "Cancel"
         }
+      },
+      "deleteConfirm": {
+        "title": "Delete Coupon",
+        "content": "Are you sure you want to delete this coupon?",
+        "okText": "Delete"
       }
     },
     "company": {
+      "stats": {
+        "total": "Total companies",
+        "withCertificate": "Companies with certificate"
+      },
       "table": {
+        "pagination": "Page",
+        "notAvailable": "No data",
         "columns": {
           "companyName": "Company Name",
           "address": "Address",
@@ -1621,6 +1755,14 @@
           "enterRejectReason": "Enter reject reason",
           "pleaseEnterReason": "Please enter reject reason"
         }
+      },
+      "status": {
+        "pendingTitle": "Pending",
+        "approvedTitle": "Approved",
+        "rejectedTitle": "Rejected",
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
       }
     },
     "postApproval": {
@@ -1940,7 +2082,7 @@
         "placeholder": "Search users...",
         "sort": "Sort",
         "refresh": "Refresh",
-        "totalUsers": "Total {total} users"
+        "totalUsers": "Total {{total}} users"
       },
       "sort": {
         "newest": "Newest Users",
@@ -2044,6 +2186,11 @@
         "createSuccess": "Notification created successfully",
         "createError": "Notification creation failed"
       }
+    },
+    "manageJobs": {
+      "pendingDescription": "Manage post waiting for approval",
+      "activeDescription": "Manage post approved",
+      "rejectedDescription": "Manage post rejected"
     }
   },
   "chatbot": {

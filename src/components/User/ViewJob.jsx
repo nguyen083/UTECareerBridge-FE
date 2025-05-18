@@ -297,7 +297,7 @@ const ViewJob = () => {
   );
 
   return (
-    <>
+    <div className="view-job-container">
       <Flex
         align="center"
         justify="center"
@@ -347,14 +347,13 @@ const ViewJob = () => {
                       <Col xs={24} md={18}>
                         <Button
                           type="primary"
-                          style={{ width: "100%" }}
                           size="large"
                           onClick={() => {
                             user.role === "student"
                               ? setApply(true)
                               : navigate("/login");
                           }}
-                          className="apply-button"
+                          className="w-full"
                         >
                           Nộp đơn ứng tuyển
                         </Button>
@@ -791,7 +790,7 @@ const ViewJob = () => {
         key={id}
         setNotice={setNotice}
       />
-    </>
+    </div>
   );
 };
 

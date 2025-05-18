@@ -156,10 +156,10 @@ html {
 
 .ant-btn-primary {
   background: linear-gradient(135deg, #1890ff 0%, #0050b3 100%);
+}
 
-  &:hover {
-    background-color: #2766be !important;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(26, 74, 131, 0.3);
-  }
+.ant-btn-primary:hover {
+  background-color: #2766be !important;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(26, 74, 131, 0.3);
 }

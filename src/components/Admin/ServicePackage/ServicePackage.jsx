@@ -1,7 +1,6 @@
 import {
   DeleteOutlined,
   EditOutlined,
-  MoreOutlined,
   PlusOutlined,
   AppstoreOutlined,
   DollarOutlined,
@@ -14,14 +13,12 @@ import {
   Card,
   Col,
   Divider,
-  Dropdown,
   Empty,
   Flex,
   Form,
   Input,
   InputNumber,
   List,
-  Menu,
   message,
   Modal,
   Row,
@@ -342,7 +339,7 @@ const ListServicePackage = ({ fetch, setFetch }) => {
         }}
         dataSource={data}
         pagination={{
-          pageSize: 6,
+          pageSize: 8,
           total: data.length,
           showSizeChanger: false,
         }}
@@ -405,7 +402,7 @@ const ListServicePackage = ({ fetch, setFetch }) => {
                     <Text className="info-label">
                       {t("admin.servicePackage.list.description")}:
                     </Text>
-                    <Text className="info-value description-text">
+                    <Text className="info-value description-text min-h-11">
                       {item.description}
                     </Text>
                   </div>
@@ -457,7 +454,7 @@ const ServicePackage = () => {
 
   return (
     <>
-      <BoxContainer className="shadow-md admin-header">
+      <BoxContainer className="shadow-md">
         <Flex align="center" justify="space-between">
           <Text className="title1">{t("admin.servicePackage.title")}</Text>
           <Button
@@ -470,8 +467,7 @@ const ServicePackage = () => {
             {t("admin.servicePackage.createNew")}
           </Button>
         </Flex>
-      </BoxContainer>
-      <BoxContainer className="shadow-md">
+        <Divider />
         <ListServicePackage fetch={fetch} setFetch={setFetch} />
       </BoxContainer>
       <ModalCreateServicePackage

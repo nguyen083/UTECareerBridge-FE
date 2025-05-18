@@ -21,6 +21,10 @@
   "my_company": "Công ty của tôi",
   "marquee": "Khởi đầu sự nghiệp, tìm việc dễ dàng - Cơ hội nghề nghiệp dành cho bạn ngay hôm nay!",
   "explore_opportunities": "Khám phá cơ hội",
+  "cutImage": "Cắt ảnh",
+  "uploadSuccess": "Tải lên thành công!",
+  "uploadError": "Tải lên thất bại. Vui lòng thử lại.",
+  "dragAndDrop": "Kéo thả hoặc nhấp để tải ảnh lên",
   "notification": {
     "title": "Thông báo",
     "titleDetail": "Chi tiết thông báo",
@@ -40,6 +44,7 @@
     "title": "Tất cả danh mục"
   },
   "common": {
+    "confirm": "Xác nhận",
     "noSkills": "Không có kỹ năng",
     "previous": "Trước",
     "next": "Tiếp theo",
@@ -429,7 +434,7 @@
       },
       "list": {
         "date": "Ngày đánh giá {date}",
-        "evaluator": "Đánh giá bởi: {name}",
+        "evaluator": "Đánh giá bởi",
         "evaluation_list": "Danh sách đánh giá",
         "view_evaluations": "Xem đánh giá",
         "title": "Danh sách đánh giá ứng viên",
@@ -470,6 +475,7 @@
       }
     },
     "applicant": {
+      "analyze": "Phân tích CV",
       "listJob": {
         "title": "Quản lý ứng viên theo công việc",
         "notice": "Vui lòng đăng việc làm để xem ứng viên",
@@ -570,6 +576,9 @@
             }
           }
         }
+      },
+      "listDrawer": {
+        "title": "Danh sách ứng viên"
       }
     },
     "chat": {
@@ -1420,7 +1429,7 @@
     },
     "dashboard": {
       "title": "Tổng quan",
-      "subtitle": "Tổng quan tính đến {date}",
+      "subtitle": "Tổng quan tính đến {{date}}",
       "refresh": "Làm mới",
       "filters": {
         "selectMonth": "Chọn tháng",
@@ -1535,12 +1544,12 @@
       },
       "alerts": {
         "systemNotice": "Thông báo hệ thống",
-        "pendingJobs": "Có {count} tin tuyển dụng mới đang chờ phê duyệt. Vui lòng xem xét để duy trì chất lượng nền tảng.",
+        "pendingJobs": "Có {{count}} tin tuyển dụng mới đang chờ phê duyệt. Vui lòng xem xét để duy trì chất lượng nền tảng.",
         "reviewNow": "Xem xét ngay",
-        "packageExpiration": "{count} gói của nhà tuyển dụng sẽ hết hạn trong 7 ngày tới",
-        "systemLoad": "Mức sử dụng CPU máy chủ đạt đỉnh {percent}% lúc {time}",
-        "securityAlert": "Phát hiện hoạt động đăng nhập bất thường từ IP {ip}",
-        "backupStatus": "Sao lưu hàng ngày đã hoàn tất thành công lúc {time}"
+        "packageExpiration": "{{count}} gói của nhà tuyển dụng sẽ hết hạn trong 7 ngày tới",
+        "systemLoad": "Mức sử dụng CPU máy chủ đạt đỉnh {{percent}}% lúc {{time}}",
+        "securityAlert": "Phát hiện hoạt động đăng nhập bất thường từ IP {{ip}}",
+        "backupStatus": "Sao lưu hàng ngày đã hoàn tất thành công lúc {{time}}"
       },
       "search": {
         "title": "Các từ khóa tìm kiếm hàng đầu",
@@ -1566,7 +1575,8 @@
       "notification": "Thông báo",
       "createNotification": "Tạo thông báo",
       "notificationList": "Danh sách thông báo",
-      "logout": "Đăng xuất"
+      "logout": "Đăng xuất",
+      "forums": "Diễn đàn"
     },
     "messages": {
       "error": "Có lỗi xảy ra"
@@ -1581,10 +1591,13 @@
       "delete": "Xóa",
       "deleteError": "Xoá mã giảm giá không thành công",
       "voucher": "Voucher",
-      "discount": "Giảm {discount}%",
+      "discount": "Giảm {{discount}}",
       "code": "Mã:",
       "remaining": "Còn lại:",
       "expireDate": "Ngày hết hạn:",
+      "active": "Hoạt động",
+      "inactive": "Không hoạt động",
+      "maxUsage": "Số lần sử dụng tối đa",
       "form": {
         "code": {
           "label": "Mã giảm giá",
@@ -1622,6 +1635,11 @@
           "create": "Tạo",
           "cancel": "Hủy"
         }
+      },
+      "deleteConfirm": {
+        "title": "Xóa mã giảm giá",
+        "content": "Bạn có chắc chắn muốn xóa mã giảm giá này không?",
+        "okText": "Xóa"
       }
     },
     "company": {
@@ -1989,7 +2007,7 @@
         "placeholder": "Tìm kiếm người dùng...",
         "sort": "Sắp xếp",
         "refresh": "Làm mới",
-        "totalUsers": "Tổng {total} người dùng"
+        "totalUsers": "Tổng {{total}} người dùng"
       },
       "sort": {
         "newest": "Người dùng mới nhất",
@@ -2093,6 +2111,11 @@
         "createSuccess": "Thông báo đã được tạo thành công!",
         "createError": "Thông báo đã tạo thất bại!"
       }
+    },
+    "manageJobs": {
+      "pendingDescription": "Quản lý các bài đăng tuyển đang chờ duyệt",
+      "activeDescription": "Quản lý các bài đăng tuyển đã được duyệt",
+      "rejectedDescription": "Quản lý các bài đăng tuyển đã bị từ chối"
     }
   },
   "chatbot": {

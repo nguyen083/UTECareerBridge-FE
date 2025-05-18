@@ -112,6 +112,10 @@ const AdminLayout = () => {
           key: "/admin/news-events",
           label: t("admin.sidebar.newsAndEvents"),
         },
+        {
+          key: "/admin/forums",
+          label: t("admin.sidebar.forums"),
+        },
       ],
     },
     {

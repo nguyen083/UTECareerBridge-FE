@@ -286,8 +286,11 @@ const NotificationIcon = ({ userId = null }) => {
       overlayClassName="notification-popover"
       placement="bottomRight"
       title={
-        <Flex justify="space-between">
-          <Typography.Title className="notification-title-header" level={5}>
+        <Flex justify="space-between" align="center">
+          <Typography.Title
+            className="!mb-0 notification-title-header leading-0"
+            level={5}
+          >
             {t("notification.title")}
           </Typography.Title>
           <Text

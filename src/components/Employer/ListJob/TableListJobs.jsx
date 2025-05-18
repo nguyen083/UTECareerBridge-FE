@@ -83,7 +83,7 @@ const TableListJobs = (props) => {
         setPagination({
           current: currentPage,
           pageSize: pageSize,
-          total: res.data.totalPages,
+          total: res.data.totalElements,
         });
       } else {
         setData([]);
@@ -304,15 +304,6 @@ const TableListJobs = (props) => {
         </div>
       ),
     },
-    {
-      title: t("admin.post.table.columns.quantity"),
-      dataIndex: "quantity",
-      key: "quantity",
-      width: "10%",
-      align: "center",
-      sorter: (a, b) => a.quantity - b.quantity,
-      render: (value) => <Badge count={value} overflowCount={999} showZero />,
-    },
   ];
 
   // Add different columns based on status
@@ -334,7 +325,7 @@ const TableListJobs = (props) => {
       title: t("admin.post.table.columns.deadline"),
       dataIndex: "deadline",
       key: "deadline",
-      align: "center",
+      align: "right",
       width: "13%",
       ...getColumnSearchProps("deadline"),
       render: (text) => (
@@ -432,9 +423,7 @@ const TableListJobs = (props) => {
         current: pagination.current,
         pageSize: pagination.pageSize,
         showSizeChanger: true,
-        showTotal: (total) =>
-          t("employer.manageJobs.totalItems", { total }) ||
-          `Total ${total} items`,
+        total: pagination.total,
       }}
       loading={loading}
       onChange={handleTableChange}
@@ -442,9 +431,7 @@ const TableListJobs = (props) => {
         emptyText: (
           <Empty
             image={Empty.PRESENTED_IMAGE_SIMPLE}
-            description={
-              <span>{t("admin.post.table.noData") || "No data available"}</span>
-            }
+            description={<span>{t("admin.post.table.noData")}</span>}
           />
         ),
       }}

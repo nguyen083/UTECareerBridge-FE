@@ -744,7 +744,7 @@ const JobEvaluations = () => {
                   <FileDoneOutlined
                     style={{ marginRight: 8, color: "#1677ff" }}
                   />
-                  {t("employer.evaluation.recommendation.title")}
+                  {t("employer.evaluation.list.evaluator")}
                 </span>
               }
             >
