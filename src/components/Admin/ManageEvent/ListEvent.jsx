@@ -12,6 +12,7 @@ import {
   Select,
   Tag,
   Empty,
+  Divider,
 } from "antd";
 import BoxContainer from "../../Generate/BoxContainer";
 import CreateEventPage from "./CreateEventPage";
@@ -19,7 +20,6 @@ import { useEffect, useState } from "react";
 import {
   DeleteOutlined,
   EditOutlined,
-  EyeOutlined,
   MoreOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
@@ -123,54 +123,52 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
         renderItem={(item) => (
           <Card size="small" className="shadow card-event">
             <List.Item
-              className="!py-0"
+              onClick={(e) => {
+                e.stopPropagation();
+                window.open(`/event-detail/${item.eventId}`, "_blank");
+              }}
+              className="!py-0 cursor-pointer"
               actions={[
                 <Dropdown
                   key={item.eventId}
                   overlay={
                     <Menu>
-                      <Menu.Item
-                        key="1"
-                        onClick={() => {
-                          window.open(
-                            `/event-detail/${item.eventId}`,
-                            "_blank"
-                          );
-                        }}
-                      >
-                        <Button
-                          icon={<EyeOutlined />}
-                          type="link"
-                          style={{ color: "black" }}
-                        >
-                          {t("admin.event.actions.view")}
-                        </Button>
-                      </Menu.Item>
                       <Menu.Item key="2">
                         <Button
                           icon={<EditOutlined />}
                           type="link"
                           color="primary"
-                          onClick={() => handleEditEvent(item.eventId)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEditEvent(item.eventId);
+                          }}
                         >
                           {t("admin.event.actions.edit")}
                         </Button>
                       </Menu.Item>
-                      <Menu.Item
-                        key="3"
-                        onClick={() => {
-                          handleDeleteEvent(item);
-                        }}
-                      >
-                        <Button icon={<DeleteOutlined />} type="link" danger>
+                      <Menu.Item key="3">
+                        <Button
+                          icon={<DeleteOutlined />}
+                          type="link"
+                          danger
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteEvent(item);
+                          }}
+                        >
                           {t("admin.event.actions.delete")}
                         </Button>
                       </Menu.Item>
                     </Menu>
                   }
                   trigger={["click"]}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                  }}
                 >
-                  <MoreOutlined className="text-lg" />
+                  <Button type="text" onClick={(e) => e.stopPropagation()}>
+                    <MoreOutlined className="text-lg" />
+                  </Button>
                 </Dropdown>,
               ]}
             >
@@ -225,8 +223,7 @@ const ListEvent = () => {
     <>
       <BoxContainer width="100%" className="shadow-md">
         <div className="title1">{t("admin.event.title.manage")}</div>
-      </BoxContainer>
-      <BoxContainer width="100%" className="shadow-md">
+        <Divider />
         <Flex gap={20} vertical>
           <Flex justify="end" align="center" gap={10}>
             <Select
@@ -253,7 +250,11 @@ const ListEvent = () => {
                 {t("admin.event.form.fields.eventType.options.webinar")}
               </Select.Option>
             </Select>
-            <Button icon={<PlusOutlined />} onClick={() => setOpen(true)}>
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => setOpen(true)}
+            >
               {t("admin.event.actions.create")}
             </Button>
           </Flex>

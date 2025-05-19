@@ -12,6 +12,7 @@ import {
   Flex,
   message,
   Modal,
+  Divider,
 } from "antd";
 import {
   EditOutlined,
@@ -32,8 +33,9 @@ import { useQueryClient } from "@tanstack/react-query";
 import CreateForumModal from "./components/CreateForumModal";
 import EditForumModal from "./components/EditForumModal";
 import { useTranslation } from "react-i18next";
+import BoxContainer from "../../../components/Generate/BoxContainer";
 
-const { Title, Text, Paragraph } = Typography;
+const { Text, Paragraph } = Typography;
 const { confirm } = Modal;
 const { Meta } = Card;
 
@@ -135,11 +137,10 @@ const ForumPage = () => {
   const total = forumData?.data?.totalElements || 0;
 
   return (
-    <div className="p-6">
-      <div className="flex items-center justify-between mb-6">
-        <Title level={3} className="!mb-0 !text-text-color">
-          {t("forum.management")}
-        </Title>
+    <BoxContainer width="100%" className="shadow-md">
+      <span className="title1">{t("forum.management")}</span>
+      <Divider />
+      <div className="flex items-center justify-end mb-6">
         <Button
           icon={<PlusOutlined />}
           type="primary"
@@ -264,7 +265,7 @@ const ForumPage = () => {
           forumData={selectedForum}
         />
       )}
-    </div>
+    </BoxContainer>
   );
 };
 

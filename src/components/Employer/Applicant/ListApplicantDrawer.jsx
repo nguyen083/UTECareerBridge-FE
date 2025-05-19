@@ -7,23 +7,39 @@ import ListApplicant from "./ListApplicant";
 import { useRef, useState } from "react";
 import AnalyzeCVsModal from "./AnalyzeCVsModal";
 import { FaRegFileExcel } from "react-icons/fa";
+import { useCVAnalyzeApplyJob } from "../../../composables/resume";
+import LoadingAnimation from "../../Student/CVAnalysis/LoadingAnimation";
 
 const { Text } = Typography;
 
 const ListApplicantDrawer = ({ open, setSelectedJob, jobId }) => {
-  // const [loading, setLoading] = useState(false);
   const [openAnalyzeCVsDrawer, setOpenAnalyzeCVsDrawer] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
   const { t } = useTranslation();
   const pendingRef = useRef();
   const viewedRef = useRef();
   const approvedRef = useRef();
   const rejectedRef = useRef();
 
+  const {
+    data: resumeAnalysis,
+    isFetching: isAnalyzing,
+    refetch: analyzeResumes,
+  } = useCVAnalyzeApplyJob(jobId);
+
   const handleRefresh = () => {
     pendingRef.current?.fetchData();
     viewedRef.current?.fetchData();
     approvedRef.current?.fetchData();
     rejectedRef.current?.fetchData();
+  };
+
+  const handleAnalyzeCVs = () => {
+    setAnalyzing(true);
+    setOpenAnalyzeCVsDrawer(true);
+    analyzeResumes().finally(() => {
+      setAnalyzing(false);
+    });
   };
 
   const items = [
@@ -58,48 +74,55 @@ const ListApplicantDrawer = ({ open, setSelectedJob, jobId }) => {
   ];
 
   return (
-    <Drawer
-      className="list-applicant-drawer"
-      width={700}
-      closable
-      destroyOnClose
-      title={
-        <Flex justify="space-between" align="center">
-          <Text className="!mb-0">
-            {t("employer.applicant.listDrawer.title", "Danh sách ứng viên")}
-          </Text>
-          <Flex gap={10}>
-            <Button
-              onClick={() => setOpenAnalyzeCVsDrawer(true)}
-              type="primary"
-              icon={<FaRegFileExcel />}
-            >
-              {t("employer.applicant.analyze")}
-            </Button>
-            <Button
-              icon={<IoIosRefresh size={20} />}
-              type="text"
-              onClick={handleRefresh}
-            ></Button>
+    <div className="relative">
+      <LoadingAnimation loadingAnimation={analyzing} />
+      <Drawer
+        className="list-applicant-drawer"
+        width={700}
+        closable
+        destroyOnClose
+        title={
+          <Flex justify="space-between" align="center">
+            <Text className="!mb-0">
+              {t("employer.applicant.listDrawer.title", "Danh sách ứng viên")}
+            </Text>
+            <Flex gap={10}>
+              <Button
+                onClick={handleAnalyzeCVs}
+                type="primary"
+                icon={<FaRegFileExcel />}
+                loading={isAnalyzing}
+              >
+                {t("employer.applicant.analyze")}
+              </Button>
+              <Button
+                icon={<IoIosRefresh size={20} />}
+                type="text"
+                onClick={handleRefresh}
+              ></Button>
+            </Flex>
           </Flex>
-        </Flex>
-      }
-      placement="right"
-      open={open}
-      // loading={loading}
-      onClose={() => setSelectedJob(null)}
-    >
-      <Collapse
-        items={items}
-        defaultActiveKey={["1", "2", "3", "4"]}
-        size="small"
-        expandIconPosition="end"
-      />
-      <AnalyzeCVsModal
-        open={openAnalyzeCVsDrawer}
-        setOpen={setOpenAnalyzeCVsDrawer}
-      />
-    </Drawer>
+        }
+        placement="right"
+        open={open}
+        onClose={() => setSelectedJob(null)}
+      >
+        <Collapse
+          items={items}
+          defaultActiveKey={["1", "2", "3", "4"]}
+          size="small"
+          expandIconPosition="end"
+        />
+        <LoadingAnimation loadingAnimation={isAnalyzing} />
+        <AnalyzeCVsModal
+          open={openAnalyzeCVsDrawer}
+          setOpen={setOpenAnalyzeCVsDrawer}
+          jobId={jobId}
+          resumeAnalysis={resumeAnalysis}
+          isAnalyzing={isAnalyzing}
+        />
+      </Drawer>
+    </div>
   );
 };
 

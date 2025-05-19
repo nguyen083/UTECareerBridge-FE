@@ -523,6 +523,13 @@
     },
     "applicant": {
       "analyze": "Analyze CVs",
+      "analyzeDescription": "This feature helps you analyze applied CVs based on job fit.",
+      "overallScore": "Overall Score",
+      "matchScore": "Match Score",
+      "email": "Email",
+      "skillScore": "Skill Score",
+      "similarity": "Similarity",
+      "skills": "Skills",
       "listJob": {
         "title": "Manage Applicants by Job",
         "notice": "Please post a job to view applicants",
@@ -1417,6 +1424,7 @@
       "lastUpdated": "Last Updated",
       "analyze": "Analyze CV",
       "analyzing": "Analyzing...",
+      "pleaseWait": "Please wait while we analyze your CV...",
       "warning": {
         "noCV": "Please select a CV or upload a new one to analyze"
       },
@@ -1430,7 +1438,7 @@
       "result": {
         "title": "Analysis Results",
         "success": "CV Analysis Complete!",
-        "subtitle": "Your CV matched with jobs at {score}% match rate",
+        "subtitle": "Your CV matched with jobs at {{score}}% match rate",
         "jobMatches": "Job Matches",
         "close": "Close",
         "viewAll": "View All Recommendations",

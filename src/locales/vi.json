@@ -483,6 +483,13 @@
     },
     "applicant": {
       "analyze": "Phân tích CV",
+      "analyzeDescription": "Chức năng này giúp bạn phân tích các CV apply dựa trên độ phù hợp với công việc.",
+      "overallScore": "Điểm đánh giá tổng thể",
+      "matchScore": "Độ phù hợp",
+      "email": "Email",
+      "skillScore": "Điểm kỹ năng",
+      "similarity": "Độ tương đồng",
+      "skills": "Kỹ năng",
       "listJob": {
         "title": "Quản lý ứng viên theo công việc",
         "notice": "Vui lòng đăng việc làm để xem ứng viên",
@@ -1362,6 +1369,43 @@
       "download": "Tải xuống PDF",
       "emptyMessage": "Không có nội dung để xem trước",
       "loading": "Đang tải CV..."
+    },
+    "analysis": {
+      "title": "Phân tích CV với AI",
+      "subtitle": "Hãy để AI phân tích CV của bạn và đề xuất cơ hội việc làm phù hợp",
+      "info": {
+        "title": "Cách thức hoạt động",
+        "description": "Hệ thống AI của chúng tôi phân tích CV của bạn để xác định kỹ năng, kinh nghiệm và trình độ của bạn, sau đó kết nối với các cơ hội việc làm phù hợp nhất trong cơ sở dữ liệu của chúng tôi."
+      },
+      "tabs": {
+        "existing": "Sử dụng CV hiện có",
+        "upload": "Tải lên CV mới"
+      },
+      "loading": "Đang tải CV...",
+      "lastUpdated": "Cập nhật lần cuối",
+      "analyze": "Phân tích CV",
+      "analyzing": "Đang phân tích...",
+      "pleaseWait": "Vui lòng đợi trong khi chúng tôi phân tích CV của bạn...",
+      "warning": {
+        "noCV": "Vui lòng chọn một CV hoặc tải lên CV mới để phân tích"
+      },
+      "error": "Đã xảy ra lỗi khi phân tích CV của bạn. Vui lòng thử lại.",
+      "noExistingCV": "Bạn chưa có CV nào.",
+      "createCV": "Tạo CV mới",
+      "upload": {
+        "title": "Tải lên CV của bạn để phân tích",
+        "hint": "Tải lên CV dạng PDF, DOC hoặc DOCX (tối đa 5MB)"
+      },
+      "result": {
+        "title": "Kết quả phân tích",
+        "success": "Phân tích CV hoàn tất!",
+        "subtitle": "CV của bạn phù hợp với công việc ở mức {{score}}%",
+        "jobMatches": "Công việc phù hợp",
+        "close": "Đóng",
+        "viewAll": "Xem tất cả đề xuất",
+        "viewRecommended": "Xem công việc được đề xuất",
+        "match": "Phù hợp"
+      }
     }
   },
   "job": {

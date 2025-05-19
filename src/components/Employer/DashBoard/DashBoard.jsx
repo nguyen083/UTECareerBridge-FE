@@ -558,13 +558,13 @@ const DashBoard = () => {
             <div className="dashboard-actions">
               <Button
                 type="primary"
+                size="middle"
                 onClick={goToPostJob}
                 icon={<FaBriefcase />}
-                className="action-button post-job-btn"
               >
                 {t("employer.dashboard.postJob")}
               </Button>
-              <Button onClick={goToPackages} className="action-button">
+              <Button className="!text-text-color" onClick={goToPackages}>
                 {t("employer.dashboard.buyPackages")}
               </Button>
             </div>

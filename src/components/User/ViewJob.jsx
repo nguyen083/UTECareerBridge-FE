@@ -37,7 +37,6 @@ import {
   getAllCompany,
   getAllJobEmployer,
   getJobById,
-  getSimilarJob,
   saveJob,
   unSaveJob,
 } from "../../services/apiService";
@@ -51,7 +50,7 @@ import { ModalApply } from "../Generate/ModalApply";
 import { useSelector } from "react-redux";
 import "./ViewJob.scss";
 
-const { Text, Link, Title } = Typography;
+const { Text, Title } = Typography;
 const { Meta } = Card;
 const ViewJob = () => {
   const user = useSelector((state) => state.user);
@@ -64,7 +63,6 @@ const ViewJob = () => {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const { id } = useParams();
-  const [similarJobs, setSimilarJobs] = useState([]);
   const [jobSameCompany, setJobSameCompany] = useState([]);
   const navigate = useNavigate();
   const [carouselItems, setCarouselItems] = useState([]);
@@ -110,14 +108,6 @@ const ViewJob = () => {
         });
       }
       setLoading(false);
-    });
-
-    getSimilarJob(id).then((res) => {
-      if (res.status === "OK" && res.data !== null) {
-        setSimilarJobs(
-          res.data?.jobResponses.filter((item) => item.jobId !== +id)
-        );
-      }
     });
 
     if (user.role === "student") {
@@ -751,31 +741,6 @@ const ViewJob = () => {
                       </Card>
                     ))}
                   </Carousel>
-                </Card>
-              )}
-
-              {similarJobs && similarJobs.length > 0 && (
-                <Card
-                  className="shadow related-jobs-card"
-                  actions={[
-                    <Link
-                      key="see-more"
-                      onClick={() =>
-                        navigate("/search", {
-                          state: { filters: { categoryId: job.jobCategoryId } },
-                        })
-                      }
-                    >
-                      Xem thêm việc làm tương tự
-                    </Link>,
-                  ]}
-                  title={<div className="card-title">Việc làm tương tự</div>}
-                >
-                  <div className="related-jobs-list">
-                    {similarJobs.map((job) => (
-                      <JobCardSmall key={job.jobId} job={job} />
-                    ))}
-                  </div>
                 </Card>
               )}
             </Row>
