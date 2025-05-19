@@ -474,15 +474,6 @@ const App = () => {
                         element={<TopicList />}
                       />
                       <Route
-                        path="/admin/forums/:forumId/topics"
-                        element={<TopicListAdmin />}
-                      />
-                      <Route
-                        path="admin/forums/:forumId/topics/:topicId/posts"
-                        element={<PostListAdmin />}
-                      />
-                      {/* <Route path='/forum/create' element={<CreatePostPage />} /> */}
-                      <Route
                         path="/forums/:forumId/topics/:topicId/posts/:postId"
                         element={<PostDetail />}
                       />
@@ -621,6 +612,14 @@ const App = () => {
                       element={<DetailNotification />}
                     />
                     <Route path="forums" element={<AdminForum />} />
+                    <Route
+                      path="forums/:forumId/topics"
+                      element={<TopicListAdmin />}
+                    />
+                    <Route
+                      path="forums/:forumId/topics/:topicId/posts"
+                      element={<PostListAdmin />}
+                    />
                   </Route>
 
                   <Route path="forgot-password" element={<BackgroundAndForm />}>

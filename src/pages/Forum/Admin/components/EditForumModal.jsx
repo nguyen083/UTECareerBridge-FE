@@ -2,12 +2,14 @@ import { Modal, Form, Input, Button } from "antd";
 import { useUpdateForumMutation } from "../../../../composables/forum";
 import { UploadImage } from "../../../../components/Student/Component/UploadAvatar";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const { TextArea } = Input;
 
 const EditForumModal = ({ open, onCancel, onSuccess, forumData }) => {
   const [form] = Form.useForm();
   const updateMutation = useUpdateForumMutation();
+  const { t } = useTranslation();
 
   // Cập nhật form khi dữ liệu forum thay đổi
   useEffect(() => {
@@ -41,7 +43,7 @@ const EditForumModal = ({ open, onCancel, onSuccess, forumData }) => {
 
   return (
     <Modal
-      title="Chỉnh sửa diễn đàn"
+      title={t("forum.editModal.title")}
       open={open}
       onCancel={handleCancel}
       footer={null}
@@ -55,19 +57,26 @@ const EditForumModal = ({ open, onCancel, onSuccess, forumData }) => {
       >
         <Form.Item
           name="name"
-          label="Tên diễn đàn"
-          rules={[{ required: true, message: "Vui lòng nhập tên diễn đàn!" }]}
+          label={t("forum.editModal.name.label")}
+          rules={[
+            { required: true, message: t("forum.editModal.name.required") },
+          ]}
         >
-          <Input placeholder="Nhập tên diễn đàn" />
+          <Input placeholder={t("forum.editModal.name.placeholder")} />
         </Form.Item>
 
         <Form.Item
           name="description"
-          label="Mô tả"
-          rules={[{ required: true, message: "Vui lòng nhập mô tả diễn đàn!" }]}
+          label={t("forum.editModal.description.label")}
+          rules={[
+            {
+              required: true,
+              message: t("forum.editModal.description.required"),
+            },
+          ]}
         >
           <TextArea
-            placeholder="Nhập mô tả chi tiết về diễn đàn"
+            placeholder={t("forum.editModal.description.placeholder")}
             rows={4}
             showCount
             maxLength={500}
@@ -75,13 +84,13 @@ const EditForumModal = ({ open, onCancel, onSuccess, forumData }) => {
         </Form.Item>
 
         <Form.Item
-          label="Hình ảnh"
+          label={t("forum.editModal.image.label")}
           name="image"
-          tooltip="Hình ảnh diễn đàn"
+          tooltip={t("forum.editModal.image.tooltip")}
           rules={[
             {
               required: true,
-              message: "Vui lòng chọn hình ảnh diễn đàn!",
+              message: t("forum.editModal.image.required"),
             },
           ]}
         >
@@ -90,14 +99,14 @@ const EditForumModal = ({ open, onCancel, onSuccess, forumData }) => {
 
         <Form.Item className="flex justify-end mb-0">
           <Button className="mr-2" onClick={handleCancel}>
-            Hủy
+            {t("forum.editModal.cancel")}
           </Button>
           <Button
             type="primary"
             htmlType="submit"
             loading={updateMutation.isPending}
           >
-            Cập nhật
+            {t("forum.editModal.update")}
           </Button>
         </Form.Item>
       </Form>

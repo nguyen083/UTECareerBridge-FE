@@ -1,517 +1,375 @@
-import { useState, useEffect } from "react";
 import {
-  Table,
   Typography,
   Button,
-  Input,
-  Space,
-  Tag,
   Avatar,
   Modal,
-  Form,
-  Select,
   message,
-  Breadcrumb,
+  Table,
+  Tooltip,
+  Spin,
+  Badge,
+  Flex,
+  Space,
+  Tag,
+  Card,
+  Row,
+  Col,
+  Statistic,
 } from "antd";
 import {
-  PlusOutlined,
-  SearchOutlined,
-  EyeOutlined,
   PushpinOutlined,
-  LockOutlined,
-  UnlockOutlined,
-  EditOutlined,
   DeleteOutlined,
   UserOutlined,
-  HomeOutlined,
+  ExclamationCircleOutlined,
+  CalendarOutlined,
+  MessageOutlined,
+  PlusOutlined,
+  EyeOutlined,
+  AppstoreOutlined,
 } from "@ant-design/icons";
-import { Link, useParams } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import {
+  useAllTopicByForumId,
+  useDeleteTopicMutation,
+  usePinTopicMutation,
+} from "../../../composables/topic";
+import { useForumDetail } from "../../../composables/forum";
 import { useTranslation } from "react-i18next";
+import HtmlContent from "../../../components/Generate/HtmlContent";
+import truncate from "html-truncate";
 
 const { Title, Text } = Typography;
+const { confirm } = Modal;
 
-const TopicList = () => {
-  const { forumId } = useParams();
-  const [topics, setTopics] = useState([]);
-  const [forum, setForum] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [searchText, setSearchText] = useState("");
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [form] = Form.useForm();
-  const [editingTopic, setEditingTopic] = useState(null);
+const TopicPage = () => {
   const { t } = useTranslation();
+  const { forumId } = useParams();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  // Giả lập dữ liệu
-  useEffect(() => {
-    // Trong thực tế, bạn sẽ gọi API để lấy dữ liệu
-    setTimeout(() => {
-      setForum({
-        forum_id: Number.parseInt(forumId),
-        name: "Công nghệ",
-        description:
-          "Thảo luận về công nghệ, phần mềm, phần cứng và các xu hướng mới",
-        is_active: true,
-        created_at: "2023-01-15T08:30:00Z",
-      });
+  // Pagination
+  const size = parseInt(searchParams.get("size") || "10", 10);
+  const page = parseInt(searchParams.get("page") || "1", 10);
 
-      setTopics([
-        {
-          topic_id: 1,
-          forum_id: Number.parseInt(forumId),
-          user_id: 101,
-          username: "nguyenvan",
-          title: "Tổng quan về React và các thư viện UI phổ biến",
-          content:
-            "React là một thư viện JavaScript phổ biến để xây dựng giao diện người dùng...",
-          view_count: 1250,
-          is_pinned: true,
-          is_close: false,
-          created_at: "2023-05-10T08:30:00Z",
-          updated_at: "2023-05-15T10:45:00Z",
-          status: "active",
-          post_count: 24,
-          last_post_at: "2023-05-20T14:30:00Z",
-          last_post_by: "tranminh",
-          tags: ["React", "Frontend", "JavaScript"],
-        },
-        {
-          topic_id: 2,
-          forum_id: Number.parseInt(forumId),
-          user_id: 102,
-          username: "lethihong",
-          title: "So sánh Next.js và Gatsby cho các dự án React",
-          content:
-            "Next.js và Gatsby là hai framework phổ biến dựa trên React...",
-          view_count: 876,
-          is_pinned: false,
-          is_close: false,
-          created_at: "2023-05-12T09:15:00Z",
-          updated_at: "2023-05-14T11:20:00Z",
-          status: "active",
-          post_count: 18,
-          last_post_at: "2023-05-19T16:45:00Z",
-          last_post_by: "phamtuan",
-          tags: ["Next.js", "Gatsby", "React", "SSR"],
-        },
-        {
-          topic_id: 3,
-          forum_id: Number.parseInt(forumId),
-          user_id: 103,
-          username: "phamtuan",
-          title: "Tailwind CSS: Ưu và nhược điểm",
-          content: "Tailwind CSS là một framework CSS tiện ích...",
-          view_count: 654,
-          is_pinned: false,
-          is_close: true,
-          created_at: "2023-05-15T10:45:00Z",
-          updated_at: "2023-05-16T14:30:00Z",
-          status: "active",
-          post_count: 12,
-          last_post_at: "2023-05-18T09:30:00Z",
-          last_post_by: "nguyenvan",
-          tags: ["CSS", "Tailwind", "Frontend"],
-        },
-        {
-          topic_id: 4,
-          forum_id: Number.parseInt(forumId),
-          user_id: 104,
-          username: "tranminh",
-          title: "Ant Design vs Material-UI: Nên chọn thư viện UI nào?",
-          content: "So sánh hai thư viện UI phổ biến cho React...",
-          view_count: 789,
-          is_pinned: false,
-          is_close: false,
-          created_at: "2023-05-18T14:20:00Z",
-          updated_at: "2023-05-19T08:15:00Z",
-          status: "active",
-          post_count: 9,
-          last_post_at: "2023-05-21T11:45:00Z",
-          last_post_by: "lethihong",
-          tags: ["Ant Design", "Material-UI", "UI Library"],
-        },
-        {
-          topic_id: 5,
-          forum_id: Number.parseInt(forumId),
-          user_id: 105,
-          username: "hoangnam",
-          title: "Tối ưu hiệu suất cho ứng dụng React",
-          content:
-            "Các kỹ thuật và công cụ để tối ưu hiệu suất cho ứng dụng React...",
-          view_count: 567,
-          is_pinned: true,
-          is_close: false,
-          created_at: "2023-05-20T11:30:00Z",
-          updated_at: "2023-05-21T09:45:00Z",
-          status: "active",
-          post_count: 7,
-          last_post_at: "2023-05-22T15:30:00Z",
-          last_post_by: "hoangnam",
-          tags: ["Performance", "React", "Optimization"],
-        },
-      ]);
-      setLoading(false);
-    }, 1000);
-  }, [forumId]);
+  // Fetch data
+  const { data: forumData, isLoading: isLoadingForum } =
+    useForumDetail(forumId);
+  const {
+    data: topicsData,
+    isLoading: isLoadingTopics,
+    isError: isErrorTopics,
+  } = useAllTopicByForumId(forumId, { page: page - 1, size });
 
-  const handleSearch = (e) => {
-    setSearchText(e.target.value);
+  // Mutations
+  const deleteMutation = useDeleteTopicMutation();
+  const pinMutation = usePinTopicMutation();
+
+  // Pagination
+  const handleChangePage = (page, pageSize) => {
+    searchParams.set("page", page);
+    searchParams.set("size", pageSize);
+    setSearchParams(searchParams);
   };
 
-  const filteredTopics = topics.filter(
-    (topic) =>
-      topic.title.toLowerCase().includes(searchText.toLowerCase()) ||
-      topic.content.toLowerCase().includes(searchText.toLowerCase()) ||
-      topic.username.toLowerCase().includes(searchText.toLowerCase()) ||
-      topic.tags.some((tag) =>
-        tag.toLowerCase().includes(searchText.toLowerCase())
-      )
-  );
-
-  const showModal = (topic = null) => {
-    setEditingTopic(topic);
-    if (topic) {
-      form.setFieldsValue({
-        title: topic.title,
-        content: topic.content,
-        tags: topic.tags,
-        is_pinned: topic.is_pinned,
-        is_close: topic.is_close,
-      });
-    } else {
-      form.resetFields();
-    }
-    setIsModalVisible(true);
-  };
-
-  const handleCancel = () => {
-    setIsModalVisible(false);
-    form.resetFields();
-  };
-
-  const handleSubmit = (values) => {
-    if (editingTopic) {
-      // Cập nhật topic
-      const updatedTopics = topics.map((topic) =>
-        topic.topic_id === editingTopic.topic_id
-          ? {
-              ...topic,
-              ...values,
-              updated_at: new Date().toISOString(),
-            }
-          : topic
-      );
-      setTopics(updatedTopics);
-      message.success("Cập nhật chủ đề thành công!");
-    } else {
-      // Thêm topic mới
-      const newTopic = {
-        topic_id: topics.length + 1,
-        forum_id: Number.parseInt(forumId),
-        user_id: 101, // Giả sử user_id của người dùng hiện tại
-        username: "nguyenvan", // Giả sử username của người dùng hiện tại
-        ...values,
-        view_count: 0,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-        status: "active",
-        post_count: 0,
-        last_post_at: null,
-        last_post_by: null,
-      };
-      setTopics([...topics, newTopic]);
-      message.success("Tạo chủ đề mới thành công!");
-    }
-    setIsModalVisible(false);
-  };
-
-  const handleDelete = (topicId) => {
-    Modal.confirm({
-      title: "Xác nhận xóa",
-      content: "Bạn có chắc chắn muốn xóa chủ đề này không?",
+  // Delete topic
+  const handleDeleteTopic = (topic) => {
+    confirm({
+      centered: true,
+      title: t("topic.delete.confirm_title"),
+      icon: <ExclamationCircleOutlined />,
+      content: t("topic.delete.confirm_message", { title: topic.title }),
+      okText: t("topic.delete.button"),
+      okType: "danger",
+      cancelText: t("topic.delete.cancel"),
       onOk() {
-        const updatedTopics = topics.filter(
-          (topic) => topic.topic_id !== topicId
-        );
-        setTopics(updatedTopics);
-        message.success("Xóa chủ đề thành công!");
+        deleteMutation.mutate(topic.topicId, {
+          onSuccess: () => {
+            message.success(t("topic.delete.success"));
+            queryClient.invalidateQueries({
+              queryKey: ["topicsByForumId", forumId],
+            });
+          },
+          onError: (error) => {
+            message.error(t("topic.error.general", { message: error.message }));
+          },
+        });
       },
     });
   };
 
-  const togglePin = (topicId) => {
-    const updatedTopics = topics.map((topic) =>
-      topic.topic_id === topicId
-        ? { ...topic, is_pinned: !topic.is_pinned }
-        : topic
-    );
-    setTopics(updatedTopics);
-    message.success("Cập nhật trạng thái ghim thành công!");
-  };
-
-  const toggleClose = (topicId) => {
-    const updatedTopics = topics.map((topic) =>
-      topic.topic_id === topicId
-        ? { ...topic, is_close: !topic.is_close }
-        : topic
-    );
-    setTopics(updatedTopics);
-    message.success("Cập nhật trạng thái khóa thành công!");
-  };
-
-  const formatDate = (dateString) => {
-    if (!dateString) return "N/A";
-    const date = new Date(dateString);
-    return date.toLocaleDateString("vi-VN", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
+  // Toggle pin
+  const handleTogglePin = (topicItem) => {
+    pinMutation.mutate(topicItem.topicId, {
+      onSuccess: () => {
+        message.success(
+          t(
+            topicItem.pinned
+              ? "topic.pin.success_unpin"
+              : "topic.pin.success_pin"
+          )
+        );
+        queryClient.setQueryData(
+          ["topicsByForumId", forumId, { page: page - 1, size }],
+          (old) => {
+            const newData = {
+              ...old,
+              data: {
+                ...old.data,
+                content: old.data.content.map((topic) =>
+                  topic.topicId === topicItem.topicId
+                    ? { ...topic, pinned: !topicItem.pinned }
+                    : topic
+                ),
+              },
+            };
+            return newData;
+          }
+        );
+      },
+      onError: (error) => {
+        message.error(t("topic.error.general", { message: error.message }));
+      },
     });
   };
 
+  // Create new topic
+  const handleCreateTopic = () => {
+    navigate(`/admin/forums/${forumId}/new-topic`);
+  };
+
+  // Loading state
+  if (isLoadingForum || isLoadingTopics) {
+    return (
+      <div className="flex items-center justify-center p-8 min-h-[400px]">
+        <Spin size="large" />
+      </div>
+    );
+  }
+
+  // Error state
+  if (isErrorTopics) {
+    return (
+      <div className="p-8">
+        <Text type="danger">{t("topic.error.loading")}</Text>
+      </div>
+    );
+  }
+
+  const topics = topicsData?.data?.content || [];
+  const total = topicsData?.data?.totalElements || 0;
+  const forum = forumData?.data;
+
+  // Table columns
   const columns = [
     {
-      title: "Chủ đề",
+      title: t("topic.title"),
       dataIndex: "title",
       key: "title",
       render: (text, record) => (
-        <div>
-          <div className="flex items-center gap-2 mb-1">
-            {record.is_pinned && <PushpinOutlined className="text-red-500" />}
-            {record.is_close && <LockOutlined className="text-gray-500" />}
-            <Link
-              to={`/forums/${forumId}/topics/${record.topic_id}/posts`}
-              className="text-lg font-medium hover:text-blue-600"
-            >
-              {text}
-            </Link>
-          </div>
-          <div className="flex flex-wrap gap-1 mb-1">
-            {record.tags.map((tag) => (
-              <Tag key={tag} color="blue">
-                {tag}
-              </Tag>
-            ))}
-          </div>
-          <div className="text-sm text-gray-500">
-            <Space>
-              <Avatar size="small" icon={<UserOutlined />} /> {record.username}
-              <span>• {formatDate(record.created_at)}</span>
-            </Space>
-          </div>
-        </div>
-      ),
-    },
-    {
-      title: "Thống kê",
-      key: "stats",
-      width: 150,
-      render: (_, record) => (
-        <div>
-          <div className="mb-1">
-            <EyeOutlined className="mr-1" /> {record.view_count} lượt xem
+        <div className="flex items-start">
+          <div className="mr-3">
+            <Avatar
+              src={record.avatar}
+              icon={!record.avatar && <UserOutlined />}
+              size="large"
+            />
           </div>
           <div>
-            <Text>{record.post_count} bài viết</Text>
+            <Flex align="center" gap={8}>
+              {record.pinned && (
+                <Badge
+                  count={<PushpinOutlined style={{ color: "#f5222d" }} />}
+                  style={{ backgroundColor: "transparent" }}
+                />
+              )}
+              <Text
+                strong
+                className="text-base cursor-pointer hover:text-primary"
+                onClick={() =>
+                  navigate(
+                    `/admin/forums/${forumId}/topics/${record.topicId}/posts`
+                  )
+                }
+              >
+                {text}
+              </Text>
+            </Flex>
+            <div className="mt-1">
+              <HtmlContent htmlString={truncate(record?.content, 150)} />
+            </div>
+            <div className="flex flex-wrap gap-1 mt-2">
+              {record.tags && record.tags.length > 0 && (
+                <>
+                  {record.tags.slice(0, 3).map((tag) => (
+                    <Tag key={tag.id} color="blue">
+                      {tag.name}
+                    </Tag>
+                  ))}
+                  {record.tags.length > 3 && (
+                    <Tag color="blue">+{record.tags.length - 3}</Tag>
+                  )}
+                </>
+              )}
+            </div>
           </div>
         </div>
       ),
+      width: "50%",
     },
     {
-      title: "Bài viết mới nhất",
-      key: "lastPost",
-      width: 200,
-      render: (_, record) => (
-        <div>
-          {record.last_post_at ? (
-            <>
-              <div className="text-sm">{formatDate(record.last_post_at)}</div>
-              <div className="text-sm text-gray-500">
-                bởi <Text strong>{record.last_post_by}</Text>
-              </div>
-            </>
-          ) : (
-            <Text type="secondary">Chưa có bài viết</Text>
-          )}
-        </div>
+      title: t("topic.author"),
+      dataIndex: "userName",
+      key: "userName",
+      render: (text) => <Text strong>{text}</Text>,
+      width: "15%",
+    },
+    {
+      title: t("topic.posts"),
+      dataIndex: "postCount",
+      key: "postCount",
+      render: (count) => (
+        <Text>
+          <MessageOutlined className="mr-2" />
+          {count || 0}
+        </Text>
       ),
+      width: "7%",
     },
     {
-      title: "Hành động",
+      title: t("topic.created_at"),
+      dataIndex: "createdAt",
+      key: "createdAt",
+      render: (date) => (
+        <Text className="text-sm text-gray-500">
+          <CalendarOutlined className="mr-2" />
+          {date.split(" ")[0]}
+        </Text>
+      ),
+      width: "10%",
+    },
+    {
+      title: t("topic.action"),
       key: "action",
-      width: 150,
       render: (_, record) => (
-        <Space size="small">
-          <Button
-            type="text"
-            icon={<EditOutlined />}
-            onClick={() => showModal(record)}
-          />
-          <Button
-            type="text"
-            icon={
-              record.is_pinned ? (
-                <PushpinOutlined className="text-red-500" />
-              ) : (
-                <PushpinOutlined />
-              )
-            }
-            onClick={() => togglePin(record.topic_id)}
-          />
-          <Button
-            type="text"
-            icon={record.is_close ? <UnlockOutlined /> : <LockOutlined />}
-            onClick={() => toggleClose(record.topic_id)}
-          />
-          <Button
-            type="text"
-            danger
-            icon={<DeleteOutlined />}
-            onClick={() => handleDelete(record.topic_id)}
-          />
+        <Space size="middle">
+          <Tooltip title={t("topic.view")}>
+            <Button
+              icon={<EyeOutlined className="text-text-color" />}
+              onClick={() =>
+                navigate(
+                  `/admin/forums/${forumId}/topics/${record.topicId}/posts`
+                )
+              }
+            />
+          </Tooltip>
+          <Tooltip
+            title={t(record.pinned ? "topic.pin.unpin" : "topic.pin.pin")}
+          >
+            <Button
+              type={record.pinned ? "primary" : "default"}
+              icon={<PushpinOutlined />}
+              onClick={() => handleTogglePin(record)}
+              loading={pinMutation.isPending}
+            />
+          </Tooltip>
+          <Tooltip title={t("topic.delete.button")}>
+            <Button
+              danger
+              icon={<DeleteOutlined />}
+              onClick={() => handleDeleteTopic(record)}
+            />
+          </Tooltip>
         </Space>
       ),
+      width: "10%",
     },
   ];
 
   return (
-    <div className="container px-4 py-8 mx-auto">
-      <Breadcrumb
-        className="mb-4"
-        items={[
-          {
-            title: (
-              <Link to="/">
-                <HomeOutlined />
-              </Link>
-            ),
-          },
-          {
-            title: <Link to="/forums">{t("forum.title") || "Diễn đàn"}</Link>,
-          },
-          {
-            title: forum?.name || t("common.loading") || "Đang tải...",
-          },
-        ]}
-      />
-
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <Title level={2} className="mb-1">
-            {forum?.name || "Đang tải..."}
-          </Title>
-          <Text type="secondary">{forum?.description}</Text>
-        </div>
-        <div className="flex gap-4">
-          <Input
-            placeholder="Tìm kiếm chủ đề"
-            prefix={<SearchOutlined />}
-            onChange={handleSearch}
-            className="w-64"
-          />
-          <Button
-            type="primary"
-            icon={<PlusOutlined />}
-            onClick={() => showModal()}
-          >
-            Tạo chủ đề
-          </Button>
-        </div>
-      </div>
-
-      <Table
-        columns={columns}
-        dataSource={filteredTopics}
-        rowKey="topic_id"
-        loading={loading}
-        pagination={{
-          pageSize: 10,
-          showSizeChanger: true,
-          showTotal: (total) => `Tổng ${total} chủ đề`,
-        }}
-      />
-
-      <Modal
-        title={editingTopic ? "Chỉnh sửa chủ đề" : "Tạo chủ đề mới"}
-        open={isModalVisible}
-        onCancel={handleCancel}
-        footer={null}
-        width={700}
-      >
-        <Form
-          form={form}
-          layout="vertical"
-          onFinish={handleSubmit}
-          initialValues={{
-            is_pinned: false,
-            is_close: false,
-            tags: [],
-          }}
-        >
-          <Form.Item
-            name="title"
-            label="Tiêu đề"
-            rules={[
-              { required: true, message: "Vui lòng nhập tiêu đề chủ đề!" },
-            ]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="content"
-            label="Nội dung"
-            rules={[
-              { required: true, message: "Vui lòng nhập nội dung chủ đề!" },
-            ]}
-          >
-            <Input.TextArea rows={6} />
-          </Form.Item>
-          <Form.Item name="tags" label="Thẻ">
-            <Select
-              mode="tags"
-              style={{ width: "100%" }}
-              placeholder="Thêm thẻ"
-              options={[
-                { value: "React", label: "React" },
-                { value: "JavaScript", label: "JavaScript" },
-                { value: "CSS", label: "CSS" },
-                { value: "HTML", label: "HTML" },
-                { value: "Frontend", label: "Frontend" },
-                { value: "Backend", label: "Backend" },
-                { value: "Node.js", label: "Node.js" },
-                { value: "Database", label: "Database" },
-              ]}
+    <div className="p-6">
+      {/* Header Stats */}
+      <Row gutter={16} className="mb-6">
+        <Col span={8}>
+          <Card bordered={false}>
+            <Statistic
+              title={t("topic.total_topics")}
+              value={total}
+              valueStyle={{ color: "#3f8600" }}
+              prefix={<AppstoreOutlined />}
             />
-          </Form.Item>
-          <div className="flex gap-4 mb-4">
-            <Form.Item
-              name="is_pinned"
-              valuePropName="checked"
-              className="mb-0"
-            >
-              <Tag.CheckableTag checked={form.getFieldValue("is_pinned")}>
-                <PushpinOutlined /> Ghim chủ đề
-              </Tag.CheckableTag>
-            </Form.Item>
-            <Form.Item name="is_close" valuePropName="checked" className="mb-0">
-              <Tag.CheckableTag checked={form.getFieldValue("is_close")}>
-                <LockOutlined /> Khóa chủ đề
-              </Tag.CheckableTag>
-            </Form.Item>
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card bordered={false}>
+            <Statistic
+              title={t("topic.pinned_topics")}
+              value={topics.filter((t) => t.pinned).length}
+              valueStyle={{ color: "#cf1322" }}
+              prefix={<PushpinOutlined />}
+            />
+          </Card>
+        </Col>
+        <Col span={8}>
+          <Card bordered={false}>
+            <Statistic
+              title={t("topic.total_posts")}
+              value={topics.reduce((sum, t) => sum + (t.postCount || 0), 0)}
+              prefix={<MessageOutlined />}
+            />
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Forum Header & Actions */}
+      <Card className="mb-6">
+        <Flex justify="space-between" align="center">
+          <div>
+            <Title level={3} className="!mb-0 !text-text-color">
+              {forum?.name || t("topic.loading")}
+            </Title>
+            <Text type="secondary">{forum?.description}</Text>
           </div>
-          <Form.Item className="mb-0 text-right">
-            <Button onClick={handleCancel} className="mr-2">
-              Hủy
+          <Flex gap={12}>
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={handleCreateTopic}
+            >
+              {t("topic.create")}
             </Button>
-            <Button type="primary" htmlType="submit">
-              {editingTopic ? "Cập nhật" : "Tạo mới"}
-            </Button>
-          </Form.Item>
-        </Form>
-      </Modal>
+          </Flex>
+        </Flex>
+      </Card>
+
+      {/* Topic List */}
+      <Card>
+        <Title level={5} className="!m-0 !mb-4">
+          {t("topic.list_title")}
+        </Title>
+
+        <Table
+          dataSource={topics}
+          columns={columns}
+          rowKey="topicId"
+          pagination={{
+            current: page,
+            pageSize: size,
+            total: total,
+            onChange: handleChangePage,
+            showTotal: (total, range) =>
+              `${range[0]}-${range[1]} ${t("common.of")} ${total} ${t(
+                "common.item"
+              )}`,
+            showSizeChanger: true,
+            pageSizeOptions: ["10", "20", "50"],
+          }}
+          loading={isLoadingTopics}
+        />
+      </Card>
     </div>
   );
 };
 
-export default TopicList;
+export default TopicPage;

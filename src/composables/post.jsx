@@ -18,7 +18,7 @@ export const usePostDetail = (id) => {
 
 export const usePostByTopicId = (topicId, params) => {
   return useQuery({
-    queryKey: ["postsByTopicId", topicId],
+    queryKey: ["postsByTopicId", topicId, params],
     queryFn: () => post.getByTopicId(topicId, params),
     refetchOnWindowFocus: false,
   });
@@ -26,7 +26,7 @@ export const usePostByTopicId = (topicId, params) => {
 
 export const usePostByUserId = (userId, params) => {
   return useQuery({
-    queryKey: ["postsByUserId", userId],
+    queryKey: ["postsByUserId", userId, params],
     queryFn: () => post.getByUserId(userId, params),
     refetchOnWindowFocus: false,
   });

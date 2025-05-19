@@ -2141,6 +2141,8 @@
   },
   "forum": {
     "title": "Diễn đàn",
+    "management": "Quản lý diễn đàn",
+    "add_new": "Thêm diễn đàn mới",
     "listForum": {
       "title": "Danh sách diễn đàn",
       "search": "Tìm kiếm diễn đàn",
@@ -2148,6 +2150,70 @@
       "edit": "Chỉnh sửa diễn đàn",
       "delete": "Xóa diễn đàn",
       "createDate": "Ngày tạo"
+    },
+    "delete": {
+      "confirm_title": "Xác nhận xóa",
+      "confirm_message": "Bạn có chắc chắn muốn xóa diễn đàn \"{{name}}\"? Hành động này không thể hoàn tác.",
+      "button": "Xóa",
+      "cancel": "Hủy",
+      "success": "Xóa diễn đàn thành công"
+    },
+    "create": {
+      "success": "Diễn đàn đã được tạo thành công"
+    },
+    "edit": {
+      "success": "Cập nhật diễn đàn thành công"
+    },
+    "status": {
+      "active": "Hoạt động",
+      "inactive": "Tạm dừng"
+    },
+    "actions": {
+      "edit": "Chỉnh sửa",
+      "delete": "Xóa"
+    },
+    "error": {
+      "loading": "Có lỗi xảy ra khi tải dữ liệu."
+    },
+    "createModal": {
+      "title": "Thêm diễn đàn mới",
+      "name": {
+        "label": "Tên diễn đàn",
+        "placeholder": "Nhập tên diễn đàn",
+        "required": "Vui lòng nhập tên diễn đàn!"
+      },
+      "description": {
+        "label": "Mô tả",
+        "placeholder": "Nhập mô tả chi tiết về diễn đàn",
+        "required": "Vui lòng nhập mô tả diễn đàn!"
+      },
+      "image": {
+        "label": "Hình ảnh",
+        "tooltip": "Hình ảnh diễn đàn",
+        "required": "Vui lòng chọn hình ảnh diễn đàn!"
+      },
+      "cancel": "Hủy",
+      "create": "Tạo mới"
+    },
+    "editModal": {
+      "title": "Chỉnh sửa diễn đàn",
+      "name": {
+        "label": "Tên diễn đàn",
+        "placeholder": "Nhập tên diễn đàn",
+        "required": "Vui lòng nhập tên diễn đàn!"
+      },
+      "description": {
+        "label": "Mô tả",
+        "placeholder": "Nhập mô tả chi tiết về diễn đàn",
+        "required": "Vui lòng nhập mô tả diễn đàn!"
+      },
+      "image": {
+        "label": "Hình ảnh",
+        "tooltip": "Hình ảnh diễn đàn",
+        "required": "Vui lòng chọn hình ảnh diễn đàn!"
+      },
+      "cancel": "Hủy",
+      "update": "Cập nhật"
     }
   },
   "topic": {
@@ -2157,7 +2223,39 @@
     "search": "Tìm kiếm chủ đề",
     "addTopic": "Tạo chủ đề",
     "filter": "Lọc chủ đề",
-    "createError": "Tạo chủ đề thất bại"
+    "createError": "Tạo chủ đề thất bại",
+    "delete": {
+      "confirm_title": "Xác nhận xóa chủ đề",
+      "confirm_message": "Bạn có chắc chắn muốn xóa chủ đề '{{title}}' không?",
+      "button": "Xóa chủ đề",
+      "cancel": "Hủy",
+      "success": "Xóa chủ đề thành công"
+    },
+    "pin": {
+      "success_unpin": "Bỏ ghim chủ đề thành công",
+      "success_pin": "Ghim chủ đề thành công",
+      "unpin": "Bỏ ghim",
+      "pin": "Ghim"
+    },
+    "loading": "Đang tải...",
+    "error": {
+      "general": "Đã xảy ra lỗi: {{message}}",
+      "loading": "Không thể tải dữ liệu chủ đề"
+    },
+    "empty": "Không tìm thấy chủ đề nào",
+    "created_by": "Tạo bởi",
+    "post_count": "{{count}} bài viết",
+    "title": "Tiêu đề",
+    "view": "Xem",
+    "author": "Tác giả",
+    "posts": "Bài viết",
+    "created_at": "Ngày tạo",
+    "action": "Thao tác",
+    "total_topics": "Tổng số chủ đề",
+    "pinned_topics": "Chủ đề được ghim",
+    "total_posts": "Tổng số bài viết",
+    "list_title": "Danh sách chủ đề",
+    "create": "Tạo chủ đề"
   },
   "post": {
     "placeholder": "Nhập nội dung bài viết của bạn",
@@ -2177,7 +2275,39 @@
     "share": "Chia sẻ",
     "comment": "Bình luận",
     "writeComment": "Viết bình luận",
-    "noComment": "Chưa có bình luận nào. Hãy là người đầu tiên bình luận!"
+    "noComment": "Chưa có bình luận nào. Hãy là người đầu tiên bình luận!",
+    "filter": "Lọc bài viết",
+    "sort": "Sắp xếp",
+    "export": "Xuất dữ liệu",
+    "view": "Xem",
+    "comments": "Bình luận",
+    "edited": "Đã chỉnh sửa",
+    "total_posts": "Tổng số bài viết",
+    "total_reactions": "Tổng số cảm xúc",
+    "total_comments": "Tổng số bình luận",
+    "list": {
+      "title": "Danh sách bài viết",
+      "reply": "Trả lời",
+      "created_by": "Tạo bởi",
+      "no_posts": "Chưa có bài viết nào",
+      "post_button": "Đăng bài",
+      "cancel": "Hủy",
+      "content_required": "Vui lòng nhập nội dung bài viết!",
+      "post_success": "Đã đăng bài viết thành công!",
+      "post_error": "Có lỗi xảy ra khi đăng bài viết!",
+      "delete": {
+        "confirm_title": "Xác nhận xóa",
+        "confirm_message": "Bạn có chắc chắn muốn xóa bài viết này không?",
+        "button": "Xóa",
+        "cancel": "Hủy",
+        "success": "Xóa bài viết thành công!",
+        "error": "Có lỗi xảy ra khi xóa bài viết!"
+      }
+    },
+    "reaction": {
+      "title": "Danh sách người dùng thả cảm xúc",
+      "no_data": "Không có dữ liệu"
+    }
   },
   "comment": {
     "reply": "Trả lời",

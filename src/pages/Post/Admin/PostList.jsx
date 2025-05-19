@@ -1,58 +1,94 @@
-"use client";
-
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
-  Card,
   Typography,
   Button,
   Space,
   Avatar,
-  Divider,
-  Tag,
   Modal,
   message,
-  Breadcrumb,
-  Dropdown,
-  Menu,
   Tooltip,
   Pagination,
+  Tag,
+  Card,
+  Empty,
+  Spin,
+  Tabs,
+  Flex,
+  Row,
+  Col,
+  Statistic,
+  Dropdown,
 } from "antd";
 import {
   UserOutlined,
-  HomeOutlined,
   MessageOutlined,
-  LikeOutlined,
-  DislikeOutlined,
-  SmileOutlined,
-  HeartOutlined,
-  EditOutlined,
   DeleteOutlined,
-  MoreOutlined,
+  ExclamationCircleOutlined,
+  CalendarOutlined,
   EyeOutlined,
-  ClockCircleOutlined,
-  CommentOutlined,
-  FileTextOutlined,
+  FilterOutlined,
+  ReadOutlined,
+  FireOutlined,
+  MoreOutlined,
+  LinkOutlined,
 } from "@ant-design/icons";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useTranslation } from "react-i18next";
+import HtmlContent from "../../../components/Generate/HtmlContent";
+import {
+  usePostByTopicId,
+  useCreatePost,
+  useDeletePost,
+} from "../../../composables/post";
+import {
+  useGetCountReactionByPostId,
+  useGetReactionByPostId,
+} from "../../../composables/reaction";
+import { formatDateTime } from "../../../utils/day";
 
-const { Title, Text, Paragraph } = Typography;
+const { Title, Text } = Typography;
+const { confirm } = Modal;
 
 const PostList = () => {
-  const { forumId, topicId } = useParams();
-  const [posts, setPosts] = useState([]);
-  const [topic, setTopic] = useState(null);
-  const [forum, setForum] = useState(null);
-  const [isReplyModalVisible, setIsReplyModalVisible] = useState(false);
-  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
-  const [editingPost, setEditingPost] = useState(null);
-  const [replyContent, setReplyContent] = useState("");
-  const [editContent, setEditContent] = useState("");
-  const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 10;
   const { t } = useTranslation();
+  const { forumId, topicId } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [isReplyModalVisible, setIsReplyModalVisible] = useState(false);
+  const [replyContent, setReplyContent] = useState("");
+  const size = Number(searchParams.get("size")) || 10;
+  const page = Number(searchParams.get("page")) || 1;
+
+  // Mutations
+  const createPostMutation = useCreatePost();
+  const deletePostMutation = useDeletePost();
+
+  // Fetch posts using usePostByTopicId
+  const { data: postsData, isLoading } = usePostByTopicId(topicId, {
+    page: page - 1,
+    size: size,
+  });
+
+  // Map posts data from API response
+  const posts =
+    postsData?.data?.content?.map((post) => ({
+      post_id: post.postId,
+      topic_id: post.topicId,
+      user_id: post.userId,
+      username: post.userName,
+      avatar: post.avatar,
+      content: post.content,
+      created_at: post.createdAt,
+      updated_at: post.updatedAt,
+      reactionCount: post.reactionCount,
+      commentCount: post.commentCount,
+      active: post.active,
+      roleName: post.roleName,
+    })) || [];
+
+  // Get pagination info from API response
+  const totalElements = postsData?.data?.totalElements || 0;
 
   // Cấu hình Quill
   const modules = {
@@ -81,133 +117,6 @@ const PostList = () => {
     "background",
   ];
 
-  // Giả lập dữ liệu
-  useEffect(() => {
-    // Trong thực tế, bạn sẽ gọi API để lấy dữ liệu
-    setTimeout(() => {
-      setForum({
-        forum_id: Number.parseInt(forumId),
-        name: "Công nghệ",
-        description:
-          "Thảo luận về công nghệ, phần mềm, phần cứng và các xu hướng mới",
-        is_active: true,
-        created_at: "2023-01-15T08:30:00Z",
-      });
-
-      setTopic({
-        topic_id: Number.parseInt(topicId),
-        forum_id: Number.parseInt(forumId),
-        user_id: 101,
-        username: "nguyenvan",
-        title: "Tổng quan về React và các thư viện UI phổ biến",
-        content:
-          "React là một thư viện JavaScript phổ biến để xây dựng giao diện người dùng. Bài viết này sẽ giới thiệu về React và các thư viện UI phổ biến như Ant Design, Material-UI, và Tailwind CSS.",
-        view_count: 1250,
-        is_pinned: true,
-        is_close: false,
-        created_at: "2023-05-10T08:30:00Z",
-        updated_at: "2023-05-15T10:45:00Z",
-        status: "active",
-        tags: ["React", "Frontend", "JavaScript"],
-      });
-
-      setPosts([
-        {
-          post_id: 1,
-          topic_id: Number.parseInt(topicId),
-          user_id: 101,
-          username: "nguyenvan",
-          avatar: null,
-          content: `<h1>React là gì?</h1>
-<p>React là một thư viện JavaScript để xây dựng giao diện người dùng. Nó được phát triển bởi Facebook và được sử dụng rộng rãi trong ngành công nghiệp phần mềm.</p>
-<h2>Ưu điểm của React</h2>
-<ul>
-  <li><strong>Component-Based</strong>: React cho phép bạn xây dựng UI từ các component độc lập, có thể tái sử dụng.</li>
-  <li><strong>Virtual DOM</strong>: React sử dụng Virtual DOM để tối ưu hóa việc render, giúp ứng dụng chạy nhanh hơn.</li>
-  <li><strong>One-way Data Binding</strong>: React sử dụng luồng dữ liệu một chiều, giúp code dễ hiểu và dễ debug hơn.</li>
-</ul>
-<h2>Các thư viện UI phổ biến cho React</h2>
-<ol>
-  <li><strong>Ant Design</strong>: Một hệ thống thiết kế và thư viện UI cho React, được phát triển bởi Alibaba.</li>
-  <li><strong>Material-UI</strong>: Thư viện UI dựa trên Material Design của Google.</li>
-  <li><strong>Tailwind CSS</strong>: Framework CSS tiện ích, giúp xây dựng UI nhanh chóng mà không cần viết CSS tùy chỉnh.</li>
-</ol>`,
-          created_at: "2023-05-10T08:30:00Z",
-          updated_at: "2023-05-10T08:30:00Z",
-          reactions: [
-            { user_id: 102, reaction_type: "like" },
-            { user_id: 103, reaction_type: "like" },
-            { user_id: 104, reaction_type: "heart" },
-          ],
-        },
-        {
-          post_id: 2,
-          topic_id: Number.parseInt(topicId),
-          user_id: 102,
-          username: "lethihong",
-          avatar: null,
-          content:
-            "<p>Tôi đã sử dụng cả Ant Design và Material-UI trong các dự án của mình. Cả hai đều rất tốt, nhưng tôi thấy Ant Design có nhiều component hơn và dễ tùy chỉnh hơn. Tuy nhiên, Material-UI có vẻ phổ biến hơn trong cộng đồng React.</p>",
-          created_at: "2023-05-10T09:15:00Z",
-          updated_at: "2023-05-10T09:15:00Z",
-          reactions: [
-            { user_id: 101, reaction_type: "like" },
-            { user_id: 103, reaction_type: "smile" },
-          ],
-        },
-        {
-          post_id: 3,
-          topic_id: Number.parseInt(topicId),
-          user_id: 103,
-          username: "phamtuan",
-          avatar: null,
-          content:
-            "<p>Tôi thích Tailwind CSS vì nó giúp tôi xây dựng UI nhanh chóng mà không cần viết nhiều CSS. Tuy nhiên, nó có thể làm cho HTML trở nên dài và khó đọc hơn. Có ai có kinh nghiệm kết hợp Tailwind với các thư viện UI như Ant Design hoặc Material-UI không?</p>",
-          created_at: "2023-05-10T10:30:00Z",
-          updated_at: "2023-05-10T10:30:00Z",
-          reactions: [
-            { user_id: 101, reaction_type: "like" },
-            { user_id: 102, reaction_type: "like" },
-            { user_id: 104, reaction_type: "like" },
-            { user_id: 105, reaction_type: "like" },
-          ],
-        },
-        {
-          post_id: 4,
-          topic_id: Number.parseInt(topicId),
-          user_id: 104,
-          username: "tranminh",
-          avatar: null,
-          content:
-            "<p>Tôi đã kết hợp Tailwind CSS với Ant Design trong một dự án gần đây. Bạn cần phải cẩn thận với các xung đột CSS, nhưng nhìn chung nó hoạt động tốt. Tôi sử dụng Ant Design cho các component phức tạp như Table, Form, và Modal, và sử dụng Tailwind CSS cho layout và styling chung.</p>",
-          created_at: "2023-05-10T11:45:00Z",
-          updated_at: "2023-05-10T11:45:00Z",
-          reactions: [
-            { user_id: 103, reaction_type: "like" },
-            { user_id: 105, reaction_type: "like" },
-          ],
-        },
-        {
-          post_id: 5,
-          topic_id: Number.parseInt(topicId),
-          user_id: 105,
-          username: "hoangnam",
-          avatar: null,
-          content:
-            "<p>Một điều quan trọng khi chọn thư viện UI là xem xét kích thước bundle của nó. Material-UI và Ant Design đều khá lớn, có thể ảnh hưởng đến thời gian tải trang. Nếu bạn quan tâm đến hiệu suất, bạn có thể xem xét các thư viện nhẹ hơn như Chakra UI hoặc sử dụng CSS-in-JS với styled-components.</p>",
-          created_at: "2023-05-10T13:20:00Z",
-          updated_at: "2023-05-10T13:20:00Z",
-          reactions: [
-            { user_id: 101, reaction_type: "like" },
-            { user_id: 102, reaction_type: "like" },
-            { user_id: 103, reaction_type: "like" },
-            { user_id: 104, reaction_type: "heart" },
-          ],
-        },
-      ]);
-    }, 1000);
-  }, [forumId, topicId]);
-
   const handleReply = () => {
     setReplyContent("");
     setIsReplyModalVisible(true);
@@ -217,120 +126,43 @@ const PostList = () => {
     setIsReplyModalVisible(false);
   };
 
-  const handleReplySubmit = () => {
+  const handleReplySubmit = async () => {
     if (!replyContent.trim()) {
-      message.error("Vui lòng nhập nội dung bài viết!");
+      message.error(t("post.list.content_required"));
       return;
     }
 
-    const newPost = {
-      post_id: posts.length + 1,
-      topic_id: Number.parseInt(topicId),
-      user_id: 101, // Giả sử user_id của người dùng hiện tại
-      username: "nguyenvan", // Giả sử username của người dùng hiện tại
-      avatar: null,
-      content: replyContent,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      reactions: [],
-    };
-    setPosts([...posts, newPost]);
-    setIsReplyModalVisible(false);
-    message.success("Đã đăng bài viết thành công!");
-  };
+    try {
+      await createPostMutation.mutateAsync({
+        topicId: Number(topicId),
+        content: replyContent,
+      });
 
-  const handleEdit = (post) => {
-    setEditingPost(post);
-    setEditContent(post.content);
-    setIsEditModalVisible(true);
-  };
-
-  const handleEditCancel = () => {
-    setIsEditModalVisible(false);
-  };
-
-  const handleEditSubmit = () => {
-    if (!editContent.trim()) {
-      message.error("Vui lòng nhập nội dung bài viết!");
-      return;
+      setIsReplyModalVisible(false);
+      message.success(t("post.list.post_success"));
+    } catch {
+      message.error(t("post.list.post_error"));
     }
-
-    const updatedPosts = posts.map((post) =>
-      post.post_id === editingPost.post_id
-        ? {
-            ...post,
-            content: editContent,
-            updated_at: new Date().toISOString(),
-          }
-        : post
-    );
-    setPosts(updatedPosts);
-    setIsEditModalVisible(false);
-    message.success("Cập nhật bài viết thành công!");
   };
 
   const handleDelete = (postId) => {
-    Modal.confirm({
-      title: "Xác nhận xóa",
-      content: "Bạn có chắc chắn muốn xóa bài viết này không?",
-      onOk() {
-        const updatedPosts = posts.filter((post) => post.post_id !== postId);
-        setPosts(updatedPosts);
-        message.success("Xóa bài viết thành công!");
+    confirm({
+      centered: true,
+      title: t("post.list.delete.confirm_title"),
+      icon: <ExclamationCircleOutlined />,
+      content: t("post.list.delete.confirm_message"),
+      okText: t("post.list.delete.button"),
+      okType: "danger",
+      cancelText: t("post.list.delete.cancel"),
+      onOk: async () => {
+        try {
+          await deletePostMutation.mutateAsync(postId);
+          message.success(t("post.list.delete.success"));
+        } catch {
+          message.error(t("post.list.delete.error"));
+        }
       },
     });
-  };
-
-  const handleReaction = (postId, reactionType) => {
-    const userId = 101; // Giả sử user_id của người dùng hiện tại
-
-    const updatedPosts = posts.map((post) => {
-      if (post.post_id === postId) {
-        // Kiểm tra xem người dùng đã reaction chưa
-        const existingReactionIndex = post.reactions.findIndex(
-          (r) => r.user_id === userId
-        );
-
-        if (existingReactionIndex !== -1) {
-          // Nếu đã reaction với cùng loại, xóa reaction
-          if (
-            post.reactions[existingReactionIndex].reaction_type === reactionType
-          ) {
-            return {
-              ...post,
-              reactions: post.reactions.filter(
-                (_, index) => index !== existingReactionIndex
-              ),
-            };
-          }
-          // Nếu đã reaction với loại khác, cập nhật loại
-          else {
-            const newReactions = [...post.reactions];
-            newReactions[existingReactionIndex] = {
-              user_id: userId,
-              reaction_type: reactionType,
-            };
-            return {
-              ...post,
-              reactions: newReactions,
-            };
-          }
-        }
-        // Nếu chưa reaction, thêm mới
-        else {
-          return {
-            ...post,
-            reactions: [
-              ...post.reactions,
-              { user_id: userId, reaction_type: reactionType },
-            ],
-          };
-        }
-      }
-      return post;
-    });
-
-    setPosts(updatedPosts);
   };
 
   const formatDate = (dateString) => {
@@ -344,300 +176,499 @@ const PostList = () => {
     });
   };
 
-  const getReactionCount = (reactions, type) => {
-    return reactions.filter((r) => r.reaction_type === type).length;
+  const actionsMenu = {
+    items: [
+      {
+        key: "1",
+        label: t("post.export"),
+        icon: <LinkOutlined />,
+      },
+      {
+        key: "2",
+        label: t("post.filter"),
+        icon: <FilterOutlined />,
+      },
+    ],
   };
 
-  const hasUserReacted = (reactions, type) => {
-    const userId = 101; // Giả sử user_id của người dùng hiện tại
-    return reactions.some(
-      (r) => r.user_id === userId && r.reaction_type === type
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center p-8 min-h-[400px]">
+        <Spin size="large" />
+      </div>
     );
-  };
+  }
 
-  const paginatedPosts = posts.slice(
-    (currentPage - 1) * pageSize,
-    currentPage * pageSize
-  );
-
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-    window.scrollTo(0, 0);
-  };
+  const topic = postsData?.data?.topic;
 
   return (
-    <div className="container px-4 py-8 mx-auto">
-      <Breadcrumb
-        className="mb-4"
-        items={[
-          {
-            title: (
-              <Link to="/">
-                <HomeOutlined />
-              </Link>
-            ),
-          },
-          {
-            title: <Link to="/forums">{t("forum.title") || ""}</Link>,
-          },
-          {
-            title: (
-              <Link to={`/forums/${forumId}/topics`}>
-                {forum?.name || t("common.loading") || "Đang tải..."}
-              </Link>
-            ),
-          },
-          {
-            title: (
-              <Link to={`/forums/${forumId}/topics/${topicId}/posts`}>
-                {topic?.title || t("common.loading") || "Đang tải..."}
-              </Link>
-            ),
-          },
-        ]}
-      />
-
+    <div>
+      {/* Stats Section */}
       {topic && (
-        <Card className="mb-6">
-          <div className="flex items-start justify-between mb-4">
+        <Row gutter={16} className="mb-6">
+          <Col span={8}>
+            <Card bordered={false}>
+              <Statistic
+                title={t("post.total_posts")}
+                value={totalElements}
+                prefix={<ReadOutlined />}
+                valueStyle={{ color: "#3f8600" }}
+              />
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card bordered={false}>
+              <Statistic
+                title={t("post.total_reactions")}
+                value={posts.reduce(
+                  (sum, post) => sum + (post.reactionCount || 0),
+                  0
+                )}
+                prefix={<FireOutlined />}
+                valueStyle={{ color: "#cf1322" }}
+              />
+            </Card>
+          </Col>
+          <Col span={8}>
+            <Card bordered={false}>
+              <Statistic
+                title={t("post.total_comments")}
+                value={posts.reduce(
+                  (sum, post) => sum + (post.commentCount || 0),
+                  0
+                )}
+                prefix={<MessageOutlined />}
+              />
+            </Card>
+          </Col>
+        </Row>
+      )}
+
+      {/* Topic Header Card */}
+      {topic && (
+        <Card className="mb-6 shadow-sm">
+          <Flex justify="space-between" align="start">
             <div>
-              <Title level={2} className="mb-1">
+              <Title level={3} className="!mb-0 !text-text-color">
                 {topic.title}
               </Title>
-              <div className="flex flex-wrap gap-1 mb-2">
-                {topic.tags.map((tag) => (
+              <div className="flex flex-wrap gap-1 mt-2">
+                {topic.tags?.map((tag) => (
                   <Tag key={tag} color="blue">
                     {tag}
                   </Tag>
                 ))}
               </div>
-              <div className="text-sm text-gray-500">
+              <div className="mt-2 text-gray-500">
                 <Space>
+                  <Avatar
+                    size="small"
+                    src={topic.avatar}
+                    icon={!topic.avatar && <UserOutlined />}
+                  />
                   <span>
-                    Tạo bởi <Text strong>{topic.username}</Text>
+                    {t("post.list.created_by")}{" "}
+                    <Text strong>{topic.username}</Text>
                   </span>
-                  <span>• {formatDate(topic.created_at)}</span>
+                  <span>•</span>
                   <span>
-                    • <EyeOutlined /> {topic.view_count} lượt xem
+                    <CalendarOutlined className="mr-1" />
+                    {formatDate(topic.createdAt)}
                   </span>
                 </Space>
               </div>
             </div>
-            <div className="flex gap-2">
-              {!topic.is_close && (
-                <Button type="primary" onClick={handleReply}>
-                  <MessageOutlined /> Trả lời
+            <Flex gap={12}>
+              {!topic.isClosed && (
+                <Button
+                  type="primary"
+                  onClick={handleReply}
+                  icon={<MessageOutlined />}
+                >
+                  {t("post.list.reply")}
                 </Button>
               )}
-            </div>
+              <Dropdown menu={actionsMenu}>
+                <Button icon={<MoreOutlined />} />
+              </Dropdown>
+            </Flex>
+          </Flex>
+
+          <div className="p-4 mt-4 rounded-lg bg-gray-50">
+            <HtmlContent htmlString={topic.content} />
           </div>
-          <Paragraph>{topic.content}</Paragraph>
         </Card>
       )}
 
-      {paginatedPosts.map((post) => (
-        <Card key={post.post_id} className="mb-4">
-          <div className="flex">
-            <div className="flex-shrink-0 w-40 pr-4 border-r">
-              <div className="flex flex-col items-center">
-                <Avatar size={64} icon={<UserOutlined />} />
-                <Text strong className="mt-2">
-                  {post.username}
-                </Text>
-                <Text type="secondary" className="text-xs">
-                  Thành viên
-                </Text>
-                <div className="mt-2 text-xs text-gray-500">
-                  Tham gia: {formatDate(post.created_at).split(",")[0]}
-                </div>
-              </div>
-            </div>
-            <div className="flex-grow pl-4">
-              <div className="flex items-center justify-between mb-2">
-                <div className="text-sm text-gray-500">
-                  <ClockCircleOutlined className="mr-1" />
-                  {formatDate(post.created_at)}
-                  {post.updated_at !== post.created_at && (
-                    <Tooltip
-                      title={`Cập nhật lần cuối: ${formatDate(
-                        post.updated_at
-                      )}`}
-                    >
-                      <span className="ml-2">(đã chỉnh sửa)</span>
-                    </Tooltip>
-                  )}
-                </div>
-                <div>
-                  <Dropdown
-                    overlay={
-                      <Menu>
-                        {post.user_id === 101 && ( // Giả sử user_id của người dùng hiện tại
-                          <>
-                            <Menu.Item
-                              key="edit"
-                              onClick={() => handleEdit(post)}
-                            >
-                              <EditOutlined /> Chỉnh sửa
-                            </Menu.Item>
-                            <Menu.Item
-                              key="delete"
-                              danger
-                              onClick={() => handleDelete(post.post_id)}
-                            >
-                              <DeleteOutlined /> Xóa
-                            </Menu.Item>
-                          </>
-                        )}
-                        <Menu.Item key="report">
-                          <FileTextOutlined /> Báo cáo
-                        </Menu.Item>
-                      </Menu>
+      {/* Posts List */}
+      <Card
+        title={
+          <Flex justify="space-between" align="center">
+            <Title level={5} className="!m-0">
+              {t("post.list.title")}
+            </Title>
+          </Flex>
+        }
+        className="shadow-sm"
+      >
+        <Spin spinning={isLoading}>
+          {posts.length > 0 ? (
+            <div className="space-y-4">
+              {posts.map((post) => (
+                <PostItem
+                  key={post.post_id}
+                  post={post}
+                  onDelete={handleDelete}
+                  topicId={topicId}
+                  forumId={forumId}
+                />
+              ))}
+              {totalElements > 0 && (
+                <div className="flex justify-end mt-4">
+                  <Pagination
+                    current={page}
+                    total={totalElements}
+                    pageSize={size}
+                    onChange={(currentPage, pageSize) => {
+                      pageSize === size
+                        ? setSearchParams({ page: currentPage, size })
+                        : setSearchParams({ size: pageSize });
+                    }}
+                    showTotal={(total, range) =>
+                      `${range[0]}-${range[1]} ${t("common.of")} ${total} ${t(
+                        "common.item"
+                      )}`
                     }
-                    trigger={["click"]}
-                  >
-                    <Button type="text" icon={<MoreOutlined />} />
-                  </Dropdown>
+                    showSizeChanger={true}
+                    pageSizeOptions={["10", "20", "50"]}
+                  />
                 </div>
-              </div>
-              <div
-                className="mb-4 post-content quill-content"
-                dangerouslySetInnerHTML={{ __html: post.content }}
-              ></div>
-              <Divider className="my-2" />
-              <div className="flex items-center justify-between">
-                <div className="flex gap-2">
-                  <Tooltip title="Thích">
-                    <Button
-                      type="text"
-                      icon={<LikeOutlined />}
-                      className={
-                        hasUserReacted(post.reactions, "like")
-                          ? "text-blue-500"
-                          : ""
-                      }
-                      onClick={() => handleReaction(post.post_id, "like")}
-                    >
-                      {getReactionCount(post.reactions, "like") > 0 &&
-                        getReactionCount(post.reactions, "like")}
-                    </Button>
-                  </Tooltip>
-                  <Tooltip title="Không thích">
-                    <Button
-                      type="text"
-                      icon={<DislikeOutlined />}
-                      className={
-                        hasUserReacted(post.reactions, "dislike")
-                          ? "text-red-500"
-                          : ""
-                      }
-                      onClick={() => handleReaction(post.post_id, "dislike")}
-                    >
-                      {getReactionCount(post.reactions, "dislike") > 0 &&
-                        getReactionCount(post.reactions, "dislike")}
-                    </Button>
-                  </Tooltip>
-                  <Tooltip title="Cười">
-                    <Button
-                      type="text"
-                      icon={<SmileOutlined />}
-                      className={
-                        hasUserReacted(post.reactions, "smile")
-                          ? "text-yellow-500"
-                          : ""
-                      }
-                      onClick={() => handleReaction(post.post_id, "smile")}
-                    >
-                      {getReactionCount(post.reactions, "smile") > 0 &&
-                        getReactionCount(post.reactions, "smile")}
-                    </Button>
-                  </Tooltip>
-                  <Tooltip title="Yêu thích">
-                    <Button
-                      type="text"
-                      icon={<HeartOutlined />}
-                      className={
-                        hasUserReacted(post.reactions, "heart")
-                          ? "text-pink-500"
-                          : ""
-                      }
-                      onClick={() => handleReaction(post.post_id, "heart")}
-                    >
-                      {getReactionCount(post.reactions, "heart") > 0 &&
-                        getReactionCount(post.reactions, "heart")}
-                    </Button>
-                  </Tooltip>
-                </div>
-                <div>
-                  <Button type="text" onClick={() => handleReply()}>
-                    <CommentOutlined /> Trả lời
-                  </Button>
-                </div>
-              </div>
+              )}
             </div>
-          </div>
-        </Card>
-      ))}
+          ) : (
+            <Empty description={t("post.list.no_posts")} />
+          )}
+        </Spin>
+      </Card>
 
-      <div className="flex justify-center mt-6">
-        <Pagination
-          current={currentPage}
-          total={posts.length}
-          pageSize={pageSize}
-          onChange={handlePageChange}
-          showSizeChanger={false}
-        />
-      </div>
-
-      {!topic?.is_close && (
-        <div className="mt-6 text-center">
-          <Button type="primary" size="large" onClick={handleReply}>
-            <MessageOutlined /> Trả lời chủ đề này
-          </Button>
-        </div>
-      )}
-
+      {/* Create Post Modal */}
       <Modal
-        title="Trả lời"
+        title={
+          <div className="flex items-center gap-2">
+            <MessageOutlined />
+            <span>{t("post.list.reply")}</span>
+          </div>
+        }
         open={isReplyModalVisible}
         onCancel={handleReplyCancel}
         onOk={handleReplySubmit}
         width={800}
-        okText="Đăng bài"
-        cancelText="Hủy"
+        okText={t("post.list.post_button")}
+        cancelText={t("post.list.cancel")}
+        confirmLoading={createPostMutation.isPending}
+        centered
       >
-        <div className="mb-4">
-          <ReactQuill
-            theme="snow"
-            value={replyContent}
-            onChange={setReplyContent}
-            modules={modules}
-            formats={formats}
-            style={{ height: "300px", marginBottom: "40px" }}
-          />
-        </div>
-      </Modal>
-
-      <Modal
-        title="Chỉnh sửa bài viết"
-        open={isEditModalVisible}
-        onCancel={handleEditCancel}
-        onOk={handleEditSubmit}
-        width={800}
-        okText="Cập nhật"
-        cancelText="Hủy"
-      >
-        <div className="mb-4">
-          <ReactQuill
-            theme="snow"
-            value={editContent}
-            onChange={setEditContent}
-            modules={modules}
-            formats={formats}
-            style={{ height: "300px", marginBottom: "40px" }}
-          />
-        </div>
+        <ReactQuill
+          theme="snow"
+          value={replyContent}
+          onChange={setReplyContent}
+          modules={modules}
+          formats={formats}
+          style={{ height: "300px", marginBottom: "40px" }}
+          placeholder={t("post.placeholder")}
+        />
       </Modal>
     </div>
+  );
+};
+
+const PostItem = ({ post, onDelete, topicId, forumId }) => {
+  const { t } = useTranslation();
+  const [modal, setModal] = useState(false);
+  const { data: reactionCount } = useGetCountReactionByPostId(post.post_id);
+  const {
+    data: reactionsData,
+    refetch: refetchReactions,
+    isPending: isPendingGetReactions,
+  } = useGetReactionByPostId(post.post_id);
+
+  const [sortedReactions, setSortedReactions] = useState([]);
+
+  // Reaction emoji mapping
+  const mapReaction = {
+    LIKE: "👍",
+    DISLIKE: "👎",
+    HAHA: "😆",
+    LOVE: "❤️",
+    WOW: "😮",
+    SAD: "😢",
+    ANGRY: "😡",
+  };
+
+  // Process reaction count data
+  useEffect(() => {
+    if (reactionCount?.data) {
+      const reactions = {
+        LIKE: reactionCount.data.likeCount,
+        DISLIKE: reactionCount.data.dislikeCount,
+        LOVE: reactionCount.data.loveCount,
+        HAHA: reactionCount.data.hahaCount,
+        WOW: reactionCount.data.wowCount,
+        SAD: reactionCount.data.sadCount,
+        ANGRY: reactionCount.data.angryCount,
+      };
+      const result = Object.entries(reactions)
+        .filter(([, count]) => count > 0)
+        .sort(([, a], [, b]) => b - a)
+        .map(([key, value]) => ({
+          type: key,
+          mapReaction: mapReaction[key],
+          value,
+        }));
+      setSortedReactions(result);
+    }
+  }, [reactionCount]);
+
+  // Handle opening modal
+  const handleOpenModal = (e) => {
+    e.stopPropagation();
+    setModal(true);
+    refetchReactions();
+  };
+
+  return (
+    <div>
+      <Card
+        className="transition-all duration-300 border border-gray-100 hover:shadow-md"
+        bodyStyle={{ padding: "16px" }}
+      >
+        <div className="relative">
+          {/* Header with user info and delete button */}
+          <Flex justify="space-between" align="center" className="mb-4">
+            <Flex align="center" gap={12}>
+              <Flex align="center" gap={12} vertical>
+                <Avatar
+                  size={40}
+                  src={post.avatar}
+                  icon={!post.avatar && <UserOutlined />}
+                  className="border border-gray-200"
+                />
+                <Tag className="text-xs p-0.5" color="blue">
+                  {t(`role.${post.roleName}`)}
+                </Tag>
+              </Flex>
+              <div className="flex flex-col gap-2">
+                <Text strong className="text-base">
+                  {post.username}
+                </Text>
+                <div className="text-sm text-gray-500">
+                  <CalendarOutlined className="mr-1" />{" "}
+                  {formatDateTime(post.created_at)}
+                </div>
+              </div>
+            </Flex>
+            <Space>
+              <Tooltip title={t("post.view")}>
+                <Button
+                  icon={<EyeOutlined className="text-text-color" />}
+                  onClick={() => {
+                    window.open(
+                      `/forums/${forumId}/topics/${topicId}/posts/${post.post_id}`,
+                      "_blank"
+                    );
+                  }}
+                />
+              </Tooltip>
+              {post.active && (
+                <Tooltip title={t("post.list.delete.button")}>
+                  <Button
+                    danger
+                    icon={<DeleteOutlined />}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete(post.post_id);
+                    }}
+                  />
+                </Tooltip>
+              )}
+            </Space>
+          </Flex>
+
+          {/* Content */}
+          <div className="p-4 my-4 rounded-lg bg-gray-50">
+            <HtmlContent htmlString={post.content} />
+          </div>
+
+          {/* Footer with reactions, comments and timestamp */}
+          <Flex
+            justify="space-between"
+            align="center"
+            className="pt-3 mt-4 border-t border-gray-100"
+          >
+            <Flex gap={16} align="center">
+              {sortedReactions.length > 0 && (
+                <Button
+                  type="text"
+                  onClick={handleOpenModal}
+                  className="flex items-center px-3 py-1 bg-gray-100 rounded-full hover:bg-gray-200"
+                >
+                  <div className="flex">
+                    {sortedReactions.slice(0, 3).map((reaction, index) => (
+                      <span
+                        key={reaction.type}
+                        className={`text-lg -ml-1 first:ml-0`}
+                        style={{ zIndex: 30 - index * 10 }}
+                      >
+                        {reaction.mapReaction}
+                      </span>
+                    ))}
+                  </div>
+                  <span className="ml-1 text-sm font-semibold text-gray-700">
+                    {reactionCount?.data?.totalCount > 0 &&
+                      reactionCount?.data?.totalCount}
+                  </span>
+                </Button>
+              )}
+              <Button
+                type="text"
+                icon={<MessageOutlined />}
+                className="flex items-center hover:!bg-transparent cursor-default"
+              >
+                <span className="ml-1">{post.commentCount}</span>
+              </Button>
+            </Flex>
+            <Text type="secondary" className="text-sm">
+              {post.updated_at !== post.created_at && (
+                <span className="italic">
+                  {t("post.edited")} {formatDateTime(post.updated_at)}
+                </span>
+              )}
+            </Text>
+          </Flex>
+        </div>
+      </Card>
+      <ReactionModal
+        modal={modal}
+        setModal={setModal}
+        reactionsData={reactionsData}
+        isPendingGetReactions={isPendingGetReactions}
+        mapReaction={mapReaction}
+      />
+    </div>
+  );
+};
+
+const ReactionModal = ({
+  modal,
+  setModal,
+  reactionsData,
+  isPendingGetReactions,
+  mapReaction,
+}) => {
+  const { t } = useTranslation();
+  const items = useMemo(() => {
+    if (
+      !reactionsData?.data?.content ||
+      reactionsData.data.content.length === 0
+    ) {
+      return [];
+    }
+
+    // Tạo object để lưu reactions theo loại
+    const reactionsByType = {};
+
+    // Nhóm các reaction theo loại
+    reactionsData.data.content.forEach((reaction) => {
+      if (!reactionsByType[reaction.type]) {
+        reactionsByType[reaction.type] = [];
+      }
+      reactionsByType[reaction.type].push(reaction);
+    });
+
+    // Tạo items cho Tabs component
+    return Object.keys(reactionsByType).map((type) => ({
+      key: type,
+      label: (
+        <div className="flex items-center gap-2 px-4 text-xl">
+          <span className="text-2xl">{mapReaction[type]}</span>
+          <span className="font-medium">{reactionsByType[type].length}</span>
+        </div>
+      ),
+      children: (
+        <div className="p-2 overflow-y-auto max-h-60">
+          {reactionsByType[type].map((reaction) => (
+            <div
+              key={reaction.reactionId}
+              className="flex items-center gap-3 p-3 transition-colors rounded-md hover:bg-gray-50"
+            >
+              <Avatar
+                icon={<UserOutlined />}
+                src={reaction.avatar}
+                size={40}
+                className="border border-gray-200"
+              />
+              <div>
+                <div className="font-medium text-gray-800">
+                  {reaction.userName}
+                </div>
+                <div className="text-xs text-gray-500">
+                  {reaction.createdAt}
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      ),
+    }));
+  }, [reactionsData, mapReaction]);
+
+  const handleClose = () => {
+    setModal(false);
+  };
+
+  return (
+    <Modal
+      width={700}
+      title={
+        <span className="text-xl font-semibold">
+          {t("post.reaction.title")}
+        </span>
+      }
+      footer={null}
+      open={modal}
+      onCancel={handleClose}
+      centered
+      styles={{
+        header: {
+          borderBottom: "1px solid #f0f0f0",
+          padding: "16px 24px",
+        },
+        body: {
+          padding: "0",
+        },
+      }}
+    >
+      <div className="pt-2">
+        {isPendingGetReactions ? (
+          <div className="flex justify-center p-8">
+            <Spin size="large" />
+          </div>
+        ) : items.length > 0 ? (
+          <Tabs
+            defaultActiveKey={items[0]?.key}
+            items={items}
+            type="card"
+            className="px-4"
+          />
+        ) : (
+          <Empty
+            description={t("post.reaction.no_data")}
+            className="py-8"
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+          />
+        )}
+      </div>
+    </Modal>
   );
 };
 

@@ -11,6 +11,7 @@ export const useForumActive = (page = 1, size = 12) => {
     queryKey: ["forumsActive", page, size],
     queryFn: () => forum.getAllForumActive({ page: page - 1, size }),
     placeholderData: keepPreviousData,
+    refetchOnWindowFocus: false,
   });
 };
 

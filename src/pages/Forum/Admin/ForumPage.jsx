@@ -21,28 +21,30 @@ import {
   PlusOutlined,
 } from "@ant-design/icons";
 import {
-  useAllForum,
   useDeleteForumMutation,
+  useForumActive,
 } from "../../../composables/forum";
 import { format } from "date-fns";
 import { vi } from "date-fns/locale";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import CreateForumModal from "./components/CreateForumModal";
 import EditForumModal from "./components/EditForumModal";
+import { useTranslation } from "react-i18next";
 
 const { Title, Text, Paragraph } = Typography;
 const { confirm } = Modal;
 const { Meta } = Card;
 
 const ForumPage = () => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams();
   const size = parseInt(searchParams.get("size") || "8", 10);
   const page = parseInt(searchParams.get("page") || "1", 10);
-
-  const { data: forumData, isLoading, isError } = useAllForum(page, size);
+  const navigate = useNavigate();
+  const { data: forumData, isLoading, isError } = useForumActive(page, size);
   const deleteMutation = useDeleteForumMutation();
 
   // Modal states
@@ -53,21 +55,18 @@ const ForumPage = () => {
   const handleDeleteForum = (forum) => {
     confirm({
       centered: true,
-      title: "Xác nhận xóa",
+      title: t("forum.delete.confirm_title"),
       icon: <ExclamationCircleOutlined />,
-      content: `Bạn có chắc chắn muốn xóa diễn đàn "${forum.name}"? Hành động này không thể hoàn tác.`,
-      okText: "Xóa",
+      content: t("forum.delete.confirm_message", { name: forum.name }),
+      okText: t("forum.delete.button"),
       okType: "danger",
-      cancelText: "Hủy",
+      cancelText: t("forum.delete.cancel"),
       onOk() {
         deleteMutation.mutate(forum.forumId, {
           onSuccess: () => {
-            message.success("Xóa diễn đàn thành công");
+            message.success(t("forum.delete.success"));
             queryClient.invalidateQueries({
-              queryKey: ["forumsActive"],
-            });
-            queryClient.invalidateQueries({
-              queryKey: ["forums", page, size],
+              queryKey: ["forumsActive", page, size],
             });
           },
         });
@@ -92,12 +91,9 @@ const ForumPage = () => {
   const handleCreateModalSuccess = () => {
     setIsCreateModalOpen(false);
     queryClient.invalidateQueries({
-      queryKey: ["forumsActive"],
+      queryKey: ["forumsActive", page, size],
     });
-    queryClient.invalidateQueries({
-      queryKey: ["forums", page, size],
-    });
-    message.success("Diễn đàn đã được tạo thành công");
+    message.success(t("forum.create.success"));
   };
 
   // Modal functions - Edit
@@ -115,12 +111,9 @@ const ForumPage = () => {
     setIsEditModalOpen(false);
     setSelectedForum(null);
     queryClient.invalidateQueries({
-      queryKey: ["forumsActive"],
+      queryKey: ["forumsActive", page, size],
     });
-    queryClient.invalidateQueries({
-      queryKey: ["forums", page, size],
-    });
-    message.success("Cập nhật diễn đàn thành công");
+    message.success(t("forum.edit.success"));
   };
 
   if (isLoading) {
@@ -134,7 +127,7 @@ const ForumPage = () => {
   if (isError) {
     return (
       <div className="p-8">
-        <Text type="danger">Có lỗi xảy ra khi tải dữ liệu.</Text>
+        <Text type="danger">{t("forum.error.loading")}</Text>
       </div>
     );
   }
@@ -144,8 +137,8 @@ const ForumPage = () => {
   return (
     <div className="p-6">
       <div className="flex items-center justify-between mb-6">
-        <Title level={4} className="!mb-0">
-          Quản lý diễn đàn
+        <Title level={3} className="!mb-0 !text-text-color">
+          {t("forum.management")}
         </Title>
         <Button
           icon={<PlusOutlined />}
@@ -153,7 +146,7 @@ const ForumPage = () => {
           size="middle"
           onClick={showCreateModal}
         >
-          Thêm diễn đàn mới
+          {t("forum.add_new")}
         </Button>
       </div>
 
@@ -161,7 +154,11 @@ const ForumPage = () => {
         {forumData?.data?.content?.map((forum) => (
           <Col xs={24} sm={12} md={8} lg={6} key={forum.forumId}>
             <Badge.Ribbon
-              text={forum.active ? "Hoạt động" : "Tạm dừng"}
+              text={
+                forum.active
+                  ? t("forum.status.active")
+                  : t("forum.status.inactive")
+              }
               color={forum.active ? "green" : "default"}
               placement="end"
             >
@@ -177,14 +174,14 @@ const ForumPage = () => {
                   </div>
                 }
                 actions={[
-                  <Tooltip title="Chỉnh sửa" key="edit">
+                  <Tooltip title={t("forum.actions.edit")} key="edit">
                     <EditOutlined
                       key="edit"
                       className="!text-text-color"
                       onClick={() => showEditModal(forum)}
                     />
                   </Tooltip>,
-                  <Tooltip title="Xóa" key="delete">
+                  <Tooltip title={t("forum.actions.delete")} key="delete">
                     <DeleteOutlined
                       key="delete"
                       className="!text-red-500"
@@ -196,7 +193,12 @@ const ForumPage = () => {
               >
                 <Meta
                   title={
-                    <div className="flex items-center justify-between">
+                    <div
+                      className="flex items-center justify-between cursor-pointer"
+                      onClick={() => {
+                        navigate(`/admin/forums/${forum.forumId}/topics`);
+                      }}
+                    >
                       <Tooltip title={forum.name}>
                         <Text ellipsis className="font-medium">
                           {forum.name}

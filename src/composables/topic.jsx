@@ -58,24 +58,17 @@ export const useCreateTopicMutation = () => {
   });
 };
 export const useUpdateTopicMutation = () => {
-  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id, params) => topic.updateTopic(id, params),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["searchTopics", "topics", "topicsByForumId"],
-      });
-    },
   });
 };
 export const useDeleteTopicMutation = () => {
-  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (id) => topic.deleteTopic(id),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["searchTopics", "topics", "topicsByForumId"],
-      });
-    },
+  });
+};
+export const usePinTopicMutation = () => {
+  return useMutation({
+    mutationFn: (id) => topic.pinTopic(id),
   });
 };

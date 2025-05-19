@@ -25,5 +25,8 @@ const topic = {
   deleteTopic: async (id) => {
     return axios.delete(`topics/${id}`);
   },
+  pinTopic: async (id) => {
+    return axios.post(`topics/${id}/pin`);
+  },
 };
 export default topic;
