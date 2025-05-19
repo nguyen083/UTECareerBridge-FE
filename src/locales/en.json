@@ -25,6 +25,9 @@
   "uploadSuccess": "Upload successfully!",
   "uploadError": "Upload failed. Please try again.",
   "dragAndDrop": "Drag and drop or click to upload image",
+  "you": "You",
+  "PAID": "Paid",
+  "PENDING": "Pending",
   "notification": {
     "title": "Notification",
     "titleDetail": "Notification Detail",
@@ -772,6 +775,7 @@
         }
       },
       "servicePackage": {
+        "empty": "No service packages found",
         "title": "Service Packages",
         "active": "Active",
         "inactive": "Inactive",

@@ -25,6 +25,9 @@
   "uploadSuccess": "Tải lên thành công!",
   "uploadError": "Tải lên thất bại. Vui lòng thử lại.",
   "dragAndDrop": "Kéo thả hoặc nhấp để tải ảnh lên",
+  "you": "Bạn",
+  "PAID": "Đã thanh toán",
+  "PENDING": "Đang chờ",
   "notification": {
     "title": "Thông báo",
     "titleDetail": "Chi tiết thông báo",
@@ -35,6 +38,7 @@
     "noNewNotification": "Không có thông báo mới",
     "new": "Mới",
     "loginToSeeNotification": "Đăng nhập để xem thông báo",
+
     "table": {
       "title": "Tiêu đề",
       "time": "Thời gian"
@@ -732,6 +736,7 @@
         }
       },
       "servicePackage": {
+        "empty": "Không có gói dịch vụ nào",
         "title": "Gói dịch vụ",
         "active": "Hoạt động",
         "inactive": "Không hoạt động",

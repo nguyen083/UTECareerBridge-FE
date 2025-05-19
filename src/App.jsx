@@ -92,7 +92,7 @@ const ManageListEmployer = lazy(() =>
   import("./components/Admin/ManageUser/ManageEmployer.jsx")
 );
 const AdminDashboard = lazy(() =>
-  import("./components/Admin/Dashboard/dashboard.jsx")
+  import("./components/Admin/Dashboard/Dashboard.jsx")
 );
 const ServiceMarketplace = lazy(() =>
   import("./components/Employer/Package/packageDashboard.jsx")

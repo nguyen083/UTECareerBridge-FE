@@ -1079,7 +1079,10 @@ const DashBoard = () => {
                   align: "right",
                   render: (_, record) => {
                     const conversionRate =
-                      (record.applications / record.views) * 100 || 0;
+                      Math.min(
+                        (record.applications / record.views) * 100,
+                        100
+                      ) || 0;
                     return (
                       <Text type={conversionRate > 10 ? "success" : "danger"}>
                         {conversionRate.toFixed(2)}%
