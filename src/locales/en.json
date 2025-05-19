@@ -106,7 +106,10 @@
   "role": {
     "ADMIN": "Admin",
     "EMPLOYER": "Employer",
-    "STUDENT": "Student"
+    "STUDENT": "Student",
+    "student": "Student",
+    "employer": "Employer",
+    "admin": "Admin"
   },
   "student": {
     "year": "Student year {{year}}",
@@ -1523,25 +1526,45 @@
         "lastYear": "Last year"
       },
       "stats": {
+        "interview": "Interview",
+        "successfulInterview": "Successful Interview",
+        "totalRevenue": "Total Revenue",
         "currentMonthRevenue": "Current Month Revenue",
         "totalCandidates": "Total Candidates",
         "totalEmployers": "Total Employers",
+        "totalUsers": "Total Users",
         "totalJobs": "Total Jobs",
         "conversionRate": "Conversion Rate",
         "newCandidates": "New Candidates",
         "newEmployers": "New Employers"
       },
       "charts": {
+        "totalNewForums": "Total new forums",
+        "totalNewTopics": "Total new topics",
+        "totalNewPosts": "Total new posts",
+        "averagePostsPerTopic": "Average posts per topic",
+        "newForums": "New forums",
+        "newTopics": "New topics",
+        "newPosts": "New posts",
+        "forumActivity": "Forum Activity",
+        "totalApplications": "Total applications",
+        "totalSuccessInterviews": "Total success interviews",
+        "averageSuccessRate": "Average success rate",
+        "studentApplications": "Student applications",
+        "successInterviews": "Success interviews",
+        "revenueAnalytics": "Revenue analytics",
+        "revenueItem": "Revenue",
+        "packageCountItem": "Package count",
         "employers": "Employers",
         "candidates": "Candidates",
-        "monthlyRevenue": "Monthly Revenue",
+        "monthlyRevenue": "Monthly revenue",
         "revenue": "Revenue (VND)",
-        "packageCount": "Package Count",
-        "topPackages": "Top Selling Packages",
-        "jobsByCategory": "Jobs by Category",
+        "packageCount": "Package count",
+        "topPackages": "Top selling packages",
+        "jobsByCategory": "Jobs by category",
         "packages": "{value} packages - {percentage}%",
         "jobs": "{value} jobs - {percentage}%",
-        "userGrowth": "User Growth Trend"
+        "userGrowth": "User growth trend"
       },
       "platform": {
         "performance": "Platform Performance",

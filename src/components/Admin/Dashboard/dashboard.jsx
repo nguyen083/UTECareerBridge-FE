@@ -4,7 +4,6 @@ import {
   Row,
   Col,
   Statistic,
-  Select,
   Space,
   Typography,
   DatePicker,
@@ -19,6 +18,7 @@ import {
   Flex,
   Tag,
   Alert,
+  Empty,
 } from "antd";
 import {
   AreaChart,
@@ -36,7 +36,6 @@ import {
   UserOutlined,
   DollarOutlined,
   ReloadOutlined,
-  FilterOutlined,
   SafetyCertificateOutlined,
   LineChartOutlined,
   BarChartOutlined,
@@ -44,14 +43,16 @@ import {
   TrophyOutlined,
 } from "@ant-design/icons";
 import { IoIosBusiness } from "react-icons/io";
+import { MdCheckCircleOutline } from "react-icons/md";
 import { BsFilePost } from "react-icons/bs";
+import { HiOutlineUserGroup } from "react-icons/hi";
 import { useTranslation } from "react-i18next";
 import {
   getRevenueByMonth,
   getStatisticUser,
 } from "../../../services/apiService";
 import "./Dashboard.scss";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import {
   useApplicationStats,
   useForumStats,
@@ -62,33 +63,69 @@ import {
   useTopEmployer,
   useUserStats,
 } from "../../../composables/admin-dashboard";
+import dayjs from "dayjs";
 
-const { Option } = Select;
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
 
 const AdminDashboard = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { data: jobCategoryStats } = useStatisticsByCategory();
-  const [currentMonthRevenue, setCurrentMonthRevenue] = useState(0);
+  const [, setSearchParams] = useSearchParams();
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const { data: jobCategoryStats, refetch: refetchJobCategoryStats } =
+    useStatisticsByCategory({
+      startDate,
+      endDate,
+    });
+  const [totalRevenue, setTotalRevenue] = useState(0);
   const [statisticUser, setStatisticUser] = useState({
     totalCandidates: 0,
     totalEmployers: 0,
   });
   const [revenueByMonth, setRevenueByMonth] = useState([]);
-  const { data: recentOrders } = useRecentOrders();
-  const { data: topEmployers } = useTopEmployer();
+  const { data: recentOrders, refetch: refetchRecentOrders } = useRecentOrders({
+    startDate,
+    endDate,
+  });
+  const { data: topEmployers, refetch: refetchTopEmployers } = useTopEmployer({
+    startDate,
+    endDate,
+  });
   const [loading, setLoading] = useState({
     revenue: true,
   });
   const [chartView, setChartView] = useState("revenue");
 
-  const { data: jobApprovalStats } = useJobStatistics();
-  const { data: userGrowthData } = useUserStats();
-  const { data: skillDemandData } = useStatsTopSkills();
-  const { data: studentApplicationData } = useApplicationStats();
-  const { data: forumActivityData } = useForumStats();
+  const { data: jobApprovalStats, refetch: refetchJobApprovalStats } =
+    useJobStatistics({
+      startDate,
+      endDate,
+    });
+  const { data: userGrowthData, refetch: refetchUserGrowthData } = useUserStats(
+    {
+      startDate,
+      endDate,
+    }
+  );
+  const { data: skillDemandData, refetch: refetchSkillDemandData } =
+    useStatsTopSkills({
+      startDate,
+      endDate,
+    });
+  const {
+    data: studentApplicationData,
+    refetch: refetchStudentApplicationData,
+  } = useApplicationStats({
+    startDate,
+    endDate,
+  });
+  const { data: forumActivityData, refetch: refetchForumActivityData } =
+    useForumStats({
+      startDate,
+      endDate,
+    });
 
   const COLORS = [
     "#722ed1",
@@ -103,38 +140,35 @@ const AdminDashboard = () => {
     "#eb2f96",
   ];
 
-  const [filters, setFilters] = useState({
-    month: null,
-    year: new Date().getFullYear(),
-    dateRange: null,
-  });
+  const [dateRange, setDateRange] = useState([]);
 
-  const months = Array.from({ length: 12 }, (_, i) => i + 1);
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
+  useEffect(() => {
+    // Update URL when date changes
+    if (dateRange[0] && dateRange[1]) {
+      const start = dateRange[0].format("YYYY-MM");
+      const end = dateRange[1].format("YYYY-MM");
+      setSearchParams({ startDate: start, endDate: end });
+      setStartDate(dateRange[0].toISOString());
+      setEndDate(dateRange[1].toISOString());
+    }
+  }, [dateRange]);
 
   const fetchRevenueByMonth = async () => {
     try {
       setLoading((prev) => ({ ...prev, revenue: true }));
-      const params = {};
-      if (filters.year) params.year = filters.year;
-      const response = await getRevenueByMonth(params);
+      let year = dateRange[0]?.format("YYYY");
+      const response = await getRevenueByMonth({ year });
       const transformedData = response.data.map((item) => ({
-        month: item.month,
+        month: item.month + "/" + item.year,
         revenue: item.revenue,
         subscriptions: item.numberOfPackages,
       }));
 
-      // Calculate current month revenue and previous month for growth indicator
-      const currentMonthNum = new Date().getMonth() + 1;
-      const currentYear = new Date().getFullYear();
-
-      if (!filters.year || filters.year === currentYear) {
-        const currentMonthData = transformedData.find(
-          (item) => item.month === currentMonthNum
-        );
-        setCurrentMonthRevenue(currentMonthData?.revenue || 0);
-      }
+      const totalRevenueData = transformedData.reduce(
+        (sum, item) => sum + item.revenue,
+        0
+      );
+      setTotalRevenue(totalRevenueData);
 
       setRevenueByMonth(transformedData);
     } catch (err) {
@@ -146,7 +180,7 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchRevenueByMonth();
-  }, [filters.year]);
+  }, [dateRange]);
 
   const fetchStatisticUser = async () => {
     try {
@@ -167,6 +201,14 @@ const AdminDashboard = () => {
   const handleRefresh = () => {
     fetchRevenueByMonth();
     fetchStatisticUser();
+    refetchJobCategoryStats();
+    refetchRecentOrders();
+    refetchTopEmployers();
+    refetchJobApprovalStats();
+    refetchUserGrowthData();
+    refetchSkillDemandData();
+    refetchStudentApplicationData();
+    refetchForumActivityData();
   };
 
   // Sample recent activities
@@ -214,34 +256,17 @@ const AdminDashboard = () => {
 
   const FilterControls = () => (
     <Space wrap size={12}>
-      <Select
-        placeholder={t("admin.dashboard.filters.selectMonth")}
-        style={{ width: 150 }}
-        value={filters.month}
-        onChange={(value) => setFilters((prev) => ({ ...prev, month: value }))}
-        allowClear
-        suffixIcon={<FilterOutlined />}
-      >
-        {months.map((month) => (
-          <Option key={month} value={month}>
-            {t("admin.dashboard.filters.month", { month })}
-          </Option>
-        ))}
-      </Select>
-
-      <Select
-        placeholder={t("admin.dashboard.filters.selectYear")}
-        style={{ width: 120 }}
-        value={filters.year}
-        onChange={(value) => setFilters((prev) => ({ ...prev, year: value }))}
-        suffixIcon={<FilterOutlined />}
-      >
-        {years.map((year) => (
-          <Option key={year} value={year}>
-            {year}
-          </Option>
-        ))}
-      </Select>
+      <RangePicker
+        value={dateRange}
+        onChange={(dates) => setDateRange(dates)}
+        picker="month"
+        allowClear={false}
+        format="MM/YYYY"
+        disabledDate={(current) => {
+          // Disable future months
+          return current && current > dayjs().endOf("month");
+        }}
+      />
 
       <Button icon={<ReloadOutlined />} onClick={handleRefresh} type="default">
         {t("admin.dashboard.refresh")}
@@ -357,26 +382,26 @@ const AdminDashboard = () => {
 
       {/* Overview Statistics */}
       <Row gutter={[16, 16]} className="mb-5">
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={24} sm={12} lg={8}>
           {loading.users ? (
             <Card className="admin-stats-card">
               <Skeleton active paragraph={{ rows: 2 }} />
             </Card>
           ) : (
             renderStatsCard(
-              t("admin.dashboard.stats.monthlyRevenue") || "Monthly Revenue",
+              t("admin.dashboard.stats.totalRevenue"),
               new Intl.NumberFormat("vi-VN", {
                 style: "currency",
                 currency: "VND",
                 minimumFractionDigits: 0,
                 maximumFractionDigits: 0,
-              }).format(currentMonthRevenue),
+              }).format(totalRevenue),
               <DollarOutlined />,
               "#1890ff"
             )
           )}
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={24} sm={12} lg={8}>
           {loading.users ? (
             <Card className="admin-stats-card">
               <Skeleton active paragraph={{ rows: 2 }} />
@@ -390,7 +415,7 @@ const AdminDashboard = () => {
             )
           )}
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={24} sm={12} lg={8}>
           {loading.users ? (
             <Card className="admin-stats-card">
               <Skeleton active paragraph={{ rows: 2 }} />
@@ -404,7 +429,37 @@ const AdminDashboard = () => {
             )
           )}
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+      </Row>
+      <Row gutter={[16, 16]} className="mb-5">
+        <Col xs={24} sm={12} lg={8}>
+          {loading.packages ? (
+            <Card className="admin-stats-card">
+              <Skeleton active paragraph={{ rows: 2 }} />
+            </Card>
+          ) : (
+            renderStatsCard(
+              t("admin.dashboard.stats.interview"),
+              jobApprovalStats?.countInterview || 0,
+              <HiOutlineUserGroup />,
+              "#f7dc6f"
+            )
+          )}
+        </Col>
+        <Col xs={24} sm={12} lg={8}>
+          {loading.packages ? (
+            <Card className="admin-stats-card">
+              <Skeleton active paragraph={{ rows: 2 }} />
+            </Card>
+          ) : (
+            renderStatsCard(
+              t("admin.dashboard.stats.successfulInterview"),
+              jobApprovalStats?.successfulInterview || 0,
+              <MdCheckCircleOutline />,
+              "#52c41a"
+            )
+          )}
+        </Col>
+        <Col xs={24} sm={12} lg={8}>
           {loading.packages ? (
             <Card className="admin-stats-card">
               <Skeleton active paragraph={{ rows: 2 }} />
@@ -485,7 +540,10 @@ const AdminDashboard = () => {
             <Progress
               percent={Math.round(
                 Math.min(
-                  (jobApprovalStats?.activeJob / jobApprovalStats?.total) * 100,
+                  jobApprovalStats?.total === 0
+                    ? 0
+                    : (jobApprovalStats?.activeJob / jobApprovalStats?.total) *
+                        100,
                   100
                 )
               )}
@@ -506,9 +564,7 @@ const AdminDashboard = () => {
           <Card
             title={
               <Flex align="center" gap="small">
-                <LineChartOutlined />{" "}
-                {t("admin.dashboard.charts.userGrowth") ||
-                  "Thống kê người dùng theo tháng"}
+                <LineChartOutlined /> {t("admin.dashboard.charts.userGrowth")}
               </Flex>
             }
             className="admin-card"
@@ -548,7 +604,7 @@ const AdminDashboard = () => {
                   <Area
                     type="monotone"
                     dataKey="employerCount"
-                    name="Nhà tuyển dụng"
+                    name={t("role.employer")}
                     stroke="#722ed1"
                     fillOpacity={1}
                     fill="url(#colorEmployers)"
@@ -556,7 +612,7 @@ const AdminDashboard = () => {
                   <Area
                     type="monotone"
                     dataKey="studentCount"
-                    name="Sinh viên"
+                    name={t("role.student")}
                     stroke="#1890ff"
                     fillOpacity={1}
                     fill="url(#colorCandidates)"
@@ -567,7 +623,7 @@ const AdminDashboard = () => {
             <Divider />
             <Flex justify="space-between" align="middle">
               <Statistic
-                title="Tổng nhà tuyển dụng"
+                title={t("admin.dashboard.stats.totalEmployers")}
                 value={userGrowthData?.reduce(
                   (sum, item) => sum + item.employerCount,
                   0
@@ -575,7 +631,7 @@ const AdminDashboard = () => {
                 valueStyle={{ color: "#722ed1" }}
               />
               <Statistic
-                title="Tổng sinh viên"
+                title={t("admin.dashboard.stats.totalCandidates")}
                 value={userGrowthData?.reduce(
                   (sum, item) => sum + item.studentCount,
                   0
@@ -583,7 +639,7 @@ const AdminDashboard = () => {
                 valueStyle={{ color: "#1890ff" }}
               />
               <Statistic
-                title="Tổng người dùng"
+                title={t("admin.dashboard.stats.totalUsers")}
                 value={
                   userGrowthData?.reduce(
                     (sum, item) => sum + item.employerCount,
@@ -607,15 +663,22 @@ const AdminDashboard = () => {
           <Card
             title={
               <Flex align="center" gap="small">
-                <BarChartOutlined /> Revenue Analytics
+                <BarChartOutlined />{" "}
+                {t("admin.dashboard.charts.revenueAnalytics")}
               </Flex>
             }
             className="admin-card"
             extra={
               <Segmented
                 options={[
-                  { label: "Revenue", value: "revenue" },
-                  { label: "Packages", value: "packages" },
+                  {
+                    label: t("admin.dashboard.charts.revenueItem"),
+                    value: "revenue",
+                  },
+                  {
+                    label: t("admin.dashboard.charts.packageCountItem"),
+                    value: "packages",
+                  },
                 ]}
                 value={chartView}
                 onChange={setChartView}
@@ -658,7 +721,7 @@ const AdminDashboard = () => {
                       <Legend />
                       <Bar
                         dataKey="revenue"
-                        name="Revenue"
+                        name={t("admin.dashboard.charts.revenueItem")}
                         fill="#1890ff"
                         radius={[4, 4, 0, 0]}
                         barSize={30}
@@ -676,7 +739,7 @@ const AdminDashboard = () => {
                       <Legend />
                       <Bar
                         dataKey="subscriptions"
-                        name="Package Subscriptions"
+                        name={t("admin.dashboard.charts.packageCountItem")}
                         fill="#1890ff"
                         radius={[4, 4, 0, 0]}
                         barSize={30}
@@ -700,35 +763,48 @@ const AdminDashboard = () => {
             className="admin-card"
           >
             <div className="top-skills-chart">
-              {skillDemandData?.data?.slice(0, 10).map((skill, index) => (
-                <div key={index} className="skill-item">
-                  <span className="skill-name w-[200px] truncate">
-                    {skill.skill}
-                  </span>
-                  <div className="skill-bar">
-                    <Progress
-                      percent={Math.round(
-                        Math.min(
-                          Math.round(
-                            (skill.count / skillDemandData?.total) * 100 * 100
-                          ) / 100,
-                          100
-                        ) || 0
-                      )}
-                      showInfo={false}
-                      strokeColor={COLORS[index % COLORS.length]}
-                    />
+              {!skillDemandData?.data?.length ? (
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description="Không có dữ liệu kỹ năng"
+                />
+              ) : (
+                skillDemandData?.data?.slice(0, 10).map((skill, index) => (
+                  <div key={index} className="skill-item">
+                    <span className="skill-name w-[200px] truncate">
+                      {skill.skill}
+                    </span>
+                    <div className="skill-bar">
+                      <Progress
+                        percent={Math.round(
+                          Math.min(
+                            skillDemandData?.total === 0
+                              ? 0
+                              : Math.round(
+                                  (skill.count / skillDemandData?.total) *
+                                    100 *
+                                    100
+                                ) / 100,
+                            100
+                          ) || 0
+                        )}
+                        showInfo={false}
+                        strokeColor={COLORS[index % COLORS.length]}
+                      />
+                    </div>
+                    <div className="skill-value">
+                      <Tag className="text-xs w-fit" color="blue">
+                        {skillDemandData?.total === 0
+                          ? 0
+                          : Math.round(
+                              (skill.count / skillDemandData?.total) * 100 * 100
+                            ) / 100}
+                        %
+                      </Tag>
+                    </div>
                   </div>
-                  <div className="skill-value">
-                    <Tag className="text-xs w-fit" color="blue">
-                      {Math.round(
-                        (skill.count / skillDemandData?.total) * 100 * 100
-                      ) / 100}
-                      %
-                    </Tag>
-                  </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </Card>
         </Col>
@@ -741,9 +817,7 @@ const AdminDashboard = () => {
             title={
               <Flex align="center" gap="small">
                 <BarChartOutlined />{" "}
-                {
-                  "Thống kê sinh viên ứng tuyển và phỏng vấn thành công theo tháng"
-                }
+                {t("admin.dashboard.charts.studentApplications")}
               </Flex>
             }
             className="admin-card"
@@ -772,14 +846,14 @@ const AdminDashboard = () => {
                   <Legend wrapperStyle={{ paddingTop: 15 }} />
                   <Bar
                     dataKey="applications"
-                    name="Sinh viên ứng tuyển"
+                    name={t("admin.dashboard.charts.studentApplications")}
                     fill="#1890ff"
                     barSize={20}
                     radius={[4, 4, 0, 0]}
                   />
                   <Bar
                     dataKey="hires"
-                    name="Phỏng vấn thành công"
+                    name={t("admin.dashboard.charts.successInterviews")}
                     fill="#52c41a"
                     barSize={20}
                     radius={[4, 4, 0, 0]}
@@ -790,7 +864,7 @@ const AdminDashboard = () => {
             <Divider />
             <Flex justify="space-between" align="middle">
               <Statistic
-                title="Tổng số lượt ứng tuyển"
+                title={t("admin.dashboard.charts.totalApplications")}
                 value={studentApplicationData?.reduce(
                   (sum, item) => sum + item.applications,
                   0
@@ -798,7 +872,7 @@ const AdminDashboard = () => {
                 valueStyle={{ color: "#1890ff" }}
               />
               <Statistic
-                title="Tổng số phỏng vấn thành công"
+                title={t("admin.dashboard.charts.totalSuccessInterviews")}
                 value={studentApplicationData?.reduce(
                   (sum, item) => sum + item.hires,
                   0
@@ -806,22 +880,29 @@ const AdminDashboard = () => {
                 valueStyle={{ color: "#52c41a" }}
               />
               <Statistic
-                title="Tỷ lệ thành công trung bình"
-                value={Math.min(
-                  Math.round(
-                    (studentApplicationData?.reduce(
-                      (sum, item) => sum + item.hires,
-                      0
-                    ) /
-                      studentApplicationData?.reduce(
-                        (sum, item) => sum + item.applications,
-                        0
-                      )) *
-                      100 *
-                      100
-                  ) / 100,
-                  100
-                ).toFixed(1)}
+                title={t("admin.dashboard.charts.averageSuccessRate")}
+                value={
+                  studentApplicationData?.reduce(
+                    (sum, item) => sum + item.applications,
+                    0
+                  ) === 0
+                    ? 0
+                    : Math.min(
+                        Math.round(
+                          (studentApplicationData?.reduce(
+                            (sum, item) => sum + item.hires,
+                            0
+                          ) /
+                            studentApplicationData?.reduce(
+                              (sum, item) => sum + item.applications,
+                              0
+                            )) *
+                            100 *
+                            100
+                        ) / 100,
+                        100
+                      ).toFixed(1)
+                }
                 suffix="%"
                 precision={1}
                 valueStyle={{ color: "#faad14" }}
@@ -837,7 +918,7 @@ const AdminDashboard = () => {
           <Card
             title={
               <Flex align="center" gap="small">
-                <BarChartOutlined /> {"Thống kê hoạt động diễn đàn theo tháng"}
+                <BarChartOutlined /> {t("admin.dashboard.charts.forumActivity")}
               </Flex>
             }
             className="admin-card"
@@ -866,21 +947,21 @@ const AdminDashboard = () => {
                   <Legend wrapperStyle={{ paddingTop: 15 }} />
                   <Bar
                     dataKey="forums"
-                    name="Diễn đàn mới"
+                    name={t("admin.dashboard.charts.newForums")}
                     fill="#722ed1"
                     barSize={20}
                     radius={[4, 4, 0, 0]}
                   />
                   <Bar
                     dataKey="topics"
-                    name="Chủ đề mới"
+                    name={t("admin.dashboard.charts.newTopics")}
                     fill="#faad14"
                     barSize={20}
                     radius={[4, 4, 0, 0]}
                   />
                   <Bar
                     dataKey="posts"
-                    name="Bài viết mới"
+                    name={t("admin.dashboard.charts.newPosts")}
                     fill="#1890ff"
                     barSize={20}
                     radius={[4, 4, 0, 0]}
@@ -891,7 +972,7 @@ const AdminDashboard = () => {
             <Divider />
             <Flex justify="space-between" align="middle">
               <Statistic
-                title="Tổng số diễn đàn mới"
+                title={t("admin.dashboard.charts.totalNewForums")}
                 value={forumActivityData?.reduce(
                   (sum, item) => sum + item.forums,
                   0
@@ -899,7 +980,7 @@ const AdminDashboard = () => {
                 valueStyle={{ color: "#722ed1" }}
               />
               <Statistic
-                title="Tổng số chủ đề mới"
+                title={t("admin.dashboard.charts.totalNewTopics")}
                 value={forumActivityData?.reduce(
                   (sum, item) => sum + item.topics,
                   0
@@ -907,7 +988,7 @@ const AdminDashboard = () => {
                 valueStyle={{ color: "#faad14" }}
               />
               <Statistic
-                title="Tổng số bài viết mới"
+                title={t("admin.dashboard.charts.totalNewPosts")}
                 value={forumActivityData?.reduce(
                   (sum, item) => sum + item.posts,
                   0
@@ -915,14 +996,24 @@ const AdminDashboard = () => {
                 valueStyle={{ color: "#1890ff" }}
               />
               <Statistic
-                title="Bài viết/chủ đề trung bình"
-                value={(
+                title={t("admin.dashboard.charts.averagePostsPerTopic")}
+                value={
                   forumActivityData?.reduce(
-                    (sum, item) => sum + item.posts,
+                    (sum, item) => sum + item.topics,
                     0
-                  ) /
-                  forumActivityData?.reduce((sum, item) => sum + item.topics, 0)
-                ).toFixed(1)}
+                  ) === 0
+                    ? 0
+                    : (
+                        forumActivityData?.reduce(
+                          (sum, item) => sum + item.posts,
+                          0
+                        ) /
+                        forumActivityData?.reduce(
+                          (sum, item) => sum + item.topics,
+                          0
+                        )
+                      ).toFixed(1)
+                }
                 precision={1}
                 valueStyle={{ color: "#52c41a" }}
               />
@@ -949,7 +1040,8 @@ const AdminDashboard = () => {
                 <Table
                   dataSource={recentOrders}
                   columns={orderColumns}
-                  rowKey="purchaseDate"
+                  rowKey="id"
+                  pagination={{ pageSize: 5 }}
                   className="admin-table"
                 />
               </Tabs.TabPane>

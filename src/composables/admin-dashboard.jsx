@@ -6,6 +6,7 @@ export const useStatisticsByCategory = (params) => {
     queryKey: ["statistics-by-category", params],
     queryFn: () => adminDashboard.getStatisticsByCategory(params),
     select: (data) => data.data,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -14,6 +15,7 @@ export const useRecentOrders = (params) => {
     queryKey: ["recent-orders", params],
     queryFn: () => adminDashboard.getRecentOrders(params),
     select: (data) => data.data,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -26,6 +28,7 @@ export const useJobStatistics = (params) => {
         data.data.pendingJob + data.data.activeJob + data.data.rejectedJob;
       return data.data;
     },
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -39,6 +42,7 @@ export const useUserStats = (params) => {
         employerCount: item.employerCount,
         studentCount: item.studentCount,
       })),
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -50,6 +54,7 @@ export const useStatsTopSkills = (params) => {
       const total = data.data.reduce((acc, curr) => acc + curr.count, 0);
       return { ...data, total };
     },
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -58,6 +63,7 @@ export const useTopEmployer = (params) => {
     queryKey: ["top-employers", params],
     queryFn: () => adminDashboard.getTopEmployer(params),
     select: (data) => data.data,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -66,6 +72,7 @@ export const useApplicationStats = (params) => {
     queryKey: ["application-statistics", params],
     queryFn: () => adminDashboard.getApplicationStats(params),
     select: (data) => data.data,
+    refetchOnWindowFocus: false,
   });
 };
 
@@ -74,5 +81,6 @@ export const useForumStats = (params) => {
     queryKey: ["forum-statistics", params],
     queryFn: () => adminDashboard.getForumStats(params),
     select: (data) => data.data,
+    refetchOnWindowFocus: false,
   });
 };

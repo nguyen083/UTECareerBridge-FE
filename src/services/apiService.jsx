@@ -129,9 +129,8 @@ const getStatisticsByJobCategory = async (values) => {
   const params = new URLSearchParams(values).toString();
   return axios.get(`admin/statistics/category-job?${params}`);
 };
-const getRevenueByMonth = async (values) => {
-  const params = new URLSearchParams(values).toString();
-  return axios.get(`admin/statistics/revenue-by-month?${params}`);
+const getRevenueByMonth = async (params) => {
+  return axios.get(`admin/statistics/revenue-by-month`, { params });
 };
 const getStatisticUser = async () => {
   return axios.get("admin/statistics-user");

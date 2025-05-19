@@ -107,7 +107,10 @@
   "role": {
     "STUDENT": "Sinh viên",
     "EMPLOYER": "Nhà tuyển dụng",
-    "ADMIN": "Quản trị viên"
+    "ADMIN": "Quản trị viên",
+    "student": "Sinh viên",
+    "employer": "Nhà tuyển dụng",
+    "admin": "Quản trị viên"
   },
   "student": {
     "year": "Sinh viên năm thứ {{year}}",
@@ -1447,15 +1450,35 @@
         "lastYear": "Năm qua"
       },
       "stats": {
+        "interview": "Cuộc phỏng vấn",
+        "successfulInterview": "Cuộc phỏng vấn thành công",
+        "totalRevenue": "Tổng doanh thu",
         "currentMonthRevenue": "Doanh thu tháng này",
         "totalCandidates": "Tổng ứng viên",
         "totalEmployers": "Tổng nhà tuyển dụng",
+        "totalUsers": "Tổng người dùng",
         "totalJobs": "Tổng số việc làm",
         "conversionRate": "Tỷ lệ ứng tuyển",
         "newCandidates": "Ứng viên mới",
         "newEmployers": "Nhà tuyển dụng mới"
       },
       "charts": {
+        "totalNewForums": "Tổng số diễn đàn mới",
+        "totalNewTopics": "Tổng số chủ đề mới",
+        "totalNewPosts": "Tổng số bài viết mới",
+        "averagePostsPerTopic": "Bài viết/chủ đề trung bình",
+        "newForums": "Diễn đàn mới",
+        "newTopics": "Chủ đề mới",
+        "newPosts": "Bài viết mới",
+        "forumActivity": "Hoạt động diễn đàn",
+        "totalApplications": "Tổng số lượt ứng tuyển",
+        "totalSuccessInterviews": "Tổng số phỏng vấn thành công",
+        "averageSuccessRate": "Tỷ lệ thành công trung bình",
+        "studentApplications": "Sinh viên ứng tuyển",
+        "successInterviews": "Phỏng vấn thành công",
+        "revenueAnalytics": "Phân tích doanh thu",
+        "revenueItem": "Doanh thu",
+        "packageCountItem": "Số lượng gói",
         "employers": "Nhà tuyển dụng",
         "candidates": "Ứng viên",
         "monthlyRevenue": "Doanh thu theo tháng",
