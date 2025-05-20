@@ -719,6 +719,7 @@
       "analyzeDescription": "This feature helps you analyze applied CVs based on job fit.",
       "overallScore": "Overall Score",
       "matchScore": "Match Score",
+      "name": "Fullname",
       "email": "Email",
       "skillScore": "Skill Score",
       "similarity": "Similarity",
@@ -2650,6 +2651,7 @@
     "create": "Create Topic"
   },
   "post": {
+    "noPost": "No posts yet",
     "placeholder": "Enter content your post",
     "create": "Create post",
     "topic": "Topic",

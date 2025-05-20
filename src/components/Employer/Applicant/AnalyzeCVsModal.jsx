@@ -16,8 +16,9 @@ import {
   CheckCircleOutlined,
   CloseCircleOutlined,
 } from "@ant-design/icons";
-import { useEffect } from "react";
-import { convertStatus } from "../../../services/apiService";
+import { convertStatus, getCVByEmployer } from "../../../services/apiService";
+import { ModalInterview } from "./ViewDetailApplicant";
+import { useEffect, useState } from "react";
 
 const { Text } = Typography;
 
@@ -29,7 +30,11 @@ const AnalyzeCVsModal = ({
   isAnalyzing,
 }) => {
   const { t } = useTranslation();
-
+  const [openModalInterview, setOpenModalInterview] = useState(false);
+  const [studentId, setStudentId] = useState(null);
+  const [resumeId, setResumeId] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [applicationId, setApplicationId] = useState(null);
   const getMatchColor = (score) => {
     const percent = score * 100;
     if (percent >= 90) return "green";
@@ -37,6 +42,26 @@ const AnalyzeCVsModal = ({
     if (percent >= 70) return "gold";
     return "orange";
   };
+
+  useEffect(() => {
+    if (applicationId) {
+      getCVByEmployer(applicationId)
+        .then((res) => {
+          setStudentId(res.data.studentId);
+          setResumeId(res.data.resumeId);
+          setEmail(res.data.email);
+        })
+        .then(() => {
+          setOpenModalInterview(true);
+        });
+    }
+  }, [applicationId]);
+
+  useEffect(() => {
+    if (!openModalInterview) {
+      setApplicationId(null);
+    }
+  }, [openModalInterview]);
 
   const renderSkillTags = (matchedSkills, missingSkills) => {
     return (
@@ -55,22 +80,16 @@ const AnalyzeCVsModal = ({
     );
   };
 
-  const hasData = resumeAnalysis?.data?.recommendations?.length > 0;
-
   const handleViewCV = (resumeId) => {
     window.open(`/employer/applicant-job/${resumeId}`);
   };
 
   const handleApproveCV = (resumeId) => {
-    console.log("resumeId", resumeId);
+    setApplicationId(resumeId);
   };
   const handleRejectCV = (resumeId) => {
     convertStatus(resumeId, "REJECTED");
   };
-
-  useEffect(() => {
-    console.log("jobId", jobId);
-  }, [jobId]);
 
   return (
     <Modal
@@ -81,7 +100,7 @@ const AnalyzeCVsModal = ({
       }
       width={800}
       centered
-      open={open && !isAnalyzing && hasData}
+      open={open && !isAnalyzing}
       footer={null}
       onCancel={() => setOpen(false)}
       className="analyze-cvs-modal"
@@ -126,28 +145,34 @@ const AnalyzeCVsModal = ({
                   <Button
                     icon={<EyeOutlined />}
                     size="small"
-                    onClick={handleViewCV(resume.application_id)}
+                    onClick={() => handleViewCV(resume.application_id)}
                   />
                   <Button
                     type="primary"
                     icon={<CheckCircleOutlined />}
                     size="small"
-                    onClick={handleApproveCV(resume.application_id)}
+                    onClick={() => handleApproveCV(resume.application_id)}
                   />
                   <Button
                     danger
                     icon={<CloseCircleOutlined />}
                     size="small"
-                    onClick={handleRejectCV(resume.application_id)}
+                    onClick={() => handleRejectCV(resume.application_id)}
                   />
                 </div>,
               ]}
             >
               <List.Item.Meta
-                avatar={<Avatar size={48} icon={<UserOutlined />} />}
+                avatar={
+                  <Avatar
+                    src={resume?.avatar}
+                    size={48}
+                    icon={<UserOutlined />}
+                  />
+                }
                 title={
                   <div className="flex flex-wrap items-center gap-2">
-                    <Text strong>{resume.resume_title}</Text>
+                    <Text strong>{resume?.resume_title}</Text>
                   </div>
                 }
                 description={
@@ -155,11 +180,25 @@ const AnalyzeCVsModal = ({
                     <div className="flex items-center gap-2">
                       <div>
                         <Text type="secondary" className="text-sm">
+                          {t("employer.applicant.name")}:
+                        </Text>
+                      </div>
+                      <div>
+                        <Text className="text-sm">
+                          {resume?.student_name || ""}
+                        </Text>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div>
+                        <Text type="secondary" className="text-sm">
                           {t("employer.applicant.email")}:
                         </Text>
                       </div>
                       <div>
-                        <Text className="text-sm">{resume.student_name}</Text>
+                        <Text className="text-sm">
+                          {resume?.student_email || ""}
+                        </Text>
                       </div>
                     </div>
                     <div>
@@ -182,6 +221,15 @@ const AnalyzeCVsModal = ({
           )}
         />
       </div>
+
+      <ModalInterview
+        open={openModalInterview}
+        setOpen={setOpenModalInterview}
+        jobId={jobId}
+        studentId={studentId}
+        resumeId={resumeId}
+        email={email}
+      />
     </Modal>
   );
 };

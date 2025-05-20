@@ -679,6 +679,7 @@
       "analyzeDescription": "Chức năng này giúp bạn phân tích các CV apply dựa trên độ phù hợp với công việc.",
       "overallScore": "Điểm đánh giá tổng thể",
       "matchScore": "Độ phù hợp",
+      "name": "Họ và tên",
       "email": "Email",
       "skillScore": "Điểm kỹ năng",
       "similarity": "Độ tương đồng",
@@ -2602,6 +2603,7 @@
     "create": "Tạo chủ đề"
   },
   "post": {
+    "noPost": "Chưa có bài viết nào",
     "placeholder": "Nhập nội dung bài viết của bạn",
     "create": "Tạo bài viết",
     "topic": "Chủ đề",

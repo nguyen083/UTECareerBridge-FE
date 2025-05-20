@@ -11,7 +11,6 @@ import {
   Divider,
   Statistic,
   Card,
-  Breadcrumb,
   Tag,
   Button,
 } from "antd";
@@ -21,7 +20,6 @@ import {
   RiseOutlined,
   FallOutlined,
   CalendarOutlined,
-  HomeOutlined,
   LoadingOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
@@ -140,15 +138,6 @@ const JobSearchPage = () => {
   return (
     <Layout className="search-page-layout">
       <Content className="search-content">
-        <div className="search-header">
-          <Breadcrumb className="mb-4">
-            <Breadcrumb.Item href="/">
-              <HomeOutlined /> {t("common.home")}
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>Search</Breadcrumb.Item>
-          </Breadcrumb>
-        </div>
-
         <Row gutter={24} className="main-content">
           <Col xs={24} lg={18} className="left-column">
             <div className="search-panel">

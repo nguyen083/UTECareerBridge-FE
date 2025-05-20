@@ -109,6 +109,7 @@ export const ModalInterview = ({
   studentId,
   resumeId,
   email,
+  jobId = null,
 }) => {
   const { t } = useTranslation();
   const [form] = Form.useForm();
@@ -118,7 +119,7 @@ export const ModalInterview = ({
   const dispatch = useDispatch();
   const load = useSelector((state) => state.web.loading);
   const { id } = useParams();
-  const { data: jobData } = useJobDetail(location.state?.jobId);
+  const { data: jobData } = useJobDetail(jobId || location.state?.jobId);
   const navigate = useNavigate();
 
   const generateLink = () => {
@@ -153,7 +154,7 @@ export const ModalInterview = ({
     values.studentId = studentId;
     if (type === "ONLINE") {
       const payload = {
-        jobId: location.state?.jobId,
+        jobId: jobId || location.state?.jobId,
         resumeId: resumeId,
         candidateEmail: email,
         title: values.jobPosition,

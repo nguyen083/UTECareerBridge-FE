@@ -19,12 +19,10 @@ import {
   Flex,
   Space,
   message,
-  Breadcrumb,
   Dropdown,
-  Card,
   Tooltip,
 } from "antd";
-import { Outlet, useLocation, useNavigate, Link } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut, removeAllToken } from "../../services/apiService";
 import { loading, stop } from "../../redux/action/webSlice";
@@ -57,7 +55,6 @@ const AdminLayout = () => {
   const adminInfo = useSelector((state) => state.admin);
   const name = `${adminInfo?.firstName || ""} ${adminInfo?.lastName || ""}`;
   const avatar = adminInfo?.avatar;
-  const [breadcrumbItems, setBreadcrumbItems] = useState([]);
 
   const user = useSelector((state) => state.user);
 
@@ -148,40 +145,6 @@ const AdminLayout = () => {
       danger: true,
     },
   ];
-
-  // Generate breadcrumb based on current path
-  useEffect(() => {
-    const pathSegments = location.pathname.split("/").filter(Boolean);
-    const breadcrumbArray = [
-      {
-        title: <Link to="/admin/dashboard">Dashboard</Link>,
-      },
-    ];
-
-    // Build breadcrumb paths
-    if (pathSegments.length > 1) {
-      let currentPath = "";
-
-      pathSegments.slice(1).forEach((segment) => {
-        currentPath += `/${segment}`;
-        const formattedTitle = segment
-          .split("-")
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(" ");
-
-        breadcrumbArray.push({
-          title:
-            location.pathname === `/admin${currentPath}` ? (
-              formattedTitle
-            ) : (
-              <Link to={`/admin${currentPath}`}>{formattedTitle}</Link>
-            ),
-        });
-      });
-    }
-
-    setBreadcrumbItems(breadcrumbArray);
-  }, [location.pathname]);
 
   const handleNavigation = async (key) => {
     if (key.key === "logout") {
@@ -287,9 +250,6 @@ const AdminLayout = () => {
           </div>
         </Header>
         <Content className="admin-content">
-          <Card className="mb-4 admin-breadcrumb">
-            <Breadcrumb items={breadcrumbItems} />
-          </Card>
           <Flex gap="1rem" vertical>
             <Outlet />
           </Flex>

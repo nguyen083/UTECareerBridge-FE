@@ -9,7 +9,6 @@ import {
   Avatar,
   Form,
   Select,
-  Breadcrumb,
   Empty,
   Tooltip,
   Divider,
@@ -28,10 +27,8 @@ import {
   PushpinOutlined,
   LockOutlined,
   UserOutlined,
-  HomeOutlined,
   ClockCircleOutlined,
   RiseOutlined,
-  MenuOutlined,
   AppstoreOutlined,
   UnorderedListOutlined,
   CalendarOutlined,
@@ -188,39 +185,6 @@ const TopicList = () => {
   }, [topics]);
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="sticky top-0 z-10 py-4 bg-white shadow-sm">
-        <div className="container mx-auto">
-          <div className="flex items-center justify-between">
-            <Breadcrumb
-              className="mb-0"
-              items={[
-                {
-                  title: (
-                    <Link to="/">
-                      <HomeOutlined />
-                    </Link>
-                  ),
-                },
-                {
-                  title: (
-                    <Link to="/forums">
-                      {t("forum.title") || t("forum.title")}
-                    </Link>
-                  ),
-                },
-                {
-                  title: forum?.data?.name || t("common.loading"),
-                },
-              ]}
-            />
-            <div className="flex items-center gap-2 md:hidden">
-              <Button icon={<MenuOutlined />} />
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div className="px-2 py-6 mx-auto ">
         <div className="flex flex-col gap-6">
           {/* Main content */}

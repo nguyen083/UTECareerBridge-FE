@@ -7,7 +7,6 @@ import {
   Avatar,
   Divider,
   Tag,
-  Breadcrumb,
   Pagination,
   Drawer,
   Tabs,
@@ -17,11 +16,9 @@ import {
   Modal,
   Spin,
   Form,
-  Badge,
   Tooltip,
 } from "antd";
 import {
-  HomeOutlined,
   ClockCircleOutlined,
   ArrowUpOutlined,
   InfoCircleOutlined,
@@ -31,17 +28,11 @@ import {
   CommentOutlined,
   EyeOutlined,
 } from "@ant-design/icons";
-import {
-  useParams,
-  Link,
-  useSearchParams,
-  useNavigate,
-} from "react-router-dom";
+import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import HtmlContent from "../../../components/Generate/HtmlContent";
 import { Newspaper } from "lucide-react";
 import { useTopicDetail } from "../../../composables/topic";
-import { useForumDetail } from "../../../composables/forum";
 import { useTranslation } from "react-i18next";
 import { useCreatePost, usePostByTopicId } from "../../../composables/post";
 import { formatDateTime } from "../../../utils/day";
@@ -56,8 +47,7 @@ import {
 import CustomizeQuill from "../../../components/Generate/CustomizeQuill";
 const { Title, Text, Paragraph } = Typography;
 const UserPostList = () => {
-  const { forumId, topicId } = useParams();
-  const { data: forum } = useForumDetail(forumId);
+  const { topicId } = useParams();
   const { data: topic, isPending: isPendingGetTopic } = useTopicDetail(topicId);
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
@@ -112,43 +102,6 @@ const UserPostList = () => {
 
   return (
     <div className="min-h-screen bg-gray-50" ref={topRef}>
-      {/* Header */}
-      <div className="sticky top-0 z-10 py-4 bg-white shadow-sm">
-        <div className="container px-4 mx-auto">
-          <div className="flex items-center justify-between">
-            <Breadcrumb
-              className="mb-0"
-              items={[
-                {
-                  title: (
-                    <Link to="/">
-                      <HomeOutlined />
-                    </Link>
-                  ),
-                },
-                {
-                  title: <Link to="/forums">{t("forum.title")}</Link>,
-                },
-                {
-                  title: (
-                    <Link to={`/forums/${forumId}/topics`}>
-                      {forum?.data?.name || t("common.loading")}
-                    </Link>
-                  ),
-                },
-                {
-                  title: (
-                    <Link to={`/forums/${forumId}/topics/${topicId}/posts`}>
-                      {topic?.data?.title || t("common.loading")}
-                    </Link>
-                  ),
-                },
-              ]}
-            />
-          </div>
-        </div>
-      </div>
-
       <div className="px-2 py-6 mx-auto md:container">
         <div className="flex flex-col gap-6 md:flex-row">
           {/* Main content */}
@@ -166,7 +119,7 @@ const UserPostList = () => {
               <Flex className="justify-end">
                 <Button
                   icon={<PlusOutlined />}
-                  className="my-3 text-white transition-all duration-300 bg-blue-500 hover:bg-blue-600 shadow-md hover:shadow-lg"
+                  className="my-3 text-white transition-all duration-300 bg-blue-500 shadow-md hover:bg-blue-600 hover:shadow-lg"
                   type="primary"
                   size="large"
                   onClick={() => {
@@ -183,12 +136,16 @@ const UserPostList = () => {
               ))}
               {posts?.data?.totalElements === 0 && (
                 <div className="flex flex-col items-center justify-center p-10 mt-6 bg-white rounded-lg shadow-sm">
-                  <Empty 
-                    description={<span className="text-lg text-gray-500">{t("post.noPost") || "Không có bài viết"}</span>}
-                    image={Empty.PRESENTED_IMAGE_SIMPLE} 
+                  <Empty
+                    description={
+                      <span className="text-lg text-gray-500">
+                        {t("post.noPost") || "Không có bài viết"}
+                      </span>
+                    }
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
                   />
-                  <Button 
-                    type="primary" 
+                  <Button
+                    type="primary"
                     icon={<PlusOutlined />}
                     className="mt-4 text-white transition-all duration-300 bg-blue-500 hover:bg-blue-600"
                     onClick={() => setIsModalVisible(true)}
@@ -210,7 +167,7 @@ const UserPostList = () => {
                       setSearchParams(searchParams);
                     }}
                     showSizeChanger={false}
-                    className="shadow-sm bg-white rounded-lg px-4 py-2"
+                    className="px-4 py-2 bg-white rounded-lg shadow-sm"
                   />
                 </div>
               )}
@@ -231,20 +188,22 @@ const UserPostList = () => {
       <Modal
         width={1000}
         centered
-        title={<span className="text-xl font-semibold">{t("post.create")}</span>}
+        title={
+          <span className="text-xl font-semibold">{t("post.create")}</span>
+        }
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         styles={{
           header: {
-            borderBottom: '1px solid #f0f0f0',
-            padding: '16px 24px',
+            borderBottom: "1px solid #f0f0f0",
+            padding: "16px 24px",
           },
           body: {
-            padding: '24px',
+            padding: "24px",
           },
           footer: {
-            borderTop: '1px solid #f0f0f0',
-            padding: '10px 16px',
+            borderTop: "1px solid #f0f0f0",
+            padding: "10px 16px",
           },
         }}
         footer={
@@ -265,13 +224,19 @@ const UserPostList = () => {
           layout="vertical"
           onFinish={handleCreatePost}
         >
-          <Form.Item 
-            name="content" 
-            label={<span className="text-base font-medium">{t("post.content")}</span>}
-            rules={[{ required: true, message: 'Nội dung không được để trống' }]}
+          <Form.Item
+            name="content"
+            label={
+              <span className="text-base font-medium">{t("post.content")}</span>
+            }
+            rules={[
+              { required: true, message: "Nội dung không được để trống" },
+            ]}
           >
-            <CustomizeQuill 
-              placeholder={t("post.placeholder") || "Chia sẻ suy nghĩ của bạn..."}
+            <CustomizeQuill
+              placeholder={
+                t("post.placeholder") || "Chia sẻ suy nghĩ của bạn..."
+              }
               className="min-h-[200px]"
             />
           </Form.Item>
@@ -458,30 +423,37 @@ const PostItem = ({ post }) => {
           {/* User info with improved styling */}
           <div className="mb-4 md:w-48 md:flex-shrink-0 md:pr-4 md:border-r md:border-gray-200 md:mb-0">
             <div className="flex items-center md:flex-col md:items-center">
-              <Avatar size={64} src={post.avatar} className="border-2 border-gray-100 shadow-sm" />
+              <Avatar
+                size={64}
+                src={post.avatar}
+                className="border-2 border-gray-100 shadow-sm"
+              />
               <div className="ml-4 md:ml-0 md:mt-3 md:text-center">
                 <Paragraph
-                  className="mb-1 text-sm font-semibold max-w-48 text-gray-800"
+                  className="mb-1 text-sm font-semibold text-gray-800 max-w-48"
                   ellipsis={{ rows: 2, tooltip: true }}
                 >
                   {post.userName}
                 </Paragraph>
-                <Tag color="blue" className="mx-auto mt-1 text-xs font-medium w-fit">
+                <Tag
+                  color="blue"
+                  className="mx-auto mt-1 text-xs font-medium w-fit"
+                >
                   {t(`role.${post.roleName}`)}
                 </Tag>
               </div>
             </div>
           </div>
-          
+
           {/* Post content with enhanced spacing and readability */}
           <div className="flex flex-col justify-between flex-1 md:pl-5">
             <div className="mb-3">
-              <HtmlContent 
-                htmlString={truncate(post.content, 300)} 
-                className="text-base text-gray-700 leading-relaxed"
+              <HtmlContent
+                htmlString={truncate(post.content, 300)}
+                className="text-base leading-relaxed text-gray-700"
               />
               {post.content.length > 300 && (
-                <span className="text-blue-500 text-sm font-medium hover:underline cursor-pointer">
+                <span className="text-sm font-medium text-blue-500 cursor-pointer hover:underline">
                   {t("common.seeMore")}...
                 </span>
               )}
@@ -497,7 +469,7 @@ const PostItem = ({ post }) => {
                     onEmojiClick={handleReactionPick}
                     onButtonClick={handleDirectButtonClick}
                   />
-                  
+
                   {sortedReactions.length > 0 && (
                     <div
                       className="flex items-center gap-1 px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 transition-colors rounded-full cursor-pointer"
@@ -507,7 +479,9 @@ const PostItem = ({ post }) => {
                         {sortedReactions.slice(0, 3).map((reaction, index) => (
                           <span
                             key={reaction.type}
-                            className={`z-${30 - index * 10} text-lg -ml-1 first:ml-0`}
+                            className={`z-${
+                              30 - index * 10
+                            } text-lg -ml-1 first:ml-0`}
                           >
                             {reaction.mapReaction}
                           </span>
@@ -521,27 +495,33 @@ const PostItem = ({ post }) => {
                       </div>
                     </div>
                   )}
-                  
+
                   {/* Add comment count indicator */}
                   <Tooltip title={t("comment.comments") || "Comments"}>
-                    <div className="flex items-center gap-1 text-gray-600 hover:text-blue-600 cursor-pointer transition-colors">
+                    <div className="flex items-center gap-1 text-gray-600 transition-colors cursor-pointer hover:text-blue-600">
                       <CommentOutlined className="text-lg" />
-                      <span className="text-sm font-medium">{post.comments || 0}</span>
+                      <span className="text-sm font-medium">
+                        {post.comments || 0}
+                      </span>
                     </div>
                   </Tooltip>
-                  
+
                   {/* Add view count indicator */}
                   <Tooltip title={t("post.viewCount") || "View count"}>
                     <div className="flex items-center gap-1 text-gray-600">
                       <EyeOutlined className="text-lg" />
-                      <span className="text-sm font-medium">{post.viewCount || 0}</span>
+                      <span className="text-sm font-medium">
+                        {post.viewCount || 0}
+                      </span>
                     </div>
                   </Tooltip>
                 </div>
-                
+
                 <div className="flex items-center text-gray-500">
                   <ClockCircleOutlined className="mr-1.5" />
-                  <span className="text-sm">{formatDateTime(post.createdAt)}</span>
+                  <span className="text-sm">
+                    {formatDateTime(post.createdAt)}
+                  </span>
                 </div>
               </div>
             </div>
@@ -589,7 +569,7 @@ const ReactionModal = ({
     return Object.keys(reactionsByType).map((type) => ({
       key: type,
       label: (
-        <div className="px-4 text-xl flex items-center gap-2">
+        <div className="flex items-center gap-2 px-4 text-xl">
           <span className="text-2xl">{mapReaction[type]}</span>
           <span className="font-medium">{reactionsByType[type].length}</span>
         </div>
@@ -601,14 +581,16 @@ const ReactionModal = ({
               key={reaction.reactionId}
               className="flex items-center gap-3 p-3 transition-colors rounded-md hover:bg-gray-50"
             >
-              <Avatar 
-                icon={<UserOutlined />} 
+              <Avatar
+                icon={<UserOutlined />}
                 src={reaction.avatar}
                 size={40}
-                className="border border-gray-200" 
+                className="border border-gray-200"
               />
               <div>
-                <div className="font-medium text-gray-800">{reaction.userName}</div>
+                <div className="font-medium text-gray-800">
+                  {reaction.userName}
+                </div>
                 <div className="text-xs text-gray-500">
                   {reaction.createdAt}
                 </div>
@@ -625,20 +607,20 @@ const ReactionModal = ({
   };
 
   return (
-    <Modal 
+    <Modal
       title={<span className="text-xl font-semibold">Reactions</span>}
-      footer={null} 
-      open={modal} 
-      onCancel={handleClose} 
+      footer={null}
+      open={modal}
+      onCancel={handleClose}
       centered
       styles={{
         header: {
-          borderBottom: '1px solid #f0f0f0',
-          padding: '16px 24px',
+          borderBottom: "1px solid #f0f0f0",
+          padding: "16px 24px",
         },
         body: {
-          padding: '0',
-        }
+          padding: "0",
+        },
       }}
     >
       <div className="pt-2">
@@ -647,15 +629,15 @@ const ReactionModal = ({
             <Spin size="large" />
           </div>
         ) : items.length > 0 ? (
-          <Tabs 
-            defaultActiveKey={items[0]?.key} 
+          <Tabs
+            defaultActiveKey={items[0]?.key}
             items={items}
             type="card"
             className="px-4"
           />
         ) : (
-          <Empty 
-            description="Không có dữ liệu reaction" 
+          <Empty
+            description="Không có dữ liệu reaction"
             className="py-8"
             image={Empty.PRESENTED_IMAGE_SIMPLE}
           />
@@ -676,9 +658,7 @@ const TopicHeader = ({ topic }) => {
           <Flex justify="space-between">
             <Flex align="center" gap={16}>
               {topic?.pinned && (
-                <Badge.Ribbon text="Pinned" color="red">
-                  <PushpinOutlined className="mb-[15px] text-red-500 text-3xl" />
-                </Badge.Ribbon>
+                <PushpinOutlined className="mb-[15px] text-red-500 text-3xl" />
               )}
               <Title level={2} className="mb-1 !text-text-color">
                 {topic?.title}
@@ -686,7 +666,7 @@ const TopicHeader = ({ topic }) => {
             </Flex>
             <Button
               type="default"
-              className="flex items-center hover:text-blue-600 hover:border-blue-600 transition-colors"
+              className="flex items-center transition-colors hover:text-blue-600 hover:border-blue-600"
               icon={<InfoCircleOutlined />}
               onClick={() => setIsInfoDrawerVisible(true)}
             >
@@ -695,7 +675,7 @@ const TopicHeader = ({ topic }) => {
           </Flex>
           <div className="flex justify-end w-full gap-1 mb-2">
             {topic?.tags?.map((tag) => (
-              <Tag key={tag.id} color="blue" className="text-xs px-3 py-1">
+              <Tag key={tag.id} color="blue" className="px-3 py-1 text-xs">
                 {tag.name}
               </Tag>
             ))}
@@ -703,7 +683,11 @@ const TopicHeader = ({ topic }) => {
           <div className="text-sm text-gray-500">
             <Flex justify="space-between">
               <Flex align="center" gap={16}>
-                <Avatar src={topic?.avatar} size="default" className="border border-gray-200" />
+                <Avatar
+                  src={topic?.avatar}
+                  size="default"
+                  className="border border-gray-200"
+                />
                 <Text className="leading-none !text-text-color">
                   {topic?.userName}
                 </Text>
@@ -730,39 +714,46 @@ const TopicHeader = ({ topic }) => {
       </Card>
       {/* Topic info drawer */}
       <Drawer
-        title={<span className="text-xl font-semibold">{t("post.inforTopic")}</span>}
+        title={
+          <span className="text-xl font-semibold">{t("post.inforTopic")}</span>
+        }
         placement="right"
         onClose={() => setIsInfoDrawerVisible(false)}
         open={isInfoDrawerVisible}
         width={500}
         styles={{
           header: {
-            borderBottom: '1px solid #f0f0f0',
-            padding: '16px 24px',
+            borderBottom: "1px solid #f0f0f0",
+            padding: "16px 24px",
           },
           body: {
-            padding: '24px',
-          }
+            padding: "24px",
+          },
         }}
       >
         <div className="space-y-6">
-          <div className="bg-gray-50 p-4 rounded-lg">
+          <div className="p-4 rounded-lg bg-gray-50">
             <Flex align="center" gap={16} className="mb-2">
               <Title level={4} className="!text-text-color !mb-0">
                 {t("post.topic")}
               </Title>
               {topic?.pinned && (
-                <PushpinOutlined className="text-red-500 text-xl" />
+                <PushpinOutlined className="text-xl text-red-500" />
               )}
             </Flex>
-            <Paragraph className="mb-0 text-lg font-medium">{topic?.title}</Paragraph>
+            <Paragraph className="mb-0 text-lg font-medium">
+              {topic?.title}
+            </Paragraph>
           </div>
           <div>
             <Title level={4} className="!text-text-color">
               {t("post.description")}
             </Title>
-            <div className="bg-white p-4 border border-gray-100 rounded-lg shadow-sm">
-              <HtmlContent htmlString={topic?.content} className="text-base text-gray-700" />
+            <div className="p-4 bg-white border border-gray-100 rounded-lg shadow-sm">
+              <HtmlContent
+                htmlString={topic?.content}
+                className="text-base text-gray-700"
+              />
             </div>
           </div>
           <div>
@@ -778,22 +769,32 @@ const TopicHeader = ({ topic }) => {
             </div>
           </div>
           <Divider className="my-6" />
-          <div className="bg-gray-50 p-4 rounded-lg">
+          <div className="p-4 rounded-lg bg-gray-50">
             <Title level={4} className="!text-text-color">
               {t("post.statistic")}
             </Title>
             <div className="space-y-3">
-              <div className="flex justify-between items-center p-2 bg-white rounded border-l-4 border-blue-500">
-                <Text className="capitalize text-base">{t("post.post")}:</Text>
-                <Text strong className="text-base">{topic?.postCount || 0}</Text>
+              <div className="flex items-center justify-between p-2 bg-white border-l-4 border-blue-500 rounded">
+                <Text className="text-base capitalize">{t("post.post")}:</Text>
+                <Text strong className="text-base">
+                  {topic?.postCount || 0}
+                </Text>
               </div>
-              <div className="flex justify-between items-center p-2 bg-white rounded border-l-4 border-green-500">
-                <Text className="capitalize text-base">{t("post.createdAt")}:</Text>
-                <Text strong className="text-base">{topic?.createdAt}</Text>
+              <div className="flex items-center justify-between p-2 bg-white border-l-4 border-green-500 rounded">
+                <Text className="text-base capitalize">
+                  {t("post.createdAt")}:
+                </Text>
+                <Text strong className="text-base">
+                  {topic?.createdAt}
+                </Text>
               </div>
-              <div className="flex justify-between items-center p-2 bg-white rounded border-l-4 border-purple-500">
-                <Text className="capitalize text-base">{t("post.updatedAt")}:</Text>
-                <Text strong className="text-base">{topic?.updatedAt}</Text>
+              <div className="flex items-center justify-between p-2 bg-white border-l-4 border-purple-500 rounded">
+                <Text className="text-base capitalize">
+                  {t("post.updatedAt")}:
+                </Text>
+                <Text strong className="text-base">
+                  {topic?.updatedAt}
+                </Text>
               </div>
             </div>
           </div>

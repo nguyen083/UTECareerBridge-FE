@@ -6,7 +6,6 @@ import {
   Avatar,
   Tag,
   message,
-  Breadcrumb,
   Tooltip,
   Skeleton,
   Input,
@@ -19,7 +18,6 @@ import {
   Form,
 } from "antd";
 import {
-  HomeOutlined,
   ShareAltOutlined,
   ClockCircleOutlined,
   CommentOutlined,
@@ -29,11 +27,10 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ReactionPicker from "../../components/Generate/ReactionPicker";
 import HtmlContent from "./../../components/Generate/HtmlContent";
-import { useForumDetail } from "../../composables/forum";
-import { useTopicDetail } from "../../composables/topic";
+
 import {
   useDeletePost,
   usePostDetail,
@@ -61,9 +58,7 @@ const { Text } = Typography;
 const { TextArea } = Input;
 
 const PostDetail = () => {
-  const { forumId, topicId, postId } = useParams();
-  const { data: forum } = useForumDetail(forumId);
-  const { data: topic } = useTopicDetail(topicId);
+  const { topicId, postId } = useParams();
   const { data: post } = usePostDetail(postId);
   const [page, setPage] = useState(1);
   const { data: commentsData, isFetching: isFetchingComments } =
@@ -385,42 +380,7 @@ const PostDetail = () => {
     <div className=" bg-gray-50" ref={topRef}>
       {/* Header */}
       <div className="sticky top-0 z-10 py-4 bg-white shadow-sm">
-        <div className="container px-4 mx-auto">
-          <div className="flex items-center justify-between">
-            <Breadcrumb
-              className="mb-0"
-              items={[
-                {
-                  title: (
-                    <Link to="/">
-                      <HomeOutlined />
-                    </Link>
-                  ),
-                },
-                {
-                  title: <Link to="/forums">{t("forum.title")}</Link>,
-                },
-                {
-                  title: (
-                    <Link to={`/forums/${forumId}/topics`}>
-                      {forum?.data?.name || t("common.loading")}
-                    </Link>
-                  ),
-                },
-                {
-                  title: (
-                    <Link to={`/forums/${forumId}/topics/${topicId}/posts`}>
-                      {topic?.data?.title || t("common.loading")}
-                    </Link>
-                  ),
-                },
-                {
-                  title: t("post.post"),
-                },
-              ]}
-            />
-          </div>
-        </div>
+        <div className="container px-4 mx-auto"></div>
       </div>
 
       <div className="px-2 pt-6 mx-auto ">

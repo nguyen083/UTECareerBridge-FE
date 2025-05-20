@@ -357,11 +357,8 @@ const ViewJob = () => {
                       <Col xs={24} md={6}>
                         <Button
                           onClick={handleSave}
-                          type={isSaved ? "primary" : "default"}
-                          className={clsx(
-                            "w-full",
-                            !isSaved && "text-text-color"
-                          )}
+                          type="default"
+                          className={clsx("w-full", "text-text-color")}
                           size="large"
                         >
                           {isSaved ? <HeartFilled /> : <HeartOutlined />}{" "}
