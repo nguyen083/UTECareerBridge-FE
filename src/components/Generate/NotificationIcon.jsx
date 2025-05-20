@@ -263,22 +263,14 @@ const NotificationIcon = ({ userId = null }) => {
   );
 
   useEffect(() => {
-    let subscription = null;
-
     connectStomp(
       (client) => {
-        subscription = onConnected(client);
+        onConnected(client);
       },
       (error) => {
         console.error("Lỗi kết nối:", error);
       }
     );
-
-    return () => {
-      if (subscription) {
-        subscription.unsubscribe();
-      }
-    };
   }, [onConnected]);
 
   return (

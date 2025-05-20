@@ -133,12 +133,7 @@ const PackageCard = ({
                 {t("employer.services.addToCart")}
               </Button>
 
-              <Button
-                block
-                type={isPopular ? "danger" : "primary"}
-                onClick={() => onBuyNow(service)}
-                className={isPopular ? "buy-now-popular-btn" : "buy-now-btn"}
-              >
+              <Button block type="primary" onClick={() => onBuyNow(service)}>
                 {t("employer.services.buyNow")}
               </Button>
             </div>

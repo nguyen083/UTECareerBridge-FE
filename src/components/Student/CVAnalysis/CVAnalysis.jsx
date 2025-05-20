@@ -282,14 +282,6 @@ const CVAnalysis = () => {
     setShowResult(false);
   };
 
-  // Navigate to recommended jobs
-  const handleViewRecommended = () => {
-    if (analysisResult?.resumeId) {
-      navigate(`/app/student/recommended-jobs/${analysisResult.resumeId}`);
-      handleCloseResult();
-    }
-  };
-
   // View job details
   const handleViewJob = (jobId) => {
     if (jobId) {
@@ -594,24 +586,6 @@ const CVAnalysis = () => {
                 <Title level={4} className="success-title">
                   {t("cv.analysis.result.success")}
                 </Title>
-
-                <div className="score-display">
-                  <Progress
-                    type="circle"
-                    percent={analysisResult.score}
-                    strokeColor={getMatchColor(analysisResult.score)}
-                    width={100}
-                    strokeWidth={10}
-                    format={(percent) => `${percent}%`}
-                  />
-                  <div className="score-text">
-                    <h2>
-                      {t("cv.analysis.result.subtitle", {
-                        score: analysisResult.score,
-                      })}
-                    </h2>
-                  </div>
-                </div>
               </div>
 
               <div className="matched-jobs-section">
@@ -620,128 +594,104 @@ const CVAnalysis = () => {
                   {t("cv.analysis.result.jobMatches")}
                 </div>
 
-                <Alert
-                  message={
-                    <div className="info-alert">
-                      <InfoCircleOutlined />{" "}
-                      {t("cv.analysis.result.clickJobAlert")}
-                    </div>
-                  }
-                  type="info"
-                  style={{ marginBottom: 16 }}
-                  action={
-                    <Button
-                      size="small"
-                      type="primary"
-                      onClick={handleViewRecommended}
-                    >
-                      {t("cv.analysis.result.viewAll")}
-                    </Button>
-                  }
-                />
-
                 <div className="job-list">
-                  {analysisResult.jobs.slice(0, 5).map((job) => (
-                    <Card
-                      hoverable
-                      key={job.id}
-                      className="cursor-pointer job-card"
-                      onClick={() => handleViewJob(job.id)}
-                      bodyStyle={{ padding: 0 }}
-                    >
-                      <div className="job-card-content">
-                        <div className="company-logo">
-                          {job.logo ? (
-                            <img src={job.logo} alt={job.company} />
-                          ) : (
-                            <div className="company-logo-placeholder">
-                              {job.company?.charAt(0) || "C"}
-                            </div>
-                          )}
-                        </div>
-
-                        <div className="job-info">
-                          <Title
-                            level={5}
-                            ellipsis={{ rows: 1 }}
-                            className="job-title"
-                          >
-                            {job.title}
-                          </Title>
-                          <Text className="company-name">{job.company}</Text>
-
-                          <div className="job-meta">
-                            <Text
-                              type="secondary"
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "6px",
-                              }}
-                            >
-                              <EnvironmentOutlined /> {job.location}
-                            </Text>
-                            <Text
-                              type="secondary"
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                gap: "6px",
-                              }}
-                            >
-                              <DollarOutlined /> {formatCurrency(job.minSalary)}{" "}
-                              - {formatCurrency(job.maxSalary)}
-                            </Text>
-                          </div>
-
-                          {job.matchedSkills?.length > 0 && (
-                            <div className="matched-skills">
-                              <Text className="skills-label">
-                                {t("cv.analysis.result.matchedSkills")}:
-                              </Text>
-                              <div className="skills-list">
-                                {job.matchedSkills
-                                  .slice(0, 3)
-                                  .map((skill, index) => (
-                                    <Tag color="success" key={index}>
-                                      {skill}
-                                    </Tag>
-                                  ))}
-                                {job.matchedSkills.length > 3 && (
-                                  <Tag className="more-skills">
-                                    +{job.matchedSkills.length - 3}
-                                  </Tag>
-                                )}
+                  {analysisResult.jobs.length === 0 ? (
+                    <Empty description={t("cv.analysis.result.noJobMatches")} />
+                  ) : (
+                    analysisResult.jobs.map((job) => (
+                      <Card
+                        hoverable
+                        key={job.id}
+                        className="cursor-pointer job-card"
+                        onClick={() => handleViewJob(job.id)}
+                        bodyStyle={{ padding: 0 }}
+                      >
+                        <div className="job-card-content">
+                          <div className="company-logo">
+                            {job.logo ? (
+                              <img src={job.logo} alt={job.company} />
+                            ) : (
+                              <div className="company-logo-placeholder">
+                                {job.company?.charAt(0) || "C"}
                               </div>
-                            </div>
-                          )}
-                        </div>
+                            )}
+                          </div>
 
-                        <div className="match-percentage">
-                          <Progress
-                            type="circle"
-                            percent={job.match}
-                            width={64}
-                            strokeColor={getMatchColor(job.match)}
-                            strokeWidth={8}
-                          />
-                          <div className="match-label">
-                            {job.match}% {t("cv.analysis.result.match")}
+                          <div className="job-info">
+                            <Title
+                              level={5}
+                              ellipsis={{ rows: 1 }}
+                              className="job-title"
+                            >
+                              {job.title}
+                            </Title>
+                            <Text className="company-name">{job.company}</Text>
+
+                            <div className="job-meta">
+                              <Text
+                                type="secondary"
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "6px",
+                                }}
+                              >
+                                <EnvironmentOutlined /> {job.location}
+                              </Text>
+                              <Text
+                                type="secondary"
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: "6px",
+                                }}
+                              >
+                                <DollarOutlined />{" "}
+                                {formatCurrency(job.minSalary)} -{" "}
+                                {formatCurrency(job.maxSalary)}
+                              </Text>
+                            </div>
+
+                            {job.matchedSkills?.length > 0 && (
+                              <div className="matched-skills">
+                                <Text className="skills-label">
+                                  {t("cv.analysis.result.matchedSkills")}:
+                                </Text>
+                                <div className="skills-list">
+                                  {job.matchedSkills
+                                    .slice(0, 3)
+                                    .map((skill, index) => (
+                                      <Tag color="success" key={index}>
+                                        {skill}
+                                      </Tag>
+                                    ))}
+                                  {job.matchedSkills.length > 3 && (
+                                    <Tag className="more-skills">
+                                      +{job.matchedSkills.length - 3}
+                                    </Tag>
+                                  )}
+                                </div>
+                              </div>
+                            )}
+                          </div>
+
+                          <div className="match-percentage">
+                            <Progress
+                              type="circle"
+                              percent={job.match}
+                              width={64}
+                              strokeColor={getMatchColor(job.match)}
+                              strokeWidth={8}
+                            />
+                            <div className="match-label">
+                              {job.match}% {t("cv.analysis.result.match")}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Card>
-                  ))}
+                      </Card>
+                    ))
+                  )}
                 </div>
-
-                {analysisResult.jobs.length > 5 && (
-                  <div style={{ textAlign: "center", marginTop: "16px" }}>
-                    <Button type="primary" onClick={handleViewRecommended}>
-                      {t("cv.analysis.result.viewAll")} (
-                      {analysisResult.jobs.length - 5} {t("common.more")})
-                    </Button>
-                  </div>
-                )}
               </div>
             </div>
           )}

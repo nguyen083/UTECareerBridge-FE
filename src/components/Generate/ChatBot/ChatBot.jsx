@@ -30,10 +30,7 @@ const WelcomeMessage = ({ onSuggestedQuestionClick }) => {
   // Danh sách các câu hỏi gợi ý (có thể dịch bằng t() nếu cần)
   const suggestedQuestions = [
     t("chatbot.howToFindJob", "Làm thế nào để tìm việc làm?"),
-    t(
-      "chatbot.UTECareerBridgeFeatures",
-      "UTECareerBridge có những tính năng gì?"
-    ),
+    t("chatbot.UTECareerFeatures", "UTECareer có những tính năng gì?"),
     t("chatbot.howToUpdateCV", "Tôi muốn cập nhật CV như thế nào?"),
     t("chatbot.howToApplyForJob", "Làm thế nào để ứng tuyển công việc?"),
   ];
@@ -47,15 +44,12 @@ const WelcomeMessage = ({ onSuggestedQuestionClick }) => {
         className="mb-4"
       />
       <Title level={4} className="text-center">
-        {t(
-          "chatbot.welcomeTitle",
-          "Chào mừng đến với UTECareerBridge Assistant"
-        )}
+        {t("chatbot.welcomeTitle", "Chào mừng đến với UTECareer Assistant")}
       </Title>
       <Text className="text-center">
         {t(
           "chatbot.welcomeDescription",
-          "Tôi có thể giúp bạn tìm hiểu về UTECareerBridge và cách sử dụng các tính năng của nền tảng."
+          "Tôi có thể giúp bạn tìm hiểu về UTECareer và cách sử dụng các tính năng của nền tảng."
         )}
       </Text>
 
@@ -228,7 +222,7 @@ const ChatBot = () => {
       title={
         <Flex className="text-white" align="center" gap={6}>
           <Image size={30} src="src\\assets\\chatbot.png" preview={false} />{" "}
-          UTECareerBridge Assistant
+          {t("chatbot.title")}
         </Flex>
       }
     >

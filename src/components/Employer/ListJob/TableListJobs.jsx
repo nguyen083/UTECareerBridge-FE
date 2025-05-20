@@ -7,17 +7,7 @@ import {
   EyeOutlined,
   FileSearchOutlined,
 } from "@ant-design/icons";
-import {
-  Button,
-  Input,
-  Modal,
-  Space,
-  Table,
-  Tooltip,
-  Tag,
-  Badge,
-  Empty,
-} from "antd";
+import { Button, Input, Modal, Space, Table, Tooltip, Tag, Empty } from "antd";
 import Highlighter from "react-highlight-words";
 import {
   deleteJob,
@@ -127,11 +117,11 @@ const TableListJobs = (props) => {
   };
 
   const handleView = (id) => {
-    navigate(`/employer/job/view/${id}`);
+    navigate(`/view/job/${id}`, { state: { status: props.status } });
   };
 
   const handleEdit = (id) => {
-    navigate(`/employer/job/edit/${id}`);
+    navigate(`/employer/job/edit/${id}`, { state: { status: props.status } });
   };
 
   const handleDelete = (id) => {
@@ -331,9 +321,9 @@ const TableListJobs = (props) => {
       render: (text) => (
         <div className="flex justify-end">
           {isDeadlineExpired(text) ? (
-            <Tag color="red">{text} (Expired)</Tag>
+            <Tag color="red">{text} </Tag>
           ) : isDeadlineNear(text) ? (
-            <Tag color="orange">{text} (Soon)</Tag>
+            <Tag color="orange">{text} </Tag>
           ) : (
             <Tag color="green">{text}</Tag>
           )}

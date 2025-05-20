@@ -55,6 +55,8 @@
     "title": "Tất cả danh mục"
   },
   "common": {
+    "show": "Hiện",
+    "hide": "Ẩn",
     "confirm": "Xác nhận",
     "noSkills": "Không có kỹ năng",
     "previous": "Trước",
@@ -1085,6 +1087,7 @@
       }
     },
     "job": {
+      "noPackages": "Gói dịch vụ không có sẵn",
       "requirementsRequired": "Vui lòng nhập yêu cầu công việc",
       "requirementsPlaceholder": "Vui lòng nhập yêu cầu công việc",
       "descriptionRequired": "Vui lòng nhập mô tả công việc",
@@ -1219,6 +1222,11 @@
       "viewResume": "Xem hồ sơ"
     },
     "orders": {
+      "checkout": "Thanh toán",
+      "shoppingCart": "Giỏ hàng",
+      "emptyCart": "Giỏ hàng trống",
+      "continueShopping": "Tiếp tục mua hàng",
+      "subtotal": "Tạm tính",
       "title": "Đơn hàng",
       "orderId": "Mã đơn hàng",
       "orderDate": "Ngày đặt hàng",
@@ -1662,6 +1670,7 @@
         "success": "Phân tích CV hoàn tất!",
         "subtitle": "CV của bạn phù hợp với công việc ở mức {{score}}%",
         "jobMatches": "Công việc phù hợp",
+        "noJobMatches": "Không tìm thấy công việc phù hợp",
         "close": "Đóng",
         "viewAll": "Xem tất cả đề xuất",
         "viewRecommended": "Xem công việc được đề xuất",
@@ -1927,6 +1936,7 @@
       "error": "Có lỗi xảy ra"
     },
     "coupon": {
+      "off": "OFF",
       "title": "Mã giảm giá",
       "createNew": "Tạo mã giảm giá mới",
       "editTitle": "Chỉnh sửa mã giảm giá",
@@ -1937,9 +1947,9 @@
       "deleteError": "Xoá mã giảm giá không thành công",
       "voucher": "Voucher",
       "discount": "Giảm {{discount}}",
-      "code": "Mã:",
-      "remaining": "Còn lại:",
-      "expireDate": "Ngày hết hạn:",
+      "code": "Mã",
+      "remaining": "Còn lại",
+      "expireDate": "Ngày hết hạn",
       "active": "Hoạt động",
       "inactive": "Không hoạt động",
       "maxUsage": "Số lần sử dụng tối đa",
@@ -2464,14 +2474,15 @@
     }
   },
   "chatbot": {
+    "title": "Trợ lý UTECareer",
     "placeholderInput": "Nhập tin nhắn của bạn ở đây...",
-    "welcomeTitle": "Chào mừng đến với UTECareerBridge Assistant",
-    "welcomeDescription": "Tôi có thể giúp bạn tìm hiểu về UTECareerBridge và cách sử dụng các tính năng của nền tảng.",
+    "welcomeTitle": "Chào mừng đến với Trợ lý UTECareer",
+    "welcomeDescription": "Tôi có thể giúp bạn tìm hiểu về UTECareer và cách sử dụng các tính năng của nền tảng.",
     "suggestedQuestions": "Bạn có thể hỏi:",
     "loading": "Đang tải...",
     "typing": "Chatbot đang gõ...",
     "howToFindJob": "Làm thế nào để tìm việc làm?",
-    "UTECareerBridgeFeatures": "UTECareerBridge có những tính năng gì?",
+    "UTECareerFeatures": "UTECareer có những tính năng gì?",
     "howToUpdateCV": "Tôi muốn cập nhật CV như thế nào?",
     "howToApplyForJob": "Làm thế nào để ứng tuyển công việc?"
   },

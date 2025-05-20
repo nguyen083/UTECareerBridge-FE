@@ -438,7 +438,7 @@ const EmployerPostJob = () => {
                     ))
                   ) : (
                     <Select.Option disabled value="no-packages">
-                      {t("employer.job.noPackages") || "No packages available"}
+                      {t("employer.job.noPackages", "No packages available")}
                     </Select.Option>
                   )}
                 </Select>
@@ -483,7 +483,7 @@ const EmployerPostJob = () => {
                 </Descriptions>
               )}
 
-              {packages.length === 0 && (
+              {/* {packages.length === 0 && (
                 <div className="no-packages-warning">
                   <Text type="warning">
                     {t("employer.job.buyPackageWarning") ||
@@ -493,7 +493,7 @@ const EmployerPostJob = () => {
                     {t("employer.job.buyPackage") || "Buy Package"}
                   </Button>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         );

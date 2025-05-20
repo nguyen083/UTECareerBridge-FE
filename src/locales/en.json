@@ -54,6 +54,8 @@
     "title": "All Categories"
   },
   "common": {
+    "show": "Show",
+    "hide": "Hide",
     "confirm": "Confirm",
     "noSkills": "No skills",
     "previous": "Previous",
@@ -1058,6 +1060,7 @@
       }
     },
     "job": {
+      "noPackages": "No packages available",
       "requirementsRequired": "Please enter job requirements",
       "requirementsPlaceholder": "Enter job requirements",
       "descriptionRequired": "Please enter job description",
@@ -1192,6 +1195,11 @@
       "viewResume": "View resume"
     },
     "orders": {
+      "checkout": "Checkout",
+      "shoppingCart": "Shopping Cart",
+      "emptyCart": "No items in cart",
+      "continueShopping": "Continue Shopping",
+      "subtotal": "Subtotal",
       "title": "Orders",
       "orderId": "Order ID",
       "orderDate": "Order Date",
@@ -1701,6 +1709,7 @@
         "success": "CV Analysis Complete!",
         "subtitle": "Your CV matched with jobs at {{score}}% match rate",
         "jobMatches": "Job Matches",
+        "noJobMatches": "No job matches found",
         "close": "Close",
         "viewAll": "View All Recommendations",
         "viewRecommended": "View Recommended Jobs",
@@ -1967,6 +1976,7 @@
       "error": "An error occurred"
     },
     "coupon": {
+      "off": "OFF",
       "title": "Coupons",
       "createNew": "Create New Coupon",
       "editTitle": "Edit Coupon",
@@ -1977,9 +1987,9 @@
       "deleteError": "Failed to delete coupon",
       "voucher": "Voucher",
       "discount": "{{discount}} off",
-      "code": "Code:",
-      "remaining": "Remaining:",
-      "expireDate": "Expire date:",
+      "code": "Code",
+      "remaining": "Remaining",
+      "expireDate": "Expire date",
       "active": "Active",
       "inactive": "Inactive",
       "maxUsage": "Maximum usage",
@@ -2512,14 +2522,15 @@
     }
   },
   "chatbot": {
+    "title": "UTECareer Assistant",
     "placeholderInput": "Type your message here...",
-    "welcomeTitle": "Welcome to UTECareerBridge Assistant",
-    "welcomeDescription": "I can help you learn about UTECareerBridge and how to use the platform's features.",
+    "welcomeTitle": "Welcome to UTECareer Assistant",
+    "welcomeDescription": "I can help you learn about UTECareer and how to use the platform's features.",
     "suggestedQuestions": "You can ask:",
     "loading": "Loading...",
     "typing": "Chatbot is typing...",
     "howToFindJob": "How to find a job?",
-    "UTECareerBridgeFeatures": "What are the features of UTECareerBridge?",
+    "UTECareerFeatures": "What are the features of UTECareer?",
     "howToUpdateCV": "How to update CV?",
     "howToApplyForJob": "How to apply for a job?"
   },
