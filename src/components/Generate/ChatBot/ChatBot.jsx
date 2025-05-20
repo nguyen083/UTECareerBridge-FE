@@ -103,7 +103,6 @@ const ChatBot = () => {
         content: question,
         language: lang,
       };
-
       chat.sendMessageToChatBot(stompClient, payload);
       setNewMessage("");
     }, 300);

@@ -7,13 +7,27 @@ import {
   Progress,
   Alert,
   Tooltip,
+  Button,
 } from "antd";
 import { useTranslation } from "react-i18next";
-import { UserOutlined } from "@ant-design/icons";
+import {
+  UserOutlined,
+  EyeOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+} from "@ant-design/icons";
+import { useEffect } from "react";
+import { convertStatus } from "../../../services/apiService";
 
 const { Text } = Typography;
 
-const AnalyzeCVsModal = ({ open, setOpen, resumeAnalysis, isAnalyzing }) => {
+const AnalyzeCVsModal = ({
+  open,
+  setOpen,
+  jobId,
+  resumeAnalysis,
+  isAnalyzing,
+}) => {
   const { t } = useTranslation();
 
   const getMatchColor = (score) => {
@@ -42,6 +56,21 @@ const AnalyzeCVsModal = ({ open, setOpen, resumeAnalysis, isAnalyzing }) => {
   };
 
   const hasData = resumeAnalysis?.data?.recommendations?.length > 0;
+
+  const handleViewCV = (resumeId) => {
+    window.open(`/employer/applicant-job/${resumeId}`);
+  };
+
+  const handleApproveCV = (resumeId) => {
+    console.log("resumeId", resumeId);
+  };
+  const handleRejectCV = (resumeId) => {
+    convertStatus(resumeId, "REJECTED");
+  };
+
+  useEffect(() => {
+    console.log("jobId", jobId);
+  }, [jobId]);
 
   return (
     <Modal
@@ -75,20 +104,42 @@ const AnalyzeCVsModal = ({ open, setOpen, resumeAnalysis, isAnalyzing }) => {
               className="!p-3 mb-3 transition-all border rounded-lg hover:shadow-md"
               actions={[
                 <div
-                  className="flex flex-col items-center gap-2"
-                  key="match-percent"
+                  key={resume.application_id}
+                  className="flex items-center justify-end gap-3 mt-2"
                 >
-                  <Tooltip title={t("employer.applicant.overallScore")}>
-                    <Progress
-                      type="circle"
-                      percent={Math.round(resume.match_score * 100)}
-                      size={50}
-                      strokeColor={getMatchColor(resume.match_score)}
-                    />
-                  </Tooltip>
-                  <Text className="text-sm font-medium">
-                    {t("employer.applicant.matchScore")}
-                  </Text>
+                  <div
+                    className="flex flex-col items-center gap-2"
+                    key="match-percent"
+                  >
+                    <Tooltip title={t("employer.applicant.overallScore")}>
+                      <Progress
+                        type="circle"
+                        percent={Math.round(resume.match_score * 100)}
+                        size={50}
+                        strokeColor={getMatchColor(resume.match_score)}
+                      />
+                    </Tooltip>
+                    <Text className="text-sm font-medium">
+                      {t("employer.applicant.matchScore")}
+                    </Text>
+                  </div>
+                  <Button
+                    icon={<EyeOutlined />}
+                    size="small"
+                    onClick={handleViewCV(resume.application_id)}
+                  />
+                  <Button
+                    type="primary"
+                    icon={<CheckCircleOutlined />}
+                    size="small"
+                    onClick={handleApproveCV(resume.application_id)}
+                  />
+                  <Button
+                    danger
+                    icon={<CloseCircleOutlined />}
+                    size="small"
+                    onClick={handleRejectCV(resume.application_id)}
+                  />
                 </div>,
               ]}
             >
@@ -101,42 +152,14 @@ const AnalyzeCVsModal = ({ open, setOpen, resumeAnalysis, isAnalyzing }) => {
                 }
                 description={
                   <div className="space-y-2 text-sm">
-                    <div className="flex">
-                      <div className="w-1/4">
+                    <div className="flex items-center gap-2">
+                      <div>
                         <Text type="secondary" className="text-sm">
                           {t("employer.applicant.email")}:
                         </Text>
                       </div>
-                      <div className="w-3/4">
+                      <div>
                         <Text className="text-sm">{resume.student_name}</Text>
-                      </div>
-                    </div>
-                    <div className="flex items-center">
-                      <div className="w-1/4">
-                        <Text type="secondary" className="text-sm">
-                          {t("employer.applicant.skillScore")}:
-                        </Text>
-                      </div>
-                      <div className="w-3/4">
-                        <Progress
-                          percent={Math.round(resume.skill_match_score * 100)}
-                          size="small"
-                          status="active"
-                        />
-                      </div>
-                    </div>
-                    <div className="flex items-center">
-                      <div className="w-1/4">
-                        <Text type="secondary" className="text-sm">
-                          {t("employer.applicant.similarity")}:
-                        </Text>
-                      </div>
-                      <div className="w-3/4">
-                        <Progress
-                          percent={Math.round(resume.content_similarity * 100)}
-                          size="small"
-                          status="active"
-                        />
                       </div>
                     </div>
                     <div>

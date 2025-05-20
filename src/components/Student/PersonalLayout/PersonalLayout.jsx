@@ -249,15 +249,15 @@ const PersonalLayout = () => {
       </Row>
 
       <Modal
-        title="Thiết lập hồ sơ"
+        title={t("student.setupResume")}
         open={modalResume}
         onCancel={() => {
           setModalResume(false);
           formResume.resetFields();
         }}
         onOk={handleFindJob}
-        cancelText="Hủy"
-        okText="Hoàn tất"
+        cancelText={t("common.cancel")}
+        okText={t("common.complete")}
       >
         <Form initialValues={{ resumeId: resumeIdActive }} form={formResume}>
           <Form.Item name="resumeId">
@@ -286,7 +286,8 @@ const PersonalLayout = () => {
                           </Typography.Link>
                           <br />
                           <Text type="secondary" italic className="text-xs">
-                            <PaperClipOutlined /> Tệp đính kèm • Cập nhật lúc:{" "}
+                            <PaperClipOutlined /> {t("student.attachmentFile")}{" "}
+                            • {t("student.updatedAt")}:{" "}
                             {item.lastUpdated.split(" ", 1)}
                           </Text>
                         </div>

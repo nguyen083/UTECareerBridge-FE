@@ -31,10 +31,11 @@ import BoxContainer from "../../Generate/BoxContainer";
 import { getAllJobLevels, getAllIndustry } from "../../../services/apiService";
 import { MdNotificationsActive } from "react-icons/md";
 import {
-  useJobAlertById,
   useJobAlertByUserId,
   useJobAlertDelete,
 } from "../../../composables/notification";
+import { useDispatch } from "react-redux";
+import { setKeyword } from "../../../redux/action/webSlice";
 
 const { Text } = Typography;
 const { confirm } = Modal;
@@ -47,14 +48,12 @@ const ManageJobAlerts = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = searchParams.get("page") || 1;
   const size = searchParams.get("size") || 10;
+  const dispatch = useDispatch();
   const {
     data: jobAlerts,
     isLoading: isLoadingJobAlerts,
     refetch: refetchJobAlerts,
   } = useJobAlertByUserId({ page: page - 1, size: size });
-  const [jobAlertId, setJobAlertId] = useState(null);
-  const { data: jobAlert, refetch: refetchJobAlert } =
-    useJobAlertById(jobAlertId);
   const { mutate: deleteJobAlert } = useJobAlertDelete();
 
   const fetchReferenceData = () => {
@@ -123,22 +122,27 @@ const ManageJobAlerts = () => {
 
   const getNotificationMethods = (alert) => {
     const methods = [];
-    if (alert.notifyByEmail) methods.push("Email");
-    if (alert.notifyByApp) methods.push("Ứng dụng");
+    if (alert.notifyByEmail)
+      methods.push(t("student.jobAlerts.notification.email"));
+    if (alert.notifyByApp)
+      methods.push(t("student.jobAlerts.notification.app"));
     return methods.join(", ");
   };
 
   const getLevelNames = (levelIds) => {
-    if (!levelIds || levelIds.length === 0) return "Tất cả cấp bậc";
-    if (!Array.isArray(levelIds)) return "Cấp bậc không hợp lệ";
-    return levelIds.map((id) => levels[id] || `Cấp bậc ${id}`).join(", ");
+    if (!levelIds || levelIds.length === 0)
+      return t("student.jobAlerts.level.all");
+    if (!Array.isArray(levelIds)) return t("student.jobAlerts.level.invalid");
+    return levelIds.map((id) => levels[id] || `${t("level")} ${id}`).join(", ");
   };
 
   const getIndustryNames = (industryIds) => {
-    if (!industryIds || industryIds.length === 0) return "Tất cả lĩnh vực";
-    if (!Array.isArray(industryIds)) return "Lĩnh vực không hợp lệ";
+    if (!industryIds || industryIds.length === 0)
+      return t("student.jobAlerts.industry.all");
+    if (!Array.isArray(industryIds))
+      return t("student.jobAlerts.industry.invalid");
     return industryIds
-      .map((id) => industries[id] || `Lĩnh vực ${id}`)
+      .map((id) => industries[id] || `${t("industry")} ${id}`)
       .join(", ");
   };
 
@@ -147,19 +151,11 @@ const ManageJobAlerts = () => {
     searchParams.set("size", pageSize);
     setSearchParams(searchParams);
   };
-
-  useEffect(() => {
-    if (jobAlert) {
-      const matchedJobs = jobAlert.data.matchedJobs;
-      // navigate(`/search/${jobAlertId}`);
-    }
-  }, [jobAlert]);
-
-  useEffect(() => {
-    if (jobAlertId) {
-      refetchJobAlert();
-    }
-  }, [jobAlertId]);
+  const handleViewMatchedJobs = (alert) => {
+    console.log("alert", alert);
+    dispatch(setKeyword(alert.jobTitle));
+    navigate(`/search`);
+  };
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -208,7 +204,7 @@ const ManageJobAlerts = () => {
                           type="primary"
                           size="small"
                           onClick={() => {
-                            setJobAlertId(alert.id);
+                            handleViewMatchedJobs(alert);
                           }}
                         >
                           {t("student.jobAlerts.viewMatchedJobs")}
@@ -283,7 +279,7 @@ const ManageJobAlerts = () => {
                                       ? `${alert.minSalary.toLocaleString(
                                           "vi-VN"
                                         )} VND`
-                                      : "Không giới hạn"}
+                                      : t("student.jobAlerts.salary.unlimited")}
                                   </Text>
                                 </Flex>
                               </Col>

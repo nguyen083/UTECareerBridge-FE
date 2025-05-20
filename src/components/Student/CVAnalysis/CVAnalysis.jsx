@@ -43,6 +43,8 @@ import { getRecommendationsByResumeId } from "../../../services/apiService";
 import "./CVAnalysis.scss";
 import "./AnalysisResultModal.scss"; // Import modal styling
 import LoadingAnimation from "./LoadingAnimation";
+import BoxContainer from "../../Generate/BoxContainer";
+import dayjs from "dayjs";
 
 const { Title, Text, Paragraph } = Typography;
 const { TabPane } = Tabs;
@@ -150,7 +152,7 @@ const CVAnalysis = () => {
         id: item.resumeId,
         title: item.resumeTitle || "",
         description: item.resumeDescription || "",
-        updatedAt: item.updatedAt || "",
+        updatedAt: dayjs(item.updatedAt, "DD/MM/YYYY HH:mm:ss").toISOString(),
         file: item.resumeFile || "",
         isActive: item.isActive || false,
       }));
@@ -291,7 +293,7 @@ const CVAnalysis = () => {
   // View job details
   const handleViewJob = (jobId) => {
     if (jobId) {
-      navigate(`/app/student/jobs/${jobId}`);
+      window.open(`/job/${jobId}`, "_blank");
     }
   };
 
@@ -304,440 +306,448 @@ const CVAnalysis = () => {
   };
 
   return (
-    <div className="cv-analysis-container">
-      <LoadingAnimation loadingAnimation={loadingAnimation} />
+    <BoxContainer>
+      <div className="cv-analysis-container">
+        <LoadingAnimation loadingAnimation={loadingAnimation} />
 
-      <div className="cv-analysis-header">
-        <Row gutter={[24, 24]} align="middle" justify="space-between">
-          <Col xs={24} md={16}>
-            <Title level={2}>
-              <RobotOutlined /> {t("cv.analysis.title")}
-            </Title>
-            <Paragraph>{t("cv.analysis.subtitle")}</Paragraph>
-          </Col>
-          <Col xs={24} md={8} style={{ textAlign: "right" }}>
-            <Button
-              type="primary"
-              size="large"
-              onClick={() => navigate("/cv-builder")}
-              icon={<FileTextOutlined />}
-            >
-              {t("cv.analysis.createCV")}
-            </Button>
-          </Col>
-        </Row>
-      </div>
-
-      <Row gutter={[32, 32]}>
-        <Col xs={24} lg={16}>
-          <Card className="cv-selection-card">
-            <Tabs
-              defaultActiveKey="existing"
-              onChange={handleTabChange}
-              tabBarGutter={24}
-              animated={{ tabPane: true }}
-            >
-              <TabPane
-                tab={
-                  <span className="tab-label">
-                    <FileTextOutlined /> {t("cv.analysis.tabs.existing")}
-                  </span>
-                }
-                key="existing"
-              >
-                {isLoadingResumes ? (
-                  <div className="loading-container">
-                    <Spin size="large" />
-                    <Text className="loading-text">
-                      {t("cv.analysis.loading")}
-                    </Text>
-                  </div>
-                ) : listResumes.length === 0 ? (
-                  <Empty
-                    description={
-                      <Space direction="vertical" align="center" size={12}>
-                        <Text strong>{t("cv.analysis.noExistingCV")}</Text>
-                        <Text type="secondary">
-                          {t("cv.analysis.createYourCV")}
-                          <Tooltip title={t("cv.builder.pageDescription")}>
-                            <InfoCircleOutlined style={{ marginLeft: 8 }} />
-                          </Tooltip>
-                        </Text>
-                      </Space>
-                    }
-                  >
-                    <Button
-                      type="primary"
-                      onClick={() => navigate("/cv-builder")}
-                      icon={<FileTextOutlined />}
-                    >
-                      {t("cv.analysis.createCV")}
-                    </Button>
-                  </Empty>
-                ) : (
-                  <Radio.Group
-                    onChange={(e) => handleResumeSelect(e.target.value)}
-                    value={selectedResumeId}
-                    style={{ width: "100%" }}
-                  >
-                    <List
-                      dataSource={listResumes}
-                      renderItem={(resume) => (
-                        <List.Item>
-                          <Card
-                            className={`resume-card ${
-                              selectedResumeId === resume.id ? "selected" : ""
-                            }`}
-                            hoverable
-                            onClick={() => handleResumeSelect(resume.id)}
-                          >
-                            <Radio value={resume.id} className="resume-radio" />
-                            <div className="resume-info">
-                              <div className="resume-header">
-                                <Title
-                                  level={5}
-                                  className="resume-title"
-                                  ellipsis={{ rows: 1, tooltip: resume.title }}
-                                >
-                                  {resume.title}
-                                </Title>
-                                {resume.isActive && (
-                                  <Badge
-                                    className="resume-badge"
-                                    status="success"
-                                    text={
-                                      <Text
-                                        type="success"
-                                        className="active-badge"
-                                      >
-                                        <CheckCircleOutlined />{" "}
-                                        {t("common.active")}
-                                      </Text>
-                                    }
-                                  />
-                                )}
-                              </div>
-
-                              <Paragraph
-                                ellipsis={{
-                                  rows: 2,
-                                  tooltip: resume.description,
-                                }}
-                                className="resume-description"
-                              >
-                                {resume.description || t("cv.noDescription")}
-                              </Paragraph>
-
-                              <div className="resume-meta">
-                                <Text type="secondary" className="last-updated">
-                                  <ClockCircleOutlined />{" "}
-                                  {t("cv.analysis.lastUpdated")}:{" "}
-                                  {formatRelativeTime(resume.updatedAt)}
-                                </Text>
-                              </div>
-                            </div>
-
-                            <div className="resume-actions">
-                              <Tooltip title={t("common.view")}>
-                                <Button
-                                  type="primary"
-                                  ghost
-                                  shape="circle"
-                                  href={resume.file}
-                                  target="_blank"
-                                  icon={<EyeOutlined />}
-                                  onClick={(e) => e.stopPropagation()}
-                                />
-                              </Tooltip>
-                            </div>
-                          </Card>
-                        </List.Item>
-                      )}
-                    />
-                  </Radio.Group>
-                )}
-              </TabPane>
-
-              <TabPane
-                tab={
-                  <span className="tab-label">
-                    <UploadOutlined /> {t("cv.analysis.tabs.upload")}
-                  </span>
-                }
-                key="upload"
-              >
-                <div className="upload-section">
-                  <Title level={4}>{t("cv.analysis.upload.title")}</Title>
-                  <Paragraph>{t("cv.analysis.upload.hint")}</Paragraph>
-
-                  <Upload.Dragger {...uploadProps}>
-                    <p className="ant-upload-drag-icon">
-                      <UploadOutlined />
-                    </p>
-                    <p className="ant-upload-text">
-                      {t("cv.upload.fileChoose")}
-                    </p>
-                    <p className="ant-upload-hint">
-                      {t("cv.upload.fileSupport")}
-                      <br />
-                      <small>{t("cv.upload.fileSizeLimit")}</small>
-                    </p>
-                  </Upload.Dragger>
-                </div>
-              </TabPane>
-            </Tabs>
-          </Card>
-        </Col>
-
-        <Col xs={24} lg={8}>
-          <Card className="info-card">
-            <div className="info-card-header">
-              <RobotOutlined className="info-icon" />
-              <Title level={4}>{t("cv.analysis.info.title")}</Title>
-            </div>
-
-            <Alert
-              message={t("cv.analysis.info.privacyTitle")}
-              description={t("cv.analysis.info.privacyDescription")}
-              type="info"
-              showIcon
-              style={{ marginBottom: "24px", borderRadius: "10px" }}
-            />
-
-            <Paragraph>{t("cv.analysis.info.description")}</Paragraph>
-
-            <div className="benefits-list">
-              <div className="benefit-item">
-                <LaptopOutlined className="benefit-icon" />
-                <div>
-                  <Text strong>{t("cv.analysis.benefits.aiTitle")}</Text>
-                  <Paragraph type="secondary">
-                    {t("cv.analysis.benefits.aiDesc")}
-                  </Paragraph>
-                </div>
-              </div>
-              <div className="benefit-item">
-                <TrophyOutlined className="benefit-icon" />
-                <div>
-                  <Text strong>{t("cv.analysis.benefits.matchTitle")}</Text>
-                  <Paragraph type="secondary">
-                    {t("cv.analysis.benefits.matchDesc")}
-                  </Paragraph>
-                </div>
-              </div>
-              <div className="benefit-item">
-                <RiseOutlined className="benefit-icon" />
-                <div>
-                  <Text strong>{t("cv.analysis.benefits.insightsTitle")}</Text>
-                  <Paragraph type="secondary">
-                    {t("cv.analysis.benefits.insightsDesc")}
-                  </Paragraph>
-                </div>
-              </div>
-            </div>
-
-            <Divider />
-
-            <div className="action-section">
+        <div className="cv-analysis-header">
+          <Row gutter={[24, 24]} align="middle" justify="space-between">
+            <Col xs={24} md={16}>
+              <Title level={3} className="!text-text-color">
+                <RobotOutlined /> {t("cv.analysis.title")}
+              </Title>
+              <Paragraph className="!text-gray-500">
+                {t("cv.analysis.subtitle")}
+              </Paragraph>
+            </Col>
+            <Col xs={24} md={8} style={{ textAlign: "right" }}>
               <Button
                 type="primary"
-                icon={<RobotOutlined />}
                 size="large"
-                block
-                onClick={handleAnalyze}
-                loading={isAnalyzing}
-                disabled={
-                  (activeTab === "existing" && !selectedResumeId) ||
-                  (activeTab === "upload" && fileList.length === 0)
-                }
+                onClick={() => navigate("/cv-builder")}
+                icon={<FileTextOutlined />}
               >
-                {isAnalyzing
-                  ? t("cv.analysis.analyzing")
-                  : t("cv.analysis.analyze")}
+                {t("cv.analysis.createCV")}
               </Button>
-            </div>
-          </Card>
-        </Col>
-      </Row>
+            </Col>
+          </Row>
+        </div>
 
-      {/* Analysis Results Modal */}
-      <Modal
-        open={showResult}
-        title={
-          <div className="modal-header">
-            <span className="modal-title">
-              <img src="/logo.ico" alt="Logo" className="modal-logo" />
-              {t("cv.analysis.result.title")}
-            </span>
-          </div>
-        }
-        footer={null}
-        onCancel={handleCloseResult}
-        width={800}
-        className="analysis-result-modal"
-        closeIcon={<CloseOutlined onClick={handleCloseResult} />}
-      >
-        {analysisResult && (
-          <div className="analysis-result-content">
-            <div className="analysis-summary">
-              <div className="check-icon">
-                <CheckCircleOutlined />
-              </div>
-              <Title level={4} className="success-title">
-                {t("cv.analysis.result.success")}
-              </Title>
+        <Row gutter={[32, 32]}>
+          <Col xs={24} lg={16}>
+            <Card className="cv-selection-card">
+              <Tabs
+                defaultActiveKey="existing"
+                onChange={handleTabChange}
+                tabBarGutter={24}
+                animated={{ tabPane: true }}
+              >
+                <TabPane
+                  tab={
+                    <span className="tab-label">
+                      <FileTextOutlined /> {t("cv.analysis.tabs.existing")}
+                    </span>
+                  }
+                  key="existing"
+                >
+                  {isLoadingResumes ? (
+                    <div className="loading-container">
+                      <Spin size="large" />
+                      <Text className="loading-text">
+                        {t("cv.analysis.loading")}
+                      </Text>
+                    </div>
+                  ) : listResumes.length === 0 ? (
+                    <Empty
+                      description={
+                        <Space direction="vertical" align="center" size={12}>
+                          <Text strong>{t("cv.analysis.noExistingCV")}</Text>
+                          <Text type="secondary">
+                            {t("cv.analysis.createYourCV")}
+                            <Tooltip title={t("cv.builder.pageDescription")}>
+                              <InfoCircleOutlined style={{ marginLeft: 8 }} />
+                            </Tooltip>
+                          </Text>
+                        </Space>
+                      }
+                    >
+                      <Button
+                        type="primary"
+                        onClick={() => navigate("/cv-builder")}
+                        icon={<FileTextOutlined />}
+                      >
+                        {t("cv.analysis.createCV")}
+                      </Button>
+                    </Empty>
+                  ) : (
+                    <Radio.Group
+                      onChange={(e) => handleResumeSelect(e.target.value)}
+                      value={selectedResumeId}
+                      style={{ width: "100%" }}
+                    >
+                      <List
+                        split={false}
+                        dataSource={listResumes}
+                        renderItem={(resume) => (
+                          <List.Item>
+                            <Card
+                              className={`resume-card !w-full ${
+                                selectedResumeId === resume.id ? "selected" : ""
+                              }`}
+                              hoverable
+                              onClick={() => handleResumeSelect(resume.id)}
+                            >
+                              <Radio value={resume.id} />
+                              <div className="resume-info">
+                                <div className="resume-header">
+                                  <Title
+                                    level={5}
+                                    className="resume-title"
+                                    ellipsis={{
+                                      rows: 1,
+                                      tooltip: resume.title,
+                                    }}
+                                  >
+                                    {resume.title}
+                                  </Title>
+                                  {resume.isActive && (
+                                    <Badge
+                                      status="success"
+                                      text={
+                                        <Text type="success">
+                                          <CheckCircleOutlined />{" "}
+                                          {t("common.active")}
+                                        </Text>
+                                      }
+                                    />
+                                  )}
+                                </div>
 
-              <div className="score-display">
-                <Progress
-                  type="circle"
-                  percent={analysisResult.score}
-                  strokeColor={getMatchColor(analysisResult.score)}
-                  width={100}
-                  strokeWidth={10}
-                  format={(percent) => `${percent}%`}
-                />
-                <div className="score-text">
-                  <h2>
-                    {t("cv.analysis.result.subtitle", {
-                      score: analysisResult.score,
-                    })}
-                  </h2>
-                </div>
-              </div>
-            </div>
+                                <Paragraph
+                                  ellipsis={{
+                                    rows: 2,
+                                    tooltip: resume.description,
+                                  }}
+                                  className="resume-description"
+                                >
+                                  {resume.description || t("cv.noDescription")}
+                                </Paragraph>
 
-            <div className="matched-jobs-section">
-              <div className="section-title">
-                <TrophyOutlined className="section-icon" />{" "}
-                {t("cv.analysis.result.jobMatches")}
+                                <div className="resume-meta">
+                                  <Text
+                                    type="secondary"
+                                    className="last-updated"
+                                  >
+                                    <ClockCircleOutlined />{" "}
+                                    {t("cv.analysis.lastUpdated")}:{" "}
+                                    {formatRelativeTime(resume.updatedAt)}
+                                  </Text>
+                                </div>
+                              </div>
+
+                              <div className="resume-actions">
+                                <Tooltip title={t("common.view")}>
+                                  <Button
+                                    shape="circle"
+                                    href={resume.file}
+                                    target="_blank"
+                                    icon={
+                                      <EyeOutlined className="!text-text-color" />
+                                    }
+                                    onClick={(e) => e.stopPropagation()}
+                                  />
+                                </Tooltip>
+                              </div>
+                            </Card>
+                          </List.Item>
+                        )}
+                      />
+                    </Radio.Group>
+                  )}
+                </TabPane>
+
+                <TabPane
+                  tab={
+                    <span className="tab-label">
+                      <UploadOutlined /> {t("cv.analysis.tabs.upload")}
+                    </span>
+                  }
+                  key="upload"
+                >
+                  <div className="upload-section">
+                    <Title level={4}>{t("cv.analysis.upload.title")}</Title>
+                    <Paragraph>{t("cv.analysis.upload.hint")}</Paragraph>
+
+                    <Upload.Dragger {...uploadProps}>
+                      <p className="ant-upload-drag-icon">
+                        <UploadOutlined />
+                      </p>
+                      <p className="ant-upload-text">
+                        {t("cv.upload.fileChoose")}
+                      </p>
+                      <p className="ant-upload-hint">
+                        {t("cv.upload.fileSupport")}
+                      </p>
+                    </Upload.Dragger>
+                  </div>
+                </TabPane>
+              </Tabs>
+            </Card>
+          </Col>
+
+          <Col xs={24} lg={8}>
+            <Card className="info-card">
+              <div className="info-card-header">
+                <RobotOutlined className="info-icon" />
+                <Title level={4}>{t("cv.analysis.info.title")}</Title>
               </div>
 
               <Alert
-                message={
-                  <div className="info-alert">
-                    <InfoCircleOutlined />{" "}
-                    {t("cv.analysis.result.clickJobAlert")}
-                  </div>
-                }
+                message={t("cv.analysis.info.privacyTitle")}
+                description={t("cv.analysis.info.privacyDescription")}
                 type="info"
-                style={{ marginBottom: 16 }}
-                action={
-                  <Button
-                    size="small"
-                    type="primary"
-                    onClick={handleViewRecommended}
-                  >
-                    {t("cv.analysis.result.viewAll")}
-                  </Button>
-                }
+                showIcon
+                style={{ marginBottom: "24px", borderRadius: "10px" }}
               />
 
-              <div className="job-list">
-                {analysisResult.jobs.slice(0, 5).map((job) => (
-                  <Card
-                    key={job.id}
-                    className="job-card"
-                    onClick={() => handleViewJob(job.id)}
-                    bodyStyle={{ padding: 0 }}
-                  >
-                    <div className="job-card-content">
-                      <div className="company-logo">
-                        {job.logo ? (
-                          <img src={job.logo} alt={job.company} />
-                        ) : (
-                          <div className="company-logo-placeholder">
-                            {job.company?.charAt(0) || "C"}
-                          </div>
-                        )}
-                      </div>
+              <Paragraph>{t("cv.analysis.info.description")}</Paragraph>
 
-                      <div className="job-info">
-                        <Title
-                          level={5}
-                          ellipsis={{ rows: 1 }}
-                          className="job-title"
-                        >
-                          {job.title}
-                        </Title>
-                        <Text className="company-name">{job.company}</Text>
-
-                        <div className="job-meta">
-                          <Text
-                            type="secondary"
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "6px",
-                            }}
-                          >
-                            <EnvironmentOutlined /> {job.location}
-                          </Text>
-                          <Text
-                            type="secondary"
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "6px",
-                            }}
-                          >
-                            <DollarOutlined /> {formatCurrency(job.minSalary)} -{" "}
-                            {formatCurrency(job.maxSalary)}
-                          </Text>
-                        </div>
-
-                        {job.matchedSkills?.length > 0 && (
-                          <div className="matched-skills">
-                            <Text className="skills-label">
-                              {t("cv.analysis.result.matchedSkills")}:
-                            </Text>
-                            <div className="skills-list">
-                              {job.matchedSkills
-                                .slice(0, 3)
-                                .map((skill, index) => (
-                                  <Tag color="success" key={index}>
-                                    {skill}
-                                  </Tag>
-                                ))}
-                              {job.matchedSkills.length > 3 && (
-                                <Tag className="more-skills">
-                                  +{job.matchedSkills.length - 3}
-                                </Tag>
-                              )}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      <div className="match-percentage">
-                        <Progress
-                          type="circle"
-                          percent={job.match}
-                          width={64}
-                          strokeColor={getMatchColor(job.match)}
-                          strokeWidth={8}
-                        />
-                        <div className="match-label">
-                          {job.match}% {t("cv.analysis.result.match")}
-                        </div>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
+              <div className="benefits-list">
+                <div className="benefit-item">
+                  <LaptopOutlined className="benefit-icon" />
+                  <div>
+                    <Text strong>{t("cv.analysis.benefits.aiTitle")}</Text>
+                    <Paragraph type="secondary">
+                      {t("cv.analysis.benefits.aiDesc")}
+                    </Paragraph>
+                  </div>
+                </div>
+                <div className="benefit-item">
+                  <TrophyOutlined className="benefit-icon" />
+                  <div>
+                    <Text strong>{t("cv.analysis.benefits.matchTitle")}</Text>
+                    <Paragraph type="secondary">
+                      {t("cv.analysis.benefits.matchDesc")}
+                    </Paragraph>
+                  </div>
+                </div>
+                <div className="benefit-item">
+                  <RiseOutlined className="benefit-icon" />
+                  <div>
+                    <Text strong>
+                      {t("cv.analysis.benefits.insightsTitle")}
+                    </Text>
+                    <Paragraph type="secondary">
+                      {t("cv.analysis.benefits.insightsDesc")}
+                    </Paragraph>
+                  </div>
+                </div>
               </div>
 
-              {analysisResult.jobs.length > 5 && (
-                <div style={{ textAlign: "center", marginTop: "16px" }}>
-                  <Button type="primary" onClick={handleViewRecommended}>
-                    {t("cv.analysis.result.viewAll")} (
-                    {analysisResult.jobs.length - 5} {t("common.more")})
-                  </Button>
-                </div>
-              )}
+              <Divider />
+
+              <div className="action-section">
+                <Button
+                  type="primary"
+                  icon={<RobotOutlined />}
+                  size="large"
+                  block
+                  onClick={handleAnalyze}
+                  loading={isAnalyzing}
+                  disabled={
+                    (activeTab === "existing" && !selectedResumeId) ||
+                    (activeTab === "upload" && fileList.length === 0)
+                  }
+                >
+                  {isAnalyzing
+                    ? t("cv.analysis.analyzing")
+                    : t("cv.analysis.analyze")}
+                </Button>
+              </div>
+            </Card>
+          </Col>
+        </Row>
+
+        {/* Analysis Results Modal */}
+        <Modal
+          open={showResult}
+          title={
+            <div className="modal-header">
+              <span className="modal-title">
+                <img src="/logo.ico" alt="Logo" className="modal-logo" />
+                {t("cv.analysis.result.title")}
+              </span>
             </div>
-          </div>
-        )}
-      </Modal>
-    </div>
+          }
+          footer={null}
+          onCancel={handleCloseResult}
+          width={800}
+          className="analysis-result-modal"
+          closeIcon={<CloseOutlined onClick={handleCloseResult} />}
+        >
+          {analysisResult && (
+            <div className="analysis-result-content">
+              <div className="analysis-summary">
+                <div className="check-icon">
+                  <CheckCircleOutlined />
+                </div>
+                <Title level={4} className="success-title">
+                  {t("cv.analysis.result.success")}
+                </Title>
+
+                <div className="score-display">
+                  <Progress
+                    type="circle"
+                    percent={analysisResult.score}
+                    strokeColor={getMatchColor(analysisResult.score)}
+                    width={100}
+                    strokeWidth={10}
+                    format={(percent) => `${percent}%`}
+                  />
+                  <div className="score-text">
+                    <h2>
+                      {t("cv.analysis.result.subtitle", {
+                        score: analysisResult.score,
+                      })}
+                    </h2>
+                  </div>
+                </div>
+              </div>
+
+              <div className="matched-jobs-section">
+                <div className="section-title">
+                  <TrophyOutlined className="section-icon" />{" "}
+                  {t("cv.analysis.result.jobMatches")}
+                </div>
+
+                <Alert
+                  message={
+                    <div className="info-alert">
+                      <InfoCircleOutlined />{" "}
+                      {t("cv.analysis.result.clickJobAlert")}
+                    </div>
+                  }
+                  type="info"
+                  style={{ marginBottom: 16 }}
+                  action={
+                    <Button
+                      size="small"
+                      type="primary"
+                      onClick={handleViewRecommended}
+                    >
+                      {t("cv.analysis.result.viewAll")}
+                    </Button>
+                  }
+                />
+
+                <div className="job-list">
+                  {analysisResult.jobs.slice(0, 5).map((job) => (
+                    <Card
+                      hoverable
+                      key={job.id}
+                      className="cursor-pointer job-card"
+                      onClick={() => handleViewJob(job.id)}
+                      bodyStyle={{ padding: 0 }}
+                    >
+                      <div className="job-card-content">
+                        <div className="company-logo">
+                          {job.logo ? (
+                            <img src={job.logo} alt={job.company} />
+                          ) : (
+                            <div className="company-logo-placeholder">
+                              {job.company?.charAt(0) || "C"}
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="job-info">
+                          <Title
+                            level={5}
+                            ellipsis={{ rows: 1 }}
+                            className="job-title"
+                          >
+                            {job.title}
+                          </Title>
+                          <Text className="company-name">{job.company}</Text>
+
+                          <div className="job-meta">
+                            <Text
+                              type="secondary"
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "6px",
+                              }}
+                            >
+                              <EnvironmentOutlined /> {job.location}
+                            </Text>
+                            <Text
+                              type="secondary"
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                gap: "6px",
+                              }}
+                            >
+                              <DollarOutlined /> {formatCurrency(job.minSalary)}{" "}
+                              - {formatCurrency(job.maxSalary)}
+                            </Text>
+                          </div>
+
+                          {job.matchedSkills?.length > 0 && (
+                            <div className="matched-skills">
+                              <Text className="skills-label">
+                                {t("cv.analysis.result.matchedSkills")}:
+                              </Text>
+                              <div className="skills-list">
+                                {job.matchedSkills
+                                  .slice(0, 3)
+                                  .map((skill, index) => (
+                                    <Tag color="success" key={index}>
+                                      {skill}
+                                    </Tag>
+                                  ))}
+                                {job.matchedSkills.length > 3 && (
+                                  <Tag className="more-skills">
+                                    +{job.matchedSkills.length - 3}
+                                  </Tag>
+                                )}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="match-percentage">
+                          <Progress
+                            type="circle"
+                            percent={job.match}
+                            width={64}
+                            strokeColor={getMatchColor(job.match)}
+                            strokeWidth={8}
+                          />
+                          <div className="match-label">
+                            {job.match}% {t("cv.analysis.result.match")}
+                          </div>
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+
+                {analysisResult.jobs.length > 5 && (
+                  <div style={{ textAlign: "center", marginTop: "16px" }}>
+                    <Button type="primary" onClick={handleViewRecommended}>
+                      {t("cv.analysis.result.viewAll")} (
+                      {analysisResult.jobs.length - 5} {t("common.more")})
+                    </Button>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </Modal>
+      </div>
+    </BoxContainer>
   );
 };
 

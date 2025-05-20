@@ -28,6 +28,13 @@
   "you": "Bạn",
   "PAID": "Đã thanh toán",
   "PENDING": "Đang chờ",
+  "gridMode": "Chế độ lưới",
+  "listMode": "Chế độ danh sách",
+  "category": "Ngành nghề",
+  "skill": "Kỹ năng",
+  "level": "Cấp bậc",
+  "industry": "Lĩnh vực",
+  "no_jobs_found": "Không tìm thấy việc làm",
   "notification": {
     "title": "Thông báo",
     "titleDetail": "Chi tiết thông báo",
@@ -113,9 +120,19 @@
     "admin": "Quản trị viên"
   },
   "student": {
+    "homepage": {
+      "create_cv": "Tạo CV Ứng Tuyển",
+      "cv_description": "Hồ sơ thể hiện thế mạnh của bản thân thông qua việc đính kèm học vấn, kinh nghiệm, dự án, kỹ năng,... của mình",
+      "create_cv_button": "Tạo CV",
+      "join_event": "Tham gia sự kiện tuyển dụng",
+      "event_description": "Tham gia ngày hội tuyển dụng giúp bạn có trải nghiệm cơ hội phỏng vấn cùng với các anh/chị có kinh nghiệm trong cùng lĩnh vực, cũng như tăng thêm cơ hội tìm được việc làm mong muốn.",
+      "join_now": "Tham gia ngay"
+    },
     "year": "Sinh viên năm thứ {{year}}",
     "allowSearch": "Cho phép tìm kiếm hồ sơ",
     "setupResume": "Thiết lập hồ sơ",
+    "attachmentFile": "Tệp đính kèm",
+    "updatedAt": "Cập nhật lúc",
     "dashboard": {
       "welcome": "Xin chào {{name}}! Chào mừng đến với UTE Career",
       "subtitle": "Theo dõi hồ sơ ứng tuyển và sự phát triển nghề nghiệp của bạn",
@@ -175,6 +192,10 @@
       "profile": {
         "resumeAttachment": "Hồ sơ đính kèm"
       },
+      "company": {
+        "title": "Công ty",
+        "all": "Tất cả công ty"
+      },
       "forum": "Diễn đàn",
       "jobs": {
         "title": "Việc làm",
@@ -195,7 +216,7 @@
       },
       "footer": {
         "footerDescription": "Kết nối sinh viên tài năng với cơ hội nghề nghiệp trong nhiều ngành. Đường cầu để thành công nghề nghiệp của bạn.",
-        "address": "Số 1 Võ Văn Ngân, Quận Thủ Đức, Thành phố Hồ Chí Minh",
+        "address": "Phòng A1-805, số 1 Võ Văn Ngân, P. Linh Chiểu, TP. Thủ Đức, TP.HCM",
         "aboutUs": "Về chúng tôi",
         "aboutUteCareerbridge": "Về UTE CareerBridge",
         "aboutUteinTECH": "Về UTEinTECH",
@@ -247,7 +268,8 @@
         "yes": "Có",
         "no": "Không",
         "createJobAlert": "Tạo thông báo việc làm",
-        "updateJobAlert": "Cập nhật thông báo việc làm"
+        "updateJobAlert": "Cập nhật thông báo việc làm",
+        "allJobs": "Tất cả công việc"
       },
       "messages": {
         "createSuccess": "Tạo thông báo việc làm thành công!",
@@ -267,7 +289,48 @@
         "level": "Chọn cấp bậc phù hợp với kinh nghiệm và kỹ năng của bạn.",
         "notification": "Chọn cách bạn muốn nhận thông báo (email, ứng dụng hoặc cả hai).",
         "description": "Hệ thống sẽ gửi thông báo cho bạn về các công việc phù hợp với tiêu chí của bạn theo tần suất bạn đã đặt. Bạn có thể tạo nhiều thông báo việc làm với các tiêu chí khác nhau."
+      },
+      "frequency": {
+        "DAILY": "Hàng ngày",
+        "WEEKLY": "Hàng tuần"
+      },
+      "notification": {
+        "email": "Email",
+        "app": "Ứng dụng"
+      },
+      "level": {
+        "all": "Tất cả cấp bậc",
+        "invalid": "Cấp bậc không hợp lệ"
+      },
+      "industry": {
+        "all": "Tất cả lĩnh vực",
+        "invalid": "Lĩnh vực không hợp lệ"
+      },
+      "salary": {
+        "unlimited": "Không giới hạn"
       }
+    },
+    "myJobs": {
+      "title": "Việc làm của tôi",
+      "applied": "Đã ứng tuyển",
+      "saved": "Đã lưu",
+      "company": "Công ty",
+      "job": "Công việc",
+      "cv": "CV",
+      "status": "Trạng thái",
+      "notice": "Chú ý",
+      "approved": "Đã duyệt",
+      "viewed": "Đã xem",
+      "pending": "Đang chờ",
+      "rejected": "Đã từ chối",
+      "unidentified": "Không xác định",
+      "noticeDescription": "Nếu đơn ứng tuyển có trạng thái \"Đã duyệt\". Vui lòng kiểm tra email để xem thông báo phỏng vấn."
+    },
+    "myCompany": {
+      "emptyFollowList": "Bạn chưa theo dõi bất kỳ công ty nào",
+      "followers": "lượt theo dõi",
+      "jobs": "công việc",
+      "unfollow": "Hủy theo dõi"
     },
     "recommend": {
       "title": "Việc được đề xuất",
@@ -312,7 +375,137 @@
         "title": "Liên hệ chúng tôi",
         "content": "Nếu bạn có bất kỳ câu hỏi nào về chính sách bảo mật này hoặc thực hành bảo mật của chúng tôi, vui lòng liên hệ chúng tôi tại: support@utecareerbridge.com"
       },
-      "lastUpdated": "Cập nhật lần cuối: Tháng 1 năm 2024"
+      "lastUpdated": "Cập nhật lần cuối: Tháng 1 năm 2025"
+    },
+    "event": {
+      "title": "Danh Sách Sự Kiện",
+      "filterByType": "Lọc theo loại",
+      "eventTypes": {
+        "seminar": "Hội thảo",
+        "conference": "Hội nghị",
+        "workshop": "Hội thảo chuyên đề",
+        "careerFair": "Hội chợ việc làm",
+        "webinar": "Hội thảo trực tuyến"
+      },
+      "noEvents": "Không tìm thấy sự kiện",
+      "date": "Ngày tổ chức",
+      "location": "Địa điểm",
+      "detail": {
+        "eventDescription": "Mô Tả Sự Kiện",
+        "eventTime": "Thời Gian diễn ra sự kiện",
+        "eventLocation": "Địa Điểm",
+        "eventProgram": "Chi Tiết Chương Trình",
+        "organizer": "Trung tâm Hỗ trợ Sinh viên",
+        "contactInfo": "Mọi thắc mắc xin vui lòng liên hệ",
+        "copySuccess": "Sao chép vào bộ nhớ tạm",
+        "copyError": "Lỗi khi sao chép URL",
+        "hashtag": "# HASHTAG:",
+        "share": "Chia sẻ ngay",
+        "shareToFacebook": "Chia sẻ lên Facebook"
+      }
+    },
+    "updateProfile": {
+      "title": "Thông tin cơ bản",
+      "save": "Lưu",
+      "cancel": "Hủy",
+      "firstName": {
+        "label": "Tên",
+        "placeholder": "Tên",
+        "required": "Vui lòng nhập tên!"
+      },
+      "lastName": {
+        "label": "Họ",
+        "placeholder": "Họ",
+        "required": "Vui lòng nhập họ!"
+      },
+      "gender": {
+        "label": "Giới tính",
+        "male": "Nam",
+        "female": "Nữ"
+      },
+      "dob": {
+        "label": "Ngày sinh",
+        "placeholder": "Ngày sinh",
+        "required": "Vui lòng nhập ngày sinh!"
+      },
+      "phone": {
+        "label": "Số điện thoại",
+        "placeholder": "Số điện thoại",
+        "required": "Vui lòng nhập số điện thoại!",
+        "invalid": "Số điện thoại không hợp lệ!"
+      },
+      "email": {
+        "label": "Email"
+      },
+      "universityEmail": {
+        "label": "Email sinh viên",
+        "placeholder": "Email sinh viên",
+        "required": "Vui lòng nhập email sinh viên!",
+        "invalid": "Email không hợp lệ!"
+      },
+      "address": {
+        "label": "Địa chỉ",
+        "placeholder": "Địa chỉ"
+      },
+      "province": {
+        "label": "Tỉnh/Thành phố",
+        "placeholder": "Tỉnh/Thành phố",
+        "required": "Vui lòng chọn tỉnh/thành phố!"
+      },
+      "district": {
+        "label": "Quận/Huyện",
+        "placeholder": "Quận/Huyện",
+        "required": "Vui lòng chọn quận/huyện!"
+      },
+      "ward": {
+        "label": "Phường/Xã",
+        "placeholder": "Phường/Xã",
+        "required": "Vui lòng chọn phường/xã!"
+      },
+      "year": {
+        "label": "Năm thứ",
+        "placeholder": "Bạn là sinh viên năm mấy",
+        "required": "Vui lòng nhập năm học"
+      },
+      "category": {
+        "label": "Thuộc chuyên nghành",
+        "placeholder": "Thuộc chuyên môn"
+      },
+      "avatar": {
+        "deleteSuccess": "Xoá ảnh thành công",
+        "deleteError": "Xoá ảnh thất bại"
+      }
+    },
+    "updateSkill": {
+      "title": "Kĩ năng",
+      "addSkill": "Thêm kỹ năng",
+      "selectSkill": "Chọn kỹ năng",
+      "selectSkillRequired": "Hãy chọn kỹ năng!",
+      "rateLevel": "Hãy đánh giá cấp độ!",
+      "add": "Thêm",
+      "deleteSuccess": "Xóa kỹ năng thành công",
+      "deleteError": "Xóa kỹ năng thất bại"
+    },
+    "accountManagement": {
+      "title": "Đổi mật khẩu",
+      "currentPassword": {
+        "label": "Mật khẩu hiện tại",
+        "required": "Vui lòng nhập mật khẩu hiện tại!"
+      },
+      "newPassword": {
+        "label": "Mật khẩu mới",
+        "required": "Vui lòng nhập mật khẩu mới!",
+        "minLength": "Mật khẩu phải có ít nhất 8 ký tự",
+        "uppercase": "Mật khẩu phải chứa ít nhất 1 chữ cái viết hoa",
+        "number": "Mật khẩu phải chứa ít nhất 1 chữ số",
+        "special": "Mật khẩu phải chứa ít nhất 1 ký tự đặc biệt"
+      },
+      "confirmPassword": {
+        "label": "Nhập lại mật khẩu mới",
+        "required": "Vui lòng nhập lại mật khẩu mới!",
+        "mismatch": "Mật khẩu xác nhận không khớp!"
+      },
+      "save": "Lưu"
     }
   },
   "employer": {
@@ -626,6 +819,16 @@
       "save": "Lưu"
     },
     "company": {
+      "list": {
+        "title": "Danh sách công ty",
+        "loading": "Đang tải danh sách công ty...",
+        "errorLoading": "Đã xảy ra lỗi khi tải danh sách công ty",
+        "noAddress": "Chưa cập nhật địa chỉ",
+        "employees": "nhân viên",
+        "noPhone": "Chưa cập nhật số điện thoại",
+        "noWebsite": "Chưa cập nhật website",
+        "noCategory": "Chưa phân loại"
+      },
       "next": "Tiếp tục",
       "email": "Email công ty",
       "mediaAndDescription": "Phương tiện và mô tả",
@@ -661,6 +864,25 @@
           "title": "Xác nhận gửi thông tin",
           "content": "Bằng cách nhấp xác nhận, bạn đồng ý rằng việc không cung cấp hoặc cung cấp thông tin không chính xác được coi là vi phạm có thể dẫn đến việc tạm dừng dịch vụ và/hoặc chấm dứt tài khoản mà không được hoàn tiền. Bạn có thể xem lại thông tin đã cung cấp"
         }
+      },
+      "inforCompany": {
+        "aboutUs": "Về chúng tôi",
+        "jobPositions": "Vị trí đang tuyển dụng",
+        "companyInfo": "Thông tin công ty",
+        "size": "Quy mô",
+        "industry": "Lĩnh vực",
+        "contact": "Liên hệ",
+        "phone": "Số điện thoại",
+        "email": "Email",
+        "address": "Địa chỉ",
+        "viewOnMap": "Xem trên bản đồ",
+        "website": "Website",
+        "detailedDescription": "Mô tả chi tiết",
+        "videoIntroduction": "Video giới thiệu",
+        "benefits": "Phúc lợi",
+        "follow": "Theo dõi",
+        "following": "Đang theo dõi",
+        "followers": "lượt theo dõi"
       }
     },
     "header": {
@@ -957,6 +1179,34 @@
       "save": {
         "saved": "Đã lưu",
         "saveJob": "Lưu việc làm"
+      },
+      "viewJob": {
+        "applySuccess": "Ứng tuyển thành công",
+        "alreadyApplied": "Hồ sơ đã được ứng tuyển",
+        "applyButton": "Ứng tuyển ngay",
+        "deadline": "Hạn nộp:",
+        "deadlineSoon": "Sắp hết hạn",
+        "jobDescription": "Mô tả công việc",
+        "jobRequirements": "Yêu cầu công việc",
+        "benefits": "Lợi ích cho bạn",
+        "workInfo": "Thông tin công việc",
+        "sameCompanyJobs": "Việc làm từ cùng công ty",
+        "verified": "Đã xác thực",
+        "address": "Địa chỉ",
+        "companySize": "Kích thước",
+        "employees": "nhân viên",
+        "field": "Lĩnh vực",
+        "viewCompanyDetails": "Xem chi tiết công ty",
+        "relatedCompanies": "Công ty trong cùng ngành",
+        "viewMore": "Xem thêm",
+        "jobLabels": {
+          "postDate": "Ngày đăng",
+          "level": "Cấp bậc",
+          "category": "Ngành nghề",
+          "skills": "Kỹ năng",
+          "industry": "Lĩnh vực",
+          "recruitmentCount": "Số lượng vị trí"
+        }
       }
     },
     "resumes": {
@@ -1373,9 +1623,19 @@
     "analysis": {
       "title": "Phân tích CV với AI",
       "subtitle": "Hãy để AI phân tích CV của bạn và đề xuất cơ hội việc làm phù hợp",
+      "benefits": {
+        "aiTitle": "Công nghệ AI",
+        "aiDesc": "Hệ thống AI của chúng tôi phân tích CV của bạn để xác định kỹ năng, kinh nghiệm và trình độ của bạn, sau đó kết nối với các cơ hội việc làm phù hợp nhất trong cơ sở dữ liệu của chúng tôi.",
+        "matchTitle": "Việc làm phù hợp",
+        "matchDesc": "Chúng tôi cam kết bảo mật dữ liệu của bạn và không chia sẻ thông tin cá nhân với bất kỳ bên thứ ba nào.",
+        "insightsTitle": "Thông tin",
+        "insightsDesc": "Chúng tôi cam kết bảo mật dữ liệu của bạn và không chia sẻ thông tin cá nhân với bất kỳ bên thứ ba nào."
+      },
       "info": {
         "title": "Cách thức hoạt động",
-        "description": "Hệ thống AI của chúng tôi phân tích CV của bạn để xác định kỹ năng, kinh nghiệm và trình độ của bạn, sau đó kết nối với các cơ hội việc làm phù hợp nhất trong cơ sở dữ liệu của chúng tôi."
+        "description": "Hệ thống AI của chúng tôi phân tích CV của bạn để xác định kỹ năng, kinh nghiệm và trình độ của bạn, sau đó kết nối với các cơ hội việc làm phù hợp nhất trong cơ sở dữ liệu của chúng tôi.",
+        "privacyTitle": "Quyền riêng tư",
+        "privacyDescription": "Chúng tôi cam kết bảo mật dữ liệu của bạn và không chia sẻ thông tin cá nhân với bất kỳ bên thứ ba nào."
       },
       "tabs": {
         "existing": "Sử dụng CV hiện có",
@@ -1404,8 +1664,20 @@
         "close": "Đóng",
         "viewAll": "Xem tất cả đề xuất",
         "viewRecommended": "Xem công việc được đề xuất",
-        "match": "Phù hợp"
+        "match": "Phù hợp",
+        "clickJobAlert": "Nhấp vào công việc để xem chi tiết",
+        "matchedSkills": "Kỹ năng phù hợp"
       }
+    },
+    "uploadCV": {
+      "title": "Thông tin CV",
+      "save": "Lưu",
+      "cancel": "Hủy",
+      "delete": "Xóa",
+      "attachedResume": "Hồ sơ đính kèm",
+      "uploadedResume": "Hồ sơ đã tải lên",
+      "lastUpdated": "Cập nhật lần cuối:",
+      "viewAsEmployer": "Xem link như nhà tuyển dụng"
     }
   },
   "job": {
@@ -2397,5 +2669,198 @@
     "delete": "Xóa thẻ",
     "createSuccess": "Tạo thẻ thành công",
     "createError": "Tạo thẻ thất bại"
+  },
+  "termsOfUse": {
+    "title": "Điều khoản sử dụng",
+    "introduction": {
+      "title": "Giới thiệu",
+      "content": "Chào mừng đến với UTECareerBridge. Bằng cách truy cập hoặc sử dụng nền tảng của chúng tôi, bạn đồng ý tuân thủ và bị ràng buộc bởi các Điều khoản sử dụng này."
+    },
+    "userAgreement": {
+      "title": "Thỏa thuận người dùng",
+      "content": "Bằng cách đăng ký tài khoản, bạn xác nhận rằng bạn hiểu và đồng ý với các điều khoản này."
+    },
+    "accountResponsibility": {
+      "title": "Trách nhiệm tài khoản",
+      "content": "Bạn chịu trách nhiệm duy trì bí mật thông tin tài khoản và cho tất cả các hoạt động xảy ra dưới tài khoản của bạn."
+    },
+    "contentGuidelines": {
+      "title": "Hướng dẫn nội dung",
+      "content": "Khi sử dụng nền tảng của chúng tôi, bạn đồng ý không đăng hoặc chia sẻ nội dung nào:",
+      "item1": "Bất hợp pháp, có hại, đe dọa, hoặc phân biệt đối xử",
+      "item2": "Vi phạm quyền sở hữu trí tuệ",
+      "item3": "Chứa thông tin sai lệch hoặc giả mạo người khác",
+      "item4": "Chứa phần mềm độc hại hoặc được thiết kế để gián đoạn dịch vụ"
+    },
+    "intellectualProperty": {
+      "title": "Sở hữu trí tuệ",
+      "content": "Tất cả nội dung trên UTECareerBridge, bao gồm văn bản, đồ họa, logo, và phần mềm, là tài sản của UTECareerBridge và được bảo vệ bởi luật bản quyền và các luật sở hữu trí tuệ khác."
+    },
+    "limitation": {
+      "title": "Giới hạn trách nhiệm",
+      "content": "UTECareerBridge không chịu trách nhiệm cho bất kỳ thiệt hại trực tiếp, gián tiếp, ngẫu nhiên, hoặc hậu quả nào phát sinh từ việc sử dụng nền tảng của bạn."
+    },
+    "termination": {
+      "title": "Chấm dứt",
+      "content": "Chúng tôi có quyền chấm dứt hoặc đình chỉ tài khoản và truy cập đến các dịch vụ của chúng tôi theo quyết định của chúng tôi, không cần thông báo, cho hành vi chúng tôi tin rằng vi phạm các Điều khoản sử dụng này."
+    },
+    "changes": {
+      "title": "Thay đổi các Điều khoản",
+      "content": "Chúng tôi có thể sửa đổi các Điều khoản sử dụng này vào bất kỳ lúc nào. Việc tiếp tục sử dụng nền tảng sau các thay đổi cấu thành sự chấp nhận các điều khoản đã sửa đổi."
+    },
+    "contactUs": {
+      "title": "Liên hệ với chúng tôi",
+      "content": "Nếu bạn có bất kỳ câu hỏi nào về các Điều khoản sử dụng này, vui lòng liên hệ với chúng tôi qua các kênh được cung cấp trên nền tảng của chúng tôi."
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "Về UTE Career",
+      "description": "Kết nối sinh viên Đại học Sư phạm Kỹ thuật TP.HCM với cơ hội nghề nghiệp tốt nhất"
+    },
+    "intro": {
+      "title": "Nền tảng kết nối sinh viên và nhà tuyển dụng",
+      "description": "UTE Career là nền tảng kết nối sinh viên, cựu sinh viên trường Đại học Sư phạm Kỹ thuật TP.HCM với các nhà tuyển dụng. Chúng tôi cung cấp các dịch vụ hỗ trợ toàn diện để giúp sinh viên tìm kiếm cơ hội việc làm phù hợp và hỗ trợ doanh nghiệp tìm kiếm ứng viên tiềm năng."
+    },
+    "stats": {
+      "studentsEmployed": "Sinh viên đã tìm được việc làm",
+      "partnerCompanies": "Doanh nghiệp đối tác",
+      "recruitmentEvents": "Sự kiện tuyển dụng mỗi năm",
+      "jobCount": "Số công việc"
+    },
+    "services": {
+      "title": "Dịch vụ của chúng tôi",
+      "description": "UTE Career cung cấp các dịch vụ toàn diện cho cả sinh viên và nhà tuyển dụng",
+      "forStudents": {
+        "title": "Dành cho sinh viên & cựu sinh viên",
+        "subtitle": "Hỗ trợ toàn diện cho hành trình nghề nghiệp của bạn",
+        "jobSearch": {
+          "title": "Tìm kiếm việc làm",
+          "description": "Tiếp cận hàng nghìn cơ hội việc làm phù hợp với chuyên ngành của bạn"
+        },
+        "careerCounseling": {
+          "title": "Tư vấn nghề nghiệp",
+          "description": "Nhận tư vấn từ các chuyên gia về định hướng nghề nghiệp và phát triển sự nghiệp"
+        },
+        "cvSupport": {
+          "title": "Hỗ trợ CV",
+          "description": "Được hỗ trợ xây dựng và hoàn thiện CV chuyên nghiệp"
+        },
+        "skillAssessment": {
+          "title": "Đánh giá năng lực",
+          "description": "Tham gia các bài đánh giá để hiểu rõ điểm mạnh và cơ hội phát triển"
+        }
+      },
+      "forEmployers": {
+        "title": "Dành cho nhà tuyển dụng",
+        "subtitle": "Tiếp cận nguồn ứng viên chất lượng từ HCMUTE",
+        "postJobs": {
+          "title": "Đăng tin tuyển dụng",
+          "description": "Đăng tin tuyển dụng và tiếp cận hàng nghìn sinh viên và cựu sinh viên"
+        },
+        "findCandidates": {
+          "title": "Tìm kiếm ứng viên",
+          "description": "Tìm kiếm ứng viên tiềm năng phù hợp với nhu cầu tuyển dụng của doanh nghiệp"
+        },
+        "campusRecruitment": {
+          "title": "Tổ chức tuyển dụng tại trường",
+          "description": "Tham gia các sự kiện tuyển dụng trực tiếp tại trường để gặp gỡ ứng viên"
+        },
+        "branding": {
+          "title": "Xây dựng thương hiệu",
+          "description": "Quảng bá thương hiệu nhà tuyển dụng đến sinh viên và cựu sinh viên"
+        }
+      }
+    },
+    "events": {
+      "title": "Sự kiện thường xuyên",
+      "description": "UTE Career tổ chức nhiều sự kiện để kết nối sinh viên với cơ hội nghề nghiệp",
+      "jobFair": {
+        "title": "Ngày hội việc làm UTE Job Fair",
+        "schedule": "Tháng 4 và tháng 10 hàng năm",
+        "description": "Sự kiện tuyển dụng lớn nhất trong năm với sự tham gia của hơn 50 doanh nghiệp và hàng nghìn cơ hội việc làm."
+      },
+      "skillsWorkshop": {
+        "title": "Workshop kỹ năng",
+        "schedule": "Hàng tháng",
+        "description": "Các buổi workshop về kỹ năng mềm và chuyên môn giúp sinh viên chuẩn bị tốt nhất cho hành trình nghề nghiệp."
+      },
+      "companySeminar": {
+        "title": "Hội thảo doanh nghiệp",
+        "schedule": "Thường xuyên",
+        "description": "Cơ hội gặp gỡ và tìm hiểu về cơ hội thực tập và việc làm từ các doanh nghiệp đối tác hàng đầu."
+      },
+      "learnMore": "Tìm hiểu thêm"
+    },
+    "registration": {
+      "title": "Quy trình đăng ký",
+      "description": "Quy trình đơn giản để bắt đầu sử dụng dịch vụ của UTE Career",
+      "forStudents": {
+        "title": "Dành cho sinh viên & cựu sinh viên",
+        "steps": {
+          "step1": {
+            "title": "Đăng ký tài khoản",
+            "description": "Đăng ký tài khoản trên website với email trường (@student.hcmute.edu.vn)"
+          },
+          "step2": {
+            "title": "Hoàn thiện hồ sơ",
+            "description": "Cập nhật thông tin cá nhân, học vấn, kỹ năng và kinh nghiệm"
+          },
+          "step3": {
+            "title": "Tìm kiếm việc làm",
+            "description": "Tìm kiếm việc làm phù hợp với chuyên ngành và kỹ năng của bạn"
+          },
+          "step4": {
+            "title": "Ứng tuyển",
+            "description": "Ứng tuyển vào các vị trí phù hợp và theo dõi trạng thái ứng tuyển"
+          }
+        },
+        "registerNow": "Đăng ký ngay"
+      },
+      "forEmployers": {
+        "title": "Dành cho nhà tuyển dụng",
+        "steps": {
+          "step1": {
+            "title": "Đăng ký tài khoản doanh nghiệp",
+            "description": "Đăng ký tài khoản doanh nghiệp trên website với thông tin chính xác"
+          },
+          "step2": {
+            "title": "Xác minh tài khoản",
+            "description": "Tài khoản doanh nghiệp sẽ được xác minh bởi quản trị viên"
+          },
+          "step3": {
+            "title": "Hoàn thiện thông tin doanh nghiệp",
+            "description": "Cập nhật thông tin chi tiết về doanh nghiệp và lĩnh vực hoạt động"
+          },
+          "step4": {
+            "title": "Đăng tin tuyển dụng",
+            "description": "Đăng tin tuyển dụng và quản lý ứng viên trên hệ thống"
+          }
+        },
+        "registerNow": "Đăng ký ngay"
+      }
+    },
+    "contact": {
+      "title": "Liên hệ với chúng tôi",
+      "description": "Nếu bạn có bất kỳ câu hỏi nào, đừng ngần ngại liên hệ với chúng tôi. Đội ngũ UTE Career luôn sẵn sàng hỗ trợ bạn.",
+      "address": {
+        "title": "Địa chỉ",
+        "value": "Phòng A1-805, số 1 Võ Văn Ngân, P. Linh Chiểu, TP. Thủ Đức, TP.HCM"
+      },
+      "email": {
+        "title": "Email",
+        "value": "support@utecareer.edu.vn"
+      },
+      "hotline": {
+        "title": "Hotline",
+        "value": "028.1234.5678"
+      },
+      "workingHours": {
+        "title": "Giờ làm việc",
+        "weekdays": "Thứ 2-6: 8h00-17h00",
+        "saturday": "Thứ 7: 8h00-12h00"
+      },
+      "sendMessage": "Gửi tin nhắn"
+    }
   }
 }

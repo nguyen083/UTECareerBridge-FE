@@ -47,7 +47,7 @@ const UploadCV = ({ listResume, fetchCV }) => {
     {
       label: (
         <Text type="danger">
-          <DeleteOutlined /> &ensp;Xóa
+          <DeleteOutlined /> &ensp;{t("cv.uploadCV.delete")}
         </Text>
       ),
       key: "1",
@@ -112,14 +112,14 @@ const UploadCV = ({ listResume, fetchCV }) => {
         if (res.status === "OK") {
           message.success(res.message);
           deleteImageFromCloudinaryByLink(item.link).then((status) => {
-            status === 200 && message.success("Xóa hồ sơ thành công!");
+            status === 200 && message.success(t("cv.upload.deleteSuccess"));
           });
         } else {
           message.error(res.message);
         }
       })
       .catch((err) => {
-        message.error("Xóa hồ sơ thất bại, ", err);
+        message.error(t("cv.upload.deleteError"), err);
       })
       .finally(() => {
         fetchCV();
@@ -138,7 +138,7 @@ const UploadCV = ({ listResume, fetchCV }) => {
           }
         },
         onError: (err) => {
-          message.error("Cập nhật hồ sơ thất bại, ", err);
+          message.error(t("cv.upload.updateError"), err);
         },
       }
     );
@@ -155,9 +155,11 @@ const UploadCV = ({ listResume, fetchCV }) => {
     <>
       <div className={`${styles.div} ${styles.box_shadow}`}>
         <Tabs defaultActiveKey="2" size="large" className={styles["tabs"]}>
-          <Tabs.TabPane tab="Hồ sơ đính kèm" key="2">
+          <Tabs.TabPane tab={t("cv.uploadCV.attachedResume")} key="2">
             <div className={styles["tab_content"]}>
-              <Text className={styles["text"]}>Hồ sơ đã tải lên</Text>
+              <Text className={styles["text"]}>
+                {t("cv.uploadCV.uploadedResume")}
+              </Text>
               {3 - listResume.length !== 0 && (
                 <Dragger
                   maxCount={1}
@@ -173,13 +175,13 @@ const UploadCV = ({ listResume, fetchCV }) => {
                     const isSizeValid = file.size / 1024 / 1024 < 5;
 
                     if (!isDocOrPdf) {
-                      message.error("Chỉ hỗ trợ định dạng .doc, .docx, .pdf");
+                      message.error(t("cv.upload.fileType"));
                       onError("Invalid file type");
                       return;
                     }
 
                     if (!isSizeValid) {
-                      message.error("Kích thước tệp vượt quá 5MB");
+                      message.error(t("cv.upload.fileMax"));
                       onError("File size exceeds limit");
                       return;
                     }
@@ -190,10 +192,8 @@ const UploadCV = ({ listResume, fetchCV }) => {
                   <p className="ant-upload-drag-icon">
                     <InboxOutlined />
                   </p>
-                  <p>Chọn hoặc kéo thả hồ sơ từ máy của bạn</p>
-                  <p>
-                    Hỗ trợ định dạng .doc, .docx, .pdf có kích thước dưới 5MB
-                  </p>
+                  <p>{t("cv.upload.fileChoose")}</p>
+                  <p>{t("cv.upload.fileSupport")}</p>
                   {uploading && <Progress percent={uploadProgress} />}
                 </Dragger>
               )}
@@ -248,7 +248,8 @@ const UploadCV = ({ listResume, fetchCV }) => {
                               description={
                                 <>
                                   <Text type="secondary">
-                                    Cập nhật lần cuối: {item.lastUpdated}
+                                    {t("cv.uploadCV.lastUpdated")}{" "}
+                                    {item.lastUpdated}
                                   </Text>
                                   <br />
                                   <Link
@@ -256,7 +257,7 @@ const UploadCV = ({ listResume, fetchCV }) => {
                                     className="text-decoration-none"
                                     target="_blank"
                                   >
-                                    Xem link như nhà tuyển dụng
+                                    {t("cv.uploadCV.viewAsEmployer")}
                                   </Link>
                                 </>
                               }
@@ -274,12 +275,12 @@ const UploadCV = ({ listResume, fetchCV }) => {
       </div>
       <Modal
         maskClosable={false}
-        title="Thông tin CV"
+        title={t("cv.uploadCV.title")}
         open={visible}
         onOk={() => form.submit()}
         onCancel={handleCancel}
-        okText="Lưu"
-        cancelText="Hủy"
+        okText={t("cv.uploadCV.save")}
+        cancelText={t("cv.uploadCV.cancel")}
         width={600}
       >
         <Form
@@ -293,26 +294,31 @@ const UploadCV = ({ listResume, fetchCV }) => {
           {/* Trường resume_title */}
           <Form.Item
             name="resumeTitle"
-            label="Tiêu đề"
-            rules={[{ required: true, message: "Vui lòng nhập tiêu đề!" }]}
+            label={t("cv.form.title")}
+            rules={[{ required: true, message: t("cv.form.titleRequired") }]}
           >
-            <Input placeholder="Nhập tiêu đề" />
+            <Input placeholder={t("cv.form.title")} />
           </Form.Item>
 
           {/* Trường resume_description */}
           <Form.Item
             name="resumeDescription"
-            label="Mô tả"
-            rules={[{ required: true, message: "Vui lòng nhập mô tả!" }]}
+            label={t("cv.form.description")}
+            rules={[
+              { required: true, message: t("cv.form.descriptionRequired") },
+            ]}
           >
-            <Input.TextArea rows={4} placeholder="Nhập mô tả resume" />
+            <Input.TextArea
+              rows={4}
+              placeholder={t("cv.form.descriptionPlaceholder")}
+            />
           </Form.Item>
 
           {/* Trường level_id */}
           <Form.Item
             name="levelId"
-            label="Cấp độ"
-            rules={[{ required: true, message: "Vui lòng chọn cấp độ!" }]}
+            label={t("cv.form.level")}
+            rules={[{ required: true, message: t("cv.form.levelRequired") }]}
           >
             <Select>
               {levelOptions.map((level) => (

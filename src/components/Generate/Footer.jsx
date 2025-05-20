@@ -37,11 +37,11 @@ const FooterComponent = () => {
                   </Flex>
                   <Flex align="center" gap={12}>
                     <PhoneOutlined className="!text-text-color text-lg" />
-                    <Text>(+84) 28 3896 4369</Text>
+                    <Text>(+84) 28 1234 5678</Text>
                   </Flex>
                   <Flex align="center" gap={12}>
                     <MailOutlined className="!text-text-color text-lg" />
-                    <Text>utecareerbridge@hcmute.edu.vn</Text>
+                    <Text>support@utecareer.edu.vn</Text>
                   </Flex>
                 </Space>
               </div>

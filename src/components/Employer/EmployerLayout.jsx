@@ -7,7 +7,7 @@ import { BsTicketPerforated } from "react-icons/bs";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdManageAccounts, MdOutlineMessage } from "react-icons/md";
 import { TiBusinessCard } from "react-icons/ti";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setInfor } from "../../redux/action/employerSlice.jsx";
 import { useRedux } from "../../utils/useRedux.jsx";
@@ -69,6 +69,7 @@ const EmployerLayout = () => {
   const location = useLocation();
   const [defaultImage, setDefaultImage] = useState(null);
 
+  const role = useSelector((state) => state.user.role);
   const avatar = useSelector((state) => state.employer.companyLogo);
   const employerInfo = useSelector((state) => state.employer);
   const companyName = useSelector((state) => state.employer.companyName);
@@ -152,7 +153,8 @@ const EmployerLayout = () => {
       icon: <SolutionOutlined />,
       label: t("admin.employer.sidebar.resumes"),
       className: "sidebar-item",
-    },    {
+    },
+    {
       key: "/employer/interview",
       icon: <IoMdChatboxes />,
       label: t("admin.employer.sidebar.interview"),
@@ -267,6 +269,10 @@ const EmployerLayout = () => {
       </Menu.Item>
     </Menu>
   );
+
+  if (role !== "employer") {
+    return <Navigate to="/employer/login" />;
+  }
 
   return (
     <Layout className="employer-layout">

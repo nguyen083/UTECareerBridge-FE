@@ -10,6 +10,10 @@ export default defineConfig(({ mode }) => {
     plugins: [react()],
     server: {
       port: env.VITE_UI_PORT,
+      hmr: {
+        host: "localhost",
+        protocol: "ws",
+      },
       proxy: {
         "/api": {
           target: env.VITE_BASE_API_URL + "/api/v1",

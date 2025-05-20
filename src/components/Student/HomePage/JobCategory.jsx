@@ -1,9 +1,16 @@
-
 import { Button, Card, Carousel } from "antd";
 import { useRef } from "react";
 import "./JobCategory.scss";
 import { FaNewspaper, FaMicrochip } from "react-icons/fa6";
-import { FaCogs, FaCar, FaCalculator, FaHotel, FaRoute, FaBullhorn, FaLaptopCode, } from "react-icons/fa";
+import {
+  FaCogs,
+  FaCar,
+  FaCalculator,
+  FaHotel,
+  FaRoute,
+  FaBullhorn,
+  FaLaptopCode,
+} from "react-icons/fa";
 import { BankOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -11,7 +18,7 @@ import { useTranslation } from "react-i18next";
 const JobCategory = () => {
   const carouselRef = useRef(null);
   const navigate = useNavigate();
-  const {t} = useTranslation();
+  const { t } = useTranslation();
 
   const categories = [
     { name: "Báo chí/ truyền hình", icon: <FaNewspaper />, key: 4 },
@@ -22,7 +29,11 @@ const JobCategory = () => {
     { name: "Kế toán / Kiểm toán", icon: <FaCalculator />, key: 32 },
     { name: "Khách sạn / Nhà hàng", icon: <FaHotel />, key: 33 },
     { name: "Logistics", icon: <FaRoute />, key: 36 },
-    { name: "Marketing / Truyền thông / Quảng cáo", icon: <FaBullhorn />, key: 38 },
+    {
+      name: "Marketing / Truyền thông / Quảng cáo",
+      icon: <FaBullhorn />,
+      key: 38,
+    },
     { name: "Ngân hàng / Tài chính", icon: <BankOutlined />, key: 42 },
   ];
 
@@ -35,12 +46,12 @@ const JobCategory = () => {
   };
 
   const handleCategoryClick = (key) => {
-    navigate(`/search`, { state: { filters: { categoryId: key } } })
-  }
+    navigate(`/search`, { state: { filters: { categoryId: key } } });
+  };
 
   return (
     <section className="job-category">
-      <h2>{t('hot_categories')}</h2>
+      <h2>{t("hot_categories")}</h2>
       <div className="job-category__carousel-wrapper">
         <Button
           icon={<LeftOutlined />}
@@ -65,8 +76,9 @@ const JobCategory = () => {
               style={{ textAlign: "center" }}
             >
               <div className="job-category__icon">{category.icon}</div>
-              <div className="text-base font-medium job-category__name">{category.name}</div>
-
+              <div className="text-base font-medium job-category__name">
+                {category.name}
+              </div>
             </Card>
           ))}
         </Carousel>

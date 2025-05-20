@@ -32,11 +32,3 @@ export const useJobSaved = () => {
     refetchOnWindowFocus: false,
   });
 };
-
-export const useRecommendedJobs = (userId) => {
-  return useQuery({
-    queryKey: ["recommendedJobs"],
-    queryFn: () => job.getRecommendJob(userId),
-    refetchOnWindowFocus: false,
-  });
-};

@@ -56,7 +56,6 @@ const JobSearchPage = () => {
   });
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searchKeyword, setSearchKeyword] = useState(keyword || "");
   const [isFilterVisible, setIsFilterVisible] = useState(true);
 
   const sanitizeParams = (params) => {
@@ -94,10 +93,10 @@ const JobSearchPage = () => {
       });
   };
 
-  const handleKeywordSearch = () => {
-    dispatch(setKeyword(searchKeyword));
-    setCurrentPage(1);
-  };
+  // const handleKeywordSearch = () => {
+  //   dispatch(setKeyword(searchKeyword));
+  //   setCurrentPage(1);
+  // };
 
   const handleFilterToggle = () => {
     setIsFilterVisible(!isFilterVisible);
@@ -111,13 +110,13 @@ const JobSearchPage = () => {
       jobLevelId: undefined,
       skillId: undefined,
     });
-    setSearchKeyword("");
     dispatch(setKeyword(""));
     setCurrentPage(1);
   };
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    console.log("location.state", location.state);
     if (location.state?.filters) {
       setFilters((prev) => ({
         ...prev,
@@ -146,7 +145,7 @@ const JobSearchPage = () => {
             <Breadcrumb.Item href="/">
               <HomeOutlined /> {t("common.home")}
             </Breadcrumb.Item>
-            <Breadcrumb.Item>{t("job.search.title")}</Breadcrumb.Item>
+            <Breadcrumb.Item>Search</Breadcrumb.Item>
           </Breadcrumb>
         </div>
 

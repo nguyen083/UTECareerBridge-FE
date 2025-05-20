@@ -28,6 +28,13 @@
   "you": "You",
   "PAID": "Paid",
   "PENDING": "Pending",
+  "gridMode": "Grid mode",
+  "listMode": "List mode",
+  "category": "Category",
+  "skill": "Skill",
+  "level": "Level",
+  "industry": "Industry",
+  "no_jobs_found": "No jobs found",
   "notification": {
     "title": "Notification",
     "titleDetail": "Notification Detail",
@@ -112,9 +119,19 @@
     "admin": "Admin"
   },
   "student": {
+    "homepage": {
+      "create_cv": "Create Application CV",
+      "cv_description": "Showcase your strengths through a resume that includes your education, experience, projects, skills, and more",
+      "create_cv_button": "Create CV",
+      "join_event": "Join Recruitment Events",
+      "event_description": "Participating in job fairs gives you the opportunity to interview with experienced professionals in your field and increases your chances of finding your desired job.",
+      "join_now": "Join Now"
+    },
     "year": "Student year {{year}}",
     "allowSearch": "Allow search resume",
     "setupResume": "Setup resume",
+    "attachmentFile": "Attachment file",
+    "updatedAt": "Updated at",
     "dashboard": {
       "welcome": "Hi {{name}}! Welcome to UTE Career",
       "subtitle": "Track your job applications and career progress",
@@ -194,7 +211,7 @@
           "title": "Contact Us",
           "content": "If you have any questions about this privacy policy or our privacy practices, please contact us at: support@utecareerbridge.com"
         },
-        "lastUpdated": "Last updated: January 2024"
+        "lastUpdated": "Last updated: January 2025"
       }
     },
     "menu": {
@@ -214,6 +231,10 @@
     "layout": {
       "profile": {
         "resumeAttachment": "Resume Attachment"
+      },
+      "company": {
+        "title": "Company",
+        "all": "All Company"
       },
       "forum": "Forum",
       "jobs": {
@@ -235,9 +256,9 @@
       },
       "footer": {
         "footerDescription": "Connecting talented students with career opportunities across industries. Your bridge to professional success.",
-        "address": "1 Vo Van Ngan, Thu Duc City, Ho Chi Minh City",
+        "address": "Room A1-805, 1 Vo Van Ngan Street, Linh Chieu Ward, Thu Duc City, HCMC",
         "aboutUs": "About Us",
-        "aboutUteCareerbridge": "About UTE CareerBridge",
+        "aboutUteCareerbridge": "About Ute CareerBridge",
         "aboutUteinTECH": "About UTEinTECH",
         "contact": "Contact",
         "faq": "FAQ",
@@ -254,6 +275,28 @@
         "construction": "Construction",
         "findJob": "Find Job"
       }
+    },
+    "myJobs": {
+      "title": "My Jobs",
+      "applied": "Applied",
+      "saved": "Saved",
+      "company": "Company",
+      "job": "Job",
+      "cv": "CV",
+      "status": "Status",
+      "notice": "Notice",
+      "approved": "Approved",
+      "viewed": "Viewed",
+      "pending": "Pending",
+      "rejected": "Rejected",
+      "unidentified": "Unidentified",
+      "noticeDescription": "If your application status is \"Approved\", please check your email for interview notification."
+    },
+    "myCompany": {
+      "emptyFollowList": "You are not following any companies yet",
+      "followers": "followers",
+      "jobs": "jobs",
+      "unfollow": "Unfollow"
     },
     "jobAlerts": {
       "title": "Job alerts",
@@ -287,7 +330,8 @@
         "yes": "Yes",
         "no": "No",
         "createJobAlert": "Create Job Alert",
-        "updateJobAlert": "Update Job Alert"
+        "updateJobAlert": "Update Job Alert",
+        "allJobs": "All Jobs"
       },
       "messages": {
         "createSuccess": "Job alert created successfully!",
@@ -307,6 +351,25 @@
         "level": "Select levels appropriate to your experience and skills.",
         "notification": "Choose how you want to receive notifications (email, app or both).",
         "description": "The system will send you notifications about jobs that match your criteria at the frequency you have set. You can create multiple job alerts with different criteria."
+      },
+      "frequency": {
+        "DAILY": "Daily",
+        "WEEKLY": "Weekly"
+      },
+      "notification": {
+        "email": "Email",
+        "app": "App"
+      },
+      "level": {
+        "all": "All levels",
+        "invalid": "Invalid level"
+      },
+      "industry": {
+        "all": "All industries",
+        "invalid": "Invalid industry"
+      },
+      "salary": {
+        "unlimited": "No limit"
       }
     },
     "recommend": {
@@ -353,6 +416,136 @@
         "content": "If you have any questions about this privacy policy or our privacy practices, please contact us at: support@utecareerbridge.com"
       },
       "lastUpdated": "Last updated: January 2024"
+    },
+    "event": {
+      "title": "Event List",
+      "filterByType": "Filter by type",
+      "eventTypes": {
+        "seminar": "Seminar",
+        "conference": "Conference",
+        "workshop": "Workshop",
+        "careerFair": "Career Fair",
+        "webinar": "Webinar"
+      },
+      "noEvents": "No events found",
+      "date": "Event date",
+      "location": "Location",
+      "detail": {
+        "eventDescription": "Event Description",
+        "eventTime": "Event Time",
+        "eventLocation": "Location",
+        "eventProgram": "Event Program Details",
+        "organizer": "Student Support Center",
+        "contactInfo": "For any inquiries, please contact",
+        "copySuccess": "Copied to clipboard",
+        "copyError": "Error copying URL",
+        "hashtag": "# HASHTAG:",
+        "share": "Share now",
+        "shareToFacebook": "Share to Facebook"
+      }
+    },
+    "updateProfile": {
+      "title": "Basic Information",
+      "save": "Save",
+      "cancel": "Cancel",
+      "firstName": {
+        "label": "First Name",
+        "placeholder": "First Name",
+        "required": "Please enter your first name!"
+      },
+      "lastName": {
+        "label": "Last Name",
+        "placeholder": "Last Name",
+        "required": "Please enter your last name!"
+      },
+      "gender": {
+        "label": "Gender",
+        "male": "Male",
+        "female": "Female"
+      },
+      "dob": {
+        "label": "Date of Birth",
+        "placeholder": "Date of Birth",
+        "required": "Please enter your date of birth!"
+      },
+      "phone": {
+        "label": "Phone Number",
+        "placeholder": "Phone Number",
+        "required": "Please enter your phone number!",
+        "invalid": "Invalid phone number!"
+      },
+      "email": {
+        "label": "Email"
+      },
+      "universityEmail": {
+        "label": "University Email",
+        "placeholder": "University Email",
+        "required": "Please enter your university email!",
+        "invalid": "Invalid email!"
+      },
+      "address": {
+        "label": "Address",
+        "placeholder": "Address"
+      },
+      "province": {
+        "label": "Province/City",
+        "placeholder": "Province/City",
+        "required": "Please select a province/city!"
+      },
+      "district": {
+        "label": "District",
+        "placeholder": "District",
+        "required": "Please select a district!"
+      },
+      "ward": {
+        "label": "Ward",
+        "placeholder": "Ward",
+        "required": "Please select a ward!"
+      },
+      "year": {
+        "label": "Year",
+        "placeholder": "Which year are you in?",
+        "required": "Please enter your academic year"
+      },
+      "category": {
+        "label": "Specialization",
+        "placeholder": "Specialization"
+      },
+      "avatar": {
+        "deleteSuccess": "Image deleted successfully",
+        "deleteError": "Failed to delete image"
+      }
+    },
+    "updateSkill": {
+      "title": "Skills",
+      "addSkill": "Add Skill",
+      "selectSkill": "Select skill",
+      "selectSkillRequired": "Please select a skill!",
+      "rateLevel": "Please rate your skill level!",
+      "add": "Add",
+      "deleteSuccess": "Skill deleted successfully",
+      "deleteError": "Failed to delete skill"
+    },
+    "accountManagement": {
+      "title": "Change Password",
+      "currentPassword": {
+        "label": "Current Password",
+        "required": "Please enter your current password!"
+      },
+      "newPassword": {
+        "label": "New Password",
+        "required": "Please enter your new password!",
+        "minLength": "Password must be at least 8 characters",
+        "uppercase": "Password must contain at least 1 uppercase letter",
+        "number": "Password must contain at least 1 number",
+        "special": "Password must contain at least 1 special character"
+      },
+      "confirmPassword": {
+        "label": "Confirm New Password",
+        "required": "Please confirm your new password!",
+        "mismatch": "The confirm password does not match!"
+      },
+      "save": "Save"
     }
   },
   "employer": {
@@ -665,43 +858,6 @@
       },
       "save": "Save"
     },
-    "company": {
-      "mediaAndDescription": "Media and Description",
-      "basicInfo": "Basic Information",
-      "title": "Company",
-      "info": "Company Information",
-      "size": "Company Size",
-      "sizePlaceholder": "Please select",
-      "sizeLessThan10": "Less than 10",
-      "sizeMoreThan50000": "More than 50,000",
-      "industry": "Company Industry",
-      "industryRequired": "Please select company industry",
-      "industryPlaceholder": "Please select",
-      "benefits": "Company Benefits",
-      "benefitDescriptionPlaceholder": "Enter benefit description",
-      "addBenefit": "Add benefit",
-      "description": "Company Description",
-      "logo": "Company Logo",
-      "logoTooltip": "Drag and drop or click to upload image",
-      "backgroundImage": "Company Image",
-      "imageTooltip": "Drag and drop or click to upload image",
-      "websitePlaceholder": "Company website URL",
-      "video": "Company Video",
-      "videoPlaceholder": "Copy and paste your YouTube link here",
-      "address": "Company Address",
-      "addressPlaceholder": "Example: 130 Suong Nguyet Anh, Ben Thanh Ward, District 1",
-      "certificate": {
-        "title": "Business Certificate",
-        "uploadLabel": "Business Certificate Image",
-        "uploadTooltip": "Drag and drop or click to upload image",
-        "previewTitle": "Preview Image",
-        "previewAlt": "Business Certificate Preview",
-        "confirmModal": {
-          "title": "Confirm Information Submission",
-          "content": "By clicking confirm, you agree that failure to provide or providing incorrect information is considered a violation that may result in service suspension and/or account termination without refund. You can review the information provided"
-        }
-      }
-    },
     "header": {
       "cart": "Cart"
     },
@@ -996,6 +1152,34 @@
       "save": {
         "saved": "Saved",
         "saveJob": "Save job"
+      },
+      "viewJob": {
+        "applySuccess": "Application successful",
+        "alreadyApplied": "Resume already submitted",
+        "applyButton": "Apply Now",
+        "deadline": "Expires on:",
+        "deadlineSoon": "Expiring soon",
+        "jobDescription": "Job Description",
+        "jobRequirements": "Job Requirements",
+        "benefits": "Benefits for You",
+        "workInfo": "Work Information",
+        "sameCompanyJobs": "Jobs from the same company",
+        "verified": "Verified",
+        "address": "Address",
+        "companySize": "Size",
+        "employees": "employees",
+        "field": "Industry",
+        "viewCompanyDetails": "View company details",
+        "relatedCompanies": "Companies in the same industry",
+        "viewMore": "View more",
+        "jobLabels": {
+          "postDate": "Posting date",
+          "level": "Level",
+          "category": "Category",
+          "skills": "Skills",
+          "industry": "Industry",
+          "recruitmentCount": "Number of positions"
+        }
       }
     },
     "resumes": {
@@ -1077,6 +1261,72 @@
       "daysRemaining": "days remaining",
       "noSearchResults": "No vouchers found matching your search",
       "noCoupons": "No vouchers available at the moment"
+    },
+    "company": {
+      "list": {
+        "title": "Company List",
+        "loading": "Loading companies...",
+        "errorLoading": "An error occurred while loading companies",
+        "noAddress": "No address updated",
+        "employees": "employees",
+        "noPhone": "No phone number updated",
+        "noWebsite": "No website updated",
+        "noCategory": "Uncategorized"
+      },
+      "mediaAndDescription": "Media and Description",
+      "basicInfo": "Basic Information",
+      "title": "Company",
+      "info": "Company Information",
+      "size": "Company Size",
+      "sizePlaceholder": "Please select",
+      "sizeLessThan10": "Less than 10",
+      "sizeMoreThan50000": "More than 50,000",
+      "industry": "Company Industry",
+      "industryRequired": "Please select company industry",
+      "industryPlaceholder": "Please select",
+      "benefits": "Company Benefits",
+      "benefitDescriptionPlaceholder": "Enter benefit description",
+      "addBenefit": "Add benefit",
+      "description": "Company Description",
+      "logo": "Company Logo",
+      "logoTooltip": "Drag and drop or click to upload image",
+      "backgroundImage": "Company Image",
+      "imageTooltip": "Drag and drop or click to upload image",
+      "websitePlaceholder": "Company website URL",
+      "video": "Company Video",
+      "videoPlaceholder": "Copy and paste your YouTube link here",
+      "address": "Company Address",
+      "addressPlaceholder": "Example: 130 Suong Nguyet Anh, Ben Thanh Ward, District 1",
+      "certificate": {
+        "title": "Business Certificate",
+        "uploadLabel": "Business Certificate Image",
+        "uploadTooltip": "Drag and drop or click to upload image",
+        "previewTitle": "Preview Image",
+        "previewAlt": "Business Certificate Preview",
+        "confirmModal": {
+          "title": "Confirm Information Submission",
+          "content": "By clicking confirm, you agree that failure to provide or providing incorrect information is considered a violation that may result in service suspension and/or account termination without refund. You can review the information provided"
+        }
+      },
+      "inforCompany": {
+        "aboutUs": "About Us",
+        "jobPositions": "Job Positions",
+        "companyInfo": "Company Information",
+        "size": "Size",
+        "industry": "Industry",
+        "contact": "Contact",
+        "phone": "Phone Number",
+        "email": "Email",
+        "address": "Address",
+        "viewOnMap": "View on map",
+        "website": "Website",
+        "detailedDescription": "Detailed Description",
+        "videoIntroduction": "Video Introduction",
+        "benefits": "Benefits",
+        "follow": "Follow",
+        "following": "Following",
+        "followers": "followers"
+      }
     }
   },
   "auth": {
@@ -1154,7 +1404,7 @@
       "fileChoose": "Choose or drag and drop your resume from your device",
       "fileSupport": "Only supports .doc, .docx, .pdf files with a size under 5MB",
       "fileType": "Only supports .doc, .docx, .pdf",
-      "fileMax": "File size exceeds limit"
+      "fileMax": "File size exceeds 5MB limit"
     },
     "form": {
       "title": "Title",
@@ -1412,9 +1662,19 @@
     "analysis": {
       "title": "CV Analysis with AI",
       "subtitle": "Let our AI analyze your CV and suggest suitable job opportunities for you",
+      "benefits": {
+        "aiTitle": "AI-Powered",
+        "aiDesc": "Our AI system analyzes your CV to identify your skills, experience, and qualifications, then matches them with the most suitable job openings in our database.",
+        "matchTitle": "Job Match",
+        "matchDesc": "We guarantee to keep your data private and not share your personal information with any third party.",
+        "insightsTitle": "Insights",
+        "insightsDesc": "We guarantee to keep your data private and not share your personal information with any third party."
+      },
       "info": {
         "title": "How it works",
-        "description": "Our AI system analyzes your CV to identify your skills, experience, and qualifications, then matches them with the most suitable job openings in our database."
+        "description": "Our AI system analyzes your CV to identify your skills, experience, and qualifications, then matches them with the most suitable job openings in our database.",
+        "privacyTitle": "Privacy",
+        "privacyDescription": "We guarantee to keep your data private and not share your personal information with any third party."
       },
       "tabs": {
         "existing": "Use Existing CV",
@@ -1443,8 +1703,20 @@
         "close": "Close",
         "viewAll": "View All Recommendations",
         "viewRecommended": "View Recommended Jobs",
-        "match": "Match"
+        "match": "Match",
+        "clickJobAlert": "Click job alert to view details",
+        "matchedSkills": "Matched Skills"
       }
+    },
+    "uploadCV": {
+      "title": "Resume Information",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "attachedResume": "Attached Resume",
+      "uploadedResume": "Uploaded Resumes",
+      "lastUpdated": "Last updated:",
+      "viewAsEmployer": "View as employer"
     }
   },
   "job": {
@@ -1798,6 +2070,16 @@
         "pending": "Pending",
         "approved": "Approved",
         "rejected": "Rejected"
+      },
+      "list": {
+        "title": "Company List",
+        "loading": "Loading companies...",
+        "errorLoading": "An error occurred while loading companies",
+        "noAddress": "No address updated",
+        "employees": "employees",
+        "noPhone": "No phone number updated",
+        "noWebsite": "No website updated",
+        "noCategory": "Uncategorized"
       }
     },
     "postApproval": {
@@ -2477,6 +2759,156 @@
     "contactUs": {
       "title": "Contact Us",
       "content": "If you have any questions about these Terms of Use, please contact us through the provided channels on our platform."
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "About UTE Career",
+      "description": "Connecting HCMC University of Technology and Education students with the best career opportunities"
+    },
+    "intro": {
+      "title": "Platform connecting students and employers",
+      "description": "UTE Career is a platform that connects students and alumni of HCMC University of Technology and Education with employers. We provide comprehensive support services to help students find suitable job opportunities and assist businesses in finding potential candidates."
+    },
+    "stats": {
+      "studentsEmployed": "Students employed",
+      "partnerCompanies": "Partner companies",
+      "recruitmentEvents": "Recruitment events per year",
+      "jobCount": "Job positions"
+    },
+    "services": {
+      "title": "Our Services",
+      "description": "UTE Career provides comprehensive services for both students and employers",
+      "forStudents": {
+        "title": "For Students & Alumni",
+        "subtitle": "Comprehensive support for your career journey",
+        "jobSearch": {
+          "title": "Job Search",
+          "description": "Access thousands of job opportunities relevant to your major"
+        },
+        "careerCounseling": {
+          "title": "Career Counseling",
+          "description": "Receive advice from experts on career orientation and development"
+        },
+        "cvSupport": {
+          "title": "CV Support",
+          "description": "Get assistance in building and perfecting a professional CV"
+        },
+        "skillAssessment": {
+          "title": "Skills Assessment",
+          "description": "Participate in assessments to understand your strengths and development opportunities"
+        }
+      },
+      "forEmployers": {
+        "title": "For Employers",
+        "subtitle": "Access quality candidates from HCMUTE",
+        "postJobs": {
+          "title": "Post Jobs",
+          "description": "Post job listings and reach thousands of students and alumni"
+        },
+        "findCandidates": {
+          "title": "Find Candidates",
+          "description": "Search for potential candidates that match your recruitment needs"
+        },
+        "campusRecruitment": {
+          "title": "Campus Recruitment",
+          "description": "Participate in direct recruitment events at the university to meet candidates"
+        },
+        "branding": {
+          "title": "Employer Branding",
+          "description": "Promote your employer brand to students and alumni"
+        }
+      }
+    },
+    "events": {
+      "title": "Regular Events",
+      "description": "UTE Career organizes many events to connect students with career opportunities",
+      "jobFair": {
+        "title": "UTE Job Fair",
+        "schedule": "April and October annually",
+        "description": "The largest recruitment event of the year with the participation of over 50 businesses and thousands of job opportunities."
+      },
+      "skillsWorkshop": {
+        "title": "Skills Workshop",
+        "schedule": "Monthly",
+        "description": "Workshops on soft skills and professional expertise to help students best prepare for their career journey."
+      },
+      "companySeminar": {
+        "title": "Company Seminars",
+        "schedule": "Regularly",
+        "description": "Opportunities to meet and learn about internship and job opportunities from leading partner companies."
+      },
+      "learnMore": "Learn more"
+    },
+    "registration": {
+      "title": "Registration Process",
+      "description": "A simple process to start using UTE Career services",
+      "forStudents": {
+        "title": "For Students & Alumni",
+        "steps": {
+          "step1": {
+            "title": "Create an account",
+            "description": "Register an account on the website with your university email (@student.hcmute.edu.vn)"
+          },
+          "step2": {
+            "title": "Complete your profile",
+            "description": "Update your personal information, education, skills, and experience"
+          },
+          "step3": {
+            "title": "Search for jobs",
+            "description": "Find jobs that match your major and skills"
+          },
+          "step4": {
+            "title": "Apply",
+            "description": "Apply for suitable positions and track your application status"
+          }
+        },
+        "registerNow": "Register now"
+      },
+      "forEmployers": {
+        "title": "For Employers",
+        "steps": {
+          "step1": {
+            "title": "Create a company account",
+            "description": "Register a company account on the website with accurate information"
+          },
+          "step2": {
+            "title": "Verify your account",
+            "description": "Your company account will be verified by administrators"
+          },
+          "step3": {
+            "title": "Complete company information",
+            "description": "Update detailed information about your company and field of activity"
+          },
+          "step4": {
+            "title": "Post jobs",
+            "description": "Post job listings and manage candidates through the system"
+          }
+        },
+        "registerNow": "Register now"
+      }
+    },
+    "contact": {
+      "title": "Contact Us",
+      "description": "If you have any questions, don't hesitate to contact us. The UTE Career team is always ready to assist you.",
+      "address": {
+        "title": "Address",
+        "value": "Room A1-805, 1 Vo Van Ngan Street, Linh Chieu Ward, Thu Duc City, HCMC"
+      },
+      "email": {
+        "title": "Email",
+        "value": "support@utecareer.edu.vn"
+      },
+      "hotline": {
+        "title": "Hotline",
+        "value": "028.1234.5678"
+      },
+      "workingHours": {
+        "title": "Working Hours",
+        "weekdays": "Monday-Friday: 8:00-17:00",
+        "saturday": "Saturday: 8:00-12:00"
+      },
+      "sendMessage": "Send message"
     }
   }
 }

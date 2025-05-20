@@ -5,7 +5,7 @@ const company = {
     return axios.get(`employers/get-company?id=${id}`);
   },
   getAllCompanyforStudent: (params) => {
-    return axios.get(`employers/get-all-company`, { params });
+    return axios.get(`employers/get-all-employers`, { params });
   },
 };
 export default company;

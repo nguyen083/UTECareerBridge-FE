@@ -33,10 +33,13 @@ import {
 } from "@ant-design/icons";
 import { Link } from "react-router-dom";
 import { useAbout } from "../../composables/about";
+import { useTranslation } from "react-i18next";
+
 const { Content } = Layout;
 const { Title, Text, Paragraph } = Typography;
 
 const AboutPage = () => {
+  const { t } = useTranslation();
   const { data, isLoading } = useAbout();
   console.log(data);
   return (
@@ -47,11 +50,10 @@ const AboutPage = () => {
           <div className="absolute inset-0 opacity-20"></div>
           <div className="relative z-10 max-w-3xl px-4 mx-auto">
             <Title level={1} className="mb-6 !text-white">
-              Về UTE Career
+              {t("about.hero.title")}
             </Title>
             <Paragraph className="mb-8 text-xl text-white">
-              Kết nối sinh viên Đại học Sư phạm Kỹ thuật TP.HCM với cơ hội nghề
-              nghiệp tốt nhất
+              {t("about.hero.description")}
             </Paragraph>
           </div>
           <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-gray-200 to-transparent"></div>
@@ -63,14 +65,10 @@ const AboutPage = () => {
             <Row gutter={[48, 48]} align="middle">
               <Col xs={24} md={12}>
                 <Title level={2} className="mb-6 !text-text-color">
-                  Nền tảng kết nối sinh viên và nhà tuyển dụng
+                  {t("about.intro.title")}
                 </Title>
                 <Paragraph className="mb-6 text-lg text-gray-600">
-                  UTE Career là nền tảng kết nối sinh viên, cựu sinh viên trường
-                  Đại học Sư phạm Kỹ thuật TP.HCM với các nhà tuyển dụng. Chúng
-                  tôi cung cấp các dịch vụ hỗ trợ toàn diện để giúp sinh viên
-                  tìm kiếm cơ hội việc làm phù hợp và hỗ trợ doanh nghiệp tìm
-                  kiếm ứng viên tiềm năng.
+                  {t("about.intro.description")}
                 </Paragraph>
                 <Row gutter={[16, 16]}>
                   <Col xs={12}>
@@ -81,7 +79,7 @@ const AboutPage = () => {
                           className="ml-4"
                           title={
                             <Title level={5} className="!text-text-color">
-                              Sinh viên đã tìm được việc làm
+                              {t("about.stats.studentsEmployed")}
                             </Title>
                           }
                           valueRender={() =>
@@ -105,7 +103,7 @@ const AboutPage = () => {
                           className="ml-4"
                           title={
                             <Title level={5} className="!text-text-color">
-                              Doanh nghiệp đối tác
+                              {t("about.stats.partnerCompanies")}
                             </Title>
                           }
                           valueRender={() =>
@@ -129,7 +127,7 @@ const AboutPage = () => {
                           className="ml-4"
                           title={
                             <Title level={5} className="!text-text-color">
-                              Sự kiện tuyển dụng mỗi năm
+                              {t("about.stats.recruitmentEvents")}
                             </Title>
                           }
                           valueRender={() =>
@@ -153,7 +151,7 @@ const AboutPage = () => {
                           className="ml-4"
                           title={
                             <Title level={5} className="!text-text-color">
-                              Số công việc
+                              {t("about.stats.jobCount")}
                             </Title>
                           }
                           valueRender={() =>
@@ -172,14 +170,12 @@ const AboutPage = () => {
                 </Row>
               </Col>
               <Col xs={24} md={12}>
-                <div className="relative overflow-hidden shadow-xl h-96 rounded-xl">
-                  <Image
-                    src="https://reviewedu.net/wp-content/uploads/2021/08/dh-su-pham-ky-thuat-hcm1.jpg"
-                    alt="UTE Career Team"
-                    preview={false}
-                    className="object-cover opacity-90"
-                  />
-                </div>
+                <Image
+                  src="https://reviewedu.net/wp-content/uploads/2021/08/dh-su-pham-ky-thuat-hcm1.jpg"
+                  alt="UTE Career Team"
+                  preview={false}
+                  className="object-cover opacity-90 rounded-xl"
+                />
               </Col>
             </Row>
           </div>
@@ -190,11 +186,10 @@ const AboutPage = () => {
           <div className="container px-4 mx-auto max-w-7xl">
             <div className="mb-12 text-center">
               <Title level={2} className="mb-4 !text-text-color">
-                Dịch vụ của chúng tôi
+                {t("about.services.title")}
               </Title>
               <Paragraph className="max-w-2xl mx-auto text-gray-600">
-                UTE Career cung cấp các dịch vụ toàn diện cho cả sinh viên và
-                nhà tuyển dụng
+                {t("about.services.description")}
               </Paragraph>
             </div>
 
@@ -207,10 +202,10 @@ const AboutPage = () => {
                 >
                   <div className="p-6 text-white bg-blue-500">
                     <Title level={3} className="m-0 !text-white">
-                      Dành cho sinh viên & cựu sinh viên
+                      {t("about.services.forStudents.title")}
                     </Title>
                     <Text className="text-white">
-                      Hỗ trợ toàn diện cho hành trình nghề nghiệp của bạn
+                      {t("about.services.forStudents.subtitle")}
                     </Text>
                   </div>
                   <div className="p-6">
@@ -219,27 +214,39 @@ const AboutPage = () => {
                       dataSource={[
                         {
                           icon: <SearchOutlined />,
-                          title: "Tìm kiếm việc làm",
-                          description:
-                            "Tiếp cận hàng nghìn cơ hội việc làm phù hợp với chuyên ngành của bạn",
+                          title: t(
+                            "about.services.forStudents.jobSearch.title"
+                          ),
+                          description: t(
+                            "about.services.forStudents.jobSearch.description"
+                          ),
                         },
                         {
                           icon: <MessageOutlined />,
-                          title: "Tư vấn nghề nghiệp",
-                          description:
-                            "Nhận tư vấn từ các chuyên gia về định hướng nghề nghiệp và phát triển sự nghiệp",
+                          title: t(
+                            "about.services.forStudents.careerCounseling.title"
+                          ),
+                          description: t(
+                            "about.services.forStudents.careerCounseling.description"
+                          ),
                         },
                         {
                           icon: <FileTextOutlined />,
-                          title: "Hỗ trợ CV",
-                          description:
-                            "Được hỗ trợ xây dựng và hoàn thiện CV chuyên nghiệp",
+                          title: t(
+                            "about.services.forStudents.cvSupport.title"
+                          ),
+                          description: t(
+                            "about.services.forStudents.cvSupport.description"
+                          ),
                         },
                         {
                           icon: <BarChartOutlined />,
-                          title: "Đánh giá năng lực",
-                          description:
-                            "Tham gia các bài đánh giá để hiểu rõ điểm mạnh và cơ hội phát triển",
+                          title: t(
+                            "about.services.forStudents.skillAssessment.title"
+                          ),
+                          description: t(
+                            "about.services.forStudents.skillAssessment.description"
+                          ),
                         },
                       ]}
                       renderItem={(item) => (
@@ -268,10 +275,10 @@ const AboutPage = () => {
                 >
                   <div className="p-6 text-white bg-indigo-600">
                     <Title level={3} className="m-0 !text-white">
-                      Dành cho nhà tuyển dụng
+                      {t("about.services.forEmployers.title")}
                     </Title>
                     <Text className="text-white">
-                      Tiếp cận nguồn ứng viên chất lượng từ HCMUTE
+                      {t("about.services.forEmployers.subtitle")}
                     </Text>
                   </div>
                   <div className="p-6">
@@ -280,27 +287,39 @@ const AboutPage = () => {
                       dataSource={[
                         {
                           icon: <EditOutlined />,
-                          title: "Đăng tin tuyển dụng",
-                          description:
-                            "Đăng tin tuyển dụng và tiếp cận hàng nghìn sinh viên và cựu sinh viên",
+                          title: t(
+                            "about.services.forEmployers.postJobs.title"
+                          ),
+                          description: t(
+                            "about.services.forEmployers.postJobs.description"
+                          ),
                         },
                         {
                           icon: <TeamOutlined />,
-                          title: "Tìm kiếm ứng viên",
-                          description:
-                            "Tìm kiếm ứng viên tiềm năng phù hợp với nhu cầu tuyển dụng của doanh nghiệp",
+                          title: t(
+                            "about.services.forEmployers.findCandidates.title"
+                          ),
+                          description: t(
+                            "about.services.forEmployers.findCandidates.description"
+                          ),
                         },
                         {
                           icon: <ShopOutlined />,
-                          title: "Tổ chức tuyển dụng tại trường",
-                          description:
-                            "Tham gia các sự kiện tuyển dụng trực tiếp tại trường để gặp gỡ ứng viên",
+                          title: t(
+                            "about.services.forEmployers.campusRecruitment.title"
+                          ),
+                          description: t(
+                            "about.services.forEmployers.campusRecruitment.description"
+                          ),
                         },
                         {
                           icon: <BulbOutlined />,
-                          title: "Xây dựng thương hiệu",
-                          description:
-                            "Quảng bá thương hiệu nhà tuyển dụng đến sinh viên và cựu sinh viên",
+                          title: t(
+                            "about.services.forEmployers.branding.title"
+                          ),
+                          description: t(
+                            "about.services.forEmployers.branding.description"
+                          ),
                         },
                       ]}
                       renderItem={(item) => (
@@ -329,11 +348,10 @@ const AboutPage = () => {
           <div className="container px-4 mx-auto max-w-7xl">
             <div className="mb-12 text-center">
               <Title level={2} className="mb-4">
-                Sự kiện thường xuyên
+                {t("about.events.title")}
               </Title>
               <Paragraph className="max-w-2xl mx-auto text-gray-600">
-                UTE Career tổ chức nhiều sự kiện để kết nối sinh viên với cơ hội
-                nghề nghiệp
+                {t("about.events.description")}
               </Paragraph>
             </div>
 
@@ -353,7 +371,7 @@ const AboutPage = () => {
                       <div className="absolute bottom-0 flex items-end bg-gradient-to-t from-black/70 to-transparent">
                         <div className="p-6 text-white">
                           <Title level={3} className="!text-white ">
-                            Ngày hội việc làm UTE Job Fair
+                            {t("about.events.jobFair.title")}
                           </Title>
                         </div>
                       </div>
@@ -363,17 +381,17 @@ const AboutPage = () => {
                   <div className="p-6">
                     <div className="flex items-center mb-4 text-gray-500">
                       <CalendarOutlined className="mr-2" />
-                      <Text>Tháng 4 và tháng 10 hàng năm</Text>
+                      <Text>{t("about.events.jobFair.schedule")}</Text>
                     </div>
                     <Paragraph className="mb-4 text-gray-600">
-                      Sự kiện tuyển dụng lớn nhất trong năm với sự tham gia của
-                      hơn 50 doanh nghiệp và hàng nghìn cơ hội việc làm.
+                      {t("about.events.jobFair.description")}
                     </Paragraph>
                     <Link
                       to="/event?eventType=CAREER_FAIR"
                       className="inline-flex items-center font-medium text-blue-500 hover:text-blue-600"
                     >
-                      Tìm hiểu thêm <RightOutlined className="ml-1" />
+                      {t("about.events.learnMore")}{" "}
+                      <RightOutlined className="ml-1" />
                     </Link>
                   </div>
                 </Card>
@@ -394,7 +412,7 @@ const AboutPage = () => {
                       <div className="absolute bottom-0 left-0 right-0 flex items-end bg-gradient-to-t from-black/70 to-transparent">
                         <div className="p-6 text-white">
                           <Title level={3} className="!text-white">
-                            Workshop kỹ năng
+                            {t("about.events.skillsWorkshop.title")}
                           </Title>
                         </div>
                       </div>
@@ -404,17 +422,17 @@ const AboutPage = () => {
                   <div className="p-6">
                     <div className="flex items-center mb-4 text-gray-500">
                       <CalendarOutlined className="mr-2" />
-                      <Text>Hàng tháng</Text>
+                      <Text>{t("about.events.skillsWorkshop.schedule")}</Text>
                     </div>
                     <Paragraph className="mb-4 text-gray-600">
-                      Các buổi workshop về kỹ năng mềm và chuyên môn giúp sinh
-                      viên chuẩn bị tốt nhất cho hành trình nghề nghiệp.
+                      {t("about.events.skillsWorkshop.description")}
                     </Paragraph>
                     <Link
                       to="/event?eventType=WORKSHOP"
                       className="inline-flex items-center font-medium text-blue-500 hover:text-blue-600"
                     >
-                      Tìm hiểu thêm <RightOutlined className="ml-1" />
+                      {t("about.events.learnMore")}{" "}
+                      <RightOutlined className="ml-1" />
                     </Link>
                   </div>
                 </Card>
@@ -435,7 +453,7 @@ const AboutPage = () => {
                       <div className="absolute bottom-0 left-0 right-0 flex items-end bg-gradient-to-t from-black/70 to-transparent">
                         <div className="p-6 text-white">
                           <Title level={3} className="!text-white">
-                            Hội thảo doanh nghiệp
+                            {t("about.events.companySeminar.title")}
                           </Title>
                         </div>
                       </div>
@@ -445,17 +463,17 @@ const AboutPage = () => {
                   <div className="p-6">
                     <div className="flex items-center mb-4 text-gray-500">
                       <CalendarOutlined className="mr-2" />
-                      <Text>Thường xuyên</Text>
+                      <Text>{t("about.events.companySeminar.schedule")}</Text>
                     </div>
                     <Paragraph className="mb-4 text-gray-600">
-                      Cơ hội gặp gỡ và tìm hiểu về cơ hội thực tập và việc làm
-                      từ các doanh nghiệp đối tác hàng đầu.
+                      {t("about.events.companySeminar.description")}
                     </Paragraph>
                     <Link
                       to="/event?eventType=SEMINAR"
                       className="inline-flex items-center font-medium text-blue-500 hover:text-blue-600"
                     >
-                      Tìm hiểu thêm <RightOutlined className="ml-1" />
+                      {t("about.events.learnMore")}{" "}
+                      <RightOutlined className="ml-1" />
                     </Link>
                   </div>
                 </Card>
@@ -469,10 +487,10 @@ const AboutPage = () => {
           <div className="container px-4 mx-auto max-w-7xl">
             <div className="mb-12 text-center">
               <Title level={2} className="mb-4">
-                Quy trình đăng ký
+                {t("about.registration.title")}
               </Title>
               <Paragraph className="max-w-2xl mx-auto text-gray-600">
-                Quy trình đơn giản để bắt đầu sử dụng dịch vụ của UTE Career
+                {t("about.registration.description")}
               </Paragraph>
             </div>
 
@@ -482,34 +500,46 @@ const AboutPage = () => {
                 <Card className="flex flex-col justify-start h-full p-8 shadow-md rounded-xl">
                   <Title level={3} className="flex items-center mb-6">
                     <UserOutlined className="mr-2 text-blue-500" />
-                    Dành cho sinh viên & cựu sinh viên
+                    {t("about.registration.forStudents.title")}
                   </Title>
 
                   <div className="space-y-8">
                     {[
                       {
                         step: 1,
-                        title: "Đăng ký tài khoản",
-                        description:
-                          "Đăng ký tài khoản trên website với email trường (@student.hcmute.edu.vn)",
+                        title: t(
+                          "about.registration.forStudents.steps.step1.title"
+                        ),
+                        description: t(
+                          "about.registration.forStudents.steps.step1.description"
+                        ),
                       },
                       {
                         step: 2,
-                        title: "Hoàn thiện hồ sơ",
-                        description:
-                          "Cập nhật thông tin cá nhân, học vấn, kỹ năng và kinh nghiệm",
+                        title: t(
+                          "about.registration.forStudents.steps.step2.title"
+                        ),
+                        description: t(
+                          "about.registration.forStudents.steps.step2.description"
+                        ),
                       },
                       {
                         step: 3,
-                        title: "Tìm kiếm việc làm",
-                        description:
-                          "Tìm kiếm việc làm phù hợp với chuyên ngành và kỹ năng của bạn",
+                        title: t(
+                          "about.registration.forStudents.steps.step3.title"
+                        ),
+                        description: t(
+                          "about.registration.forStudents.steps.step3.description"
+                        ),
                       },
                       {
                         step: 4,
-                        title: "Ứng tuyển",
-                        description:
-                          "Ứng tuyển vào các vị trí phù hợp và theo dõi trạng thái ứng tuyển",
+                        title: t(
+                          "about.registration.forStudents.steps.step4.title"
+                        ),
+                        description: t(
+                          "about.registration.forStudents.steps.step4.description"
+                        ),
                       },
                     ].map((item) => (
                       <div className="flex" key={item.step}>
@@ -534,7 +564,9 @@ const AboutPage = () => {
                       size="large"
                       className="!bg-blue-500 !border-blue-500 hover:!bg-blue-600 hover:!border-blue-600"
                     >
-                      <Link to="/register">Đăng ký ngay</Link>
+                      <Link to="/register">
+                        {t("about.registration.forStudents.registerNow")}
+                      </Link>
                     </Button>
                   </div>
                 </Card>
@@ -553,34 +585,46 @@ const AboutPage = () => {
                 >
                   <Title level={3} className="flex items-center mb-6">
                     <BankOutlined className="mr-2 text-indigo-600" />
-                    Dành cho nhà tuyển dụng
+                    {t("about.registration.forEmployers.title")}
                   </Title>
 
                   <div className="space-y-8 ">
                     {[
                       {
                         step: 1,
-                        title: "Đăng ký tài khoản doanh nghiệp",
-                        description:
-                          "Đăng ký tài khoản doanh nghiệp trên website với thông tin chính xác",
+                        title: t(
+                          "about.registration.forEmployers.steps.step1.title"
+                        ),
+                        description: t(
+                          "about.registration.forEmployers.steps.step1.description"
+                        ),
                       },
                       {
                         step: 2,
-                        title: "Xác minh tài khoản",
-                        description:
-                          "Tài khoản doanh nghiệp sẽ được xác minh bởi quản trị viên",
+                        title: t(
+                          "about.registration.forEmployers.steps.step2.title"
+                        ),
+                        description: t(
+                          "about.registration.forEmployers.steps.step2.description"
+                        ),
                       },
                       {
                         step: 3,
-                        title: "Hoàn thiện thông tin doanh nghiệp",
-                        description:
-                          "Cập nhật thông tin chi tiết về doanh nghiệp và lĩnh vực hoạt động",
+                        title: t(
+                          "about.registration.forEmployers.steps.step3.title"
+                        ),
+                        description: t(
+                          "about.registration.forEmployers.steps.step3.description"
+                        ),
                       },
                       {
                         step: 4,
-                        title: "Đăng tin tuyển dụng",
-                        description:
-                          "Đăng tin tuyển dụng và quản lý ứng viên trên hệ thống",
+                        title: t(
+                          "about.registration.forEmployers.steps.step4.title"
+                        ),
+                        description: t(
+                          "about.registration.forEmployers.steps.step4.description"
+                        ),
                       },
                     ].map((item) => (
                       <div className="flex" key={item.step}>
@@ -605,7 +649,9 @@ const AboutPage = () => {
                       size="large"
                       className="!bg-indigo-600 !border-indigo-600 hover:!bg-indigo-700 hover:!border-indigo-700"
                     >
-                      <Link to="/employer/register">Đăng ký ngay</Link>
+                      <Link to="/employer/register">
+                        {t("about.registration.forEmployers.registerNow")}
+                      </Link>
                     </Button>
                   </div>
                 </Card>
@@ -625,11 +671,10 @@ const AboutPage = () => {
                 <Col xs={24} md={12}>
                   <div className="p-8 md:p-12">
                     <Title level={2} className="mb-6">
-                      Liên hệ với chúng tôi
+                      {t("about.contact.title")}
                     </Title>
                     <Paragraph className="mb-8 text-gray-600">
-                      Nếu bạn có bất kỳ câu hỏi nào, đừng ngần ngại liên hệ với
-                      chúng tôi. Đội ngũ UTE Career luôn sẵn sàng hỗ trợ bạn.
+                      {t("about.contact.description")}
                     </Paragraph>
 
                     <div className="space-y-6">
@@ -639,11 +684,10 @@ const AboutPage = () => {
                         </div>
                         <div>
                           <Text strong className="block mb-1">
-                            Địa chỉ
+                            {t("about.contact.address.title")}
                           </Text>
                           <Text className="text-gray-600">
-                            Phòng A1-805, số 1 Võ Văn Ngân, P. Linh Chiểu, TP.
-                            Thủ Đức, TP.HCM
+                            {t("about.contact.address.value")}
                           </Text>
                         </div>
                       </div>
@@ -654,10 +698,10 @@ const AboutPage = () => {
                         </div>
                         <div>
                           <Text strong className="block mb-1">
-                            Email
+                            {t("about.contact.email.title")}
                           </Text>
                           <Text className="text-gray-600">
-                            support@utecareer.edu.vn
+                            {t("about.contact.email.value")}
                           </Text>
                         </div>
                       </div>
@@ -668,9 +712,11 @@ const AboutPage = () => {
                         </div>
                         <div>
                           <Text strong className="block mb-1">
-                            Hotline
+                            {t("about.contact.hotline.title")}
                           </Text>
-                          <Text className="text-gray-600">028.1234.5678</Text>
+                          <Text className="text-gray-600">
+                            {t("about.contact.hotline.value")}
+                          </Text>
                         </div>
                       </div>
 
@@ -680,12 +726,12 @@ const AboutPage = () => {
                         </div>
                         <div>
                           <Text strong className="block mb-1">
-                            Giờ làm việc
+                            {t("about.contact.workingHours.title")}
                           </Text>
                           <Text className="text-gray-600 whitespace-pre-line">
-                            Thứ 2-6: 8h00-17h00
+                            {t("about.contact.workingHours.weekdays")}
                             <br />
-                            Thứ 7: 8h00-12h00
+                            {t("about.contact.workingHours.saturday")}
                           </Text>
                         </div>
                       </div>
@@ -698,7 +744,7 @@ const AboutPage = () => {
                         className="border-blue-500 bg-card-color0 hover:bg-blue-600 hover:border-blue-600"
                       >
                         <Link to="/contact" className="flex items-center">
-                          Gửi tin nhắn
+                          {t("about.contact.sendMessage")}
                           <MessageOutlined className="ml-2" />
                         </Link>
                       </Button> */}

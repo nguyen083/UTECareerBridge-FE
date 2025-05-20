@@ -26,3 +26,12 @@ export const useRecruimentPerformance = () => {
     refetchOnWindowFocus: false,
   });
 };
+
+export const useRecommendJob = (userId) => {
+  return useQuery({
+    queryKey: ["recommendJob", userId],
+    queryFn: () => job.getRecommendJob(userId),
+    refetchOnWindowFocus: false,
+    select: (res) => res.data,
+  });
+};

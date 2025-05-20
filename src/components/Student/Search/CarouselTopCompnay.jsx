@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getAds } from "../../../services/apiService";
 import "./CarouselTopCompnay.scss";
+import { useTranslation } from "react-i18next";
 const { Meta } = Card;
 const { Text } = Typography;
 const CarouselTopCompnay = () => {
   const navigate = useNavigate();
   const [companies, setCompanies] = useState([]);
+  const { t } = useTranslation();
 
   const fetchData = async () => {
     getAds().then((res) => {
@@ -24,7 +26,7 @@ const CarouselTopCompnay = () => {
   }, []);
   return (
     <Card
-      title={<Text className="title2">Công ty hàng đầu</Text>}
+      title={<Text className="title2">{t("top_companies")}</Text>}
       className="border shadow carousel-top-company"
     >
       <Carousel
@@ -70,7 +72,7 @@ const CarouselTopCompnay = () => {
                     }}
                     type="primary"
                   >
-                    Xem thêm
+                    {t("common.seeMore")}
                   </Button>
                 </div>
               }

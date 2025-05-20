@@ -96,6 +96,12 @@ const PopoverCategory = () => {
             {t("student.layout.events.all")}
           </Button>
         </Col>
+        <Col span={8}>
+          <Title level={5}>{t("student.layout.company.title")}</Title>
+          <Button size="large" type="text" onClick={() => navigate("/company")}>
+            {t("student.layout.company.all")}
+          </Button>
+        </Col>
       </Row>
     </div>
   );

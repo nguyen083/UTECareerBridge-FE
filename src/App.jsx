@@ -56,6 +56,9 @@ const EditJobAlert = lazy(() =>
 const TermsOfUse = lazy(() => import("./components/Generate/TermsOfUse.jsx"));
 import Policy from "./components/Generate/Policy.jsx";
 import { refreshToken, setupTokenRefresh } from "./utils/axiosCustomize.jsx";
+const CompanyList = lazy(() =>
+  import("./components/Generate/Company/CompanyList.jsx")
+);
 // import CreatePostPage from './pages/Forum/create/CreatePostPage.jsx';
 
 const GoogleAuthCallback = lazy(() =>
@@ -226,9 +229,6 @@ const DetailNotification = lazy(() =>
 const CVBuilderPage = lazy(() =>
   import("./components/Student/CV/CVBuilderPage.jsx")
 );
-const InterviewEvaluation = lazy(() =>
-  import("./components/Employer/Interview/InterviewEvaluation.jsx")
-);
 
 const App = () => {
   const lang = useSelector((state) => state.web.lang || "en");
@@ -242,34 +242,20 @@ const App = () => {
       const isExpired = isTokenExpired(token);
 
       if (isExpired) {
-        refreshToken()
-          .then(() => {
-            console.log("Token refreshed successfully");
-            // Kết nối WebSocket sau khi refresh token thành công
-            connectStomp(() => {
-              console.log("WebSocket connected after token refresh");
-            });
-          })
-          .catch((error) => {
-            console.error("Failed to refresh token:", error);
-            // Không kết nối WebSocket với token không hợp lệ
-          });
-      } else {
-        // Token hợp lệ, kết nối WebSocket
-        connectStomp(() => {
-          console.log("WebSocket connected with valid token");
-        });
+        refreshToken();
+        // Thiết lập cơ chế tự động refresh token trước khi hết hạn
+        const cleanupTokenRefresh = setupTokenRefresh();
+        return () => {
+          // Dọn dẹp khi component unmount
+          disconnectStomp();
+          cleanupTokenRefresh();
+        };
       }
-
-      // Thiết lập cơ chế tự động refresh token trước khi hết hạn
-      const cleanupTokenRefresh = setupTokenRefresh();
-
-      return () => {
-        // Dọn dẹp khi component unmount
-        disconnectStomp();
-        cleanupTokenRefresh();
-      };
     }
+    return () => {
+      // Dọn dẹp khi component unmount
+      disconnectStomp();
+    };
   }, []);
 
   const isTokenExpired = (token) => {
@@ -422,12 +408,14 @@ const App = () => {
                   <Route element={<StudentLayout />}>
                     <Route index element={<Navigate to={"/home"} replace />} />
                     <Route path="/home" element={<HomePage />} />
-                    <Route path="/event" element={<EventPage />}></Route>
+
                     <Route
                       path="/vnpay-payment-return"
                       element={<PaymentReturn />}
                     />
                     <Route element={<ViewLayout width="90%" />}>
+                      <Route path="/event" element={<EventPage />}></Route>
+                      <Route path="/company" element={<CompanyList />} />
                       <Route
                         path="/event-detail/:id"
                         element={<EventDetail />}

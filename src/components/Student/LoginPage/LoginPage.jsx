@@ -55,7 +55,6 @@ const LoginPage = () => {
       let res = await studentLogin(updatedValues);
       if (res.status === "OK") {
         form.resetFields();
-        message.success(res.message);
         await setToken(res.data.token, res.data.refresh_token);
         login(res);
         if (res.data.roles.roleName === "student") {
@@ -63,8 +62,6 @@ const LoginPage = () => {
         } else if (res.data.roles.roleName === "admin") {
           navigate("/admin");
         }
-      } else {
-        message.error(res.message);
       }
     } catch (err) {
       console.error(err);

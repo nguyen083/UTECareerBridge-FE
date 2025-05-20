@@ -18,10 +18,12 @@ import BoxContainer from "../../Generate/BoxContainer";
 import { getAllEvent } from "../../../services/apiService";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { FaFilter } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 const { Text } = Typography;
 
 const EventPage = () => {
+  const { t } = useTranslation();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -93,23 +95,31 @@ const EventPage = () => {
       <Flex className="mb-6" justify="space-between" align="center">
         <BoxContainer width="100%">
           <Flex justify="space-between" align="center">
-            <div className="title1">Danh Sách Sự Kiện</div>
+            <div className="title1">{t("student.event.title")}</div>
             <Select
               size="large"
               allowClear
               style={{ width: 200 }}
-              placeholder="Lọc theo loại"
+              placeholder={t("student.event.filterByType")}
               onChange={handleEventTypeChange}
               value={eventType}
               prefix={<FaFilter color="#1E4F94" style={{ marginRight: 8 }} />}
             >
-              <Select.Option value="SEMINAR">Hội thảo</Select.Option>
-              <Select.Option value="CONFERENCE">Hội nghị</Select.Option>
-              <Select.Option value="WORKSHOP">Hội thảo chuyên đề</Select.Option>
-              <Select.Option value="CAREER_FAIR">
-                Hội chợ việc làm
+              <Select.Option value="SEMINAR">
+                {t("student.event.eventTypes.seminar")}
               </Select.Option>
-              <Select.Option value="WEBINAR">Hội thảo trực tuyến</Select.Option>
+              <Select.Option value="CONFERENCE">
+                {t("student.event.eventTypes.conference")}
+              </Select.Option>
+              <Select.Option value="WORKSHOP">
+                {t("student.event.eventTypes.workshop")}
+              </Select.Option>
+              <Select.Option value="CAREER_FAIR">
+                {t("student.event.eventTypes.careerFair")}
+              </Select.Option>
+              <Select.Option value="WEBINAR">
+                {t("student.event.eventTypes.webinar")}
+              </Select.Option>
             </Select>
           </Flex>
         </BoxContainer>
@@ -169,13 +179,7 @@ const EventPage = () => {
             </Row>
 
             {/* Phân trang */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: "24px",
-              }}
-            >
+            <div className="flex justify-end mt-4">
               <Pagination
                 current={page}
                 pageSize={size}
@@ -188,7 +192,7 @@ const EventPage = () => {
             </div>
           </>
         ) : (
-          <Empty description="Không tìm thấy sự kiện" />
+          <Empty description={t("student.event.noEvents")} />
         )}
       </BoxContainer>
     </div>

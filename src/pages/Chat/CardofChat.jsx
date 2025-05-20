@@ -173,10 +173,6 @@ const ListConversation = () => {
         });
       });
     });
-
-    return () => {
-      unsubscribeFromTopic(ListConversationTopic + senderId);
-    };
   }, [senderId]);
 
   const ChooseItem = (item) => {

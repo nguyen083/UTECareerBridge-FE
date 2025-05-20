@@ -49,10 +49,13 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import { ModalApply } from "../Generate/ModalApply";
 import { useSelector } from "react-redux";
 import "./ViewJob.scss";
+import { useTranslation } from "react-i18next";
+import clsx from "clsx";
 
 const { Text, Title } = Typography;
 const { Meta } = Card;
 const ViewJob = () => {
+  const { t } = useTranslation();
   const user = useSelector((state) => state.user);
   const location = useLocation();
   const ref = useRef();
@@ -155,7 +158,7 @@ const ViewJob = () => {
       {
         key: "1",
         label: (
-          <BackgroundIcon lable={"NGÀY ĐĂNG"}>
+          <BackgroundIcon lable={t("employer.job.viewJob.jobLabels.postDate")}>
             <FaCalendarAlt />
           </BackgroundIcon>
         ),
@@ -164,7 +167,7 @@ const ViewJob = () => {
       {
         key: "2",
         label: (
-          <BackgroundIcon lable={"CẤP BẬC"}>
+          <BackgroundIcon lable={t("employer.job.viewJob.jobLabels.level")}>
             <FaUserTie />
           </BackgroundIcon>
         ),
@@ -173,7 +176,7 @@ const ViewJob = () => {
       {
         key: "3",
         label: (
-          <BackgroundIcon lable={"NGHÀNH NGHỀ"}>
+          <BackgroundIcon lable={t("employer.job.viewJob.jobLabels.category")}>
             <FaInbox />
           </BackgroundIcon>
         ),
@@ -182,7 +185,7 @@ const ViewJob = () => {
       {
         key: "4",
         label: (
-          <BackgroundIcon lable={"KĨ NĂNG"}>
+          <BackgroundIcon lable={t("employer.job.viewJob.jobLabels.skills")}>
             <FaReact />
           </BackgroundIcon>
         ),
@@ -199,7 +202,7 @@ const ViewJob = () => {
       {
         key: "5",
         label: (
-          <BackgroundIcon lable={"LĨNH VỰC"}>
+          <BackgroundIcon lable={t("employer.job.viewJob.jobLabels.industry")}>
             <FaCubes />
           </BackgroundIcon>
         ),
@@ -208,7 +211,9 @@ const ViewJob = () => {
       {
         key: "6",
         label: (
-          <BackgroundIcon lable={"SỐ LƯỢNG TUYỂN DỤNG"}>
+          <BackgroundIcon
+            lable={t("employer.job.viewJob.jobLabels.recruitmentCount")}
+          >
             <FaUsers />
           </BackgroundIcon>
         ),
@@ -217,7 +222,7 @@ const ViewJob = () => {
         ),
       },
     ]);
-  }, [job]);
+  }, [job, t]);
 
   const handleSave = () => {
     if (localStorage.getItem("accessToken")) {
@@ -250,14 +255,14 @@ const ViewJob = () => {
   useEffect(() => {
     if (notice != null) {
       if (notice?.status === "OK") {
-        message.success("Ứng tuyển thành công");
+        message.success(t("employer.job.viewJob.applySuccess"));
         setNotice(null);
       } else {
-        message.error("Hồ sơ đã được ứng tuyển");
+        message.error(t("employer.job.viewJob.alreadyApplied"));
         setNotice(null);
       }
     }
-  }, [notice]);
+  }, [notice, t]);
 
   const isDeadlineSoon = () => {
     if (!job.jobDeadline) return false;
@@ -276,10 +281,11 @@ const ViewJob = () => {
     <Flex align="center" className="deadline-info">
       <ClockCircleOutlined className="icon-small" />
       <Text>
-        Hết hạn ngày: <Text strong>{job.jobDeadline}</Text>
+        {t("employer.job.viewJob.deadline")}{" "}
+        <Text strong>{job.jobDeadline}</Text>
         {isDeadlineSoon() && (
           <Tag color="orange" style={{ marginLeft: 8 }}>
-            Sắp hết hạn
+            {t("employer.job.viewJob.deadlineSoon")}
           </Tag>
         )}
       </Text>
@@ -345,27 +351,32 @@ const ViewJob = () => {
                           }}
                           className="w-full"
                         >
-                          Nộp đơn ứng tuyển
+                          {t("employer.job.viewJob.applyButton")}
                         </Button>
                       </Col>
                       <Col xs={24} md={6}>
                         <Button
                           onClick={handleSave}
                           type={isSaved ? "primary" : "default"}
-                          ghost={isSaved}
-                          style={{ width: "100%" }}
+                          className={clsx(
+                            "w-full",
+                            !isSaved && "text-text-color"
+                          )}
                           size="large"
-                          className="save-button"
                         >
                           {isSaved ? <HeartFilled /> : <HeartOutlined />}{" "}
-                          {isSaved ? "Đã lưu" : "Lưu việc làm"}
+                          {isSaved
+                            ? t("job.save.saved")
+                            : t("job.save.saveJob")}
                         </Button>
                       </Col>
                     </Row>
                   </BoxContainer>
 
                   <Flex vertical gap="1.5rem" className="job-section">
-                    <div className="title2">Mô tả công việc</div>
+                    <div className="title2">
+                      {t("employer.job.viewJob.jobDescription")}
+                    </div>
 
                     <div className="px-3 py-1 content-block">
                       <HtmlContent htmlString={job.jobDescription} />
@@ -373,7 +384,9 @@ const ViewJob = () => {
                   </Flex>
 
                   <Flex vertical gap="1.5rem" className="job-section">
-                    <div className="title2">Yêu cầu công việc</div>
+                    <div className="title2">
+                      {t("employer.job.viewJob.jobRequirements")}
+                    </div>
                     <div className="px-3 py-1 content-block">
                       <HtmlContent htmlString={job.jobRequirements} />
                     </div>
@@ -385,7 +398,9 @@ const ViewJob = () => {
                       gap="1.5rem"
                       className="job-section benefits-section"
                     >
-                      <div className="title2">Phúc lợi dành cho bạn</div>
+                      <div className="title2">
+                        {t("employer.job.viewJob.benefits")}
+                      </div>
                       <Flex vertical gap={12} className="benefits-list">
                         {job?.benefitDetails?.map((benefit) => (
                           <BenefitComponent
@@ -400,7 +415,9 @@ const ViewJob = () => {
                   )}
 
                   <Flex vertical gap="1.5rem" className="job-section">
-                    <div className="title2">Thông tin làm việc</div>
+                    <div className="title2">
+                      {t("employer.job.viewJob.workInfo")}
+                    </div>
                     <Descriptions
                       items={items}
                       contentStyle={{ paddingLeft: 27 }}
@@ -417,7 +434,7 @@ const ViewJob = () => {
                         className="shadow related-jobs-card"
                         title={
                           <div className="card-title">
-                            Việc làm cùng công ty
+                            {t("employer.job.viewJob.sameCompanyJobs")}
                           </div>
                         }
                       >
@@ -437,255 +454,253 @@ const ViewJob = () => {
           {/* Cột phải - Sidebar */}
           <Col xs={24} md={8} lg={6}>
             <Row gutter={[0, 16]}>
-              <Card
-                className="shadow company-card"
-                style={{ width: "100%" }}
-                cover={
+              <Badge.Ribbon
+                text={t("employer.job.viewJob.verified")}
+                color="#52c41a"
+                style={{ fontSize: "14px", fontWeight: "500" }}
+              >
+                <Card
+                  className="shadow company-card"
+                  style={{ width: "100%" }}
+                  cover={
+                    <div
+                      className="company-header"
+                      style={{
+                        backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url(${
+                          company.backgroundImage ||
+                          "https://www.vietnamworks.com/_next/image?url=https%3A%2F%2Fimages.vietnamworks.com%2Fcompany-assets%2Fimages%2Fbanner-default-company.png&w=1920&q=75"
+                        })`,
+                        backgroundPosition: "center",
+                        backgroundSize: "cover",
+                        height: "140px",
+                        position: "relative",
+                      }}
+                    ></div>
+                  }
+                  bodyStyle={{
+                    padding: "0px",
+                    paddingTop: "45px",
+                    position: "relative",
+                  }}
+                >
+                  {/* Logo công ty nằm giữa ảnh bìa và bên dưới */}
                   <div
-                    className="company-header"
                     style={{
-                      backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4)), url(${
-                        company.backgroundImage ||
-                        "https://www.vietnamworks.com/_next/image?url=https%3A%2F%2Fimages.vietnamworks.com%2Fcompany-assets%2Fimages%2Fbanner-default-company.png&w=1920&q=75"
-                      })`,
-                      backgroundPosition: "center",
-                      backgroundSize: "cover",
-                      height: "140px",
-                      position: "relative",
+                      position: "absolute",
+                      top: "-45px",
+                      left: "50%",
+                      transform: "translateX(-50%)",
+                      zIndex: 2,
+                      display: "flex",
+                      justifyContent: "center",
+                      width: "100%",
                     }}
                   >
                     <div
-                      className="company-verified-badge"
-                      style={{ position: "absolute", top: 0, right: 0 }}
+                      style={{
+                        width: "90px",
+                        height: "90px",
+                        borderRadius: "10px",
+                        background: "white",
+                        padding: "8px",
+                        boxShadow: "0 4px 15px rgba(0, 0, 0, 0.15)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
                     >
-                      <Badge.Ribbon
-                        text="Đã xác minh"
-                        color="#52c41a"
-                        style={{ fontSize: "14px", fontWeight: "500" }}
+                      <Image
+                        preview={false}
+                        src={
+                          company.companyLogo ||
+                          "https://images.vietnamworks.com/img/company-default-logo.svg"
+                        }
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "contain",
+                        }}
                       />
                     </div>
                   </div>
-                }
-                bodyStyle={{
-                  padding: "0px",
-                  paddingTop: "45px",
-                  position: "relative",
-                }}
-              >
-                {/* Logo công ty nằm giữa ảnh bìa và bên dưới */}
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "-45px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    zIndex: 2,
-                    display: "flex",
-                    justifyContent: "center",
-                    width: "100%",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "90px",
-                      height: "90px",
-                      borderRadius: "10px",
-                      background: "white",
-                      padding: "8px",
-                      boxShadow: "0 4px 15px rgba(0, 0, 0, 0.15)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
+
+                  <Flex
+                    align="center"
+                    vertical
+                    className="company-profile-section"
                   >
-                    <Image
-                      preview={false}
-                      src={
-                        company.companyLogo ||
-                        "https://images.vietnamworks.com/img/company-default-logo.svg"
-                      }
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "contain",
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <Flex
-                  align="center"
-                  vertical
-                  className="company-profile-section"
-                >
-                  <div className="company-name-container">
-                    <Text
-                      onClick={() => handleToCompany(company.id)}
-                      strong
-                      className="company-name"
-                      style={{
-                        fontSize: "20px",
-                        margin: "0px 0 10px",
-                        display: "block",
-                        textAlign: "center",
-                      }}
-                    >
-                      {company.companyName}
-                    </Text>
-                  </div>
-
-                  <Divider style={{ margin: "8px 0 16px" }} />
-
-                  <div
-                    className="company-meta"
-                    style={{ width: "100%", padding: "0 20px" }}
-                  >
-                    <Flex
-                      align="center"
-                      gap={14}
-                      className="meta-item"
-                      style={{ marginBottom: "15px" }}
-                    >
-                      <div
-                        className="icon-wrapper"
+                    <div className="company-name-container">
+                      <Text
+                        onClick={() => handleToCompany(company.id)}
+                        strong
+                        className="company-name"
                         style={{
-                          backgroundColor: "rgba(24, 144, 255, 0.1)",
-                          borderRadius: "50%",
-                          width: "40px",
-                          height: "40px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
+                          fontSize: "20px",
+                          margin: "0px 0 10px",
+                          display: "block",
+                          textAlign: "center",
                         }}
                       >
-                        <EnvironmentOutlined
-                          className="meta-icon"
-                          style={{ fontSize: "20px", color: "#1890ff" }}
-                        />
-                      </div>
-                      <div>
-                        <Text
-                          strong
-                          style={{ display: "block", fontSize: "14px" }}
-                        >
-                          Địa chỉ
-                        </Text>
-                        <Text
-                          className="meta-text"
-                          style={{ fontSize: "14px" }}
-                        >
-                          {company.companyAddress}
-                        </Text>
-                      </div>
-                    </Flex>
+                        {company.companyName}
+                      </Text>
+                    </div>
 
-                    <Flex
-                      align="center"
-                      gap={14}
-                      className="meta-item"
-                      style={{ marginBottom: "15px" }}
+                    <Divider style={{ margin: "8px 0 16px" }} />
+
+                    <div
+                      className="company-meta"
+                      style={{ width: "100%", padding: "0 20px" }}
                     >
-                      <div
-                        className="icon-wrapper"
-                        style={{
-                          backgroundColor: "rgba(82, 196, 26, 0.1)",
-                          borderRadius: "50%",
-                          width: "40px",
-                          height: "40px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
-                        }}
+                      <Flex
+                        align="center"
+                        gap={14}
+                        className="meta-item"
+                        style={{ marginBottom: "15px" }}
                       >
-                        <TeamOutlined
-                          className="meta-icon"
-                          style={{ fontSize: "20px", color: "#52c41a" }}
-                        />
-                      </div>
-                      <div>
-                        <Text
-                          strong
-                          style={{ display: "block", fontSize: "14px" }}
+                        <div
+                          className="icon-wrapper"
+                          style={{
+                            backgroundColor: "rgba(24, 144, 255, 0.1)",
+                            borderRadius: "50%",
+                            width: "40px",
+                            height: "40px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0,
+                          }}
                         >
-                          Quy mô
-                        </Text>
-                        <Text
-                          className="meta-text"
-                          style={{ fontSize: "14px" }}
-                        >
-                          {company.companySize} nhân viên
-                        </Text>
-                      </div>
-                    </Flex>
+                          <EnvironmentOutlined
+                            className="meta-icon"
+                            style={{ fontSize: "20px", color: "#1890ff" }}
+                          />
+                        </div>
+                        <div>
+                          <Text
+                            strong
+                            style={{ display: "block", fontSize: "14px" }}
+                          >
+                            {t("employer.job.viewJob.address")}
+                          </Text>
+                          <Text
+                            className="meta-text"
+                            style={{ fontSize: "14px" }}
+                          >
+                            {company.companyAddress}
+                          </Text>
+                        </div>
+                      </Flex>
 
-                    <Flex
-                      align="center"
-                      gap={14}
-                      className="meta-item"
-                      style={{ marginBottom: "15px" }}
-                    >
-                      <div
-                        className="icon-wrapper"
-                        style={{
-                          backgroundColor: "rgba(250, 140, 22, 0.1)",
-                          borderRadius: "50%",
-                          width: "40px",
-                          height: "40px",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                          flexShrink: 0,
-                        }}
+                      <Flex
+                        align="center"
+                        gap={14}
+                        className="meta-item"
+                        style={{ marginBottom: "15px" }}
                       >
-                        <BankOutlined
-                          className="meta-icon"
-                          style={{ fontSize: "20px", color: "#fa8c16" }}
-                        />
-                      </div>
-                      <div>
-                        <Text
-                          strong
-                          style={{ display: "block", fontSize: "14px" }}
+                        <div
+                          className="icon-wrapper"
+                          style={{
+                            backgroundColor: "rgba(82, 196, 26, 0.1)",
+                            borderRadius: "50%",
+                            width: "40px",
+                            height: "40px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0,
+                          }}
                         >
-                          Lĩnh vực
-                        </Text>
-                        <Text
-                          className="meta-text"
-                          style={{ fontSize: "14px" }}
-                        >
-                          {job.industry}
-                        </Text>
-                      </div>
-                    </Flex>
-                  </div>
+                          <TeamOutlined
+                            className="meta-icon"
+                            style={{ fontSize: "20px", color: "#52c41a" }}
+                          />
+                        </div>
+                        <div>
+                          <Text
+                            strong
+                            style={{ display: "block", fontSize: "14px" }}
+                          >
+                            {t("employer.job.viewJob.companySize")}
+                          </Text>
+                          <Text
+                            className="meta-text"
+                            style={{ fontSize: "14px" }}
+                          >
+                            {company.companySize}{" "}
+                            {t("employer.job.viewJob.employees")}
+                          </Text>
+                        </div>
+                      </Flex>
 
-                  <div style={{ width: "100%", padding: "0 20px 20px" }}>
-                    <Button
-                      type="primary"
-                      onClick={() => handleToCompany(company.id)}
-                      className="view-company-btn"
-                      style={{
-                        width: "100%",
-                        height: "44px",
-                        borderRadius: "8px",
-                        boxShadow: "0 4px 12px rgba(24, 144, 255, 0.15)",
-                        marginTop: "10px",
-                      }}
-                      icon={<BankOutlined />}
-                    >
-                      Xem chi tiết công ty
-                    </Button>
-                  </div>
-                </Flex>
-              </Card>
+                      <Flex
+                        align="center"
+                        gap={14}
+                        className="meta-item"
+                        style={{ marginBottom: "15px" }}
+                      >
+                        <div
+                          className="icon-wrapper"
+                          style={{
+                            backgroundColor: "rgba(250, 140, 22, 0.1)",
+                            borderRadius: "50%",
+                            width: "40px",
+                            height: "40px",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            flexShrink: 0,
+                          }}
+                        >
+                          <BankOutlined
+                            className="meta-icon"
+                            style={{ fontSize: "20px", color: "#fa8c16" }}
+                          />
+                        </div>
+                        <div>
+                          <Text
+                            strong
+                            style={{ display: "block", fontSize: "14px" }}
+                          >
+                            {t("employer.job.viewJob.field")}
+                          </Text>
+                          <Text
+                            className="meta-text"
+                            style={{ fontSize: "14px" }}
+                          >
+                            {job.industry}
+                          </Text>
+                        </div>
+                      </Flex>
+                    </div>
+
+                    <div style={{ width: "100%", padding: "0 20px 20px" }}>
+                      <Button
+                        type="primary"
+                        onClick={() => handleToCompany(company.id)}
+                        className="view-company-btn"
+                        style={{
+                          width: "100%",
+                          height: "44px",
+                          borderRadius: "8px",
+                          boxShadow: "0 4px 12px rgba(24, 144, 255, 0.15)",
+                          marginTop: "10px",
+                        }}
+                        icon={<BankOutlined />}
+                      >
+                        {t("employer.job.viewJob.viewCompanyDetails")}
+                      </Button>
+                    </div>
+                  </Flex>
+                </Card>
+              </Badge.Ribbon>
 
               {carouselItems.length > 0 && (
                 <Card
                   className="shadow related-companies-card"
                   title={
-                    <div className="card-title">Công ty cùng lĩnh vực</div>
+                    <div className="card-title">
+                      {t("employer.job.viewJob.relatedCompanies")}
+                    </div>
                   }
                   style={{ width: "100%" }}
                 >
@@ -733,7 +748,7 @@ const ViewJob = () => {
                                 onClick={() => navigate("/company/" + item.id)}
                                 type="primary"
                               >
-                                Xem thêm
+                                {t("employer.job.viewJob.viewMore")}
                               </Button>
                             </div>
                           }

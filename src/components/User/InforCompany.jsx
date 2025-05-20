@@ -45,6 +45,7 @@ import {
 import { useSelector } from "react-redux";
 import { UserPlus } from "lucide-react";
 import "./InforCompany.scss";
+import { useTranslation } from "react-i18next";
 
 const { Title, Text, Link } = Typography;
 
@@ -53,6 +54,7 @@ const isEmpty = (array) => {
 };
 
 const InforCompany = () => {
+  const { t } = useTranslation();
   const user = useSelector((state) => state.user);
   const [company, setCompany] = useState({});
   const [loading, setLoading] = useState(true);
@@ -176,17 +178,15 @@ const InforCompany = () => {
           <div className="company-info-container">
             <Row gutter={16} align="bottom" style={{ width: "100%" }}>
               <Col>
-                <Tooltip title="Logo công ty" placement="bottom">
-                  <Avatar
-                    className="company-logo"
-                    size={120}
-                    src={
-                      company.companyLogo
-                        ? company.companyLogo
-                        : "https://images.vietnamworks.com/img/company-default-logo.svg"
-                    }
-                  />
-                </Tooltip>
+                <Avatar
+                  className="company-logo"
+                  size={120}
+                  src={
+                    company.companyLogo
+                      ? company.companyLogo
+                      : "https://images.vietnamworks.com/img/company-default-logo.svg"
+                  }
+                />
               </Col>
               <Col flex="1">
                 <div className="company-info">
@@ -198,35 +198,33 @@ const InforCompany = () => {
                       <span className="follower-count">
                         {company.countFollower}
                       </span>{" "}
-                      lượt theo dõi
+                      {t("employer.company.inforCompany.followers")}
                     </Text>
-                    <Tag color="blue" className="industry-tag">
+                    <Tag color="blue" className="items-center industry-tag">
                       <BankOutlined className="tag-icon" /> {company.industry}
                     </Tag>
                   </Flex>
                 </div>
               </Col>
               <Col className="follow-button-container">
-                <Tooltip title={isFollow ? "Hủy theo dõi" : "Theo dõi công ty"}>
-                  <Button
-                    size="large"
-                    onClick={isFollow ? handleUnfollow : handleFollow}
-                    type={isFollow ? "default" : "primary"}
-                    className={`follow-button ${isFollow ? "followed" : ""}`}
-                  >
-                    {isFollow ? (
-                      <>
-                        <CheckOutlined className="icon" />
-                        Đang theo dõi
-                      </>
-                    ) : (
-                      <>
-                        <UserPlus className="icon" />
-                        Theo dõi
-                      </>
-                    )}
-                  </Button>
-                </Tooltip>
+                <Button
+                  size="large"
+                  onClick={isFollow ? handleUnfollow : handleFollow}
+                  type={isFollow ? "default" : "primary"}
+                  className={`follow-button ${isFollow ? "followed" : ""}`}
+                >
+                  {isFollow ? (
+                    <>
+                      <CheckOutlined className="icon" />
+                      {t("employer.company.inforCompany.following")}
+                    </>
+                  ) : (
+                    <>
+                      <UserPlus className="icon" />
+                      {t("employer.company.inforCompany.follow")}
+                    </>
+                  )}
+                </Button>
               </Col>
             </Row>
           </div>
@@ -244,7 +242,9 @@ const InforCompany = () => {
                   title: (
                     <>
                       <InfoCircleOutlined className="anchor-icon" />{" "}
-                      <Text className="text-lg">Về chúng tôi</Text>
+                      <Text className="text-lg">
+                        {t("employer.company.inforCompany.aboutUs")}
+                      </Text>
                     </>
                   ),
                 },
@@ -254,7 +254,9 @@ const InforCompany = () => {
                   title: (
                     <>
                       <FireOutlined className="anchor-icon" />{" "}
-                      <Text className="text-lg">Vị trí đang tuyển dụng</Text>
+                      <Text className="text-lg">
+                        {t("employer.company.inforCompany.jobPositions")}
+                      </Text>
                     </>
                   ),
                 },
@@ -264,7 +266,9 @@ const InforCompany = () => {
             <Flex gap={"1rem"} vertical>
               <div id="about">
                 <BoxContainer padding="1rem" className="section-title">
-                  <Text className="title1">Về chúng tôi</Text>
+                  <Text className="title1">
+                    {t("employer.company.inforCompany.aboutUs")}
+                  </Text>
                 </BoxContainer>
 
                 <div className="descriptions-container">
@@ -276,27 +280,36 @@ const InforCompany = () => {
                         key: "1",
                         label: (
                           <>
-                            <TeamOutlined /> Quy mô
+                            <TeamOutlined />{" "}
+                            {t("employer.company.inforCompany.size")}
                           </>
                         ),
                         children: (
-                          <Tag color="purple">{company.companySize}</Tag>
+                          <Tag className="text-sm !py-0.5" color="purple">
+                            {company.companySize}
+                          </Tag>
                         ),
                       },
                       {
                         key: "2",
                         label: (
                           <>
-                            <BankOutlined /> Lĩnh vực
+                            <BankOutlined />{" "}
+                            {t("employer.company.inforCompany.industry")}
                           </>
                         ),
-                        children: <Tag color="blue">{company.industry}</Tag>,
+                        children: (
+                          <Tag className="text-sm !py-0.5" color="blue">
+                            {company.industry}
+                          </Tag>
+                        ),
                       },
                       {
                         key: "3",
                         label: (
                           <>
-                            <UserOutlined /> Liên hệ
+                            <UserOutlined />{" "}
+                            {t("employer.company.inforCompany.contact")}
                           </>
                         ),
                         children: company.gender
@@ -307,7 +320,8 @@ const InforCompany = () => {
                         key: "4",
                         label: (
                           <>
-                            <PhoneOutlined /> Số điện thoại
+                            <PhoneOutlined />{" "}
+                            {t("employer.company.inforCompany.phone")}
                           </>
                         ),
                         children: (
@@ -320,7 +334,8 @@ const InforCompany = () => {
                         key: "5",
                         label: (
                           <>
-                            <MailOutlined /> Email
+                            <MailOutlined />{" "}
+                            {t("employer.company.inforCompany.email")}
                           </>
                         ),
                         children: (
@@ -333,13 +348,18 @@ const InforCompany = () => {
                         key: "6",
                         label: (
                           <>
-                            <EnvironmentOutlined /> Địa chỉ
+                            <EnvironmentOutlined />{" "}
+                            {t("employer.company.inforCompany.address")}
                           </>
                         ),
                         children: (
                           <Flex align="center" gap={8}>
                             <span>{company.companyAddress}</span>
-                            <Tooltip title="Xem trên bản đồ">
+                            <Tooltip
+                              title={t(
+                                "employer.company.inforCompany.viewOnMap"
+                              )}
+                            >
                               <a
                                 href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                                   company.companyAddress
@@ -358,7 +378,8 @@ const InforCompany = () => {
                         key: "7",
                         label: (
                           <>
-                            <GlobalOutlined /> Website
+                            <GlobalOutlined />{" "}
+                            {t("employer.company.inforCompany.website")}
                           </>
                         ),
                         children: (
@@ -381,9 +402,10 @@ const InforCompany = () => {
                         level={5}
                         style={{ marginBottom: 8, color: "#1E4F94" }}
                       >
-                        <BuildOutlined /> Mô tả chi tiết
+                        <BuildOutlined />{" "}
+                        {t("employer.company.inforCompany.detailedDescription")}
                       </Title>
-                      <div className="description-content">
+                      <div className="">
                         <HtmlContent htmlString={company?.companyDescription} />
                       </div>
                     </Flex>
@@ -395,7 +417,8 @@ const InforCompany = () => {
                     <>
                       <BoxContainer padding="1rem" className="section-title">
                         <Text className="title1">
-                          <VideoCameraOutlined /> Video giới thiệu
+                          <VideoCameraOutlined />{" "}
+                          {t("employer.company.inforCompany.videoIntroduction")}
                         </Text>
                       </BoxContainer>
                       <div className="video-container">
@@ -408,7 +431,8 @@ const InforCompany = () => {
                     <Flex gap={"1rem"} vertical>
                       <BoxContainer padding="1rem" className="section-title">
                         <Text className="title1">
-                          <GiftOutlined /> Phúc lợi
+                          <GiftOutlined />{" "}
+                          {t("employer.company.inforCompany.benefits")}
                         </Text>
                       </BoxContainer>
 
@@ -432,7 +456,8 @@ const InforCompany = () => {
               <div id="list-job" className="job-list-section">
                 <BoxContainer padding="1rem" className="section-title">
                   <Text className="title1">
-                    <FireOutlined /> Vị trí đang tuyển dụng
+                    <FireOutlined />{" "}
+                    {t("employer.company.inforCompany.jobPositions")}
                   </Text>
                 </BoxContainer>
                 <JobList />

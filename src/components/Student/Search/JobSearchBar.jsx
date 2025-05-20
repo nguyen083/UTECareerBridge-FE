@@ -6,25 +6,37 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { SearchOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import { clsx } from "clsx";
+import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 
 const JobSearchBar = () => {
   const dispatch = useDispatch();
   const location = useLocation();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const keyWord = useSelector((state) => state.web.keyword);
+  const [key, setKey] = useState(keyWord);
 
-  const handleSearch = (e) => {
-    dispatch(setKeyword(e.target.value));
+  const handleSearch = () => {
+    dispatch(setKeyword(key));
     if (location.pathname !== "/search") {
       navigate("/search");
     }
   };
 
   const handleChange = (e) => {
-    if (e.target.value === "") {
+    setKey(e.target.value);
+  };
+
+  useEffect(() => {
+    if (key === "") {
       dispatch(setKeyword(""));
     }
-  };
+  }, [key]);
+
+  useEffect(() => {
+    setKey(keyWord);
+  }, [keyWord]);
 
   return (
     <div
@@ -40,8 +52,9 @@ const JobSearchBar = () => {
         allowClear
         prefix={<SearchOutlined />}
         size="large"
-        onPressEnter={(value) => handleSearch(value)}
+        onPressEnter={() => handleSearch()}
         style={{ width: "500px" }}
+        value={key}
         onChange={(e) => handleChange(e)}
       />
     </div>

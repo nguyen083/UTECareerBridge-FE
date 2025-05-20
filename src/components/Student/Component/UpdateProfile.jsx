@@ -25,9 +25,11 @@ import { useDispatch, useSelector } from "react-redux";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import { setInforStudent } from "../../../redux/action/studentSlice.jsx";
+import { useTranslation } from "react-i18next";
 dayjs.extend(customParseFormat);
 
 const UpdateProfile = () => {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [form] = Form.useForm();
   const dispatch = useDispatch();
@@ -106,8 +108,8 @@ const UpdateProfile = () => {
     imageUploaded &&
       deleteImageFromCloudinaryByLink(imageUploaded).then((status) => {
         status === 200
-          ? message.success("Xoá ảnh thành công")
-          : message.error("Xoá ảnh thất bại");
+          ? message.success(t("student.updateProfile.avatar.deleteSuccess"))
+          : message.error(t("student.updateProfile.avatar.deleteError"));
       });
 
     form.resetFields();
@@ -130,14 +132,14 @@ const UpdateProfile = () => {
         className={styles.modalUpdateProfile}
         width={750}
         centered
-        title="Thông tin cơ bản"
+        title={t("student.updateProfile.title")}
         open={open}
         onCancel={handleReset}
         onOk={() => {
           form.submit();
         }}
-        okText="Lưu"
-        cancelText="Hủy"
+        okText={t("student.updateProfile.save")}
+        cancelText={t("student.updateProfile.cancel")}
       >
         <Form
           form={form}
@@ -179,46 +181,37 @@ const UpdateProfile = () => {
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
-                  label="Tên"
+                  label={t("student.updateProfile.firstName.label")}
                   name="firstName"
-                  rules={[{ required: true, message: "Vui lòng nhập tên!" }]}
-                >
-                  <Input placeholder="Tên" />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  label="Họ"
-                  name="lastName"
-                  rules={[{ required: true, message: "Vui lòng nhập họ!" }]}
-                >
-                  <Input placeholder="Họ" />
-                </Form.Item>
-              </Col>
-            </Row>
-            <Row gutter={16}>
-              <Col span={12}>
-                <Form.Item name="gender" layout="horizontal" label="Giới tính">
-                  <Radio.Group className={styles.radioGroup}>
-                    <Space direction="horizontal">
-                      <Radio value={false}>Nam</Radio>
-                      <Radio value={true}>Nữ</Radio>
-                    </Space>
-                  </Radio.Group>
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item
-                  name="dob"
-                  label="Ngày sinh"
                   rules={[
-                    { required: true, message: "Vui lòng nhập ngày sinh!" },
+                    {
+                      required: true,
+                      message: t("student.updateProfile.firstName.required"),
+                    },
                   ]}
                 >
-                  <DatePicker
-                    className={styles.w100}
-                    format={"DD/MM/YYYY"}
-                    placeholder="Ngày sinh"
+                  <Input
+                    placeholder={t(
+                      "student.updateProfile.firstName.placeholder"
+                    )}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label={t("student.updateProfile.lastName.label")}
+                  name="lastName"
+                  rules={[
+                    {
+                      required: true,
+                      message: t("student.updateProfile.lastName.required"),
+                    },
+                  ]}
+                >
+                  <Input
+                    placeholder={t(
+                      "student.updateProfile.lastName.placeholder"
+                    )}
                   />
                 </Form.Item>
               </Col>
@@ -226,21 +219,67 @@ const UpdateProfile = () => {
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
-                  label="Số điện thoại"
-                  name="phoneNumber"
-                  rules={[
-                    { required: true, message: "Vui lòng nhập số điện thoại!" },
-                    {
-                      pattern: new RegExp(/^(0[3|5|7|8|9])[0-9]{8}$/),
-                      message: "Số điện thoại không hợp lệ!",
-                    },
-                  ]}
+                  name="gender"
+                  layout="horizontal"
+                  label={t("student.updateProfile.gender.label")}
                 >
-                  <Input placeholder="Số điện thoại" />
+                  <Radio.Group className={styles.radioGroup}>
+                    <Space direction="horizontal">
+                      <Radio value={false}>
+                        {t("student.updateProfile.gender.male")}
+                      </Radio>
+                      <Radio value={true}>
+                        {t("student.updateProfile.gender.female")}
+                      </Radio>
+                    </Space>
+                  </Radio.Group>
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="Email" name="email">
+                <Form.Item
+                  name="dob"
+                  label={t("student.updateProfile.dob.label")}
+                  rules={[
+                    {
+                      required: true,
+                      message: t("student.updateProfile.dob.required"),
+                    },
+                  ]}
+                >
+                  <DatePicker
+                    className={styles.w100}
+                    format={"DD/MM/YYYY"}
+                    placeholder={t("student.updateProfile.dob.placeholder")}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Form.Item
+                  label={t("student.updateProfile.phone.label")}
+                  name="phoneNumber"
+                  rules={[
+                    {
+                      required: true,
+                      message: t("student.updateProfile.phone.required"),
+                    },
+                    {
+                      pattern: new RegExp(/^(0[3|5|7|8|9])[0-9]{8}$/),
+                      message: t("student.updateProfile.phone.invalid"),
+                    },
+                  ]}
+                >
+                  <Input
+                    placeholder={t("student.updateProfile.phone.placeholder")}
+                  />
+                </Form.Item>
+              </Col>
+              <Col span={12}>
+                <Form.Item
+                  label={t("student.updateProfile.email.label")}
+                  name="email"
+                >
                   <Input disabled />
                 </Form.Item>
               </Col>
@@ -248,39 +287,57 @@ const UpdateProfile = () => {
             <Row gutter={16}>
               <Col span={12}>
                 <Form.Item
-                  label="Email sinh viên"
+                  label={t("student.updateProfile.universityEmail.label")}
                   name="universityEmail"
                   rules={[
                     {
                       required: true,
-                      message: "Vui lòng nhập email sinh viên!",
+                      message: t(
+                        "student.updateProfile.universityEmail.required"
+                      ),
                     },
-                    { type: "email", message: "Email không hợp lệ!" },
+                    {
+                      type: "email",
+                      message: t(
+                        "student.updateProfile.universityEmail.invalid"
+                      ),
+                    },
                   ]}
                 >
-                  <Input placeholder="Email sinh viên" />
+                  <Input
+                    placeholder={t(
+                      "student.updateProfile.universityEmail.placeholder"
+                    )}
+                  />
                 </Form.Item>
               </Col>
               <Col span={12}>
-                <Form.Item label="Địa chỉ" name="address">
-                  <Input placeholder="Địa chỉ" />
+                <Form.Item
+                  label={t("student.updateProfile.address.label")}
+                  name="address"
+                >
+                  <Input
+                    placeholder={t("student.updateProfile.address.placeholder")}
+                  />
                 </Form.Item>
               </Col>
             </Row>
             <Row gutter={16}>
               <Col span={8}>
                 <Form.Item
-                  label="Tỉnh/Thành phố"
+                  label={t("student.updateProfile.province.label")}
                   name="provinceId"
                   rules={[
                     {
                       required: true,
-                      message: "Vui lòng chọn tỉnh/thành phố!",
+                      message: t("student.updateProfile.province.required"),
                     },
                   ]}
                 >
                   <Select
-                    placeholder="Tỉnh/Thành phố"
+                    placeholder={t(
+                      "student.updateProfile.province.placeholder"
+                    )}
                     showSearch
                     onChange={(value) => {
                       setCurrentProvinceId(value);
@@ -300,14 +357,19 @@ const UpdateProfile = () => {
               </Col>
               <Col span={8}>
                 <Form.Item
-                  label="Quận/Huyện"
+                  label={t("student.updateProfile.district.label")}
                   name="districtId"
                   rules={[
-                    { required: true, message: "Vui lòng chọn quận/huyện!" },
+                    {
+                      required: true,
+                      message: t("student.updateProfile.district.required"),
+                    },
                   ]}
                 >
                   <Select
-                    placeholder="Quận/Huyện"
+                    placeholder={t(
+                      "student.updateProfile.district.placeholder"
+                    )}
                     showSearch
                     onChange={(value) => {
                       setCurrentDistrictId(value);
@@ -319,14 +381,17 @@ const UpdateProfile = () => {
               </Col>
               <Col span={8}>
                 <Form.Item
-                  label="Phường/Xã"
+                  label={t("student.updateProfile.ward.label")}
                   name="wardId"
                   rules={[
-                    { required: true, message: "Vui lòng chọn phường/xã!" },
+                    {
+                      required: true,
+                      message: t("student.updateProfile.ward.required"),
+                    },
                   ]}
                 >
                   <Select
-                    placeholder="Phường/Xã"
+                    placeholder={t("student.updateProfile.ward.placeholder")}
                     showSearch
                     options={currentListWard}
                     onChange={(value) => {
@@ -340,23 +405,34 @@ const UpdateProfile = () => {
               <Col span={12}>
                 <Form.Item
                   name="year"
-                  label="Năm thứ"
+                  label={t("student.updateProfile.year.label")}
                   rules={[
-                    { required: true, message: "Vui lòng  nhập năm học" },
+                    {
+                      required: true,
+                      message: t("student.updateProfile.year.required"),
+                    },
                   ]}
                 >
                   <InputNumber
                     className="w-full"
                     type="number"
-                    placeholder="Bạn là sinh viên năm mấy"
+                    placeholder={t("student.updateProfile.year.placeholder")}
                     min={1}
                   />
                 </Form.Item>
               </Col>
               <Col span={12}>
                 <Form.Item>
-                  <Form.Item name="categoryId" label="Thuộc chuyên nghành">
-                    <Select placeholder="Thuộc chuyên môn" showSearch>
+                  <Form.Item
+                    name="categoryId"
+                    label={t("student.updateProfile.category.label")}
+                  >
+                    <Select
+                      placeholder={t(
+                        "student.updateProfile.category.placeholder"
+                      )}
+                      showSearch
+                    >
                       {categories.map((item) => {
                         return (
                           <Select.Option key={item.value} value={item.value}>
