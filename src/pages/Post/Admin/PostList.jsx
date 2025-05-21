@@ -468,7 +468,7 @@ const PostItem = ({ post, onDelete, topicId, forumId }) => {
               </div>
             </Flex>
             <Space>
-              <Tooltip title={t("post.view")}>
+              <Tooltip destroyTooltipOnHide={true} title={t("post.view")}>
                 <Button
                   icon={<EyeOutlined className="text-text-color" />}
                   onClick={() => {
@@ -480,7 +480,10 @@ const PostItem = ({ post, onDelete, topicId, forumId }) => {
                 />
               </Tooltip>
               {post.active && (
-                <Tooltip title={t("post.list.delete.button")}>
+                <Tooltip
+                  destroyTooltipOnHide={true}
+                  title={t("post.list.delete.button")}
+                >
                   <Button
                     danger
                     icon={<DeleteOutlined />}

@@ -19,6 +19,7 @@ const ReactionPicker = ({
 
   return (
     <Popover
+      destroyTooltipOnHide={true}
       placement="topLeft"
       content={
         <div className="flex items-center justify-between w-full">

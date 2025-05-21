@@ -175,14 +175,22 @@ const ForumPage = () => {
                   </div>
                 }
                 actions={[
-                  <Tooltip title={t("forum.actions.edit")} key="edit">
+                  <Tooltip
+                    destroyTooltipOnHide={true}
+                    title={t("forum.actions.edit")}
+                    key="edit"
+                  >
                     <EditOutlined
                       key="edit"
                       className="!text-text-color"
                       onClick={() => showEditModal(forum)}
                     />
                   </Tooltip>,
-                  <Tooltip title={t("forum.actions.delete")} key="delete">
+                  <Tooltip
+                    destroyTooltipOnHide={true}
+                    title={t("forum.actions.delete")}
+                    key="delete"
+                  >
                     <DeleteOutlined
                       key="delete"
                       className="!text-red-500"
@@ -200,7 +208,7 @@ const ForumPage = () => {
                         navigate(`/admin/forums/${forum.forumId}/topics`);
                       }}
                     >
-                      <Tooltip title={forum.name}>
+                      <Tooltip destroyTooltipOnHide={true} title={forum.name}>
                         <Text ellipsis className="font-medium">
                           {forum.name}
                         </Text>

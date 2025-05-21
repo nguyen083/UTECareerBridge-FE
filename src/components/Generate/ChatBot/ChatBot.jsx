@@ -310,6 +310,7 @@ const IconChatBot = () => {
   return (
     <div className="popover-chat">
       <Popover
+        destroyTooltipOnHide={true}
         overlayClassName="chatbot"
         className="p-0 "
         placement="leftBottom"

@@ -135,6 +135,7 @@ const PopoverAvatar = () => {
 
   return (
     <Popover
+      destroyTooltipOnHide={true}
       className="cursor-pointer"
       open={open}
       onOpenChange={(e) => setOpen(e)}

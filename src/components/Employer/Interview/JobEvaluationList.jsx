@@ -208,6 +208,7 @@ const JobEvaluationList = () => {
                     {jobType}
                   </Tag>
                   <Tooltip
+                    destroyTooltipOnHide={true}
                     title={t(
                       "employer.evaluation.list.table.total_evaluations"
                     )}

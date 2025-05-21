@@ -18,3 +18,11 @@ export const useCountInterview = () => {
     refetchOnWindowFocus: false,
   });
 };
+
+export const useEvaluationsByStudent = (params) => {
+  return useQuery({
+    queryKey: ["evaluationsByStudent", params],
+    queryFn: () => interview.getEvaluationsByStudent(params),
+    select: (res) => res.data,
+  });
+};

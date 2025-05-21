@@ -50,6 +50,7 @@ const EventDetail = () => {
             ),
             children: (
               <Tooltip
+                destroyTooltipOnHide={true}
                 color="#4478c0"
                 title={
                   <Text style={{ color: "#ffffff" }} className="text-base">

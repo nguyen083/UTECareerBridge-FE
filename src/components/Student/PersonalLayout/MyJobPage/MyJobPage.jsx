@@ -1,6 +1,6 @@
 import BoxContainer from "../../../Generate/BoxContainer";
 import { useEffect, useState } from "react";
-import { Table, Flex, Typography, Tabs, Alert } from "antd";
+import { Table, Flex, Typography, Tabs, Alert, Divider } from "antd";
 import {
   getApplyJobByStudent,
   getJobSaved,
@@ -217,8 +217,7 @@ const MyJobPage = () => {
       <Flex vertical gap={8}>
         <BoxContainer width="100%">
           <div className="title1">{t("student.myJobs.title")}</div>
-        </BoxContainer>
-        <BoxContainer width="100%">
+          <Divider />
           <Tabs onChange={handleTabChange} activeKey={activeTab} size="large">
             <Tabs.TabPane tab={t("student.myJobs.applied")} key="job-applied">
               <Flex vertical gap={16}>

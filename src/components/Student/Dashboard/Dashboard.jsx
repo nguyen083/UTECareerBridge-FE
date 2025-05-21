@@ -559,7 +559,7 @@ const StudentDashboard = () => {
                 )}
               </div>
               <Button type="link" className="view-all-link">
-                <Link to="/recommended-job">
+                <Link to="/recommend-job">
                   {t("student.dashboard.viewRecommendedJobs")}
                 </Link>
               </Button>
@@ -575,7 +575,9 @@ const StudentDashboard = () => {
               paragraph={{ rows: 2 }}
               loading={eventStatisticsLoading}
             >
-              <Title level={5}>{t("student.dashboard.upcomingEvents")}</Title>
+              <Title level={5} className="!text-lg !font-semibold !text-[#666]">
+                {t("student.dashboard.upcomingEvents")}
+              </Title>
               <div className="mb-4 upcoming-events">
                 {eventStatistics?.data?.eventResponses
                   ?.slice(0, 2)

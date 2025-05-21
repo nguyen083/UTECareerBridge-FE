@@ -305,7 +305,7 @@ const TableListJobs = (props) => {
       ellipsis: true,
       width: "20%",
       render: (text) => (
-        <Tooltip title={text}>
+        <Tooltip destroyTooltipOnHide={true} title={text}>
           <span className="rejection-reason">{text || "-"}</span>
         </Tooltip>
       ),
@@ -348,7 +348,7 @@ const TableListJobs = (props) => {
     width: "15%",
     render: (_, record) => (
       <Space size="small" className="action-buttons">
-        <Tooltip title={t("common.view")}>
+        <Tooltip destroyTooltipOnHide={true} title={t("common.view")}>
           <Button
             onClick={() => handleView(record.key)}
             icon={<FileSearchOutlined />}
@@ -357,7 +357,7 @@ const TableListJobs = (props) => {
         </Tooltip>
 
         {props.status !== "REJECTED" && (
-          <Tooltip title={t("common.edit")}>
+          <Tooltip destroyTooltipOnHide={true} title={t("common.edit")}>
             <Button
               onClick={() => handleEdit(record.key)}
               icon={<EditOutlined />}
@@ -367,7 +367,7 @@ const TableListJobs = (props) => {
           </Tooltip>
         )}
 
-        <Tooltip title={t("common.delete")}>
+        <Tooltip destroyTooltipOnHide={true} title={t("common.delete")}>
           <Button
             onClick={() => handleDelete(record.key)}
             icon={<DeleteOutlined />}
@@ -378,6 +378,7 @@ const TableListJobs = (props) => {
 
         {["ACTIVE", "INACTIVE"].includes(props.status) && (
           <Tooltip
+            destroyTooltipOnHide={true}
             title={
               props.status === "INACTIVE"
                 ? t("employer.manageJobs.show")

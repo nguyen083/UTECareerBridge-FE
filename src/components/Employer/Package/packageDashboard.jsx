@@ -260,7 +260,10 @@ const ServiceMarketplace = () => {
           description={
             <div className="notice-content">
               <Paragraph>{t("employer.services.noticeDescription")}</Paragraph>
-              <Tooltip title={t("employer.services.contactSales")}>
+              <Tooltip
+                destroyTooltipOnHide={true}
+                title={t("employer.services.contactSales")}
+              >
                 <Button type="link" className="contact-sales-link">
                   <InfoCircleOutlined /> {t("employer.services.needHelp")}
                 </Button>

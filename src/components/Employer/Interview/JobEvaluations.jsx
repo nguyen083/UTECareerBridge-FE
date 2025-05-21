@@ -223,7 +223,7 @@ const JobEvaluations = () => {
       key: "createdAt",
       align: "center",
       render: (date) => (
-        <Tooltip title={date}>
+        <Tooltip destroyTooltipOnHide={true} title={date}>
           <Text>{formatTime(date)}</Text>
         </Tooltip>
       ),

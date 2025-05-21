@@ -329,7 +329,10 @@ const EmployerLayout = () => {
             </div>
 
             <div className="header-right">
-              <Tooltip title={t("employer.header.cart")}>
+              <Tooltip
+                destroyTooltipOnHide={true}
+                title={t("employer.header.cart")}
+              >
                 <Badge count={0} size="small">
                   <Button
                     onClick={() => navigate("/employer/cart")}

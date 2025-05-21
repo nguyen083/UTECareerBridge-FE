@@ -112,13 +112,17 @@ const TopicList = () => {
 
   const sortOptions = [
     {
-      label: "Mới nhất",
+      label: t("topic.filter_sort.options.newest"),
       value: "createdAtDesc",
       icon: <ClockCircleOutlined />,
     },
-    { label: "Cũ nhất", value: "createdAtAsc", icon: <CalendarOutlined /> },
     {
-      label: "Cập nhật gần đây",
+      label: t("topic.filter_sort.options.oldest"),
+      value: "createdAtAsc",
+      icon: <CalendarOutlined />,
+    },
+    {
+      label: t("topic.filter_sort.options.recently_updated"),
       value: "updatedAtDesc",
       icon: <RiseOutlined />,
     },
@@ -300,17 +304,19 @@ const TopicList = () => {
                   >
                     <Form.Item
                       name="title"
-                      label="Tiêu đề"
+                      label={t("topic.create.title")}
                       rules={[
                         {
                           required: true,
-                          message: "Vui lòng nhập tiêu đề chủ đề!",
+                          message: t("topic.create.title_required"),
                         },
                       ]}
                     >
-                      <Input placeholder="Nhập tiêu đề chủ đề" />
+                      <Input
+                        placeholder={t("topic.create.title_placeholder")}
+                      />
                     </Form.Item>
-                    <Form.Item name="tags" label="Thẻ">
+                    <Form.Item name="tags" label={t("topic.create.tags")}>
                       <Select
                         mode="tags"
                         style={{ width: "100%" }}
@@ -327,7 +333,9 @@ const TopicList = () => {
                               <Form.Item name="name" className="flex-1">
                                 <Input
                                   className="w-full"
-                                  placeholder="Nhập tên thẻ"
+                                  placeholder={t(
+                                    "topic.create.tags_placeholder"
+                                  )}
                                   onKeyDown={(e) => e.stopPropagation()}
                                 />
                               </Form.Item>
@@ -344,7 +352,7 @@ const TopicList = () => {
                             </Form>
                           </>
                         )}
-                        placeholder="Chọn thẻ"
+                        placeholder={t("topic.create.tags_placeholder")}
                         options={tags?.data?.content?.map((tag) => ({
                           value: String(tag.tagId),
                           label: tag.name,
@@ -353,11 +361,11 @@ const TopicList = () => {
                     </Form.Item>
                     <Form.Item
                       name="content"
-                      label="Nội dung"
+                      label={t("topic.create.content")}
                       rules={[
                         {
                           required: true,
-                          message: "Vui lòng nhập nội dung chủ đề!",
+                          message: t("topic.create.content_required"),
                         },
                       ]}
                     >
@@ -366,14 +374,14 @@ const TopicList = () => {
 
                     <Form.Item className="mb-0 text-right">
                       <Button onClick={handleCancel} className="mr-2">
-                        Hủy
+                        {t("topic.create.cancel")}
                       </Button>
                       <Button
                         type="primary"
                         htmlType="submit"
                         loading={isPendingCreateTopic}
                       >
-                        Tạo chủ đề
+                        {t("topic.create.submit")}
                       </Button>
                     </Form.Item>
                   </Form>
@@ -401,8 +409,8 @@ const TopicList = () => {
                 <Empty
                   description={
                     <span>
-                      Không tìm thấy chủ đề nào
-                      {searchText && ` phù hợp với từ khóa "${searchText}"`}
+                      {t("topic.noTopic")}
+                      {searchText && ` ${t("topic.noTopic")} "${searchText}"`}
                     </span>
                   }
                 />
@@ -427,7 +435,7 @@ const TopicList = () => {
       <Drawer
         title={
           <Title className="!mb-0 leading-0 !text-text-color" level={5}>
-            Bộ lọc & Sắp xếp
+            {t("topic.filter_sort.title")}
           </Title>
         }
         placement="right"
@@ -436,23 +444,22 @@ const TopicList = () => {
         width={400}
         footer={
           <Flex gap={16}>
-            {" "}
             <Button className="w-full" onClick={handleResetFilter}>
-              Đặt lại
+              {t("topic.filter_sort.reset")}
             </Button>
             <Button
               className="w-full"
               type="primary"
               onClick={handleApplyFilter}
             >
-              Áp dụng
+              {t("topic.filter_sort.apply")}
             </Button>
           </Flex>
         }
       >
         <div className="space-y-6">
           <div>
-            <Title level={5}>Sắp xếp theo</Title>
+            <Title level={5}>{t("topic.filter_sort.sort_by")}</Title>
             <Radio.Group
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
@@ -475,11 +482,11 @@ const TopicList = () => {
           </div>
           <Divider />
           <div>
-            <Title level={5}>Thẻ phổ biến</Title>
+            <Title level={5}>{t("topic.filter_sort.popular_tags")}</Title>
             <Select
               mode="multiple"
               style={{ width: "100%" }}
-              placeholder="Chọn thẻ để lọc"
+              placeholder={t("topic.filter_sort.select_tags")}
               maxTagCount="responsive"
               allowClear
               value={selectedTags}
@@ -524,7 +531,7 @@ const TopicCard = ({ topic }) => {
             <Col span={18}>
               <div className="flex items-center gap-2 mb-1">
                 {topic?.pinned && (
-                  <Tooltip title="Chủ đề ghim">
+                  <Tooltip title={t("topic.tooltips.pinned")}>
                     <PushpinOutlined className="text-red-500" />
                   </Tooltip>
                 )}
@@ -558,7 +565,7 @@ const TopicCard = ({ topic }) => {
               </span>
             </div>
             <div className="flex items-center gap-4">
-              <Tooltip title="Số bài viết">
+              <Tooltip title={t("topic.tooltips.post_count")}>
                 <span className="flex items-center gap-2">
                   <Newspaper className="w-4 h-4" /> {topic?.postCount || 0}
                 </span>
@@ -572,6 +579,7 @@ const TopicCard = ({ topic }) => {
 };
 
 const TopicListItem = ({ topic }) => {
+  const { t } = useTranslation();
   const { forumId } = useParams();
   return (
     <div
@@ -585,12 +593,12 @@ const TopicListItem = ({ topic }) => {
         <div className="flex-grow">
           <div className="flex items-center gap-2 mb-1">
             {topic?.pinned && (
-              <Tooltip title="Chủ đề ghim">
+              <Tooltip title={t("topic.tooltips.pinned")}>
                 <PushpinOutlined className="text-red-500" />
               </Tooltip>
             )}
             {topic?.close && (
-              <Tooltip title="Chủ đề đã khóa">
+              <Tooltip title={t("topic.tooltips.locked")}>
                 <LockOutlined className="text-gray-500" />
               </Tooltip>
             )}
@@ -628,7 +636,7 @@ const TopicListItem = ({ topic }) => {
               </span>
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
-              <Tooltip title="Số bài viết">
+              <Tooltip title={t("topic.tooltips.post_count")}>
                 <span className="flex items-center gap-2">
                   <Newspaper className="w-4 h-4" /> {topic?.postCount || 0}
                 </span>

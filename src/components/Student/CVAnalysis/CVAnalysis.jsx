@@ -356,7 +356,10 @@ const CVAnalysis = () => {
                           <Text strong>{t("cv.analysis.noExistingCV")}</Text>
                           <Text type="secondary">
                             {t("cv.analysis.createYourCV")}
-                            <Tooltip title={t("cv.builder.pageDescription")}>
+                            <Tooltip
+                              destroyTooltipOnHide={true}
+                              title={t("cv.builder.pageDescription")}
+                            >
                               <InfoCircleOutlined style={{ marginLeft: 8 }} />
                             </Tooltip>
                           </Text>
@@ -438,7 +441,10 @@ const CVAnalysis = () => {
                               </div>
 
                               <div className="resume-actions">
-                                <Tooltip title={t("common.view")}>
+                                <Tooltip
+                                  destroyTooltipOnHide={true}
+                                  title={t("common.view")}
+                                >
                                   <Button
                                     shape="circle"
                                     href={resume.file}

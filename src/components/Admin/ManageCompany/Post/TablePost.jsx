@@ -324,7 +324,7 @@ const TablePost = ({ status, onUpdateStats }) => {
           ellipsis: true,
           width: "15%",
           render: (reason) => (
-            <Tooltip title={reason}>
+            <Tooltip destroyTooltipOnHide={true} title={reason}>
               <div className="truncate">{reason}</div>
             </Tooltip>
           ),
@@ -345,7 +345,11 @@ const TablePost = ({ status, onUpdateStats }) => {
       align: "center",
       render: (_, record) => (
         <Space size="small">
-          <Tooltip color="blue" title={t("admin.post.table.actions.view")}>
+          <Tooltip
+            destroyTooltipOnHide={true}
+            color="blue"
+            title={t("admin.post.table.actions.view")}
+          >
             <Button
               shape="circle"
               onClick={() =>
@@ -359,6 +363,7 @@ const TablePost = ({ status, onUpdateStats }) => {
           {status === "PENDING" && (
             <>
               <Tooltip
+                destroyTooltipOnHide={true}
                 color="green"
                 title={t("admin.post.table.actions.approve")}
               >
@@ -369,7 +374,11 @@ const TablePost = ({ status, onUpdateStats }) => {
                   onClick={() => handleApprove(record.key)}
                 />
               </Tooltip>
-              <Tooltip color="red" title={t("admin.post.table.actions.reject")}>
+              <Tooltip
+                destroyTooltipOnHide={true}
+                color="red"
+                title={t("admin.post.table.actions.reject")}
+              >
                 <Button
                   danger
                   shape="circle"

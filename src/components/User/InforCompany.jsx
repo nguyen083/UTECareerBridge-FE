@@ -356,6 +356,7 @@ const InforCompany = () => {
                           <Flex align="center" gap={8}>
                             <span>{company.companyAddress}</span>
                             <Tooltip
+                              destroyTooltipOnHide={true}
                               title={t(
                                 "employer.company.inforCompany.viewOnMap"
                               )}

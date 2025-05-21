@@ -218,7 +218,10 @@ const AdminLayout = () => {
       <Layout className="site-layout">
         <Header className="admin-header !bg-card-color">
           <Flex align="center">
-            <Tooltip title={collapsed ? "Expand menu" : "Collapse menu"}>
+            <Tooltip
+              destroyTooltipOnHide={true}
+              title={collapsed ? "Expand menu" : "Collapse menu"}
+            >
               <MenuOutlined
                 className="text-base transition-all cursor-pointer hover:text-blue-500"
                 onClick={() => setCollapsed(!collapsed)}

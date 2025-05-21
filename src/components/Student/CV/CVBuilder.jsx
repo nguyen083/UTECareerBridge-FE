@@ -1762,7 +1762,11 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     </div>
                     <div className="color-options">
                       {CV_COLOR_PRESETS.map((preset) => (
-                        <Tooltip key={preset.color} title={preset.name}>
+                        <Tooltip
+                          destroyTooltipOnHide={true}
+                          key={preset.color}
+                          title={preset.name}
+                        >
                           <div
                             className={`color-preset ${
                               selectedColor === preset.color ? "active" : ""

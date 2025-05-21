@@ -256,7 +256,11 @@ const TableCompany = ({ status }) => {
               showTitle: false,
             },
             render: (text) => (
-              <Tooltip placement="topLeft" title={text}>
+              <Tooltip
+                destroyTooltipOnHide={true}
+                placement="topLeft"
+                title={text}
+              >
                 <span style={{ color: "#ff4d4f" }}>{text}</span>
               </Tooltip>
             ),
@@ -270,7 +274,10 @@ const TableCompany = ({ status }) => {
       align: "center",
       render: (_, record) => (
         <Space size="small">
-          <Tooltip title={t("admin.company.table.actions.view")}>
+          <Tooltip
+            destroyTooltipOnHide={true}
+            title={t("admin.company.table.actions.view")}
+          >
             <Link to={`/view/company/${record.id}`} target="_blank">
               <Button
                 icon={<EyeOutlined className="text-text-color" />}
@@ -280,7 +287,10 @@ const TableCompany = ({ status }) => {
             </Link>
           </Tooltip>
           {status === "PENDING" && (
-            <Tooltip title={t("admin.company.table.actions.approve")}>
+            <Tooltip
+              destroyTooltipOnHide={true}
+              title={t("admin.company.table.actions.approve")}
+            >
               <Button
                 type="primary"
                 icon={<CheckOutlined />}
@@ -305,6 +315,7 @@ const TableCompany = ({ status }) => {
           )}
           {status === "PENDING" && (
             <Tooltip
+              destroyTooltipOnHide={true}
               color="red"
               title={t("admin.company.table.actions.reject")}
             >

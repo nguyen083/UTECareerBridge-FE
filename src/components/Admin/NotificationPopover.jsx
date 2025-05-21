@@ -11,16 +11,16 @@ import {
   notification,
   Empty,
   Divider,
-  Avatar
+  Avatar,
 } from "antd";
-import { 
-  BellOutlined, 
-  CheckCircleOutlined, 
+import {
+  BellOutlined,
+  CheckCircleOutlined,
   ClockCircleOutlined,
   InfoCircleFilled,
   WarningFilled,
   CheckCircleFilled,
-  ExclamationCircleFilled
+  ExclamationCircleFilled,
 } from "@ant-design/icons";
 import { useSelector, useDispatch } from "react-redux";
 import {
@@ -52,15 +52,15 @@ const NotificationPopover = ({ children, userId }) => {
   // Get notification icon based on type
   const getNotificationIcon = (type) => {
     switch (type?.toLowerCase()) {
-      case 'warning':
-        return <WarningFilled style={{ color: '#faad14' }} />;
-      case 'success':
-        return <CheckCircleFilled style={{ color: '#52c41a' }} />;
-      case 'error':
-        return <ExclamationCircleFilled style={{ color: '#ff4d4f' }} />;
-      case 'info':
+      case "warning":
+        return <WarningFilled style={{ color: "#faad14" }} />;
+      case "success":
+        return <CheckCircleFilled style={{ color: "#52c41a" }} />;
+      case "error":
+        return <ExclamationCircleFilled style={{ color: "#ff4d4f" }} />;
+      case "info":
       default:
-        return <InfoCircleFilled style={{ color: '#1890ff' }} />;
+        return <InfoCircleFilled style={{ color: "#1890ff" }} />;
     }
   };
 
@@ -100,7 +100,7 @@ const NotificationPopover = ({ children, userId }) => {
         notificationDate: new Date().toISOString(),
         isRead: false,
         url: payload.data?.url,
-        type: payload.data?.type || 'info'
+        type: payload.data?.type || "info",
       };
 
       setNotifications((prev) => [newNotification, ...prev]);
@@ -219,9 +219,9 @@ const NotificationPopover = ({ children, userId }) => {
     const date = new Date(dateString);
     const now = new Date();
     const diffInSeconds = Math.floor((now - date) / 1000);
-    
+
     if (diffInSeconds < 60) {
-      return 'Vài giây trước';
+      return "Vài giây trước";
     } else if (diffInSeconds < 3600) {
       return `${Math.floor(diffInSeconds / 60)} phút trước`;
     } else if (diffInSeconds < 86400) {
@@ -229,12 +229,12 @@ const NotificationPopover = ({ children, userId }) => {
     } else if (diffInSeconds < 604800) {
       return `${Math.floor(diffInSeconds / 86400)} ngày trước`;
     } else {
-      return date.toLocaleDateString('vi-VN', { 
-        day: '2-digit', 
-        month: '2-digit', 
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
+      return date.toLocaleDateString("vi-VN", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
       });
     }
   };
@@ -242,7 +242,9 @@ const NotificationPopover = ({ children, userId }) => {
   const notificationContent = (
     <div className="notification-popover-content">
       <div className="notification-header">
-        <Text strong style={{ fontSize: '16px' }}>Thông báo</Text>
+        <Text strong style={{ fontSize: "16px" }}>
+          Thông báo
+        </Text>
         <Button
           type="text"
           onClick={handleMarkAllRead}
@@ -255,9 +257,9 @@ const NotificationPopover = ({ children, userId }) => {
           </Space>
         </Button>
       </div>
-      
-      <Divider style={{ margin: '8px 0' }} />
-      
+
+      <Divider style={{ margin: "8px 0" }} />
+
       <div className="notification-list-container">
         <Spin spinning={loading}>
           {notifications.length > 0 ? (
@@ -265,7 +267,9 @@ const NotificationPopover = ({ children, userId }) => {
               dataSource={notifications}
               renderItem={(notification) => (
                 <List.Item
-                  className={`notification-item ${!notification.isRead ? 'unread' : ''}`}
+                  className={`notification-item ${
+                    !notification.isRead ? "unread" : ""
+                  }`}
                   onClick={() => {
                     handleReadNotification(notification.id);
                     if (notification.url) {
@@ -275,15 +279,20 @@ const NotificationPopover = ({ children, userId }) => {
                 >
                   <List.Item.Meta
                     avatar={
-                      <Avatar icon={getNotificationIcon(notification.type)} 
-                        className={`notification-avatar ${notification.type || 'info'}`} 
+                      <Avatar
+                        icon={getNotificationIcon(notification.type)}
+                        className={`notification-avatar ${
+                          notification.type || "info"
+                        }`}
                       />
                     }
                     title={
                       <Space className="notification-title">
                         <Text strong>{notification.title}</Text>
                         {!notification.isRead && (
-                          <Tag color="blue" className="notification-badge">Mới</Tag>
+                          <Tag color="blue" className="notification-badge">
+                            Mới
+                          </Tag>
                         )}
                       </Space>
                     }
@@ -293,8 +302,10 @@ const NotificationPopover = ({ children, userId }) => {
                           {notification.content}
                         </Paragraph>
                         <div className="notification-time">
-                          <ClockCircleOutlined style={{ fontSize: '12px', marginRight: '4px' }} />
-                          <Text type="secondary" style={{ fontSize: '12px' }}>
+                          <ClockCircleOutlined
+                            style={{ fontSize: "12px", marginRight: "4px" }}
+                          />
+                          <Text type="secondary" style={{ fontSize: "12px" }}>
                             {formatTimeAgo(notification.notificationDate)}
                           </Text>
                         </div>
@@ -308,14 +319,14 @@ const NotificationPopover = ({ children, userId }) => {
             <Empty
               image={Empty.PRESENTED_IMAGE_SIMPLE}
               description="Không có thông báo mới"
-              style={{ padding: '24px 0' }}
+              style={{ padding: "24px 0" }}
             />
           )}
         </Spin>
       </div>
-      
-      <Divider style={{ margin: '8px 0' }} />
-      
+
+      <Divider style={{ margin: "8px 0" }} />
+
       <div className="notification-footer">
         <Button type="link" className="view-all-btn">
           Xem tất cả thông báo
@@ -326,6 +337,7 @@ const NotificationPopover = ({ children, userId }) => {
 
   return (
     <Popover
+      destroyTooltipOnHide={true}
       content={notificationContent}
       trigger="click"
       open={open}
@@ -334,7 +346,9 @@ const NotificationPopover = ({ children, userId }) => {
       overlayClassName="admin-notification-popover"
       arrow={{ pointAtCenter: true }}
     >
-      {children ? children : (
+      {children ? (
+        children
+      ) : (
         <Badge count={notificationCount} overflowCount={99}>
           <BellOutlined className="text-lg cursor-pointer notification-icon" />
         </Badge>

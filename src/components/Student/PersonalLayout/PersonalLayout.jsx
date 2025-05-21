@@ -37,6 +37,7 @@ import { setFindJob } from "../../../redux/action/studentSlice";
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useResume } from "../../../composables/resume";
+import { TbChecklist } from "react-icons/tb";
 const { Text } = Typography;
 const { Meta } = Card;
 
@@ -96,6 +97,11 @@ const PersonalLayout = () => {
       key: "/my-job",
       label: <div className="text-base">{t("student.menu.myJob")}</div>,
       icon: <IoBriefcaseOutline />,
+    },
+    {
+      key: "/my-evaluations",
+      label: <div className="text-base">{t("student.menu.evaluations")}</div>,
+      icon: <TbChecklist />,
     },
     {
       key: "/student/job-alerts",

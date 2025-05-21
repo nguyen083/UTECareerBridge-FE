@@ -205,7 +205,10 @@ const UploadCV = ({ listResume, fetchCV }) => {
                   dataSource={listResume}
                   renderItem={(item) => (
                     <List.Item className="!px-0">
-                      <Tooltip title={item.description}>
+                      <Tooltip
+                        destroyTooltipOnHide={true}
+                        title={item.description}
+                      >
                         <Card className="w-full" size="small">
                           <List.Item
                             key={item.id}

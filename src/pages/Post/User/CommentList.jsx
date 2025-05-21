@@ -1,6 +1,15 @@
 "use client";
 
-import { Avatar, Typography, Button, Input, message, Modal, Tooltip, Badge } from "antd";
+import {
+  Avatar,
+  Typography,
+  Button,
+  Input,
+  message,
+  Modal,
+  Tooltip,
+  Badge,
+} from "antd";
 import {
   DeleteOutlined,
   MessageOutlined,
@@ -50,7 +59,7 @@ const CommentList = ({
                 loading={isPendingComments}
                 onClick={() => setPage(page + 1)}
                 type="primary"
-                className="font-medium bg-blue-500 hover:bg-blue-600 text-white shadow-sm"
+                className="font-medium text-white bg-blue-500 shadow-sm hover:bg-blue-600"
               >
                 {t("common.seeMore")}
               </Button>
@@ -58,12 +67,14 @@ const CommentList = ({
           )}
         </div>
       ) : (
-        <div className="py-8 text-center rounded-lg bg-gray-50 shadow-sm">
+        <div className="py-8 text-center rounded-lg shadow-sm bg-gray-50">
           <MessageOutlined
             style={{ fontSize: 48 }}
             className="mb-4 text-gray-300"
           />
-          <Paragraph className="text-gray-500 text-base">{t("post.noComment")}</Paragraph>
+          <Paragraph className="text-base text-gray-500">
+            {t("post.noComment")}
+          </Paragraph>
         </div>
       )}
     </div>
@@ -216,15 +227,15 @@ const ChildCommentItem = ({
         />
         <div className={`flex-col ${isEditing ? "w-full" : ""}`}>
           {isEditing ? (
-            <div className="flex flex-col space-y-2 w-full">
+            <div className="flex flex-col w-full space-y-2">
               <TextArea
                 autoFocus
                 value={editText}
                 onChange={(e) => setEditText(e.target.value)}
-                className="rounded-xl shadow-sm border-gray-200"
+                className="border-gray-200 shadow-sm rounded-xl"
                 autoSize={{ minRows: 1, maxRows: 3 }}
               />
-              <div className="flex gap-2 justify-end">
+              <div className="flex justify-end gap-2">
                 <Button
                   type="primary"
                   size="small"
@@ -232,7 +243,7 @@ const ChildCommentItem = ({
                     handleUpdateComment(childComment.commentId, editText)
                   }
                   loading={isUpdatingComment}
-                  className="bg-blue-500 hover:bg-blue-600 text-white shadow-sm"
+                  className="text-white bg-blue-500 shadow-sm hover:bg-blue-600"
                 >
                   {t("common.save")}
                 </Button>
@@ -251,13 +262,16 @@ const ChildCommentItem = ({
           ) : (
             <div className="w-full">
               <div className="px-3.5 py-2.5 bg-gray-100 rounded-2xl hover:bg-gray-200 transition-colors">
-                <div className="flex justify-between items-start">
-                  <Text strong className="text-sm text-gray-800 mr-2">
+                <div className="flex items-start justify-between">
+                  <Text strong className="mr-2 text-sm text-gray-800">
                     {childComment.userName}
                   </Text>
                   <div className="flex mt-0.5">
                     {user.userId === childComment.userId && !isEditing && (
-                      <Tooltip title={t("common.edit")}>
+                      <Tooltip
+                        destroyTooltipOnHide={true}
+                        title={t("common.edit")}
+                      >
                         <Button
                           type="text"
                           size="small"
@@ -265,31 +279,39 @@ const ChildCommentItem = ({
                             e.stopPropagation();
                             setIsEditing(true);
                           }}
-                          icon={<EditOutlined className="text-gray-500 hover:text-blue-500" />}
-                          className="px-1 h-5"
+                          icon={
+                            <EditOutlined className="text-gray-500 hover:text-blue-500" />
+                          }
+                          className="h-5 px-1"
                         />
                       </Tooltip>
                     )}
                     {(user.userId === childComment.userId ||
                       user.userId === post.data.userId ||
-                      user.role === "admin") && !isEditing && (
-                      <Tooltip title={t("common.delete")}>
-                        <Button
-                          type="text"
-                          size="small"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteComment(
-                              childComment.commentId,
-                              childComment.parentCommentId
-                            );
-                          }}
-                          loading={isDeletingComment}
-                          icon={<DeleteOutlined className="text-gray-500 hover:text-red-500" />}
-                          className="px-1 h-5"
-                        />
-                      </Tooltip>
-                    )}
+                      user.role === "admin") &&
+                      !isEditing && (
+                        <Tooltip
+                          destroyTooltipOnHide={true}
+                          title={t("common.delete")}
+                        >
+                          <Button
+                            type="text"
+                            size="small"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteComment(
+                                childComment.commentId,
+                                childComment.parentCommentId
+                              );
+                            }}
+                            loading={isDeletingComment}
+                            icon={
+                              <DeleteOutlined className="text-gray-500 hover:text-red-500" />
+                            }
+                            className="h-5 px-1"
+                          />
+                        </Tooltip>
+                      )}
                   </div>
                 </div>
                 <Paragraph className="!my-1 text-sm text-gray-700">
@@ -312,7 +334,7 @@ const ChildCommentItem = ({
               </div>
             </div>
           )}
-          
+
           {replyCount > 0 && (
             <div className="pl-2 mt-1">
               {replyComments.length > 0 ? (
@@ -338,7 +360,10 @@ const ChildCommentItem = ({
       {replyComments.length > 0 && (
         <div className="pl-10 mt-2.5 space-y-3">
           {replyComments.map((replyComment) => (
-            <div key={replyComment.commentId} className="flex items-start gap-2">
+            <div
+              key={replyComment.commentId}
+              className="flex items-start gap-2"
+            >
               <Avatar
                 src={replyComment.avatar}
                 icon={<UserOutlined />}
@@ -349,7 +374,7 @@ const ChildCommentItem = ({
                 className={`flex-col ${replyComment.isEditing ? "w-full" : ""}`}
               >
                 {replyComment.isEditing ? (
-                  <div className="flex flex-col space-y-2 w-full">
+                  <div className="flex flex-col w-full space-y-2">
                     <TextArea
                       autoFocus
                       value={replyComment.editText}
@@ -361,10 +386,10 @@ const ChildCommentItem = ({
                         );
                         setReplyComments(updatedComments);
                       }}
-                      className="rounded-xl shadow-sm border-gray-200"
+                      className="border-gray-200 shadow-sm rounded-xl"
                       autoSize={{ minRows: 1, maxRows: 3 }}
                     />
-                    <div className="flex gap-2 justify-end">
+                    <div className="flex justify-end gap-2">
                       <Button
                         type="primary"
                         size="small"
@@ -375,7 +400,7 @@ const ChildCommentItem = ({
                           )
                         }
                         loading={isUpdatingComment}
-                        className="bg-blue-500 hover:bg-blue-600 text-white"
+                        className="text-white bg-blue-500 hover:bg-blue-600"
                       >
                         {t("common.save")}
                       </Button>
@@ -396,51 +421,68 @@ const ChildCommentItem = ({
                   </div>
                 ) : (
                   <div>
-                    <div className="w-full px-3 py-2 bg-gray-100 rounded-2xl hover:bg-gray-200 transition-colors">
-                      <div className="flex justify-between items-start">
-                        <Text strong className="text-sm text-gray-800 mr-2">
+                    <div className="w-full px-3 py-2 transition-colors bg-gray-100 rounded-2xl hover:bg-gray-200">
+                      <div className="flex items-start justify-between">
+                        <Text strong className="mr-2 text-sm text-gray-800">
                           {replyComment.userName}
                         </Text>
                         <div className="flex mt-0.5">
-                          {user.userId === replyComment.userId && !replyComment.isEditing && (
-                            <Tooltip title={t("common.edit")}>
-                              <Button
-                                type="text"
-                                size="small"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  const updatedComments = replyComments.map((c) =>
-                                    c.commentId === replyComment.commentId
-                                      ? { ...c, isEditing: true, editText: c.content }
-                                      : c
-                                  );
-                                  setReplyComments(updatedComments);
-                                }}
-                                icon={<EditOutlined className="text-gray-500 hover:text-blue-500" />}
-                                className="px-1 h-5"
-                              />
-                            </Tooltip>
-                          )}
+                          {user.userId === replyComment.userId &&
+                            !replyComment.isEditing && (
+                              <Tooltip
+                                destroyTooltipOnHide={true}
+                                title={t("common.edit")}
+                              >
+                                <Button
+                                  type="text"
+                                  size="small"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    const updatedComments = replyComments.map(
+                                      (c) =>
+                                        c.commentId === replyComment.commentId
+                                          ? {
+                                              ...c,
+                                              isEditing: true,
+                                              editText: c.content,
+                                            }
+                                          : c
+                                    );
+                                    setReplyComments(updatedComments);
+                                  }}
+                                  icon={
+                                    <EditOutlined className="text-gray-500 hover:text-blue-500" />
+                                  }
+                                  className="h-5 px-1"
+                                />
+                              </Tooltip>
+                            )}
                           {(user.userId === replyComment.userId ||
                             user.userId === post.data.userId ||
-                            user.role === "admin") && !replyComment.isEditing && (
-                            <Tooltip title={t("common.delete")}>
-                              <Button
-                                type="text"
-                                size="small"
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleDeleteComment(
-                                    replyComment.commentId,
-                                    replyComment.parentCommentId
-                                  );
-                                }}
-                                loading={isDeletingComment}
-                                icon={<DeleteOutlined className="text-gray-500 hover:text-red-500" />}
-                                className="px-1 h-5"
-                              />
-                            </Tooltip>
-                          )}
+                            user.role === "admin") &&
+                            !replyComment.isEditing && (
+                              <Tooltip
+                                destroyTooltipOnHide={true}
+                                title={t("common.delete")}
+                              >
+                                <Button
+                                  type="text"
+                                  size="small"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDeleteComment(
+                                      replyComment.commentId,
+                                      replyComment.parentCommentId
+                                    );
+                                  }}
+                                  loading={isDeletingComment}
+                                  icon={
+                                    <DeleteOutlined className="text-gray-500 hover:text-red-500" />
+                                  }
+                                  className="h-5 px-1"
+                                />
+                              </Tooltip>
+                            )}
                         </div>
                       </div>
                       <Paragraph className="!my-1 text-sm text-gray-700">
@@ -492,7 +534,7 @@ const ChildCommentItem = ({
                 placeholder={t("post.writeComment")}
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
-                className="bg-gray-100 resize-none rounded-2xl shadow-sm border-transparent focus:border-blue-400 focus:bg-white transition-all"
+                className="transition-all bg-gray-100 border-transparent shadow-sm resize-none rounded-2xl focus:border-blue-400 focus:bg-white"
                 autoSize={{ minRows: 1, maxRows: 3 }}
                 onPressEnter={(e) => {
                   if (!e.shiftKey) {
@@ -507,7 +549,7 @@ const ChildCommentItem = ({
                   type="primary"
                   onClick={handleCommentSubmit}
                   size="small"
-                  className="flex items-center rounded-full shadow-sm bg-blue-500 hover:bg-blue-600 text-white"
+                  className="flex items-center text-white bg-blue-500 rounded-full shadow-sm hover:bg-blue-600"
                   disabled={!commentText.trim()}
                   icon={<SendOutlined />}
                 >
@@ -685,20 +727,22 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
         />
         <div className={`flex-col ${isEditing ? "w-full" : ""} flex-grow`}>
           {isEditing ? (
-            <div className="flex flex-col space-y-2 w-full">
+            <div className="flex flex-col w-full space-y-2">
               <TextArea
                 autoFocus
                 value={editText}
                 onChange={(e) => setEditText(e.target.value)}
-                className="rounded-xl shadow-sm border-gray-200"
+                className="border-gray-200 shadow-sm rounded-xl"
                 autoSize={{ minRows: 2, maxRows: 4 }}
               />
-              <div className="flex gap-2 justify-end">
+              <div className="flex justify-end gap-2">
                 <Button
                   type="primary"
-                  onClick={() => handleUpdateComment(comment.commentId, editText)}
+                  onClick={() =>
+                    handleUpdateComment(comment.commentId, editText)
+                  }
                   loading={isUpdatingComment}
-                  className="bg-blue-500 hover:bg-blue-600 text-white"
+                  className="text-white bg-blue-500 hover:bg-blue-600"
                 >
                   {t("common.save")}
                 </Button>
@@ -715,22 +759,30 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
           ) : (
             <div className="w-full">
               <div className="px-4 py-2.5 bg-gray-100 rounded-2xl hover:bg-gray-200 transition-colors">
-                <div className="flex justify-between items-start">
+                <div className="flex items-start justify-between">
                   <div className="flex items-center gap-2">
                     <Text strong className="text-base text-gray-800">
                       {comment.userName}
                     </Text>
                     {comment.userId === post.data.userId && (
-                      <Badge 
-                        count="Author" 
-                        color="blue" 
-                        style={{ fontSize: '10px', padding: '0 6px', height: '16px', lineHeight: '16px' }} 
+                      <Badge
+                        count="Author"
+                        color="blue"
+                        style={{
+                          fontSize: "10px",
+                          padding: "0 6px",
+                          height: "16px",
+                          lineHeight: "16px",
+                        }}
                       />
                     )}
                   </div>
                   <div className="flex">
                     {user.userId === comment.userId && !isEditing && (
-                      <Tooltip title={t("common.edit")}>
+                      <Tooltip
+                        destroyTooltipOnHide={true}
+                        title={t("common.edit")}
+                      >
                         <Button
                           type="text"
                           size="small"
@@ -738,7 +790,9 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
                             e.stopPropagation();
                             setIsEditing(true);
                           }}
-                          icon={<EditOutlined className="text-gray-500 hover:text-blue-500" />}
+                          icon={
+                            <EditOutlined className="text-gray-500 hover:text-blue-500" />
+                          }
                           className="px-1"
                         />
                       </Tooltip>
@@ -747,23 +801,28 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
                       user.userId === post.data.userId ||
                       user.role === "admin") &&
                       !isEditing && (
-                      <Tooltip title={t("common.delete")}>
-                        <Button
-                          type="text"
-                          size="small"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleDeleteComment(
-                              comment.commentId,
-                              comment.parentCommentId
-                            );
-                          }}
-                          loading={isDeletingComment}
-                          icon={<DeleteOutlined className="text-gray-500 hover:text-red-500" />}
-                          className="px-1"
-                        />
-                      </Tooltip>
-                    )}
+                        <Tooltip
+                          destroyTooltipOnHide={true}
+                          title={t("common.delete")}
+                        >
+                          <Button
+                            type="text"
+                            size="small"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteComment(
+                                comment.commentId,
+                                comment.parentCommentId
+                              );
+                            }}
+                            loading={isDeletingComment}
+                            icon={
+                              <DeleteOutlined className="text-gray-500 hover:text-red-500" />
+                            }
+                            className="px-1"
+                          />
+                        </Tooltip>
+                      )}
                   </div>
                 </div>
                 <Paragraph className="text-sm text-gray-700 mt-1 mb-0.5">
@@ -780,11 +839,13 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
                   {t("comment.reply")}
                 </Button>
                 <span className="mx-1">·</span>
-                <span className="text-xs text-gray-500">{comment.createdAt}</span>
+                <span className="text-xs text-gray-500">
+                  {comment.createdAt}
+                </span>
               </div>
             </div>
           )}
-          
+
           {comment.replyCount > 0 && (
             <div className="pl-2 mt-1.5">
               {commentChild.length > 0 ? (
@@ -798,7 +859,9 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
                   onClick={() => (page === 0 ? setPage(1) : null)}
                   icon={<MessageOutlined className="mr-1" />}
                 >
-                  {`${t("comment.view") || "Xem"} ${replyCommentCount} ${t("comment.replies") || "phản hồi"}`}
+                  {`${t("comment.view") || "Xem"} ${replyCommentCount} ${
+                    t("comment.replies") || "phản hồi"
+                  }`}
                 </Button>
               )}
             </div>
@@ -807,7 +870,7 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
       </div>
 
       {commentChild.length > 0 && (
-        <div className="pl-14 mt-3 space-y-4">
+        <div className="mt-3 space-y-4 pl-14">
           {commentChild.map((childComment) => (
             <ChildCommentItem
               key={childComment.commentId}
@@ -836,7 +899,7 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
       )}
 
       {isReply && (
-        <div className="pl-14 mt-3">
+        <div className="mt-3 pl-14">
           <div className="flex items-start gap-2">
             <Avatar
               src={student.profileImage || employer.companyLogo}
@@ -851,7 +914,7 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
                 placeholder={t("post.writeComment")}
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
-                className="bg-gray-100 resize-none rounded-2xl shadow-sm border-transparent focus:border-blue-400 focus:bg-white transition-all"
+                className="transition-all bg-gray-100 border-transparent shadow-sm resize-none rounded-2xl focus:border-blue-400 focus:bg-white"
                 autoSize={{ minRows: 2, maxRows: 4 }}
                 onPressEnter={(e) => {
                   if (!e.shiftKey) {
@@ -866,7 +929,7 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
                   type="primary"
                   onClick={handleCommentSubmit}
                   size="small"
-                  className="flex items-center rounded-full shadow-sm bg-blue-500 hover:bg-blue-600 text-white"
+                  className="flex items-center text-white bg-blue-500 rounded-full shadow-sm hover:bg-blue-600"
                   disabled={!commentText.trim()}
                   icon={<SendOutlined />}
                 >

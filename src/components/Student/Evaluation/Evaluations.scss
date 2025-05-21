@@ -1,0 +1,201 @@
+.evaluations-container {
+  .ant-card {
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+    border-left: 2px solid #3b82f6;
+    &:hover {
+      border-color: #3b82f6;
+      border-left: 4px solid #3b82f6;
+      scale: 1.01;
+      box-shadow: 0 0 10px 0 rgb(59, 130, 246, 0.2);
+    }
+
+    .ant-card-body {
+      padding: 16px;
+    }
+  }
+
+  .ant-rate {
+    font-size: 16px;
+
+    .ant-rate-star {
+      margin-right: 4px;
+
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+  }
+
+  .ant-list-pagination {
+    margin-top: 24px;
+
+    .ant-pagination-item {
+      border-radius: 6px;
+
+      &:hover {
+        border-color: #3b82f6;
+      }
+
+      &-active {
+        background-color: #3b82f6;
+        border-color: #3b82f6;
+
+        a {
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+// Custom Modal Styles
+.evaluation-modal {
+  .ant-modal-content {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  }
+
+  .ant-modal-header {
+    background: linear-gradient(to right, #3b82f6, #60a5fa);
+    padding: 20px 24px;
+    margin-bottom: 0;
+
+    .ant-modal-title {
+      color: white;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+  }
+
+  .ant-modal-body {
+    padding: 24px;
+  }
+
+  .ant-modal-close {
+    color: white;
+    top: 20px;
+    right: 20px;
+
+    &:hover {
+      color: #e5e7eb;
+    }
+  }
+
+  .evaluation-header {
+    background-color: #f8fafc;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+
+    .position-title {
+      color: #1e40af;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .evaluator-info {
+      color: #4b5563;
+      font-size: 0.875rem;
+    }
+
+    .overall-rating {
+      .rating-label {
+        color: #4b5563;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .ant-rate {
+        font-size: 20px;
+      }
+    }
+  }
+
+  .rating-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    margin-bottom: 24px;
+
+    .rating-item {
+      margin-bottom: 16px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .rating-label {
+        color: #374151;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .ant-rate {
+        font-size: 18px;
+      }
+    }
+  }
+
+  .feedback-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    margin-bottom: 24px;
+
+    .feedback-item {
+      margin-bottom: 20px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .feedback-label {
+        color: #374151;
+        font-weight: 500;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        &::before {
+          content: "";
+          display: block;
+          width: 4px;
+          height: 16px;
+          background-color: #3b82f6;
+          border-radius: 2px;
+        }
+      }
+
+      .feedback-content {
+        color: #4b5563;
+        line-height: 1.6;
+        padding-left: 12px;
+      }
+    }
+  }
+
+  .salary-section {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+
+    .salary-label {
+      color: #374151;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .salary-amount {
+      color: #059669;
+      font-size: 1.25rem;
+      font-weight: 600;
+    }
+  }
+}

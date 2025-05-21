@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./StudentLayout.scss";
 import "../Generate/CustomizePopover.scss";
 import {
@@ -29,7 +29,7 @@ import { BsChatLeftText } from "react-icons/bs";
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
 
-const PopoverCategory = () => {
+const PopoverCategory = ({ setOpen }) => {
   const navigate = useNavigate();
   const infor = useSelector((state) => state?.user);
   const { t } = useTranslation();
@@ -42,15 +42,23 @@ const PopoverCategory = () => {
           <Button
             size="large"
             type="text"
-            onClick={() =>
+            onClick={() => {
               navigate("/search", {
                 state: { filters: { jobStatus: "newest" } },
-              })
-            }
+              });
+              setOpen(false);
+            }}
           >
             {t("student.layout.jobs.newest")}
           </Button>
-          <Button size="large" type="text" onClick={() => navigate("/search")}>
+          <Button
+            size="large"
+            type="text"
+            onClick={() => {
+              navigate("/search");
+              setOpen(false);
+            }}
+          >
             {t("student.layout.jobs.search")}
           </Button>
         </Col>
@@ -63,6 +71,7 @@ const PopoverCategory = () => {
               infor.role === "student"
                 ? navigate("/my-job#job-saved")
                 : navigate("login");
+              setOpen(false);
             }}
           >
             {t("student.layout.myJobs.saved")}
@@ -74,6 +83,7 @@ const PopoverCategory = () => {
               infor.role === "student"
                 ? navigate("/my-job#job-applied")
                 : navigate("login");
+              setOpen(false);
             }}
           >
             {t("student.layout.myJobs.applied")}
@@ -85,6 +95,7 @@ const PopoverCategory = () => {
               infor.role === "student"
                 ? navigate("/recommend-job")
                 : navigate("login");
+              setOpen(false);
             }}
           >
             {t("student.layout.myJobs.recommend")}
@@ -92,13 +103,27 @@ const PopoverCategory = () => {
         </Col>
         <Col span={8}>
           <Title level={5}>{t("student.layout.events.title")}</Title>
-          <Button size="large" type="text" onClick={() => navigate("/event")}>
+          <Button
+            size="large"
+            type="text"
+            onClick={() => {
+              navigate("/event");
+              setOpen(false);
+            }}
+          >
             {t("student.layout.events.all")}
           </Button>
         </Col>
         <Col span={8}>
           <Title level={5}>{t("student.layout.company.title")}</Title>
-          <Button size="large" type="text" onClick={() => navigate("/company")}>
+          <Button
+            size="large"
+            type="text"
+            onClick={() => {
+              navigate("/company");
+              setOpen(false);
+            }}
+          >
             {t("student.layout.company.all")}
           </Button>
         </Col>
@@ -113,6 +138,7 @@ const StudentLayout = () => {
   const infor = useSelector((state) => state?.user);
   const dispatch = useDispatch();
   const token = localStorage.getItem("accessToken");
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (infor.role === "student") {
@@ -154,11 +180,14 @@ const StudentLayout = () => {
               </Flex>
             </Button>
             <Popover
+              open={open}
+              onOpenChange={(e) => setOpen(e)}
               overlayClassName="customize-popover"
               placement="bottomRight"
               arrow={false}
-              content={PopoverCategory}
+              content={<PopoverCategory setOpen={setOpen} />}
               trigger={["click"]}
+              destroyTooltipOnHide={true}
             >
               <Button className="rounded-full btn-header" size="large">
                 <Flex gap={4}>

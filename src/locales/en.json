@@ -222,6 +222,7 @@
       "notification": "Notification",
       "myCompany": "My Company",
       "myJob": "My Job",
+      "evaluations": "Evaluations",
       "jobAlerts": "Job Alerts",
       "recommend": "Recommend Jobs",
       "changePassword": "Change Password",
@@ -548,6 +549,26 @@
         "mismatch": "The confirm password does not match!"
       },
       "save": "Save"
+    },
+    "evaluations": {
+      "title": "Evaluations",
+      "noEvaluations": "No evaluations yet",
+      "evaluatedBy": "Evaluated by",
+      "date": "Date",
+      "overallRating": "Overall Rating",
+      "modalTitle": "Evaluation Details",
+      "technicalSkills": "Technical Skills",
+      "communicationSkills": "Communication Skills",
+      "cultureFit": "Culture Fit",
+      "problemSolving": "Problem Solving",
+      "attitude": "Attitude",
+      "strengths": "Strengths",
+      "weaknesses": "Weaknesses",
+      "overallNotes": "Overall Notes",
+      "recommendedSalary": "Recommended Salary",
+      "none": "None",
+      "notSpecified": "Not specified",
+      "totalEvaluations": "Total {{total}} evaluations"
     }
   },
   "employer": {
@@ -2621,6 +2642,7 @@
     }
   },
   "topic": {
+    "noTopic": "No topics found",
     "ADMIN": "Admin",
     "STUDENT": "Student",
     "EMPLOYER": "Employer",
@@ -2659,7 +2681,35 @@
     "pinned_topics": "Pinned Topics",
     "total_posts": "Total Posts",
     "list_title": "Topic List",
-    "create": "Create Topic"
+    "filter_sort": {
+      "title": "Filter & Sort",
+      "sort_by": "Sort by",
+      "popular_tags": "Popular Tags",
+      "select_tags": "Select tags to filter",
+      "reset": "Reset",
+      "apply": "Apply",
+      "options": {
+        "newest": "Newest",
+        "oldest": "Oldest",
+        "recently_updated": "Recently Updated"
+      }
+    },
+    "create": {
+      "title": "Title",
+      "title_placeholder": "Enter topic title",
+      "title_required": "Please enter topic title!",
+      "tags": "Tags",
+      "tags_placeholder": "Select tags",
+      "content": "Content",
+      "content_required": "Please enter topic content!",
+      "cancel": "Cancel",
+      "submit": "Create Topic"
+    },
+    "tooltips": {
+      "pinned": "Pinned Topic",
+      "locked": "Locked Topic",
+      "post_count": "Post Count"
+    }
   },
   "post": {
     "noPost": "No posts yet",

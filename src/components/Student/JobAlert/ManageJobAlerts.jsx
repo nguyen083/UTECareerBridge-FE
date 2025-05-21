@@ -211,7 +211,10 @@ const ManageJobAlerts = () => {
                         </Button>
 
                         {/* Chỉnh sửa */}
-                        <Tooltip title={t("common.edit")}>
+                        <Tooltip
+                          destroyTooltipOnHide={true}
+                          title={t("common.edit")}
+                        >
                           <Button
                             className="opacity-70"
                             type="text"
@@ -224,7 +227,10 @@ const ManageJobAlerts = () => {
                           />
                         </Tooltip>
                         {/* Xóa */}
-                        <Tooltip title={t("common.delete")}>
+                        <Tooltip
+                          destroyTooltipOnHide={true}
+                          title={t("common.delete")}
+                        >
                           <Button
                             className="opacity-70"
                             type="text"

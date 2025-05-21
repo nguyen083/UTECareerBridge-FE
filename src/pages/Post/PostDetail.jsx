@@ -421,6 +421,7 @@ const PostDetail = () => {
                           {(post.data?.updatedAt !== post.data?.createdAt ||
                             post.updatedAt !== post.createdAt) && (
                             <Tooltip
+                              destroyTooltipOnHide={true}
                               title={`${t("post.lastUpdate")}: ${formatDateTime(
                                 post.data?.updatedAt
                               )}`}

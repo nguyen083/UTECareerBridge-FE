@@ -743,7 +743,11 @@ const ListOrder = () => {
       render: (_, record) => {
         if (record.paymentStatus === "PENDING") {
           return (
-            <Tooltip color="blue" title={t("employer.orders.pay")}>
+            <Tooltip
+              destroyTooltipOnHide={true}
+              color="blue"
+              title={t("employer.orders.pay")}
+            >
               <Button
                 icon={<FaMoneyCheckDollar size={20} />}
                 type="text"
@@ -758,7 +762,11 @@ const ListOrder = () => {
         } else {
           return (
             <Space>
-              <Tooltip color="blue" title={t("employer.orders.view")}>
+              <Tooltip
+                destroyTooltipOnHide={true}
+                color="blue"
+                title={t("employer.orders.view")}
+              >
                 <Button
                   icon={<EyeOutlined size={20} />}
                   type="text"
@@ -769,7 +777,11 @@ const ListOrder = () => {
                   }}
                 />
               </Tooltip>
-              <Tooltip color="green" title={t("employer.orders.printInvoice")}>
+              <Tooltip
+                destroyTooltipOnHide={true}
+                color="green"
+                title={t("employer.orders.printInvoice")}
+              >
                 <Button
                   key={record.orderId}
                   icon={<PdfIcon size={16} />}

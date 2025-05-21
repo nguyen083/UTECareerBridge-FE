@@ -130,7 +130,10 @@ const AnalyzeCVsModal = ({
                     className="flex flex-col items-center gap-2"
                     key="match-percent"
                   >
-                    <Tooltip title={t("employer.applicant.overallScore")}>
+                    <Tooltip
+                      destroyTooltipOnHide={true}
+                      title={t("employer.applicant.overallScore")}
+                    >
                       <Progress
                         type="circle"
                         percent={Math.round(resume.match_score * 100)}

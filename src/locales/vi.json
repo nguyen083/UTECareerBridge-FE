@@ -182,6 +182,7 @@
       "notification": "Thông báo",
       "myCompany": "Công ty của tôi",
       "myJob": "Việc làm của tôi",
+      "evaluations": "Đánh giá",
       "jobAlerts": "Thông báo việc làm",
       "recommend": "Việc được đề xuất",
       "changePassword": "Đổi mật khẩu",
@@ -508,6 +509,26 @@
         "mismatch": "Mật khẩu xác nhận không khớp!"
       },
       "save": "Lưu"
+    },
+    "evaluations": {
+      "title": "Đánh giá",
+      "noEvaluations": "Chưa có đánh giá nào",
+      "evaluatedBy": "Đánh giá bởi",
+      "date": "Ngày",
+      "overallRating": "Đánh giá tổng thể",
+      "modalTitle": "Chi tiết đánh giá",
+      "technicalSkills": "Kỹ năng kỹ thuật",
+      "communicationSkills": "Kỹ năng giao tiếp",
+      "cultureFit": "Phù hợp văn hóa",
+      "problemSolving": "Khả năng giải quyết vấn đề",
+      "attitude": "Thái độ",
+      "strengths": "Điểm mạnh",
+      "weaknesses": "Điểm yếu",
+      "overallNotes": "Ghi chú tổng thể",
+      "recommendedSalary": "Mức lương đề xuất",
+      "none": "Không có",
+      "notSpecified": "Chưa có",
+      "totalEvaluations": "Tổng số {{total}} đánh giá"
     }
   },
   "employer": {
@@ -2573,6 +2594,7 @@
     }
   },
   "topic": {
+    "noTopic": "Không tìm thấy chủ đề nào",
     "ADMIN": "Quản trị viên",
     "STUDENT": "Sinh viên",
     "EMPLOYER": "Nhà tuyển dụng",
@@ -2611,7 +2633,35 @@
     "pinned_topics": "Chủ đề được ghim",
     "total_posts": "Tổng số bài viết",
     "list_title": "Danh sách chủ đề",
-    "create": "Tạo chủ đề"
+    "filter_sort": {
+      "title": "Bộ lọc & Sắp xếp",
+      "sort_by": "Sắp xếp theo",
+      "popular_tags": "Thẻ phổ biến",
+      "select_tags": "Chọn thẻ để lọc",
+      "reset": "Đặt lại",
+      "apply": "Áp dụng",
+      "options": {
+        "newest": "Mới nhất",
+        "oldest": "Cũ nhất",
+        "recently_updated": "Cập nhật gần đây"
+      }
+    },
+    "create": {
+      "title": "Tiêu đề",
+      "title_placeholder": "Nhập tiêu đề chủ đề",
+      "title_required": "Vui lòng nhập tiêu đề chủ đề!",
+      "tags": "Thẻ",
+      "tags_placeholder": "Chọn thẻ",
+      "content": "Nội dung",
+      "content_required": "Vui lòng nhập nội dung chủ đề!",
+      "cancel": "Hủy",
+      "submit": "Tạo chủ đề"
+    },
+    "tooltips": {
+      "pinned": "Chủ đề ghim",
+      "locked": "Chủ đề đã khóa",
+      "post_count": "Số bài viết"
+    }
   },
   "post": {
     "noPost": "Chưa có bài viết nào",

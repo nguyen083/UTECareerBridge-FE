@@ -7,7 +7,11 @@ import viVN from "antd/lib/locale/vi_VN";
 import enUS from "antd/locale/en_US";
 import I18nInitializer from "./i18n";
 import { lazy, Suspense, useEffect } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { connectStomp, disconnectStomp } from "./utils/stompConfig.js";
 const StudentDashboard = lazy(() =>
   import("./components/Student/Dashboard/Dashboard.jsx")
@@ -54,8 +58,11 @@ const EditJobAlert = lazy(() =>
   import("./components/Student/JobAlert/EditJobAlert.jsx")
 );
 const TermsOfUse = lazy(() => import("./components/Generate/TermsOfUse.jsx"));
-import Policy from "./components/Generate/Policy.jsx";
+const Policy = lazy(() => import("./components/Generate/Policy.jsx"));
 import { refreshToken, setupTokenRefresh } from "./utils/axiosCustomize.jsx";
+const Evaluations = lazy(() =>
+  import("./components/Student/Evaluation/Evaluations.jsx")
+);
 const CompanyList = lazy(() =>
   import("./components/Generate/Company/CompanyList.jsx")
 );
@@ -232,7 +239,15 @@ const CVBuilderPage = lazy(() =>
 
 const App = () => {
   const lang = useSelector((state) => state.web.lang || "en");
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    queryCache: new QueryCache({}),
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        staleTime: 1000 * 60 * 5,
+      },
+    },
+  });
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -421,7 +436,6 @@ const App = () => {
                         element={<EventDetail />}
                       />
                       <Route path="/search" element={<JobSearchPage />} />
-                      <Route path="/recommend-job" element={<RecommendJob />} />
                     </Route>
                     <Route element={<PersonalLayout />}>
                       <Route path="/dashboard" element={<StudentDashboard />} />
@@ -438,6 +452,8 @@ const App = () => {
                         path="/account-management"
                         element={<AccountManagement />}
                       />
+                      <Route path="/my-evaluations" element={<Evaluations />} />
+                      <Route path="/recommend-job" element={<RecommendJob />} />
                       <Route
                         path="/student/job-alerts"
                         element={<ManageJobAlerts />}

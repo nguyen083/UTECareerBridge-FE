@@ -12,6 +12,7 @@ import {
   Switch,
   Tooltip,
   Spin,
+  Empty,
 } from "antd";
 import { useRecommendJob } from "../../../composables/job";
 import { useNavigate } from "react-router-dom";
@@ -162,6 +163,7 @@ const RecommendJob = () => {
 
             <div className="flex flex-col items-center justify-center mt-3 md:w-24 md:mt-0 md:ml-4">
               <Tooltip
+                destroyTooltipOnHide={true}
                 title={`${Math.round(job.score * 100)}% ${t(
                   "cv.analysis.result.match"
                 )}`}
@@ -224,9 +226,9 @@ const RecommendJob = () => {
                     recommendJob.map((job) => renderGridCard(job))
                   ) : (
                     <div className="py-8 text-center col-span-full">
-                      <Text className="text-gray-500">
-                        {t("student.dashboard.noRecommendedJobs")}
-                      </Text>
+                      <Empty
+                        description={t("student.dashboard.noRecommendedJobs")}
+                      />
                     </div>
                   )}
                 </div>
@@ -236,9 +238,9 @@ const RecommendJob = () => {
                     recommendJob.map((job) => renderListCard(job))
                   ) : (
                     <div className="py-8 text-center">
-                      <Text className="text-gray-500">
-                        {t("student.dashboard.noRecommendedJobs")}
-                      </Text>
+                      <Empty
+                        description={t("student.dashboard.noRecommendedJobs")}
+                      />
                     </div>
                   )}
                 </div>

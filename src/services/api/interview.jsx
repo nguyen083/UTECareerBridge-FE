@@ -32,5 +32,8 @@ const interview = {
     const response = await axios.get(`/jobs/interview-complete`);
     return response;
   },
+  getEvaluationsByStudent: async (params) => {
+    return axios.get(`/interviews/student/evaluation`, { params });
+  },
 };
 export default interview;

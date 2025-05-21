@@ -9,7 +9,7 @@ import {
   Tooltip,
   Typography,
 } from "antd";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import COLOR from "../styles/_variables";
 import "./Notification.scss";
 import "../Generate/CustomizePopover.scss";
@@ -30,7 +30,7 @@ import { clsx } from "clsx";
 import { useSelector } from "react-redux";
 
 const { Text } = Typography;
-const ListNotification = ({ notification, userId }) => {
+const ListNotification = ({ notification, userId, setOpen }) => {
   const notificationMutation = useNotificationRead();
   const navigate = useNavigate();
   const { t } = useTranslation();
@@ -39,10 +39,13 @@ const ListNotification = ({ notification, userId }) => {
   const handleSeeMore = () => {
     if (user.role === "admin") {
       navigate("/admin/notification");
+      setOpen(false);
     } else if (user.role === "employer") {
       navigate("/employer/notification");
+      setOpen(false);
     } else {
       navigate("/notification");
+      setOpen(false);
     }
   };
 
@@ -81,9 +84,10 @@ const ListNotification = ({ notification, userId }) => {
             title={
               <Flex justify="space-between">
                 <Typography.Text
-                  onClick={() =>
-                    navigate(`/notification/${item.notificationId}`)
-                  }
+                  onClick={() => {
+                    navigate(`/notification/${item.notificationId}`);
+                    setOpen(false);
+                  }}
                   className={clsx(
                     "!text-base cursor-pointer group-hover:text-text-color-hover notification-title",
                     item.read === false && "!font-medium"
@@ -106,6 +110,7 @@ const ListNotification = ({ notification, userId }) => {
                     {new Date(item.notificationDate).toLocaleString("vi-VN")}
                   </Typography.Text>
                   <Tooltip
+                    destroyTooltipOnHide={true}
                     placement="topRight"
                     title={t("notification.markAsRead")}
                   >
@@ -143,6 +148,7 @@ const NotificationIcon = ({ userId = null }) => {
   const { data: notificationList } = useNotification(userId);
   const markAllAsRead = useNotificationReadAll();
   const queryClient = useQueryClient();
+  const [open, setOpen] = useState(false);
   const { t } = useTranslation();
 
   const playNotificationSound = () => {
@@ -275,7 +281,11 @@ const NotificationIcon = ({ userId = null }) => {
 
   return (
     <Popover
+      open={open}
+      onOpenChange={(e) => setOpen(e)}
+      destroyTooltipOnHide={true}
       overlayClassName="notification-popover"
+      popupVisible
       placement="bottomRight"
       title={
         <Flex justify="space-between" align="center">
@@ -295,16 +305,21 @@ const NotificationIcon = ({ userId = null }) => {
         </Flex>
       }
       content={
-        <ListNotification notification={notificationList} userId={userId} />
+        <ListNotification
+          notification={notificationList}
+          userId={userId}
+          setOpen={setOpen}
+        />
       }
       trigger={["click"]}
     >
       <Tooltip
+        destroyTooltipOnHide={true}
         title={t("notification.title")}
         placement="bottom"
         color={COLOR.bgTooltipColor}
       >
-        <Badge count={notificationCount}>
+        <Badge count={notificationCount} destroyTooltipOnHide={true}>
           <Button
             className="rounded-full btn-header btn-bell"
             size="large"

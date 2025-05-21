@@ -324,7 +324,10 @@ const EmployerCompany = () => {
                                   />
                                 </Form.Item>
 
-                                <Tooltip title={t("common.remove")}>
+                                <Tooltip
+                                  destroyTooltipOnHide={true}
+                                  title={t("common.remove")}
+                                >
                                   <Button
                                     size="middle"
                                     danger
