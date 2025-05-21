@@ -13,8 +13,8 @@ const job = {
   getRecruimentAverage: async () => {
     return axios.get(`/jobs/recruiment-average`);
   },
-  getRecruimentPerformance: async () => {
-    return axios.get(`jobs/recruitment-performance`);
+  getRecruimentPerformance: async (params) => {
+    return axios.get(`jobs/recruitment-performance`, { params });
   },
 };
 export default job;

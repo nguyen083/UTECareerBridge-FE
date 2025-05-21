@@ -18,10 +18,10 @@ export const useRecruimentAverage = () => {
   });
 };
 
-export const useRecruimentPerformance = () => {
+export const useRecruimentPerformance = (params) => {
   return useQuery({
-    queryKey: ["recruitmentPerformance"],
-    queryFn: () => job.getRecruimentPerformance(),
+    queryKey: ["recruitmentPerformance", params],
+    queryFn: () => job.getRecruimentPerformance(params),
     select: (res) => res.data,
     refetchOnWindowFocus: false,
   });

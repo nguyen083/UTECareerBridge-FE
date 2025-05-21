@@ -10,10 +10,10 @@ export const useTopStudentSkill = () => {
   });
 };
 
-export const useTopSkill = () => {
+export const useTopSkill = (params) => {
   return useQuery({
-    queryKey: ["topSkill"],
-    queryFn: () => skill.getTopSkill(),
+    queryKey: ["topSkill", params],
+    queryFn: () => skill.getTopSkill(params),
     select: (res) => res.data,
     refetchOnWindowFocus: false,
   });

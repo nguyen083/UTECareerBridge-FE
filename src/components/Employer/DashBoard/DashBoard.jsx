@@ -358,18 +358,20 @@ const ListPackage = () => {
 };
 
 // Filter controls component
-const FilterControls = ({ time, setTime, onRefresh }) => {
+const FilterControls = ({ dateRange, setDateRange, onRefresh }) => {
   const { t } = useTranslation();
 
   return (
     <Space size={12}>
       <RangePicker
-        format="DD/MM/YYYY"
-        value={time}
-        onChange={(dates) => {
-          if (dates) {
-            setTime(dates);
-          }
+        value={dateRange}
+        onChange={(dates) => setDateRange(dates)}
+        picker="month"
+        allowClear={false}
+        format="MM/YYYY"
+        disabledDate={(current) => {
+          // Disable future months
+          return current && current > dayjs().endOf("month");
         }}
       />
       <Button
@@ -392,10 +394,18 @@ const DashBoard = () => {
   const [jobStatusData, setJobStatusData] = useState([]);
   const { data: interviews } = useListInterviewEmployer();
   const [upcomingInterviews, setUpcomingInterviews] = useState([]);
-  const [time, setTime] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [dateRange, setDateRange] = useState([]);
 
-  const { data: skillDistributionData } = useTopSkill();
-  const { data: jobPerformanceData } = useRecruimentPerformance();
+  const { data: skillDistributionData } = useTopSkill({
+    startDate,
+    endDate,
+  });
+  const { data: jobPerformanceData } = useRecruimentPerformance({
+    startDate,
+    endDate,
+  });
   const [chartView, setChartView] = useState("area");
 
   // Get data from Redux store
@@ -405,15 +415,39 @@ const DashBoard = () => {
   const { data: applicantRate } = useApplicantRate();
 
   useEffect(() => {
+    // Update dates when dateRange changes
+    if (dateRange[0] && dateRange[1]) {
+      setStartDate(dateRange[0].toISOString());
+      setEndDate(dateRange[1].toISOString());
+    }
+  }, [dateRange]);
+
+  useEffect(() => {
     setLoading(true);
     Promise.all([
       // Get count of students who applied
       getCountStudentApplied(),
       // Get jobs by status
-      getJobsByStatus({ jobStatus: "ACTIVE", page: 0, limit: 10 }),
-      getJobsByStatus({ jobStatus: "INACTIVE", page: 0, limit: 10 }),
-      getJobsByStatus({ jobStatus: "PENDING", page: 0, limit: 10 }),
-      getJobsByStatus({ jobStatus: "REJECTED", page: 0, limit: 10 }),
+      getJobsByStatus({
+        jobStatus: "ACTIVE",
+        page: 0,
+        limit: 10,
+      }),
+      getJobsByStatus({
+        jobStatus: "INACTIVE",
+        page: 0,
+        limit: 10,
+      }),
+      getJobsByStatus({
+        jobStatus: "PENDING",
+        page: 0,
+        limit: 10,
+      }),
+      getJobsByStatus({
+        jobStatus: "REJECTED",
+        page: 0,
+        limit: 10,
+      }),
     ])
       .then(
         ([
@@ -472,7 +506,7 @@ const DashBoard = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, [time]);
+  }, [startDate, endDate]);
 
   useEffect(() => {
     setUpcomingInterviews(
@@ -505,10 +539,26 @@ const DashBoard = () => {
     // Refresh all data sources
     Promise.all([
       getCountStudentApplied(),
-      getJobsByStatus({ jobStatus: "ACTIVE", page: 0, limit: 100 }),
-      getJobsByStatus({ jobStatus: "INACTIVE", page: 0, limit: 100 }),
-      getJobsByStatus({ jobStatus: "PENDING", page: 0, limit: 100 }),
-      getJobsByStatus({ jobStatus: "REJECTED", page: 0, limit: 100 }),
+      getJobsByStatus({
+        jobStatus: "ACTIVE",
+        page: 0,
+        limit: 100,
+      }),
+      getJobsByStatus({
+        jobStatus: "INACTIVE",
+        page: 0,
+        limit: 100,
+      }),
+      getJobsByStatus({
+        jobStatus: "PENDING",
+        page: 0,
+        limit: 100,
+      }),
+      getJobsByStatus({
+        jobStatus: "REJECTED",
+        page: 0,
+        limit: 100,
+      }),
     ])
       .then(([studentsRes]) => {
         // Update state with fresh data
@@ -551,8 +601,8 @@ const DashBoard = () => {
           </div>
           <Flex align="center" gap={16}>
             <FilterControls
-              time={time}
-              setTime={setTime}
+              dateRange={dateRange}
+              setDateRange={setDateRange}
               onRefresh={handleRefresh}
             />
             <div className="dashboard-actions">

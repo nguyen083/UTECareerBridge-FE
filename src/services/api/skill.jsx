@@ -4,8 +4,8 @@ const skill = {
   getTopStudentSkill: async () => {
     return axios.get("/jobs/top-student-skills");
   },
-  getTopSkill: async () => {
-    return axios.get("/jobs/top-skills");
+  getTopSkill: async (params) => {
+    return axios.get("/jobs/top-skills", { params });
   },
 };
 
