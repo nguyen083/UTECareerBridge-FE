@@ -52,7 +52,7 @@ import {
   AreaChart,
   Area,
 } from "recharts";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RiseOutlined, ReloadOutlined } from "@ant-design/icons";
 import "./DashBoard.scss";
@@ -388,6 +388,7 @@ const FilterControls = ({ dateRange, setDateRange, onRefresh }) => {
 const DashBoard = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [countStudentApplied, setCountStudentApplied] = useState(0);
   const [loading, setLoading] = useState(true);
   const { data: applicationData } = useEmployerDashboard();
@@ -414,9 +415,28 @@ const DashBoard = () => {
   const { data: hiringData } = useRecruimentAverage();
   const { data: applicantRate } = useApplicantRate();
 
+  // Initialize date range from URL params
   useEffect(() => {
-    // Update dates when dateRange changes
+    const startParam = searchParams.get("startDate");
+    const endParam = searchParams.get("endDate");
+
+    if (startParam && endParam) {
+      setDateRange([dayjs(startParam, "YYYY-MM"), dayjs(endParam, "YYYY-MM")]);
+    } else {
+      // Set default date range if not in URL (current month and previous month)
+      setDateRange([
+        dayjs().subtract(1, "month").startOf("month"),
+        dayjs().endOf("month"),
+      ]);
+    }
+  }, []); // Run only once on component mount
+
+  useEffect(() => {
+    // Update URL when date changes
     if (dateRange[0] && dateRange[1]) {
+      const start = dateRange[0].format("YYYY-MM");
+      const end = dateRange[1].format("YYYY-MM");
+      setSearchParams({ startDate: start, endDate: end });
       setStartDate(dateRange[0].toISOString());
       setEndDate(dateRange[1].toISOString());
     }
