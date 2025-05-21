@@ -26,17 +26,14 @@ import { IoBriefcaseOutline } from "react-icons/io5";
 import { HiLightBulb } from "react-icons/hi";
 import { IoIosBusiness } from "react-icons/io";
 import BoxContainer from "../../Generate/BoxContainer";
-import {
-  updateFindjob,
-  updateResumeActive,
-} from "../../../services/apiService";
+import { updateResumeActive } from "../../../services/apiService";
 
 import { useDispatch, useSelector } from "react-redux";
 import { apiService } from "../../../services/getAddressId";
 import { setFindJob } from "../../../redux/action/studentSlice";
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useResume } from "../../../composables/resume";
+import { useResume, useUpdateFindJob } from "../../../composables/resume";
 import { TbChecklist } from "react-icons/tb";
 const { Text } = Typography;
 const { Meta } = Card;
@@ -53,6 +50,7 @@ const PersonalLayout = () => {
   const [formResume] = Form.useForm();
   const [address, setAddress] = useState("");
   const [resumeIdActive, setResumeIdActive] = useState(0);
+  const updateFindJob = useUpdateFindJob();
 
   const menuItems = [
     {
@@ -189,13 +187,14 @@ const PersonalLayout = () => {
 
   const switchFindjob = (status = null) => {
     const check = status === null ? !infor.findingJob : status;
-    updateFindjob(check).then((res) => {
-      if (res.status === "OK") {
-        dispatch(setFindJob(check));
-      } else {
+    dispatch(setFindJob(check));
+    updateFindJob.mutate(check, {
+      onSuccess: () => {},
+      onError: () => {
+        dispatch(setFindJob(!check));
         message.error(t("cv.chooseResume"));
         setModalResume(true);
-      }
+      },
     });
   };
   return (

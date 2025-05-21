@@ -1,9 +1,4 @@
-import {
-  keepPreviousData,
-  useMutation,
-  useQuery,
-  useQueryClient,
-} from "@tanstack/react-query";
+import { keepPreviousData, useMutation, useQuery } from "@tanstack/react-query";
 import topic from "../services/api/topic";
 
 export const useAllTopic = () => {
@@ -47,19 +42,13 @@ export const useTopicByUserId = (id) => {
   });
 };
 export const useCreateTopicMutation = () => {
-  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (params) => topic.createTopic(params),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["searchTopics", "topics", "topicsByForumId"],
-      });
-    },
   });
 };
 export const useUpdateTopicMutation = () => {
   return useMutation({
-    mutationFn: (id, params) => topic.updateTopic(id, params),
+    mutationFn: ({ id, params }) => topic.updateTopic(id, params),
   });
 };
 export const useDeleteTopicMutation = () => {

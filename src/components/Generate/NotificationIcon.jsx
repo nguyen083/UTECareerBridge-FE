@@ -35,17 +35,16 @@ const ListNotification = ({ notification, userId, setOpen }) => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const user = useSelector((state) => state.user);
+  const queryClient = useQueryClient();
 
   const handleSeeMore = () => {
+    setOpen(false);
     if (user.role === "admin") {
       navigate("/admin/notification");
-      setOpen(false);
     } else if (user.role === "employer") {
       navigate("/employer/notification");
-      setOpen(false);
     } else {
       navigate("/notification");
-      setOpen(false);
     }
   };
 
@@ -117,9 +116,39 @@ const ListNotification = ({ notification, userId, setOpen }) => {
                     <Check
                       className="invisible cursor-pointer group-hover:visible group-hover:text-text-color-hover"
                       size={16}
-                      onClick={() =>
-                        notificationMutation.mutate(item.notificationId)
-                      }
+                      onClick={() => {
+                        queryClient.setQueryData(
+                          ["notificationList", userId],
+                          (old) => {
+                            const newData = {
+                              ...old,
+                              data: {
+                                ...old.data,
+                                content: old.data.content.map((noti) => {
+                                  if (
+                                    noti.notificationId === item.notificationId
+                                  ) {
+                                    return { ...noti, read: true };
+                                  }
+                                  return noti;
+                                }),
+                              },
+                            };
+                            return newData;
+                          }
+                        );
+                        if (item.read === false)
+                          queryClient.setQueryData(
+                            ["notificationCount", userId],
+                            (old) => {
+                              return {
+                                ...old,
+                                data: old.data - 1,
+                              };
+                            }
+                          );
+                        notificationMutation.mutate(item.notificationId);
+                      }}
                     />
                   </Tooltip>
                 </Flex>
@@ -298,7 +327,24 @@ const NotificationIcon = ({ userId = null }) => {
           <Text
             className="text-sm font-medium cursor-pointer hover:text-text-color-hover hover:underline"
             type="text"
-            onClick={() => markAllAsRead.mutate(userId)}
+            onClick={() => {
+              queryClient.setQueryData(["notificationCount", userId], () => {
+                return { data: 0 };
+              });
+              queryClient.setQueryData(["notificationList", userId], (old) => {
+                const newData = {
+                  ...old,
+                  data: {
+                    ...old.data,
+                    content: old.data.content.map((noti) => {
+                      return { ...noti, read: true };
+                    }),
+                  },
+                };
+                return newData;
+              });
+              markAllAsRead.mutate(userId);
+            }}
           >
             {t("notification.markAllAsRead")}
           </Text>

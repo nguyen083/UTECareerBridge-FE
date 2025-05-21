@@ -1,4 +1,4 @@
-import { Button, Collapse, Drawer, Flex } from "antd";
+import { Button, Collapse, Drawer, Flex, Select } from "antd";
 import { useTranslation } from "react-i18next";
 import { Typography } from "antd";
 import { IoIosRefresh } from "react-icons/io";
@@ -20,12 +20,12 @@ const ListApplicantDrawer = ({ open, setSelectedJob, jobId }) => {
   const viewedRef = useRef();
   const approvedRef = useRef();
   const rejectedRef = useRef();
-
+  const [limit, setLimit] = useState(5);
   const {
     data: resumeAnalysis,
     isFetching: isAnalyzing,
     refetch: analyzeResumes,
-  } = useCVAnalyzeApplyJob(jobId);
+  } = useCVAnalyzeApplyJob(jobId, limit);
 
   const handleRefresh = () => {
     pendingRef.current?.fetchData();
@@ -84,9 +84,21 @@ const ListApplicantDrawer = ({ open, setSelectedJob, jobId }) => {
         title={
           <Flex justify="space-between" align="center">
             <Text className="!mb-0">
-              {t("employer.applicant.listDrawer.title", "Danh sách ứng viên")}
+              {t("employer.applicant.listDrawer.title")}
             </Text>
-            <Flex gap={10}>
+            <Flex gap={10} align="center">
+              <Text className="!mb-0 text-sm text-me">Giới hạn CV:</Text>
+              <Select
+                onChange={(value) => setLimit(value)}
+                defaultValue={5}
+                className="w-16"
+                options={[
+                  { label: "5", value: 5 },
+                  { label: "10", value: 10 },
+                  { label: "20", value: 20 },
+                  { label: "50", value: 50 },
+                ]}
+              />
               <Button
                 onClick={handleAnalyzeCVs}
                 type="primary"

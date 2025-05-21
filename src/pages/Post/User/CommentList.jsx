@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Avatar,
   Typography,
@@ -8,7 +6,6 @@ import {
   message,
   Modal,
   Tooltip,
-  Badge,
 } from "antd";
 import {
   DeleteOutlined,
@@ -25,7 +22,6 @@ import {
   useGetCommentChildrenByCommentId,
   useUpdateComment,
 } from "../../../composables/comment";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const { Text, Paragraph } = Typography;
@@ -34,6 +30,7 @@ const { TextArea } = Input;
 const CommentList = ({
   isOpenModal,
   comments = [],
+  setComments,
   page,
   setPage,
   totalPage,
@@ -41,25 +38,34 @@ const CommentList = ({
   post,
 }) => {
   const { t } = useTranslation();
+
+  const handleDeleteComment = (commentId) => {
+    setComments(comments.filter((comment) => comment.commentId !== commentId));
+  };
+
   return (
     <div className="mt-4 overflow-y-auto max-h-[70vh] scrollbar-webkit scrollbar-thin pr-1">
       {comments.length > 0 ? (
         <div className="space-y-5">
           {comments.map((comment) => (
             <CommentItem
+              handleDeleteRootComment={handleDeleteComment}
               isOpenModal={isOpenModal}
               key={comment.commentId}
               comment={comment}
               post={post}
             />
           ))}
-          {!(page === totalPage && !isPendingComments) && (
+          {!(
+            (page === totalPage && !isPendingComments) ||
+            comments.length < 10
+          ) && (
             <div className="flex justify-center">
               <Button
                 loading={isPendingComments}
                 onClick={() => setPage(page + 1)}
-                type="primary"
-                className="font-medium text-white bg-blue-500 shadow-sm hover:bg-blue-600"
+                type="text"
+                className="text-blue-500"
               >
                 {t("common.seeMore")}
               </Button>
@@ -98,7 +104,6 @@ const ChildCommentItem = ({
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(childComment.content);
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const { mutate: createComment, isPending: isCreatingComment } =
     useCreateComment();
   const {
@@ -113,6 +118,11 @@ const ChildCommentItem = ({
   const { mutate: updateComment, isPending: isUpdatingComment } =
     useUpdateComment();
   const handleCommentSubmit = () => {
+    if (!user.userId) {
+      message.error(t("comment.createError"));
+      setCommentText("");
+      return;
+    }
     createComment(
       {
         postId: +post.data.postId,
@@ -127,8 +137,7 @@ const ChildCommentItem = ({
           setIsReply(false);
         },
         onError: () => {
-          message.error(t("comment.login"));
-          navigate("/login");
+          message.error(t("comment.createError"));
         },
       }
     );
@@ -564,14 +573,18 @@ const ChildCommentItem = ({
   );
 };
 
-const CommentItem = ({ comment, post, isOpenModal }) => {
+const CommentItem = ({
+  comment,
+  post,
+  isOpenModal,
+  handleDeleteRootComment,
+}) => {
   const commentInputRef = useRef(null);
   const user = useSelector((state) => state.user);
   const [replyCommentCount, setReplyCommentCount] = useState(
     comment.replyCount
   );
   const [page, setPage] = useState(0);
-  const navigate = useNavigate();
   const { mutate: createComment, isPending: isCreatingComment } =
     useCreateComment();
   const [isReply, setIsReply] = useState(false);
@@ -594,6 +607,11 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
   const student = useSelector((state) => state.student);
   const employer = useSelector((state) => state.employer);
   const handleCommentSubmit = () => {
+    if (!user.userId) {
+      message.error(t("comment.login"));
+      setCommentText("");
+      return;
+    }
     createComment(
       {
         postId: +post.data.postId,
@@ -608,8 +626,7 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
           setIsReply(false);
         },
         onError: () => {
-          message.error(t("comment.login"));
-          navigate("/login");
+          message.error(t("comment.createError"));
         },
       }
     );
@@ -643,6 +660,7 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
                 setCommentChild(
                   commentChild.filter((c) => c.commentId !== commentId)
                 );
+                handleDeleteRootComment(commentId);
                 setReplyCommentCount((prev) => prev - 1);
               }
             },
@@ -764,18 +782,6 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
                     <Text strong className="text-base text-gray-800">
                       {comment.userName}
                     </Text>
-                    {comment.userId === post.data.userId && (
-                      <Badge
-                        count="Author"
-                        color="blue"
-                        style={{
-                          fontSize: "10px",
-                          padding: "0 6px",
-                          height: "16px",
-                          lineHeight: "16px",
-                        }}
-                      />
-                    )}
                   </div>
                   <div className="flex">
                     {user.userId === comment.userId && !isEditing && (

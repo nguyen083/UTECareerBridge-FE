@@ -33,6 +33,7 @@ import {
   UnorderedListOutlined,
   CalendarOutlined,
   FilterOutlined,
+  LoginOutlined,
 } from "@ant-design/icons";
 import {
   Link,
@@ -53,9 +54,12 @@ import { useAllTag, useCreateTag } from "../../../composables/tag";
 import HtmlContent from "../../../components/Generate/HtmlContent";
 import truncate from "html-truncate";
 const { Title, Paragraph, Text } = Typography;
+import { useSelector } from "react-redux";
 
 const { Search } = Input;
 const TopicList = () => {
+  const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const { forumId } = useParams();
   const { data: forum, isLoading: isLoadingForum } = useForumDetail(forumId);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -159,6 +163,7 @@ const TopicList = () => {
         onSuccess: () => {
           form.resetFields();
           setIsModalVisible(false);
+          refetchTopics();
         },
         onError: () => {
           message.error(t("topic.createError"));
@@ -282,6 +287,7 @@ const TopicList = () => {
               </div>
 
               {/* Create topic drawer */}
+
               <div
                 className={`transition-all duration-500 ease-in-out  origin-top ${
                   isModalVisible
@@ -289,103 +295,115 @@ const TopicList = () => {
                     : "max-h-0 scale-y-0 opacity-0 !mb-0"
                 } `}
               >
-                <Card
-                  className="mb-3 transition-shadow duration-300"
-                  bodyStyle={{ padding: "16px" }}
-                >
-                  <Form
-                    size="large"
-                    form={form}
-                    layout="vertical"
-                    onFinish={handleCreateTopic}
-                    initialValues={{
-                      tags: [],
-                    }}
+                {user.userId ? (
+                  <Card
+                    className="mb-3 transition-shadow duration-300"
+                    bodyStyle={{ padding: "16px" }}
                   >
-                    <Form.Item
-                      name="title"
-                      label={t("topic.create.title")}
-                      rules={[
-                        {
-                          required: true,
-                          message: t("topic.create.title_required"),
-                        },
-                      ]}
+                    <Form
+                      size="large"
+                      form={form}
+                      layout="vertical"
+                      onFinish={handleCreateTopic}
+                      initialValues={{
+                        tags: [],
+                      }}
                     >
-                      <Input
-                        placeholder={t("topic.create.title_placeholder")}
-                      />
-                    </Form.Item>
-                    <Form.Item name="tags" label={t("topic.create.tags")}>
-                      <Select
-                        mode="tags"
-                        style={{ width: "100%" }}
-                        dropdownRender={(menu) => (
-                          <>
-                            {menu}
-                            <Divider style={{ margin: "8px 0" }} />
-                            <Form
-                              size="middle"
-                              form={formTag}
-                              onFinish={handleAddTag}
-                              className="flex gap-2"
-                            >
-                              <Form.Item name="name" className="flex-1">
-                                <Input
-                                  className="w-full"
-                                  placeholder={t(
-                                    "topic.create.tags_placeholder"
-                                  )}
-                                  onKeyDown={(e) => e.stopPropagation()}
-                                />
-                              </Form.Item>
-                              <Form.Item>
-                                <Button
-                                  loading={isPendingCreateTag}
-                                  type="text"
-                                  icon={<PlusOutlined />}
-                                  htmlType="submit"
-                                >
-                                  {t("tag.create")}
-                                </Button>
-                              </Form.Item>
-                            </Form>
-                          </>
-                        )}
-                        placeholder={t("topic.create.tags_placeholder")}
-                        options={tags?.data?.content?.map((tag) => ({
-                          value: String(tag.tagId),
-                          label: tag.name,
-                        }))}
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      name="content"
-                      label={t("topic.create.content")}
-                      rules={[
-                        {
-                          required: true,
-                          message: t("topic.create.content_required"),
-                        },
-                      ]}
-                    >
-                      <CustomizeQuill />
-                    </Form.Item>
-
-                    <Form.Item className="mb-0 text-right">
-                      <Button onClick={handleCancel} className="mr-2">
-                        {t("topic.create.cancel")}
-                      </Button>
-                      <Button
-                        type="primary"
-                        htmlType="submit"
-                        loading={isPendingCreateTopic}
+                      <Form.Item
+                        name="title"
+                        label={t("topic.create.title")}
+                        rules={[
+                          {
+                            required: true,
+                            message: t("topic.create.title_required"),
+                          },
+                        ]}
                       >
-                        {t("topic.create.submit")}
-                      </Button>
-                    </Form.Item>
-                  </Form>
-                </Card>
+                        <Input
+                          placeholder={t("topic.create.title_placeholder")}
+                        />
+                      </Form.Item>
+                      <Form.Item name="tags" label={t("topic.create.tags")}>
+                        <Select
+                          mode="tags"
+                          style={{ width: "100%" }}
+                          dropdownRender={(menu) => (
+                            <>
+                              {menu}
+                              <Divider style={{ margin: "8px 0" }} />
+                              <Form
+                                size="middle"
+                                form={formTag}
+                                onFinish={handleAddTag}
+                                className="flex gap-2"
+                              >
+                                <Form.Item name="name" className="flex-1">
+                                  <Input
+                                    className="w-full"
+                                    placeholder={t(
+                                      "topic.create.tags_placeholder"
+                                    )}
+                                    onKeyDown={(e) => e.stopPropagation()}
+                                  />
+                                </Form.Item>
+                                <Form.Item>
+                                  <Button
+                                    loading={isPendingCreateTag}
+                                    type="text"
+                                    icon={<PlusOutlined />}
+                                    htmlType="submit"
+                                  >
+                                    {t("tag.create")}
+                                  </Button>
+                                </Form.Item>
+                              </Form>
+                            </>
+                          )}
+                          placeholder={t("topic.create.tags_placeholder")}
+                          options={tags?.data?.content?.map((tag) => ({
+                            value: String(tag.tagId),
+                            label: tag.name,
+                          }))}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        name="content"
+                        label={t("topic.create.content")}
+                        rules={[
+                          {
+                            required: true,
+                            message: t("topic.create.content_required"),
+                          },
+                        ]}
+                      >
+                        <CustomizeQuill />
+                      </Form.Item>
+
+                      <Form.Item className="mb-0 text-right">
+                        <Button onClick={handleCancel} className="mr-2">
+                          {t("topic.create.cancel")}
+                        </Button>
+                        <Button
+                          type="primary"
+                          htmlType="submit"
+                          loading={isPendingCreateTopic}
+                        >
+                          {t("topic.create.submit")}
+                        </Button>
+                      </Form.Item>
+                    </Form>
+                  </Card>
+                ) : (
+                  <div className="flex flex-col items-center justify-center gap-4">
+                    <span className="text-lg font-medium text-gray-500">
+                      {t("post.login")}
+                    </span>
+                    <Button type="primary" onClick={() => navigate("/login")}>
+                      <LoginOutlined />
+                      {t("common.login")}
+                    </Button>
+                  </div>
+                )}
               </div>
 
               {/* Topics list */}

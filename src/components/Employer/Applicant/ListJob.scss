@@ -324,32 +324,6 @@
       margin: 20px 0;
       padding: 0 24px;
 
-      .ant-pagination-item {
-        border-radius: 8px;
-        transition: all 0.2s ease;
-
-        &:hover {
-          border-color: #1890ff;
-
-          a {
-            color: #1890ff;
-          }
-        }
-      }
-
-      .ant-pagination-item-active {
-        background-color: #1890ff;
-        border-color: #1890ff;
-
-        a {
-          color: white;
-        }
-
-        &:hover {
-          background-color: #40a9ff;
-        }
-      }
-
       .ant-pagination-prev,
       .ant-pagination-next {
         .ant-pagination-item-link {

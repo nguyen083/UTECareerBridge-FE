@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getAllCV, uploadCV } from "../services/apiService";
+import { getAllCV, updateFindjob, uploadCV } from "../services/apiService";
 import resumeApi from "../services/api/resume";
 
 export const useResume = () => {
@@ -18,11 +18,16 @@ export const useUploadResume = () => {
     },
   });
 };
-export const useCVAnalyzeApplyJob = (jobId) => {
+export const useCVAnalyzeApplyJob = (jobId, limit) => {
   return useQuery({
     queryKey: ["cvAnalyzeApplyJob", jobId],
-    queryFn: () => resumeApi.CVAnalyzeApplyJob(jobId),
+    queryFn: () => resumeApi.CVAnalyzeApplyJob(jobId, limit),
     enabled: false,
     refetchOnWindowFocus: false,
+  });
+};
+export const useUpdateFindJob = () => {
+  return useMutation({
+    mutationFn: (values) => updateFindjob(values),
   });
 };

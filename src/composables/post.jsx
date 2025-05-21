@@ -56,11 +56,7 @@ export const useUpdatePost = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ id, params }) => post.updatePost(id, params),
-    onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({
-        queryKey: ["post", id],
-      });
-
+    onSuccess: () => {
       queryClient.invalidateQueries({
         predicate: (query) =>
           query.queryKey[0] === "posts" ||

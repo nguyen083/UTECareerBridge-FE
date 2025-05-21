@@ -2594,6 +2594,10 @@
     }
   },
   "topic": {
+    "update": "Cập nhật chủ đề",
+    "edit": "Chỉnh sửa chủ đề",
+    "updateSuccess": "Cập nhật chủ đề thành công",
+    "updateError": "Cập nhật chủ đề thất bại",
     "noTopic": "Không tìm thấy chủ đề nào",
     "ADMIN": "Quản trị viên",
     "STUDENT": "Sinh viên",
@@ -2607,7 +2611,8 @@
       "confirm_message": "Bạn có chắc chắn muốn xóa chủ đề '{{title}}' không?",
       "button": "Xóa chủ đề",
       "cancel": "Hủy",
-      "success": "Xóa chủ đề thành công"
+      "success": "Xóa chủ đề thành công",
+      "error": "Xóa chủ đề thất bại"
     },
     "pin": {
       "success_unpin": "Bỏ ghim chủ đề thành công",
@@ -2664,6 +2669,16 @@
     }
   },
   "post": {
+    "login": "Vui lòng đăng nhập tiếp tục!",
+    "contentRequired": "Vui lòng nhập nội dung bài viết!",
+    "deleteError": "Xóa bài viết thất bại",
+    "deleteSuccess": "Xóa bài viết thành công",
+    "updateSuccess": "Cập nhật bài viết thành công",
+    "updateError": "Cập nhật bài viết thất bại",
+    "delete": "Xóa bài viết",
+    "deleteConfirm": "Bạn có chắc chắn muốn xóa bài viết này không?",
+    "update": "Cập nhật bài viết",
+    "detailReactions": "Chi tiết cảm xúc",
     "noPost": "Chưa có bài viết nào",
     "placeholder": "Nhập nội dung bài viết của bạn",
     "create": "Tạo bài viết",
@@ -2717,8 +2732,10 @@
     }
   },
   "comment": {
+    "send": "Gửi",
     "reply": "Trả lời",
     "login": "Đăng nhập để bình luận",
+    "createError": "Bình luận thất bại",
     "delete": "Xóa bình luận",
     "deleteConfirm": "Bạn có chắc chắn muốn xóa bình luận này?",
     "deleteError": "Xóa bình luận thất bại",

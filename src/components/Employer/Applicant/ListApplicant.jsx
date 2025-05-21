@@ -4,71 +4,74 @@ import ApplicantCard from "../../Generate/ApplicantCard";
 import { getApplyJobByJobId } from "../../../services/apiService";
 import { useTranslation } from "react-i18next";
 
-const ListApplicant = forwardRef(({activeKey, jobId : id}, ref) => {
-    const { t } = useTranslation();
-    const [currentPage, setCurrentPage] = useState(1);
-    const [totalApplicants, setTotalApplicants] = useState(0);
-    const [pageSize, setPageSize] = useState(10);
-    const [listApplicant, setListApplicant] = useState([]);
-   
-    const fetchData = async () => {
-        const response = await getApplyJobByJobId(id, activeKey);
-        if (response.status === "OK" && response.data) {
-            setListApplicant(response.data.content);
-            setTotalApplicants(response.data.totalElements);
-        }
-        else {
-            message.error(t('employer.applicant.messages.notFound'));
-            setListApplicant([]);
-        }
+const ListApplicant = forwardRef(({ activeKey, jobId: id }, ref) => {
+  const { t } = useTranslation();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalApplicants, setTotalApplicants] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [listApplicant, setListApplicant] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchData = async () => {
+    setLoading(true);
+    const response = await getApplyJobByJobId(id, activeKey);
+    if (response.status === "OK" && response.data) {
+      setListApplicant(response.data.content);
+      setTotalApplicants(response.data.totalElements);
+    } else {
+      message.error(t("employer.applicant.messages.notFound"));
+      setListApplicant([]);
     }
-    
-    // Cung cấp phương thức fetchData thông qua ref
-    useImperativeHandle(ref, () => ({
-        fetchData
-    }));
+    setLoading(false);
+  };
 
-    useEffect(() => {
-        fetchData();
-    }, [activeKey, currentPage]);
+  // Cung cấp phương thức fetchData thông qua ref
+  useImperativeHandle(ref, () => ({
+    fetchData,
+  }));
 
-    const handlePageChange = (page, newSize = pageSize) => {
-        setCurrentPage(page);
-        setPageSize(newSize);
-    };
+  useEffect(() => {
+    fetchData();
+  }, [activeKey, currentPage]);
 
-    const handlePageSizeChange = (newSize) => {
-        setPageSize(newSize);
-        setCurrentPage(1);
-    };
+  const handlePageChange = (page, newSize = pageSize) => {
+    setCurrentPage(page);
+    setPageSize(newSize);
+  };
 
-    return (
-        <>
-            <List
-                dataSource={listApplicant}
-                locale={{
-                    emptyText: t('employer.applicant.messages.empty')
-                }}
-                pagination={{
-                    current: currentPage,
-                    total: totalApplicants,
-                    onChange: handlePageChange,
-                    pageSizeOptions: ['10', '20', '50'],
-                    showSizeChanger: true,
-                    onShowSizeChange: handlePageSizeChange
-                }}
-                renderItem={(item) => (
-                    <List.Item>
-                        <div className="w-full">
-                            <ApplicantCard applicant={item} status={activeKey} />
-                        </div>
-                    </List.Item>
-                )}
-            />
-        </>
-    )
+  const handlePageSizeChange = (newSize) => {
+    setPageSize(newSize);
+    setCurrentPage(1);
+  };
+
+  return (
+    <>
+      <List
+        loading={loading}
+        dataSource={listApplicant}
+        locale={{
+          emptyText: t("employer.applicant.messages.empty"),
+        }}
+        pagination={{
+          current: currentPage,
+          total: totalApplicants,
+          onChange: handlePageChange,
+          pageSizeOptions: ["10", "20", "50"],
+          showSizeChanger: true,
+          onShowSizeChange: handlePageSizeChange,
+        }}
+        renderItem={(item) => (
+          <List.Item>
+            <div className="w-full">
+              <ApplicantCard applicant={item} status={activeKey} />
+            </div>
+          </List.Item>
+        )}
+      />
+    </>
+  );
 });
 
-ListApplicant.displayName = 'ListApplicant';
+ListApplicant.displayName = "ListApplicant";
 
 export default ListApplicant;
