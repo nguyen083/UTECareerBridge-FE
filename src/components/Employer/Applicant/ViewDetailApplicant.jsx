@@ -173,30 +173,29 @@ export const ModalInterview = ({
         .then((res) => {
           if (res.status === "OK") {
             message.success(t("employer.interview.create.message.success"));
+            convertStatus(id, "APPROVED")
+              .then((response) => {
+                if (response.status === "OK") {
+                  handleCancel();
+                }
+              })
+              .catch((err) => {
+                message.error(err.message);
+              })
+              .finally(() => {
+                dispatch(stop());
+                form.resetFields();
+                setOpen(false);
+                navigate("/employer/applicant/list-job");
+              });
           } else if (res.status === "UNAUTHORIZED") {
             window.open(res.data.url, "_blank");
+            dispatch(stop());
           }
         })
         .catch((err) => {
           console.error(err);
           message.error(t("employer.interview.create.message.error"));
-        })
-        .finally(() => {
-          convertStatus(id, "APPROVED")
-            .then((response) => {
-              if (response.status === "OK") {
-                handleCancel();
-              }
-            })
-            .catch((err) => {
-              message.error(err.message);
-            })
-            .finally(() => {
-              dispatch(stop());
-              form.resetFields();
-              setOpen(false);
-              navigate("/employer/applicant/list-job");
-            });
         });
     } else {
       values.employerId = employerId;
