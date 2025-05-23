@@ -603,7 +603,7 @@ const StudentDashboard = () => {
                   ))}
               </div>
               <Button type="link" className="view-all-link">
-                <Link to="/event">
+                <Link to="/events">
                   {t("student.dashboard.viewUpcomingEvents")}
                 </Link>
               </Button>

@@ -285,7 +285,7 @@ const CVAnalysis = () => {
   // View job details
   const handleViewJob = (jobId) => {
     if (jobId) {
-      window.open(`/job/${jobId}`, "_blank");
+      window.open(`/jobs/${jobId}`, "_blank");
     }
   };
 

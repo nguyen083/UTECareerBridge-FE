@@ -698,6 +698,8 @@
       }
     },
     "applicant": {
+      "rejectSuccess": "Từ chối thành công",
+      "rejectError": "Lỗi khi từ chối",
       "analyze": "Phân tích CV",
       "analyzeDescription": "Chức năng này giúp bạn phân tích các CV apply dựa trên độ phù hợp với công việc.",
       "overallScore": "Điểm đánh giá tổng thể",

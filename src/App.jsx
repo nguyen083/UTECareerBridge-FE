@@ -429,7 +429,7 @@ const App = () => {
                       element={<PaymentReturn />}
                     />
                     <Route element={<ViewLayout width="90%" />}>
-                      <Route path="/event" element={<EventPage />}></Route>
+                      <Route path="/events" element={<EventPage />}></Route>
                       <Route path="/company" element={<CompanyList />} />
                       <Route
                         path="/event-detail/:id"
@@ -469,7 +469,7 @@ const App = () => {
                       <Route path="/cv-analysis" element={<CVAnalysis />} />
                     </Route>
                     <Route element={<ViewLayout width="90%" />}>
-                      <Route path="/job/:id" element={<ViewJob />} />
+                      <Route path="/jobs/:id" element={<ViewJob />} />
                       <Route path="/company/:id" element={<InforCompany />} />
                       <Route path="/resume/view/:id" element={<ViewCV />} />
                       <Route path="/forums" element={<ForumPage />} />

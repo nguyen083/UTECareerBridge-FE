@@ -387,7 +387,7 @@ const AboutPage = () => {
                       {t("about.events.jobFair.description")}
                     </Paragraph>
                     <Link
-                      to="/event?eventType=CAREER_FAIR"
+                      to="/events?eventType=CAREER_FAIR"
                       className="inline-flex items-center font-medium text-blue-500 hover:text-blue-600"
                     >
                       {t("about.events.learnMore")}{" "}
@@ -428,7 +428,7 @@ const AboutPage = () => {
                       {t("about.events.skillsWorkshop.description")}
                     </Paragraph>
                     <Link
-                      to="/event?eventType=WORKSHOP"
+                      to="/events?eventType=WORKSHOP"
                       className="inline-flex items-center font-medium text-blue-500 hover:text-blue-600"
                     >
                       {t("about.events.learnMore")}{" "}
@@ -469,7 +469,7 @@ const AboutPage = () => {
                       {t("about.events.companySeminar.description")}
                     </Paragraph>
                     <Link
-                      to="/event?eventType=SEMINAR"
+                      to="/events?eventType=SEMINAR"
                       className="inline-flex items-center font-medium text-blue-500 hover:text-blue-600"
                     >
                       {t("about.events.learnMore")}{" "}

@@ -41,7 +41,7 @@ const OrtherCard = () => {
       image:
         "https://res.cloudinary.com/utejobhub/image/upload/v1733329165/Green_Geometric_We_re_Hiring_Flyer_Set_rfuuwq.jpg",
       onclick: () => {
-        navigate("/event");
+        navigate("/events");
       },
     },
   ];

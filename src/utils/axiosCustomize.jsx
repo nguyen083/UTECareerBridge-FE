@@ -116,7 +116,13 @@ instance.interceptors.response.use(
           return Promise.reject(error);
 
         case 404:
-          // window.location.href = "/user/404";
+          if (originalRequest.url.includes("jobs")) {
+            console.log(error?.response?.data);
+            return error?.response?.data
+              ? Promise.reject(error.response.data)
+              : Promise.reject(error);
+          }
+          window.location.href = "/user/404";
           return Promise.reject(error);
 
         case 500:

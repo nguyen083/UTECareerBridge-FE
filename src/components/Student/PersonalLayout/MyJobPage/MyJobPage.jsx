@@ -55,7 +55,7 @@ const AppliedJob = () => {
       dataIndex: "jobTitle",
       key: "jobTitle",
       render: (text, record) => (
-        <Link to={`/job/${record.jobId}`}>
+        <Link to={`/jobs/${record.jobId}`}>
           <Text ellipsis={{ rows: 1, tooltip: text }}>{text}</Text>
         </Link>
       ),
@@ -156,7 +156,7 @@ const SavedJob = () => {
       dataIndex: "jobTitle",
       key: "jobTitle",
       render: (text, record) => (
-        <Link to={`/job/${record.jobId}`}>
+        <Link to={`/jobs/${record.jobId}`}>
           <Text ellipsis={{ rows: 1, tooltip: text }}>{text}</Text>
         </Link>
       ),

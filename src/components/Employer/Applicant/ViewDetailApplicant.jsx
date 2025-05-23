@@ -24,8 +24,7 @@ import { useEffect, useState } from "react";
 import "./ModalInterview.scss";
 import CustomizeQuill from "./../../Generate/CustomizeQuill";
 import dayjs from "dayjs";
-import { useDispatch, useSelector } from "react-redux";
-import { loading, stop } from "../../../redux/action/webSlice";
+import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import interview from "../../../services/api/interview";
 import { useJobDetail } from "../../../composables/job";
@@ -110,17 +109,17 @@ export const ModalInterview = ({
   resumeId,
   email,
   jobId = null,
+  applicationId = null,
 }) => {
   const { t } = useTranslation();
   const [form] = Form.useForm();
   const location = useLocation();
   const [type, setType] = useState("ONLINE");
   const employerId = useSelector((state) => state.employer.id);
-  const dispatch = useDispatch();
-  const load = useSelector((state) => state.web.loading);
   const { id } = useParams();
   const { data: jobData } = useJobDetail(jobId || location.state?.jobId);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const generateLink = () => {
     const link =
@@ -167,30 +166,30 @@ export const ModalInterview = ({
         durationMinutes: values.durationMinutes,
         attendeeEmails: [email],
       };
-      dispatch(loading());
+      setLoading(true);
       interview
         .createInterview(payload)
         .then((res) => {
           if (res.status === "OK") {
             message.success(t("employer.interview.create.message.success"));
-            convertStatus(id, "APPROVED")
+            convertStatus(applicationId || id, "APPROVED")
               .then((response) => {
                 if (response.status === "OK") {
                   handleCancel();
                 }
               })
-              .catch((err) => {
-                message.error(err.message);
+              .catch(() => {
+                message.error(t("employer.applicant.approveError"));
               })
               .finally(() => {
-                dispatch(stop());
+                setLoading(false);
                 form.resetFields();
                 setOpen(false);
                 navigate("/employer/applicant/list-job");
               });
           } else if (res.status === "UNAUTHORIZED") {
             window.open(res.data.url, "_blank");
-            dispatch(stop());
+            setLoading(false);
           }
         })
         .catch((err) => {
@@ -511,7 +510,7 @@ export const ModalInterview = ({
           {t("employer.applicant.viewDetail.interview.cancel")}
         </Button>,
         <Button
-          loading={load}
+          loading={loading}
           size="large"
           key="submit"
           type="primary"

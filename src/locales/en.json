@@ -738,6 +738,10 @@
       }
     },
     "applicant": {
+      "rejectSuccess": "Rejected successfully",
+      "rejectError": "Failed to reject",
+      "approveSuccess": "Approved successfully",
+      "approveError": "Failed to approve",
       "analyze": "Analyze CVs",
       "analyzeDescription": "This feature helps you analyze applied CVs based on job fit.",
       "overallScore": "Overall Score",

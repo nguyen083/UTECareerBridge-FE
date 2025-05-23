@@ -135,7 +135,9 @@ const ChatBot = () => {
         .replace(/\n\n/g, "<br><br>")
         .replace(/\n/g, "<br>")
         .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-        .replace(/\*(.*?)\*/g, "<em>$1</em>");
+        .replace(/\*(.*?)\*/g, "<em>$1</em>")
+        .replace(/http:\/\/utecareer\.edu\.vn/g, "http://localhost:3000")
+        .replace(/https:\/\/utecareer\.edu\.vn/g, "http://localhost:3000");
     }
 
     // If no HTML tags, process markdown including converting markdown links to HTML
@@ -164,6 +166,7 @@ const ChatBot = () => {
     client.subscribe("/chatbot/" + newSessionId, (response) => {
       const responseBody = JSON.parse(response.body);
       const messageContent = responseBody.message.content;
+      console.log("Message content:", messageContent);
       console.log("Message content:", cleanMarkdownText(messageContent));
 
       if (messageContent) {
@@ -214,8 +217,8 @@ const ChatBot = () => {
       language: lang,
     };
 
-    chat.sendMessageToChatBot(stompClient, payload);
     setNewMessage("");
+    chat.sendMessageToChatBot(stompClient, payload);
   };
   return (
     <Card

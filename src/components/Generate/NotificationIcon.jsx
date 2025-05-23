@@ -47,6 +47,16 @@ const ListNotification = ({ notification, userId, setOpen }) => {
       navigate("/notification");
     }
   };
+  const handleViewNotification = (id) => {
+    setOpen(false);
+    if (user.role === "admin") {
+      navigate(`/admin/notification/${id}`);
+    } else if (user.role === "employer") {
+      navigate(`/employer/notification/${id}`);
+    } else {
+      navigate(`/notification/${id}`);
+    }
+  };
 
   return (
     <List
@@ -83,10 +93,7 @@ const ListNotification = ({ notification, userId, setOpen }) => {
             title={
               <Flex justify="space-between">
                 <Typography.Text
-                  onClick={() => {
-                    navigate(`/notification/${item.notificationId}`);
-                    setOpen(false);
-                  }}
+                  onClick={() => handleViewNotification(item.notificationId)}
                   className={clsx(
                     "!text-base cursor-pointer group-hover:text-text-color-hover notification-title",
                     item.read === false && "!font-medium"

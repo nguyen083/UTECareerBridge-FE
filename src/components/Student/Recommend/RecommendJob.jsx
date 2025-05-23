@@ -44,7 +44,7 @@ const RecommendJob = () => {
   };
 
   const handleViewDetail = (jobId) => {
-    navigate(`/job/${jobId}`);
+    navigate(`/jobs/${jobId}`);
   };
 
   // Card hiển thị dạng lưới (grid)

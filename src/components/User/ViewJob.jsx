@@ -75,43 +75,81 @@ const ViewJob = () => {
     id && window.scrollTo(0, 0);
   }, [id]);
 
+  const MapData = (res) => {
+    const job = res.data;
+    const company = job.employerResponse;
+    setCompany({
+      id: company.id,
+      companyName: company.companyName,
+      companyLogo: company.companyLogo,
+      companyAddress: company.companyAddress,
+      companySize: company.companySize,
+      backgroundImage: company.backgroundImage,
+      industryId: company.industry.industryId,
+    });
+    setJob({
+      jobTitle: job.jobTitle,
+      jobMinSalary: job.jobMinSalary,
+      jobMaxSalary: job.jobMaxSalary,
+      jobDeadline: job.jobDeadline,
+      jobLocation: job.jobLocation,
+      jobDescription: job.jobDescription,
+      jobRequirements: job.jobRequirements,
+      benefitDetails: company.benefitDetails,
+      updatedAt: job.updatedAt,
+      jobCategory: job.jobCategory.jobCategoryName,
+      industry: company.industry.industryName,
+      amount: job.amount,
+      jobLevel: job.jobLevel.nameLevel,
+      jobCategoryId: job.jobCategory.jobCategoryId,
+      jobSkills: job.jobSkills.map((skill) => skill.skillName).join(", "),
+    });
+  };
+
   useEffect(() => {
     setLoading(true);
     const status = location.state?.status;
 
-    getJobById(id, status).then((res) => {
-      if (res.status === "OK") {
-        const job = res.data;
-        const company = job.employerResponse;
-        setCompany({
-          id: company.id,
-          companyName: company.companyName,
-          companyLogo: company.companyLogo,
-          companyAddress: company.companyAddress,
-          companySize: company.companySize,
-          backgroundImage: company.backgroundImage,
-          industryId: company.industry.industryId,
-        });
-        setJob({
-          jobTitle: job.jobTitle,
-          jobMinSalary: job.jobMinSalary,
-          jobMaxSalary: job.jobMaxSalary,
-          jobDeadline: job.jobDeadline,
-          jobLocation: job.jobLocation,
-          jobDescription: job.jobDescription,
-          jobRequirements: job.jobRequirements,
-          benefitDetails: company.benefitDetails,
-          updatedAt: job.updatedAt,
-          jobCategory: job.jobCategory.jobCategoryName,
-          industry: company.industry.industryName,
-          amount: job.amount,
-          jobLevel: job.jobLevel.nameLevel,
-          jobCategoryId: job.jobCategory.jobCategoryId,
-          jobSkills: job.jobSkills.map((skill) => skill.skillName).join(", "),
-        });
-      }
-      setLoading(false);
-    });
+    getJobById(id, status)
+      .then((res) => {
+        if (res.status === "OK") {
+          MapData(res);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        if (user.role === "student") {
+          window.location.href = "/user/404";
+        }
+        getJobById(id, "PENDING")
+          .then((res) => {
+            if (res.status === "OK") {
+              MapData(res);
+            }
+            setLoading(false);
+          })
+          .catch(() => {
+            getJobById(id, "REJECTED")
+              .then((res) => {
+                if (res.status === "OK") {
+                  MapData(res);
+                }
+                setLoading(false);
+              })
+              .catch(() => {
+                getJobById(id, "INACTIVE")
+                  .then((res) => {
+                    if (res.status === "OK") {
+                      MapData(res);
+                    }
+                    setLoading(false);
+                  })
+                  .catch(() => {
+                    window.location.href = "/user/404";
+                  });
+              });
+          });
+      });
 
     if (user.role === "student") {
       checkSaveJob(id).then((res) => {

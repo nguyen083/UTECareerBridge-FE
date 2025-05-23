@@ -13,7 +13,7 @@ const { Text, Title, Paragraph } = Typography;
 const JobCardSmall = ({ job }) => {
   const navigate = useNavigate();
   const handleClick = (key) => {
-    navigate("/job/" + key);
+    navigate("/jobs/" + key);
   };
   return (
     <div className="job-card-small">
@@ -78,7 +78,7 @@ const JobCardLarge = ({ job, disable = false }) => {
   const handleClick = (key) => {
     if (disable) return;
     else {
-      navigate("/job/" + key);
+      navigate("/jobs/" + key);
     }
   };
 

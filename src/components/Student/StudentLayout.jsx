@@ -107,7 +107,7 @@ const PopoverCategory = ({ setOpen }) => {
             size="large"
             type="text"
             onClick={() => {
-              navigate("/event");
+              navigate("/events");
               setOpen(false);
             }}
           >

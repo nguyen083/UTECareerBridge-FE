@@ -8,6 +8,7 @@ import {
   Alert,
   Tooltip,
   Button,
+  message,
 } from "antd";
 import { useTranslation } from "react-i18next";
 import {
@@ -35,6 +36,7 @@ const AnalyzeCVsModal = ({
   const [resumeId, setResumeId] = useState(null);
   const [email, setEmail] = useState(null);
   const [applicationId, setApplicationId] = useState(null);
+  const [loading, setLoading] = useState(false);
   const getMatchColor = (score) => {
     const percent = score * 100;
     if (percent >= 90) return "green";
@@ -71,11 +73,16 @@ const AnalyzeCVsModal = ({
             {skill}
           </Tag>
         ))}
-        {missingSkills.map((skill) => (
+        {missingSkills.slice(0, 3).map((skill) => (
           <Tag color="error" key={skill} className="mb-1 capitalize">
             {skill}
           </Tag>
         ))}
+        {missingSkills.length > 3 && (
+          <Tag color="error" key="more" className="mb-1 capitalize">
+            +{missingSkills.length - 3}
+          </Tag>
+        )}
       </div>
     );
   };
@@ -88,7 +95,17 @@ const AnalyzeCVsModal = ({
     setApplicationId(resumeId);
   };
   const handleRejectCV = (resumeId) => {
-    convertStatus(resumeId, "REJECTED");
+    setLoading(true);
+    convertStatus(resumeId, "REJECTED")
+      .then(() => {
+        message.success(t("employer.applicant.rejectSuccess"));
+      })
+      .catch(() => {
+        message.error(t("employer.applicant.rejectError"));
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -158,6 +175,7 @@ const AnalyzeCVsModal = ({
                   />
                   <Button
                     danger
+                    loading={loading}
                     icon={<CloseCircleOutlined />}
                     size="small"
                     onClick={() => handleRejectCV(resume.application_id)}
@@ -192,21 +210,12 @@ const AnalyzeCVsModal = ({
                         </Text>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <div>
-                        <Text type="secondary" className="text-sm">
-                          {t("employer.applicant.email")}:
-                        </Text>
-                      </div>
-                      <div>
-                        <Text className="text-sm">
-                          {resume?.student_email || ""}
-                        </Text>
-                      </div>
-                    </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <Text type="secondary" className="text-sm">
+                        <Text
+                          type="secondary"
+                          className="flex-shrink-0 text-sm"
+                        >
                           {t("employer.applicant.skills")}:
                         </Text>
                         <div className="flex flex-wrap mt-1">
@@ -232,6 +241,7 @@ const AnalyzeCVsModal = ({
         studentId={studentId}
         resumeId={resumeId}
         email={email}
+        applicationId={applicationId}
       />
     </Modal>
   );

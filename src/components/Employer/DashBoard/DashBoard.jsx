@@ -415,22 +415,6 @@ const DashBoard = () => {
   const { data: hiringData } = useRecruimentAverage();
   const { data: applicantRate } = useApplicantRate();
 
-  // Initialize date range from URL params
-  useEffect(() => {
-    const startParam = searchParams.get("startDate");
-    const endParam = searchParams.get("endDate");
-
-    if (startParam && endParam) {
-      setDateRange([dayjs(startParam, "YYYY-MM"), dayjs(endParam, "YYYY-MM")]);
-    } else {
-      // Set default date range if not in URL (current month and previous month)
-      setDateRange([
-        dayjs().subtract(1, "month").startOf("month"),
-        dayjs().endOf("month"),
-      ]);
-    }
-  }, []); // Run only once on component mount
-
   useEffect(() => {
     // Update URL when date changes
     if (dateRange[0] && dateRange[1]) {
