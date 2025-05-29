@@ -154,32 +154,27 @@ const ListPackage = () => {
       render: (text) => {
         if (!text) return "-";
 
-        const date = new Date(text);
-        const today = new Date();
-        const diff = date - today;
-        const daysRemaining = Math.ceil(diff / (1000 * 60 * 60 * 24));
+        const date = dayjs(text, "DD/MM/YYYY");
+        const today = dayjs();
+        const diff = date.diff(today, "day");
+        const daysRemaining = diff;
 
         return (
           <div className="expiry-container">
             <div className="expiry-date">{text}</div>
-            {daysRemaining <= 7 && daysRemaining > 0 ? (
-              <Tag color="red" className="expiry-tag">
+            {daysRemaining <= 14 && daysRemaining > 0 ? (
+              <Tag color="orange" className="expiry-tag">
                 {t("employer.dashboard.servicePackage.expiringSoon", {
                   days: daysRemaining,
-                }) || `${daysRemaining} days left`}
+                })}
               </Tag>
             ) : daysRemaining <= 0 ? (
               <Tag color="error" className="expiry-tag">
-                {t("employer.dashboard.servicePackage.expired") || "Expired"}
-              </Tag>
-            ) : daysRemaining <= 14 ? (
-              <Tag color="orange" className="expiry-tag">
-                {daysRemaining}{" "}
-                {t("employer.dashboard.servicePackage.daysLeft") || "days left"}
+                {t("employer.dashboard.servicePackage.expired")}
               </Tag>
             ) : (
               <Tag color="success" className="expiry-tag">
-                {t("employer.dashboard.servicePackage.active") || "Active"}
+                {t("employer.dashboard.servicePackage.active")}
               </Tag>
             )}
           </div>

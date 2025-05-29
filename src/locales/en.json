@@ -1,4 +1,5 @@
 {
+  "failed_to_fetch_data": "Failed to fetch data",
   "chat_with_employer": "Chat with employer",
   "job_application_submitted": "Job application submitted",
   "find_company_name_employer": "Search company name, employer",
@@ -969,6 +970,9 @@
         }
       },
       "servicePackage": {
+        "expired": "Expired",
+        "daysLeft": "days left",
+        "expiringSoon": "{{days}} days left",
         "empty": "No service packages found",
         "title": "Service Packages",
         "active": "Active",
@@ -2646,6 +2650,7 @@
     }
   },
   "topic": {
+    "createTopic": "Create topic",
     "update": "Update topic",
     "edit": "Edit topic",
     "updateSuccess": "Update topic successfully",

@@ -1,4 +1,5 @@
 {
+  "failed_to_fetch_data": "Lỗi khi tải dữ liệu",
   "chat_with_employer": "Trò chuyện với nhà tuyển dụng",
   "job_application_submitted": "Đã nộp đơn ứng tuyển",
   "find_company_name_employer": "Tìm tên công ty, nhà tuyển dụng",
@@ -994,6 +995,9 @@
         }
       },
       "servicePackage": {
+        "expired": "Đã hết hạn",
+        "daysLeft": "ngày còn lại",
+        "expiringSoon": "Còn lại {{days}} ngày",
         "empty": "Không có gói dịch vụ nào",
         "title": "Gói dịch vụ",
         "active": "Hoạt động",
@@ -2596,6 +2600,7 @@
     }
   },
   "topic": {
+    "createTopic": "Tạo chủ đề",
     "update": "Cập nhật chủ đề",
     "edit": "Chỉnh sửa chủ đề",
     "updateSuccess": "Cập nhật chủ đề thành công",

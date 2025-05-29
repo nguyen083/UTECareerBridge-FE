@@ -23,7 +23,6 @@ import {
   ExclamationCircleOutlined,
   CalendarOutlined,
   MessageOutlined,
-  PlusOutlined,
   EyeOutlined,
   AppstoreOutlined,
 } from "@ant-design/icons";
@@ -60,6 +59,7 @@ const TopicPage = () => {
     data: topicsData,
     isLoading: isLoadingTopics,
     isError: isErrorTopics,
+    refetch: refetchTopics,
   } = useAllTopicByForumId(forumId, { page: page - 1, size });
 
   // Mutations
@@ -87,9 +87,7 @@ const TopicPage = () => {
         deleteMutation.mutate(topic.topicId, {
           onSuccess: () => {
             message.success(t("topic.delete.success"));
-            queryClient.invalidateQueries({
-              queryKey: ["topicsByForumId", forumId],
-            });
+            refetchTopics();
           },
           onError: (error) => {
             message.error(t("topic.error.general", { message: error.message }));
@@ -132,11 +130,6 @@ const TopicPage = () => {
         message.error(t("topic.error.general", { message: error.message }));
       },
     });
-  };
-
-  // Create new topic
-  const handleCreateTopic = () => {
-    navigate(`/admin/forums/${forumId}/new-topic`);
   };
 
   // Loading state
@@ -331,15 +324,6 @@ const TopicPage = () => {
             </Title>
             <Text type="secondary">{forum?.description}</Text>
           </div>
-          <Flex gap={12}>
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={handleCreateTopic}
-            >
-              {t("topic.create")}
-            </Button>
-          </Flex>
         </Flex>
       </Card>
 

@@ -28,6 +28,7 @@ import {
 } from "../../../../services/apiService";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import dayjs from "dayjs";
 
 const TablePost = ({ status, onUpdateStats }) => {
   const { t } = useTranslation();
@@ -302,9 +303,9 @@ const TablePost = ({ status, onUpdateStats }) => {
           sorter: (a, b) => new Date(a.deadline) - new Date(b.deadline),
           sortOrder: sortedInfo.columnKey === "deadline" && sortedInfo.order,
           render: (date) => {
-            const deadlineDate = new Date(date);
-            const now = new Date();
-            const isExpired = deadlineDate < now;
+            const deadlineDate = dayjs(date, "DD/MM/YYYY");
+            const now = dayjs();
+            const isExpired = deadlineDate.isBefore(now);
 
             return (
               <Tag

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import {
   Typography,
   Button,
@@ -12,7 +12,6 @@ import {
   Card,
   Empty,
   Spin,
-  Tabs,
   Flex,
   Row,
   Col,
@@ -47,7 +46,8 @@ import {
   useGetReactionByPostId,
 } from "../../../composables/reaction";
 import { formatDateTime } from "../../../utils/day";
-
+import { ReactionModal } from "../PostDetail";
+import truncate from "html-truncate";
 const { Title, Text } = Typography;
 const { confirm } = Modal;
 
@@ -65,7 +65,11 @@ const PostList = () => {
   const deletePostMutation = useDeletePost();
 
   // Fetch posts using usePostByTopicId
-  const { data: postsData, isLoading } = usePostByTopicId(topicId, {
+  const {
+    data: postsData,
+    isLoading,
+    refetch: refetchPosts,
+  } = usePostByTopicId(topicId, {
     page: page - 1,
     size: size,
   });
@@ -158,6 +162,7 @@ const PostList = () => {
         try {
           await deletePostMutation.mutateAsync(postId);
           message.success(t("post.list.delete.success"));
+          refetchPosts();
         } catch {
           message.error(t("post.list.delete.error"));
         }
@@ -389,7 +394,7 @@ const PostItem = ({ post, onDelete, topicId, forumId }) => {
   const {
     data: reactionsData,
     refetch: refetchReactions,
-    isPending: isPendingGetReactions,
+    isFetching: isFetchingGetReactions,
   } = useGetReactionByPostId(post.post_id);
 
   const [sortedReactions, setSortedReactions] = useState([]);
@@ -499,7 +504,7 @@ const PostItem = ({ post, onDelete, topicId, forumId }) => {
 
           {/* Content */}
           <div className="p-4 my-4 rounded-lg bg-gray-50">
-            <HtmlContent htmlString={post.content} />
+            <HtmlContent htmlString={truncate(post.content, 300)} />
           </div>
 
           {/* Footer with reactions, comments and timestamp */}
@@ -554,124 +559,10 @@ const PostItem = ({ post, onDelete, topicId, forumId }) => {
         modal={modal}
         setModal={setModal}
         reactionsData={reactionsData}
-        isPendingGetReactions={isPendingGetReactions}
+        isFetchingGetReactions={isFetchingGetReactions}
         mapReaction={mapReaction}
       />
     </div>
-  );
-};
-
-const ReactionModal = ({
-  modal,
-  setModal,
-  reactionsData,
-  isPendingGetReactions,
-  mapReaction,
-}) => {
-  const { t } = useTranslation();
-  const items = useMemo(() => {
-    if (
-      !reactionsData?.data?.content ||
-      reactionsData.data.content.length === 0
-    ) {
-      return [];
-    }
-
-    // Tạo object để lưu reactions theo loại
-    const reactionsByType = {};
-
-    // Nhóm các reaction theo loại
-    reactionsData.data.content.forEach((reaction) => {
-      if (!reactionsByType[reaction.type]) {
-        reactionsByType[reaction.type] = [];
-      }
-      reactionsByType[reaction.type].push(reaction);
-    });
-
-    // Tạo items cho Tabs component
-    return Object.keys(reactionsByType).map((type) => ({
-      key: type,
-      label: (
-        <div className="flex items-center gap-2 px-4 text-xl">
-          <span className="text-2xl">{mapReaction[type]}</span>
-          <span className="font-medium">{reactionsByType[type].length}</span>
-        </div>
-      ),
-      children: (
-        <div className="p-2 overflow-y-auto max-h-60">
-          {reactionsByType[type].map((reaction) => (
-            <div
-              key={reaction.reactionId}
-              className="flex items-center gap-3 p-3 transition-colors rounded-md hover:bg-gray-50"
-            >
-              <Avatar
-                icon={<UserOutlined />}
-                src={reaction.avatar}
-                size={40}
-                className="border border-gray-200"
-              />
-              <div>
-                <div className="font-medium text-gray-800">
-                  {reaction.userName}
-                </div>
-                <div className="text-xs text-gray-500">
-                  {reaction.createdAt}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      ),
-    }));
-  }, [reactionsData, mapReaction]);
-
-  const handleClose = () => {
-    setModal(false);
-  };
-
-  return (
-    <Modal
-      width={700}
-      title={
-        <span className="text-xl font-semibold">
-          {t("post.reaction.title")}
-        </span>
-      }
-      footer={null}
-      open={modal}
-      onCancel={handleClose}
-      centered
-      styles={{
-        header: {
-          borderBottom: "1px solid #f0f0f0",
-          padding: "16px 24px",
-        },
-        body: {
-          padding: "0",
-        },
-      }}
-    >
-      <div className="pt-2">
-        {isPendingGetReactions ? (
-          <div className="flex justify-center p-8">
-            <Spin size="large" />
-          </div>
-        ) : items.length > 0 ? (
-          <Tabs
-            defaultActiveKey={items[0]?.key}
-            items={items}
-            type="card"
-            className="px-4"
-          />
-        ) : (
-          <Empty
-            description={t("post.reaction.no_data")}
-            className="py-8"
-            image={Empty.PRESENTED_IMAGE_SIMPLE}
-          />
-        )}
-      </div>
-    </Modal>
   );
 };
 
