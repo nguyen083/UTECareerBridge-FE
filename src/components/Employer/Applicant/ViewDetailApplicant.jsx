@@ -18,7 +18,12 @@ import BoxContainer from "../../Generate/BoxContainer";
 import ViewCV from "../../Student/CV/ViewCV";
 import styles from "./ViewDetailApplicant.module.scss";
 import { CheckOutlined, CloseOutlined } from "@ant-design/icons";
-import { useParams, useLocation, useNavigate } from "react-router-dom";
+import {
+  useParams,
+  useLocation,
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
 import { convertStatus } from "../../../services/apiService";
 import { useEffect, useState } from "react";
 import "./ModalInterview.scss";
@@ -34,13 +39,15 @@ const ViewDetailApplicant = () => {
   const { t } = useTranslation();
   const { id } = useParams();
   const location = useLocation();
+  const [searchParams] = useSearchParams();
   const [open, setOpen] = useState(false);
   const [studentId, setStudentId] = useState(null);
   const [resumeId, setResumeId] = useState(null);
   const [email, setEmail] = useState(null);
-
+  const jobId = searchParams.get("jobId") || null;
+  const state = searchParams.get("state");
   useEffect(() => {
-    if (location.state?.status === "PENDING") {
+    if (location.state?.status === "PENDING" || state === "PENDING") {
       convertStatus(id, "VIEWED");
     }
   }, []);
@@ -97,6 +104,7 @@ const ViewDetailApplicant = () => {
         resumeId={resumeId}
         studentId={studentId}
         email={email}
+        jobId={jobId}
       />
     </Flex>
   );

@@ -24,6 +24,7 @@ export const useCVAnalyzeApplyJob = (jobId, limit) => {
     queryFn: () => resumeApi.CVAnalyzeApplyJob(jobId, limit),
     enabled: false,
     refetchOnWindowFocus: false,
+    retry: false,
   });
 };
 export const useUpdateFindJob = () => {

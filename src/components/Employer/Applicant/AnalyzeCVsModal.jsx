@@ -88,7 +88,9 @@ const AnalyzeCVsModal = ({
   };
 
   const handleViewCV = (resumeId) => {
-    window.open(`/employer/applicant-job/${resumeId}`);
+    window.open(
+      `/employer/applicant-job/${resumeId}?state=PENDING&jobId=${jobId}`
+    );
   };
 
   const handleApproveCV = (resumeId) => {
@@ -186,7 +188,7 @@ const AnalyzeCVsModal = ({
               <List.Item.Meta
                 avatar={
                   <Avatar
-                    src={resume?.avatar}
+                    src={resume?.profile_image}
                     size={48}
                     icon={<UserOutlined />}
                   />

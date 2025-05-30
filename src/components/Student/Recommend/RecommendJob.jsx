@@ -7,7 +7,6 @@ import {
   Layout,
   Typography,
   Card,
-  Progress,
   Divider,
   Switch,
   Tooltip,
@@ -89,7 +88,7 @@ const RecommendJob = () => {
           <Text className="flex items-center text-sm text-gray-600">
             <FaPercentage className="mr-1" /> {t("cv.analysis.result.match")}:
           </Text>
-          <Progress
+          {/* <Progress
             percent={Math.round(job.score * 100)}
             size="small"
             status="active"
@@ -97,7 +96,7 @@ const RecommendJob = () => {
               from: "#108ee9",
               to: "#87d068",
             }}
-          />
+          /> */}
         </div>
 
         <Paragraph className="mb-3 text-xs italic text-gray-500">
@@ -168,7 +167,7 @@ const RecommendJob = () => {
                   "cv.analysis.result.match"
                 )}`}
               >
-                <Progress
+                {/* <Progress
                   type="circle"
                   percent={Math.round(job.score * 100)}
                   size={80}
@@ -176,7 +175,7 @@ const RecommendJob = () => {
                     "0%": "#108ee9",
                     "100%": "#87d068",
                   }}
-                />
+                /> */}
               </Tooltip>
             </div>
           </div>

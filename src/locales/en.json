@@ -1504,6 +1504,8 @@
       "scoreLabel": "Score:"
     },
     "builder": {
+      "saveSuccess": "CV saved successfully",
+      "saveError": "Failed to save CV",
       "sectionAlreadyExists": "This section already exists",
       "newSection": "NEW SECTION",
       "addNewSection": "Add New Section",

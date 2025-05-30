@@ -446,9 +446,7 @@ const CVBuilderPage = () => {
                       description={
                         <Text type="secondary" className="cv-date">
                           <CalendarOutlined className="date-icon" />
-                          {new Date(
-                            cv.updatedAt || cv.createdAt
-                          ).toLocaleDateString()}
+                          {cv?.updatedAt}
                         </Text>
                       }
                     />

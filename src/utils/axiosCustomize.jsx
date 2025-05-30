@@ -27,7 +27,7 @@ const REFRESH_ENDPOINT = "/v1/auth/refresh";
 
 const instance = axios.create({
   baseURL: "/api",
-  timeout: 30000,
+  timeout: 60000,
   headers: {
     "Content-Type": "application/json",
     "Accept-Language": localStorage.getItem("lang") || "en",

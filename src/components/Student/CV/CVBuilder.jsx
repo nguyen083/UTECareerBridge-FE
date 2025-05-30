@@ -493,14 +493,14 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
       }
 
       if (response.status === "OK") {
-        message.success("Lưu CV thành công");
+        message.success(t("cv.builder.saveSuccess"));
         if (onFinish) onFinish(response.data);
       } else {
         throw new Error(response.message || "Unknown error");
       }
     } catch (error) {
       console.error("Error saving CV:", error);
-      message.error("Có lỗi khi lưu CV");
+      message.error(t("cv.builder.saveError"));
     } finally {
       queryClient.invalidateQueries({ queryKey: ["resume"] });
       setSaveLoading(false);
@@ -552,7 +552,6 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
           // Sử dụng phương thức previewCV mới từ component CVPreview
           // Phương thức này sẽ tạo PDF và mở trong tab mới mà không cần hiển thị trên trang hiện tại
           const success = await previewComponentRef.current.previewCV();
-
           if (success) {
             message.open({
               key: messageKey,
@@ -692,7 +691,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
   const addSkill = () => {
     const newId =
       skills.length > 0 ? Math.max(...skills.map((s) => s.id)) + 1 : 1;
-    setSkills([...skills, { id: newId, name: "Kỹ năng mới", level: 3 }]);
+    setSkills([...skills, { id: newId, name: "", level: 3 }]);
   };
 
   const removeSkill = (skillId) => {

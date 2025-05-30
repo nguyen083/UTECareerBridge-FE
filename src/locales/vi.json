@@ -1463,6 +1463,8 @@
       "scoreLabel": "Điểm:"
     },
     "builder": {
+      "saveSuccess": "CV đã được lưu thành công",
+      "saveError": "Lưu CV thất bại",
       "sectionAlreadyExists": "Mục này đã tồn tại",
       "newSection": "MỤC MỚI",
       "addNewSection": "Thêm mục mới",
