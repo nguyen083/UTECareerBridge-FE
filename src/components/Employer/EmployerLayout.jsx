@@ -216,11 +216,11 @@ const EmployerLayout = () => {
       const res = await logOut();
       if (res.status === "OK") {
         removeAllToken();
-        message.success(res.message);
+        message.success(t("logoutSuccess"));
         navigate("login");
         clearRedux();
       } else {
-        message.error(res.message);
+        message.error(t("logoutError"));
       }
     } catch (error) {
       console.log(error);

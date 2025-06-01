@@ -1,4 +1,8 @@
 {
+  "logoutSuccess": "Đăng xuất thành công!",
+  "logoutError": "Đăng xuất thất bại!",
+  "loginSuccess": "Đăng nhập thành công!",
+  "loginError": "Đăng nhập thất bại!",
   "failed_to_fetch_data": "Lỗi khi tải dữ liệu",
   "chat_with_employer": "Trò chuyện với nhà tuyển dụng",
   "job_application_submitted": "Đã nộp đơn ứng tuyển",
@@ -56,6 +60,7 @@
     "title": "Tất cả danh mục"
   },
   "common": {
+    "update": "Cập nhật",
     "show": "Hiện",
     "hide": "Ẩn",
     "confirm": "Xác nhận",
@@ -1959,6 +1964,7 @@
       "createNotification": "Tạo thông báo",
       "notificationList": "Danh sách thông báo",
       "logout": "Đăng xuất",
+      "jobAlertConfig": "Cấu hình thông báo",
       "forums": "Diễn đàn"
     },
     "messages": {
@@ -2950,6 +2956,84 @@
         "saturday": "Thứ 7: 8h00-12h00"
       },
       "sendMessage": "Gửi tin nhắn"
+    }
+  },
+  "jobAlertSchedule": {
+    "title": "🔔 Cấu hình lịch trình thông báo công việc",
+    "info": {
+      "title": "Thông tin cấu hình",
+      "description": "Quản lý lịch trình gửi thông báo công việc tự động đến sinh viên dựa trên tiêu chí mà họ đã thiết lập.\nSử dụng biểu thức Cron để định nghĩa chính xác thời điểm thực hiện gửi thông báo."
+    },
+    "list": {
+      "title": "Danh sách cấu hình",
+      "description": "Quản lý các lịch trình gửi thông báo công việc",
+      "addNew": "Thêm cấu hình mới",
+      "total": "{{start}}-{{end}} của {{total}} cấu hình"
+    },
+    "frequency": {
+      "daily": "🌅 Hàng ngày",
+      "weekly": "📆 Hàng tuần",
+      "monthly": "🗓️ Hàng tháng",
+      "hourly": "⏰ Hàng giờ"
+    },
+    "cronSamples": {
+      "daily8am": "Hàng ngày lúc 8:00 AM",
+      "daily6pm": "Hàng ngày lúc 6:00 PM",
+      "weeklyMonday": "Thứ 2 hàng tuần lúc 8:00 AM",
+      "weeklyFriday": "Thứ 6 hàng tuần lúc 9:00 AM",
+      "monthly": "Ngày 1 hàng tháng lúc 8:00 AM",
+      "every2hours": "Mỗi 2 tiếng",
+      "every30mins": "Mỗi 30 phút"
+    },
+    "modal": {
+      "edit": "✏️ Chỉnh sửa cấu hình lịch trình",
+      "create": "➕ Thêm cấu hình lịch trình",
+      "frequency": {
+        "label": "📅 Tần suất thông báo",
+        "placeholder": "Chọn tần suất thông báo",
+        "required": "Vui lòng chọn tần suất"
+      },
+      "sampleTime": {
+        "label": "🕒 Thời gian mẫu",
+        "tooltip": "Chọn một mẫu thời gian để tự động điền biểu thức Cron",
+        "placeholder": "Chọn thời gian mẫu"
+      },
+      "cronExpression": {
+        "label": "⚙️ Biểu thức Cron",
+        "required": "Vui lòng nhập biểu thức Cron",
+        "tooltip": "Định dạng: second minute hour dayOfMonth month dayOfWeek",
+        "guide": {
+          "title": "💡 Cách đọc biểu thức Cron:",
+          "format": "second minute hour dayOfMonth month dayOfWeek",
+          "examples": {
+            "title": "Ví dụ:",
+            "daily8am": "🌅 Hàng ngày lúc 8:00 sáng",
+            "daily6pm": "🌆 Hàng ngày lúc 6:00 chiều",
+            "weeklyMonday": "📅 Mỗi thứ Hai lúc 8:00 sáng",
+            "monthly": "🗓️ Ngày mùng 1 hàng tháng lúc 8:00 sáng"
+          }
+        }
+      },
+      "buttons": {
+        "cancel": "Hủy bỏ",
+        "update": "Cập nhật",
+        "save": "Lưu cấu hình"
+      }
+    },
+    "messages": {
+      "updateSuccess": "Cập nhật cấu hình thành công",
+      "updateError": "Có lỗi xảy ra khi cập nhật cấu hình",
+      "loadError": "Không thể tải danh sách cấu hình lịch trình gửi thông báo",
+      "invalidCronExpression": "Biểu thức cron không hợp lệ",
+      "everyXHours": "Mỗi {{interval}} giờ",
+      "dailyAtTime": "Hàng ngày lúc {{hour}}:00",
+      "everyXMinutes": "Mỗi {{interval}} phút",
+      "customSchedule": "Lịch trình tùy chỉnh"
+    },
+    "table": {
+      "frequency": "Tần suất",
+      "cronExpression": "Biểu thức cron",
+      "timeDescription": "Thời gian mô tả"
     }
   }
 }

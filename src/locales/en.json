@@ -1,4 +1,8 @@
 {
+  "logoutSuccess": "Logout successfully!",
+  "logoutError": "Logout failed!",
+  "loginSuccess": "Login successfully!",
+  "loginError": "Login failed!",
   "failed_to_fetch_data": "Failed to fetch data",
   "chat_with_employer": "Chat with employer",
   "job_application_submitted": "Job application submitted",
@@ -55,6 +59,7 @@
     "title": "All Categories"
   },
   "common": {
+    "update": "Update",
     "show": "Show",
     "hide": "Hide",
     "confirm": "Confirm",
@@ -2001,7 +2006,8 @@
       "createNotification": "Create Notification",
       "notificationList": "Notification List",
       "forums": "Forums",
-      "logout": "Logout"
+      "logout": "Logout",
+      "jobAlertConfig": "Job Alert Config"
     },
     "messages": {
       "error": "An error occurred"
@@ -2999,6 +3005,84 @@
         "saturday": "Saturday: 8:00-12:00"
       },
       "sendMessage": "Send message"
+    }
+  },
+  "jobAlertSchedule": {
+    "title": "🔔 Job Alert Schedule Configuration",
+    "info": {
+      "title": "Configuration Information",
+      "description": "Manage automatic job notification schedules to students based on their set criteria.\nUse Cron expressions to precisely define when notifications should be sent."
+    },
+    "list": {
+      "title": "Configuration List",
+      "description": "Manage job notification schedules",
+      "addNew": "Add New Configuration",
+      "total": "{{start}}-{{end}} of {{total}} configurations"
+    },
+    "frequency": {
+      "daily": "🌅 Daily",
+      "weekly": "📆 Weekly",
+      "monthly": "🗓️ Monthly",
+      "hourly": "⏰ Hourly"
+    },
+    "cronSamples": {
+      "daily8am": "Daily at 8:00 AM",
+      "daily6pm": "Daily at 6:00 PM",
+      "weeklyMonday": "Every Monday at 8:00 AM",
+      "weeklyFriday": "Every Friday at 9:00 AM",
+      "monthly": "1st day of month at 8:00 AM",
+      "every2hours": "Every 2 hours",
+      "every30mins": "Every 30 minutes"
+    },
+    "modal": {
+      "edit": "✏️ Edit Schedule Configuration",
+      "create": "➕ Add Schedule Configuration",
+      "frequency": {
+        "label": "📅 Notification Frequency",
+        "placeholder": "Select notification frequency",
+        "required": "Please select a frequency"
+      },
+      "sampleTime": {
+        "label": "🕒 Sample Time",
+        "tooltip": "Select a time sample to auto-fill Cron expression",
+        "placeholder": "Select time sample"
+      },
+      "cronExpression": {
+        "label": "⚙️ Cron Expression",
+        "required": "Please enter Cron expression",
+        "tooltip": "Format: second minute hour dayOfMonth month dayOfWeek",
+        "guide": {
+          "title": "💡 How to read Cron expression:",
+          "format": "second minute hour dayOfMonth month dayOfWeek",
+          "examples": {
+            "title": "Examples:",
+            "daily8am": "🌅 Daily at 8:00 AM",
+            "daily6pm": "🌆 Daily at 6:00 PM",
+            "weeklyMonday": "📅 Every Monday at 8:00 AM",
+            "monthly": "🗓️ 1st day of month at 8:00 AM"
+          }
+        }
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "update": "Update",
+        "save": "Save Configuration"
+      }
+    },
+    "messages": {
+      "updateSuccess": "Configuration updated successfully",
+      "updateError": "An error occurred while updating configuration",
+      "loadError": "Failed to load job alert schedule configurations",
+      "invalidCronExpression": "Invalid cron expression",
+      "everyXHours": "Every {{interval}} hours",
+      "dailyAtTime": "Daily at {{hour}}:00",
+      "everyXMinutes": "Every {{interval}} minutes",
+      "customSchedule": "Custom Schedule"
+    },
+    "table": {
+      "frequency": "Frequency",
+      "cronExpression": "Cron Expression",
+      "timeDescription": "Time Description"
     }
   }
 }

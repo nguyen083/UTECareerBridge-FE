@@ -1,15 +1,23 @@
-@import '../../styles/variables.scss';
+@import "../../styles/variables.scss";
 
 .title-event {
-    font-size  : 1.2rem !important;
-    font-weight: 550;
-    color      : $text-color !important;
+  font-size: 1.2rem !important;
+  font-weight: 550;
+  color: $text-color !important;
+  margin-bottom: 0.5rem;
 }
 
 .list-event {
-    .card-event {
+  .card-event {
+    cursor: pointer;
+    transition: all 0.3s ease;
 
-        margin-bottom: 20px;
+    &:hover {
+      transform: translateY(-5px);
     }
-}
 
+    .ant-card-cover img {
+      object-fit: cover;
+    }
+  }
+}

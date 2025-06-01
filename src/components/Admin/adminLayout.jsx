@@ -11,6 +11,7 @@ import {
   GlobalOutlined,
   MenuOutlined,
   NotificationOutlined,
+  SettingOutlined,
 } from "@ant-design/icons";
 import {
   Layout,
@@ -114,7 +115,8 @@ const AdminLayout = () => {
           label: t("admin.sidebar.forums"),
         },
       ],
-    },    {
+    },
+    {
       key: "7",
       icon: <NotificationOutlined />,
       label: t("admin.sidebar.notification"),
@@ -127,11 +129,12 @@ const AdminLayout = () => {
           key: "/admin/notification",
           label: t("admin.sidebar.notificationList"),
         },
-        {
-          key: "/admin/job-alert-config",
-          label: "Cấu hình thông báo việc làm",
-        },
       ],
+    },
+    {
+      key: "/admin/job-alert-config",
+      icon: <SettingOutlined />,
+      label: t("admin.sidebar.jobAlertConfig"),
     },
     {
       key: "logout",

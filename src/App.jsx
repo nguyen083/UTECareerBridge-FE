@@ -612,7 +612,8 @@ const App = () => {
                     <Route
                       path="create-notification"
                       element={<CreateNotification />}
-                    />                    <Route path="notification" element={<Notification />} />
+                    />
+                    <Route path="notification" element={<Notification />} />
                     <Route
                       path="notification/:id"
                       element={<DetailNotification />}
