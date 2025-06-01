@@ -690,11 +690,16 @@
         "error": {
           "loading": "Lỗi khi tải danh sách đánh giá"
         }
-      },
-      "error": {
+      },      "error": {
         "loading": "Lỗi khi tải thông tin phỏng vấn",
         "invalid_id": "ID phỏng vấn không hợp lệ",
         "submission": "Lỗi khi gửi đánh giá. Vui lòng thử lại."
+      },
+      "update_status": {
+        "button": "Chọn ứng viên",
+        "select_required": "Vui lòng chọn ít nhất một ứng viên để cập nhật trạng thái",
+        "success": "Cập nhật trạng thái ứng dụng thành công",
+        "error": "Lỗi khi cập nhật trạng thái ứng dụng. Vui lòng thử lại."
       }
     },
     "applicant": {
