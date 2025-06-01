@@ -40,6 +40,9 @@ const Notification = lazy(() =>
 const CreateNotification = lazy(() =>
   import("./components/Admin/Notification/CreateNotification.jsx")
 );
+const JobAlertScheduleConfig = lazy(() =>
+  import("./components/Admin/JobAlertConfig/JobAlertScheduleConfig.jsx")
+);
 const ForumPage = lazy(() => import("./pages/Forum/ForumPage.jsx"));
 const AdminForum = lazy(() => import("./pages/Forum/Admin/ForumPage.jsx"));
 const TopicListAdmin = lazy(() => import("./pages/Topic/Admin/TopicPage.jsx"));
@@ -609,11 +612,14 @@ const App = () => {
                     <Route
                       path="create-notification"
                       element={<CreateNotification />}
-                    />
-                    <Route path="notification" element={<Notification />} />
+                    />                    <Route path="notification" element={<Notification />} />
                     <Route
                       path="notification/:id"
                       element={<DetailNotification />}
+                    />
+                    <Route
+                      path="job-alert-config"
+                      element={<JobAlertScheduleConfig />}
                     />
                     <Route path="forums" element={<AdminForum />} />
                     <Route
