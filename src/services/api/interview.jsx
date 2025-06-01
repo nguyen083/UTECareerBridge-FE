@@ -34,6 +34,10 @@ const interview = {
   },
   getEvaluationsByStudent: async (params) => {
     return axios.get(`/interviews/student/evaluation`, { params });
+  },  updateApplicationStatus: async (interviewIds) => {
+    return axios.put(`/admin/update-application-status`, {
+      interviewIds: interviewIds
+    });
   },
 };
 export default interview;

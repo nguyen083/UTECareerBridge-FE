@@ -33,6 +33,8 @@ import {
   PlusCircleOutlined,
   FileDoneOutlined,
   MinusCircleOutlined,
+  CheckCircleOutlined,
+  SyncOutlined,
 } from "@ant-design/icons";
 import BoxContainer from "../../Generate/BoxContainer";
 import interview from "../../../services/api/interview";
@@ -55,11 +57,11 @@ const JobEvaluations = () => {
     totalEvaluations: 0,
     recommendedCount: 0,
     notRecommendedCount: 0,
-  });
-  const [detailModalVisible, setDetailModalVisible] = useState(false);
+  });  const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [currentEvaluation, setCurrentEvaluation] = useState(null);
   const [selectedEvaluations, setSelectedEvaluations] = useState([]);
   const [compareModalVisible, setCompareModalVisible] = useState(false);
+  const [updating, setUpdating] = useState(false);
   // Lấy đánh giá theo jobId
   useEffect(() => {
     const fetchEvaluations = async () => {
@@ -143,10 +145,55 @@ const JobEvaluations = () => {
   const handleCloseCompareModal = () => {
     setCompareModalVisible(false);
   };
-
   // Xóa tất cả ứng viên đã chọn
   const clearAllSelected = () => {
     setSelectedEvaluations([]);
+  };
+
+  // Cập nhật trạng thái cho các ứng viên đã chọn
+  const handleUpdateApplicationStatus = async () => {
+    if (selectedEvaluations.length === 0) {
+      message.warning(
+        t("employer.evaluation.update_status.select_required") ||
+          "Vui lòng chọn ít nhất một ứng viên để cập nhật trạng thái"
+      );
+      return;
+    }
+
+    try {
+      setUpdating(true);
+      
+      // Lấy danh sách interviewId từ các đánh giá đã chọn
+      const interviewIds = selectedEvaluations.map(evaluation => evaluation.interviewId);
+      
+      const response = await interview.updateApplicationStatus(interviewIds);
+      
+      if (response && response.status === "OK") {
+        message.success({
+          content: t("employer.evaluation.update_status.success") ||
+            `Đã cập nhật trạng thái thành công cho ${selectedEvaluations.length} ứng viên`,
+          icon: <CheckCircleOutlined style={{ color: '#52c41a' }} />,
+          duration: 3
+        });
+        
+        // Clear selection sau khi cập nhật thành công
+        clearAllSelected();
+        
+        // Có thể reload data nếu cần
+        // fetchEvaluations();
+        
+      } else {
+        throw new Error(response?.message || "Unknown error");
+      }
+    } catch (error) {
+      console.error("Error updating application status:", error);
+      message.error(
+        t("employer.evaluation.update_status.error") ||
+          "Lỗi khi cập nhật trạng thái ứng viên"
+      );
+    } finally {
+      setUpdating(false);
+    }
   };
 
   // Định nghĩa các cột cho bảng đánh giá
@@ -827,16 +874,27 @@ const JobEvaluations = () => {
               </>
             ) : null}
           </BoxContainer>{" "}
-          <BoxContainer className="shadow-md">
-            <Flex justify="space-between" align="center" className="mb-4">
+          <BoxContainer className="shadow-md">            <Flex justify="space-between" align="center" className="mb-4">
               <Title level={5} className="mb-0 !text-text-color">
                 {t("employer.evaluation.list.evaluation_list")}
               </Title>
               <Space>
                 {selectedEvaluations.length > 0 && (
-                  <Button onClick={clearAllSelected} type="text" danger>
-                    {t("employer.evaluation.compare.clear_all")}
-                  </Button>
+                  <>
+                    <Button 
+                      type="primary"
+                      icon={<CheckCircleOutlined />}
+                      loading={updating}
+                      onClick={handleUpdateApplicationStatus}
+                      style={{ backgroundColor: '#52c41a', borderColor: '#52c41a' }}
+                    >
+                      {t("employer.evaluation.update_status.button") ||
+                        `Cập nhật trạng thái (${selectedEvaluations.length})`}
+                    </Button>
+                    <Button onClick={clearAllSelected} type="text" danger>
+                      {t("employer.evaluation.compare.clear_all")}
+                    </Button>
+                  </>
                 )}
                 <Button
                   type="primary"

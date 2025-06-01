@@ -736,11 +736,16 @@
         "error": {
           "loading": "Error loading evaluation list"
         }
-      },
-      "error": {
+      },      "error": {
         "loading": "Error loading evaluation information",
         "invalid_id": "Invalid interview ID",
         "submission": "Error sending evaluation. Please try again."
+      },
+      "update_status": {
+        "button": "Update Status ({count})",
+        "select_required": "Please select at least one candidate to update status",
+        "success": "Application status updated successfully",
+        "error": "Error updating application status. Please try again."
       }
     },
     "applicant": {
