@@ -374,8 +374,8 @@ const JobAlertScheduleConfig = () => {
         title={
           <div className="py-2 text-lg font-semibold text-gray-800">
             {editingConfig
-              ? t("jobAlertSchedule.modal.editTitle")
-              : t("jobAlertSchedule.modal.addTitle")}
+              ? t("jobAlertSchedule.modal.edit")
+              : t("jobAlertSchedule.modal.create")}
           </div>
         }
         open={modalVisible}

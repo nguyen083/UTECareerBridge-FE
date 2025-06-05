@@ -34,7 +34,6 @@ import {
   FileDoneOutlined,
   MinusCircleOutlined,
   CheckCircleOutlined,
-  SyncOutlined,
 } from "@ant-design/icons";
 import BoxContainer from "../../Generate/BoxContainer";
 import interview from "../../../services/api/interview";
@@ -57,7 +56,8 @@ const JobEvaluations = () => {
     totalEvaluations: 0,
     recommendedCount: 0,
     notRecommendedCount: 0,
-  });  const [detailModalVisible, setDetailModalVisible] = useState(false);
+  });
+  const [detailModalVisible, setDetailModalVisible] = useState(false);
   const [currentEvaluation, setCurrentEvaluation] = useState(null);
   const [selectedEvaluations, setSelectedEvaluations] = useState([]);
   const [compareModalVisible, setCompareModalVisible] = useState(false);
@@ -162,26 +162,28 @@ const JobEvaluations = () => {
 
     try {
       setUpdating(true);
-      
+
       // Lấy danh sách interviewId từ các đánh giá đã chọn
-      const interviewIds = selectedEvaluations.map(evaluation => evaluation.interviewId);
-      
+      const interviewIds = selectedEvaluations.map(
+        (evaluation) => evaluation.interviewId
+      );
+
       const response = await interview.updateApplicationStatus(interviewIds);
-      
+
       if (response && response.status === "OK") {
         message.success({
-          content: t("employer.evaluation.update_status.success") ||
+          content:
+            t("employer.evaluation.update_status.success") ||
             `Đã cập nhật trạng thái thành công cho ${selectedEvaluations.length} ứng viên`,
-          icon: <CheckCircleOutlined style={{ color: '#52c41a' }} />,
-          duration: 3
+          icon: <CheckCircleOutlined style={{ color: "#52c41a" }} />,
+          duration: 3,
         });
-        
+
         // Clear selection sau khi cập nhật thành công
         clearAllSelected();
-        
+
         // Có thể reload data nếu cần
         // fetchEvaluations();
-        
       } else {
         throw new Error(response?.message || "Unknown error");
       }
@@ -874,19 +876,24 @@ const JobEvaluations = () => {
               </>
             ) : null}
           </BoxContainer>{" "}
-          <BoxContainer className="shadow-md">            <Flex justify="space-between" align="center" className="mb-4">
+          <BoxContainer className="shadow-md">
+            {" "}
+            <Flex justify="space-between" align="center" className="mb-4">
               <Title level={5} className="mb-0 !text-text-color">
                 {t("employer.evaluation.list.evaluation_list")}
               </Title>
               <Space>
                 {selectedEvaluations.length > 0 && (
                   <>
-                    <Button 
+                    <Button
                       type="primary"
                       icon={<CheckCircleOutlined />}
                       loading={updating}
                       onClick={handleUpdateApplicationStatus}
-                      style={{ backgroundColor: '#52c41a', borderColor: '#52c41a' }}
+                      style={{
+                        backgroundColor: "#52c41a",
+                        borderColor: "#52c41a",
+                      }}
                     >
                       {t("employer.evaluation.update_status.button") ||
                         `Cập nhật trạng thái (${selectedEvaluations.length})`}
@@ -908,7 +915,6 @@ const JobEvaluations = () => {
                 </Button>
               </Space>
             </Flex>
-
             <Table
               dataSource={evaluations}
               columns={columns}
