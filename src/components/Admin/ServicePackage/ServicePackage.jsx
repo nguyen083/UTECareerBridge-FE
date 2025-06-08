@@ -1,7 +1,6 @@
 import {
   DeleteOutlined,
   EditOutlined,
-  MoreOutlined,
   PlusOutlined,
   AppstoreOutlined,
   DollarOutlined,
@@ -14,14 +13,12 @@ import {
   Card,
   Col,
   Divider,
-  Dropdown,
   Empty,
   Flex,
   Form,
   Input,
   InputNumber,
   List,
-  Menu,
   message,
   Modal,
   Row,
@@ -342,14 +339,14 @@ const ListServicePackage = ({ fetch, setFetch }) => {
         }}
         dataSource={data}
         pagination={{
-          pageSize: 6,
+          pageSize: 8,
           total: data.length,
           showSizeChanger: false,
         }}
         renderItem={(item) => (
           <List.Item>
-            <Card 
-              size="small" 
+            <Card
+              size="small"
               className="package-card"
               title={
                 <div className="package-card-header">
@@ -358,6 +355,7 @@ const ListServicePackage = ({ fetch, setFetch }) => {
               }
               actions={[
                 <Button
+                  key={item.packageId}
                   icon={<EditOutlined />}
                   type="link"
                   onClick={() => handleEditServicePackage(item)}
@@ -365,17 +363,20 @@ const ListServicePackage = ({ fetch, setFetch }) => {
                   {t("admin.servicePackage.list.actions.edit")}
                 </Button>,
                 <Button
+                  key={item.packageId}
                   icon={<DeleteOutlined />}
                   type="link"
                   danger
                   onClick={() => handleDeleteServicePackage(item)}
                 >
                   {t("admin.servicePackage.list.actions.delete")}
-                </Button>
+                </Button>,
               ]}
             >
               <div className="package-price">
-                <Text className="price-label">{t("admin.servicePackage.list.price")}:</Text>
+                <Text className="price-label">
+                  {t("admin.servicePackage.list.price")}:
+                </Text>
                 <Text className="price-value">
                   {item.price.toLocaleString("vi-VN", {
                     style: "currency",
@@ -383,38 +384,50 @@ const ListServicePackage = ({ fetch, setFetch }) => {
                   })}
                 </Text>
               </div>
-              
+
               <div className="package-info">
                 <div className="info-item">
                   <DollarOutlined className="info-icon" />
                   <div className="info-content">
-                    <Text className="info-label">{t("admin.servicePackage.list.feature")}:</Text>
+                    <Text className="info-label">
+                      {t("admin.servicePackage.list.feature")}:
+                    </Text>
                     <Text className="info-value">{item.featureName}</Text>
                   </div>
                 </div>
-                
+
                 <div className="info-item">
                   <InfoCircleOutlined className="info-icon" />
                   <div className="info-content">
-                    <Text className="info-label">{t("admin.servicePackage.list.description")}:</Text>
-                    <Text className="info-value description-text">{item.description}</Text>
+                    <Text className="info-label">
+                      {t("admin.servicePackage.list.description")}:
+                    </Text>
+                    <Text className="info-value description-text min-h-11">
+                      {item.description}
+                    </Text>
                   </div>
                 </div>
-                
+
                 <Divider style={{ margin: "8px 0" }} />
-                
+
                 <Flex align="center" justify="space-between">
                   <div className="info-item">
                     <FieldTimeOutlined className="info-icon" />
                     <div className="info-content">
-                      <Text className="info-label">{t("admin.servicePackage.list.duration")}:</Text>
-                      <Text className="info-value">{item.duration} {t("admin.servicePackage.list.months")}</Text>
+                      <Text className="info-label">
+                        {t("admin.servicePackage.list.duration")}:
+                      </Text>
+                      <Text className="info-value">
+                        {item.duration} {t("admin.servicePackage.list.months")}
+                      </Text>
                     </div>
                   </div>
                   <div className="info-item">
                     <AppstoreOutlined className="info-icon" />
                     <div className="info-content">
-                      <Text className="info-label">{t("admin.servicePackage.list.postAmount")}:</Text>
+                      <Text className="info-label">
+                        {t("admin.servicePackage.list.postAmount")}:
+                      </Text>
                       <Text className="info-value">{item.amount}</Text>
                     </div>
                   </div>
@@ -441,7 +454,7 @@ const ServicePackage = () => {
 
   return (
     <>
-      <BoxContainer className="shadow-md admin-header">
+      <BoxContainer className="shadow-md">
         <Flex align="center" justify="space-between">
           <Text className="title1">{t("admin.servicePackage.title")}</Text>
           <Button
@@ -454,8 +467,7 @@ const ServicePackage = () => {
             {t("admin.servicePackage.createNew")}
           </Button>
         </Flex>
-      </BoxContainer>
-      <BoxContainer className="shadow-md">
+        <Divider />
         <ListServicePackage fetch={fetch} setFetch={setFetch} />
       </BoxContainer>
       <ModalCreateServicePackage

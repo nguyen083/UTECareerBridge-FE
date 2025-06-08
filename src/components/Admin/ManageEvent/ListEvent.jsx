@@ -12,6 +12,7 @@ import {
   Select,
   Tag,
   Empty,
+  Divider,
 } from "antd";
 import BoxContainer from "../../Generate/BoxContainer";
 import CreateEventPage from "./CreateEventPage";
@@ -19,7 +20,6 @@ import { useEffect, useState } from "react";
 import {
   DeleteOutlined,
   EditOutlined,
-  EyeOutlined,
   MoreOutlined,
   PlusOutlined,
 } from "@ant-design/icons";
@@ -35,7 +35,7 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
   const { t } = useTranslation();
   const [eventData, setEventData] = useState([]);
   const [currentPage, setCurrentPage] = useState(0);
-  const [pageSize, setPageSize] = useState(4);
+  const [pageSize, setPageSize] = useState(6);
   const [totalItems, setTotalItems] = useState(0);
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
@@ -107,82 +107,85 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
         loading={loading}
         className="list-event"
         split={false}
+        grid={{ gutter: 16, xs: 1, sm: 2, md: 2, lg: 2, xl: 2, xxl: 3 }}
         locale={{
           emptyText: <Empty description={t("admin.event.list.empty")} />,
         }}
-        itemLayout="horizontal"
         dataSource={eventData}
         pagination={{
           current: currentPage + 1,
           pageSize: pageSize,
           showSizeChanger: true,
-          pageSizeOptions: ["4", "8", "16", "32"],
+          pageSizeOptions: ["6", "12", "24", "48"],
           total: totalItems * pageSize,
           onChange: handlePageChange,
         }}
         renderItem={(item) => (
-          <Card size="small" className="shadow card-event">
-            <List.Item
-              className="!py-0"
-              actions={[
-                <Dropdown
-                  key={item.eventId}
-                  overlay={
-                    <Menu>
-                      <Menu.Item
-                        key="1"
-                        onClick={() => {
-                          window.open(
-                            `/event-detail/${item.eventId}`,
-                            "_blank"
-                          );
-                        }}
-                      >
-                        <Button
-                          icon={<EyeOutlined />}
-                          type="link"
-                          style={{ color: "black" }}
-                        >
-                          {t("admin.event.actions.view")}
-                        </Button>
-                      </Menu.Item>
-                      <Menu.Item key="2">
-                        <Button
-                          icon={<EditOutlined />}
-                          type="link"
-                          color="primary"
-                          onClick={() => handleEditEvent(item.eventId)}
-                        >
-                          {t("admin.event.actions.edit")}
-                        </Button>
-                      </Menu.Item>
-                      <Menu.Item
-                        key="3"
-                        onClick={() => {
-                          handleDeleteEvent(item);
-                        }}
-                      >
-                        <Button icon={<DeleteOutlined />} type="link" danger>
-                          {t("admin.event.actions.delete")}
-                        </Button>
-                      </Menu.Item>
-                    </Menu>
-                  }
-                  trigger={["click"]}
-                >
-                  <MoreOutlined className="text-lg" />
-                </Dropdown>,
-              ]}
+          <List.Item>
+            <Card
+              size="small"
+              className="h-full shadow card-event"
+              onClick={() =>
+                window.open(`/event-detail/${item.eventId}`, "_blank")
+              }
+              hoverable
+              cover={
+                <Image
+                  preview={false}
+                  src={item.eventImage}
+                  alt={item.eventTitle}
+                  className="object-cover h-[200px]"
+                />
+              }
             >
-              <List.Item.Meta
-                className="flex"
-                avatar={
-                  <Image preview={false} src={item.eventImage} height={110} />
-                }
+              <Card.Meta
                 title={
-                  <Flex justify="space-between">
-                    <Title className="title-event">{item.eventTitle}</Title>
-                  </Flex>
+                  <div className="flex justify-between">
+                    <Title level={5} className="title-event">
+                      {item.eventTitle}
+                    </Title>
+                    <Dropdown
+                      key={item.eventId}
+                      overlay={
+                        <Menu>
+                          <Menu.Item key="2">
+                            <Button
+                              icon={<EditOutlined />}
+                              type="link"
+                              color="primary"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleEditEvent(item.eventId);
+                              }}
+                            >
+                              {t("admin.event.actions.edit")}
+                            </Button>
+                          </Menu.Item>
+                          <Menu.Item key="3">
+                            <Button
+                              icon={<DeleteOutlined />}
+                              type="link"
+                              danger
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleDeleteEvent(item);
+                              }}
+                            >
+                              {t("admin.event.actions.delete")}
+                            </Button>
+                          </Menu.Item>
+                        </Menu>
+                      }
+                      trigger={["click"]}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                      }}
+                    >
+                      <Button type="text" onClick={(e) => e.stopPropagation()}>
+                        <MoreOutlined className="text-lg" />
+                      </Button>
+                    </Dropdown>
+                  </div>
                 }
                 description={
                   <>
@@ -196,14 +199,17 @@ const EventList = ({ isFetching, setIsFetching, eventType }) => {
                     </Text>{" "}
                     <Text>{item.eventLocation}</Text>
                     <br />
-                    <Tag className="text-sm font-normal w-fit" color="blue">
+                    <Tag
+                      className="mt-2 text-sm font-normal w-fit"
+                      color="blue"
+                    >
                       {item.eventType}
                     </Tag>
                   </>
                 }
               />
-            </List.Item>
-          </Card>
+            </Card>
+          </List.Item>
         )}
       />
       <CreateEventPage
@@ -225,8 +231,7 @@ const ListEvent = () => {
     <>
       <BoxContainer width="100%" className="shadow-md">
         <div className="title1">{t("admin.event.title.manage")}</div>
-      </BoxContainer>
-      <BoxContainer width="100%" className="shadow-md">
+        <Divider />
         <Flex gap={20} vertical>
           <Flex justify="end" align="center" gap={10}>
             <Select
@@ -253,7 +258,11 @@ const ListEvent = () => {
                 {t("admin.event.form.fields.eventType.options.webinar")}
               </Select.Option>
             </Select>
-            <Button icon={<PlusOutlined />} onClick={() => setOpen(true)}>
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => setOpen(true)}
+            >
               {t("admin.event.actions.create")}
             </Button>
           </Flex>

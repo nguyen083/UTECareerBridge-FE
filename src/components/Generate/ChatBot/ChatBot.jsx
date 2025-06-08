@@ -30,10 +30,7 @@ const WelcomeMessage = ({ onSuggestedQuestionClick }) => {
   // Danh sách các câu hỏi gợi ý (có thể dịch bằng t() nếu cần)
   const suggestedQuestions = [
     t("chatbot.howToFindJob", "Làm thế nào để tìm việc làm?"),
-    t(
-      "chatbot.UTECareerBridgeFeatures",
-      "UTECareerBridge có những tính năng gì?"
-    ),
+    t("chatbot.UTECareerFeatures", "UTECareer có những tính năng gì?"),
     t("chatbot.howToUpdateCV", "Tôi muốn cập nhật CV như thế nào?"),
     t("chatbot.howToApplyForJob", "Làm thế nào để ứng tuyển công việc?"),
   ];
@@ -47,15 +44,12 @@ const WelcomeMessage = ({ onSuggestedQuestionClick }) => {
         className="mb-4"
       />
       <Title level={4} className="text-center">
-        {t(
-          "chatbot.welcomeTitle",
-          "Chào mừng đến với UTECareerBridge Assistant"
-        )}
+        {t("chatbot.welcomeTitle", "Chào mừng đến với UTECareer Assistant")}
       </Title>
       <Text className="text-center">
         {t(
           "chatbot.welcomeDescription",
-          "Tôi có thể giúp bạn tìm hiểu về UTECareerBridge và cách sử dụng các tính năng của nền tảng."
+          "Tôi có thể giúp bạn tìm hiểu về UTECareer và cách sử dụng các tính năng của nền tảng."
         )}
       </Text>
 
@@ -103,7 +97,6 @@ const ChatBot = () => {
         content: question,
         language: lang,
       };
-
       chat.sendMessageToChatBot(stompClient, payload);
       setNewMessage("");
     }, 300);
@@ -142,7 +135,9 @@ const ChatBot = () => {
         .replace(/\n\n/g, "<br><br>")
         .replace(/\n/g, "<br>")
         .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
-        .replace(/\*(.*?)\*/g, "<em>$1</em>");
+        .replace(/\*(.*?)\*/g, "<em>$1</em>")
+        .replace(/http:\/\/utecareer\.edu\.vn/g, "http://localhost:3000")
+        .replace(/https:\/\/utecareer\.edu\.vn/g, "http://localhost:3000");
     }
 
     // If no HTML tags, process markdown including converting markdown links to HTML
@@ -171,6 +166,7 @@ const ChatBot = () => {
     client.subscribe("/chatbot/" + newSessionId, (response) => {
       const responseBody = JSON.parse(response.body);
       const messageContent = responseBody.message.content;
+      console.log("Message content:", messageContent);
       console.log("Message content:", cleanMarkdownText(messageContent));
 
       if (messageContent) {
@@ -221,15 +217,15 @@ const ChatBot = () => {
       language: lang,
     };
 
-    chat.sendMessageToChatBot(stompClient, payload);
     setNewMessage("");
+    chat.sendMessageToChatBot(stompClient, payload);
   };
   return (
     <Card
       title={
         <Flex className="text-white" align="center" gap={6}>
           <Image size={30} src="src\\assets\\chatbot.png" preview={false} />{" "}
-          UTECareerBridge Assistant
+          {t("chatbot.title")}
         </Flex>
       }
     >
@@ -317,6 +313,7 @@ const IconChatBot = () => {
   return (
     <div className="popover-chat">
       <Popover
+        destroyTooltipOnHide={true}
         overlayClassName="chatbot"
         className="p-0 "
         placement="leftBottom"

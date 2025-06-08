@@ -1,4 +1,9 @@
 {
+  "logoutSuccess": "Logout successfully!",
+  "logoutError": "Logout failed!",
+  "loginSuccess": "Login successfully!",
+  "loginError": "Login failed!",
+  "failed_to_fetch_data": "Failed to fetch data",
   "chat_with_employer": "Chat with employer",
   "job_application_submitted": "Job application submitted",
   "find_company_name_employer": "Search company name, employer",
@@ -21,6 +26,20 @@
   "my_company": "My company",
   "marquee": "Kickstart your career, find a job with ease - Career opportunities await you today!",
   "explore_opportunities": "Explore opportunities",
+  "cutImage": "Cut image",
+  "uploadSuccess": "Upload successfully!",
+  "uploadError": "Upload failed. Please try again.",
+  "dragAndDrop": "Drag and drop or click to upload image",
+  "you": "You",
+  "PAID": "Paid",
+  "PENDING": "Pending",
+  "gridMode": "Grid mode",
+  "listMode": "List mode",
+  "category": "Category",
+  "skill": "Skill",
+  "level": "Level",
+  "industry": "Industry",
+  "no_jobs_found": "No jobs found",
   "notification": {
     "title": "Notification",
     "titleDetail": "Notification Detail",
@@ -40,6 +59,15 @@
     "title": "All Categories"
   },
   "common": {
+    "update": "Update",
+    "show": "Show",
+    "hide": "Hide",
+    "confirm": "Confirm",
+    "noSkills": "No skills",
+    "previous": "Previous",
+    "next": "Next",
+    "reset": "Reset",
+    "back": "Back",
     "yes": "Yes",
     "no": "No",
     "home": "Home",
@@ -60,13 +88,17 @@
     "hot": "Hot",
     "urgent": "Urgent",
     "ok": "OK",
+    "close": "Close",
     "loading": "Loading...",
     "collapse": "Collapse",
     "month": "month",
+    "day": "day",
+    "hour": "hour",
+    "minutes": "minutes",
     "dragAndDrop": "Drag and drop or click to upload image",
     "view": "View",
     "of": "of",
-    "item": "item",
+    "item": "items",
     "login": "Login",
     "continue": "Continue",
     "viewDetail": "View detail",
@@ -76,17 +108,38 @@
     "weekAgo": "{{value}} week ago",
     "weeksAgo": "{{value}} weeks ago",
     "monthAgo": "{{value}} month ago",
-    "monthsAgo": "{{value}} months ago"
+    "monthsAgo": "{{value}} months ago",
+    "active": "Active",
+    "justNow": "Just now",
+    "minutesAgo": "minutes ago",
+    "hoursAgo": "hours ago",
+    "more": "more",
+    "actions": "Actions",
+    "total": "Total",
+    "join": "Join"
   },
   "role": {
     "ADMIN": "Admin",
     "EMPLOYER": "Employer",
-    "STUDENT": "Student"
+    "STUDENT": "Student",
+    "student": "Student",
+    "employer": "Employer",
+    "admin": "Admin"
   },
   "student": {
+    "homepage": {
+      "create_cv": "Create Application CV",
+      "cv_description": "Showcase your strengths through a resume that includes your education, experience, projects, skills, and more",
+      "create_cv_button": "Create CV",
+      "join_event": "Join Recruitment Events",
+      "event_description": "Participating in job fairs gives you the opportunity to interview with experienced professionals in your field and increases your chances of finding your desired job.",
+      "join_now": "Join Now"
+    },
     "year": "Student year {{year}}",
     "allowSearch": "Allow search resume",
     "setupResume": "Setup resume",
+    "attachmentFile": "Attachment file",
+    "updatedAt": "Updated at",
     "dashboard": {
       "welcome": "Hi {{name}}! Welcome to UTE Career",
       "subtitle": "Track your job applications and career progress",
@@ -166,7 +219,7 @@
           "title": "Contact Us",
           "content": "If you have any questions about this privacy policy or our privacy practices, please contact us at: support@utecareerbridge.com"
         },
-        "lastUpdated": "Last updated: January 2024"
+        "lastUpdated": "Last updated: January 2025"
       }
     },
     "menu": {
@@ -175,6 +228,7 @@
       "notification": "Notification",
       "myCompany": "My Company",
       "myJob": "My Job",
+      "evaluations": "Evaluations",
       "jobAlerts": "Job Alerts",
       "recommend": "Recommend Jobs",
       "changePassword": "Change Password",
@@ -186,6 +240,10 @@
     "layout": {
       "profile": {
         "resumeAttachment": "Resume Attachment"
+      },
+      "company": {
+        "title": "Company",
+        "all": "All Company"
       },
       "forum": "Forum",
       "jobs": {
@@ -207,9 +265,9 @@
       },
       "footer": {
         "footerDescription": "Connecting talented students with career opportunities across industries. Your bridge to professional success.",
-        "address": "1 Vo Van Ngan, Thu Duc City, Ho Chi Minh City",
+        "address": "Room A1-805, 1 Vo Van Ngan Street, Linh Chieu Ward, Thu Duc City, HCMC",
         "aboutUs": "About Us",
-        "aboutUteCareerbridge": "About UTE CareerBridge",
+        "aboutUteCareerbridge": "About Ute CareerBridge",
         "aboutUteinTECH": "About UTEinTECH",
         "contact": "Contact",
         "faq": "FAQ",
@@ -226,6 +284,28 @@
         "construction": "Construction",
         "findJob": "Find Job"
       }
+    },
+    "myJobs": {
+      "title": "My Jobs",
+      "applied": "Applied",
+      "saved": "Saved",
+      "company": "Company",
+      "job": "Job",
+      "cv": "CV",
+      "status": "Status",
+      "notice": "Notice",
+      "approved": "Approved",
+      "viewed": "Viewed",
+      "pending": "Pending",
+      "rejected": "Rejected",
+      "unidentified": "Unidentified",
+      "noticeDescription": "If your application status is \"Approved\", please check your email for interview notification."
+    },
+    "myCompany": {
+      "emptyFollowList": "You are not following any companies yet",
+      "followers": "followers",
+      "jobs": "jobs",
+      "unfollow": "Unfollow"
     },
     "jobAlerts": {
       "title": "Job alerts",
@@ -259,7 +339,8 @@
         "yes": "Yes",
         "no": "No",
         "createJobAlert": "Create Job Alert",
-        "updateJobAlert": "Update Job Alert"
+        "updateJobAlert": "Update Job Alert",
+        "allJobs": "All Jobs"
       },
       "messages": {
         "createSuccess": "Job alert created successfully!",
@@ -279,6 +360,25 @@
         "level": "Select levels appropriate to your experience and skills.",
         "notification": "Choose how you want to receive notifications (email, app or both).",
         "description": "The system will send you notifications about jobs that match your criteria at the frequency you have set. You can create multiple job alerts with different criteria."
+      },
+      "frequency": {
+        "DAILY": "Daily",
+        "WEEKLY": "Weekly"
+      },
+      "notification": {
+        "email": "Email",
+        "app": "App"
+      },
+      "level": {
+        "all": "All levels",
+        "invalid": "Invalid level"
+      },
+      "industry": {
+        "all": "All industries",
+        "invalid": "Invalid industry"
+      },
+      "salary": {
+        "unlimited": "No limit"
       }
     },
     "recommend": {
@@ -325,12 +425,355 @@
         "content": "If you have any questions about this privacy policy or our privacy practices, please contact us at: support@utecareerbridge.com"
       },
       "lastUpdated": "Last updated: January 2024"
+    },
+    "event": {
+      "title": "Event List",
+      "filterByType": "Filter by type",
+      "eventTypes": {
+        "seminar": "Seminar",
+        "conference": "Conference",
+        "workshop": "Workshop",
+        "careerFair": "Career Fair",
+        "webinar": "Webinar"
+      },
+      "noEvents": "No events found",
+      "date": "Event date",
+      "location": "Location",
+      "detail": {
+        "eventDescription": "Event Description",
+        "eventTime": "Event Time",
+        "eventLocation": "Location",
+        "eventProgram": "Event Program Details",
+        "organizer": "Student Support Center",
+        "contactInfo": "For any inquiries, please contact",
+        "copySuccess": "Copied to clipboard",
+        "copyError": "Error copying URL",
+        "hashtag": "# HASHTAG:",
+        "share": "Share now",
+        "shareToFacebook": "Share to Facebook"
+      }
+    },
+    "updateProfile": {
+      "title": "Basic Information",
+      "save": "Save",
+      "cancel": "Cancel",
+      "firstName": {
+        "label": "First Name",
+        "placeholder": "First Name",
+        "required": "Please enter your first name!"
+      },
+      "lastName": {
+        "label": "Last Name",
+        "placeholder": "Last Name",
+        "required": "Please enter your last name!"
+      },
+      "gender": {
+        "label": "Gender",
+        "male": "Male",
+        "female": "Female"
+      },
+      "dob": {
+        "label": "Date of Birth",
+        "placeholder": "Date of Birth",
+        "required": "Please enter your date of birth!"
+      },
+      "phone": {
+        "label": "Phone Number",
+        "placeholder": "Phone Number",
+        "required": "Please enter your phone number!",
+        "invalid": "Invalid phone number!"
+      },
+      "email": {
+        "label": "Email"
+      },
+      "universityEmail": {
+        "label": "University Email",
+        "placeholder": "University Email",
+        "required": "Please enter your university email!",
+        "invalid": "Invalid email!"
+      },
+      "address": {
+        "label": "Address",
+        "placeholder": "Address"
+      },
+      "province": {
+        "label": "Province/City",
+        "placeholder": "Province/City",
+        "required": "Please select a province/city!"
+      },
+      "district": {
+        "label": "District",
+        "placeholder": "District",
+        "required": "Please select a district!"
+      },
+      "ward": {
+        "label": "Ward",
+        "placeholder": "Ward",
+        "required": "Please select a ward!"
+      },
+      "year": {
+        "label": "Year",
+        "placeholder": "Which year are you in?",
+        "required": "Please enter your academic year"
+      },
+      "category": {
+        "label": "Specialization",
+        "placeholder": "Specialization"
+      },
+      "avatar": {
+        "deleteSuccess": "Image deleted successfully",
+        "deleteError": "Failed to delete image"
+      }
+    },
+    "updateSkill": {
+      "title": "Skills",
+      "addSkill": "Add Skill",
+      "selectSkill": "Select skill",
+      "selectSkillRequired": "Please select a skill!",
+      "rateLevel": "Please rate your skill level!",
+      "add": "Add",
+      "deleteSuccess": "Skill deleted successfully",
+      "deleteError": "Failed to delete skill"
+    },
+    "accountManagement": {
+      "title": "Change Password",
+      "currentPassword": {
+        "label": "Current Password",
+        "required": "Please enter your current password!"
+      },
+      "newPassword": {
+        "label": "New Password",
+        "required": "Please enter your new password!",
+        "minLength": "Password must be at least 8 characters",
+        "uppercase": "Password must contain at least 1 uppercase letter",
+        "number": "Password must contain at least 1 number",
+        "special": "Password must contain at least 1 special character"
+      },
+      "confirmPassword": {
+        "label": "Confirm New Password",
+        "required": "Please confirm your new password!",
+        "mismatch": "The confirm password does not match!"
+      },
+      "save": "Save"
+    },
+    "evaluations": {
+      "title": "Evaluations",
+      "noEvaluations": "No evaluations yet",
+      "evaluatedBy": "Evaluated by",
+      "date": "Date",
+      "overallRating": "Overall Rating",
+      "modalTitle": "Evaluation Details",
+      "technicalSkills": "Technical Skills",
+      "communicationSkills": "Communication Skills",
+      "cultureFit": "Culture Fit",
+      "problemSolving": "Problem Solving",
+      "attitude": "Attitude",
+      "strengths": "Strengths",
+      "weaknesses": "Weaknesses",
+      "overallNotes": "Overall Notes",
+      "recommendedSalary": "Recommended Salary",
+      "none": "None",
+      "notSpecified": "Not specified",
+      "totalEvaluations": "Total {{total}} evaluations"
     }
   },
   "employer": {
+    "evaluation": {
+      "title": "Candidate Evaluation",
+      "subtitle": "Evaluate candidates based on interview results",
+      "note": "Note",
+      "note_description": "Your evaluation will be saved for reference and use in the candidate evaluation process.",
+      "submit": "Submit",
+      "success": "Evaluation sent successfully!",
+      "jobs": {
+        "no_results": "No jobs with evaluations",
+        "title": "List of jobs with evaluations",
+        "subtitle": "View candidate evaluations by job",
+        "list_title": "Jobs with evaluations",
+        "items": "jobs",
+        "search": "Search jobs...",
+        "loading": "Loading job list...",
+        "empty": "No jobs with evaluations"
+      },
+      "compare": {
+        "title": "Compare candidates",
+        "criteria": "Criteria",
+        "max_limit": "Only 3 candidates can be compared",
+        "min_required": "Please select at least 2 candidates to compare",
+        "clear_all": "Clear selection",
+        "overall": "Overall evaluation",
+        "notes": "Notes"
+      },
+      "skills": {
+        "title": "Skill evaluation",
+        "technical": "Technical skills",
+        "communication": "Communication skills",
+        "culture_fit": "Culture fit",
+        "problem_solving": "Problem solving",
+        "attitude": "Attitude",
+        "technical_1": "Very poor - Lack of basic knowledge",
+        "technical_2": "Poor - Still many basic mistakes",
+        "technical_3": "Below average - Basic knowledge but limited",
+        "technical_4": "Average - Sufficient professional knowledge",
+        "technical_5": "Good - Proficient professional skills",
+        "technical_6": "Excellent - Mastering professional skills",
+        "technical_7": "Very good - Strong professional skills",
+        "technical_8": "Excellent - High level professional skills",
+        "technical_9": "Outstanding - Mastering special professional skills",
+        "technical_10": "Excellent - Expert level professional skills",
+        "communication_1": "Very poor - Cannot communicate clearly",
+        "communication_2": "Poor - Difficult to understand when communicating",
+        "communication_3": "Below average - Needs improvement in communication",
+        "communication_4": "Average - Sufficient communication ideas",
+        "communication_5": "Good - Good communication skills",
+        "communication_6": "Excellent - Clear and effective communication",
+        "communication_7": "Very good - Clear and convincing presentation",
+        "communication_8": "Excellent - Outstanding communication skills",
+        "communication_9": "Outstanding - Proficient communication skills",
+        "communication_10": "Excellent - Expert level communication skills",
+        "culture_1": "Very poor - Not suitable with company culture",
+        "culture_2": "Poor - Many issues with cultural fit",
+        "culture_3": "Below average - Some concerns about cultural fit",
+        "culture_4": "Average - Acceptable cultural fit",
+        "culture_5": "Good - Good cultural fit",
+        "culture_6": "Excellent - Excellent cultural fit",
+        "culture_7": "Very good - Strong cultural fit",
+        "culture_8": "Excellent - Outstanding cultural fit",
+        "culture_9": "Outstanding - Fully compatible with company values",
+        "culture_10": "Excellent - Will enhance company culture",
+        "problem_1": "Very poor - Cannot solve basic problems",
+        "problem_2": "Poor - Difficulty solving problems",
+        "problem_3": "Below average - Limited problem-solving skills",
+        "problem_4": "Average - Adequate problem-solving skills",
+        "problem_5": "Good - Good problem-solving skills",
+        "problem_6": "Excellent - Effective problem-solving skills",
+        "problem_7": "Very good - Strong problem-solving skills",
+        "problem_8": "Excellent - Creative and effective problem-solving skills",
+        "problem_9": "Outstanding - Special problem-solving skills",
+        "problem_10": "Excellent - Expert problem-solving skills",
+        "attitude_1": "Very poor - Negative attitude",
+        "attitude_2": "Poor - Poor attitude",
+        "attitude_3": "Below average - Needs improvement",
+        "attitude_4": "Average - Acceptable attitude",
+        "attitude_5": "Fair - Positive attitude most of the time",
+        "attitude_6": "Excellent - Consistent positive attitude",
+        "attitude_7": "Very good - Excellent and enthusiastic attitude",
+        "attitude_8": "Excellent - Excellent attitude and high motivation",
+        "attitude_9": "Outstanding - Exceptional positive attitude",
+        "attitude_10": "Excellent - Attitude and style inspiring motivation"
+      },
+      "notes": {
+        "title": "Notes",
+        "strengths": "Strengths",
+        "strengths_placeholder": "Enter candidate strengths",
+        "strengths_required": "Please enter candidate strengths",
+        "weaknesses": "Weaknesses",
+        "weaknesses_placeholder": "Enter candidate weaknesses",
+        "weaknesses_required": "Please enter candidate weaknesses",
+        "overall": "Overall evaluation",
+        "overall_placeholder": "Enter overall evaluation of candidate",
+        "overall_required": "Please enter overall evaluation of candidate"
+      },
+      "recommendation": {
+        "title": "Recommendation",
+        "recommend": "Recommend",
+        "hire": "Hire",
+        "position": "Position",
+        "position_placeholder": "Enter position recommendation for candidate",
+        "position_required": "Please enter position recommendation!",
+        "salary": "Salary recommendation",
+        "salary_required": "Please enter salary recommendation!",
+        "notes": "Notes",
+        "notes_placeholder": "Enter additional recommendations (training, development...)"
+      },
+      "rating": {
+        "title": "Overall evaluation",
+        "excellent": "Excellent",
+        "veryGood": "Very good",
+        "average": "Average",
+        "belowAverage": "Below average",
+        "poor": "Poor"
+      },
+      "overall": {
+        "title": "Overall evaluation"
+      },
+      "buttons": {
+        "submit": "Submit",
+        "cancel": "Cancel"
+      },
+      "list": {
+        "date": "Evaluation date {date}",
+        "evaluator": "Evaluated by",
+        "evaluation_list": "Evaluation list",
+        "view_evaluations": "View evaluations",
+        "title": "Candidate evaluation list",
+        "subtitle": "Total candidate evaluation for job",
+        "loading": "Loading evaluation data...",
+        "empty": "No evaluation for this job",
+        "recommended": "Recommendation",
+        "not_recommended": "Not recommended",
+        "job_info": "Job information",
+        "view_details": "View details",
+        "detail_title": "Evaluation details",
+        "filter": {
+          "recommended": "Recommended",
+          "not_recommended": "Not recommended"
+        },
+        "table": {
+          "candidate": "Candidate",
+          "overall_rating": "Overall evaluation",
+          "recommended": "Recommendation",
+          "evaluator": "Evaluator",
+          "date": "Evaluation date",
+          "actions": "Actions"
+        },
+        "stats": {
+          "average": "Average evaluation",
+          "total": "Total evaluation",
+          "recommended": "Recommendation",
+          "not_recommended": "Not recommended"
+        },
+        "error": {
+          "loading": "Error loading evaluation list"
+        }
+      },      "error": {
+        "loading": "Error loading evaluation information",
+        "invalid_id": "Invalid interview ID",
+        "submission": "Error sending evaluation. Please try again."
+      },
+      "update_status": {
+        "button": "Update Status ({count})",
+        "select_required": "Please select at least one candidate to update status",
+        "success": "Application status updated successfully",
+        "error": "Error updating application status. Please try again."
+      }
+    },
     "applicant": {
+      "rejectSuccess": "Rejected successfully",
+      "rejectError": "Failed to reject",
+      "approveSuccess": "Approved successfully",
+      "approveError": "Failed to approve",
+      "analyze": "Analyze CVs",
+      "analyzeDescription": "This feature helps you analyze applied CVs based on job fit.",
+      "overallScore": "Overall Score",
+      "matchScore": "Match Score",
+      "name": "Fullname",
+      "email": "Email",
+      "skillScore": "Skill Score",
+      "similarity": "Similarity",
+      "skills": "Skills",
       "listJob": {
-        "notice": "Please post a job to view applicants"
+        "title": "Manage Applicants by Job",
+        "notice": "Please post a job to view applicants",
+        "totalJob": "Total Job",
+        "clickJob": "Click job to view applicant list",
+        "loadingJob": "Loading jobs...",
+        "noJob": "No job found",
+        "titleCard": "Job List",
+        "status": {
+          "active": "Active",
+          "expired": "Expired"
+        }
       },
       "tabs": {
         "pending": "Unread",
@@ -346,6 +789,8 @@
         "title": "Review Candidate",
         "approve": "Approve",
         "reject": "Reject",
+        "candidate": "Candidate",
+        "position": "Position",
         "interview": {
           "title": "Interview Notification",
           "cancel": "Cancel",
@@ -417,6 +862,9 @@
             }
           }
         }
+      },
+      "listDrawer": {
+        "title": "List of applicants"
       }
     },
     "chat": {
@@ -449,43 +897,75 @@
       },
       "save": "Save"
     },
-    "company": {
-      "title": "Company",
-      "info": "Company Information",
-      "size": "Company Size",
-      "sizePlaceholder": "Please select",
-      "sizeLessThan10": "Less than 10",
-      "sizeMoreThan50000": "More than 50,000",
-      "industry": "Company Industry",
-      "industryRequired": "Please select company industry",
-      "industryPlaceholder": "Please select",
-      "benefits": "Company Benefits",
-      "benefitDescriptionPlaceholder": "Enter benefit description",
-      "addBenefit": "Add benefit",
-      "description": "Company Description",
-      "logo": "Company Logo",
-      "logoTooltip": "Drag and drop or click to upload image",
-      "backgroundImage": "Company Image",
-      "imageTooltip": "Drag and drop or click to upload image",
-      "websitePlaceholder": "Company website URL",
-      "video": "Company Video",
-      "videoPlaceholder": "Copy and paste your YouTube link here",
-      "addressPlaceholder": "Example: 130 Suong Nguyet Anh, Ben Thanh Ward, District 1",
-      "certificate": {
-        "title": "Business Certificate",
-        "uploadLabel": "Business Certificate Image",
-        "uploadTooltip": "Drag and drop or click to upload image",
-        "previewTitle": "Preview Image",
-        "previewAlt": "Business Certificate Preview",
-        "confirmModal": {
-          "title": "Confirm Information Submission",
-          "content": "By clicking confirm, you agree that failure to provide or providing incorrect information is considered a violation that may result in service suspension and/or account termination without refund. You can review the information provided"
-        }
-      }
+    "header": {
+      "cart": "Cart"
     },
     "dashboard": {
+      "today": "Today: {{date}}",
+      "hiringTime": "Hiring Time",
+      "hiringTimeDesc": "Average time from job posting to successful hiring",
+      "days": "days",
+      "buyPackages": "Buy Service Packages",
+      "postJob": "Post a Job",
+      "refresh": "Refresh",
+      "schedule": "Interview Schedule",
+      "manageJobs": "Manage Job Posts",
+      "viewAll": "View All",
+      "welcome": "Welcome to UTE-Career",
+      "charts": {
+        "jobStatus": "Job Status",
+        "title": "Charts",
+        "views": "Views",
+        "applications": "Applications",
+        "applicationsOverview": "Job Overview",
+        "noJobsData": "No job data",
+        "jobs": "jobs",
+        "interviews": {
+          "title": "Interview Schedule",
+          "unit": "schedules"
+        }
+      },
       "title": "Statistics",
+      "postFirstJob": "Post your first job",
+      "getStarted": "Get Started",
+      "buyMore": "Buy More",
+      "skillDistribution": "Skill Distribution",
+      "jobPerformance": "Recruitment Performance",
+      "jobTitle": "Job Title",
+      "conversionRate": "Conversion Rate",
+      "topSkills": "Top Candidate Skills",
+      "upcomingInterviews": "Upcoming Interviews",
+      "noInterviews": "No upcoming interviews",
+      "filters": {
+        "selectPeriod": "Select Period",
+        "week": "Week",
+        "month": "Month",
+        "quarter": "Quarter",
+        "year": "Year",
+        "allTime": "All Time"
+      },
+      "sortBy": {
+        "views": "Sort by views",
+        "applications": "Sort by applications",
+        "conversionRate": "Sort by conversion rate"
+      },
+      "chartTypes": {
+        "area": "Area Chart",
+        "line": "Line Chart",
+        "bar": "Bar Chart"
+      },
+      "metrics": {
+        "views": "Views",
+        "applications": "Applications",
+        "interviews": "Interviews"
+      },
       "stats": {
+        "applicationRate": "Application Rate",
+        "applications": "Applications",
+        "interviews": {
+          "title": "Number of Interviews",
+          "unit": "interviews"
+        },
         "followers": {
           "title": "Number of Followers",
           "unit": "people"
@@ -495,17 +975,31 @@
           "unit": "people"
         },
         "jobs": {
-          "title": "Posted Jobs",
-          "unit": "jobs"
+          "title": "Job Postings",
+          "unit": "posts"
         }
       },
       "servicePackage": {
+        "expired": "Expired",
+        "daysLeft": "days left",
+        "expiringSoon": "{{days}} days left",
+        "empty": "No service packages found",
         "title": "Service Packages",
+        "active": "Active",
+        "inactive": "Inactive",
         "table": {
           "packageName": "Package Name",
           "amount": "Amount",
           "expiredAt": "Expiry Date",
           "emptyText": "No service packages found"
+        },
+        "detail": {
+          "duration": "Duration",
+          "description": "Description",
+          "information": "Detail information",
+          "quantity": "Quantity",
+          "expiredAt": "Expiry date",
+          "feature": "Feature"
         }
       }
     },
@@ -518,10 +1012,51 @@
       }
     },
     "interview": {
-      "title": "Interview Calendar",
+      "title": "Interview",
+      "interview_calendar": "Interview Calendar",
+      "calendar_view": "Calendar View",
+      "list_view": "List View",
+      "subtitle": "Manage your interview schedule",
+      "interview_schedule": "Interview Schedule",
+      "no_interviews_scheduled": "No interviews scheduled",
+      "interview": "Interview",
+      "interview_details": "Interview Details",
+      "start_interview": "Start Interview",
+      "scheduled": "Scheduled",
+      "in_progress": "In Progress",
+      "completed": "Completed",
+      "schedule_time": "Schedule Time",
+      "duration": "Duration",
+      "meeting_link": "Meeting Link",
+      "join_interview_now": "Join Interview Now",
+      "ok": "OK",
+      "view_evaluations": "View Evaluations",
+      "interviews": "interviews",
+      "evaluation": {
+        "title": "Candidate Evaluation",
+        "fromMeetingDescription": "Please evaluate the candidate you just interviewed.",
+        "description": "Evaluate candidate performance after the interview.",
+        "skills": "Technical Skills",
+        "skillsRating": "Technical Skills Rating",
+        "skillsFeedback": "Technical Skills Feedback",
+        "communication": "Communication Skills",
+        "communicationRating": "Communication Rating",
+        "communicationFeedback": "Communication Feedback",
+        "cultureFit": "Culture Fit",
+        "cultureFitRating": "Culture Fit Rating",
+        "cultureFitFeedback": "Culture Fit Feedback",
+        "overall": "Overall Assessment",
+        "overallRating": "Overall Rating",
+        "hiringDecision": "Hiring Decision",
+        "hire": "Hire",
+        "consider": "Consider",
+        "reject": "Reject",
+        "additionalFeedback": "Additional Feedback",
+        "submit": "Submit Evaluation"
+      },
       "create": {
         "title": "Create Interview",
-        "description": "Create an interview to reach the candidate",
+        "description": "Create an interview to contact candidates",
         "jobPosition": "Job Position",
         "interviewDate": "Interview Date",
         "interviewTime": "Interview Time",
@@ -529,12 +1064,22 @@
         "meetingLink": "Meeting Link",
         "message": {
           "success": "Interview created successfully",
-          "error": "Interview creation failed"
+          "error": "Failed to create interview"
         }
       }
     },
     "manageJobs": {
+      "hide": "Hide",
+      "show": "Show",
+      "totalItems": "Total items: {{total}}",
+      "createJob": "Create Job",
+      "totalJobs": "Total Jobs",
+      "activeDescription": "Job posting is currently active",
+      "inactiveDescription": "Job posting is currently hidden",
+      "pendingDescription": "Job posting is currently pending",
+      "rejectedDescription": "Job posting is currently rejected",
       "listJobs": "Job List",
+      "description": "Manage your job postings",
       "tabs": {
         "active": "Active",
         "inactive": "Hidden",
@@ -546,7 +1091,7 @@
       "showConfirm": "Are you sure you want to show this job?",
       "hideShow": "Hide/Show",
       "search": {
-        "placeholder": "Search {field}",
+        "placeholder": "Search",
         "search": "Search",
         "reset": "Reset",
         "filter": "Filter",
@@ -554,6 +1099,20 @@
       }
     },
     "job": {
+      "noPackages": "No packages available",
+      "requirementsRequired": "Please enter job requirements",
+      "requirementsPlaceholder": "Enter job requirements",
+      "descriptionRequired": "Please enter job description",
+      "descriptionPlaceholder": "Enter job description",
+      "packageRequired": "Please select a service package",
+      "titlePlaceholder": "Enter job title",
+      "locationPlaceholder": "Enter job location",
+      "minSalaryPlaceholder": "Please enter minimum salary",
+      "maxSalaryPlaceholder": "Please enter maximum salary",
+      "quantityPlaceholder": "Please enter the number of positions",
+      "quantityMin": "Minimum number of positions is 1",
+      "packageSelection": "Package Selection",
+      "postJobDescription": "Post a job to find the right candidate",
       "title": "Title",
       "titleRequired": "Please enter a title",
       "location": "Work Location",
@@ -573,18 +1132,20 @@
       "quantityRequired": "Please enter the number of positions",
       "level": "Level",
       "levelRequired": "Please select a level",
-      "levelPlaceholder": "Please select",
+      "levelPlaceholder": "Please select a level",
       "skills": "Required Skills",
       "skillsRequired": "Please select at least one skill",
       "skillsPlaceholder": "Please select skills",
       "requirements": "Job Requirements",
       "description": "Job Description",
-      "descriptionPlaceholder": "Enter job description",
       "basicInfo": "Job Information",
       "requirementsInfo": "Job Requirements",
       "editJob": "Edit Job",
       "postJob": "Post a Job",
       "post": "Post",
+      "packageName": "Package Name",
+      "packageFeature": "Feature",
+      "packageDescription": "Description",
       "packagePlaceholder": "Please select service package",
       "packageDetailTitle": "Service Package Details",
       "packageRemainingAmount": "Remaining Amount",
@@ -634,6 +1195,34 @@
       "save": {
         "saved": "Saved",
         "saveJob": "Save job"
+      },
+      "viewJob": {
+        "applySuccess": "Application successful",
+        "alreadyApplied": "Resume already submitted",
+        "applyButton": "Apply Now",
+        "deadline": "Expires on:",
+        "deadlineSoon": "Expiring soon",
+        "jobDescription": "Job Description",
+        "jobRequirements": "Job Requirements",
+        "benefits": "Benefits for You",
+        "workInfo": "Work Information",
+        "sameCompanyJobs": "Jobs from the same company",
+        "verified": "Verified",
+        "address": "Address",
+        "companySize": "Size",
+        "employees": "employees",
+        "field": "Industry",
+        "viewCompanyDetails": "View company details",
+        "relatedCompanies": "Companies in the same industry",
+        "viewMore": "View more",
+        "jobLabels": {
+          "postDate": "Posting date",
+          "level": "Level",
+          "category": "Category",
+          "skills": "Skills",
+          "industry": "Industry",
+          "recruitmentCount": "Number of positions"
+        }
       }
     },
     "resumes": {
@@ -645,17 +1234,26 @@
       "viewResume": "View resume"
     },
     "orders": {
+      "checkout": "Checkout",
+      "shoppingCart": "Shopping Cart",
+      "emptyCart": "No items in cart",
+      "continueShopping": "Continue Shopping",
+      "subtotal": "Subtotal",
       "title": "Orders",
       "orderId": "Order ID",
       "orderDate": "Order Date",
       "couponCode": "Coupon Code",
       "total": "Total",
       "status": "Status",
-      "actions": "View / Pay",
+      "actions": "Actions",
       "pending": "Pending",
       "paid": "Paid",
       "pay": "Pay",
       "view": "View details",
+      "printInvoice": "Print Invoice",
+      "invoice": "INVOICE",
+      "invoiceSuccess": "Invoice generated successfully",
+      "invoiceError": "Error generating invoice",
       "loadError": "Error loading order list",
       "orderDetail": "Order Details",
       "orderInfo": "Order Information",
@@ -669,16 +1267,37 @@
       "paymentMethod": "Select Payment Method",
       "vnpay": "VNPAY e-Wallet",
       "paymentSuccess": "Payment successful!",
-      "paymentError": "Payment failed"
+      "paymentError": "Payment failed",
+      "customerInfo": "Customer Information",
+      "subTotal": "Subtotal",
+      "thankYouMessage": "Thank you for your business!"
     },
     "services": {
       "title": "Service Packages",
+      "subtitle": "Choose the service package that suits your needs",
+      "viewCart": "View Cart",
       "importantNotice": "Important Notice",
       "noticeDescription": "To avoid identity theft and fraud, we recommend that you do not transfer funds to any personal account and only make payments to our official accounts.",
       "addToCart": "Add to Cart",
       "buyNow": "Buy Now",
       "addToCartError": "Cannot add product to cart.",
-      "addToCartErrorGeneric": "An error occurred while adding product to cart."
+      "addToCartErrorGeneric": "An error occurred while adding product to cart.",
+      "needHelp": "Need help?",
+      "contactSales": "Contact Sales",
+      "availablePackages": "Available Packages",
+      "comparePackages": "Compare Packages",
+      "bestValue": "Best Value",
+      "jobPostings": "Job Postings",
+      "validFor": "Valid for {{period}} months",
+      "faq": {
+        "title": "Frequently Asked Questions",
+        "q1": "How long does a job posting package remain active?",
+        "a1": "Our job posting packages remain active for the specified duration from the date of purchase. During this time, you can post jobs until you've used all the job postings included in your package.",
+        "q2": "Can I use the remaining job postings in my package at any time during its validity period?",
+        "a2": "Yes, your package remains valid for its full duration, and any remaining job postings can be used anytime within that period.",
+        "q3": "What happens if I exceed the number of job postings included in my package?",
+        "a3": "Contact our customer support team through the Help Center, and they can assist you with upgrading to a larger package."
+      }
     },
     "voucher": {
       "selectTitle": "Select voucher",
@@ -690,6 +1309,72 @@
       "daysRemaining": "days remaining",
       "noSearchResults": "No vouchers found matching your search",
       "noCoupons": "No vouchers available at the moment"
+    },
+    "company": {
+      "list": {
+        "title": "Company List",
+        "loading": "Loading companies...",
+        "errorLoading": "An error occurred while loading companies",
+        "noAddress": "No address updated",
+        "employees": "employees",
+        "noPhone": "No phone number updated",
+        "noWebsite": "No website updated",
+        "noCategory": "Uncategorized"
+      },
+      "mediaAndDescription": "Media and Description",
+      "basicInfo": "Basic Information",
+      "title": "Company",
+      "info": "Company Information",
+      "size": "Company Size",
+      "sizePlaceholder": "Please select",
+      "sizeLessThan10": "Less than 10",
+      "sizeMoreThan50000": "More than 50,000",
+      "industry": "Company Industry",
+      "industryRequired": "Please select company industry",
+      "industryPlaceholder": "Please select",
+      "benefits": "Company Benefits",
+      "benefitDescriptionPlaceholder": "Enter benefit description",
+      "addBenefit": "Add benefit",
+      "description": "Company Description",
+      "logo": "Company Logo",
+      "logoTooltip": "Drag and drop or click to upload image",
+      "backgroundImage": "Company Image",
+      "imageTooltip": "Drag and drop or click to upload image",
+      "websitePlaceholder": "Company website URL",
+      "video": "Company Video",
+      "videoPlaceholder": "Copy and paste your YouTube link here",
+      "address": "Company Address",
+      "addressPlaceholder": "Example: 130 Suong Nguyet Anh, Ben Thanh Ward, District 1",
+      "certificate": {
+        "title": "Business Certificate",
+        "uploadLabel": "Business Certificate Image",
+        "uploadTooltip": "Drag and drop or click to upload image",
+        "previewTitle": "Preview Image",
+        "previewAlt": "Business Certificate Preview",
+        "confirmModal": {
+          "title": "Confirm Information Submission",
+          "content": "By clicking confirm, you agree that failure to provide or providing incorrect information is considered a violation that may result in service suspension and/or account termination without refund. You can review the information provided"
+        }
+      },
+      "inforCompany": {
+        "aboutUs": "About Us",
+        "jobPositions": "Job Positions",
+        "companyInfo": "Company Information",
+        "size": "Size",
+        "industry": "Industry",
+        "contact": "Contact",
+        "phone": "Phone Number",
+        "email": "Email",
+        "address": "Address",
+        "viewOnMap": "View on map",
+        "website": "Website",
+        "detailedDescription": "Detailed Description",
+        "videoIntroduction": "Video Introduction",
+        "benefits": "Benefits",
+        "follow": "Follow",
+        "following": "Following",
+        "followers": "followers"
+      }
     }
   },
   "auth": {
@@ -721,6 +1406,7 @@
       "title": "Register",
       "firstName": "First Name",
       "lastName": "Last Name",
+      "address": "Address",
       "birthday": "Birthday",
       "birthdayPlaceholder": "Select birthday",
       "phone": "Phone Number",
@@ -766,7 +1452,7 @@
       "fileChoose": "Choose or drag and drop your resume from your device",
       "fileSupport": "Only supports .doc, .docx, .pdf files with a size under 5MB",
       "fileType": "Only supports .doc, .docx, .pdf",
-      "fileMax": "File size exceeds limit"
+      "fileMax": "File size exceeds 5MB limit"
     },
     "form": {
       "title": "Title",
@@ -813,6 +1499,7 @@
       },
       "fullNameLabel": "Full Name",
       "jobTitleLabel": "Job Title - Experience",
+      "objectiveLabel": "CAREER OBJECTIVES",
       "phoneLabel": "Phone:",
       "emailLabel": "Email:",
       "addressLabel": "Address:",
@@ -827,6 +1514,11 @@
       "scoreLabel": "Score:"
     },
     "builder": {
+      "saveSuccess": "CV saved successfully",
+      "saveError": "Failed to save CV",
+      "sectionAlreadyExists": "This section already exists",
+      "newSection": "NEW SECTION",
+      "addNewSection": "Add New Section",
       "edit": "Edit CV",
       "view": "View CV",
       "delete": "Delete CV",
@@ -1020,9 +1712,19 @@
     "analysis": {
       "title": "CV Analysis with AI",
       "subtitle": "Let our AI analyze your CV and suggest suitable job opportunities for you",
+      "benefits": {
+        "aiTitle": "AI-Powered",
+        "aiDesc": "Our AI system analyzes your CV to identify your skills, experience, and qualifications, then matches them with the most suitable job openings in our database.",
+        "matchTitle": "Job Match",
+        "matchDesc": "We guarantee to keep your data private and not share your personal information with any third party.",
+        "insightsTitle": "Insights",
+        "insightsDesc": "We guarantee to keep your data private and not share your personal information with any third party."
+      },
       "info": {
         "title": "How it works",
-        "description": "Our AI system analyzes your CV to identify your skills, experience, and qualifications, then matches them with the most suitable job openings in our database."
+        "description": "Our AI system analyzes your CV to identify your skills, experience, and qualifications, then matches them with the most suitable job openings in our database.",
+        "privacyTitle": "Privacy",
+        "privacyDescription": "We guarantee to keep your data private and not share your personal information with any third party."
       },
       "tabs": {
         "existing": "Use Existing CV",
@@ -1032,6 +1734,7 @@
       "lastUpdated": "Last Updated",
       "analyze": "Analyze CV",
       "analyzing": "Analyzing...",
+      "pleaseWait": "Please wait while we analyze your CV...",
       "warning": {
         "noCV": "Please select a CV or upload a new one to analyze"
       },
@@ -1045,16 +1748,32 @@
       "result": {
         "title": "Analysis Results",
         "success": "CV Analysis Complete!",
-        "subtitle": "Your CV matched with jobs at {score}% match rate",
+        "subtitle": "Your CV matched with jobs at {{score}}% match rate",
         "jobMatches": "Job Matches",
+        "noJobMatches": "No job matches found",
         "close": "Close",
         "viewAll": "View All Recommendations",
         "viewRecommended": "View Recommended Jobs",
-        "match": "Match"
+        "match": "Match",
+        "clickJobAlert": "Click job alert to view details",
+        "matchedSkills": "Matched Skills"
       }
+    },
+    "uploadCV": {
+      "title": "Resume Information",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "attachedResume": "Attached Resume",
+      "uploadedResume": "Uploaded Resumes",
+      "lastUpdated": "Last updated:",
+      "viewAsEmployer": "View as employer"
     }
   },
   "job": {
+    "noDeadline": "No deadline",
+    "expired": "Expired",
+    "daysLeft": "days left",
     "search": {
       "search": "Search",
       "category": "Category",
@@ -1107,9 +1826,14 @@
     "404": "Sorry, the page you are looking for does not exist.",
     "403": "Sorry, you do not have permission to access this page.",
     "500": "Sorry, the page you are trying to access is currently not working.",
-    "backToHome": "Back to Home"
+    "backToHome": "Back to Home",
+    "loginFailed": "Login failed"
   },
   "admin": {
+    "search": {
+      "placeholder": "Search for companies, candidates...",
+      "noResults": "No results found"
+    },
     "companyApproval": {
       "title": "Company Approval",
       "tabs": {
@@ -1120,25 +1844,151 @@
     },
     "dashboard": {
       "title": "Overview",
+      "subtitle": "Overview as of {{date}}",
+      "refresh": "Refresh",
       "filters": {
+        "selectMonth": "Select month",
+        "selectYear": "Select year",
         "allMonths": "All months",
         "month": "Month {month}",
-        "allYears": "All years"
+        "allYears": "All years",
+        "last30Days": "Last 30 days",
+        "last6Months": "Last 6 months",
+        "lastYear": "Last year"
       },
       "stats": {
+        "interview": "Interview",
+        "successfulInterview": "Successful Interview",
+        "totalRevenue": "Total Revenue",
         "currentMonthRevenue": "Current Month Revenue",
         "totalCandidates": "Total Candidates",
         "totalEmployers": "Total Employers",
-        "conversionRate": "Conversion Rate"
+        "totalUsers": "Total Users",
+        "totalJobs": "Total Jobs",
+        "conversionRate": "Conversion Rate",
+        "newCandidates": "New Candidates",
+        "newEmployers": "New Employers"
       },
       "charts": {
-        "monthlyRevenue": "Monthly Revenue",
+        "totalNewForums": "Total new forums",
+        "totalNewTopics": "Total new topics",
+        "totalNewPosts": "Total new posts",
+        "averagePostsPerTopic": "Average posts per topic",
+        "newForums": "New forums",
+        "newTopics": "New topics",
+        "newPosts": "New posts",
+        "forumActivity": "Forum Activity",
+        "totalApplications": "Total applications",
+        "totalSuccessInterviews": "Total success interviews",
+        "averageSuccessRate": "Average success rate",
+        "studentApplications": "Student applications",
+        "successInterviews": "Success interviews",
+        "revenueAnalytics": "Revenue analytics",
+        "revenueItem": "Revenue",
+        "packageCountItem": "Package count",
+        "employers": "Employers",
+        "candidates": "Candidates",
+        "monthlyRevenue": "Monthly revenue",
         "revenue": "Revenue (VND)",
-        "packageCount": "Package Count",
-        "topPackages": "Top Selling Packages",
-        "jobsByCategory": "Jobs by Category",
+        "packageCount": "Package count",
+        "topPackages": "Top selling packages",
+        "jobsByCategory": "Jobs by category",
         "packages": "{value} packages - {percentage}%",
-        "jobs": "{value} jobs - {percentage}%"
+        "jobs": "{value} jobs - {percentage}%",
+        "userGrowth": "User growth trend"
+      },
+      "platform": {
+        "performance": "Platform Performance",
+        "activeUsers": "Active Users (Daily)",
+        "avgSessionDuration": "Average Session Duration",
+        "bounceRate": "Bounce Rate",
+        "conversionRate": "Conversion Rate"
+      },
+      "insights": {
+        "title": "Platform Insights",
+        "engagementTitle": "Increased Engagement",
+        "engagementDesc": "User sessions increased by 12% compared to last month, indicating higher engagement with the platform.",
+        "mobileTitle": "Mobile Usage Trends",
+        "mobileDesc": "Mobile usage is increasing but conversion rates are 5% lower on mobile compared to desktop. Consider optimizing the mobile experience.",
+        "categoriesTitle": "Popular Job Categories",
+        "categoriesDesc": "IT/Software Development and Data Analysis are the fastest growing job categories this month."
+      },
+      "jobApproval": {
+        "title": "Job Approval Status",
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected",
+        "total": "Total",
+        "approvedPercent": "{percent}% approved"
+      },
+      "metrics": {
+        "monthlyRevenue": "Monthly Revenue",
+        "totalUsers": "Total Users",
+        "activeJobs": "Active Jobs",
+        "conversionRate": "Conversion Rate",
+        "vsLastMonth": "vs last month"
+      },
+      "recentActivities": {
+        "title": "Recent Activities",
+        "newUser": "New employer registered: {company}",
+        "newJob": "New job posted: {position}",
+        "newPackage": "Package purchased: {package}",
+        "approval": "Company profile approved: {company}",
+        "newApplication": "{count} new applications received today",
+        "timeAgo": "{time} ago"
+      },
+      "tables": {
+        "recentOrders": "Recent Orders",
+        "topEmployers": "Top Employers",
+        "systemAlerts": "System Alerts",
+        "columns": {
+          "id": "ID",
+          "company": "Company",
+          "package": "Package",
+          "amount": "Amount",
+          "date": "Date",
+          "status": "Status",
+          "jobsPosted": "Jobs Posted",
+          "hires": "Successful Hires",
+          "rating": "Rating"
+        },
+        "statuses": {
+          "completed": "Completed",
+          "processing": "Processing"
+        },
+        "action": "Action"
+      },
+      "skills": {
+        "title": "Top Requested Skills",
+        "viewAll": "View all skills",
+        "distribution": "Skill Distribution Analysis"
+      },
+      "geographic": {
+        "title": "Geographic Distribution",
+        "employers": "Employers",
+        "candidates": "Candidates",
+        "jobs": "Jobs"
+      },
+      "chartTypes": {
+        "pie": "Pie Chart",
+        "bar": "Bar Chart"
+      },
+      "tabViews": {
+        "chart": "Chart View",
+        "data": "Data View"
+      },
+      "alerts": {
+        "systemNotice": "System Notice",
+        "pendingJobs": "There are {{count}} new job postings pending approval. Please review to maintain platform quality.",
+        "reviewNow": "Review Now",
+        "packageExpiration": "{{count}} employer packages will expire in the next 7 days",
+        "systemLoad": "Server CPU usage peaked at {percent}% at {{time}}",
+        "securityAlert": "Unusual login activity detected from IP {{ip}}",
+        "backupStatus": "Daily backup completed successfully at {{time}}"
+      },
+      "search": {
+        "title": "Top Search Keywords",
+        "searches": "searches"
       },
       "errors": {
         "loadData": "Error loading data"
@@ -1160,12 +2010,15 @@
       "notification": "Notification",
       "createNotification": "Create Notification",
       "notificationList": "Notification List",
-      "logout": "Logout"
+      "forums": "Forums",
+      "logout": "Logout",
+      "jobAlertConfig": "Job Alert Config"
     },
     "messages": {
       "error": "An error occurred"
     },
     "coupon": {
+      "off": "OFF",
       "title": "Coupons",
       "createNew": "Create New Coupon",
       "editTitle": "Edit Coupon",
@@ -1175,10 +2028,13 @@
       "delete": "Delete",
       "deleteError": "Failed to delete coupon",
       "voucher": "Voucher",
-      "discount": "{discount}% Off",
-      "code": "Code:",
-      "remaining": "Remaining:",
-      "expireDate": "Expire Date:",
+      "discount": "{{discount}} off",
+      "code": "Code",
+      "remaining": "Remaining",
+      "expireDate": "Expire date",
+      "active": "Active",
+      "inactive": "Inactive",
+      "maxUsage": "Maximum usage",
       "form": {
         "code": {
           "label": "Coupon Code",
@@ -1216,10 +2072,21 @@
           "create": "Create",
           "cancel": "Cancel"
         }
+      },
+      "deleteConfirm": {
+        "title": "Delete Coupon",
+        "content": "Are you sure you want to delete this coupon?",
+        "okText": "Delete"
       }
     },
     "company": {
+      "stats": {
+        "total": "Total companies",
+        "withCertificate": "Companies with certificate"
+      },
       "table": {
+        "pagination": "Page",
+        "notAvailable": "No data",
         "columns": {
           "companyName": "Company Name",
           "address": "Address",
@@ -1248,6 +2115,24 @@
           "enterRejectReason": "Enter reject reason",
           "pleaseEnterReason": "Please enter reject reason"
         }
+      },
+      "status": {
+        "pendingTitle": "Pending",
+        "approvedTitle": "Approved",
+        "rejectedTitle": "Rejected",
+        "pending": "Pending",
+        "approved": "Approved",
+        "rejected": "Rejected"
+      },
+      "list": {
+        "title": "Company List",
+        "loading": "Loading companies...",
+        "errorLoading": "An error occurred while loading companies",
+        "noAddress": "No address updated",
+        "employees": "employees",
+        "noPhone": "No phone number updated",
+        "noWebsite": "No website updated",
+        "noCategory": "Uncategorized"
       }
     },
     "postApproval": {
@@ -1261,6 +2146,7 @@
     "post": {
       "table": {
         "columns": {
+          "actions": "Action",
           "no": "No.",
           "title": "Title",
           "category": "Category",
@@ -1450,6 +2336,7 @@
         "manageJobs": "Jobs",
         "resumes": "Resumes",
         "interview": "Interview",
+        "evaluation": "Candidate Evaluation",
         "orders": "Orders",
         "messages": "Messages",
         "services": "Service Packages",
@@ -1565,7 +2452,7 @@
         "placeholder": "Search users...",
         "sort": "Sort",
         "refresh": "Refresh",
-        "totalUsers": "Total {total} users"
+        "totalUsers": "Total {{total}} users"
       },
       "sort": {
         "newest": "Newest Users",
@@ -1669,17 +2556,23 @@
         "createSuccess": "Notification created successfully",
         "createError": "Notification creation failed"
       }
+    },
+    "manageJobs": {
+      "pendingDescription": "Manage post waiting for approval",
+      "activeDescription": "Manage post approved",
+      "rejectedDescription": "Manage post rejected"
     }
   },
   "chatbot": {
+    "title": "UTECareer Assistant",
     "placeholderInput": "Type your message here...",
-    "welcomeTitle": "Welcome to UTECareerBridge Assistant",
-    "welcomeDescription": "I can help you learn about UTECareerBridge and how to use the platform's features.",
+    "welcomeTitle": "Welcome to UTECareer Assistant",
+    "welcomeDescription": "I can help you learn about UTECareer and how to use the platform's features.",
     "suggestedQuestions": "You can ask:",
     "loading": "Loading...",
     "typing": "Chatbot is typing...",
     "howToFindJob": "How to find a job?",
-    "UTECareerBridgeFeatures": "What are the features of UTECareerBridge?",
+    "UTECareerFeatures": "What are the features of UTECareer?",
     "howToUpdateCV": "How to update CV?",
     "howToApplyForJob": "How to apply for a job?"
   },
@@ -1694,6 +2587,8 @@
   },
   "forum": {
     "title": "Forum",
+    "management": "Forum Management",
+    "add_new": "Add new forum",
     "listForum": {
       "title": "A list of forums",
       "search": "Search forum",
@@ -1701,18 +2596,159 @@
       "edit": "Edit forum",
       "delete": "Delete forum",
       "createDate": "Published at"
+    },
+    "delete": {
+      "confirm_title": "Confirm deletion",
+      "confirm_message": "Are you sure you want to delete the forum \"{{name}}\"? This action cannot be undone.",
+      "button": "Delete",
+      "cancel": "Cancel",
+      "success": "Delete forum successfully"
+    },
+    "create": {
+      "success": "Forum created successfully"
+    },
+    "edit": {
+      "success": "Update forum successfully"
+    },
+    "status": {
+      "active": "Active",
+      "inactive": "Inactive"
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "error": {
+      "loading": "An error occurred while loading data."
+    },
+    "createModal": {
+      "title": "Add new forum",
+      "name": {
+        "label": "Forum name",
+        "placeholder": "Enter forum name",
+        "required": "Please enter forum name!"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Enter detailed description about the forum",
+        "required": "Please enter forum description!"
+      },
+      "image": {
+        "label": "Image",
+        "tooltip": "Forum image",
+        "required": "Please select forum image!"
+      },
+      "cancel": "Cancel",
+      "create": "Create"
+    },
+    "editModal": {
+      "title": "Edit forum",
+      "name": {
+        "label": "Forum name",
+        "placeholder": "Enter forum name",
+        "required": "Please enter forum name!"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Enter detailed description about the forum",
+        "required": "Please enter forum description!"
+      },
+      "image": {
+        "label": "Image",
+        "tooltip": "Forum image",
+        "required": "Please select forum image!"
+      },
+      "cancel": "Cancel",
+      "update": "Update"
     }
   },
   "topic": {
+    "createTopic": "Create topic",
+    "update": "Update topic",
+    "edit": "Edit topic",
+    "updateSuccess": "Update topic successfully",
+    "updateError": "Update topic failed",
+    "noTopic": "No topics found",
     "ADMIN": "Admin",
     "STUDENT": "Student",
     "EMPLOYER": "Employer",
     "search": "Search topic",
     "addTopic": "Create topic",
     "filter": "Filter topic",
-    "createError": "Create topic failed"
+    "createError": "Create topic failed",
+    "delete": {
+      "confirm_title": "Confirm Delete Topic",
+      "confirm_message": "Are you sure you want to delete topic '{{title}}'?",
+      "button": "Delete Topic",
+      "cancel": "Cancel",
+      "success": "Topic deleted successfully"
+    },
+    "pin": {
+      "success_unpin": "Topic unpinned successfully",
+      "success_pin": "Topic pinned successfully",
+      "unpin": "Unpin",
+      "pin": "Pin"
+    },
+    "loading": "Loading...",
+    "error": {
+      "general": "An error occurred: {{message}}",
+      "loading": "Could not load topic data"
+    },
+    "empty": "No topics found",
+    "created_by": "Created by",
+    "post_count": "{{count}} posts",
+    "title": "Title",
+    "view": "View",
+    "author": "Author",
+    "posts": "Posts",
+    "created_at": "Created At",
+    "action": "Action",
+    "total_topics": "Total Topics",
+    "pinned_topics": "Pinned Topics",
+    "total_posts": "Total Posts",
+    "list_title": "Topic List",
+    "filter_sort": {
+      "title": "Filter & Sort",
+      "sort_by": "Sort by",
+      "popular_tags": "Popular Tags",
+      "select_tags": "Select tags to filter",
+      "reset": "Reset",
+      "apply": "Apply",
+      "options": {
+        "newest": "Newest",
+        "oldest": "Oldest",
+        "recently_updated": "Recently Updated"
+      }
+    },
+    "create": {
+      "title": "Title",
+      "title_placeholder": "Enter topic title",
+      "title_required": "Please enter topic title!",
+      "tags": "Tags",
+      "tags_placeholder": "Select tags",
+      "content": "Content",
+      "content_required": "Please enter topic content!",
+      "cancel": "Cancel",
+      "submit": "Create Topic"
+    },
+    "tooltips": {
+      "pinned": "Pinned Topic",
+      "locked": "Locked Topic",
+      "post_count": "Post Count"
+    }
   },
   "post": {
+    "login": "Please login to continue!",
+    "contentRequired": "Please enter the content of the post!",
+    "deleteSuccess": "Delete post successfully",
+    "deleteError": "Delete post failed",
+    "updateSuccess": "Update post successfully",
+    "updateError": "Update post failed",
+    "delete": "Delete post",
+    "deleteConfirm": "Are you sure you want to delete this post?",
+    "update": "Update post",
+    "detailReactions": "Detail reactions",
+    "noPost": "No posts yet",
     "placeholder": "Enter content your post",
     "create": "Create post",
     "topic": "Topic",
@@ -1730,11 +2766,45 @@
     "share": "Share",
     "comment": "Comment",
     "writeComment": "Write a comment",
-    "noComment": "No comments yet. Be the first to comment!"
+    "noComment": "No comments yet. Be the first to comment!",
+    "filter": "Filter posts",
+    "sort": "Sort",
+    "export": "Export data",
+    "view": "View",
+    "comments": "Comments",
+    "edited": "Edited",
+    "total_posts": "Total Posts",
+    "total_reactions": "Total Reactions",
+    "total_comments": "Total Comments",
+    "list": {
+      "title": "List of posts",
+      "reply": "Reply",
+      "created_by": "Created by",
+      "no_posts": "No posts yet",
+      "post_button": "Create post",
+      "cancel": "Cancel",
+      "content_required": "Please enter the content of the post!",
+      "post_success": "Post created successfully",
+      "post_error": "An error occurred while creating the post!",
+      "delete": {
+        "confirm_title": "Confirm deletion",
+        "confirm_message": "Are you sure you want to delete this post?",
+        "button": "Delete",
+        "cancel": "Cancel",
+        "success": "Post deleted successfully",
+        "error": "An error occurred while deleting the post!"
+      }
+    },
+    "reaction": {
+      "title": "List of users who reacted",
+      "no_data": "No data"
+    }
   },
   "comment": {
+    "send": "Send",
     "reply": "Reply",
     "login": "Login to comment",
+    "createError": "Comment failed",
     "delete": "Delete comment",
     "deleteConfirm": "Are you sure you want to delete this comment?",
     "deleteError": "Delete comment failed",
@@ -1790,6 +2860,234 @@
     "contactUs": {
       "title": "Contact Us",
       "content": "If you have any questions about these Terms of Use, please contact us through the provided channels on our platform."
+    }
+  },
+  "about": {
+    "hero": {
+      "title": "About UTE Career",
+      "description": "Connecting HCMC University of Technology and Education students with the best career opportunities"
+    },
+    "intro": {
+      "title": "Platform connecting students and employers",
+      "description": "UTE Career is a platform that connects students and alumni of HCMC University of Technology and Education with employers. We provide comprehensive support services to help students find suitable job opportunities and assist businesses in finding potential candidates."
+    },
+    "stats": {
+      "studentsEmployed": "Students employed",
+      "partnerCompanies": "Partner companies",
+      "recruitmentEvents": "Recruitment events per year",
+      "jobCount": "Job positions"
+    },
+    "services": {
+      "title": "Our Services",
+      "description": "UTE Career provides comprehensive services for both students and employers",
+      "forStudents": {
+        "title": "For Students & Alumni",
+        "subtitle": "Comprehensive support for your career journey",
+        "jobSearch": {
+          "title": "Job Search",
+          "description": "Access thousands of job opportunities relevant to your major"
+        },
+        "careerCounseling": {
+          "title": "Career Counseling",
+          "description": "Receive advice from experts on career orientation and development"
+        },
+        "cvSupport": {
+          "title": "CV Support",
+          "description": "Get assistance in building and perfecting a professional CV"
+        },
+        "skillAssessment": {
+          "title": "Skills Assessment",
+          "description": "Participate in assessments to understand your strengths and development opportunities"
+        }
+      },
+      "forEmployers": {
+        "title": "For Employers",
+        "subtitle": "Access quality candidates from HCMUTE",
+        "postJobs": {
+          "title": "Post Jobs",
+          "description": "Post job listings and reach thousands of students and alumni"
+        },
+        "findCandidates": {
+          "title": "Find Candidates",
+          "description": "Search for potential candidates that match your recruitment needs"
+        },
+        "campusRecruitment": {
+          "title": "Campus Recruitment",
+          "description": "Participate in direct recruitment events at the university to meet candidates"
+        },
+        "branding": {
+          "title": "Employer Branding",
+          "description": "Promote your employer brand to students and alumni"
+        }
+      }
+    },
+    "events": {
+      "title": "Regular Events",
+      "description": "UTE Career organizes many events to connect students with career opportunities",
+      "jobFair": {
+        "title": "UTE Job Fair",
+        "schedule": "April and October annually",
+        "description": "The largest recruitment event of the year with the participation of over 50 businesses and thousands of job opportunities."
+      },
+      "skillsWorkshop": {
+        "title": "Skills Workshop",
+        "schedule": "Monthly",
+        "description": "Workshops on soft skills and professional expertise to help students best prepare for their career journey."
+      },
+      "companySeminar": {
+        "title": "Company Seminars",
+        "schedule": "Regularly",
+        "description": "Opportunities to meet and learn about internship and job opportunities from leading partner companies."
+      },
+      "learnMore": "Learn more"
+    },
+    "registration": {
+      "title": "Registration Process",
+      "description": "A simple process to start using UTE Career services",
+      "forStudents": {
+        "title": "For Students & Alumni",
+        "steps": {
+          "step1": {
+            "title": "Create an account",
+            "description": "Register an account on the website with your university email (@student.hcmute.edu.vn)"
+          },
+          "step2": {
+            "title": "Complete your profile",
+            "description": "Update your personal information, education, skills, and experience"
+          },
+          "step3": {
+            "title": "Search for jobs",
+            "description": "Find jobs that match your major and skills"
+          },
+          "step4": {
+            "title": "Apply",
+            "description": "Apply for suitable positions and track your application status"
+          }
+        },
+        "registerNow": "Register now"
+      },
+      "forEmployers": {
+        "title": "For Employers",
+        "steps": {
+          "step1": {
+            "title": "Create a company account",
+            "description": "Register a company account on the website with accurate information"
+          },
+          "step2": {
+            "title": "Verify your account",
+            "description": "Your company account will be verified by administrators"
+          },
+          "step3": {
+            "title": "Complete company information",
+            "description": "Update detailed information about your company and field of activity"
+          },
+          "step4": {
+            "title": "Post jobs",
+            "description": "Post job listings and manage candidates through the system"
+          }
+        },
+        "registerNow": "Register now"
+      }
+    },
+    "contact": {
+      "title": "Contact Us",
+      "description": "If you have any questions, don't hesitate to contact us. The UTE Career team is always ready to assist you.",
+      "address": {
+        "title": "Address",
+        "value": "Room A1-805, 1 Vo Van Ngan Street, Linh Chieu Ward, Thu Duc City, HCMC"
+      },
+      "email": {
+        "title": "Email",
+        "value": "support@utecareer.edu.vn"
+      },
+      "hotline": {
+        "title": "Hotline",
+        "value": "028.1234.5678"
+      },
+      "workingHours": {
+        "title": "Working Hours",
+        "weekdays": "Monday-Friday: 8:00-17:00",
+        "saturday": "Saturday: 8:00-12:00"
+      },
+      "sendMessage": "Send message"
+    }
+  },
+  "jobAlertSchedule": {
+    "title": "🔔 Job Alert Schedule Configuration",
+    "info": {
+      "title": "Configuration Information",
+      "description": "Manage automatic job notification schedules to students based on their set criteria.\nUse Cron expressions to precisely define when notifications should be sent."
+    },
+    "list": {
+      "title": "Configuration List",
+      "description": "Manage job notification schedules",
+      "addNew": "Add New Configuration",
+      "total": "{{start}}-{{end}} of {{total}} configurations"
+    },
+    "frequency": {
+      "daily": "🌅 Daily",
+      "weekly": "📆 Weekly",
+      "monthly": "🗓️ Monthly",
+      "hourly": "⏰ Hourly"
+    },
+    "cronSamples": {
+      "daily8am": "Daily at 8:00 AM",
+      "daily6pm": "Daily at 6:00 PM",
+      "weeklyMonday": "Every Monday at 8:00 AM",
+      "weeklyFriday": "Every Friday at 9:00 AM",
+      "monthly": "1st day of month at 8:00 AM",
+      "every2hours": "Every 2 hours",
+      "every30mins": "Every 30 minutes"
+    },
+    "modal": {
+      "edit": "✏️ Edit Schedule Configuration",
+      "create": "➕ Add Schedule Configuration",
+      "frequency": {
+        "label": "📅 Notification Frequency",
+        "placeholder": "Select notification frequency",
+        "required": "Please select a frequency"
+      },
+      "sampleTime": {
+        "label": "🕒 Sample Time",
+        "tooltip": "Select a time sample to auto-fill Cron expression",
+        "placeholder": "Select time sample"
+      },
+      "cronExpression": {
+        "label": "⚙️ Cron Expression",
+        "required": "Please enter Cron expression",
+        "tooltip": "Format: second minute hour dayOfMonth month dayOfWeek",
+        "guide": {
+          "title": "💡 How to read Cron expression:",
+          "format": "second minute hour dayOfMonth month dayOfWeek",
+          "examples": {
+            "title": "Examples:",
+            "daily8am": "🌅 Daily at 8:00 AM",
+            "daily6pm": "🌆 Daily at 6:00 PM",
+            "weeklyMonday": "📅 Every Monday at 8:00 AM",
+            "monthly": "🗓️ 1st day of month at 8:00 AM"
+          }
+        }
+      },
+      "buttons": {
+        "cancel": "Cancel",
+        "update": "Update",
+        "save": "Save Configuration"
+      }
+    },
+    "messages": {
+      "updateSuccess": "Configuration updated successfully",
+      "updateError": "An error occurred while updating configuration",
+      "loadError": "Failed to load job alert schedule configurations",
+      "invalidCronExpression": "Invalid cron expression",
+      "everyXHours": "Every {{interval}} hours",
+      "dailyAtTime": "Daily at {{hour}}:00",
+      "everyXMinutes": "Every {{interval}} minutes",
+      "customSchedule": "Custom Schedule"
+    },
+    "table": {
+      "frequency": "Frequency",
+      "cronExpression": "Cron Expression",
+      "timeDescription": "Time Description"
     }
   }
 }

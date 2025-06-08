@@ -11,8 +11,6 @@ import {
   GlobalOutlined,
   MenuOutlined,
   NotificationOutlined,
-  SearchOutlined,
-  BellOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
 import {
@@ -22,19 +20,16 @@ import {
   Flex,
   Space,
   message,
-  Input,
-  Badge,
-  Breadcrumb,
   Dropdown,
-  Card,
   Tooltip,
 } from "antd";
-import { Outlet, useLocation, useNavigate, Link } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut, removeAllToken } from "../../services/apiService";
 import { loading, stop } from "../../redux/action/webSlice";
 import { useRedux } from "../../utils/useRedux.jsx";
-import NotificationPopover from "./NotificationPopover";
+import ChangeLanguageBtn from "../Generate/ChangeLanguageBtn";
+import NotificationIcon from "../Generate/NotificationIcon.jsx";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -58,15 +53,11 @@ const AdminLayout = () => {
   const [defaultImage, setDefaultImage] = useState(null);
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
   const adminInfo = useSelector((state) => state.admin);
   const name = `${adminInfo?.firstName || ""} ${adminInfo?.lastName || ""}`;
   const avatar = adminInfo?.avatar;
-  const [breadcrumbItems, setBreadcrumbItems] = useState([]);
 
-  const notifications = useSelector(
-    (state) => state.notifications?.unread || 0
-  );
+  const user = useSelector((state) => state.user);
 
   const itemSider = [
     {
@@ -75,7 +66,7 @@ const AdminLayout = () => {
       label: t("admin.sidebar.overview"),
     },
     {
-      key: "1",
+      key: "2",
       icon: <TeamOutlined />,
       label: t("admin.sidebar.userManagement"),
       children: [
@@ -84,7 +75,7 @@ const AdminLayout = () => {
       ],
     },
     {
-      key: "2",
+      key: "3",
       icon: <FileTextOutlined />,
       label: t("admin.sidebar.companyManagement"),
       children: [
@@ -92,7 +83,10 @@ const AdminLayout = () => {
           key: "/admin/company-approval",
           label: t("admin.sidebar.companyApproval"),
         },
-        { key: "/admin/post-approval", label: t("admin.sidebar.postApproval") },
+        {
+          key: "/admin/post-approval",
+          label: t("admin.sidebar.postApproval"),
+        },
       ],
     },
     {
@@ -112,7 +106,14 @@ const AdminLayout = () => {
       icon: <GlobalOutlined />,
       label: t("admin.sidebar.contentManagement"),
       children: [
-        { key: "/admin/news-events", label: t("admin.sidebar.newsAndEvents") },
+        {
+          key: "/admin/news-events",
+          label: t("admin.sidebar.newsAndEvents"),
+        },
+        {
+          key: "/admin/forums",
+          label: t("admin.sidebar.forums"),
+        },
       ],
     },
     {
@@ -125,10 +126,15 @@ const AdminLayout = () => {
           label: t("admin.sidebar.createNotification"),
         },
         {
-          key: "/admin/notification-list",
+          key: "/admin/notification",
           label: t("admin.sidebar.notificationList"),
         },
       ],
+    },
+    {
+      key: "/admin/job-alert-config",
+      icon: <SettingOutlined />,
+      label: t("admin.sidebar.jobAlertConfig"),
     },
     {
       key: "logout",
@@ -139,59 +145,12 @@ const AdminLayout = () => {
 
   const userMenuItems = [
     {
-      key: "profile",
-      label: t("admin.profile.view"),
-      icon: <UserOutlined />,
-    },
-    {
-      key: "settings",
-      label: t("admin.profile.settings"),
-      icon: <SettingOutlined />,
-    },
-    {
-      type: "divider",
-    },
-    {
       key: "logout",
       label: t("admin.sidebar.logout"),
       icon: <LogoutOutlined />,
       danger: true,
     },
   ];
-
-  // Generate breadcrumb based on current path
-  useEffect(() => {
-    const pathSegments = location.pathname.split("/").filter(Boolean);
-    const breadcrumbArray = [
-      {
-        title: <Link to="/admin/dashboard">Dashboard</Link>,
-      },
-    ];
-
-    // Build breadcrumb paths
-    if (pathSegments.length > 1) {
-      let currentPath = "";
-
-      pathSegments.slice(1).forEach((segment) => {
-        currentPath += `/${segment}`;
-        const formattedTitle = segment
-          .split("-")
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(" ");
-
-        breadcrumbArray.push({
-          title:
-            location.pathname === `/admin${currentPath}` ? (
-              formattedTitle
-            ) : (
-              <Link to={`/admin${currentPath}`}>{formattedTitle}</Link>
-            ),
-        });
-      });
-    }
-
-    setBreadcrumbItems(breadcrumbArray);
-  }, [location.pathname]);
 
   const handleNavigation = async (key) => {
     if (key.key === "logout") {
@@ -214,11 +173,6 @@ const AdminLayout = () => {
     } else {
       navigate(key.key);
     }
-  };
-
-  const handleSearch = (e) => {
-    setSearchValue(e.target.value);
-    // Implement search functionality as needed
   };
 
   const handleUserMenuClick = ({ key }) => {
@@ -270,33 +224,21 @@ const AdminLayout = () => {
       <Layout className="site-layout">
         <Header className="admin-header !bg-card-color">
           <Flex align="center">
-            <Tooltip title={collapsed ? "Expand menu" : "Collapse menu"}>
+            <Tooltip
+              destroyTooltipOnHide={true}
+              title={collapsed ? "Expand menu" : "Collapse menu"}
+            >
               <MenuOutlined
                 className="text-base transition-all cursor-pointer hover:text-blue-500"
                 onClick={() => setCollapsed(!collapsed)}
               />
             </Tooltip>
-
-            <div className="ml-6 search-container">
-              <SearchOutlined className="search-icon" />
-              <div className="search-bar">
-                <Input
-                  className="search-input"
-                  placeholder={t("admin.search.placeholder")}
-                  value={searchValue}
-                  onChange={handleSearch}
-                  bordered={false}
-                />
-              </div>
-            </div>
           </Flex>
 
-          <Space size={24}>
-            <NotificationPopover userId={adminInfo?.id}>
-              <Badge count={notifications} size="small">
-                <BellOutlined className="notification-icon" />
-              </Badge>
-            </NotificationPopover>
+          <div className="flex !items-center gap-6">
+            <ChangeLanguageBtn />
+
+            <NotificationIcon userId={user.userId} />
 
             <Dropdown
               menu={{ items: userMenuItems, onClick: handleUserMenuClick }}
@@ -314,12 +256,9 @@ const AdminLayout = () => {
                 <span className="admin-name">{name}</span>
               </Space>
             </Dropdown>
-          </Space>
+          </div>
         </Header>
         <Content className="admin-content">
-          <Card className="mb-4 admin-breadcrumb">
-            <Breadcrumb items={breadcrumbItems} />
-          </Card>
           <Flex gap="1rem" vertical>
             <Outlet />
           </Flex>

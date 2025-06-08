@@ -1,6 +1,6 @@
 import BoxContainer from "../../../Generate/BoxContainer";
 import { useEffect, useState } from "react";
-import { Table, Flex, Typography, Tabs, Alert } from "antd";
+import { Table, Flex, Typography, Tabs, Alert, Divider } from "antd";
 import {
   getApplyJobByStudent,
   getJobSaved,
@@ -9,9 +9,11 @@ import Status from "../../../../constant/status";
 import { checkThoiHan } from "../../../../utils/day";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { EyeOutlined } from "@ant-design/icons";
+import { useTranslation } from "react-i18next";
 const { Text } = Typography;
 
 const AppliedJob = () => {
+  const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -37,7 +39,7 @@ const AppliedJob = () => {
   }, [currentPage, pageSize]);
   const columns = [
     {
-      title: "Công ty",
+      title: t("student.myJobs.company"),
       dataIndex: "companyName",
       key: "companyName",
       render: (text, record) => (
@@ -49,11 +51,11 @@ const AppliedJob = () => {
       width: "39%",
     },
     {
-      title: "Công việc",
+      title: t("student.myJobs.job"),
       dataIndex: "jobTitle",
       key: "jobTitle",
       render: (text, record) => (
-        <Link to={`/job/${record.jobId}`}>
+        <Link to={`/jobs/${record.jobId}`}>
           <Text ellipsis={{ rows: 1, tooltip: text }}>{text}</Text>
         </Link>
       ),
@@ -61,7 +63,7 @@ const AppliedJob = () => {
       width: "39%",
     },
     {
-      title: "CV",
+      title: t("student.myJobs.cv"),
       dataIndex: "resumeFile",
       key: "resumeFile",
       render: (text) => (
@@ -73,7 +75,7 @@ const AppliedJob = () => {
       width: "9%",
     },
     {
-      title: "Trạng thái",
+      title: t("student.myJobs.status"),
       dataIndex: "applicationStatus",
       key: "applicationStatus",
       render: (status) => <Status status={status} />,
@@ -104,6 +106,7 @@ const AppliedJob = () => {
 };
 
 const SavedJob = () => {
+  const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -137,7 +140,7 @@ const SavedJob = () => {
   }, [currentPage, pageSize]);
   const columns = [
     {
-      title: "Công ty",
+      title: t("student.myJobs.company"),
       dataIndex: "companyName",
       key: "companyName",
       render: (text, record) => (
@@ -149,11 +152,11 @@ const SavedJob = () => {
       width: "39%",
     },
     {
-      title: "Công việc",
+      title: t("student.myJobs.job"),
       dataIndex: "jobTitle",
       key: "jobTitle",
       render: (text, record) => (
-        <Link to={`/job/${record.jobId}`}>
+        <Link to={`/jobs/${record.jobId}`}>
           <Text ellipsis={{ rows: 1, tooltip: text }}>{text}</Text>
         </Link>
       ),
@@ -161,7 +164,7 @@ const SavedJob = () => {
       width: "43%",
     },
     {
-      title: "Trạng thái",
+      title: t("student.myJobs.status"),
       dataIndex: "jobDeadline",
       key: "jobDeadline",
       render: (text) => checkThoiHan({ dateInput: text }),
@@ -192,6 +195,7 @@ const SavedJob = () => {
 };
 
 const MyJobPage = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -212,22 +216,15 @@ const MyJobPage = () => {
     <>
       <Flex vertical gap={8}>
         <BoxContainer width="100%">
-          <div className="title1">Việc làm của tôi</div>
-        </BoxContainer>
-        <BoxContainer width="100%">
+          <div className="title1">{t("student.myJobs.title")}</div>
+          <Divider />
           <Tabs onChange={handleTabChange} activeKey={activeTab} size="large">
-            <Tabs.TabPane tab="Đã ứng tuyển" key="job-applied">
+            <Tabs.TabPane tab={t("student.myJobs.applied")} key="job-applied">
               <Flex vertical gap={16}>
                 <Alert
-                  message={<Text strong>Chú ý</Text>}
+                  message={<Text strong>{t("student.myJobs.notice")}</Text>}
                   description={
-                    <Text>
-                      Nếu đơn ứng tuyển có trạng thái{" "}
-                      <Text className="text-text-color">
-                        &quot;Đã duyệt&quot;
-                      </Text>
-                      . Vui lòng kiểm tra email để xem thông báo phỏng vấn.{" "}
-                    </Text>
+                    <Text>{t("student.myJobs.noticeDescription")}</Text>
                   }
                   type="info"
                   showIcon
@@ -235,7 +232,7 @@ const MyJobPage = () => {
                 <AppliedJob />
               </Flex>
             </Tabs.TabPane>
-            <Tabs.TabPane tab="Đã lưu" key="job-saved">
+            <Tabs.TabPane tab={t("student.myJobs.saved")} key="job-saved">
               <SavedJob />
             </Tabs.TabPane>
           </Tabs>

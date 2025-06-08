@@ -18,7 +18,7 @@ export const usePostDetail = (id) => {
 
 export const usePostByTopicId = (topicId, params) => {
   return useQuery({
-    queryKey: ["postsByTopicId", topicId],
+    queryKey: ["postsByTopicId", topicId, params],
     queryFn: () => post.getByTopicId(topicId, params),
     refetchOnWindowFocus: false,
   });
@@ -26,7 +26,7 @@ export const usePostByTopicId = (topicId, params) => {
 
 export const usePostByUserId = (userId, params) => {
   return useQuery({
-    queryKey: ["postsByUserId", userId],
+    queryKey: ["postsByUserId", userId, params],
     queryFn: () => post.getByUserId(userId, params),
     refetchOnWindowFocus: false,
   });
@@ -56,11 +56,7 @@ export const useUpdatePost = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({ id, params }) => post.updatePost(id, params),
-    onSuccess: (_, { id }) => {
-      queryClient.invalidateQueries({
-        queryKey: ["post", id],
-      });
-
+    onSuccess: () => {
       queryClient.invalidateQueries({
         predicate: (query) =>
           query.queryKey[0] === "posts" ||

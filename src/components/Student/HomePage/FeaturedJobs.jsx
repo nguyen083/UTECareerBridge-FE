@@ -26,7 +26,7 @@ const FeaturedJobs = ({ jobs }) => {
   };
 
   const handleJobClick = (jobId) => {
-    navigate(`/job/${jobId}`);
+    navigate(`/jobs/${jobId}`);
   };
   return (
     <section className="featured-jobs">

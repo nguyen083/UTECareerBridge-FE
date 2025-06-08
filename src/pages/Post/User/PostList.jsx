@@ -7,37 +7,38 @@ import {
   Avatar,
   Divider,
   Tag,
-  Breadcrumb,
   Pagination,
   Drawer,
-  Tabs,
   Flex,
   FloatButton,
   Empty,
   Modal,
   Spin,
   Form,
+  message,
+  Space,
+  Input,
+  Select,
 } from "antd";
 import {
-  HomeOutlined,
   ClockCircleOutlined,
   ArrowUpOutlined,
   InfoCircleOutlined,
   PushpinOutlined,
-  UserOutlined,
   PlusOutlined,
+  CommentOutlined,
+  LoginOutlined,
+  EditOutlined,
+  DeleteOutlined,
 } from "@ant-design/icons";
-import {
-  useParams,
-  Link,
-  useSearchParams,
-  useNavigate,
-} from "react-router-dom";
+import { useParams, useSearchParams, useNavigate } from "react-router-dom";
 import "react-quill/dist/quill.snow.css";
 import HtmlContent from "../../../components/Generate/HtmlContent";
 import { Newspaper } from "lucide-react";
-import { useTopicDetail } from "../../../composables/topic";
-import { useForumDetail } from "../../../composables/forum";
+import {
+  useDeleteTopicMutation,
+  useTopicDetail,
+} from "../../../composables/topic";
 import { useTranslation } from "react-i18next";
 import { useCreatePost, usePostByTopicId } from "../../../composables/post";
 import { formatDateTime } from "../../../utils/day";
@@ -50,11 +51,20 @@ import {
   useGetReactionByUserId,
 } from "../../../composables/reaction";
 import CustomizeQuill from "../../../components/Generate/CustomizeQuill";
+import { ReactionModal } from "../PostDetail";
+import { useSelector } from "react-redux";
+import { useUpdateTopicMutation } from "./../../../composables/topic";
+import { useAllTag, useCreateTag } from "../../../composables/tag";
 const { Title, Text, Paragraph } = Typography;
 const UserPostList = () => {
-  const { forumId, topicId } = useParams();
-  const { data: forum } = useForumDetail(forumId);
-  const { data: topic, isPending: isPendingGetTopic } = useTopicDetail(topicId);
+  const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const { topicId } = useParams();
+  const {
+    data: topic,
+    isPending: isPendingGetTopic,
+    refetch: refetchTopic,
+  } = useTopicDetail(topicId);
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get("page")) || 1;
   const topRef = useRef(null);
@@ -68,6 +78,7 @@ const UserPostList = () => {
     page: page - 1,
     size: pageSize,
   });
+
   const { mutate: createPost, isPending: isPendingCreatePost } =
     useCreatePost();
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -108,44 +119,7 @@ const UserPostList = () => {
 
   return (
     <div className="min-h-screen bg-gray-50" ref={topRef}>
-      {/* Header */}
-      <div className="sticky top-0 z-10 py-4 bg-white shadow-sm">
-        <div className="container px-4 mx-auto">
-          <div className="flex items-center justify-between">
-            <Breadcrumb
-              className="mb-0"
-              items={[
-                {
-                  title: (
-                    <Link to="/">
-                      <HomeOutlined />
-                    </Link>
-                  ),
-                },
-                {
-                  title: <Link to="/forums">{t("forum.title")}</Link>,
-                },
-                {
-                  title: (
-                    <Link to={`/forums/${forumId}/topics`}>
-                      {forum?.data?.name || t("common.loading")}
-                    </Link>
-                  ),
-                },
-                {
-                  title: (
-                    <Link to={`/forums/${forumId}/topics/${topicId}/posts`}>
-                      {topic?.data?.title || t("common.loading")}
-                    </Link>
-                  ),
-                },
-              ]}
-            />
-          </div>
-        </div>
-      </div>
-
-      <div className="px-2 py-6 mx-auto">
+      <div className="px-2 py-6 mx-auto md:container">
         <div className="flex flex-col gap-6 md:flex-row">
           {/* Main content */}
           <div className="flex-grow">
@@ -157,13 +131,14 @@ const UserPostList = () => {
               {/* Topic header */}
 
               {topic?.data?.content !== undefined && (
-                <TopicHeader topic={topic?.data} />
+                <TopicHeader topic={topic?.data} refetchTopic={refetchTopic} />
               )}
               <Flex className="justify-end">
                 <Button
                   icon={<PlusOutlined />}
-                  className="my-3"
+                  className="my-3 text-white transition-all duration-300 bg-blue-500 shadow-md hover:bg-blue-600 hover:shadow-lg"
                   type="primary"
+                  size="large"
                   onClick={() => {
                     setIsModalVisible(!isModalVisible);
                   }}
@@ -177,24 +152,42 @@ const UserPostList = () => {
                 <PostItem key={post.postId} post={post} />
               ))}
               {posts?.data?.totalElements === 0 && (
-                <div className="flex justify-center mt-6">
-                  <Empty description="Không có bài viết" />
+                <div className="flex flex-col items-center justify-center p-10 mt-6 bg-white rounded-lg shadow-sm">
+                  <Empty
+                    description={
+                      <span className="text-lg text-gray-500">
+                        {t("post.noPost") || "Không có bài viết"}
+                      </span>
+                    }
+                    image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  />
+                  <Button
+                    type="primary"
+                    icon={<PlusOutlined />}
+                    className="mt-4 text-white transition-all duration-300 bg-blue-500 hover:bg-blue-600"
+                    onClick={() => setIsModalVisible(true)}
+                  >
+                    {t("post.create")}
+                  </Button>
                 </div>
               )}
 
               {/* Pagination */}
-              <div className="flex justify-center mt-6">
-                <Pagination
-                  current={page}
-                  total={posts?.data?.totalElements}
-                  pageSize={pageSize}
-                  onChange={(page) => {
-                    searchParams.set("page", page.toString());
-                    setSearchParams(searchParams);
-                  }}
-                  showSizeChanger={false}
-                />
-              </div>
+              {posts?.data?.totalElements > 0 && (
+                <div className="flex justify-center mt-6">
+                  <Pagination
+                    current={page}
+                    total={posts?.data?.totalElements}
+                    pageSize={pageSize}
+                    onChange={(page) => {
+                      searchParams.set("page", page.toString());
+                      setSearchParams(searchParams);
+                    }}
+                    showSizeChanger={false}
+                    className="px-4 py-2 bg-white rounded-lg shadow-sm"
+                  />
+                </div>
+              )}
             </Spin>
           </div>
         </div>
@@ -212,34 +205,65 @@ const UserPostList = () => {
       <Modal
         width={1000}
         centered
+        title={
+          <span className="text-xl font-semibold">{t("post.create")}</span>
+        }
         open={isModalVisible}
         onCancel={() => setIsModalVisible(false)}
         footer={
-          <Button
-            loading={isPendingCreatePost}
-            type="primary"
-            onClick={() => form.submit()}
-          >
-            {t("post.create")}
-          </Button>
+          user.userId ? (
+            <Button
+              loading={isPendingCreatePost}
+              type="primary"
+              onClick={() => form.submit()}
+              className="text-white bg-blue-500 hover:bg-blue-600"
+              size="large"
+            >
+              {t("post.create")}
+            </Button>
+          ) : null
         }
       >
-        <Form
-          className="m-4"
-          form={form}
-          layout="vertical"
-          onFinish={handleCreatePost}
-        >
-          <Form.Item name="content" label={t("post.content")}>
-            <CustomizeQuill placeholder={t("post.placeholder")} />
-          </Form.Item>
-        </Form>
+        {user.userId ? (
+          <Form
+            className="m-4"
+            form={form}
+            layout="vertical"
+            onFinish={handleCreatePost}
+          >
+            <Form.Item
+              name="content"
+              label={
+                <span className="text-base font-medium">
+                  {t("post.content")}
+                </span>
+              }
+              rules={[{ required: true, message: t("post.contentRequired") }]}
+            >
+              <CustomizeQuill
+                placeholder={t("post.placeholder")}
+                className="min-h-[200px]"
+              />
+            </Form.Item>
+          </Form>
+        ) : (
+          <div className="flex flex-col items-center justify-center gap-4">
+            <span className="text-lg font-medium text-gray-500">
+              {t("post.login")}
+            </span>
+            <Button type="primary" onClick={() => navigate("/login")}>
+              <LoginOutlined />
+              {t("common.login")}
+            </Button>
+          </div>
+        )}
       </Modal>
     </div>
   );
 };
 
 const PostItem = ({ post }) => {
+  const user = useSelector((state) => state.user);
   const { forumId, topicId } = useParams();
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -253,7 +277,7 @@ const PostItem = ({ post }) => {
   const {
     data: reactionsData,
     refetch: refetchReactions,
-    isPending: isPendingGetReactions,
+    isFetching: isFetchingGetReactions,
   } = useGetReactionByPostId(post.postId);
 
   const [sortedReactions, setSortedReactions] = useState([]);
@@ -315,11 +339,15 @@ const PostItem = ({ post }) => {
   // Handle direct button click (like/unlike toggle)
   const handleDirectButtonClick = (e) => {
     e.stopPropagation();
+    if (!user.userId) {
+      message.error(t("post.login"));
+      return;
+    }
     if (currentReaction) {
       // If already has a reaction, remove it
+      setCurrentReaction(null);
       deleteReaction(post.postId, {
         onSuccess: () => {
-          setCurrentReaction(null);
           refetchReactionCount();
           refetchReactions();
           refetchUserReaction();
@@ -327,11 +355,11 @@ const PostItem = ({ post }) => {
       });
     } else {
       // If no reaction, add default like
+      setCurrentReaction("👍");
       createReaction(
         { postId: post.postId, reactionType: "LIKE" },
         {
           onSuccess: () => {
-            setCurrentReaction("👍");
             refetchReactionCount();
             refetchReactions();
             refetchUserReaction();
@@ -344,12 +372,16 @@ const PostItem = ({ post }) => {
   // Handle choosing a specific reaction from the picker
   const handleReactionPick = (newEmoji, e) => {
     e.stopPropagation();
+    if (!user.userId) {
+      message.error(t("post.login"));
+      return;
+    }
     // If clicking the same reaction, remove it
     if (newEmoji === currentReaction) {
       // Remove reaction
+      setCurrentReaction(null);
       deleteReaction(post.postId, {
         onSuccess: () => {
-          setCurrentReaction(null);
           refetchReactionCount();
           refetchReactions();
           refetchUserReaction();
@@ -362,6 +394,7 @@ const PostItem = ({ post }) => {
       // If user already has a reaction, we need to replace it
       if (currentReaction) {
         // Delete existing reaction first
+        setCurrentReaction(newEmoji);
         deleteReaction(post.postId, {
           onSuccess: () => {
             // Then create the new reaction
@@ -369,7 +402,6 @@ const PostItem = ({ post }) => {
               { postId: post.postId, reactionType: newReactionType },
               {
                 onSuccess: () => {
-                  setCurrentReaction(newEmoji);
                   refetchReactionCount();
                   refetchReactions();
                   refetchUserReaction();
@@ -380,11 +412,11 @@ const PostItem = ({ post }) => {
         });
       } else {
         // Create new reaction directly
+        setCurrentReaction(newEmoji);
         createReaction(
           { postId: post.postId, reactionType: newReactionType },
           {
             onSuccess: () => {
-              setCurrentReaction(newEmoji);
               refetchReactionCount();
               refetchReactions();
               refetchUserReaction();
@@ -407,75 +439,102 @@ const PostItem = ({ post }) => {
       <Card
         key={post.postId}
         id={`post-${post.postId}`}
-        className="mb-4 transition-shadow duration-300 shadow-sm cursor-pointer hover:shadow-md"
+        className="mb-4 transition-all duration-300 border border-gray-200 shadow-sm cursor-pointer hover:shadow-md hover:border-blue-200"
         onClick={() => {
           navigate(`/forums/${forumId}/topics/${topicId}/posts/${post.postId}`);
         }}
       >
-        {/* Rest of the Card component structure */}
         <div className="flex flex-row">
-          {/* User info */}
-          <div className="mb-4 md:w-48 md:flex-shrink-0 md:pr-4 md:border-r md:mb-0">
+          {/* User info with improved styling */}
+          <div className="mb-4 md:w-48 md:flex-shrink-0 md:pr-4 md:border-r md:border-gray-200 md:mb-0">
             <div className="flex items-center md:flex-col md:items-center">
-              <Avatar size={64} src={post.avatar} />
-              <div className="ml-4 md:ml-0 md:mt-2 md:text-center">
+              <Avatar
+                size={64}
+                src={post.avatar}
+                className="border-2 border-gray-100 shadow-sm"
+              />
+              <div className="ml-4 md:ml-0 md:mt-3 md:text-center">
                 <Paragraph
-                  className="text-sm font-semibold max-w-48"
+                  className="mb-1 text-sm font-semibold text-gray-800 max-w-48"
                   ellipsis={{ rows: 2, tooltip: true }}
                 >
                   {post.userName}
                 </Paragraph>
-                <Tag color="blue" className="mx-auto mt-1 w-fit">
+                <Tag
+                  color="blue"
+                  className="mx-auto mt-1 text-xs font-medium w-fit"
+                >
                   {t(`role.${post.roleName}`)}
                 </Tag>
               </div>
             </div>
           </div>
-          {/* Post content */}
-          <div className="flex flex-col justify-between flex-1 md:pl-4">
-            <div
-              to={`/forums/${forumId}/topics/${topicId}/posts/${post.postId}`}
-            >
-              <HtmlContent htmlString={truncate(post.content, 300)} />
+
+          {/* Post content with enhanced spacing and readability */}
+          <div className="flex flex-col justify-between flex-1 md:pl-5">
+            <div className="mb-3">
+              <HtmlContent
+                htmlString={truncate(post.content, 300)}
+                className="text-base leading-relaxed text-gray-700"
+              />
+              {post.content.length > 300 && (
+                <span className="text-sm font-medium text-blue-500 cursor-pointer hover:underline">
+                  {t("common.seeMore")}...
+                </span>
+              )}
             </div>
 
             <div>
               <Divider className="my-2" />
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
-                  {/* Updated ReactionPicker with separate handlers */}
+                  {/* Enhanced ReactionPicker with better styling */}
                   <ReactionPicker
                     selected={currentReaction}
                     onEmojiClick={handleReactionPick}
                     onButtonClick={handleDirectButtonClick}
                   />
+
                   {sortedReactions.length > 0 && (
                     <div
-                      className="flex items-center gap-1 px-2 py-1 bg-gray-100 rounded-full cursor-pointer"
+                      className="flex items-center gap-1 px-2.5 py-1.5 bg-gray-100 hover:bg-gray-200 transition-colors rounded-full cursor-pointer"
                       onClick={handleOpenModal}
                     >
                       <div className="flex">
                         {sortedReactions.slice(0, 3).map((reaction, index) => (
                           <span
                             key={reaction.type}
-                            className={`z-${30 - index * 10} text-lg`}
+                            className={`z-${
+                              30 - index * 10
+                            } text-lg -ml-1 first:ml-0`}
                           >
                             {reaction.mapReaction}
                           </span>
                         ))}
                       </div>
                       <div>
-                        <span className="text-sm font-semibold">
+                        <span className="ml-1 text-sm font-semibold text-gray-700">
                           {reactionCount?.data?.totalCount > 0 &&
                             reactionCount?.data?.totalCount}
                         </span>
                       </div>
                     </div>
                   )}
+
+                  {/* Add comment count indicator */}
+                  <div className="flex items-center gap-1 text-gray-600 transition-colors cursor-pointer hover:text-blue-600">
+                    <CommentOutlined className="text-lg" />
+                    <span className="text-sm font-medium">
+                      {post.commentCount || 0}
+                    </span>
+                  </div>
                 </div>
-                <div>
-                  <ClockCircleOutlined className="mr-1" />
-                  {formatDateTime(post.createdAt)}
+
+                <div className="flex items-center text-gray-500">
+                  <ClockCircleOutlined className="mr-1.5" />
+                  <span className="text-sm">
+                    {formatDateTime(post.createdAt)}
+                  </span>
                 </div>
               </div>
             </div>
@@ -486,96 +545,101 @@ const PostItem = ({ post }) => {
         modal={modal}
         setModal={setModal}
         reactionsData={reactionsData}
-        isPendingGetReactions={isPendingGetReactions}
+        isFetchingGetReactions={isFetchingGetReactions}
         mapReaction={mapReaction}
       />
     </>
   );
 };
 
-const ReactionModal = ({
-  modal,
-  setModal,
-  reactionsData,
-  isPendingGetReactions,
-  mapReaction,
-}) => {
-  const items = useMemo(() => {
-    if (
-      !reactionsData?.data?.content ||
-      reactionsData.data.content.length === 0
-    ) {
-      return [];
+const TopicHeader = ({ topic, refetchTopic }) => {
+  const user = useSelector((state) => state.user);
+  const [isInfoDrawerVisible, setIsInfoDrawerVisible] = useState(false);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const { mutate: updateTopic, isPending: isPendingUpdateTopic } =
+    useUpdateTopicMutation();
+  const { mutate: createTag, isPending: isPendingCreateTag } = useCreateTag();
+  const { data: tags } = useAllTag();
+
+  const { mutate: deleteTopic } = useDeleteTopicMutation();
+  const { t } = useTranslation();
+  const [form] = Form.useForm();
+  const [formTag] = Form.useForm();
+  const navigate = useNavigate();
+  const { forumId } = useParams();
+
+  useEffect(() => {
+    if (isEditModalVisible && topic) {
+      form.setFieldsValue({
+        title: topic.title,
+        content: topic.content,
+        tags: topic.tags?.map((tag) => String(tag.id)),
+      });
     }
+  }, [isEditModalVisible, topic]);
 
-    // Tạo object để lưu reactions theo loại
-    const reactionsByType = {};
-
-    // Nhóm các reaction theo loại
-    reactionsData.data.content.forEach((reaction) => {
-      if (!reactionsByType[reaction.type]) {
-        reactionsByType[reaction.type] = [];
+  const handleUpdateTopic = (values) => {
+    updateTopic(
+      {
+        id: topic.topicId,
+        params: { ...values, forumId: parseInt(forumId), userId: user.userId },
+      },
+      {
+        onSuccess: () => {
+          setIsEditModalVisible(false);
+          message.success(t("topic.updateSuccess"));
+          refetchTopic();
+        },
+        onError: () => {
+          message.error(t("topic.updateError"));
+        },
       }
-      reactionsByType[reaction.type].push(reaction);
+    );
+  };
+
+  const handleDeleteTopic = () => {
+    Modal.confirm({
+      centered: true,
+      title: t("topic.delete.confirm_title"),
+      content: t("topic.delete.confirm_message", {
+        title: topic.title,
+      }),
+      okText: t("common.yes"),
+      cancelText: t("common.no"),
+      onOk: () => {
+        deleteTopic(topic.topicId, {
+          onSuccess: () => {
+            message.success(t("topic.delete.success"));
+            navigate(`/forums/${forumId}/topics`);
+          },
+          onError: () => {
+            message.error(t("topic.delete.error"));
+          },
+        });
+      },
     });
+  };
 
-    // Tạo items cho Tabs component
-    return Object.keys(reactionsByType).map((type) => ({
-      key: type,
-      label: (
-        <div className="px-4 text-xl">
-          {mapReaction[type]} {reactionsByType[type].length}
-        </div>
-      ),
-      children: (
-        <div className="p-2 overflow-y-auto max-h-60">
-          {reactionsByType[type].map((reaction) => (
-            <div
-              key={reaction.reactionId}
-              className="flex items-center gap-2 p-2 rounded-md hover:bg-gray-50"
-            >
-              <Avatar icon={<UserOutlined />} src={reaction.avatar} />
-              <div>
-                <div className="font-medium">{reaction.userName}</div>
-                <div className="text-xs text-gray-500">
-                  {reaction.createdAt}
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      ),
-    }));
-  }, [reactionsData, mapReaction]);
-
-  const handleClose = () => {
-    setModal(false);
+  const handleAddTag = (values) => {
+    createTag(
+      {
+        name: values.name,
+        description: "",
+      },
+      {
+        onSuccess: () => {
+          formTag.resetFields();
+        },
+        onError: () => {
+          message.error(t("tag.createError"));
+        },
+      }
+    );
   };
 
   return (
-    <Modal footer={null} open={modal} onCancel={handleClose} centered>
-      <div className="pt-2">
-        {isPendingGetReactions ? (
-          <div className="flex justify-center p-6">
-            <Spin />
-          </div>
-        ) : items.length > 0 ? (
-          <Tabs defaultActiveKey={items[0]?.key} items={items} />
-        ) : (
-          <Empty description="Không có dữ liệu reaction" />
-        )}
-      </div>
-    </Modal>
-  );
-};
-
-const TopicHeader = ({ topic }) => {
-  const [isInfoDrawerVisible, setIsInfoDrawerVisible] = useState(false);
-  const { t } = useTranslation();
-
-  return (
     <>
-      <Card className="shadow-sm">
+      <Card className="border border-gray-200 shadow-sm">
         <div>
           <Flex justify="space-between">
             <Flex align="center" gap={16}>
@@ -586,18 +650,35 @@ const TopicHeader = ({ topic }) => {
                 {topic?.title}
               </Title>
             </Flex>
-            <Button
-              type="text"
-              className="text-text-color-hover hover:!text-text-color hover:!bg-transparent"
-              icon={<InfoCircleOutlined />}
-              onClick={() => setIsInfoDrawerVisible(true)}
-            >
-              {t("post.inforTopic")}
-            </Button>
+            <Space>
+              {user.userId === topic.userId && (
+                <div>
+                  <Button
+                    icon={<EditOutlined />}
+                    type="text"
+                    onClick={() => setIsEditModalVisible(true)}
+                  ></Button>
+                  <Button
+                    danger
+                    type="text"
+                    onClick={handleDeleteTopic}
+                    icon={<DeleteOutlined />}
+                  ></Button>
+                </div>
+              )}
+              <Button
+                type="default"
+                className="flex items-center transition-colors hover:text-blue-600 hover:border-blue-600"
+                icon={<InfoCircleOutlined />}
+                onClick={() => setIsInfoDrawerVisible(true)}
+              >
+                {t("post.inforTopic")}
+              </Button>{" "}
+            </Space>
           </Flex>
           <div className="flex justify-end w-full gap-1 mb-2">
             {topic?.tags?.map((tag) => (
-              <Tag key={tag.id} color="blue">
+              <Tag key={tag.id} color="blue" className="px-3 py-1 text-xs">
                 {tag.name}
               </Tag>
             ))}
@@ -605,7 +686,11 @@ const TopicHeader = ({ topic }) => {
           <div className="text-sm text-gray-500">
             <Flex justify="space-between">
               <Flex align="center" gap={16}>
-                <Avatar src={topic?.avatar} size="default" />
+                <Avatar
+                  src={topic?.avatar}
+                  size="default"
+                  className="border border-gray-200"
+                />
                 <Text className="leading-none !text-text-color">
                   {topic?.userName}
                 </Text>
@@ -632,64 +717,186 @@ const TopicHeader = ({ topic }) => {
       </Card>
       {/* Topic info drawer */}
       <Drawer
-        title={t("post.inforTopic")}
+        title={
+          <span className="text-xl font-semibold">{t("post.inforTopic")}</span>
+        }
         placement="right"
         onClose={() => setIsInfoDrawerVisible(false)}
         open={isInfoDrawerVisible}
         width={500}
+        styles={{
+          header: {
+            borderBottom: "1px solid #f0f0f0",
+            padding: "16px 24px",
+          },
+          body: {
+            padding: "24px",
+          },
+        }}
       >
-        <div className="space-y-4">
-          <div>
-            <Flex align="center" gap={16}>
-              <Title level={4} className="!text-text-color">
+        <div className="space-y-6">
+          <div className="p-4 rounded-lg bg-gray-50">
+            <Flex align="center" gap={16} className="mb-2">
+              <Title level={4} className="!text-text-color !mb-0">
                 {t("post.topic")}
               </Title>
               {topic?.pinned && (
-                <PushpinOutlined className="mb-[10px] text-red-500 text-xl" />
+                <PushpinOutlined className="text-xl text-red-500" />
               )}
             </Flex>
-            <Paragraph>{topic?.title}</Paragraph>
+            <Paragraph className="mb-0 text-lg font-medium">
+              {topic?.title}
+            </Paragraph>
           </div>
           <div>
             <Title level={4} className="!text-text-color">
               {t("post.description")}
             </Title>
-            <HtmlContent htmlString={topic?.content} />
+            <div className="p-4 bg-white border border-gray-100 rounded-lg shadow-sm">
+              <HtmlContent
+                htmlString={topic?.content}
+                className="text-base text-gray-700"
+              />
+            </div>
           </div>
           <div>
             <Title level={4} className="!text-text-color">
               {t("post.tags")}
             </Title>
-            <div className="flex flex-wrap gap-1">
+            <div className="flex flex-wrap gap-2">
               {topic?.tags?.map((tag) => (
-                <Tag key={tag.id} color="blue" className="w-fit">
+                <Tag key={tag.id} color="blue" className="px-3 py-1 text-sm">
                   {tag.name}
                 </Tag>
               ))}
             </div>
           </div>
-          <Divider />
-          <div>
+          <Divider className="my-6" />
+          <div className="p-4 rounded-lg bg-gray-50">
             <Title level={4} className="!text-text-color">
               {t("post.statistic")}
             </Title>
-            <div className="space-y-2">
-              <div className="flex justify-between">
-                <Text className="capitalize">{t("post.post")}:</Text>
-                <Text strong>{topic?.postCount || 0}</Text>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-2 bg-white border-l-4 border-blue-500 rounded">
+                <Text className="text-base capitalize">{t("post.post")}:</Text>
+                <Text strong className="text-base">
+                  {topic?.postCount || 0}
+                </Text>
               </div>
-              <div className="flex justify-between">
-                <Text className="capitalize">{t("post.createdAt")}:</Text>
-                <Text strong>{topic?.createdAt}</Text>
+              <div className="flex items-center justify-between p-2 bg-white border-l-4 border-green-500 rounded">
+                <Text className="text-base capitalize">
+                  {t("post.createdAt")}:
+                </Text>
+                <Text strong className="text-base">
+                  {topic?.createdAt}
+                </Text>
               </div>
-              <div className="flex justify-between">
-                <Text className="capitalize">{t("post.updatedAt")}:</Text>
-                <Text strong>{topic?.updatedAt}</Text>
+              <div className="flex items-center justify-between p-2 bg-white border-l-4 border-purple-500 rounded">
+                <Text className="text-base capitalize">
+                  {t("post.updatedAt")}:
+                </Text>
+                <Text strong className="text-base">
+                  {topic?.updatedAt}
+                </Text>
               </div>
             </div>
           </div>
         </div>
       </Drawer>
+
+      {/* Edit Modal */}
+      <Modal
+        width={1000}
+        centered
+        title={<span className="text-xl font-semibold">{t("topic.edit")}</span>}
+        open={isEditModalVisible}
+        onCancel={() => setIsEditModalVisible(false)}
+        footer={
+          <Button
+            loading={isPendingUpdateTopic}
+            type="primary"
+            onClick={() => form.submit()}
+            className="text-white bg-blue-500 hover:bg-blue-600"
+          >
+            {t("topic.update")}
+          </Button>
+        }
+      >
+        <Form
+          className="m-4"
+          form={form}
+          layout="vertical"
+          onFinish={handleUpdateTopic}
+        >
+          <Form.Item
+            name="title"
+            label={
+              <span className="text-base font-medium">
+                {t("topic.create.title")}
+              </span>
+            }
+            rules={[
+              { required: true, message: t("topic.create.title_required") },
+            ]}
+          >
+            <Input placeholder={t("topic.create.title_placeholder")} />
+          </Form.Item>
+          <Form.Item name="tags" label={t("topic.create.tags")}>
+            <Select
+              mode="tags"
+              style={{ width: "100%" }}
+              dropdownRender={(menu) => (
+                <>
+                  {menu}
+                  <Divider style={{ margin: "8px 0" }} />
+                  <Form
+                    size="middle"
+                    form={formTag}
+                    onFinish={handleAddTag}
+                    className="flex gap-2"
+                  >
+                    <Form.Item name="name" className="flex-1">
+                      <Input
+                        className="w-full"
+                        placeholder={t("topic.create.tags_placeholder")}
+                        onKeyDown={(e) => e.stopPropagation()}
+                      />
+                    </Form.Item>
+                    <Form.Item>
+                      <Button
+                        loading={isPendingCreateTag}
+                        type="text"
+                        icon={<PlusOutlined />}
+                        htmlType="submit"
+                      >
+                        {t("tag.create")}
+                      </Button>
+                    </Form.Item>
+                  </Form>
+                </>
+              )}
+              placeholder={t("topic.create.tags_placeholder")}
+              options={tags?.data?.content?.map((tag) => ({
+                value: String(tag.tagId),
+                label: tag.name,
+              }))}
+            />
+          </Form.Item>
+          <Form.Item
+            name="content"
+            label={
+              <span className="text-base font-medium">
+                {t("topic.create.content")}
+              </span>
+            }
+            rules={[
+              { required: true, message: t("topic.create.content_required") },
+            ]}
+          >
+            <CustomizeQuill />
+          </Form.Item>
+        </Form>
+      </Modal>
     </>
   );
 };

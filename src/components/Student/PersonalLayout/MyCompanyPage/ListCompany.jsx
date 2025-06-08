@@ -17,10 +17,12 @@ import {
 import { FaIndustry } from "react-icons/fa";
 import { IoIosPeople } from "react-icons/io";
 import { IoBriefcaseSharp } from "react-icons/io5";
+import { useTranslation } from "react-i18next";
 
 import "./ListCompany.scss";
 const { Title, Text } = Typography;
 const ListCompany = () => {
+  const { t } = useTranslation();
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
@@ -70,7 +72,7 @@ const ListCompany = () => {
         locale={{
           emptyText: (
             <Empty
-              description="Bạn chưa theo dõi bất kỳ công ty nào"
+              description={t("student.myCompany.emptyFollowList")}
               image={Empty.PRESENTED_IMAGE_SIMPLE}
             />
           ),
@@ -115,18 +117,20 @@ const ListCompany = () => {
                   </Text>
                   <Flex align="center" className="mt-2">
                     <Text className="flex items-center gap-3" type="secondary">
-                      <IoIosPeople /> {item.countFollower} lượt theo dõi
+                      <IoIosPeople /> {item.countFollower}{" "}
+                      {t("student.myCompany.followers")}
                     </Text>
                     <Divider type="vertical" />
                     <Text className="flex items-center gap-3" type="secondary">
-                      <IoBriefcaseSharp /> {item.countJob} công việc
+                      <IoBriefcaseSharp /> {item.countJob}{" "}
+                      {t("student.myCompany.jobs")}
                     </Text>
                   </Flex>
                 </Flex>
               }
             />
             <Button onClick={() => handleUnfollow(item.id)} type="primary">
-              Hủy theo dõi
+              {t("student.myCompany.unfollow")}
             </Button>
           </List.Item>
         )}

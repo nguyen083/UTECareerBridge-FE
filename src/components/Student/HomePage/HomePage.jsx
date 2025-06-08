@@ -174,7 +174,7 @@ const HomePage = () => {
         </div>
 
         <Divider className="my-6">
-          <Tooltip title={t("newest_jobs_tooltip")}>
+          <Tooltip destroyTooltipOnHide={true} title={t("newest_jobs_tooltip")}>
             <Typography.Text className="text-lg font-medium text-blue-800">
               {t("explore_opportunities")}
             </Typography.Text>

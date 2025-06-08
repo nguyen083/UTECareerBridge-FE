@@ -6,20 +6,18 @@ import {
   Avatar,
   Tag,
   message,
-  Breadcrumb,
   Tooltip,
   Skeleton,
   Input,
   FloatButton,
   Modal,
   Empty,
-  Spin,
   Tabs,
   Flex,
   Form,
+  Divider,
 } from "antd";
 import {
-  HomeOutlined,
   ShareAltOutlined,
   ClockCircleOutlined,
   CommentOutlined,
@@ -29,11 +27,10 @@ import {
   EditOutlined,
   DeleteOutlined,
 } from "@ant-design/icons";
-import { useNavigate, useParams, Link } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import ReactionPicker from "../../components/Generate/ReactionPicker";
 import HtmlContent from "./../../components/Generate/HtmlContent";
-import { useForumDetail } from "../../composables/forum";
-import { useTopicDetail } from "../../composables/topic";
+
 import {
   useDeletePost,
   usePostDetail,
@@ -62,8 +59,6 @@ const { TextArea } = Input;
 
 const PostDetail = () => {
   const { forumId, topicId, postId } = useParams();
-  const { data: forum } = useForumDetail(forumId);
-  const { data: topic } = useTopicDetail(topicId);
   const { data: post } = usePostDetail(postId);
   const [page, setPage] = useState(1);
   const { data: commentsData, isFetching: isFetchingComments } =
@@ -96,7 +91,7 @@ const PostDetail = () => {
   const {
     data: reactionsData,
     refetch: refetchReactions,
-    isPending: isPendingGetReactions,
+    isFetching: isFetchingGetReactions,
   } = useGetReactionByPostId(postId);
   const user = useSelector((state) => state.user);
   const [isUpdatePostModalVisible, setIsUpdatePostModalVisible] =
@@ -171,11 +166,15 @@ const PostDetail = () => {
   // Handle direct button click (like/unlike toggle)
   const handleDirectButtonClick = (e) => {
     e.stopPropagation();
+    if (!user.userId) {
+      message.error(t("post.login"));
+      return;
+    }
     if (currentReaction) {
       // If already has a reaction, remove it
+      setCurrentReaction(null);
       deleteReaction(postId, {
         onSuccess: () => {
-          setCurrentReaction(null);
           refetchReactionCount();
           refetchReactions();
           refetchUserReaction();
@@ -183,11 +182,11 @@ const PostDetail = () => {
       });
     } else {
       // If no reaction, add default like
+      setCurrentReaction("👍");
       createReaction(
         { postId: postId, reactionType: "LIKE" },
         {
           onSuccess: () => {
-            setCurrentReaction("👍");
             refetchReactionCount();
             refetchReactions();
             refetchUserReaction();
@@ -200,12 +199,16 @@ const PostDetail = () => {
   // Handle choosing a specific reaction from the picker
   const handleReactionPick = (newEmoji, e) => {
     e.stopPropagation();
+    if (!user.userId) {
+      message.error(t("post.login"));
+      return;
+    }
     // If clicking the same reaction, remove it
     if (newEmoji === currentReaction) {
       // Remove reaction
+      setCurrentReaction(null);
       deleteReaction(postId, {
         onSuccess: () => {
-          setCurrentReaction(null);
           refetchReactionCount();
           refetchReactions();
           refetchUserReaction();
@@ -218,6 +221,7 @@ const PostDetail = () => {
       // If user already has a reaction, we need to replace it
       if (currentReaction) {
         // Delete existing reaction first
+        setCurrentReaction(newEmoji);
         deleteReaction(postId, {
           onSuccess: () => {
             // Then create the new reaction
@@ -225,7 +229,6 @@ const PostDetail = () => {
               { postId: postId, reactionType: newReactionType },
               {
                 onSuccess: () => {
-                  setCurrentReaction(newEmoji);
                   refetchReactionCount();
                   refetchReactions();
                   refetchUserReaction();
@@ -236,11 +239,11 @@ const PostDetail = () => {
         });
       } else {
         // Create new reaction directly
+        setCurrentReaction(newEmoji);
         createReaction(
           { postId: postId, reactionType: newReactionType },
           {
             onSuccess: () => {
-              setCurrentReaction(newEmoji);
               refetchReactionCount();
               refetchReactions();
               refetchUserReaction();
@@ -279,8 +282,9 @@ const PostDetail = () => {
   }, []);
 
   const handleCommentSubmit = () => {
-    if (!commentText.trim()) {
-      message.error("Vui lòng nhập nội dung bình luận!");
+    if (!user.userId) {
+      message.error(t("post.login"));
+      setCommentText("");
       return;
     }
     createComment(
@@ -309,8 +313,7 @@ const PostDetail = () => {
           setCommentText("");
         },
         onError: () => {
-          message.error(t("comment.login"));
-          navigate("/login");
+          message.error(t("comment.createError"));
         },
       }
     );
@@ -352,8 +355,15 @@ const PostDetail = () => {
       {
         onSuccess: () => {
           setIsUpdatePostModalVisible(false);
-          queryClient.refetchQueries({
-            queryKey: ["post", postId],
+          message.success(t("post.updateSuccess"));
+          queryClient.setQueryData(["post", postId], (oldData) => {
+            return {
+              ...oldData,
+              data: {
+                ...oldData.data,
+                content: values.content,
+              },
+            };
           });
         },
         onError: () => {
@@ -370,7 +380,10 @@ const PostDetail = () => {
       centered: true,
       onOk: () => {
         deletePost(postId, {
-          onSuccess: () => {},
+          onSuccess: () => {
+            message.success(t("post.deleteSuccess"));
+            navigate(`/forums/${forumId}/topics/${topicId}/posts`);
+          },
         });
       },
     });
@@ -383,46 +396,6 @@ const PostDetail = () => {
   }, [commentsData]);
   return (
     <div className=" bg-gray-50" ref={topRef}>
-      {/* Header */}
-      <div className="sticky top-0 z-10 py-4 bg-white shadow-sm">
-        <div className="container px-4 mx-auto">
-          <div className="flex items-center justify-between">
-            <Breadcrumb
-              className="mb-0"
-              items={[
-                {
-                  title: (
-                    <Link to="/">
-                      <HomeOutlined />
-                    </Link>
-                  ),
-                },
-                {
-                  title: <Link to="/forums">{t("forum.title")}</Link>,
-                },
-                {
-                  title: (
-                    <Link to={`/forums/${forumId}/topics`}>
-                      {forum?.data?.name || t("common.loading")}
-                    </Link>
-                  ),
-                },
-                {
-                  title: (
-                    <Link to={`/forums/${forumId}/topics/${topicId}/posts`}>
-                      {topic?.data?.title || t("common.loading")}
-                    </Link>
-                  ),
-                },
-                {
-                  title: t("post.post"),
-                },
-              ]}
-            />
-          </div>
-        </div>
-      </div>
-
       <div className="px-2 pt-6 mx-auto ">
         <div className="flex flex-col gap-6 md:flex-row">
           {/* Main content */}
@@ -461,6 +434,7 @@ const PostDetail = () => {
                           {(post.data?.updatedAt !== post.data?.createdAt ||
                             post.updatedAt !== post.createdAt) && (
                             <Tooltip
+                              destroyTooltipOnHide={true}
                               title={`${t("post.lastUpdate")}: ${formatDateTime(
                                 post.data?.updatedAt
                               )}`}
@@ -645,7 +619,7 @@ const PostDetail = () => {
               modal={reactionModal}
               setModal={setReactionModal}
               reactionsData={reactionsData}
-              isPendingGetReactions={isPendingGetReactions}
+              isFetchingGetReactions={isFetchingGetReactions}
               mapReaction={mapReaction}
             />
           </div>
@@ -665,11 +639,11 @@ const PostDetail = () => {
 };
 
 // Reaction Modal Component
-const ReactionModal = ({
+export const ReactionModal = ({
   modal,
   setModal,
   reactionsData,
-  isPendingGetReactions,
+  isFetchingGetReactions,
   mapReaction,
 }) => {
   const items = useMemo(() => {
@@ -725,16 +699,23 @@ const ReactionModal = ({
   };
 
   return (
-    <Modal footer={null} open={modal} onCancel={handleClose} centered>
-      <div className="pt-2">
-        {isPendingGetReactions ? (
-          <div className="flex justify-center p-6">
-            <Spin />
+    <Modal
+      title={t("post.detailReactions")}
+      footer={null}
+      open={modal}
+      onCancel={handleClose}
+      centered
+    >
+      <div>
+        {isFetchingGetReactions ? (
+          <div>
+            <Divider />
+            <Skeleton active paragraph={{ rows: 2 }} />
           </div>
         ) : items.length > 0 ? (
-          <Tabs defaultActiveKey={items[0]?.key} items={items} />
+          <Tabs size="small" defaultActiveKey={items[0]?.key} items={items} />
         ) : (
-          <Empty description="Không có dữ liệu reaction" />
+          <Empty description={t("post.noReactions")} />
         )}
       </div>
     </Modal>

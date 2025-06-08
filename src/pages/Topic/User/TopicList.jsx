@@ -9,7 +9,6 @@ import {
   Avatar,
   Form,
   Select,
-  Breadcrumb,
   Empty,
   Tooltip,
   Divider,
@@ -28,14 +27,13 @@ import {
   PushpinOutlined,
   LockOutlined,
   UserOutlined,
-  HomeOutlined,
   ClockCircleOutlined,
   RiseOutlined,
-  MenuOutlined,
   AppstoreOutlined,
   UnorderedListOutlined,
   CalendarOutlined,
   FilterOutlined,
+  LoginOutlined,
 } from "@ant-design/icons";
 import {
   Link,
@@ -56,9 +54,12 @@ import { useAllTag, useCreateTag } from "../../../composables/tag";
 import HtmlContent from "../../../components/Generate/HtmlContent";
 import truncate from "html-truncate";
 const { Title, Paragraph, Text } = Typography;
+import { useSelector } from "react-redux";
 
 const { Search } = Input;
 const TopicList = () => {
+  const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const { forumId } = useParams();
   const { data: forum, isLoading: isLoadingForum } = useForumDetail(forumId);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -115,13 +116,17 @@ const TopicList = () => {
 
   const sortOptions = [
     {
-      label: "Mới nhất",
+      label: t("topic.filter_sort.options.newest"),
       value: "createdAtDesc",
       icon: <ClockCircleOutlined />,
     },
-    { label: "Cũ nhất", value: "createdAtAsc", icon: <CalendarOutlined /> },
     {
-      label: "Cập nhật gần đây",
+      label: t("topic.filter_sort.options.oldest"),
+      value: "createdAtAsc",
+      icon: <CalendarOutlined />,
+    },
+    {
+      label: t("topic.filter_sort.options.recently_updated"),
       value: "updatedAtDesc",
       icon: <RiseOutlined />,
     },
@@ -158,6 +163,7 @@ const TopicList = () => {
         onSuccess: () => {
           form.resetFields();
           setIsModalVisible(false);
+          refetchTopics();
         },
         onError: () => {
           message.error(t("topic.createError"));
@@ -188,39 +194,6 @@ const TopicList = () => {
   }, [topics]);
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="sticky top-0 z-10 py-4 bg-white shadow-sm">
-        <div className="container mx-auto">
-          <div className="flex items-center justify-between">
-            <Breadcrumb
-              className="mb-0"
-              items={[
-                {
-                  title: (
-                    <Link to="/">
-                      <HomeOutlined />
-                    </Link>
-                  ),
-                },
-                {
-                  title: (
-                    <Link to="/forums">
-                      {t("forum.title") || t("forum.title")}
-                    </Link>
-                  ),
-                },
-                {
-                  title: forum?.data?.name || t("common.loading"),
-                },
-              ]}
-            />
-            <div className="flex items-center gap-2 md:hidden">
-              <Button icon={<MenuOutlined />} />
-            </div>
-          </div>
-        </div>
-      </div>
-
       <div className="px-2 py-6 mx-auto ">
         <div className="flex flex-col gap-6">
           {/* Main content */}
@@ -314,6 +287,7 @@ const TopicList = () => {
               </div>
 
               {/* Create topic drawer */}
+
               <div
                 className={`transition-all duration-500 ease-in-out  origin-top ${
                   isModalVisible
@@ -321,99 +295,115 @@ const TopicList = () => {
                     : "max-h-0 scale-y-0 opacity-0 !mb-0"
                 } `}
               >
-                <Card
-                  className="mb-3 transition-shadow duration-300"
-                  bodyStyle={{ padding: "16px" }}
-                >
-                  <Form
-                    size="large"
-                    form={form}
-                    layout="vertical"
-                    onFinish={handleCreateTopic}
-                    initialValues={{
-                      tags: [],
-                    }}
+                {user.userId ? (
+                  <Card
+                    className="mb-3 transition-shadow duration-300"
+                    bodyStyle={{ padding: "16px" }}
                   >
-                    <Form.Item
-                      name="title"
-                      label="Tiêu đề"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Vui lòng nhập tiêu đề chủ đề!",
-                        },
-                      ]}
+                    <Form
+                      size="large"
+                      form={form}
+                      layout="vertical"
+                      onFinish={handleCreateTopic}
+                      initialValues={{
+                        tags: [],
+                      }}
                     >
-                      <Input placeholder="Nhập tiêu đề chủ đề" />
-                    </Form.Item>
-                    <Form.Item name="tags" label="Thẻ">
-                      <Select
-                        mode="tags"
-                        style={{ width: "100%" }}
-                        dropdownRender={(menu) => (
-                          <>
-                            {menu}
-                            <Divider style={{ margin: "8px 0" }} />
-                            <Form
-                              size="middle"
-                              form={formTag}
-                              onFinish={handleAddTag}
-                              className="flex gap-2"
-                            >
-                              <Form.Item name="name" className="flex-1">
-                                <Input
-                                  className="w-full"
-                                  placeholder="Nhập tên thẻ"
-                                  onKeyDown={(e) => e.stopPropagation()}
-                                />
-                              </Form.Item>
-                              <Form.Item>
-                                <Button
-                                  loading={isPendingCreateTag}
-                                  type="text"
-                                  icon={<PlusOutlined />}
-                                  htmlType="submit"
-                                >
-                                  {t("tag.create")}
-                                </Button>
-                              </Form.Item>
-                            </Form>
-                          </>
-                        )}
-                        placeholder="Chọn thẻ"
-                        options={tags?.data?.content?.map((tag) => ({
-                          value: String(tag.tagId),
-                          label: tag.name,
-                        }))}
-                      />
-                    </Form.Item>
-                    <Form.Item
-                      name="content"
-                      label="Nội dung"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Vui lòng nhập nội dung chủ đề!",
-                        },
-                      ]}
-                    >
-                      <CustomizeQuill />
-                    </Form.Item>
-
-                    <Form.Item className="mb-0 text-right">
-                      <Button onClick={handleCancel} className="mr-2">
-                        Hủy
-                      </Button>
-                      <Button
-                        type="primary"
-                        htmlType="submit"
-                        loading={isPendingCreateTopic}
+                      <Form.Item
+                        name="title"
+                        label={t("topic.create.title")}
+                        rules={[
+                          {
+                            required: true,
+                            message: t("topic.create.title_required"),
+                          },
+                        ]}
                       >
-                        Tạo chủ đề
-                      </Button>
-                    </Form.Item>
-                  </Form>
-                </Card>
+                        <Input
+                          placeholder={t("topic.create.title_placeholder")}
+                        />
+                      </Form.Item>
+                      <Form.Item name="tags" label={t("topic.create.tags")}>
+                        <Select
+                          mode="tags"
+                          style={{ width: "100%" }}
+                          dropdownRender={(menu) => (
+                            <>
+                              {menu}
+                              <Divider style={{ margin: "8px 0" }} />
+                              <Form
+                                size="middle"
+                                form={formTag}
+                                onFinish={handleAddTag}
+                                className="flex gap-2"
+                              >
+                                <Form.Item name="name" className="flex-1">
+                                  <Input
+                                    className="w-full"
+                                    placeholder={t(
+                                      "topic.create.tags_placeholder"
+                                    )}
+                                    onKeyDown={(e) => e.stopPropagation()}
+                                  />
+                                </Form.Item>
+                                <Form.Item>
+                                  <Button
+                                    loading={isPendingCreateTag}
+                                    type="text"
+                                    icon={<PlusOutlined />}
+                                    htmlType="submit"
+                                  >
+                                    {t("tag.create")}
+                                  </Button>
+                                </Form.Item>
+                              </Form>
+                            </>
+                          )}
+                          placeholder={t("topic.create.tags_placeholder")}
+                          options={tags?.data?.content?.map((tag) => ({
+                            value: String(tag.tagId),
+                            label: tag.name,
+                          }))}
+                        />
+                      </Form.Item>
+                      <Form.Item
+                        name="content"
+                        label={t("topic.create.content")}
+                        rules={[
+                          {
+                            required: true,
+                            message: t("topic.create.content_required"),
+                          },
+                        ]}
+                      >
+                        <CustomizeQuill />
+                      </Form.Item>
+
+                      <Form.Item className="mb-0 text-right">
+                        <Button onClick={handleCancel} className="mr-2">
+                          {t("topic.create.cancel")}
+                        </Button>
+                        <Button
+                          type="primary"
+                          htmlType="submit"
+                          loading={isPendingCreateTopic}
+                        >
+                          {t("topic.create.submit")}
+                        </Button>
+                      </Form.Item>
+                    </Form>
+                  </Card>
+                ) : (
+                  <div className="flex flex-col items-center justify-center gap-4">
+                    <span className="text-lg font-medium text-gray-500">
+                      {t("post.login")}
+                    </span>
+                    <Button type="primary" onClick={() => navigate("/login")}>
+                      <LoginOutlined />
+                      {t("common.login")}
+                    </Button>
+                  </div>
+                )}
               </div>
 
               {/* Topics list */}
@@ -437,8 +427,8 @@ const TopicList = () => {
                 <Empty
                   description={
                     <span>
-                      Không tìm thấy chủ đề nào
-                      {searchText && ` phù hợp với từ khóa "${searchText}"`}
+                      {t("topic.noTopic")}
+                      {searchText && ` ${t("topic.noTopic")} "${searchText}"`}
                     </span>
                   }
                 />
@@ -463,7 +453,7 @@ const TopicList = () => {
       <Drawer
         title={
           <Title className="!mb-0 leading-0 !text-text-color" level={5}>
-            Bộ lọc & Sắp xếp
+            {t("topic.filter_sort.title")}
           </Title>
         }
         placement="right"
@@ -472,23 +462,22 @@ const TopicList = () => {
         width={400}
         footer={
           <Flex gap={16}>
-            {" "}
             <Button className="w-full" onClick={handleResetFilter}>
-              Đặt lại
+              {t("topic.filter_sort.reset")}
             </Button>
             <Button
               className="w-full"
               type="primary"
               onClick={handleApplyFilter}
             >
-              Áp dụng
+              {t("topic.filter_sort.apply")}
             </Button>
           </Flex>
         }
       >
         <div className="space-y-6">
           <div>
-            <Title level={5}>Sắp xếp theo</Title>
+            <Title level={5}>{t("topic.filter_sort.sort_by")}</Title>
             <Radio.Group
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
@@ -511,11 +500,11 @@ const TopicList = () => {
           </div>
           <Divider />
           <div>
-            <Title level={5}>Thẻ phổ biến</Title>
+            <Title level={5}>{t("topic.filter_sort.popular_tags")}</Title>
             <Select
               mode="multiple"
               style={{ width: "100%" }}
-              placeholder="Chọn thẻ để lọc"
+              placeholder={t("topic.filter_sort.select_tags")}
               maxTagCount="responsive"
               allowClear
               value={selectedTags}
@@ -560,7 +549,7 @@ const TopicCard = ({ topic }) => {
             <Col span={18}>
               <div className="flex items-center gap-2 mb-1">
                 {topic?.pinned && (
-                  <Tooltip title="Chủ đề ghim">
+                  <Tooltip title={t("topic.tooltips.pinned")}>
                     <PushpinOutlined className="text-red-500" />
                   </Tooltip>
                 )}
@@ -594,7 +583,7 @@ const TopicCard = ({ topic }) => {
               </span>
             </div>
             <div className="flex items-center gap-4">
-              <Tooltip title="Số bài viết">
+              <Tooltip title={t("topic.tooltips.post_count")}>
                 <span className="flex items-center gap-2">
                   <Newspaper className="w-4 h-4" /> {topic?.postCount || 0}
                 </span>
@@ -608,6 +597,7 @@ const TopicCard = ({ topic }) => {
 };
 
 const TopicListItem = ({ topic }) => {
+  const { t } = useTranslation();
   const { forumId } = useParams();
   return (
     <div
@@ -621,12 +611,12 @@ const TopicListItem = ({ topic }) => {
         <div className="flex-grow">
           <div className="flex items-center gap-2 mb-1">
             {topic?.pinned && (
-              <Tooltip title="Chủ đề ghim">
+              <Tooltip title={t("topic.tooltips.pinned")}>
                 <PushpinOutlined className="text-red-500" />
               </Tooltip>
             )}
             {topic?.close && (
-              <Tooltip title="Chủ đề đã khóa">
+              <Tooltip title={t("topic.tooltips.locked")}>
                 <LockOutlined className="text-gray-500" />
               </Tooltip>
             )}
@@ -664,7 +654,7 @@ const TopicListItem = ({ topic }) => {
               </span>
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
-              <Tooltip title="Số bài viết">
+              <Tooltip title={t("topic.tooltips.post_count")}>
                 <span className="flex items-center gap-2">
                   <Newspaper className="w-4 h-4" /> {topic?.postCount || 0}
                 </span>

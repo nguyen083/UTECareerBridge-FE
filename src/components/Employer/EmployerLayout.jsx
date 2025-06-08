@@ -7,7 +7,7 @@ import { BsTicketPerforated } from "react-icons/bs";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { MdManageAccounts, MdOutlineMessage } from "react-icons/md";
 import { TiBusinessCard } from "react-icons/ti";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setInfor } from "../../redux/action/employerSlice.jsx";
 import { useRedux } from "../../utils/useRedux.jsx";
@@ -25,7 +25,6 @@ import {
   MenuOutlined,
   ShoppingCartOutlined,
   BellOutlined,
-  SearchOutlined,
 } from "@ant-design/icons";
 import {
   Layout,
@@ -36,7 +35,6 @@ import {
   Button,
   Tooltip,
   message,
-  Input,
   Dropdown,
   Space,
   Typography,
@@ -71,13 +69,13 @@ const EmployerLayout = () => {
   const location = useLocation();
   const [defaultImage, setDefaultImage] = useState(null);
 
+  const role = useSelector((state) => state.user.role);
   const avatar = useSelector((state) => state.employer.companyLogo);
   const employerInfo = useSelector((state) => state.employer);
   const companyName = useSelector((state) => state.employer.companyName);
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   const [collapsed, setCollapsed] = useState(false);
-  const [searchVisible, setSearchVisible] = useState(false);
 
   const itemSider = [
     {
@@ -163,6 +161,12 @@ const EmployerLayout = () => {
       className: "sidebar-item",
     },
     {
+      key: "/employer/interview/evaluations",
+      icon: <SolutionOutlined />,
+      label: t("admin.employer.sidebar.evaluation") || "Job Evaluation",
+      className: "sidebar-item",
+    },
+    {
       key: "/employer/list-order",
       icon: <AiOutlinePayCircle />,
       label: t("admin.employer.sidebar.orders"),
@@ -212,11 +216,11 @@ const EmployerLayout = () => {
       const res = await logOut();
       if (res.status === "OK") {
         removeAllToken();
-        message.success(res.message);
+        message.success(t("logoutSuccess"));
         navigate("login");
         clearRedux();
       } else {
-        message.error(res.message);
+        message.error(t("logoutError"));
       }
     } catch (error) {
       console.log(error);
@@ -245,18 +249,30 @@ const EmployerLayout = () => {
 
   const userMenu = (
     <Menu>
-      <Menu.Item key="profile" onClick={() => navigate("/employer/profile")}>
-        <UserOutlined /> {t("admin.employer.sidebar.account.profile")}
+      <Menu.Item
+        icon={<UserOutlined />}
+        key="profile"
+        onClick={() => navigate("/employer/profile")}
+      >
+        {t("admin.employer.sidebar.account.profile")}
       </Menu.Item>
-      <Menu.Item key="company" onClick={() => navigate("/employer/company")}>
-        <IoBusinessOutline /> {t("admin.employer.sidebar.company.info")}
+      <Menu.Item
+        icon={<IoBusinessOutline />}
+        key="company"
+        onClick={() => navigate("/employer/company")}
+      >
+        {t("admin.employer.sidebar.company.info")}
       </Menu.Item>
       <Menu.Divider />
-      <Menu.Item key="logout" onClick={logout} danger>
-        <LogoutOutlined /> {t("admin.employer.sidebar.logout")}
+      <Menu.Item icon={<LogoutOutlined />} key="logout" onClick={logout} danger>
+        {t("admin.employer.sidebar.logout")}
       </Menu.Item>
     </Menu>
   );
+
+  if (role !== "employer") {
+    return <Navigate to="/employer/login" />;
+  }
 
   return (
     <Layout className="employer-layout">
@@ -304,33 +320,19 @@ const EmployerLayout = () => {
                 className="menu-trigger"
               />
               <div className="company-info">
-                {!collapsed && companyName && (
+                {
                   <Text strong className="company-name">
                     {companyName}
                   </Text>
-                )}
+                }
               </div>
             </div>
 
             <div className="header-right">
-              {searchVisible ? (
-                <Input
-                  className="search-input"
-                  placeholder={t("common.search")}
-                  prefix={<SearchOutlined />}
-                  onBlur={() => setSearchVisible(false)}
-                  autoFocus
-                />
-              ) : (
-                <Button
-                  onClick={() => setSearchVisible(true)}
-                  className="search-button"
-                  type="text"
-                  icon={<SearchOutlined />}
-                />
-              )}
-
-              <Tooltip title={t("employer.header.cart")}>
+              <Tooltip
+                destroyTooltipOnHide={true}
+                title={t("employer.header.cart")}
+              >
                 <Badge count={0} size="small">
                   <Button
                     onClick={() => navigate("/employer/cart")}
@@ -352,21 +354,20 @@ const EmployerLayout = () => {
               >
                 <div className="user-profile">
                   <Avatar
-                    size={36}
+                    size={40}
                     className="avatar"
                     icon={<UserOutlined />}
                     src={avatar}
                   />
-                  {!collapsed && (
-                    <Space direction="vertical" size={0} className="user-info">
-                      <Text strong className="username">{`${
-                        employerInfo?.firstName || ""
-                      } ${employerInfo?.lastName || ""}`}</Text>
-                      <Text type="secondary" className="user-role">
-                        {t("role.EMPLOYER")}
-                      </Text>
-                    </Space>
-                  )}
+
+                  <Space direction="vertical" size={0} className="user-info">
+                    <Text strong className="username">{`${
+                      employerInfo?.firstName || ""
+                    } ${employerInfo?.lastName || ""}`}</Text>
+                    <Text type="secondary" className="user-role">
+                      {t("role.EMPLOYER")}
+                    </Text>
+                  </Space>
                 </div>
               </Dropdown>
             </div>

@@ -52,8 +52,8 @@ import {
   useEventStatistics,
   useJobSaved,
   useJobStatistics,
-  useRecommendedJobs,
 } from "../../../composables/student-dashboard";
+import { useRecommendJob } from "../../../composables/job";
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -68,7 +68,7 @@ const StudentDashboard = () => {
   const { data: activity, isLoading: activityLoading } = useActivity();
   const { data: jobSaved, isLoading: jobSavedLoading } = useJobSaved();
   const { data: recommendedJobs, isLoading: recommendedJobsLoading } =
-    useRecommendedJobs(user.userId);
+    useRecommendJob(user.userId);
 
   // Convert date from YYYY-MM-DD to DD-MM-YYYY format
   const convertDate = (dateString) => {
@@ -534,28 +534,32 @@ const StudentDashboard = () => {
                 {t("student.dashboard.recommendedJobs")}
               </Title>
               <div className="mb-4 job-recommendations">
-                {recommendedJobs?.data.length === 0 ? (
+                {recommendedJobs?.length === 0 ? (
                   <Empty
                     description={t("student.dashboard.noRecommendedJobs")}
                   />
                 ) : (
-                  recommendedJobs?.data?.slice(0, 2).map((job) => (
+                  recommendedJobs?.slice(0, 2).map((job) => (
                     <Link
-                      to={`/jobs/${job.id}`}
-                      key={job.id}
+                      to={`/jobs/${job.job_id}`}
+                      key={job.job_id}
                       className="recommended-job"
                     >
-                      <Avatar src={job.companyLogo} size="small" />
-                      <div className="job-details">
-                        <div className="job-title">{job.title}</div>
-                        <div className="job-company">{job.company}</div>
+                      <Avatar src={job.logo} size="small" />
+                      <div className="w-full overflow-hidden job-details">
+                        <div className="job-title line-clamp-1">
+                          {job.job_title}
+                        </div>
+                        <div className="job-company line-clamp-1">
+                          {job.company_name}
+                        </div>
                       </div>
                     </Link>
                   ))
                 )}
               </div>
               <Button type="link" className="view-all-link">
-                <Link to="/recommended-jobs">
+                <Link to="/recommend-job">
                   {t("student.dashboard.viewRecommendedJobs")}
                 </Link>
               </Button>
@@ -571,7 +575,9 @@ const StudentDashboard = () => {
               paragraph={{ rows: 2 }}
               loading={eventStatisticsLoading}
             >
-              <Title level={5}>{t("student.dashboard.upcomingEvents")}</Title>
+              <Title level={5} className="!text-lg !font-semibold !text-[#666]">
+                {t("student.dashboard.upcomingEvents")}
+              </Title>
               <div className="mb-4 upcoming-events">
                 {eventStatistics?.data?.eventResponses
                   ?.slice(0, 2)
@@ -597,7 +603,7 @@ const StudentDashboard = () => {
                   ))}
               </div>
               <Button type="link" className="view-all-link">
-                <Link to="/event">
+                <Link to="/events">
                   {t("student.dashboard.viewUpcomingEvents")}
                 </Link>
               </Button>

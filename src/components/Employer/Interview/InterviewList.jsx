@@ -1,45 +1,69 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Calendar, Badge, Button, Modal, Card, Spin, Flex, Table, Tag, Tooltip, Typography, Space, Empty } from "antd"
-import { VideoCameraOutlined, ClockCircleOutlined, CheckCircleOutlined, CalendarOutlined, UserOutlined, FieldTimeOutlined } from "@ant-design/icons"
-import { useListInterviewEmployer } from "../../../composables/interview"
-import dayjs from 'dayjs';
-import customParseFormat from 'dayjs/plugin/customParseFormat';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-import 'dayjs/locale/vi';
-import './InterviewList.scss'
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import {
+  Calendar,
+  Badge,
+  Button,
+  Modal,
+  Card,
+  Spin,
+  Flex,
+  Table,
+  Tag,
+  Typography,
+  Space,
+  Empty,
+} from "antd";
+import {
+  VideoCameraOutlined,
+  ClockCircleOutlined,
+  CheckCircleOutlined,
+  CalendarOutlined,
+  UserOutlined,
+  FieldTimeOutlined,
+  FileSearchOutlined,
+} from "@ant-design/icons";
+import { useListInterviewEmployer } from "../../../composables/interview";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+import "dayjs/locale/vi";
+import "./InterviewList.scss";
 
 const { Text, Title } = Typography;
 
 dayjs.extend(customParseFormat);
 dayjs.extend(utc);
 dayjs.extend(timezone);
-dayjs.locale('vi');
+dayjs.locale("vi");
 
 const InterviewCalendar = ({ viewMode = "calendar" }) => {
   const { data: interviewsData, isLoading } = useListInterviewEmployer();
-  const [isModalVisible, setIsModalVisible] = useState(false)
-  const [selectedInterview, setSelectedInterview] = useState(null)
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedInterview, setSelectedInterview] = useState(null);
 
   const formatInterviewData = (data) => {
-    if (!data || !data.data || !data.data.content) return [];
-    return data.data.content.map(interview => {
-      const parsedUtc = dayjs.utc(interview.scheduleDate, 'DD/MM/YYYY HH:mm:ss');
-      const vietnamTime = parsedUtc.tz('Asia/Ho_Chi_Minh');
-      const formattedDate = vietnamTime.format('DD/MM/YYYY HH:mm:ss');
-      
+    console.log(data);
+    if (!data?.content) return [];
+    return data?.content.map((interview) => {
       return {
         interview_id: interview.interviewId,
-        schedule_date: formattedDate,
+        schedule_date: interview.scheduleDate,
         duration: interview.duration,
         meeting_link: interview.meetingLink,
         status: interview.status.toLowerCase(),
         candidate_name: interview.studentName,
-        job_title: interview.jobTitle || 'Job Position',
+        job_title: interview.jobTitle || t("employer.job.title"),
+        job_id: interview.jobId, // Thêm job_id để sử dụng cho trang đánh giá
         candidate_avatar: interview.studentAvatar,
-        position: interview.position || 'Position',
+        position:
+          interview.position || t("employer.applicant.viewDetail.position"),
         key: interview.interviewId, // For table component
       };
     });
@@ -48,84 +72,89 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
   const interviews = formatInterviewData(interviewsData);
 
   const handleStartInterview = (interview) => {
-    setSelectedInterview(interview)
-    setIsModalVisible(true)
-  }
+    interview.meeting_link =
+      interview.meeting_link + "?interviewId=" + interview.interview_id;
+    setSelectedInterview(interview);
+    setIsModalVisible(true);
+  };
 
   const joinMeeting = () => {
     if (selectedInterview) {
-      window.open(selectedInterview.meeting_link, "_blank")
+      window.open(selectedInterview.meeting_link, "_blank");
     }
-  }
+  };
 
   const getStatusColor = (status) => {
     switch (status) {
       case "scheduled":
-        return "#1890ff" 
+        return "#1890ff";
       case "in_progress":
-        return "#fa8c16" 
+        return "#fa8c16";
       case "completed":
-        return "#52c41a" 
+        return "#52c41a";
       default:
-        return "#d9d9d9" 
+        return "#d9d9d9";
     }
-  }
+  };
 
   const getStatusBgClass = (status) => {
     switch (status) {
       case "scheduled":
-        return "bg-[#e6f7ff]" 
+        return "bg-[#e6f7ff]";
       case "in_progress":
-        return "bg-[#fff7e6]" 
+        return "bg-[#fff7e6]";
       case "completed":
-        return "bg-[#f6ffed]" 
+        return "bg-[#f6ffed]";
       default:
-        return "bg-[#f5f5f5]" 
+        return "bg-[#f5f5f5]";
     }
-  }
+  };
 
   const getBorderClass = (status) => {
     switch (status) {
       case "scheduled":
-        return "border-l-[3px] border-l-[#1890ff]" 
+        return "border-l-[3px] border-l-[#1890ff]";
       case "in_progress":
-        return "border-l-[3px] border-l-[#fa8c16]" 
+        return "border-l-[3px] border-l-[#fa8c16]";
       case "completed":
-        return "border-l-[3px] border-l-[#52c41a]" 
+        return "border-l-[3px] border-l-[#52c41a]";
       default:
-        return "border-l-[3px] border-l-[#d9d9d9]" 
+        return "border-l-[3px] border-l-[#d9d9d9]";
     }
-  }
+  };
 
   const getStatusText = (status) => {
     switch (status) {
       case "scheduled":
-        return "Scheduled"
+        return t("employer.interview.scheduled");
       case "in_progress":
-        return "In Progress"
+        return t("employer.interview.in_progress");
       case "completed":
-        return "Completed"
+        return t("employer.interview.completed");
       default:
-        return status
+        return status;
     }
-  }
+  };
 
   const getInterviewsForDate = (date) => {
     if (!interviews) return [];
-    
+
     return interviews.filter((interview) => {
-      const interviewDate = dayjs(interview.schedule_date, 'DD/MM/YYYY HH:mm:ss').utcOffset(7);
+      const interviewDate = dayjs(
+        interview.schedule_date,
+        "DD/MM/YYYY HH:mm:ss"
+      ).utcOffset(7);
       return (
         interviewDate.date() === date.date() &&
         interviewDate.month() === date.month() &&
         interviewDate.year() === date.year()
-      )
-    })
-  }
+      );
+    });
+  };
 
   // Custom calendar cell renderer
   const dateCellRender = (value) => {
-    const dayInterviews = getInterviewsForDate(value)
+    const dayInterviews = getInterviewsForDate(value);
     if (dayInterviews.length === 0) return null;
 
     return (
@@ -134,7 +163,11 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
           return (
             <li key={interview.interview_id} className="mb-1">
               <Card
-                className={`interview-card rounded cursor-pointer ${getStatusBgClass(interview.status)} ${getBorderClass(interview.status)} shadow-sm transition-all duration-300 hover:shadow-md`}
+                className={`interview-card rounded cursor-pointer ${getStatusBgClass(
+                  interview.status
+                )} ${getBorderClass(
+                  interview.status
+                )} shadow-sm transition-all duration-300 hover:shadow-md`}
                 onClick={(e) => {
                   e.stopPropagation();
                   handleStartInterview(interview);
@@ -143,16 +176,28 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
                 <Flex className="flex-col justify-between min-h-[60px]">
                   <Flex align="center" justify="space-between">
                     <Text className="text-xs font-medium">
-                      {dayjs(interview.schedule_date,'DD/MM/YYYY HH:mm:ss').utcOffset(7).format("HH:mm")}
+                      {dayjs(interview.schedule_date, "DD/MM/YYYY HH:mm:ss")
+                        .utcOffset(7)
+                        .format("HH:mm")}
                     </Text>
-                    <Tag color={getStatusColor(interview.status)} className="m-0">
+                    <Tag
+                      color={getStatusColor(interview.status)}
+                      className="m-0"
+                    >
                       {getStatusText(interview.status)}
                     </Tag>
                   </Flex>
-                  <Text className="text-sm font-medium mt-1 line-clamp-2" ellipsis={{ tooltip: interview.candidate_name }}>
+                  <Text
+                    className="mt-1 text-sm font-medium line-clamp-2"
+                    ellipsis={{ tooltip: interview.candidate_name }}
+                  >
                     {interview.candidate_name}
                   </Text>
-                  <Text type="secondary" className="text-xs mt-0.5 line-clamp-1" ellipsis={{ tooltip: interview.job_title }}>
+                  <Text
+                    type="secondary"
+                    className="text-xs mt-0.5 line-clamp-1"
+                    ellipsis={{ tooltip: interview.job_title }}
+                  >
                     {interview.job_title}
                   </Text>
                 </Flex>
@@ -161,73 +206,97 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
           );
         })}
       </ul>
-    )
-  }
+    );
+  };
 
   // Custom month cell renderer
   const monthCellRender = (value) => {
     if (!interviews) return null;
-    
+
     const monthInterviews = interviews.filter((interview) => {
-      const interviewDate = dayjs(interview.schedule_date, 'DD/MM/YYYY HH:mm:ss').utcOffset(7);
-      return interviewDate.month() === value.month() && interviewDate.year() === value.year()
-    })
+      const interviewDate = dayjs(
+        interview.schedule_date,
+        "DD/MM/YYYY HH:mm:ss"
+      ).utcOffset(7);
+      return (
+        interviewDate.month() === value.month() &&
+        interviewDate.year() === value.year()
+      );
+    });
 
     const statusCounts = {
       scheduled: 0,
       in_progress: 0,
       completed: 0,
-    }
+    };
 
     monthInterviews.forEach((interview) => {
-      statusCounts[interview.status]++
-    })
+      statusCounts[interview.status]++;
+    });
 
     return (
       <div className="p-2">
-        <p className="font-medium">Total: {monthInterviews.length} interviews</p>
+        <p className="font-medium">
+          {t("common.total")}: {monthInterviews.length}{" "}
+          {t("employer.interview.interviews")}
+        </p>
         <ul className="p-0 list-none">
           <li>
-            <Badge color="#1890ff" text={`Scheduled: ${statusCounts.scheduled}`} />
+            <Badge
+              color="#1890ff"
+              text={`${t("employer.interview.scheduled")}: ${
+                statusCounts.scheduled
+              }`}
+            />
           </li>
           <li>
-            <Badge color="#fa8c16" text={`In Progress: ${statusCounts.in_progress}`} />
+            <Badge
+              color="#fa8c16"
+              text={`${t("employer.interview.in_progress")}: ${
+                statusCounts.in_progress
+              }`}
+            />
           </li>
           <li>
-            <Badge color="#52c41a" text={`Completed: ${statusCounts.completed}`} />
+            <Badge
+              color="#52c41a"
+              text={`${t("employer.interview.completed")}: ${
+                statusCounts.completed
+              }`}
+            />
           </li>
         </ul>
       </div>
-    )
-  }
+    );
+  };
 
   // Handle calendar date selection
   const onSelect = (date) => {
-    const dayInterviews = getInterviewsForDate(date)
+    const dayInterviews = getInterviewsForDate(date);
     if (dayInterviews.length > 0) {
-      setSelectedInterview(dayInterviews[0])
-      setIsModalVisible(true)
+      setSelectedInterview(dayInterviews[0]);
+      setIsModalVisible(true);
     }
-  }
+  };
 
   // Get summary counts
   const getStatusCounts = () => {
     if (!interviews) return { scheduled: 0, in_progress: 0, completed: 0 };
-    
+
     const counts = {
       scheduled: 0,
       in_progress: 0,
       completed: 0,
-    }
+    };
 
     interviews.forEach((interview) => {
-      counts[interview.status]++
-    })
+      counts[interview.status]++;
+    });
 
-    return counts
-  }
+    return counts;
+  };
 
-  const statusCounts = getStatusCounts()
+  const statusCounts = getStatusCounts();
 
   if (isLoading) {
     return (
@@ -239,87 +308,106 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
 
   const getBadgeStyle = (color) => {
     return { backgroundColor: color };
-  }
+  };
 
   // Table columns for list view
   const columns = [
     {
-      title: 'Candidate',
-      dataIndex: 'candidate_name',
-      key: 'candidate_name',
+      title: t("employer.applicant.viewDetail.candidate"),
+      dataIndex: "candidate_name",
+      key: "candidate_name",
       render: (text, record) => (
         <Flex align="center" gap={8}>
-          <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-            {record.candidate_avatar ? 
-              <img src={record.candidate_avatar} alt={text} className="w-8 h-8 rounded-full" /> :
+          <div className="flex items-center justify-center w-8 h-8 bg-blue-100 rounded-full">
+            {record.candidate_avatar ? (
+              <img
+                src={record.candidate_avatar}
+                alt={text}
+                className="w-8 h-8 rounded-full"
+              />
+            ) : (
               <UserOutlined />
-            }
+            )}
           </div>
           <Text strong>{text}</Text>
         </Flex>
       ),
     },
     {
-      title: 'Job Position',
-      dataIndex: 'job_title',
-      key: 'job_title',
-      render: (text) => <Text ellipsis={{ tooltip: text }}>{text}</Text>,
-    },
-    {
-      title: 'Schedule Date',
-      dataIndex: 'schedule_date',
-      key: 'schedule_date',
+      title: t("employer.interview.schedule_time"),
+      dataIndex: "schedule_date",
+      key: "schedule_date",
       render: (text) => (
         <Flex align="center" gap={6}>
           <CalendarOutlined />
-          <Text>{dayjs(text, 'DD/MM/YYYY HH:mm:ss').format('DD/MM/YYYY HH:mm')}</Text>
+          <Text>
+            {dayjs(text, "DD/MM/YYYY HH:mm:ss").format("DD/MM/YYYY HH:mm")}
+          </Text>
         </Flex>
       ),
       sorter: (a, b) => {
-        return dayjs(a.schedule_date, 'DD/MM/YYYY HH:mm:ss').unix() - dayjs(b.schedule_date, 'DD/MM/YYYY HH:mm:ss').unix();
-      }
+        return (
+          dayjs(a.schedule_date, "DD/MM/YYYY HH:mm:ss").unix() -
+          dayjs(b.schedule_date, "DD/MM/YYYY HH:mm:ss").unix()
+        );
+      },
     },
     {
-      title: 'Duration',
-      dataIndex: 'duration',
-      key: 'duration',
+      title: t("employer.interview.duration"),
+      dataIndex: "duration",
+      key: "duration",
       render: (text) => (
         <Flex align="center" gap={6}>
           <FieldTimeOutlined />
-          <Text>{text} min</Text>
+          <Text>
+            {text} {t("common.minutes")}
+          </Text>
         </Flex>
       ),
     },
     {
-      title: 'Status',
-      key: 'status',
-      dataIndex: 'status',
+      title: t("employer.orders.status"),
+      key: "status",
+      dataIndex: "status",
       render: (status) => (
-        <Tag color={getStatusColor(status)}>
+        <Tag className="w-fit" color={getStatusColor(status)}>
           {getStatusText(status)}
         </Tag>
       ),
       filters: [
-        { text: 'Scheduled', value: 'scheduled' },
-        { text: 'In Progress', value: 'in_progress' },
-        { text: 'Completed', value: 'completed' },
+        { text: t("employer.interview.scheduled"), value: "scheduled" },
+        { text: t("employer.interview.in_progress"), value: "in_progress" },
+        { text: t("employer.interview.completed"), value: "completed" },
       ],
       onFilter: (value, record) => record.status === value,
     },
     {
-      title: 'Action',
-      key: 'action',
+      title: t("common.actions"),
+      key: "action",
       render: (_, record) => (
         <Space size="middle">
-          <Button 
+          <Button
             type={record.status === "in_progress" ? "primary" : "default"}
-            icon={<VideoCameraOutlined />} 
+            icon={<VideoCameraOutlined />}
             size="small"
             disabled={record.status === "completed"}
             onClick={() => handleStartInterview(record)}
           >
-            {record.status === "in_progress" ? "Join Now" : "Details"}
+            {record.status === "in_progress"
+              ? t("meeting.join_link")
+              : t("common.join")}
           </Button>
+          {record.job_id && (
+            <Button
+              icon={<FileSearchOutlined />}
+              size="small"
+              onClick={() =>
+                navigate(`/employer/interview/evaluations/job/${record.job_id}`)
+              }
+            >
+              {t("employer.interview.view_evaluations")}
+            </Button>
+          )}
         </Space>
       ),
     },
@@ -328,30 +416,53 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
   const renderCalendarView = () => (
     <div className="p-6 interview-calendar">
       <Flex className="flex-wrap items-center justify-between gap-4 mb-4">
-        <Title level={4} className="m-0">Interview Calendar</Title>
+        <Title level={4} className="m-0">
+          {t("employer.interview.interview_calendar")}
+        </Title>
         <Flex gap={16}>
-          <Badge count={statusCounts.scheduled} style={getBadgeStyle("#1890ff")}>
-            <Button type="default" icon={<ClockCircleOutlined />} className="mr-2 bg-[#e6f7ff] border-[#91caff]">
-              Scheduled
+          <Badge
+            count={statusCounts.scheduled}
+            style={getBadgeStyle("#1890ff")}
+          >
+            <Button
+              type="default"
+              icon={<ClockCircleOutlined />}
+              className="mr-2 bg-[#e6f7ff] border-[#91caff]"
+            >
+              {t("employer.interview.scheduled")}
             </Button>
           </Badge>
-          <Badge count={statusCounts.in_progress} style={getBadgeStyle("#fa8c16")}>
-            <Button type="default" icon={<VideoCameraOutlined />} className="mr-2 bg-[#fff7e6] border-[#ffcb8b]">
-              In Progress
+          <Badge
+            count={statusCounts.in_progress}
+            style={getBadgeStyle("#fa8c16")}
+          >
+            <Button
+              type="default"
+              icon={<VideoCameraOutlined />}
+              className="mr-2 bg-[#fff7e6] border-[#ffcb8b]"
+            >
+              {t("employer.interview.in_progress")}
             </Button>
           </Badge>
-          <Badge count={statusCounts.completed} style={getBadgeStyle("#52c41a")}>
-            <Button type="default" icon={<CheckCircleOutlined />} className="bg-[#f6ffed] border-[#b7eb8f]">
-              Completed
+          <Badge
+            count={statusCounts.completed}
+            style={getBadgeStyle("#52c41a")}
+          >
+            <Button
+              type="default"
+              icon={<CheckCircleOutlined />}
+              className="bg-[#f6ffed] border-[#b7eb8f]"
+            >
+              {t("employer.interview.completed")}
             </Button>
           </Badge>
         </Flex>
       </Flex>
       <Card className="calendar-card">
-        <Calendar 
-          dateCellRender={dateCellRender} 
-          monthCellRender={monthCellRender} 
-          onSelect={onSelect} 
+        <Calendar
+          dateCellRender={dateCellRender}
+          monthCellRender={monthCellRender}
+          onSelect={onSelect}
           className="interview-calendar-component"
         />
       </Card>
@@ -361,39 +472,64 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
   const renderListView = () => (
     <div className="p-6 interview-list">
       <Flex className="flex-wrap items-center justify-between gap-4 mb-4">
-        <Title level={4} className="m-0">Interview Schedule</Title>
+        <Title level={4} className="m-0">
+          {t("employer.interview.interview_schedule")}
+        </Title>
         <Flex gap={16}>
-          <Badge count={statusCounts.scheduled} style={getBadgeStyle("#1890ff")}>
-            <Button type="default" icon={<ClockCircleOutlined />} className="mr-2 bg-[#e6f7ff] border-[#91caff]">
-              Scheduled
+          <Badge
+            count={statusCounts.scheduled}
+            style={getBadgeStyle("#1890ff")}
+          >
+            <Button
+              type="default"
+              icon={<ClockCircleOutlined />}
+              className="mr-2 bg-[#e6f7ff] border-[#91caff]"
+            >
+              {t("employer.interview.scheduled")}
             </Button>
           </Badge>
-          <Badge count={statusCounts.in_progress} style={getBadgeStyle("#fa8c16")}>
-            <Button type="default" icon={<VideoCameraOutlined />} className="mr-2 bg-[#fff7e6] border-[#ffcb8b]">
-              In Progress
+          <Badge
+            count={statusCounts.in_progress}
+            style={getBadgeStyle("#fa8c16")}
+          >
+            <Button
+              type="default"
+              icon={<VideoCameraOutlined />}
+              className="mr-2 bg-[#fff7e6] border-[#ffcb8b]"
+            >
+              {t("employer.interview.in_progress")}
             </Button>
           </Badge>
-          <Badge count={statusCounts.completed} style={getBadgeStyle("#52c41a")}>
-            <Button type="default" icon={<CheckCircleOutlined />} className="bg-[#f6ffed] border-[#b7eb8f]">
-              Completed
+          <Badge
+            count={statusCounts.completed}
+            style={getBadgeStyle("#52c41a")}
+          >
+            <Button
+              type="default"
+              icon={<CheckCircleOutlined />}
+              className="bg-[#f6ffed] border-[#b7eb8f]"
+            >
+              {t("employer.interview.completed")}
             </Button>
           </Badge>
         </Flex>
       </Flex>
-      
+
       {interviews && interviews.length > 0 ? (
-        <Table 
-          columns={columns} 
-          dataSource={interviews} 
-          pagination={{ pageSize: 6 }} 
-          rowClassName={(record) => `interview-row ${getStatusBgClass(record.status)}`}
+        <Table
+          columns={columns}
+          dataSource={interviews}
+          pagination={{ pageSize: 6 }}
+          rowClassName={(record) =>
+            `interview-row ${getStatusBgClass(record.status)}`
+          }
           rowKey="interview_id"
         />
       ) : (
         <Card>
-          <Empty 
-            description="No interviews scheduled" 
-            image={Empty.PRESENTED_IMAGE_SIMPLE} 
+          <Empty
+            description={t("employer.interview.no_interviews_scheduled")}
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
           />
         </Card>
       )}
@@ -405,64 +541,125 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
       {viewMode === "calendar" ? renderCalendarView() : renderListView()}
 
       <Modal
+        closable={false}
         centered
-        title={selectedInterview ? getStatusText(selectedInterview.status) + " Interview" : "Interview Details"}
+        title={
+          selectedInterview
+            ? getStatusText(selectedInterview.status) +
+              " " +
+              t("employer.interview.interview")
+            : t("employer.interview.interview_details")
+        }
         open={isModalVisible}
         onOk={
-          selectedInterview && selectedInterview.status !== "completed" ? joinMeeting : () => setIsModalVisible(false)
+          selectedInterview && selectedInterview.status !== "completed"
+            ? joinMeeting
+            : () => setIsModalVisible(false)
         }
         onCancel={() => setIsModalVisible(false)}
-        okText={selectedInterview && selectedInterview.status !== "completed" ? "Start Interview" : "OK"}
+        okText={
+          selectedInterview && selectedInterview.status !== "completed"
+            ? t("employer.interview.start_interview")
+            : t("employer.interview.ok")
+        }
         okButtonProps={{
-          type: selectedInterview && selectedInterview.status === "in_progress" ? "primary" : "default",
-          danger: selectedInterview && selectedInterview.status === "in_progress",
-          icon: selectedInterview && selectedInterview.status === "in_progress" ? <VideoCameraOutlined /> : null,
+          type:
+            selectedInterview && selectedInterview.status === "in_progress"
+              ? "primary"
+              : "default",
+          danger:
+            selectedInterview && selectedInterview.status === "in_progress",
+          icon:
+            selectedInterview && selectedInterview.status === "in_progress" ? (
+              <VideoCameraOutlined />
+            ) : null,
         }}
-        cancelText="Close"
+        cancelText={t("common.close")}
         className="interview-modal"
       >
         {selectedInterview && (
           <div>
-            <Card className={`interview-detail-card mb-4 ${getStatusBgClass(selectedInterview.status)} ${getBorderClass(selectedInterview.status)}`}>
+            <Card
+              className={`interview-detail-card mb-4 ${getStatusBgClass(
+                selectedInterview.status
+              )} ${getBorderClass(selectedInterview.status)}`}
+            >
               <Flex align="center" justify="space-between">
                 <div>
-                  <Title level={5} className="mb-1">{selectedInterview.candidate_name}</Title>
-                  <Text type="secondary">{selectedInterview.position || 'Candidate'} • {selectedInterview.job_title}</Text>
+                  <Title level={5} className="mb-1">
+                    {selectedInterview.candidate_name}
+                  </Title>
+                  <Text type="secondary">
+                    {selectedInterview.position ||
+                      t("employer.applicant.viewDetail.candidate")}{" "}
+                    • {selectedInterview.job_title}
+                  </Text>
                 </div>
-                <Tag color={getStatusColor(selectedInterview.status)} className="text-sm px-2 py-1">
+                <Tag
+                  color={getStatusColor(selectedInterview.status)}
+                  className="px-2 py-1 text-sm"
+                >
                   {getStatusText(selectedInterview.status)}
                 </Tag>
               </Flex>
             </Card>
-            
+
             <Flex vertical gap={16}>
               <Flex align="center" gap={12}>
                 <CalendarOutlined className="text-lg text-blue-500" />
                 <div>
-                  <Text strong className="block">Schedule Time</Text>
-                  <Text>{dayjs(selectedInterview.schedule_date,'DD/MM/YYYY HH:mm:ss').utcOffset(7).format("dddd, DD/MM/YYYY")}</Text>
+                  <Text strong className="block">
+                    {t("employer.interview.schedule_time")}
+                  </Text>
+                  <Text>
+                    {dayjs(
+                      selectedInterview.schedule_date,
+                      "DD/MM/YYYY HH:mm:ss"
+                    )
+                      .utcOffset(7)
+                      .format("dddd, DD/MM/YYYY")}
+                  </Text>
                   <Text className="block">
-                    {dayjs(selectedInterview.schedule_date,'DD/MM/YYYY HH:mm:ss').utcOffset(7).format("HH:mm")} - {dayjs(selectedInterview.schedule_date,'DD/MM/YYYY HH:mm:ss').utcOffset(7).add(selectedInterview.duration, 'minute').format("HH:mm")}
+                    {dayjs(
+                      selectedInterview.schedule_date,
+                      "DD/MM/YYYY HH:mm:ss"
+                    )
+                      .utcOffset(7)
+                      .format("HH:mm")}{" "}
+                    -{" "}
+                    {dayjs(
+                      selectedInterview.schedule_date,
+                      "DD/MM/YYYY HH:mm:ss"
+                    )
+                      .utcOffset(7)
+                      .add(selectedInterview.duration, "minute")
+                      .format("HH:mm")}
                   </Text>
                 </div>
               </Flex>
-              
+
               <Flex align="center" gap={12}>
                 <FieldTimeOutlined className="text-lg text-green-500" />
                 <div>
-                  <Text strong className="block">Duration</Text>
-                  <Text>{selectedInterview.duration} minutes</Text>
+                  <Text strong className="block">
+                    {t("employer.interview.duration")}
+                  </Text>
+                  <Text>
+                    {selectedInterview.duration} {t("common.minutes")}
+                  </Text>
                 </div>
               </Flex>
-              
+
               <Flex align="center" gap={12}>
                 <VideoCameraOutlined className="text-lg text-purple-500" />
                 <div>
-                  <Text strong className="block">Meeting Link</Text>
-                  <a 
-                    className="hover:underline text-blue-500" 
-                    href={selectedInterview.meeting_link} 
-                    target="_blank" 
+                  <Text strong className="block">
+                    {t("employer.interview.meeting_link")}
+                  </Text>
+                  <a
+                    className="text-blue-500 hover:underline"
+                    href={selectedInterview.meeting_link}
+                    target="_blank"
                     rel="noopener noreferrer"
                   >
                     {selectedInterview.meeting_link}
@@ -470,7 +667,7 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
                 </div>
               </Flex>
             </Flex>
-            
+
             {selectedInterview.status === "in_progress" && (
               <Button
                 type="primary"
@@ -481,14 +678,14 @@ const InterviewCalendar = ({ viewMode = "calendar" }) => {
                 className="mt-6"
                 size="large"
               >
-                Join Interview Now
+                {t("employer.interview.join_interview_now")}
               </Button>
             )}
           </div>
         )}
       </Modal>
     </div>
-  )
-}
+  );
+};
 
-export default InterviewCalendar
+export default InterviewCalendar;

@@ -1,88 +1,132 @@
 import { useState, useEffect } from "react";
-import { 
-  Card, 
-  Row, 
-  Col, 
-  Statistic, 
-  Select, 
-  Space, 
-  Typography, 
-  DatePicker, 
-  Button, 
-  Segmented, 
+import {
+  Card,
+  Row,
+  Col,
+  Statistic,
+  Space,
+  Typography,
+  DatePicker,
+  Button,
+  Segmented,
   Skeleton,
   Badge,
   Progress,
   Divider,
   Tabs,
   Table,
-  Avatar 
+  Flex,
+  Tag,
+  Alert,
+  Empty,
 } from "antd";
 import {
-  LineChart,
-  Line,
   AreaChart,
   Area,
   BarChart,
   Bar,
-  PieChart,
-  Pie,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   Legend,
   ResponsiveContainer,
-  Cell,
 } from "recharts";
-import { 
-  UserOutlined, 
-  BankOutlined, 
+import {
+  UserOutlined,
   DollarOutlined,
-  UpOutlined,
-  DownOutlined,
-  FileTextOutlined,
-  TeamOutlined,
-  RiseOutlined,
-  CalendarOutlined,
   ReloadOutlined,
-  FilterOutlined
+  SafetyCertificateOutlined,
+  LineChartOutlined,
+  BarChartOutlined,
+  FireOutlined,
+  TrophyOutlined,
 } from "@ant-design/icons";
+import { IoIosBusiness } from "react-icons/io";
+import { MdCheckCircleOutline } from "react-icons/md";
+import { BsFilePost } from "react-icons/bs";
+import { HiOutlineUserGroup } from "react-icons/hi";
 import { useTranslation } from "react-i18next";
 import {
-  getStatisticsByJobCategory,
   getRevenueByMonth,
   getStatisticUser,
-  getStatisticPackage,
 } from "../../../services/apiService";
+import "./Dashboard.scss";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  useApplicationStats,
+  useForumStats,
+  useJobStatistics,
+  useRecentOrders,
+  useStatisticsByCategory,
+  useStatsTopSkills,
+  useTopEmployer,
+  useUserStats,
+} from "../../../composables/admin-dashboard";
+import dayjs from "dayjs";
 
-const { Option } = Select;
 const { Title, Text } = Typography;
 const { RangePicker } = DatePicker;
 
 const AdminDashboard = () => {
   const { t } = useTranslation();
-  const [jobCategoryStats, setJobCategoryStats] = useState([]);
-  const [currentMonthRevenue, setCurrentMonthRevenue] = useState(0);
-  const [previousMonthRevenue, setPreviousMonthRevenue] = useState(0);
-  const [packageStats, setPackageStats] = useState([]);
+  const navigate = useNavigate();
+  const [, setSearchParams] = useSearchParams();
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const { data: jobCategoryStats, refetch: refetchJobCategoryStats } =
+    useStatisticsByCategory({
+      startDate,
+      endDate,
+    });
+  const [totalRevenue, setTotalRevenue] = useState(0);
   const [statisticUser, setStatisticUser] = useState({
     totalCandidates: 0,
     totalEmployers: 0,
   });
   const [revenueByMonth, setRevenueByMonth] = useState([]);
-  const [recentOrders, setRecentOrders] = useState([]);
-  const [topEmployers, setTopEmployers] = useState([]);
+  const { data: recentOrders, refetch: refetchRecentOrders } = useRecentOrders({
+    startDate,
+    endDate,
+  });
+  const { data: topEmployers, refetch: refetchTopEmployers } = useTopEmployer({
+    startDate,
+    endDate,
+  });
   const [loading, setLoading] = useState({
     revenue: true,
-    packages: true,
-    users: true,
-    categories: true,
-    orders: true,
-    employers: true,
   });
-  const [chartView, setChartView] = useState('revenue');
-  
+  const [chartView, setChartView] = useState("revenue");
+
+  const { data: jobApprovalStats, refetch: refetchJobApprovalStats } =
+    useJobStatistics({
+      startDate,
+      endDate,
+    });
+  const { data: userGrowthData, refetch: refetchUserGrowthData } = useUserStats(
+    {
+      startDate,
+      endDate,
+    }
+  );
+  const { data: skillDemandData, refetch: refetchSkillDemandData } =
+    useStatsTopSkills({
+      startDate,
+      endDate,
+    });
+  const {
+    data: studentApplicationData,
+    refetch: refetchStudentApplicationData,
+  } = useApplicationStats({
+    startDate,
+    endDate,
+  });
+  const { data: forumActivityData, refetch: refetchForumActivityData } =
+    useForumStats({
+      startDate,
+      endDate,
+    });
+
   const COLORS = [
     "#722ed1",
     "#2f54eb",
@@ -95,277 +139,136 @@ const AdminDashboard = () => {
     "#f5222d",
     "#eb2f96",
   ];
-  
-  const [filters, setFilters] = useState({
-    month: null,
-    year: new Date().getFullYear(),
-    dateRange: null,
-  });
 
-  const months = Array.from({ length: 12 }, (_, i) => i + 1);
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
+  const [dateRange, setDateRange] = useState([]);
 
-  const fetchPackageStats = async () => {
-    try {
-      setLoading(prev => ({ ...prev, packages: true }));
-      const response = await getStatisticPackage();
-      const totalPackages = response.data.reduce(
-        (sum, item) => sum + item.packageCount,
-        0
-      );
-      const transformedData = response.data.map((pkg) => ({
-        name: pkg.packageName,
-        value: pkg.packageCount,
-        percentage: ((pkg.packageCount / totalPackages) * 100).toFixed(1),
-        revenue: pkg.totalRevenue || 0,
-      }));
-
-      transformedData.sort((a, b) => b.value - a.value);
-      setPackageStats(transformedData);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(prev => ({ ...prev, packages: false }));
-    }
-  };
-  
   useEffect(() => {
-    fetchPackageStats();
-    
-    // Simulate fetching recent orders
-    setRecentOrders([
-      { id: '1', company: 'Tech Solutions', package: 'Premium Package', date: '2025-04-25', amount: 2500000, status: 'completed' },
-      { id: '2', company: 'Alpha Innovations', package: 'Standard Package', date: '2025-04-23', amount: 1200000, status: 'completed' },
-      { id: '3', company: 'Global Systems', package: 'Premium Package', date: '2025-04-20', amount: 2500000, status: 'completed' },
-      { id: '4', company: 'Future Partners', package: 'Enterprise Package', date: '2025-04-18', amount: 5000000, status: 'completed' },
-      { id: '5', company: 'Tech Dynamics', package: 'Standard Package', date: '2025-04-15', amount: 1200000, status: 'completed' },
-    ]);
-    
-    // Simulate fetching top employers
-    setTopEmployers([
-      { id: '1', name: 'Tech Solutions', jobsPosted: 28, hires: 12, rating: 4.9 },
-      { id: '2', name: 'Future Partners', jobsPosted: 24, hires: 8, rating: 4.7 },
-      { id: '3', name: 'Alpha Innovations', jobsPosted: 18, hires: 10, rating: 4.8 },
-      { id: '4', name: 'Global Systems', jobsPosted: 15, hires: 7, rating: 4.5 },
-      { id: '5', name: 'Tech Dynamics', jobsPosted: 12, hires: 5, rating: 4.6 },
-    ]);
-    
-  }, []);
+    // Update URL when date changes
+    if (dateRange[0] && dateRange[1]) {
+      const start = dateRange[0].format("YYYY-MM");
+      const end = dateRange[1].format("YYYY-MM");
+      setSearchParams({ startDate: start, endDate: end });
+      setStartDate(dateRange[0].toISOString());
+      setEndDate(dateRange[1].toISOString());
+    }
+  }, [dateRange]);
 
   const fetchRevenueByMonth = async () => {
     try {
-      setLoading(prev => ({ ...prev, revenue: true }));
-      const params = {};
-      if (filters.year) params.year = filters.year;
-      const response = await getRevenueByMonth(params);
+      setLoading((prev) => ({ ...prev, revenue: true }));
+      let year = dateRange[0]?.format("YYYY");
+      const response = await getRevenueByMonth({ year });
       const transformedData = response.data.map((item) => ({
-        month: item.month,
+        month: item.month + "/" + item.year,
         revenue: item.revenue,
         subscriptions: item.numberOfPackages,
       }));
-      
-      // Calculate current month revenue and previous month for growth indicator
-      const currentMonthNum = new Date().getMonth() + 1;
-      const currentYear = new Date().getFullYear();
-      
-      if (!filters.year || filters.year === currentYear) {
-        const currentMonthData = transformedData.find(
-          (item) => item.month === currentMonthNum
-        );
-        setCurrentMonthRevenue(currentMonthData?.revenue || 0);
-        
-        const previousMonthData = transformedData.find(
-          (item) => item.month === (currentMonthNum === 1 ? 12 : currentMonthNum - 1)
-        );
-        setPreviousMonthRevenue(previousMonthData?.revenue || 0);
-      }
-      
+
+      const totalRevenueData = transformedData.reduce(
+        (sum, item) => sum + item.revenue,
+        0
+      );
+      setTotalRevenue(totalRevenueData);
+
       setRevenueByMonth(transformedData);
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(prev => ({ ...prev, revenue: false }));
+      setLoading((prev) => ({ ...prev, revenue: false }));
     }
   };
-  
+
   useEffect(() => {
     fetchRevenueByMonth();
-  }, [filters.year]);
-
-  const fetchJobCategoryStats = async () => {
-    try {
-      setLoading(prev => ({ ...prev, categories: true }));
-      const params = {};
-      if (filters.month) params.month = filters.month;
-      if (filters.year) params.year = filters.year;
-
-      const response = await getStatisticsByJobCategory(params);
-
-      const filteredData = response.data.filter(
-        (category) => category.jobCount > 0
-      );
-
-      const totalJobs = filteredData.reduce(
-        (sum, category) => sum + category.jobCount,
-        0
-      );
-
-      const transformedData = filteredData.map((category) => ({
-        name: category.categoryName,
-        value: category.jobCount,
-        percentage: ((category.jobCount / totalJobs) * 100).toFixed(1),
-      }));
-
-      transformedData.sort((a, b) => b.value - a.value);
-
-      setJobCategoryStats(transformedData);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(prev => ({ ...prev, categories: false }));
-    }
-  };
-  
-  useEffect(() => {
-    fetchJobCategoryStats();
-  }, [filters.month, filters.year]);
+  }, [dateRange]);
 
   const fetchStatisticUser = async () => {
     try {
-      setLoading(prev => ({ ...prev, users: true }));
+      setLoading((prev) => ({ ...prev, users: true }));
       const response = await getStatisticUser();
       setStatisticUser(...response.data);
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(prev => ({ ...prev, users: false }));
+      setLoading((prev) => ({ ...prev, users: false }));
     }
   };
-  
+
   useEffect(() => {
     fetchStatisticUser();
   }, []);
 
   const handleRefresh = () => {
     fetchRevenueByMonth();
-    fetchJobCategoryStats();
-    fetchPackageStats();
     fetchStatisticUser();
+    refetchJobCategoryStats();
+    refetchRecentOrders();
+    refetchTopEmployers();
+    refetchJobApprovalStats();
+    refetchUserGrowthData();
+    refetchSkillDemandData();
+    refetchStudentApplicationData();
+    refetchForumActivityData();
   };
-
-  const calculateGrowth = (current, previous) => {
-    if (!previous) return 100;
-    return ((current - previous) / previous) * 100;
-  };
-
-  const revenueGrowth = calculateGrowth(currentMonthRevenue, previousMonthRevenue);
 
   // Sample recent activities
-  const recentActivities = [
-    { id: 1, type: 'newUser', message: 'New employer registered: Tech Solutions', time: '2 hours ago' },
-    { id: 2, type: 'newJob', message: 'New job posted: Senior Frontend Developer', time: '4 hours ago' },
-    { id: 3, type: 'newPackage', message: 'Package purchased: Premium Package', time: '6 hours ago' },
-    { id: 4, type: 'approval', message: 'Company profile approved: Alpha Innovations', time: '1 day ago' },
-    { id: 5, type: 'newApplication', message: '15 new job applications received today', time: '1 day ago' },
-  ];
 
-  const renderStatsCard = (title, value, icon, color, secondaryValue = null, secondaryLabel = null) => (
+  const renderStatsCard = (
+    title,
+    value,
+    icon,
+    color,
+    secondaryValue = null,
+    secondaryLabel = null
+  ) => (
     <Card className="admin-stats-card">
       <div className="flex items-center justify-between mb-2">
         <div>
-          <Text type="secondary" className="stat-label">{title}</Text>
-          <div className="stat-value" style={{ color }}>{value}</div>
+          <Text type="secondary" className="stat-label">
+            {title}
+          </Text>
+          <div className="stat-value" style={{ color }}>
+            {value}
+          </div>
           {secondaryValue && (
             <div className="flex items-center mt-1">
-              <Text type="secondary" style={{ fontSize: '12px', marginRight: '4px' }}>{secondaryLabel}:</Text>
-              <Text strong style={{ fontSize: '13px' }}>{secondaryValue}</Text>
+              <Text
+                type="secondary"
+                style={{ fontSize: "12px", marginRight: "4px" }}
+              >
+                {secondaryLabel}:
+              </Text>
+              <Text strong style={{ fontSize: "13px" }}>
+                {secondaryValue}
+              </Text>
             </div>
           )}
         </div>
-        <div className="stat-icon" style={{ backgroundColor: `${color}15`, color }}>
+        <div
+          className="stat-icon"
+          style={{ backgroundColor: `${color}15`, color }}
+        >
           {icon}
         </div>
       </div>
     </Card>
   );
 
-  const revenueStatsCard = (title, value, previousValue, icon, color) => {
-    const growth = calculateGrowth(value, previousValue);
-    const isPositive = growth >= 0;
-    
-    return (
-      <Card className="admin-stats-card">
-        <div className="flex items-center justify-between mb-2">
-          <div>
-            <Text type="secondary" className="stat-label">{title}</Text>
-            <div className="stat-value" style={{ color }}>
-              {new Intl.NumberFormat("vi-VN", {
-                style: "currency",
-                currency: "VND",
-                minimumFractionDigits: 0,
-                maximumFractionDigits: 0,
-              }).format(value)}
-            </div>
-            <div className="flex items-center mt-1">
-              <Badge 
-                status={isPositive ? "success" : "error"} 
-                text={
-                  <span style={{ color: isPositive ? "#52c41a" : "#f5222d", fontSize: '13px', fontWeight: 500 }}>
-                    {isPositive ? <UpOutlined /> : <DownOutlined />}
-                    {' '}
-                    {Math.abs(growth).toFixed(1)}%
-                    {' '}
-                    <span style={{ color: "#8c8c8c", fontWeight: 400 }}>vs last month</span>
-                  </span>
-                } 
-              />
-            </div>
-          </div>
-          <div className="stat-icon" style={{ backgroundColor: `${color}15`, color }}>
-            {icon}
-          </div>
-        </div>
-      </Card>
-    );
-  };
-
   const FilterControls = () => (
     <Space wrap size={12}>
-      <Select
-        placeholder={t("admin.dashboard.filters.selectMonth")}
-        style={{ width: 150 }}
-        value={filters.month}
-        onChange={(value) => setFilters((prev) => ({ ...prev, month: value }))}
-        allowClear
-        suffixIcon={<FilterOutlined />}
-      >
-        {months.map((month) => (
-          <Option key={month} value={month}>
-            {t("admin.dashboard.filters.month", { month })}
-          </Option>
-        ))}
-      </Select>
-      
-      <Select
-        placeholder={t("admin.dashboard.filters.selectYear")}
-        style={{ width: 120 }}
-        value={filters.year}
-        onChange={(value) => setFilters((prev) => ({ ...prev, year: value }))}
-        suffixIcon={<FilterOutlined />}
-      >
-        {years.map((year) => (
-          <Option key={year} value={year}>
-            {year}
-          </Option>
-        ))}
-      </Select>
+      <RangePicker
+        value={dateRange}
+        onChange={(dates) => setDateRange(dates)}
+        picker="month"
+        allowClear={false}
+        format="MM/YYYY"
+        disabledDate={(current) => {
+          // Disable future months
+          return current && current > dayjs().endOf("month");
+        }}
+      />
 
-      <Button 
-        icon={<ReloadOutlined />} 
-        onClick={handleRefresh}
-        type="default"
-      >
+      <Button icon={<ReloadOutlined />} onClick={handleRefresh} type="default">
         {t("admin.dashboard.refresh")}
       </Button>
     </Space>
@@ -373,175 +276,409 @@ const AdminDashboard = () => {
 
   const orderColumns = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      key: 'id',
-      width: 60,
-    },
-    {
-      title: 'Company',
-      dataIndex: 'company',
-      key: 'company',
+      title: t("admin.dashboard.tables.columns.company") || "Company",
+      dataIndex: "companyName",
+      key: "companyName",
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Package',
-      dataIndex: 'package',
-      key: 'package',
+      title: t("admin.dashboard.tables.columns.package") || "Package",
+      dataIndex: "packageName",
+      key: "packageName",
     },
     {
-      title: 'Amount',
-      dataIndex: 'amount',
-      key: 'amount',
-      render: (amount) => new Intl.NumberFormat("vi-VN", {
-        style: "currency",
-        currency: "VND",
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-      }).format(amount),
-      align: 'right',
+      title: t("admin.dashboard.tables.columns.amount") || "Amount",
+      dataIndex: "price",
+      key: "price",
+      render: (price) =>
+        new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }).format(price),
+      align: "right",
     },
     {
-      title: 'Date',
-      dataIndex: 'date',
-      key: 'date',
+      title: t("admin.dashboard.tables.columns.date") || "Date",
+      dataIndex: "purchaseDate",
+      key: "purchaseDate",
+      render: (purchaseDate) => {
+        const date = new Date(purchaseDate);
+        return date.toLocaleDateString("vi-VN");
+      },
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
-      render: (status) => (
-        <Badge 
-          status={status === 'completed' ? 'success' : 'processing'} 
-          text={status === 'completed' ? 'Completed' : 'Processing'} 
-        />
-      ),
+      title: t("admin.dashboard.tables.columns.status") || "Status",
+      dataIndex: "paymentStatus",
+      key: "paymentStatus",
+      render: (paymentStatus) => {
+        console.log("paymentStatus: ", t(paymentStatus));
+        if (paymentStatus === "PAID") {
+          return <Badge text={t(`${paymentStatus}`)} color="green" />;
+        } else {
+          return <Badge text={t(`${paymentStatus}`)} color="gray" />;
+        }
+      },
     },
   ];
-  
+
   const employerColumns = [
     {
-      title: 'Company',
-      dataIndex: 'name',
-      key: 'name',
+      title: t("admin.dashboard.tables.columns.company") || "Company",
+      dataIndex: "name",
+      key: "name",
       render: (text) => <a>{text}</a>,
     },
     {
-      title: 'Jobs Posted',
-      dataIndex: 'jobsPosted',
-      key: 'jobsPosted',
+      title: t("admin.dashboard.tables.columns.jobsPosted") || "Jobs Posted",
+      dataIndex: "jobPosted",
+      key: "jobPosted",
+      align: "center",
     },
     {
-      title: 'Successful Hires',
-      dataIndex: 'hires',
-      key: 'hires',
-    },
-    {
-      title: 'Rating',
-      dataIndex: 'rating',
-      key: 'rating',
-      render: (rating) => (
-        <span>
-          {rating} 
-          <span style={{color: '#faad14', marginLeft: '5px'}}>
-            {'★'.repeat(Math.floor(rating))}
-            {rating % 1 > 0 ? '☆' : ''}
-          </span>
-        </span>
-      ),
+      title: t("admin.dashboard.tables.columns.hires") || "Successful Hires",
+      dataIndex: "hires",
+      key: "hires",
+      align: "center",
     },
   ];
 
   return (
     <div className="admin-dashboard">
-      <Card className="admin-card mb-5">
-        <div className="flex justify-between items-center flex-wrap gap-4">
+      <Card className="mb-5 admin-card">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <Title level={4} style={{ margin: 0 }}>{t("admin.dashboard.title")}</Title>
-            <Text type="secondary">{t("admin.dashboard.subtitle", { date: new Date().toLocaleDateString() })}</Text>
+            <Title level={4} style={{ margin: 0 }}>
+              {t("admin.dashboard.title")}
+            </Title>
           </div>
           <FilterControls />
         </div>
       </Card>
-      
+
+      {/* Alert Section for Important Notices */}
+      <div className="alert-section">
+        <Alert
+          message={t("admin.dashboard.alerts.systemNotice")}
+          description={t("admin.dashboard.alerts.pendingJobs", {
+            count: jobApprovalStats?.pendingJob || 0,
+          })}
+          type="info"
+          showIcon
+          action={
+            <Button
+              size="small"
+              type="primary"
+              onClick={() => {
+                navigate("/admin/post-approval");
+              }}
+            >
+              {t("admin.dashboard.alerts.reviewNow")}
+            </Button>
+          }
+        />
+      </div>
+
       {/* Overview Statistics */}
       <Row gutter={[16, 16]} className="mb-5">
-        <Col xs={24} sm={12} lg={6}>
-          {loading.revenue ? (
-            <Card className="admin-stats-card">
-              <Skeleton active paragraph={{ rows: 2 }} />
-            </Card>
-          ) : (
-            revenueStatsCard(
-              t("admin.dashboard.stats.currentMonthRevenue"),
-              currentMonthRevenue,
-              previousMonthRevenue,
-              <DollarOutlined />,
-              "#52c41a"
-            )
-          )}
-        </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={24} sm={12} lg={8}>
           {loading.users ? (
             <Card className="admin-stats-card">
               <Skeleton active paragraph={{ rows: 2 }} />
             </Card>
           ) : (
             renderStatsCard(
-              t("admin.dashboard.stats.totalCandidates"),
+              t("admin.dashboard.stats.totalRevenue"),
+              new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              }).format(totalRevenue),
+              <DollarOutlined />,
+              "#1890ff"
+            )
+          )}
+        </Col>
+        <Col xs={24} sm={12} lg={8}>
+          {loading.users ? (
+            <Card className="admin-stats-card">
+              <Skeleton active paragraph={{ rows: 2 }} />
+            </Card>
+          ) : (
+            renderStatsCard(
+              t("admin.dashboard.stats.totalCandidates") || "Total Candidates",
               statisticUser.totalCandidates,
               <UserOutlined />,
-              "#1890ff",
-              "+12 this week",
-              "New candidates"
+              "#1890ff"
             )
           )}
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={24} sm={12} lg={8}>
           {loading.users ? (
             <Card className="admin-stats-card">
               <Skeleton active paragraph={{ rows: 2 }} />
             </Card>
           ) : (
             renderStatsCard(
-              t("admin.dashboard.stats.totalEmployers"),
+              t("admin.dashboard.stats.totalEmployers") || "Total Employers",
               statisticUser.totalEmployers,
-              <BankOutlined />,
-              "#722ed1",
-              "+5 this week",
-              "New employers"
+              <IoIosBusiness />,
+              "#722ed1"
             )
           )}
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+      </Row>
+      <Row gutter={[16, 16]} className="mb-5">
+        <Col xs={24} sm={12} lg={8}>
           {loading.packages ? (
             <Card className="admin-stats-card">
               <Skeleton active paragraph={{ rows: 2 }} />
             </Card>
           ) : (
             renderStatsCard(
-              t("admin.dashboard.stats.totalJobs"),
-              jobCategoryStats.reduce((sum, item) => sum + item.value, 0),
-              <FileTextOutlined />,
-              "#fa8c16",
-              "+28 this week",
-              "New jobs"
+              t("admin.dashboard.stats.interview"),
+              jobApprovalStats?.countInterview || 0,
+              <HiOutlineUserGroup />,
+              "#f7dc6f"
+            )
+          )}
+        </Col>
+        <Col xs={24} sm={12} lg={8}>
+          {loading.packages ? (
+            <Card className="admin-stats-card">
+              <Skeleton active paragraph={{ rows: 2 }} />
+            </Card>
+          ) : (
+            renderStatsCard(
+              t("admin.dashboard.stats.successfulInterview"),
+              jobApprovalStats?.successfulInterview || 0,
+              <MdCheckCircleOutline />,
+              "#52c41a"
+            )
+          )}
+        </Col>
+        <Col xs={24} sm={12} lg={8}>
+          {loading.packages ? (
+            <Card className="admin-stats-card">
+              <Skeleton active paragraph={{ rows: 2 }} />
+            </Card>
+          ) : (
+            renderStatsCard(
+              t("admin.dashboard.stats.totalJobs") || "Total Jobs",
+              jobCategoryStats?.reduce((sum, item) => sum + item.jobCount, 0),
+              <BsFilePost />,
+              "#fa8c16"
             )
           )}
         </Col>
       </Row>
 
+      {/* Job Approval Status */}
+      <Row gutter={[16, 16]} className="mb-5">
+        <Col xs={24}>
+          <Card
+            title={
+              <Flex align="center" gap="small">
+                <SafetyCertificateOutlined />{" "}
+                {t("admin.dashboard.jobApproval.title") ||
+                  "Job Approval Status"}
+              </Flex>
+            }
+            className="admin-card overview-card"
+          >
+            <div className="job-status-summary">
+              <div
+                className="status-item"
+                style={{ borderTop: "3px solid #faad14" }}
+              >
+                <div className="status-count">
+                  {jobApprovalStats?.pendingJob || 0}
+                </div>
+                <div className="status-label">
+                  {t("admin.dashboard.jobApproval.pending") || "Pending"}
+                </div>
+              </div>
+              <div
+                className="status-item"
+                style={{ borderTop: "3px solid #52c41a" }}
+              >
+                <div className="status-count">
+                  {jobApprovalStats?.activeJob || 0}
+                </div>
+                <div className="status-label">
+                  {t("admin.dashboard.jobApproval.approved") || "Approved"}
+                </div>
+              </div>
+              <div
+                className="status-item"
+                style={{ borderTop: "3px solid #f5222d" }}
+              >
+                <div className="status-count">
+                  {jobApprovalStats?.rejectedJob || 0}
+                </div>
+                <div className="status-label">
+                  {t("admin.dashboard.jobApproval.rejected") || "Rejected"}
+                </div>
+              </div>
+              <div
+                className="status-item"
+                style={{ borderTop: "3px solid #1890ff" }}
+              >
+                <div className="status-count">
+                  {jobApprovalStats?.total || 0}
+                </div>
+                <div className="status-label">
+                  {t("admin.dashboard.jobApproval.total") || "Total"}
+                </div>
+              </div>
+            </div>
+
+            <Divider />
+
+            <Progress
+              percent={Math.round(
+                Math.min(
+                  jobApprovalStats?.total === 0
+                    ? 0
+                    : (jobApprovalStats?.activeJob / jobApprovalStats?.total) *
+                        100,
+                  100
+                )
+              )}
+              strokeColor="#52c41a"
+              format={(percent) =>
+                `${percent}% ${
+                  t("admin.dashboard.jobApproval.approved") || "approved"
+                }`
+              }
+            />
+          </Card>
+        </Col>
+      </Row>
+
+      {/* User Growth and Platform Performance */}
+      <Row gutter={[16, 16]} className="mb-5">
+        <Col xs={24} lg={24}>
+          <Card
+            title={
+              <Flex align="center" gap="small">
+                <LineChartOutlined /> {t("admin.dashboard.charts.userGrowth")}
+              </Flex>
+            }
+            className="admin-card"
+          >
+            <div style={{ height: 350 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                  data={userGrowthData}
+                  margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                >
+                  <defs>
+                    <linearGradient
+                      id="colorEmployers"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="5%" stopColor="#722ed1" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#722ed1" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient
+                      id="colorCandidates"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="5%" stopColor="#1890ff" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#1890ff" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <Tooltip />
+                  <Area
+                    type="monotone"
+                    dataKey="employerCount"
+                    name={t("role.employer")}
+                    stroke="#722ed1"
+                    fillOpacity={1}
+                    fill="url(#colorEmployers)"
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="studentCount"
+                    name={t("role.student")}
+                    stroke="#1890ff"
+                    fillOpacity={1}
+                    fill="url(#colorCandidates)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+            <Divider />
+            <Flex justify="space-between" align="middle">
+              <Statistic
+                title={t("admin.dashboard.stats.totalEmployers")}
+                value={userGrowthData?.reduce(
+                  (sum, item) => sum + item.employerCount,
+                  0
+                )}
+                valueStyle={{ color: "#722ed1" }}
+              />
+              <Statistic
+                title={t("admin.dashboard.stats.totalCandidates")}
+                value={userGrowthData?.reduce(
+                  (sum, item) => sum + item.studentCount,
+                  0
+                )}
+                valueStyle={{ color: "#1890ff" }}
+              />
+              <Statistic
+                title={t("admin.dashboard.stats.totalUsers")}
+                value={
+                  userGrowthData?.reduce(
+                    (sum, item) => sum + item.employerCount,
+                    0
+                  ) +
+                  userGrowthData?.reduce(
+                    (sum, item) => sum + item.studentCount,
+                    0
+                  )
+                }
+                valueStyle={{ color: "#1890ff" }}
+              />
+            </Flex>
+          </Card>
+        </Col>
+      </Row>
+
       {/* Charts */}
       <Row gutter={[16, 16]} className="mb-5">
-        <Col xs={24} lg={16}>
-          <Card 
-            title={t("admin.dashboard.charts.performanceAnalytics")}
+        <Col xs={24} lg={12}>
+          <Card
+            title={
+              <Flex align="center" gap="small">
+                <BarChartOutlined />{" "}
+                {t("admin.dashboard.charts.revenueAnalytics")}
+              </Flex>
+            }
             className="admin-card"
             extra={
               <Segmented
                 options={[
-                  { label: 'Revenue', value: 'revenue' },
-                  { label: 'Packages', value: 'packages' },
+                  {
+                    label: t("admin.dashboard.charts.revenueItem"),
+                    value: "revenue",
+                  },
+                  {
+                    label: t("admin.dashboard.charts.packageCountItem"),
+                    value: "packages",
+                  },
                 ]}
                 value={chartView}
                 onChange={setChartView}
@@ -556,95 +693,53 @@ const AdminDashboard = () => {
             ) : (
               <div style={{ height: 400 }}>
                 <ResponsiveContainer width="100%" height="100%">
-                  {chartView === 'revenue' ? (
-                    <AreaChart data={revenueByMonth} margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
-                      <defs>
-                        <linearGradient id="colorRevenue" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#52c41a" stopOpacity={0.3}/>
-                          <stop offset="95%" stopColor="#52c41a" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                      <XAxis 
-                        dataKey="month" 
-                        axisLine={{ stroke: "#d9d9d9" }}
-                        tick={{ fill: "#8c8c8c" }}
-                        tickFormatter={(month) => {
-                          const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                          return monthNames[month - 1];
-                        }}
-                      />
+                  {chartView === "revenue" ? (
+                    <BarChart
+                      data={revenueByMonth}
+                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
                       <YAxis
                         tickFormatter={(value) =>
                           new Intl.NumberFormat("vi-VN", {
-                            style: "currency",
-                            currency: "VND",
                             notation: "compact",
                             compactDisplay: "short",
+                          }).format(value)
+                        }
+                      />
+                      <Tooltip
+                        formatter={(value) =>
+                          new Intl.NumberFormat("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
                             minimumFractionDigits: 0,
                             maximumFractionDigits: 0,
                           }).format(value)
                         }
-                        domain={[0, (dataMax) => Math.ceil(dataMax * 1.1)]}
-                        axisLine={{ stroke: "#d9d9d9" }}
-                        tick={{ fill: "#8c8c8c" }}
                       />
-                      <Tooltip
-                        formatter={(value, name) => {
-                          if (name === t("admin.dashboard.charts.revenue")) {
-                            return [
-                              new Intl.NumberFormat("vi-VN", {
-                                style: "currency",
-                                currency: "VND",
-                                minimumFractionDigits: 0,
-                                maximumFractionDigits: 0,
-                              }).format(value),
-                              name,
-                            ];
-                          }
-                          return [value, name];
-                        }}
-                        labelFormatter={(month) => {
-                          const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                          return monthNames[month - 1];
-                        }}
-                      />
-                      <Area
-                        type="monotone"
+                      <Legend />
+                      <Bar
                         dataKey="revenue"
-                        stroke="#52c41a"
-                        name={t("admin.dashboard.charts.revenue")}
-                        strokeWidth={3}
-                        dot={{ stroke: "#52c41a", strokeWidth: 2, r: 4 }}
-                        activeDot={{ r: 6 }}
-                        fill="url(#colorRevenue)"
+                        name={t("admin.dashboard.charts.revenueItem")}
+                        fill="#1890ff"
+                        radius={[4, 4, 0, 0]}
+                        barSize={30}
                       />
-                    </AreaChart>
+                    </BarChart>
                   ) : (
-                    <BarChart data={revenueByMonth} margin={{ top: 20, right: 30, left: 20, bottom: 10 }}>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                      <XAxis 
-                        dataKey="month" 
-                        axisLine={{ stroke: "#d9d9d9" }}
-                        tick={{ fill: "#8c8c8c" }}
-                        tickFormatter={(month) => {
-                          const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-                          return monthNames[month - 1];
-                        }}
-                      />
-                      <YAxis
-                        axisLine={{ stroke: "#d9d9d9" }}
-                        tick={{ fill: "#8c8c8c" }}
-                      />
-                      <Tooltip
-                        labelFormatter={(month) => {
-                          const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-                          return monthNames[month - 1];
-                        }}
-                      />
+                    <BarChart
+                      data={revenueByMonth}
+                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
                       <Bar
                         dataKey="subscriptions"
-                        name={t("admin.dashboard.charts.packageCount")}
+                        name={t("admin.dashboard.charts.packageCountItem")}
                         fill="#1890ff"
                         radius={[4, 4, 0, 0]}
                         barSize={30}
@@ -656,171 +751,293 @@ const AdminDashboard = () => {
             )}
           </Card>
         </Col>
-
-        <Col xs={24} lg={8}>
-          <Card title={t("admin.dashboard.charts.recentActivities")} className="admin-card h-full">
-            <div className="recent-activities-list">
-              {recentActivities.map(activity => (
-                <div key={activity.id} className="recent-activity-item">
-                  <div className="activity-icon">
-                    {activity.type === 'newUser' && <UserOutlined style={{ color: '#1890ff' }} />}
-                    {activity.type === 'newJob' && <FileTextOutlined style={{ color: '#52c41a' }} />}
-                    {activity.type === 'newPackage' && <DollarOutlined style={{ color: '#722ed1' }} />}
-                    {activity.type === 'approval' && <BankOutlined style={{ color: '#fa8c16' }} />}
-                    {activity.type === 'newApplication' && <TeamOutlined style={{ color: '#eb2f96' }} />}
+        {/* Top In-Demand Skills */}
+        <Col xs={24} lg={12} className="h-full">
+          <Card
+            title={
+              <Flex align="center" gap="small">
+                <FireOutlined />{" "}
+                {t("admin.dashboard.skills.title") || "Top In-Demand Skills"}
+              </Flex>
+            }
+            className="admin-card"
+          >
+            <div className="top-skills-chart">
+              {!skillDemandData?.data?.length ? (
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description="Không có dữ liệu kỹ năng"
+                />
+              ) : (
+                skillDemandData?.data?.slice(0, 10).map((skill, index) => (
+                  <div key={index} className="skill-item">
+                    <span className="skill-name w-[200px] truncate">
+                      {skill.skill}
+                    </span>
+                    <div className="skill-bar">
+                      <Progress
+                        percent={Math.round(
+                          Math.min(
+                            skillDemandData?.total === 0
+                              ? 0
+                              : Math.round(
+                                  (skill.count / skillDemandData?.total) *
+                                    100 *
+                                    100
+                                ) / 100,
+                            100
+                          ) || 0
+                        )}
+                        showInfo={false}
+                        strokeColor={COLORS[index % COLORS.length]}
+                      />
+                    </div>
+                    <div className="skill-value">
+                      <Tag className="text-xs w-fit" color="blue">
+                        {skillDemandData?.total === 0
+                          ? 0
+                          : Math.round(
+                              (skill.count / skillDemandData?.total) * 100 * 100
+                            ) / 100}
+                        %
+                      </Tag>
+                    </div>
                   </div>
-                  <div className="activity-content">
-                    <div className="activity-message">{activity.message}</div>
-                    <div className="activity-time">{activity.time}</div>
-                  </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </Card>
         </Col>
       </Row>
 
+      {/* Student Applications Chart */}
       <Row gutter={[16, 16]} className="mb-5">
-        <Col xs={24} lg={12}>
-          <Card title={t("admin.dashboard.charts.topPackages")} className="admin-card">
-            {loading.packages ? (
-              <div style={{ height: 350 }}>
-                <Skeleton active paragraph={{ rows: 10 }} />
-              </div>
-            ) : (
-              <div style={{ height: 350 }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={packageStats}
-                      dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={70}
-                      outerRadius={110}
-                      fill="#722ed1"
-                      paddingAngle={2}
-                      label={({ value, percentage }) =>
-                        t("admin.dashboard.charts.packages", {
-                          value,
-                          percentage,
-                        })
-                      }
-                      labelLine={{ stroke: "#555", strokeWidth: 0.5, strokeDasharray: "2 2" }}
-                    >
-                      {packageStats.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      formatter={(value, name) => [
-                        t("admin.dashboard.charts.packages", {
-                          value,
-                          percentage: packageStats.find(
-                            (item) => item.name === name
-                          )?.percentage,
-                        }),
-                        name,
-                      ]}
-                      contentStyle={{
-                        backgroundColor: "rgba(255, 255, 255, 0.98)",
-                        border: "1px solid #e8e8e8",
-                        borderRadius: "8px",
-                        padding: "10px",
-                        boxShadow: "0 2px 12px rgba(0,0,0,0.05)",
-                      }}
-                    />
-                    <Legend
-                      layout="vertical"
-                      align="right"
-                      verticalAlign="middle"
-                      wrapperStyle={{
-                        paddingLeft: "20px",
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            )}
-          </Card>
-        </Col>
-
-        <Col xs={24} lg={12}>
-          <Card title={t("admin.dashboard.charts.jobsByCategory")} className="admin-card">
-            {loading.categories ? (
-              <div style={{ height: 350 }}>
-                <Skeleton active paragraph={{ rows: 10 }} />
-              </div>
-            ) : (
-              <div style={{ height: 350 }}>
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={jobCategoryStats}
-                      dataKey="value"
-                      nameKey="name"
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={70}
-                      outerRadius={110}
-                      fill="#722ed1"
-                      paddingAngle={2}
-                      label={({ value, percentage }) =>
-                        t("admin.dashboard.charts.jobs", { value, percentage })
-                      }
-                      labelLine={{ stroke: "#555", strokeWidth: 0.5, strokeDasharray: "2 2" }}
-                    >
-                      {jobCategoryStats.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip
-                      formatter={(value, name) => [
-                        t("admin.dashboard.charts.jobs", {
-                          value,
-                          percentage: jobCategoryStats.find(
-                            (item) => item.name === name
-                          )?.percentage,
-                        }),
-                        name,
-                      ]}
-                      contentStyle={{
-                        backgroundColor: "rgba(255, 255, 255, 0.98)",
-                        border: "1px solid #e8e8e8",
-                        borderRadius: "8px",
-                        padding: "10px",
-                        boxShadow: "0 2px 12px rgba(0,0,0,0.05)",
-                      }}
-                    />
-                    <Legend
-                      layout="vertical"
-                      align="right"
-                      verticalAlign="middle"
-                      wrapperStyle={{
-                        paddingLeft: "20px",
-                      }}
-                    />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-            )}
+        <Col xs={24}>
+          <Card
+            title={
+              <Flex align="center" gap="small">
+                <BarChartOutlined />{" "}
+                {t("admin.dashboard.charts.studentApplications")}
+              </Flex>
+            }
+            className="admin-card"
+          >
+            <div style={{ height: 400 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={studentApplicationData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="date"
+                    tick={{ fontSize: 12 }}
+                    axisLine={{ stroke: "#E5E5E5" }}
+                  />
+                  <YAxis
+                    axisLine={{ stroke: "#E5E5E5" }}
+                    tickFormatter={(value) => value.toLocaleString()}
+                  />
+                  <Tooltip
+                    formatter={(value, name) => {
+                      return [value.toLocaleString(), name];
+                    }}
+                  />
+                  <Legend wrapperStyle={{ paddingTop: 15 }} />
+                  <Bar
+                    dataKey="applications"
+                    name={t("admin.dashboard.charts.studentApplications")}
+                    fill="#1890ff"
+                    barSize={20}
+                    radius={[4, 4, 0, 0]}
+                  />
+                  <Bar
+                    dataKey="hires"
+                    name={t("admin.dashboard.charts.successInterviews")}
+                    fill="#52c41a"
+                    barSize={20}
+                    radius={[4, 4, 0, 0]}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <Divider />
+            <Flex justify="space-between" align="middle">
+              <Statistic
+                title={t("admin.dashboard.charts.totalApplications")}
+                value={studentApplicationData?.reduce(
+                  (sum, item) => sum + item.applications,
+                  0
+                )}
+                valueStyle={{ color: "#1890ff" }}
+              />
+              <Statistic
+                title={t("admin.dashboard.charts.totalSuccessInterviews")}
+                value={studentApplicationData?.reduce(
+                  (sum, item) => sum + item.hires,
+                  0
+                )}
+                valueStyle={{ color: "#52c41a" }}
+              />
+              <Statistic
+                title={t("admin.dashboard.charts.averageSuccessRate")}
+                value={
+                  studentApplicationData?.reduce(
+                    (sum, item) => sum + item.applications,
+                    0
+                  ) === 0
+                    ? 0
+                    : Math.min(
+                        Math.round(
+                          (studentApplicationData?.reduce(
+                            (sum, item) => sum + item.hires,
+                            0
+                          ) /
+                            studentApplicationData?.reduce(
+                              (sum, item) => sum + item.applications,
+                              0
+                            )) *
+                            100 *
+                            100
+                        ) / 100,
+                        100
+                      ).toFixed(1)
+                }
+                suffix="%"
+                precision={1}
+                valueStyle={{ color: "#faad14" }}
+              />
+            </Flex>
           </Card>
         </Col>
       </Row>
 
+      {/* Forum Activity Chart */}
+      <Row gutter={[16, 16]} className="mb-5">
+        <Col xs={24}>
+          <Card
+            title={
+              <Flex align="center" gap="small">
+                <BarChartOutlined /> {t("admin.dashboard.charts.forumActivity")}
+              </Flex>
+            }
+            className="admin-card"
+          >
+            <div style={{ height: 400 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart
+                  data={forumActivityData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="date"
+                    tick={{ fontSize: 12 }}
+                    axisLine={{ stroke: "#E5E5E5" }}
+                  />
+                  <YAxis
+                    axisLine={{ stroke: "#E5E5E5" }}
+                    tickFormatter={(value) => value.toLocaleString()}
+                  />
+                  <Tooltip
+                    formatter={(value, name) => {
+                      return [value.toLocaleString(), name];
+                    }}
+                  />
+                  <Legend wrapperStyle={{ paddingTop: 15 }} />
+                  <Bar
+                    dataKey="forums"
+                    name={t("admin.dashboard.charts.newForums")}
+                    fill="#722ed1"
+                    barSize={20}
+                    radius={[4, 4, 0, 0]}
+                  />
+                  <Bar
+                    dataKey="topics"
+                    name={t("admin.dashboard.charts.newTopics")}
+                    fill="#faad14"
+                    barSize={20}
+                    radius={[4, 4, 0, 0]}
+                  />
+                  <Bar
+                    dataKey="posts"
+                    name={t("admin.dashboard.charts.newPosts")}
+                    fill="#1890ff"
+                    barSize={20}
+                    radius={[4, 4, 0, 0]}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <Divider />
+            <Flex justify="space-between" align="middle">
+              <Statistic
+                title={t("admin.dashboard.charts.totalNewForums")}
+                value={forumActivityData?.reduce(
+                  (sum, item) => sum + item.forums,
+                  0
+                )}
+                valueStyle={{ color: "#722ed1" }}
+              />
+              <Statistic
+                title={t("admin.dashboard.charts.totalNewTopics")}
+                value={forumActivityData?.reduce(
+                  (sum, item) => sum + item.topics,
+                  0
+                )}
+                valueStyle={{ color: "#faad14" }}
+              />
+              <Statistic
+                title={t("admin.dashboard.charts.totalNewPosts")}
+                value={forumActivityData?.reduce(
+                  (sum, item) => sum + item.posts,
+                  0
+                )}
+                valueStyle={{ color: "#1890ff" }}
+              />
+              <Statistic
+                title={t("admin.dashboard.charts.averagePostsPerTopic")}
+                value={
+                  forumActivityData?.reduce(
+                    (sum, item) => sum + item.topics,
+                    0
+                  ) === 0
+                    ? 0
+                    : (
+                        forumActivityData?.reduce(
+                          (sum, item) => sum + item.posts,
+                          0
+                        ) /
+                        forumActivityData?.reduce(
+                          (sum, item) => sum + item.topics,
+                          0
+                        )
+                      ).toFixed(1)
+                }
+                precision={1}
+                valueStyle={{ color: "#52c41a" }}
+              />
+            </Flex>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Tables Section */}
       <Row gutter={[16, 16]}>
         <Col xs={24}>
           <Card className="admin-card">
             <Tabs defaultActiveKey="1">
-              <Tabs.TabPane tab="Recent Orders" key="1">
-                <Table 
+              <Tabs.TabPane
+                tab={
+                  <span>
+                    <DollarOutlined />{" "}
+                    {t("admin.dashboard.tables.recentOrders") ||
+                      "Recent Orders"}
+                  </span>
+                }
+                key="1"
+              >
+                <Table
                   dataSource={recentOrders}
                   columns={orderColumns}
                   rowKey="id"
@@ -828,9 +1045,20 @@ const AdminDashboard = () => {
                   className="admin-table"
                 />
               </Tabs.TabPane>
-              <Tabs.TabPane tab="Top Employers" key="2">
-                <Table 
-                  dataSource={topEmployers}
+              <Tabs.TabPane
+                tab={
+                  <span>
+                    <TrophyOutlined />{" "}
+                    {t("admin.dashboard.tables.topEmployers") ||
+                      "Top Employers"}
+                  </span>
+                }
+                key="2"
+              >
+                <Table
+                  dataSource={topEmployers?.filter(
+                    (employer) => employer.jobPosted !== 0
+                  )}
                   columns={employerColumns}
                   rowKey="id"
                   pagination={{ pageSize: 5 }}

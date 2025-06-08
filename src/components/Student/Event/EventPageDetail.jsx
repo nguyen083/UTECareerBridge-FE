@@ -26,10 +26,12 @@ import { useParams } from "react-router-dom";
 import { getEventDetail } from "../../../services/apiService";
 import "./EventPageDetail.scss";
 import { FaDotCircle } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 const { Title, Text } = Typography;
 
 const EventDetail = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
   const [eventDetail, setEventDetail] = useState({});
   const [timeline, setTimeline] = useState([]);
@@ -48,6 +50,7 @@ const EventDetail = () => {
             ),
             children: (
               <Tooltip
+                destroyTooltipOnHide={true}
                 color="#4478c0"
                 title={
                   <Text style={{ color: "#ffffff" }} className="text-base">
@@ -78,10 +81,10 @@ const EventDetail = () => {
     navigator.clipboard
       .writeText(window.location.href)
       .then(() => {
-        message.success("Sao chép vào bộ nhớ tạm");
+        message.success(t("student.event.detail.copySuccess"));
       })
       .catch((err) => {
-        console.error("Lỗi khi sao chép URL: ", err);
+        console.error(t("student.event.detail.copyError"), err);
       });
   };
   const handleSharetoFacebook = () => {
@@ -122,7 +125,7 @@ const EventDetail = () => {
               {/* Thẻ loại sự kiện */}
               <Space>
                 <Text strong style={{ color: "#91CAFF" }}>
-                  # HASHTAG:{" "}
+                  {t("student.event.detail.hashtag")}
                 </Text>{" "}
                 <Tag color="blue" key={eventDetail.eventType}>
                   {eventDetail.eventType}
@@ -130,7 +133,9 @@ const EventDetail = () => {
               </Space>
               <Card
                 title={
-                  <Text className="text-lg text-hightlight">Mô Tả Sự Kiện</Text>
+                  <Text className="text-lg text-hightlight">
+                    {t("student.event.detail.eventDescription")}
+                  </Text>
                 }
                 className="shadow"
               >
@@ -145,7 +150,8 @@ const EventDetail = () => {
                     className="flex items-center"
                     label={
                       <Space className="text-hightlight">
-                        <CalendarOutlined /> Thời Gian diễn ra sự kiện
+                        <CalendarOutlined />{" "}
+                        {t("student.event.detail.eventTime")}
                       </Space>
                     }
                   >
@@ -155,7 +161,8 @@ const EventDetail = () => {
                     className="flex items-center"
                     label={
                       <Space className="text-hightlight">
-                        <EnvironmentOutlined /> Địa Điểm
+                        <EnvironmentOutlined />{" "}
+                        {t("student.event.detail.eventLocation")}
                       </Space>
                     }
                   >
@@ -171,7 +178,7 @@ const EventDetail = () => {
                 size="large"
                 title={
                   <Text className="text-lg text-hightlight">
-                    Chi Tiết Chương Trình
+                    {t("student.event.detail.eventProgram")}
                   </Text>
                 }
                 className=" card_box_shadow card_timeline"
@@ -199,12 +206,12 @@ const EventDetail = () => {
                       size={64}
                     />
                   }
-                  title="Trung tâm Hỗ trợ Sinh viên"
+                  title={t("student.event.detail.organizer")}
                   description={
                     <>
                       <Text className="text-sm" strong>
                         {" "}
-                        Mọi thắc mắc xin vui lòng liên hệ
+                        {t("student.event.detail.contactInfo")}
                       </Text>{" "}
                       <Text className="text-sm" type="secondary">
                         {" "}
@@ -217,28 +224,13 @@ const EventDetail = () => {
 
               {/* Nút hành động */}
               <Space direction="vertical" style={{ width: "100%" }}>
-                {/* <Button
-                  type="primary"
-                  block
-                  size="large"
-                  icon={<BookOutlined />}
-                >
-                  Đăng Ký Ngay
-                </Button>
-                <Button
-                  block
-                  size="large"
-                  icon={<HeartOutlined />}
-                >
-                  Quan Tâm
-                </Button> */}
                 <Button
                   block
                   size="large"
                   icon={<ShareAltOutlined />}
                   onClick={handleShareClick}
                 >
-                  Chia sẻ ngay
+                  {t("student.event.detail.share")}
                 </Button>
                 <Button
                   block
@@ -246,7 +238,7 @@ const EventDetail = () => {
                   icon={<FacebookFilled />}
                   onClick={handleSharetoFacebook}
                 >
-                  Chia sẻ lên Facebook
+                  {t("student.event.detail.shareToFacebook")}
                 </Button>
               </Space>
             </Space>

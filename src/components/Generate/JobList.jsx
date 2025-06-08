@@ -83,7 +83,7 @@ const JobList = () => {
   };
 
   const handleClick = (key) => {
-    navigate("/job/" + key);
+    navigate("/jobs/" + key);
   };
 
   return (

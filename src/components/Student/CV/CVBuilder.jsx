@@ -378,7 +378,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
         message.error(t("cv.builder.errorLoading"));
       }
     }
-  }, [existingCvData, t]);
+  }, [existingCvData]);
 
   // Lắng nghe thay đổi của template để cập nhật giao diện
   useEffect(() => {
@@ -408,7 +408,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
     // Check if section already exists
     const exists = sections.some((s) => s.type === sectionType);
     if (exists) {
-      message.info("Mục này đã được thêm");
+      message.info(t("cv.builder.sectionAlreadyExists"));
       return;
     }
 
@@ -418,13 +418,11 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
       {
         id: `${sectionType}-${Date.now()}`,
         type: sectionType,
-        title: sectionTemplate.name,
+        title: t(`cv.builder.${sectionTemplate.name}`),
         position: prevSections.length,
         content: { items: [] },
       },
     ]);
-
-    message.success("Thêm mục thành công");
   };
 
   const removeSection = (sectionId) => {
@@ -436,8 +434,6 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
         position: index,
       }));
     });
-
-    message.success("Đã xóa mục");
   };
 
   const handleSave = async () => {
@@ -497,14 +493,14 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
       }
 
       if (response.status === "OK") {
-        message.success("Lưu CV thành công");
+        message.success(t("cv.builder.saveSuccess"));
         if (onFinish) onFinish(response.data);
       } else {
         throw new Error(response.message || "Unknown error");
       }
     } catch (error) {
       console.error("Error saving CV:", error);
-      message.error("Có lỗi khi lưu CV");
+      message.error(t("cv.builder.saveError"));
     } finally {
       queryClient.invalidateQueries({ queryKey: ["resume"] });
       setSaveLoading(false);
@@ -556,7 +552,6 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
           // Sử dụng phương thức previewCV mới từ component CVPreview
           // Phương thức này sẽ tạo PDF và mở trong tab mới mà không cần hiển thị trên trang hiện tại
           const success = await previewComponentRef.current.previewCV();
-
           if (success) {
             message.open({
               key: messageKey,
@@ -696,7 +691,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
   const addSkill = () => {
     const newId =
       skills.length > 0 ? Math.max(...skills.map((s) => s.id)) + 1 : 1;
-    setSkills([...skills, { id: newId, name: "Kỹ năng mới", level: 3 }]);
+    setSkills([...skills, { id: newId, name: "", level: 3 }]);
   };
 
   const removeSkill = (skillId) => {
@@ -1342,7 +1337,7 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     />
                   ) : (
                     <div
-                      className="flex items-center justify-center w-32 h-32 bg-gray-100 rounded-full ring-4"
+                      className="flex items-center justify-center w-full h-full bg-gray-100 rounded-full ring-4"
                       style={{
                         ringColor: selectedColor,
                         border: `2px solid white`,
@@ -1766,7 +1761,11 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                     </div>
                     <div className="color-options">
                       {CV_COLOR_PRESETS.map((preset) => (
-                        <Tooltip key={preset.color} title={preset.name}>
+                        <Tooltip
+                          destroyTooltipOnHide={true}
+                          key={preset.color}
+                          title={preset.name}
+                        >
                           <div
                             className={`color-preset ${
                               selectedColor === preset.color ? "active" : ""
@@ -2499,7 +2498,10 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                             setSections((prevSections) =>
                               prevSections.map((s) =>
                                 s.id === section.id
-                                  ? { ...s, title: e.target.value }
+                                  ? {
+                                      ...s,
+                                      title: e.target.value.toUpperCase(),
+                                    }
                                   : s
                               )
                             );
@@ -2539,6 +2541,29 @@ const CVBuilder = ({ onFinish, existingCvData = null, setShowBuilder }) => {
                       />
                     </div>
                   ))}
+                  <Button
+                    className="add-section-btn"
+                    type="dashed"
+                    block
+                    icon={<PlusOutlined />}
+                    onClick={() => {
+                      const sectionId = `custom-${Date.now()}`;
+                      setSections((prevSections) => [
+                        ...prevSections,
+                        {
+                          id: sectionId,
+                          type: "custom",
+                          title: t("cv.builder.newSection"),
+                          position: prevSections.length,
+                          content: {
+                            text: "",
+                          },
+                        },
+                      ]);
+                    }}
+                  >
+                    {t("cv.builder.addNewSection")}
+                  </Button>
                 </div>
               </div>
             </div>

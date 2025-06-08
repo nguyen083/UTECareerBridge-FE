@@ -5,7 +5,7 @@ const { Title, Text } = Typography;
 
 const JobCard = ({ job }) => {
   return (
-    <Card className="job-card">
+    <Card className="job-card-item">
       <Row align="middle" justify="space-between">
         <Col>
           <img className="company-logo" alt="Company Logo" src={job.logo} />

@@ -367,7 +367,7 @@ const EmployerRegister = () => {
                     </Col>
                   </Row>
                   <Flex justify="space-between" align="center">
-                    <Link to="/login" className="text-blue-500">
+                    <Link to="/employer/login" className="text-blue-500">
                       {t("auth.register.haveAccount")}
                     </Link>
                     {current < steps.length - 1 && (

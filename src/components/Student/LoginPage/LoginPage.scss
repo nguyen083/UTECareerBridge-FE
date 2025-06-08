@@ -2,52 +2,52 @@
 
 .full-height-row {
   min-height: 100vh;
-}
 
-.left-column {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: $background-color;
-}
-
-.right-column {
-  background-color: $background-color;
-  background-image: url("https://res.cloudinary.com/utejobhub/image/upload/v1744870441/background-website_zmcplv_77396e.webp");
-  background-size: cover;
-  background-position: center;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 2rem;
-  text-align: end;
-  position: relative;
-}
-
-.card-title {
-  color: $text-color !important;
-}
-
-.form-label {
-  color: $text-color;
-}
-
-.input-field {
-  color: $text-color !important;
-}
-
-.login-button {
-  background-color: $text-color !important;
-
-  &:hover {
-    background-color: $text-color-hover !important;
+  .left-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: $background-color;
   }
-}
 
-.link-text {
-  color: $text-color !important;
-}
+  .right-column {
+    background-color: $background-color;
+    background-image: url("https://res.cloudinary.com/utejobhub/image/upload/v1744870441/background-website_zmcplv_77396e.webp");
+    background-size: cover;
+    background-position: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 2rem;
+    text-align: end;
+    position: relative;
+  }
 
-.logo {
-  cursor: pointer !important;
+  .card-title {
+    color: $text-color !important;
+  }
+
+  .form-label {
+    color: $text-color;
+  }
+
+  .input-field {
+    color: $text-color !important;
+  }
+
+  .login-button {
+    background-color: $text-color !important;
+
+    &:hover {
+      background-color: $text-color-hover !important;
+    }
+  }
+
+  .link-text {
+    color: $text-color !important;
+  }
+
+  .logo {
+    cursor: pointer !important;
+  }
 }

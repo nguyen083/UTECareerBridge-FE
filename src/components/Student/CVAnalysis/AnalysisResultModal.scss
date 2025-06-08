@@ -39,13 +39,13 @@ $gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
     padding: 16px 24px;
     border-bottom: 1px solid $border-color;
     background: #f9fafc;
-    
+
     .result-logo,
     .modal-logo {
       height: 32px;
       margin-right: 16px;
     }
-    
+
     .result-modal-title,
     .modal-title {
       display: inline-flex;
@@ -54,14 +54,6 @@ $gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
       margin-bottom: 0;
       font-weight: 600;
       font-size: 18px;
-      
-      &::after {
-        content: '';
-        height: 24px;
-        width: 2px;
-        background: linear-gradient(to bottom, $primary-color, transparent);
-        margin-left: 16px;
-      }
     }
 
     .close-button {
@@ -96,7 +88,7 @@ $gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
     position: relative;
     overflow: hidden;
     min-height: 400px;
-    
+
     .svg-background {
       position: absolute;
       top: 0;
@@ -106,18 +98,18 @@ $gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
       opacity: 0.7;
       z-index: 1;
     }
-    
+
     .loading-text {
       position: relative;
       z-index: 2;
       text-align: center;
-      
+
       h4 {
         color: $primary-color;
         margin-bottom: 12px;
         font-weight: 600;
       }
-      
+
       .ant-typography {
         color: $secondary-text;
       }
@@ -128,12 +120,12 @@ $gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
   .analysis-result-content {
     padding: 24px;
   }
-  
+
   .analysis-success-container,
   .analysis-summary {
     text-align: center;
     margin-bottom: 28px;
-    
+
     .success-icon,
     .check-icon {
       width: 64px;
@@ -163,28 +155,32 @@ $gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
     align-items: center;
     justify-content: center;
     margin-top: 24px;
-    
+
     .score-circle,
     .ant-progress {
       margin-right: 20px;
-      
+
       .ant-progress-text {
         color: $text-color;
         font-weight: 700;
         font-size: 20px;
       }
     }
-    
+
     .match-description,
     .score-text {
       text-align: left;
       max-width: 400px;
-      
+
       h2 {
         margin-bottom: 0;
         font-weight: 700;
         line-height: 1.4;
-        background: linear-gradient(90deg, $primary-color, darken($primary-color, 15%));
+        background: linear-gradient(
+          90deg,
+          $primary-color,
+          darken($primary-color, 15%)
+        );
         background-clip: text;
         -webkit-background-clip: text;
         color: transparent;
@@ -204,7 +200,7 @@ $gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
       font-weight: 600;
     }
   }
-  
+
   .matched-jobs-section,
   .job-recommendations-container {
     margin-top: 24px;
@@ -217,22 +213,22 @@ $gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
       font-size: 18px;
       color: $text-color;
       position: relative;
-      
+
       &::before {
-        content: '';
+        content: "";
         width: 4px;
         height: 24px;
         background: $warning-color;
         margin-right: 12px;
         border-radius: 2px;
       }
-      
+
       .section-icon {
         color: $warning-color;
         margin-right: 8px;
       }
     }
-    
+
     // Simplified job card styling to match the design in the image
     .job-card,
     .job-recommendation-card {
@@ -242,20 +238,20 @@ $gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
       background-color: #fff;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
       transition: all 0.2s ease;
-      
+
       &:hover {
         box-shadow: 0 4px 12px rgba(24, 144, 255, 0.12);
         border-color: rgba(24, 144, 255, 0.2);
         transform: translateY(-2px);
       }
-      
+
       .job-card-content,
       .job-card-wrapper {
         padding: 16px;
         display: flex;
         align-items: center;
       }
-      
+
       // Company logo styling
       .company-logo,
       .company-logo-container {
@@ -263,7 +259,7 @@ $gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
         margin-right: 12px;
         width: 48px;
         height: 48px;
-        
+
         img {
           width: 48px;
           height: 48px;
@@ -286,27 +282,27 @@ $gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
           border-radius: 8px;
         }
       }
-      
+
       // Job details styling
       .job-info,
       .job-details {
         flex: 1;
         min-width: 0; // Fix for text overflow
-        
+
         .job-title {
           margin-bottom: 4px;
           color: $text-color;
           font-weight: 600;
           font-size: 16px;
         }
-        
+
         .company-name {
           display: block;
           color: $secondary-text;
           margin-bottom: 8px;
           font-size: 14px;
         }
-        
+
         // Location and salary styling
         .job-meta {
           display: flex;
@@ -329,7 +325,7 @@ $gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
             }
           }
         }
-        
+
         // Skills tags styling
         .matched-skills {
           .skills-label {
@@ -344,7 +340,7 @@ $gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
             flex-wrap: wrap;
             gap: 8px;
           }
-          
+
           .ant-tag {
             margin: 0;
             border-radius: 4px;
@@ -352,7 +348,7 @@ $gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
             padding: 0 8px;
             height: 22px;
             line-height: 20px;
-            
+
             &.more-skills {
               background: #f5f5f5;
               color: $secondary-text;
@@ -361,7 +357,7 @@ $gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
           }
         }
       }
-      
+
       // Match percentage styling
       .match-percentage {
         flex-shrink: 0;
@@ -369,19 +365,19 @@ $gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
         flex-direction: column;
         align-items: center;
         margin-left: 16px;
-        
+
         .ant-progress {
           width: 64px !important;
           height: 64px !important;
         }
-        
+
         .ant-progress-circle {
           .ant-progress-text {
             font-weight: 600;
             font-size: 16px;
           }
         }
-        
+
         .match-label {
           margin-top: 4px;
           font-size: 12px;
@@ -432,49 +428,49 @@ $gradient-success: linear-gradient(135deg, #52c41a 0%, #b7eb8f 100%);
     .job-card-wrapper {
       flex-direction: column;
       align-items: center;
-      
+
       .company-logo,
       .company-logo-container {
         margin-right: 0;
         margin-bottom: 12px;
       }
-      
+
       .job-info,
       .job-details {
         width: 100%;
         text-align: center;
-        
+
         .job-meta {
           justify-content: center;
         }
-        
+
         .matched-skills {
           .skills-list {
             justify-content: center;
           }
         }
       }
-      
+
       .match-percentage {
         margin-left: 0;
         margin-top: 16px;
       }
     }
-    
+
     .match-score-container,
     .score-display {
       flex-direction: column;
-      
+
       .score-circle,
       .ant-progress {
         margin-right: 0;
         margin-bottom: 16px;
       }
-      
+
       .match-description,
       .score-text {
         text-align: center;
-        
+
         h2 {
           font-size: 16px;
         }

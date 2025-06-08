@@ -11,7 +11,6 @@ import {
   Divider,
   Statistic,
   Card,
-  Breadcrumb,
   Tag,
   Button,
 } from "antd";
@@ -21,7 +20,6 @@ import {
   RiseOutlined,
   FallOutlined,
   CalendarOutlined,
-  HomeOutlined,
   LoadingOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
@@ -56,7 +54,6 @@ const JobSearchPage = () => {
   });
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searchKeyword, setSearchKeyword] = useState(keyword || "");
   const [isFilterVisible, setIsFilterVisible] = useState(true);
 
   const sanitizeParams = (params) => {
@@ -94,10 +91,10 @@ const JobSearchPage = () => {
       });
   };
 
-  const handleKeywordSearch = () => {
-    dispatch(setKeyword(searchKeyword));
-    setCurrentPage(1);
-  };
+  // const handleKeywordSearch = () => {
+  //   dispatch(setKeyword(searchKeyword));
+  //   setCurrentPage(1);
+  // };
 
   const handleFilterToggle = () => {
     setIsFilterVisible(!isFilterVisible);
@@ -111,13 +108,13 @@ const JobSearchPage = () => {
       jobLevelId: undefined,
       skillId: undefined,
     });
-    setSearchKeyword("");
     dispatch(setKeyword(""));
     setCurrentPage(1);
   };
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    console.log("location.state", location.state);
     if (location.state?.filters) {
       setFilters((prev) => ({
         ...prev,
@@ -141,15 +138,6 @@ const JobSearchPage = () => {
   return (
     <Layout className="search-page-layout">
       <Content className="search-content">
-        <div className="search-header">
-          <Breadcrumb className="mb-4">
-            <Breadcrumb.Item href="/">
-              <HomeOutlined /> {t("common.home")}
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>{t("job.search.title")}</Breadcrumb.Item>
-          </Breadcrumb>
-        </div>
-
         <Row gutter={24} className="main-content">
           <Col xs={24} lg={18} className="left-column">
             <div className="search-panel">

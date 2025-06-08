@@ -1,6 +1,12 @@
-"use client";
-
-import { Avatar, Typography, Button, Input, message, Modal } from "antd";
+import {
+  Avatar,
+  Typography,
+  Button,
+  Input,
+  message,
+  Modal,
+  Tooltip,
+} from "antd";
 import {
   DeleteOutlined,
   MessageOutlined,
@@ -16,7 +22,6 @@ import {
   useGetCommentChildrenByCommentId,
   useUpdateComment,
 } from "../../../composables/comment";
-import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const { Text, Paragraph } = Typography;
@@ -25,6 +30,7 @@ const { TextArea } = Input;
 const CommentList = ({
   isOpenModal,
   comments = [],
+  setComments,
   page,
   setPage,
   totalPage,
@@ -32,36 +38,49 @@ const CommentList = ({
   post,
 }) => {
   const { t } = useTranslation();
+
+  const handleDeleteComment = (commentId) => {
+    setComments(comments.filter((comment) => comment.commentId !== commentId));
+  };
+
   return (
-    <div className="mt-4 overflow-y-scroll max-h-[70vh] scrollbar-webkit scrollbar-thin">
+    <div className="mt-4 overflow-y-auto max-h-[70vh] scrollbar-webkit scrollbar-thin pr-1">
       {comments.length > 0 ? (
-        <div className="space-y-3">
+        <div className="space-y-5">
           {comments.map((comment) => (
             <CommentItem
+              handleDeleteRootComment={handleDeleteComment}
               isOpenModal={isOpenModal}
               key={comment.commentId}
               comment={comment}
               post={post}
             />
           ))}
-          {!(page === totalPage && !isPendingComments) && (
-            <Button
-              loading={isPendingComments}
-              onClick={() => setPage(page + 1)}
-              type="text"
-              className="font-medium text-blue-500 hover:text-blue-700"
-            >
-              {t("common.seeMore")}
-            </Button>
+          {!(
+            (page === totalPage && !isPendingComments) ||
+            comments.length < 10
+          ) && (
+            <div className="flex justify-center">
+              <Button
+                loading={isPendingComments}
+                onClick={() => setPage(page + 1)}
+                type="text"
+                className="text-blue-500"
+              >
+                {t("common.seeMore")}
+              </Button>
+            </div>
           )}
         </div>
       ) : (
-        <div className="py-6 text-center rounded-lg bg-gray-50">
+        <div className="py-8 text-center rounded-lg shadow-sm bg-gray-50">
           <MessageOutlined
             style={{ fontSize: 48 }}
             className="mb-4 text-gray-300"
           />
-          <Paragraph className="text-gray-500">{t("post.noComment")}</Paragraph>
+          <Paragraph className="text-base text-gray-500">
+            {t("post.noComment")}
+          </Paragraph>
         </div>
       )}
     </div>
@@ -85,7 +104,6 @@ const ChildCommentItem = ({
   const [isEditing, setIsEditing] = useState(false);
   const [editText, setEditText] = useState(childComment.content);
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const { mutate: createComment, isPending: isCreatingComment } =
     useCreateComment();
   const {
@@ -100,6 +118,11 @@ const ChildCommentItem = ({
   const { mutate: updateComment, isPending: isUpdatingComment } =
     useUpdateComment();
   const handleCommentSubmit = () => {
+    if (!user.userId) {
+      message.error(t("comment.createError"));
+      setCommentText("");
+      return;
+    }
     createComment(
       {
         postId: +post.data.postId,
@@ -114,8 +137,7 @@ const ChildCommentItem = ({
           setIsReply(false);
         },
         onError: () => {
-          message.error(t("comment.login"));
-          navigate("/login");
+          message.error(t("comment.createError"));
         },
       }
     );
@@ -204,68 +226,124 @@ const ChildCommentItem = ({
     }
   }, [isReply]);
   return (
-    <div className="mb-2">
-      <div className="flex items-start gap-2">
+    <div className="mb-3">
+      <div className="flex items-start gap-3">
         <Avatar
           src={childComment.avatar}
           icon={<UserOutlined />}
-          className="flex-shrink-0 mr-2"
+          className="flex-shrink-0 border-2 border-gray-100 shadow-sm"
           size={32}
         />
         <div className={`flex-col ${isEditing ? "w-full" : ""}`}>
           {isEditing ? (
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col w-full space-y-2">
               <TextArea
                 autoFocus
                 value={editText}
                 onChange={(e) => setEditText(e.target.value)}
-                className="flex-grow"
+                className="border-gray-200 shadow-sm rounded-xl"
                 autoSize={{ minRows: 1, maxRows: 3 }}
               />
-              <Button
-                type="primary"
-                onClick={() =>
-                  handleUpdateComment(childComment.commentId, editText)
-                }
-                loading={isUpdatingComment}
-              >
-                {t("common.save")}
-              </Button>
-              <Button
-                onClick={() => {
-                  setIsEditing(false);
-                  setEditText(childComment.content);
-                }}
-              >
-                {t("common.cancel")}
-              </Button>
+              <div className="flex justify-end gap-2">
+                <Button
+                  type="primary"
+                  size="small"
+                  onClick={() =>
+                    handleUpdateComment(childComment.commentId, editText)
+                  }
+                  loading={isUpdatingComment}
+                  className="text-white bg-blue-500 shadow-sm hover:bg-blue-600"
+                >
+                  {t("common.save")}
+                </Button>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    setIsEditing(false);
+                    setEditText(childComment.content);
+                  }}
+                  className="hover:border-gray-400"
+                >
+                  {t("common.cancel")}
+                </Button>
+              </div>
             </div>
           ) : (
-            <div className="px-3 py-2 bg-gray-100 rounded-2xl">
-              <Text strong className="text-sm">
-                {childComment.userName}
-              </Text>
-              <Paragraph className="!my-1 text-sm">
-                {childComment.content}
-              </Paragraph>
+            <div className="w-full">
+              <div className="px-3.5 py-2.5 bg-gray-100 rounded-2xl hover:bg-gray-200 transition-colors">
+                <div className="flex items-start justify-between">
+                  <Text strong className="mr-2 text-sm text-gray-800">
+                    {childComment.userName}
+                  </Text>
+                  <div className="flex mt-0.5">
+                    {user.userId === childComment.userId && !isEditing && (
+                      <Tooltip
+                        destroyTooltipOnHide={true}
+                        title={t("common.edit")}
+                      >
+                        <Button
+                          type="text"
+                          size="small"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setIsEditing(true);
+                          }}
+                          icon={
+                            <EditOutlined className="text-gray-500 hover:text-blue-500" />
+                          }
+                          className="h-5 px-1"
+                        />
+                      </Tooltip>
+                    )}
+                    {(user.userId === childComment.userId ||
+                      user.userId === post.data.userId ||
+                      user.role === "admin") &&
+                      !isEditing && (
+                        <Tooltip
+                          destroyTooltipOnHide={true}
+                          title={t("common.delete")}
+                        >
+                          <Button
+                            type="text"
+                            size="small"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteComment(
+                                childComment.commentId,
+                                childComment.parentCommentId
+                              );
+                            }}
+                            loading={isDeletingComment}
+                            icon={
+                              <DeleteOutlined className="text-gray-500 hover:text-red-500" />
+                            }
+                            className="h-5 px-1"
+                          />
+                        </Tooltip>
+                      )}
+                  </div>
+                </div>
+                <Paragraph className="!my-1 text-sm text-gray-700">
+                  {childComment.content}
+                </Paragraph>
+              </div>
+              <div className="flex items-center pl-2 mt-1 text-xs text-gray-500">
+                <Button
+                  type="text"
+                  size="small"
+                  className="px-1 text-xs font-medium text-gray-600 hover:text-blue-600"
+                  onClick={() => setIsReply(!isReply)}
+                >
+                  {t("comment.reply")}
+                </Button>
+                <span className="mx-1">·</span>
+                <span className="text-xs text-gray-500">
+                  {childComment.createdAt}
+                </span>
+              </div>
             </div>
           )}
-          {!isEditing && (
-            <div className="flex items-center pl-2 mt-1 text-xs text-gray-500">
-              <Button
-                type="text"
-                size="small"
-                className="px-1 text-xs font-medium text-gray-600 hover:text-blue-600"
-                onClick={() => setIsReply(!isReply)}
-              >
-                {t("comment.reply")}
-              </Button>
-              <span className="mx-1">·</span>
-              <span className="text-xs text-gray-500">
-                {childComment.createdAt}
-              </span>
-            </div>
-          )}
+
           {replyCount > 0 && (
             <div className="pl-2 mt-1">
               {replyComments.length > 0 ? (
@@ -275,8 +353,9 @@ const ChildCommentItem = ({
                   type="text"
                   size="small"
                   loading={isFetchingCommentChild}
-                  className="flex items-center px-0 text-xs font-medium hover:!bg-transparent text-text-color hover:text-text-color-hover"
+                  className="flex items-center px-0 text-xs font-medium hover:!bg-transparent text-blue-500 hover:text-blue-700"
                   onClick={() => (page === 0 ? setPage(1) : null)}
+                  icon={<MessageOutlined className="mr-1" />}
                 >
                   {`Xem ${replyCount} phản hồi`}
                 </Button>
@@ -284,53 +363,27 @@ const ChildCommentItem = ({
             </div>
           )}
         </div>
-        <div className="flex">
-          {user.userId === childComment.userId && !isEditing && (
-            <Button
-              type="text"
-              size="small"
-              onClick={() => setIsEditing(true)}
-              icon={<EditOutlined />}
-              className="mr-1 text-xs text-gray-500"
-            ></Button>
-          )}
-          {(user.userId === childComment.userId ||
-            user.userId === post.data.userId ||
-            user.role === "admin") &&
-            !isEditing && (
-              <Button
-                type="text"
-                size="small"
-                onClick={() => {
-                  handleDeleteComment(
-                    childComment.commentId,
-                    childComment.parentCommentId
-                  );
-                }}
-                loading={isDeletingComment}
-                icon={<DeleteOutlined />}
-                className="text-xs text-gray-500"
-              ></Button>
-            )}
-        </div>
       </div>
 
       {/* Third level replies */}
       {replyComments.length > 0 && (
-        <div className="pl-8 mt-2 space-y-2">
+        <div className="pl-10 mt-2.5 space-y-3">
           {replyComments.map((replyComment) => (
-            <div key={replyComment.commentId} className="flex items-start">
+            <div
+              key={replyComment.commentId}
+              className="flex items-start gap-2"
+            >
               <Avatar
                 src={replyComment.avatar}
                 icon={<UserOutlined />}
-                className="flex-shrink-0 mr-2"
+                className="flex-shrink-0 border-2 border-gray-100 shadow-sm"
                 size={28}
               />
               <div
                 className={`flex-col ${replyComment.isEditing ? "w-full" : ""}`}
               >
                 {replyComment.isEditing ? (
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-col w-full space-y-2">
                     <TextArea
                       autoFocus
                       value={replyComment.editText}
@@ -342,113 +395,145 @@ const ChildCommentItem = ({
                         );
                         setReplyComments(updatedComments);
                       }}
-                      className="flex-grow"
+                      className="border-gray-200 shadow-sm rounded-xl"
                       autoSize={{ minRows: 1, maxRows: 3 }}
                     />
-                    <Button
-                      type="primary"
-                      onClick={() =>
-                        handleUpdateComment(
-                          replyComment.commentId,
-                          replyComment.editText
-                        )
-                      }
-                      loading={isUpdatingComment}
-                    >
-                      {t("common.save")}
-                    </Button>
-                    <Button
-                      onClick={() => {
-                        const updatedComments = replyComments.map((c) =>
-                          c.commentId === replyComment.commentId
-                            ? { ...c, isEditing: false }
-                            : c
-                        );
-                        setReplyComments(updatedComments);
-                      }}
-                    >
-                      {t("common.cancel")}
-                    </Button>
-                  </div>
-                ) : (
-                  <div className="px-3 py-2 bg-gray-100 rounded-2xl">
-                    <Text strong className="text-sm">
-                      {replyComment.userName}
-                    </Text>
-                    <Paragraph className="!my-1 text-sm">
-                      {replyComment.content}
-                    </Paragraph>
-                  </div>
-                )}
-                <div className="flex items-center pl-2 mt-1 text-xs text-gray-500">
-                  <span className="text-xs text-gray-500">
-                    {replyComment.createdAt}
-                  </span>
-                </div>
-              </div>
-              {(user.userId === replyComment.userId ||
-                user.userId === post.data.userId ||
-                user.role === "admin") && (
-                <div className="flex">
-                  {user.userId === replyComment.userId &&
-                    !replyComment.isEditing && (
+                    <div className="flex justify-end gap-2">
                       <Button
-                        type="text"
+                        type="primary"
+                        size="small"
+                        onClick={() =>
+                          handleUpdateComment(
+                            replyComment.commentId,
+                            replyComment.editText
+                          )
+                        }
+                        loading={isUpdatingComment}
+                        className="text-white bg-blue-500 hover:bg-blue-600"
+                      >
+                        {t("common.save")}
+                      </Button>
+                      <Button
                         size="small"
                         onClick={() => {
                           const updatedComments = replyComments.map((c) =>
                             c.commentId === replyComment.commentId
-                              ? { ...c, isEditing: true, editText: c.content }
+                              ? { ...c, isEditing: false }
                               : c
                           );
                           setReplyComments(updatedComments);
                         }}
-                        icon={<EditOutlined />}
-                        className="mr-1 text-xs text-gray-500"
-                      ></Button>
-                    )}
-                  {!replyComment.isEditing && (
-                    <Button
-                      type="text"
-                      size="small"
-                      onClick={() => {
-                        handleDeleteComment(
-                          replyComment.commentId,
-                          replyComment.parentCommentId
-                        );
-                      }}
-                      loading={isDeletingComment}
-                      icon={<DeleteOutlined />}
-                      className="text-xs text-gray-500"
-                    ></Button>
-                  )}
-                </div>
-              )}
+                      >
+                        {t("common.cancel")}
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <div>
+                    <div className="w-full px-3 py-2 transition-colors bg-gray-100 rounded-2xl hover:bg-gray-200">
+                      <div className="flex items-start justify-between">
+                        <Text strong className="mr-2 text-sm text-gray-800">
+                          {replyComment.userName}
+                        </Text>
+                        <div className="flex mt-0.5">
+                          {user.userId === replyComment.userId &&
+                            !replyComment.isEditing && (
+                              <Tooltip
+                                destroyTooltipOnHide={true}
+                                title={t("common.edit")}
+                              >
+                                <Button
+                                  type="text"
+                                  size="small"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    const updatedComments = replyComments.map(
+                                      (c) =>
+                                        c.commentId === replyComment.commentId
+                                          ? {
+                                              ...c,
+                                              isEditing: true,
+                                              editText: c.content,
+                                            }
+                                          : c
+                                    );
+                                    setReplyComments(updatedComments);
+                                  }}
+                                  icon={
+                                    <EditOutlined className="text-gray-500 hover:text-blue-500" />
+                                  }
+                                  className="h-5 px-1"
+                                />
+                              </Tooltip>
+                            )}
+                          {(user.userId === replyComment.userId ||
+                            user.userId === post.data.userId ||
+                            user.role === "admin") &&
+                            !replyComment.isEditing && (
+                              <Tooltip
+                                destroyTooltipOnHide={true}
+                                title={t("common.delete")}
+                              >
+                                <Button
+                                  type="text"
+                                  size="small"
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handleDeleteComment(
+                                      replyComment.commentId,
+                                      replyComment.parentCommentId
+                                    );
+                                  }}
+                                  loading={isDeletingComment}
+                                  icon={
+                                    <DeleteOutlined className="text-gray-500 hover:text-red-500" />
+                                  }
+                                  className="h-5 px-1"
+                                />
+                              </Tooltip>
+                            )}
+                        </div>
+                      </div>
+                      <Paragraph className="!my-1 text-sm text-gray-700">
+                        {replyComment.content}
+                      </Paragraph>
+                    </div>
+                    <div className="flex items-center pl-2 mt-1">
+                      <span className="text-xs text-gray-500">
+                        {replyComment.createdAt}
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           ))}
 
           {replyComments.length < replyCount && (
-            <Button
-              loading={isFetchingCommentChild}
-              type="text"
-              size="small"
-              className="ml-8 text-xs font-medium text-blue-600 hover:text-blue-800"
-              onClick={() => setPage(page + 1)}
-            >
-              {t("common.seeMore")}
-            </Button>
+            <div className="ml-10">
+              <Button
+                loading={isFetchingCommentChild}
+                type="text"
+                size="small"
+                className="flex items-center text-xs font-medium text-blue-500 hover:text-blue-700"
+                onClick={() => setPage(page + 1)}
+                icon={<MessageOutlined className="mr-1" />}
+              >
+                {t("common.seeMore")}
+              </Button>
+            </div>
           )}
         </div>
       )}
 
       {/* Reply input for third level */}
       {isReply && (
-        <div className="pl-8 mt-2 ">
-          <div className="flex items-center gap-2">
+        <div className="pl-10 mt-3">
+          <div className="flex items-start gap-2">
             <Avatar
               src={student.profileImage || employer.companyLogo}
               icon={<UserOutlined />}
-              className="flex-shrink-0 mr-2"
+              className="flex-shrink-0 border-2 border-gray-100 shadow-sm"
               size={28}
             />
             <div className="flex-grow">
@@ -458,25 +543,29 @@ const ChildCommentItem = ({
                 placeholder={t("post.writeComment")}
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
-                className="bg-gray-100 resize-none rounded-3xl scrollbar-webkit scrollbar-thin"
+                className="transition-all bg-gray-100 border-transparent shadow-sm resize-none rounded-2xl focus:border-blue-400 focus:bg-white"
                 autoSize={{ minRows: 1, maxRows: 3 }}
                 onPressEnter={(e) => {
                   if (!e.shiftKey) {
                     e.preventDefault();
-                    handleCommentSubmit();
+                    if (commentText.trim()) handleCommentSubmit();
                   }
                 }}
               />
+              <div className="flex justify-end mt-2">
+                <Button
+                  loading={isCreatingComment}
+                  type="primary"
+                  onClick={handleCommentSubmit}
+                  size="small"
+                  className="flex items-center text-white bg-blue-500 rounded-full shadow-sm hover:bg-blue-600"
+                  disabled={!commentText.trim()}
+                  icon={<SendOutlined />}
+                >
+                  {t("comment.send") || "Gửi"}
+                </Button>
+              </div>
             </div>
-            <Button
-              loading={isCreatingComment}
-              type="text"
-              onClick={handleCommentSubmit}
-              size="small"
-              className="rounded-full"
-              disabled={!commentText.trim()}
-              icon={<SendOutlined className="!text-2xl text-text-color" />}
-            ></Button>
           </div>
         </div>
       )}
@@ -484,14 +573,18 @@ const ChildCommentItem = ({
   );
 };
 
-const CommentItem = ({ comment, post, isOpenModal }) => {
+const CommentItem = ({
+  comment,
+  post,
+  isOpenModal,
+  handleDeleteRootComment,
+}) => {
   const commentInputRef = useRef(null);
   const user = useSelector((state) => state.user);
   const [replyCommentCount, setReplyCommentCount] = useState(
     comment.replyCount
   );
   const [page, setPage] = useState(0);
-  const navigate = useNavigate();
   const { mutate: createComment, isPending: isCreatingComment } =
     useCreateComment();
   const [isReply, setIsReply] = useState(false);
@@ -514,6 +607,11 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
   const student = useSelector((state) => state.student);
   const employer = useSelector((state) => state.employer);
   const handleCommentSubmit = () => {
+    if (!user.userId) {
+      message.error(t("comment.login"));
+      setCommentText("");
+      return;
+    }
     createComment(
       {
         postId: +post.data.postId,
@@ -528,8 +626,7 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
           setIsReply(false);
         },
         onError: () => {
-          message.error(t("comment.login"));
-          navigate("/login");
+          message.error(t("comment.createError"));
         },
       }
     );
@@ -545,6 +642,9 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
       title: t("comment.delete"),
       content: t("comment.deleteConfirm"),
       centered: true,
+      okButtonProps: {
+        className: "bg-red-500 hover:bg-red-600",
+      },
       onOk: () => {
         deleteComment(
           { commentId, parentCommentId },
@@ -560,6 +660,7 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
                 setCommentChild(
                   commentChild.filter((c) => c.commentId !== commentId)
                 );
+                handleDeleteRootComment(commentId);
                 setReplyCommentCount((prev) => prev - 1);
               }
             },
@@ -634,68 +735,125 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
     }
   }, [isReply]);
   return (
-    <div className="mb-3">
-      <div className="flex items-start gap-2">
+    <div className="mb-5 transition-all duration-300">
+      <div className="flex items-start gap-3">
         <Avatar
           src={comment.avatar}
           icon={<UserOutlined />}
-          className="flex-shrink-0 mr-3"
-          size={36}
+          className="flex-shrink-0 border-2 border-gray-100 shadow-sm"
+          size={38}
         />
-        <div className={`flex-col ${isEditing ? "w-full" : ""}`}>
+        <div className={`flex-col ${isEditing ? "w-full" : ""} flex-grow`}>
           {isEditing ? (
-            <div className="flex items-center gap-2">
+            <div className="flex flex-col w-full space-y-2">
               <TextArea
                 autoFocus
                 value={editText}
                 onChange={(e) => setEditText(e.target.value)}
-                className="flex-grow"
-                autoSize={{ minRows: 1, maxRows: 3 }}
+                className="border-gray-200 shadow-sm rounded-xl"
+                autoSize={{ minRows: 2, maxRows: 4 }}
               />
-              <Button
-                type="primary"
-                onClick={() => handleUpdateComment(comment.commentId, editText)}
-                loading={isUpdatingComment}
-              >
-                {t("common.save")}
-              </Button>
-              <Button
-                onClick={() => {
-                  setIsEditing(false);
-                  setEditText(comment.content);
-                }}
-              >
-                {t("common.cancel")}
-              </Button>
+              <div className="flex justify-end gap-2">
+                <Button
+                  type="primary"
+                  onClick={() =>
+                    handleUpdateComment(comment.commentId, editText)
+                  }
+                  loading={isUpdatingComment}
+                  className="text-white bg-blue-500 hover:bg-blue-600"
+                >
+                  {t("common.save")}
+                </Button>
+                <Button
+                  onClick={() => {
+                    setIsEditing(false);
+                    setEditText(comment.content);
+                  }}
+                >
+                  {t("common.cancel")}
+                </Button>
+              </div>
             </div>
           ) : (
-            <div className="px-3 py-2 bg-gray-100 rounded-2xl">
-              <div className="flex items-start justify-between">
-                <div>
-                  <Text strong className="text-sm">
-                    {comment.userName}
-                  </Text>
+            <div className="w-full">
+              <div className="px-4 py-2.5 bg-gray-100 rounded-2xl hover:bg-gray-200 transition-colors">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-2">
+                    <Text strong className="text-base text-gray-800">
+                      {comment.userName}
+                    </Text>
+                  </div>
+                  <div className="flex">
+                    {user.userId === comment.userId && !isEditing && (
+                      <Tooltip
+                        destroyTooltipOnHide={true}
+                        title={t("common.edit")}
+                      >
+                        <Button
+                          type="text"
+                          size="small"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setIsEditing(true);
+                          }}
+                          icon={
+                            <EditOutlined className="text-gray-500 hover:text-blue-500" />
+                          }
+                          className="px-1"
+                        />
+                      </Tooltip>
+                    )}
+                    {(user.userId === comment.userId ||
+                      user.userId === post.data.userId ||
+                      user.role === "admin") &&
+                      !isEditing && (
+                        <Tooltip
+                          destroyTooltipOnHide={true}
+                          title={t("common.delete")}
+                        >
+                          <Button
+                            type="text"
+                            size="small"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDeleteComment(
+                                comment.commentId,
+                                comment.parentCommentId
+                              );
+                            }}
+                            loading={isDeletingComment}
+                            icon={
+                              <DeleteOutlined className="text-gray-500 hover:text-red-500" />
+                            }
+                            className="px-1"
+                          />
+                        </Tooltip>
+                      )}
+                  </div>
                 </div>
+                <Paragraph className="text-sm text-gray-700 mt-1 mb-0.5">
+                  {comment.content}
+                </Paragraph>
               </div>
-              <Paragraph className="!my-1 text-sm">{comment.content}</Paragraph>
+              <div className="flex items-center pl-2 mt-1.5 text-xs text-gray-500">
+                <Button
+                  type="text"
+                  size="small"
+                  className="px-1 text-xs font-medium text-gray-600 hover:text-blue-600"
+                  onClick={() => setIsReply(!isReply)}
+                >
+                  {t("comment.reply")}
+                </Button>
+                <span className="mx-1">·</span>
+                <span className="text-xs text-gray-500">
+                  {comment.createdAt}
+                </span>
+              </div>
             </div>
           )}
-          {!isEditing && (
-            <div className="flex items-center pl-2 mt-1 text-xs text-gray-500">
-              <Button
-                type="text"
-                size="small"
-                className="px-1 text-xs font-medium text-gray-600 hover:text-blue-600"
-                onClick={() => setIsReply(!isReply)}
-              >
-                {t("comment.reply")}
-              </Button>
-              <span className="mx-1">·</span>
-              <span className="text-xs text-gray-500">{comment.createdAt}</span>
-            </div>
-          )}
+
           {comment.replyCount > 0 && (
-            <div className="pl-2 mt-1">
+            <div className="pl-2 mt-1.5">
               {commentChild.length > 0 ? (
                 <></>
               ) : (
@@ -703,52 +861,22 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
                   type="text"
                   size="small"
                   loading={isFetchingMoreCommentChild}
-                  className="flex items-center px-0 text-xs font-medium hover:!bg-transparent text-text-color hover:text-text-color-hover"
+                  className="flex items-center px-0 text-xs font-medium hover:!bg-transparent text-blue-500 hover:text-blue-700"
                   onClick={() => (page === 0 ? setPage(1) : null)}
+                  icon={<MessageOutlined className="mr-1" />}
                 >
-                  {`Xem ${replyCommentCount} phản hồi`}
+                  {`${t("comment.view") || "Xem"} ${replyCommentCount} ${
+                    t("comment.replies") || "phản hồi"
+                  }`}
                 </Button>
               )}
             </div>
           )}
         </div>
-        <div className="flex">
-          {user.userId === comment.userId && !isEditing && (
-            <Button
-              type="text"
-              size="small"
-              onClick={() => setIsEditing(true)}
-              icon={<EditOutlined />}
-              className="mr-1 text-xs text-gray-500"
-            ></Button>
-          )}
-          {(user.userId === comment.userId ||
-            user.userId === post.data.userId ||
-            user.role === "admin") &&
-            !isEditing && (
-              <Button
-                type="text"
-                size="small"
-                onClick={() => {
-                  handleDeleteComment(
-                    comment.commentId,
-                    comment.parentCommentId
-                  );
-                  console.log(
-                    "comment.parentCommentId: ",
-                    comment.parentCommentId
-                  );
-                }}
-                loading={isDeletingComment}
-                icon={<DeleteOutlined />}
-                className="text-xs text-gray-500"
-              ></Button>
-            )}
-        </div>
       </div>
 
       {commentChild.length > 0 && (
-        <div className="pl-12 mt-2 space-y-3">
+        <div className="mt-3 space-y-4 pl-14">
           {commentChild.map((childComment) => (
             <ChildCommentItem
               key={childComment.commentId}
@@ -760,26 +888,29 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
           ))}
 
           {commentChild.length < replyCommentCount && (
-            <Button
-              loading={isFetchingMoreCommentChild}
-              type="text"
-              size="small"
-              className="ml-10 text-xs font-medium text-blue-600 hover:text-blue-800"
-              onClick={() => setPage(page + 1)}
-            >
-              {t("common.seeMore")}
-            </Button>
+            <div>
+              <Button
+                loading={isFetchingMoreCommentChild}
+                type="text"
+                size="small"
+                className="flex items-center text-xs font-medium text-blue-500 hover:text-blue-700"
+                onClick={() => setPage(page + 1)}
+                icon={<MessageOutlined className="mr-1" />}
+              >
+                {t("common.seeMore")}
+              </Button>
+            </div>
           )}
         </div>
       )}
 
       {isReply && (
-        <div className="pl-12 mt-2">
-          <div className="flex items-center gap-2 ">
+        <div className="mt-3 pl-14">
+          <div className="flex items-start gap-2">
             <Avatar
               src={student.profileImage || employer.companyLogo}
               icon={<UserOutlined />}
-              className="flex-shrink-0 mr-2"
+              className="flex-shrink-0 border-2 border-gray-100 shadow-sm"
               size={32}
             />
             <div className="flex-grow">
@@ -789,25 +920,29 @@ const CommentItem = ({ comment, post, isOpenModal }) => {
                 placeholder={t("post.writeComment")}
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
-                className="bg-gray-100 resize-none rounded-3xl scrollbar-webkit scrollbar-thin"
-                autoSize={{ minRows: 1, maxRows: 3 }}
+                className="transition-all bg-gray-100 border-transparent shadow-sm resize-none rounded-2xl focus:border-blue-400 focus:bg-white"
+                autoSize={{ minRows: 2, maxRows: 4 }}
                 onPressEnter={(e) => {
                   if (!e.shiftKey) {
                     e.preventDefault();
-                    handleCommentSubmit();
+                    if (commentText.trim()) handleCommentSubmit();
                   }
                 }}
               />
+              <div className="flex justify-end mt-2">
+                <Button
+                  loading={isCreatingComment}
+                  type="primary"
+                  onClick={handleCommentSubmit}
+                  size="small"
+                  className="flex items-center text-white bg-blue-500 rounded-full shadow-sm hover:bg-blue-600"
+                  disabled={!commentText.trim()}
+                  icon={<SendOutlined />}
+                >
+                  {t("comment.send") || "Gửi"}
+                </Button>
+              </div>
             </div>
-            <Button
-              loading={isCreatingComment}
-              type="text"
-              onClick={handleCommentSubmit}
-              size="small"
-              className="rounded-full"
-              disabled={!commentText.trim()}
-              icon={<SendOutlined className="!text-2xl text-text-color" />}
-            ></Button>
           </div>
         </div>
       )}

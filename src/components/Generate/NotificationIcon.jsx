@@ -9,7 +9,7 @@ import {
   Tooltip,
   Typography,
 } from "antd";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import COLOR from "../styles/_variables";
 import "./Notification.scss";
 import "../Generate/CustomizePopover.scss";
@@ -27,12 +27,37 @@ import sound from "../../assets/sounds/notification.mp3";
 import icon from "../../assets/bell-ringing.png";
 import { Check } from "lucide-react";
 import { clsx } from "clsx";
+import { useSelector } from "react-redux";
 
 const { Text } = Typography;
-const ListNotification = ({ notification, userId }) => {
+const ListNotification = ({ notification, userId, setOpen }) => {
   const notificationMutation = useNotificationRead();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const user = useSelector((state) => state.user);
+  const queryClient = useQueryClient();
+
+  const handleSeeMore = () => {
+    setOpen(false);
+    if (user.role === "admin") {
+      navigate("/admin/notification");
+    } else if (user.role === "employer") {
+      navigate("/employer/notification");
+    } else {
+      navigate("/notification");
+    }
+  };
+  const handleViewNotification = (id) => {
+    setOpen(false);
+    if (user.role === "admin") {
+      navigate(`/admin/notification/${id}`);
+    } else if (user.role === "employer") {
+      navigate(`/employer/notification/${id}`);
+    } else {
+      navigate(`/notification/${id}`);
+    }
+  };
+
   return (
     <List
       split={false}
@@ -59,7 +84,7 @@ const ListNotification = ({ notification, userId }) => {
           </Typography.Text>
         ),
       }}
-      className="notification-list"
+      className="notification-list min-w-[250px]"
       itemLayout="horizontal"
       dataSource={notification}
       renderItem={(item) => (
@@ -68,9 +93,7 @@ const ListNotification = ({ notification, userId }) => {
             title={
               <Flex justify="space-between">
                 <Typography.Text
-                  onClick={() =>
-                    navigate(`/notification/${item.notificationId}`)
-                  }
+                  onClick={() => handleViewNotification(item.notificationId)}
                   className={clsx(
                     "!text-base cursor-pointer group-hover:text-text-color-hover notification-title",
                     item.read === false && "!font-medium"
@@ -93,15 +116,46 @@ const ListNotification = ({ notification, userId }) => {
                     {new Date(item.notificationDate).toLocaleString("vi-VN")}
                   </Typography.Text>
                   <Tooltip
+                    destroyTooltipOnHide={true}
                     placement="topRight"
                     title={t("notification.markAsRead")}
                   >
                     <Check
                       className="invisible cursor-pointer group-hover:visible group-hover:text-text-color-hover"
                       size={16}
-                      onClick={() =>
-                        notificationMutation.mutate(item.notificationId)
-                      }
+                      onClick={() => {
+                        queryClient.setQueryData(
+                          ["notificationList", userId],
+                          (old) => {
+                            const newData = {
+                              ...old,
+                              data: {
+                                ...old.data,
+                                content: old.data.content.map((noti) => {
+                                  if (
+                                    noti.notificationId === item.notificationId
+                                  ) {
+                                    return { ...noti, read: true };
+                                  }
+                                  return noti;
+                                }),
+                              },
+                            };
+                            return newData;
+                          }
+                        );
+                        if (item.read === false)
+                          queryClient.setQueryData(
+                            ["notificationCount", userId],
+                            (old) => {
+                              return {
+                                ...old,
+                                data: old.data - 1,
+                              };
+                            }
+                          );
+                        notificationMutation.mutate(item.notificationId);
+                      }}
                     />
                   </Tooltip>
                 </Flex>
@@ -115,7 +169,7 @@ const ListNotification = ({ notification, userId }) => {
           variant="outlined"
           type="text"
           className="w-full"
-          onClick={() => navigate("/notification")}
+          onClick={handleSeeMore}
         >
           {t("common.seeMore")}
         </Button>
@@ -130,6 +184,7 @@ const NotificationIcon = ({ userId = null }) => {
   const { data: notificationList } = useNotification(userId);
   const markAllAsRead = useNotificationReadAll();
   const queryClient = useQueryClient();
+  const [open, setOpen] = useState(false);
   const { t } = useTranslation();
 
   const playNotificationSound = () => {
@@ -250,53 +305,74 @@ const NotificationIcon = ({ userId = null }) => {
   );
 
   useEffect(() => {
-    let subscription = null;
-
     connectStomp(
       (client) => {
-        subscription = onConnected(client);
+        onConnected(client);
       },
       (error) => {
         console.error("Lỗi kết nối:", error);
       }
     );
-
-    return () => {
-      if (subscription) {
-        subscription.unsubscribe();
-      }
-    };
   }, [onConnected]);
 
   return (
     <Popover
+      open={open}
+      onOpenChange={(e) => setOpen(e)}
+      destroyTooltipOnHide={true}
       overlayClassName="notification-popover"
+      popupVisible
       placement="bottomRight"
       title={
-        <Flex justify="space-between">
-          <Typography.Title className="notification-title-header" level={5}>
+        <Flex justify="space-between" align="center">
+          <Typography.Title
+            className="!mb-0 notification-title-header leading-0"
+            level={5}
+          >
             {t("notification.title")}
           </Typography.Title>
           <Text
             className="text-sm font-medium cursor-pointer hover:text-text-color-hover hover:underline"
             type="text"
-            onClick={() => markAllAsRead.mutate(userId)}
+            onClick={() => {
+              queryClient.setQueryData(["notificationCount", userId], () => {
+                return { data: 0 };
+              });
+              queryClient.setQueryData(["notificationList", userId], (old) => {
+                const newData = {
+                  ...old,
+                  data: {
+                    ...old.data,
+                    content: old.data.content.map((noti) => {
+                      return { ...noti, read: true };
+                    }),
+                  },
+                };
+                return newData;
+              });
+              markAllAsRead.mutate(userId);
+            }}
           >
             {t("notification.markAllAsRead")}
           </Text>
         </Flex>
       }
       content={
-        <ListNotification notification={notificationList} userId={userId} />
+        <ListNotification
+          notification={notificationList}
+          userId={userId}
+          setOpen={setOpen}
+        />
       }
       trigger={["click"]}
     >
       <Tooltip
+        destroyTooltipOnHide={true}
         title={t("notification.title")}
         placement="bottom"
         color={COLOR.bgTooltipColor}
       >
-        <Badge count={notificationCount}>
+        <Badge count={notificationCount} destroyTooltipOnHide={true}>
           <Button
             className="rounded-full btn-header btn-bell"
             size="large"

@@ -1,122 +1,146 @@
-import { useEffect, useState } from 'react';
-import { Button, Card, Badge, Layout, Row, Col, Typography, Alert, Pagination, message, Flex, Skeleton, Tooltip, Tag, Divider } from 'antd';
-import BoxContainer from '../../Generate/BoxContainer';
-import './packageDashboard.scss';
-import { getAllPackages, addPackageToCart } from '../../../services/apiService';
-import { ShoppingCartOutlined, CheckCircleFilled, StarFilled, FireFilled, ThunderboltFilled, InfoCircleOutlined } from '@ant-design/icons';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
+import { useEffect, useState } from "react";
+import {
+  Button,
+  Card,
+  Badge,
+  Row,
+  Col,
+  Typography,
+  Alert,
+  Pagination,
+  message,
+  Skeleton,
+  Tooltip,
+  Tag,
+  Divider,
+} from "antd";
+import BoxContainer from "../../Generate/BoxContainer";
+import "./packageDashboard.scss";
+import { getAllPackages, addPackageToCart } from "../../../services/apiService";
+import {
+  ShoppingCartOutlined,
+  FireFilled,
+  ThunderboltFilled,
+  InfoCircleOutlined,
+} from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const { Title, Text, Paragraph } = Typography;
 
 // Function to determine if a package is popular
 const isPopularPackage = (package_) => {
-  return package_.packageName.toLowerCase().includes('premium') || 
-         package_.packageName.toLowerCase().includes('gold') || 
-         package_.amount > 20;
-};
-
-const PackageFeatureList = ({ features }) => {
-  // This is a simple placeholder since we don't have actual feature list data
-  // In a real implementation, you would map actual features
-  const defaultFeatures = [
-    { title: 'Job posting', included: true },
-    { title: 'Priority listing', included: features?.includes('premium') },
-    { title: 'Featured company', included: features?.includes('featured') },
-    { title: 'Access to CV database', included: features?.includes('cv') || features?.includes('premium') },
-    { title: 'Analytics dashboard', included: features?.includes('premium') },
-  ];
-
   return (
-    <div className="feature-list">
-      {defaultFeatures.map((feature, index) => (
-        <div key={index} className="feature-item">
-          <CheckCircleFilled className={feature.included ? 'feature-included' : 'feature-excluded'} />
-          <span className={feature.included ? 'feature-text' : 'feature-text disabled'}>{feature.title}</span>
-        </div>
-      ))}
-    </div>
+    package_.packageName.toLowerCase().includes("premium") ||
+    package_.packageName.toLowerCase().includes("gold") ||
+    package_.amount > 20
   );
 };
 
-const PackageCard = ({ service, onAddToCart, onBuyNow, isPopular, isBestValue }) => {
+const PackageCard = ({
+  service,
+  onAddToCart,
+  onBuyNow,
+  isPopular,
+  isBestValue,
+}) => {
   const { t } = useTranslation();
-  
-  // Extract features from package description
-  const features = service.description.toLowerCase();
-  
+
   return (
-    <Badge.Ribbon 
-      text={isPopular ? t('employer.services.mostPopular') : isBestValue ? t('employer.services.bestValue') : null}
-      color={isPopular ? '#ff4d4f' : '#52c41a'}
-      style={{ display: !isPopular && !isBestValue ? 'none' : 'block' }}
-    >
-      <Card 
-        className={`service-card ${isPopular ? 'popular-card' : isBestValue ? 'best-value-card' : ''}`}
-        hoverable
+    <div className="flex-1 h-full">
+      <Badge.Ribbon
+        text={
+          isPopular
+            ? t("employer.services.mostPopular")
+            : isBestValue
+            ? t("employer.services.bestValue")
+            : null
+        }
+        color={isPopular ? "#ff4d4f" : "#52c41a"}
+        style={{
+          display: !isPopular && !isBestValue ? "none" : "block",
+        }}
       >
-        <div className="card-header">
-          <Title level={4} className="package-title">
-            {service.packageName}
-            {isPopular && <FireFilled className="popular-icon" />}
-            {isBestValue && <ThunderboltFilled className="best-value-icon" />}
-          </Title>
-          
-          {service.featureName && (
-            <Tag color={isPopular ? 'volcano' : 'blue'} className="feature-tag">
-              {service.featureName}
-            </Tag>
-          )}
-          
-          <div className="price-container">
-            <Text className="price-text">
-              {service.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
-            </Text>
-            <Text type="secondary" className="price-info">
-              {t('employer.services.validFor', { period: service.duration || 30 })}
-            </Text>
-          </div>
-        </div>
-        
-        <Divider />
-        
-        <div className="package-content">
-          <div className="package-amount">
-            <div className="amount-circle">
-              <Text className="amount-value">{service.amount}</Text>
+        <Card
+          className={`service-card shadow-md ${
+            isPopular ? "popular-card" : isBestValue ? "best-value-card" : ""
+          }`}
+          hoverable
+        >
+          <div className="flex flex-col">
+            <div className="card-header">
+              <Title level={4} className="package-title">
+                {service.packageName}
+                {isPopular && <FireFilled className="popular-icon" />}
+                {isBestValue && (
+                  <ThunderboltFilled className="best-value-icon" />
+                )}
+              </Title>
+
+              {service.featureName && (
+                <Tag
+                  color={isPopular ? "volcano" : "blue"}
+                  className="feature-tag w-fit"
+                >
+                  {service.featureName}
+                </Tag>
+              )}
+
+              <div className="price-container">
+                <Text className="price-text">
+                  {service.price.toLocaleString("vi-VN", {
+                    style: "currency",
+                    currency: "VND",
+                  })}
+                </Text>
+                <Text type="secondary" className="price-info">
+                  {t("employer.services.validFor", {
+                    period: service.duration || 30,
+                  })}
+                </Text>
+              </div>
             </div>
-            <Text className="amount-label">{t('employer.services.jobPostings')}</Text>
+
+            <Divider />
+
+            <div className="package-content">
+              <div className="package-amount">
+                <div className="amount-circle">
+                  <Text className="amount-value">{service.amount}</Text>
+                </div>
+                <Text className="amount-label">
+                  {t("employer.services.jobPostings")}
+                </Text>
+              </div>
+
+              <Paragraph
+                className="package-description"
+                ellipsis={{ rows: 2, expandable: true }}
+                style={{ minHeight: "3rem" }}
+              >
+                {service.description}
+              </Paragraph>
+            </div>
+
+            <div className="package-footer">
+              <Button
+                block
+                type="default"
+                onClick={() => onAddToCart(service)}
+                className="add-to-cart-btn"
+                icon={<ShoppingCartOutlined />}
+              >
+                {t("employer.services.addToCart")}
+              </Button>
+
+              <Button block type="primary" onClick={() => onBuyNow(service)}>
+                {t("employer.services.buyNow")}
+              </Button>
+            </div>
           </div>
-          
-          <Paragraph className="package-description" ellipsis={{ rows: 2, expandable: true }}>
-            {service.description}
-          </Paragraph>
-          
-          <PackageFeatureList features={features} />
-        </div>
-        
-        <div className="package-footer">
-          <Button
-            block
-            type="default"
-            onClick={() => onAddToCart(service)}
-            className="add-to-cart-btn"
-            icon={<ShoppingCartOutlined />}
-          >
-            {t('employer.services.addToCart')}
-          </Button>
-          
-          <Button
-            block
-            type={isPopular ? 'danger' : 'primary'}
-            onClick={() => onBuyNow(service)}
-            className={isPopular ? 'buy-now-popular-btn' : 'buy-now-btn'}
-          >
-            {t('employer.services.buyNow')}
-          </Button>
-        </div>
-      </Card>
-    </Badge.Ribbon>
+        </Card>
+      </Badge.Ribbon>
+    </div>
   );
 };
 
@@ -132,26 +156,28 @@ const ServiceMarketplace = () => {
     try {
       const values = {
         packageId: service.packageId,
-        quantity: 1
+        quantity: 1,
       };
 
       const response = await addPackageToCart(values);
 
-      if (response.status === 'OK') {
-        message.success(response.message || t('employer.services.addedToCart'));
+      if (response.status === "OK") {
+        message.success(response.message || t("employer.services.addedToCart"));
       } else {
-        message.error(response.message || t('employer.services.addToCartError'));
+        message.error(
+          response.message || t("employer.services.addToCartError")
+        );
       }
     } catch (error) {
       console.error("Error adding to cart:", error);
-      message.error(t('employer.services.addToCartErrorGeneric'));
+      message.error(t("employer.services.addToCartErrorGeneric"));
     }
   };
 
   const handleCheckout = async (service) => {
     try {
       await handleAddToCart(service);
-      navigate('/employer/cart');
+      navigate("/employer/cart");
     } catch (error) {
       console.error("Error during checkout:", error);
     }
@@ -166,7 +192,7 @@ const ServiceMarketplace = () => {
       }
     } catch (error) {
       console.error("Error fetching packages:", error);
-      message.error(t('employer.services.fetchError'));
+      message.error(t("employer.services.fetchError"));
     } finally {
       setLoading(false);
     }
@@ -178,7 +204,7 @@ const ServiceMarketplace = () => {
 
   const handlePageChange = (page) => {
     setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const currentServices = services.slice(
@@ -189,65 +215,57 @@ const ServiceMarketplace = () => {
   // Find best value package (highest amount / price ratio)
   const findBestValuePackage = (packages) => {
     if (!packages || packages.length === 0) return null;
-    
+
     let bestValue = null;
     let bestRatio = 0;
-    
-    packages.forEach(pkg => {
+
+    packages.forEach((pkg) => {
       const ratio = pkg.amount / pkg.price;
       if (ratio > bestRatio) {
         bestRatio = ratio;
         bestValue = pkg.packageId;
       }
     });
-    
+
     return bestValue;
   };
-  
+
   const bestValuePackageId = findBestValuePackage(services);
 
   return (
     <>
-      <BoxContainer className='shadow-md package-header'>
+      <BoxContainer className="shadow-md package-header">
         <div className="package-header-content">
           <div>
-            <Title level={3}>{t('employer.services.title')}</Title>
-            <Text type="secondary">{t('employer.services.subtitle') || "Choose the perfect package for your recruitment needs"}</Text>
+            <Title level={3}>{t("employer.services.title")}</Title>
+            <Text type="secondary">
+              {t("employer.services.subtitle") ||
+                "Choose the perfect package for your recruitment needs"}
+            </Text>
           </div>
-          <Button 
-            type="primary" 
+          <Button
+            type="primary"
             className="view-cart-btn"
             icon={<ShoppingCartOutlined />}
-            onClick={() => navigate('/employer/cart')}
+            onClick={() => navigate("/employer/cart")}
           >
-            {t('employer.services.viewCart')}
+            {t("employer.services.viewCart")}
           </Button>
         </div>
       </BoxContainer>
-      
-      <BoxContainer className='shadow-md notice-container'>
+
+      <BoxContainer className="shadow-md notice-container">
         <Alert
-          message={<Text strong>{t('employer.services.importantNotice')}</Text>}
+          message={<Text strong>{t("employer.services.importantNotice")}</Text>}
           description={
             <div className="notice-content">
-              <Paragraph>{t('employer.services.noticeDescription')}</Paragraph>
-              <div className="benefit-points">
-                <div className="benefit-item">
-                  <CheckCircleFilled className="benefit-check" />
-                  <Text>{t('employer.services.benefits.reach')}</Text>
-                </div>
-                <div className="benefit-item">
-                  <CheckCircleFilled className="benefit-check" />
-                  <Text>{t('employer.services.benefits.visibility')}</Text>
-                </div>
-                <div className="benefit-item">
-                  <CheckCircleFilled className="benefit-check" />
-                  <Text>{t('employer.services.benefits.talent')}</Text>
-                </div>
-              </div>
-              <Tooltip title={t('employer.services.contactSales')}>
+              <Paragraph>{t("employer.services.noticeDescription")}</Paragraph>
+              <Tooltip
+                destroyTooltipOnHide={true}
+                title={t("employer.services.contactSales")}
+              >
                 <Button type="link" className="contact-sales-link">
-                  <InfoCircleOutlined /> {t('employer.services.needHelp')}
+                  <InfoCircleOutlined /> {t("employer.services.needHelp")}
                 </Button>
               </Tooltip>
             </div>
@@ -257,8 +275,8 @@ const ServiceMarketplace = () => {
           className="service-alert"
         />
       </BoxContainer>
-      
-      <BoxContainer className='shadow-md package-container'>
+
+      <BoxContainer className="shadow-md package-container">
         {loading ? (
           <div className="skeleton-container">
             <Row gutter={[24, 24]}>
@@ -274,18 +292,29 @@ const ServiceMarketplace = () => {
         ) : (
           <>
             <div className="packages-header">
-              <Title level={4}>{t('employer.services.availablePackages')}</Title>
-              <Text type="secondary">{t('employer.services.comparePackages')}</Text>
+              <Title level={4}>
+                {t("employer.services.availablePackages")}
+              </Title>
+              <Text type="secondary">
+                {t("employer.services.comparePackages")}
+              </Text>
             </div>
-            
+
             <Row gutter={[24, 24]} className="packages-grid">
               {currentServices.map((service) => {
                 const isPopular = isPopularPackage(service);
-                const isBestValue = service.packageId === bestValuePackageId && !isPopular;
-                
+                const isBestValue =
+                  service.packageId === bestValuePackageId && !isPopular;
+
                 return (
-                  <Col key={service.packageId} xs={24} sm={12} lg={8}>
-                    <PackageCard 
+                  <Col
+                    className="flex items-stretch"
+                    key={service.packageId}
+                    xs={24}
+                    sm={12}
+                    lg={8}
+                  >
+                    <PackageCard
                       service={service}
                       onAddToCart={handleAddToCart}
                       onBuyNow={handleCheckout}
@@ -296,7 +325,7 @@ const ServiceMarketplace = () => {
                 );
               })}
             </Row>
-            
+
             {services.length > itemsPerPage && (
               <div className="pagination-container">
                 <Pagination
@@ -311,21 +340,35 @@ const ServiceMarketplace = () => {
           </>
         )}
       </BoxContainer>
-      
-      <BoxContainer className='shadow-md faq-container'>
-        <Title level={4} className="faq-title">{t('employer.services.faq.title')}</Title>
-        <div className="faq-content">
-          <div className="faq-item">
-            <Title level={5}>{t('employer.services.faq.q1')}</Title>
-            <Paragraph>{t('employer.services.faq.a1') || "Our job posting packages remain active for the specified duration from the date of purchase. During this time, you can post jobs until you've used all the job postings included in your package."}</Paragraph>
+
+      <BoxContainer className="shadow-md faq-container">
+        <Title level={4} className="faq-title !text-text-color !mb-4">
+          {t("employer.services.faq.title")}
+        </Title>
+        <div className="flex flex-col gap-1">
+          <div>
+            <Title level={5} className="!text-text-color">
+              1. {t("employer.services.faq.q1")}
+            </Title>
+            <Paragraph className="!text-text-color-hover !ml-3">
+              {t("employer.services.faq.a1")}
+            </Paragraph>
           </div>
-          <div className="faq-item">
-            <Title level={5}>{t('employer.services.faq.q2')}</Title>
-            <Paragraph>{t('employer.services.faq.a2') || "Yes, your package remains valid for its full duration, and any remaining job postings can be used anytime within that period."}</Paragraph>
+          <div>
+            <Title level={5} className="!text-text-color">
+              2. {t("employer.services.faq.q2")}
+            </Title>
+            <Paragraph className="!text-text-color-hover !ml-3">
+              {t("employer.services.faq.a2")}
+            </Paragraph>
           </div>
-          <div className="faq-item">
-            <Title level={5}>{t('employer.services.faq.q3')}</Title>
-            <Paragraph>{t('employer.services.faq.a3') || "Contact our customer support team through the Help Center, and they can assist you with upgrading to a larger package."}</Paragraph>
+          <div>
+            <Title level={5} className="!text-text-color">
+              3. {t("employer.services.faq.q3")}
+            </Title>
+            <Paragraph className="!text-text-color-hover !ml-3">
+              {t("employer.services.faq.a3")}
+            </Paragraph>
           </div>
         </div>
       </BoxContainer>

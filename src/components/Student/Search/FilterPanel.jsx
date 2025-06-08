@@ -7,9 +7,11 @@ import {
   getAllJobLevels,
   getAllSkills,
 } from "../../../services/apiService";
+import { useTranslation } from "react-i18next";
 const { Option } = Select;
 
 const FilterPanel = ({ onValuesChange, filters = null }) => {
+  const { t } = useTranslation();
   const [form] = Form.useForm();
   const [listCategory, setListCategory] = useState([]);
   const [listIndustry, setListIndustry] = useState([]);
@@ -60,17 +62,15 @@ const FilterPanel = ({ onValuesChange, filters = null }) => {
   useEffect(() => {
     fetchData();
     if (filters) {
-      console.log(filters);
-      onValuesChange(filters);
+      form.setFieldsValue(filters);
     }
-  }, []);
+  }, [filters]);
   return (
     <Form
       size="large"
       form={form}
       className="w-full"
       onValuesChange={(_, allValues) => {
-        console.log(allValues);
         onValuesChange(allValues);
       }}
       initialValues={filters}
@@ -78,7 +78,7 @@ const FilterPanel = ({ onValuesChange, filters = null }) => {
       <Flex gap={16} className="w-full">
         <Form.Item name="categoryId" className={styles.wSelect}>
           <Select
-            placeholder="Ngành nghề"
+            placeholder={t("category")}
             allowClear
             showSearch
             filterOption={(input, option) =>
@@ -94,7 +94,7 @@ const FilterPanel = ({ onValuesChange, filters = null }) => {
         </Form.Item>
         <Form.Item name="industryId" className={styles.wSelect}>
           <Select
-            placeholder="Lĩnh vực"
+            placeholder={t("industry")}
             allowClear
             showSearch
             filterOption={(input, option) =>
@@ -110,7 +110,7 @@ const FilterPanel = ({ onValuesChange, filters = null }) => {
         </Form.Item>
         <Form.Item name="jobLevelId" className={styles.wSelect}>
           <Select
-            placeholder="Cấp bậc"
+            placeholder={t("level")}
             allowClear
             showSearch
             filterOption={(input, option) =>
@@ -126,7 +126,7 @@ const FilterPanel = ({ onValuesChange, filters = null }) => {
         </Form.Item>
         <Form.Item name="skillId" className={styles.wSelect}>
           <Select
-            placeholder="Kỹ năng"
+            placeholder={t("skill")}
             allowClear
             showSearch
             filterOption={(input, option) =>

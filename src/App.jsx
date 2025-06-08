@@ -7,7 +7,11 @@ import viVN from "antd/lib/locale/vi_VN";
 import enUS from "antd/locale/en_US";
 import I18nInitializer from "./i18n";
 import { lazy, Suspense, useEffect } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import {
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { connectStomp, disconnectStomp } from "./utils/stompConfig.js";
 const StudentDashboard = lazy(() =>
   import("./components/Student/Dashboard/Dashboard.jsx")
@@ -21,16 +25,26 @@ const CVAnalysis = lazy(() =>
 const InterviewList = lazy(() =>
   import("./components/Employer/Interview/InterviewPage.jsx")
 );
+const CandidateEvaluation = lazy(() =>
+  import("./components/Employer/Interview/CandidateEvaluation.jsx")
+);
+const JobEvaluations = lazy(() =>
+  import("./components/Employer/Interview/JobEvaluations.jsx")
+);
+const JobEvaluationList = lazy(() =>
+  import("./components/Employer/Interview/JobEvaluationList.jsx")
+);
 const Notification = lazy(() =>
   import("./components/Generate/Notification/Notification.jsx")
 );
 const CreateNotification = lazy(() =>
   import("./components/Admin/Notification/CreateNotification.jsx")
 );
-const NotificationList = lazy(() =>
-  import("./components/Admin/Notification/NotificationList.jsx")
+const JobAlertScheduleConfig = lazy(() =>
+  import("./components/Admin/JobAlertConfig/JobAlertScheduleConfig.jsx")
 );
 const ForumPage = lazy(() => import("./pages/Forum/ForumPage.jsx"));
+const AdminForum = lazy(() => import("./pages/Forum/Admin/ForumPage.jsx"));
 const TopicListAdmin = lazy(() => import("./pages/Topic/Admin/TopicPage.jsx"));
 const PostList = lazy(() => import("./pages/Post/User/PostList.jsx"));
 const PostListAdmin = lazy(() => import("./pages/Post/Admin/PostList.jsx"));
@@ -47,8 +61,14 @@ const EditJobAlert = lazy(() =>
   import("./components/Student/JobAlert/EditJobAlert.jsx")
 );
 const TermsOfUse = lazy(() => import("./components/Generate/TermsOfUse.jsx"));
-import Policy from "./components/Generate/Policy.jsx";
+const Policy = lazy(() => import("./components/Generate/Policy.jsx"));
 import { refreshToken, setupTokenRefresh } from "./utils/axiosCustomize.jsx";
+const Evaluations = lazy(() =>
+  import("./components/Student/Evaluation/Evaluations.jsx")
+);
+const CompanyList = lazy(() =>
+  import("./components/Generate/Company/CompanyList.jsx")
+);
 // import CreatePostPage from './pages/Forum/create/CreatePostPage.jsx';
 
 const GoogleAuthCallback = lazy(() =>
@@ -222,7 +242,15 @@ const CVBuilderPage = lazy(() =>
 
 const App = () => {
   const lang = useSelector((state) => state.web.lang || "en");
-  const queryClient = new QueryClient();
+  const queryClient = new QueryClient({
+    queryCache: new QueryCache({}),
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        staleTime: 1000 * 60 * 5,
+      },
+    },
+  });
 
   useEffect(() => {
     const token = localStorage.getItem("accessToken");
@@ -232,34 +260,20 @@ const App = () => {
       const isExpired = isTokenExpired(token);
 
       if (isExpired) {
-        refreshToken()
-          .then(() => {
-            console.log("Token refreshed successfully");
-            // Kết nối WebSocket sau khi refresh token thành công
-            connectStomp(() => {
-              console.log("WebSocket connected after token refresh");
-            });
-          })
-          .catch((error) => {
-            console.error("Failed to refresh token:", error);
-            // Không kết nối WebSocket với token không hợp lệ
-          });
-      } else {
-        // Token hợp lệ, kết nối WebSocket
-        connectStomp(() => {
-          console.log("WebSocket connected with valid token");
-        });
+        refreshToken();
+        // Thiết lập cơ chế tự động refresh token trước khi hết hạn
+        const cleanupTokenRefresh = setupTokenRefresh();
+        return () => {
+          // Dọn dẹp khi component unmount
+          disconnectStomp();
+          cleanupTokenRefresh();
+        };
       }
-
-      // Thiết lập cơ chế tự động refresh token trước khi hết hạn
-      const cleanupTokenRefresh = setupTokenRefresh();
-
-      return () => {
-        // Dọn dẹp khi component unmount
-        disconnectStomp();
-        cleanupTokenRefresh();
-      };
     }
+    return () => {
+      // Dọn dẹp khi component unmount
+      disconnectStomp();
+    };
   }, []);
 
   const isTokenExpired = (token) => {
@@ -412,18 +426,19 @@ const App = () => {
                   <Route element={<StudentLayout />}>
                     <Route index element={<Navigate to={"/home"} replace />} />
                     <Route path="/home" element={<HomePage />} />
-                    <Route path="/event" element={<EventPage />}></Route>
+
                     <Route
                       path="/vnpay-payment-return"
                       element={<PaymentReturn />}
                     />
                     <Route element={<ViewLayout width="90%" />}>
+                      <Route path="/events" element={<EventPage />}></Route>
+                      <Route path="/company" element={<CompanyList />} />
                       <Route
                         path="/event-detail/:id"
                         element={<EventDetail />}
                       />
                       <Route path="/search" element={<JobSearchPage />} />
-                      <Route path="/recommend-job" element={<RecommendJob />} />
                     </Route>
                     <Route element={<PersonalLayout />}>
                       <Route path="/dashboard" element={<StudentDashboard />} />
@@ -440,6 +455,8 @@ const App = () => {
                         path="/account-management"
                         element={<AccountManagement />}
                       />
+                      <Route path="/my-evaluations" element={<Evaluations />} />
+                      <Route path="/recommend-job" element={<RecommendJob />} />
                       <Route
                         path="/student/job-alerts"
                         element={<ManageJobAlerts />}
@@ -455,7 +472,7 @@ const App = () => {
                       <Route path="/cv-analysis" element={<CVAnalysis />} />
                     </Route>
                     <Route element={<ViewLayout width="90%" />}>
-                      <Route path="/job/:id" element={<ViewJob />} />
+                      <Route path="/jobs/:id" element={<ViewJob />} />
                       <Route path="/company/:id" element={<InforCompany />} />
                       <Route path="/resume/view/:id" element={<ViewCV />} />
                       <Route path="/forums" element={<ForumPage />} />
@@ -463,15 +480,6 @@ const App = () => {
                         path="/forums/:forumId/topics"
                         element={<TopicList />}
                       />
-                      <Route
-                        path="/admin/forums/:forumId/topics"
-                        element={<TopicListAdmin />}
-                      />
-                      <Route
-                        path="admin/forums/:forumId/topics/:topicId/posts"
-                        element={<PostListAdmin />}
-                      />
-                      {/* <Route path='/forum/create' element={<CreatePostPage />} /> */}
                       <Route
                         path="/forums/:forumId/topics/:topicId/posts/:postId"
                         element={<PostDetail />}
@@ -520,6 +528,18 @@ const App = () => {
                     <Route path="company" element={<EmployerCompany />} />
                     <Route path="list-resumes" element={<ListResumes />} />
                     <Route path="interview" element={<InterviewList />} />
+                    <Route
+                      path="interview/evaluation/:interviewId"
+                      element={<CandidateEvaluation />}
+                    />
+                    <Route
+                      path="interview/evaluations"
+                      element={<JobEvaluationList />}
+                    />
+                    <Route
+                      path="interview/evaluations/job/:jobId"
+                      element={<JobEvaluations />}
+                    />
                     <Route path="list-order" element={<ListOrder />} />
                     <Route path="detail-resume" element={<DetailResume />} />
                     <Route path="applicant" element={<Applicant />}>
@@ -593,9 +613,23 @@ const App = () => {
                       path="create-notification"
                       element={<CreateNotification />}
                     />
+                    <Route path="notification" element={<Notification />} />
                     <Route
-                      path="notification-list"
-                      element={<NotificationList />}
+                      path="notification/:id"
+                      element={<DetailNotification />}
+                    />
+                    <Route
+                      path="job-alert-config"
+                      element={<JobAlertScheduleConfig />}
+                    />
+                    <Route path="forums" element={<AdminForum />} />
+                    <Route
+                      path="forums/:forumId/topics"
+                      element={<TopicListAdmin />}
+                    />
+                    <Route
+                      path="forums/:forumId/topics/:topicId/posts"
+                      element={<PostListAdmin />}
                     />
                   </Route>
 

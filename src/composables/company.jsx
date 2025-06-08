@@ -5,7 +5,11 @@ export const useCompany = (page, limit) => {
   return useQuery({
     queryKey: ["all-company", page, limit],
     queryFn: () =>
-      company.getAllCompanyforStudent({ page, limit, status: "APPROVED" }),
+      company.getAllCompanyforStudent({
+        page: page - 1,
+        limit,
+        status: "APPROVED",
+      }),
     retry: false,
     refetchOnWindowFocus: false,
     placeholderData: keepPreviousData,

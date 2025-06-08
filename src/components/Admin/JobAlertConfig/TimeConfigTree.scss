@@ -1,0 +1,246 @@
+.time-config-tree {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  overflow: hidden;
+
+  .tree-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid #f0f0f0;
+    background: #fafafa;
+
+    h3 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #262626;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .anticon {
+        color: #1890ff;
+      }
+    }
+  }
+
+  .tree-content {
+    padding: 16px;
+  }
+
+  .schedule-tree {
+    .ant-tree-node-content-wrapper {
+      width: 100%;
+      padding: 0;
+
+      &:hover {
+        background: transparent;
+      }
+    }
+
+    .ant-tree-title {
+      width: 100%;
+    }
+
+    .schedule-tree-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      border: 1px solid #f0f0f0;
+      border-radius: 6px;
+      margin: 4px 0;
+      background: #fff;
+      transition: all 0.3s ease;
+
+      &:hover {
+        border-color: #d9d9d9;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+        .schedule-actions {
+          opacity: 1;
+        }
+      }
+
+      .schedule-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex: 1;
+
+        .schedule-icon {
+          font-size: 16px;
+          color: #1890ff;
+        }
+
+        .schedule-details {
+          flex: 1;
+
+          .schedule-name {
+            font-weight: 500;
+            color: #262626;
+            margin-bottom: 4px;
+          }
+
+          .schedule-desc {
+            font-size: 12px;
+            color: #8c8c8c;
+            margin-bottom: 6px;
+          }
+
+          .schedule-status {
+            .status-badge {
+              padding: 2px 8px;
+              border-radius: 12px;
+              font-size: 11px;
+              font-weight: 500;
+
+              &.active {
+                background: #f6ffed;
+                color: #52c41a;
+                border: 1px solid #b7eb8f;
+              }
+
+              &.inactive {
+                background: #fff2e8;
+                color: #fa8c16;
+                border: 1px solid #ffd591;
+              }
+            }
+          }
+        }
+      }
+
+      .schedule-actions {
+        display: flex;
+        gap: 4px;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+
+        .ant-btn {
+          border: none;
+          box-shadow: none;
+
+          &:hover {
+            background: #f5f5f5;
+          }
+
+          &.ant-btn-dangerous:hover {
+            background: #fff2f0;
+            color: #ff4d4f;
+          }
+        }
+      }
+    }
+
+    // Tree group styling
+    .ant-tree-treenode {
+      padding: 0;
+
+      .ant-tree-node-content-wrapper {
+        &.ant-tree-node-selected {
+          background: transparent;
+        }
+      }
+
+      // Parent nodes (frequency groups)
+      &:not(.ant-tree-treenode-leaf-last) {
+        .ant-tree-title {
+          font-weight: 600;
+          color: #595959;
+          padding: 8px 12px;
+          background: #f8f9fa;
+          border-radius: 4px;
+          margin-bottom: 8px;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          .anticon {
+            color: #1890ff;
+          }
+        }
+      }
+    }
+  }
+
+  // Modal form styles
+  .cron-templates {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+
+    .template-btn {
+      height: auto;
+      padding: 6px 12px;
+      border: 1px solid #d9d9d9;
+      border-radius: 4px;
+      background: #fafafa;
+      color: #595959;
+      font-size: 12px;
+      transition: all 0.3s;
+
+      &:hover {
+        border-color: #1890ff;
+        color: #1890ff;
+        background: #f0f8ff;
+      }
+    }
+  }
+
+  .ant-form-item-label > label {
+    font-weight: 500;
+  }
+
+  .ant-input,
+  .ant-select-selector {
+    border-radius: 6px;
+  }
+
+  .ant-input-group-addon {
+    background: #fafafa;
+    border-color: #d9d9d9;
+
+    .ant-btn-link {
+      color: #1890ff;
+      font-size: 12px;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .time-config-tree {
+    .tree-header {
+      flex-direction: column;
+      gap: 12px;
+      align-items: stretch;
+
+      h3 {
+        text-align: center;
+      }
+    }
+
+    .schedule-tree-item {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+
+      .schedule-actions {
+        opacity: 1;
+        justify-content: center;
+      }
+    }
+
+    .cron-templates {
+      .template-btn {
+        flex: 1;
+        min-width: calc(50% - 4px);
+      }
+    }
+  }
+}

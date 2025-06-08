@@ -122,6 +122,7 @@ const TableListUser = ({ fetch, userType, additionalColumns = [], onEdit }) => {
       render: (_, record) => (
         <Space size="middle">
           <Tooltip
+            destroyTooltipOnHide={true}
             title={t("admin.userTable.tooltips.updateAccount")}
             color="cyan"
           >
@@ -129,6 +130,7 @@ const TableListUser = ({ fetch, userType, additionalColumns = [], onEdit }) => {
           </Tooltip>
           {userType === "employer" && (
             <Tooltip
+              destroyTooltipOnHide={true}
               title={t("admin.userTable.tooltips.viewCompany")}
               color="blue"
             >

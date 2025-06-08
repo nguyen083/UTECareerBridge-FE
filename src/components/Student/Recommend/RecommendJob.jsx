@@ -1,380 +1,250 @@
 import { useTranslation } from "react-i18next";
 import BoxContainer from "../../Generate/BoxContainer";
-import { JobCardSmall } from "../../Generate/JobCard";
-import { useState, useEffect } from "react";
-import job from "../../../services/api/job";
 import { useSelector } from "react-redux";
-import { 
-  Alert, 
-  Layout, 
-  Typography, 
-  Skeleton, 
-  Empty, 
-  Spin, 
-  Tabs, 
-  Card, 
-  Tag, 
-  Button, 
-  Tooltip,
-  Row,
-  Col,
-  Rate,
+import { useState } from "react";
+import {
+  Alert,
+  Layout,
+  Typography,
+  Card,
   Divider,
-  Progress,
   Switch,
-  Input 
+  Tooltip,
+  Spin,
+  Empty,
 } from "antd";
-import "./RecommendJob.scss";
-import { 
-  RobotOutlined, 
-  ThunderboltOutlined, 
-  RiseOutlined, 
-  StarOutlined,
-  StarFilled,
-  BulbOutlined,
-  FilterOutlined,
-  ReloadOutlined,
-  FireOutlined,
-  LikeOutlined,
-  DislikeOutlined,
-  BarChartOutlined,
-  SettingOutlined
-} from "@ant-design/icons";
+import { useRecommendJob } from "../../../composables/job";
+import { useNavigate } from "react-router-dom";
+import { FaMapMarkerAlt, FaMoneyBillWave, FaPercentage } from "react-icons/fa";
+import { AppstoreOutlined, BarsOutlined } from "@ant-design/icons";
 
 const { Content } = Layout;
 const { Title, Text, Paragraph } = Typography;
-const { TabPane } = Tabs;
-const { Search } = Input;
 
 const RecommendJob = () => {
   const { t } = useTranslation();
-  const [recommendJob, setRecommendJob] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState("all");
-  const [matchScores, setMatchScores] = useState({});
-  const [likedJobs, setLikedJobs] = useState([]);
-  const [dislikedJobs, setDislikedJobs] = useState([]);
-  const [showAIDetails, setShowAIDetails] = useState(false);
+  const userId = useSelector((state) => state.user.userId);
+  const { data: recommendJob = [], isPending } = useRecommendJob(userId);
+  const navigate = useNavigate();
+  const [viewMode, setViewMode] = useState("list"); // 'grid' hoặc 'list'
 
-  const userId = useSelector(state => state.user.userId);
-  const student = useSelector(state => state.student);
+  const formatSalary = (salary) => {
+    if (!salary) return "0";
 
-  // Simulate AI-based job categories
-  const jobCategories = [
-    { key: "all", title: t('student.recommend.tabs.all'), icon: <ThunderboltOutlined /> },
-    { key: "matched", title: t('student.recommend.tabs.bestMatch'), icon: <RobotOutlined /> },
-    { key: "trending", title: t('student.recommend.tabs.trending'), icon: <RiseOutlined /> },
-    { key: "saved", title: t('student.recommend.tabs.saved'), icon: <StarOutlined /> }
-  ];
-
-  const fetchRecommendJob = async () => {
-    setLoading(true);
-    try {
-      const response = await job.getRecommendJob(userId);
-      
-      // Transform job data and add random match scores for UI demonstration
-      const data = response.map(job => ({
-        jobId: job.job_id,
-        jobTitle: job.job_title,
-        employerResponse: {
-          companyLogo: job.logo,
-          companyName: job.company_name,
-        },
-        jobMinSalary: job.job_min_salary,
-        jobMaxSalary: job.job_max_salary,
-        jobLocation: job.job_location,
-        skillMatch: Math.floor(Math.random() * 30) + 70, // Random score between 70-100%
-        category: getRandomCategory(),
-        isTrending: Math.random() > 0.7 // 30% chance of trending
-      }));
-      
-      // Simulate calculating match scores for each job
-      const scores = {};
-      data.forEach(job => {
-        scores[job.jobId] = {
-          overall: job.skillMatch,
-          skills: Math.floor(Math.random() * 25) + 70,
-          experience: Math.floor(Math.random() * 25) + 70,
-          location: Math.floor(Math.random() * 40) + 60
-        };
-      });
-      
-      setMatchScores(scores);
-      setRecommendJob(data);
-    } catch (error) {
-      console.error("Error fetching recommended jobs:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Helper function to get random category for demo
-  const getRandomCategory = () => {
-    const categories = ["web", "mobile", "data", "design", "ai"];
-    return categories[Math.floor(Math.random() * categories.length)];
-  };
-
-  useEffect(() => {
-    fetchRecommendJob();
-    
-    // Load saved preferences from localStorage
-    const savedLiked = localStorage.getItem('likedJobs');
-    const savedDisliked = localStorage.getItem('dislikedJobs');
-    
-    if (savedLiked) setLikedJobs(JSON.parse(savedLiked));
-    if (savedDisliked) setDislikedJobs(JSON.parse(savedDisliked));
-  }, []);
-
-  // Handle liking or disliking a job to improve recommendations
-  const handleJobFeedback = (jobId, isLiked) => {
-    if (isLiked) {
-      const updatedLiked = [...likedJobs, jobId];
-      setLikedJobs(updatedLiked);
-      setDislikedJobs(dislikedJobs.filter(id => id !== jobId));
-      localStorage.setItem('likedJobs', JSON.stringify(updatedLiked));
+    // Nếu salary lớn hơn 1000 thì giả sử là VND, còn không thì là USD
+    if (salary > 1000) {
+      return new Intl.NumberFormat("vi-VN").format(salary) + " VND";
     } else {
-      const updatedDisliked = [...dislikedJobs, jobId];
-      setDislikedJobs(updatedDisliked);
-      setLikedJobs(likedJobs.filter(id => id !== jobId));
-      localStorage.setItem('dislikedJobs', JSON.stringify(updatedDisliked));
+      return new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+      }).format(salary);
     }
-    
-    // In a real app, you would send this feedback to your backend API
-    console.log(`User ${isLiked ? 'liked' : 'disliked'} job ${jobId}`);
   };
 
-  // Filter jobs based on active tab
-  const filteredJobs = recommendJob.filter(job => {
-    switch (activeTab) {
-      case "matched":
-        return matchScores[job.jobId]?.overall >= 85;
-      case "trending":
-        return job.isTrending;
-      case "saved":
-        return likedJobs.includes(job.jobId);
-      default:
-        return true;
-    }
-  });
+  const handleViewDetail = (jobId) => {
+    navigate(`/jobs/${jobId}`);
+  };
 
-  // Render AI explanation modal/card for each job
-  const renderAIExplanationCard = (jobItem) => {
-    const score = matchScores[jobItem.jobId];
-    
-    if (!score) return null;
-    
-    return (
-      <div className="ai-explanation-card">
-        <div className="ai-explanation-header">
-          <RobotOutlined className="ai-icon" />
-          <Text strong>{t('student.recommend.aiExplanation.title')}</Text>
+  // Card hiển thị dạng lưới (grid)
+  const renderGridCard = (job) => (
+    <Card
+      key={`grid-${job.job_id}`}
+      hoverable
+      className="h-full transition-all shadow-md cursor-pointer hover:shadow-lg"
+      onClick={() => handleViewDetail(job.job_id)}
+      cover={
+        <div className="flex items-center justify-center h-32 p-4 bg-background-color">
+          <img
+            src={job.logo || "https://via.placeholder.com/150"}
+            alt={job.company_name}
+            className="object-contain max-h-full"
+          />
         </div>
-        
-        <div className="match-factors">
-          <div className="match-factor">
-            <Text>{t('student.recommend.aiExplanation.skills')}</Text>
-            <Progress 
-              percent={score.skills} 
-              size="small" 
-              strokeColor="#1890ff" 
-              format={percent => `${percent}%`}
-            />
-          </div>
-          
-          <div className="match-factor">
-            <Text>{t('student.recommend.aiExplanation.experience')}</Text>
-            <Progress 
-              percent={score.experience} 
-              size="small" 
-              strokeColor="#52c41a" 
-              format={percent => `${percent}%`}
-            />
-          </div>
-          
-          <div className="match-factor">
-            <Text>{t('student.recommend.aiExplanation.location')}</Text>
-            <Progress 
-              percent={score.location} 
-              size="small" 
-              strokeColor="#722ed1" 
-              format={percent => `${percent}%`}
-            />
-          </div>
+      }
+    >
+      <div className="flex flex-col gap-2">
+        <Title level={5} className="!mb-1 line-clamp-2" title={job.job_title}>
+          {job.job_title}
+        </Title>
+        <Text className="font-medium text-gray-700">{job.company_name}</Text>
+
+        <div className="flex items-center text-sm text-gray-600">
+          <FaMapMarkerAlt className="mr-1" />
+          <Text className="text-gray-600">{job.job_location}</Text>
         </div>
+
+        <div className="flex items-center text-sm text-gray-600">
+          <FaMoneyBillWave className="mr-1" />
+          <Text className="text-gray-600">
+            {formatSalary(job.job_min_salary)} -{" "}
+            {formatSalary(job.job_max_salary)}
+          </Text>
+        </div>
+
+        <Divider className="my-2" />
+
+        <div className="mb-2">
+          <Text className="flex items-center text-sm text-gray-600">
+            <FaPercentage className="mr-1" /> {t("cv.analysis.result.match")}:
+          </Text>
+          {/* <Progress
+            percent={Math.round(job.score * 100)}
+            size="small"
+            status="active"
+            strokeColor={{
+              from: "#108ee9",
+              to: "#87d068",
+            }}
+          /> */}
+        </div>
+
+        <Paragraph className="mb-3 text-xs italic text-gray-500">
+          &ldquo;{job.reason}&rdquo;
+        </Paragraph>
       </div>
-    );
-  };
+    </Card>
+  );
 
-  // Render a job card with AI match information
-  const renderJobCard = (jobItem) => {
-    const isLiked = likedJobs.includes(jobItem.jobId);
-    const isDisliked = dislikedJobs.includes(jobItem.jobId);
-    
-    return (
-      <div className="ai-job-card" key={jobItem.jobId}>
-        <div className="job-card-content">
-          <JobCardSmall job={jobItem} />
-          
-          <div className="job-card-actions">
-            <Tooltip title={t('student.recommend.actions.like')}>
-              <Button 
-                type={isLiked ? "primary" : "default"}
-                shape="circle" 
-                icon={<LikeOutlined />} 
-                onClick={() => handleJobFeedback(jobItem.jobId, true)}
-              />
-            </Tooltip>
-            
-            <Tooltip title={t('student.recommend.actions.dislike')}>
-              <Button 
-                danger={isDisliked}
-                shape="circle" 
-                icon={<DislikeOutlined />} 
-                onClick={() => handleJobFeedback(jobItem.jobId, false)}
-              />
-            </Tooltip>
-            
-            <div className="match-score-badge">
-              <Tooltip title={t('student.recommend.matchScore')}>
-                <div className="match-percentage">
-                  <RobotOutlined /> {matchScores[jobItem.jobId]?.overall || 0}%
+  // Card hiển thị dạng danh sách nằm ngang (list)
+  const renderListCard = (job) => (
+    <Card
+      key={`list-${job.job_id}`}
+      hoverable
+      className="w-full mb-4 transition-all shadow-md cursor-pointer hover:shadow-lg"
+      bodyStyle={{ padding: 0 }}
+      onClick={() => handleViewDetail(job.job_id)}
+    >
+      <div className="flex flex-col md:flex-row">
+        {/* Logo bên trái */}
+        <div className="flex items-center justify-center h-32 p-4 bg-gray-50 md:w-48">
+          <img
+            src={job.logo || "https://via.placeholder.com/150"}
+            alt={job.company_name}
+            className="object-contain max-w-full max-h-full"
+          />
+        </div>
+
+        {/* Thông tin bên phải */}
+        <div className="flex-1 p-4">
+          <div className="flex flex-col md:flex-row md:justify-between">
+            <div className="flex-1">
+              <Title
+                level={5}
+                className="!mb-1 line-clamp-2"
+                title={job.job_title}
+              >
+                {job.job_title}
+              </Title>
+              <Text className="font-medium text-gray-700">
+                {job.company_name}
+              </Text>
+
+              <div className="flex flex-wrap gap-4 mt-2">
+                <div className="flex items-center text-sm text-gray-600">
+                  <FaMapMarkerAlt className="mr-1" />
+                  <Text className="text-gray-600">{job.job_location}</Text>
                 </div>
+
+                <div className="flex items-center text-sm text-gray-600">
+                  <FaMoneyBillWave className="mr-1" />
+                  <Text className="text-gray-600">
+                    {formatSalary(job.job_min_salary)} -{" "}
+                    {formatSalary(job.job_max_salary)}
+                  </Text>
+                </div>
+              </div>
+
+              <Paragraph className="mt-2 text-xs italic text-gray-500">
+                &ldquo;{job.reason}&rdquo;
+              </Paragraph>
+            </div>
+
+            <div className="flex flex-col items-center justify-center mt-3 md:w-24 md:mt-0 md:ml-4">
+              <Tooltip
+                destroyTooltipOnHide={true}
+                title={`${Math.round(job.score * 100)}% ${t(
+                  "cv.analysis.result.match"
+                )}`}
+              >
+                {/* <Progress
+                  type="circle"
+                  percent={Math.round(job.score * 100)}
+                  size={80}
+                  strokeColor={{
+                    "0%": "#108ee9",
+                    "100%": "#87d068",
+                  }}
+                /> */}
               </Tooltip>
             </div>
           </div>
         </div>
-        
-        {showAIDetails && renderAIExplanationCard(jobItem)}
       </div>
-    );
-  };
+    </Card>
+  );
 
   return (
-    <Layout className="recommend-job-layout">
+    <Layout>
       <Content>
-        <div className="recommend-job-header">
-          <BoxContainer className="shadow-lg recommendation-header-container">
-            <Row gutter={[24, 16]} align="middle">
-              <Col xs={24} md={16}>
-                <div className="header-content">
-                  <div className="header-icon">
-                    <RobotOutlined />
-                  </div>
-                  <div>
-                    <Title level={2} className="recommend-title">
-                      {t('student.recommend.title')}
-                    </Title>
-                    <Paragraph className="recommend-subtitle">
-                      {t('student.recommend.subtitle')}
-                    </Paragraph>
-                  </div>
-                </div>
-              </Col>
-              <Col xs={24} md={8}>
-                <div className="header-actions">
-                  <Tooltip title={t('student.recommend.toggleAI')}>
-                    <Switch 
-                      checkedChildren={<BulbOutlined />}
-                      unCheckedChildren={<BulbOutlined />}
-                      checked={showAIDetails}
-                      onChange={setShowAIDetails}
-                    />
-                  </Tooltip>
-                  <Tooltip title={t('student.recommend.refresh')}>
-                    <Button 
-                      icon={<ReloadOutlined />} 
-                      onClick={fetchRecommendJob}
-                      loading={loading}
-                    >
-                      {t('student.recommend.refreshBtn')}
-                    </Button>
-                  </Tooltip>
-                </div>
-              </Col>
-            </Row>
-          </BoxContainer>
-        </div>
-
-        <BoxContainer className="shadow-lg recommendation-container">
-          <div className="ai-insight-panel">
-            <Card className="ai-profile-card">
-              <div className="ai-profile-header">
-                <RobotOutlined className="robot-icon" />
-                <div>
-                  <Text strong>{t('student.recommend.aiProfile.title')}</Text>
-                  <Text type="secondary" className="ai-subtitle">{t('student.recommend.aiProfile.subtitle')}</Text>
-                </div>
-              </div>
-              
-              <Divider />
-              
-              <div className="profile-stats">
-                <div className="stat-item">
-                  <BarChartOutlined />
-                  <div>
-                    <Text strong>{student.categoryName || t('student.recommend.aiProfile.category')}</Text>
-                    <Text type="secondary">{t('student.recommend.aiProfile.field')}</Text>
-                  </div>
-                </div>
-                
-                <div className="stat-item">
-                  <FireOutlined />
-                  <div>
-                    <Text strong>{likedJobs.length}</Text>
-                    <Text type="secondary">{t('student.recommend.aiProfile.preferences')}</Text>
-                  </div>
-                </div>
-              </div>
-              
-              <Divider />
-              
-              <Alert 
-                message={t('student.recommend.aiProfile.tip')}
-                description={t('student.recommend.aiProfile.tipDescription')}
-                type="info" 
-                showIcon 
-              />
-            </Card>
-          </div>
-          
-          <div className="recommendation-content">
-            <Tabs 
-              activeKey={activeTab} 
-              onChange={setActiveTab}
-              className="recommendation-tabs"
-            >
-              {jobCategories.map(category => (
-                <TabPane 
-                  tab={
-                    <span className="tab-with-icon">
-                      {category.icon} {category.title}
-                      {category.key === "saved" && likedJobs.length > 0 && (
-                        <Tag color="blue">{likedJobs.length}</Tag>
-                      )}
-                    </span>
-                  } 
-                  key={category.key}
+        <BoxContainer className="shadow-lg" padding="40px">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <Title
+                level={3}
+                className="text-2xl font-bold !text-text-color !mb-0"
+              >
+                {t("student.recommend.title")}
+              </Title>
+              <div className="flex items-center gap-2">
+                <Text className="text-gray-500">
+                  {viewMode === "grid" ? t("gridMode") : t("listMode")}
+                </Text>
+                <Switch
+                  checkedChildren={<BarsOutlined />}
+                  unCheckedChildren={<AppstoreOutlined />}
+                  checked={viewMode === "list"}
+                  onChange={(checked) => setViewMode(checked ? "list" : "grid")}
+                  className="mr-2"
                 />
-              ))}
-            </Tabs>
-            
-            <div className="job-list">
-              {loading ? (
-                <div className="loading-container">
-                  <Spin size="large" />
-                  <Text className="loading-text">{t('student.recommend.loading')}</Text>
-                </div>
-              ) : filteredJobs.length > 0 ? (
-                <div className="job-cards">
-                  {filteredJobs.map(jobItem => renderJobCard(jobItem))}
+              </div>
+            </div>
+
+            <Alert
+              className="p-6"
+              message={t("student.recommend.description")}
+              type="info"
+            />
+
+            <Spin spinning={isPending} tip={t("common.loading")} size="large">
+              {viewMode === "grid" ? (
+                <div className="grid grid-cols-1 gap-4 mt-4 md:grid-cols-2 lg:grid-cols-3">
+                  {recommendJob &&
+                  recommendJob.length > 0 &&
+                  isPending === false ? (
+                    recommendJob.map((job) => renderGridCard(job))
+                  ) : (
+                    <div className="py-8 text-center col-span-full">
+                      <Empty
+                        description={t("student.dashboard.noRecommendedJobs")}
+                      />
+                    </div>
+                  )}
                 </div>
               ) : (
-                <Empty 
-                  description={t('student.recommend.noJobs')}
-                  image={Empty.PRESENTED_IMAGE_SIMPLE} 
-                />
+                <div className="mt-4">
+                  {recommendJob && recommendJob.length > 0 ? (
+                    recommendJob.map((job) => renderListCard(job))
+                  ) : (
+                    <div className="py-8 text-center">
+                      <Empty
+                        description={t("student.dashboard.noRecommendedJobs")}
+                      />
+                    </div>
+                  )}
+                </div>
               )}
-            </div>
+            </Spin>
           </div>
         </BoxContainer>
       </Content>

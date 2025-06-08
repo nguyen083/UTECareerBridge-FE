@@ -23,11 +23,13 @@ import {
   getAllSkills,
   getSkillStudent,
 } from "../../../../services/apiService";
+import { useTranslation } from "react-i18next";
 
 const { Text } = Typography;
 const { Option } = Select;
 
 const UpdateSkill = () => {
+  const { t } = useTranslation();
   const [formSkill] = Form.useForm();
   const [openModalSkill, setOpenModalSkill] = useState(false);
   const [studentSkill, setStudentSkill] = useState([]);
@@ -58,7 +60,7 @@ const UpdateSkill = () => {
         }
       })
       .catch((err) => {
-        message.error("Xóa kỹ năng thất bại, ", err);
+        message.error(t("student.updateSkill.deleteError"), err);
       })
       .finally(() => {
         fetchStudentSkill();
@@ -101,11 +103,19 @@ const UpdateSkill = () => {
   useEffect(() => {
     fetchStudentSkill();
   }, [listSkill]);
+  useEffect(() => {
+    formSkill.resetFields();
+  }, [openModalSkill]);
+
   return (
     <>
       <BoxContainer className="shadow" padding="1rem" width={"100%"}>
         <Card
-          title={<Text className="text-2xl font-semibold">Kĩ năng</Text>}
+          title={
+            <Text className="text-2xl font-semibold">
+              {t("student.updateSkill.title")}
+            </Text>
+          }
           extra={
             <EditOutlined
               className={styles.icon_edit}
@@ -136,7 +146,11 @@ const UpdateSkill = () => {
       <Modal
         centered
         width={"40%"}
-        title={<Text className="text-2xl font-semibold">Thêm kỹ năng</Text>}
+        title={
+          <Text className="text-2xl font-semibold">
+            {t("student.updateSkill.addSkill")}
+          </Text>
+        }
         open={openModalSkill}
         onCancel={() => setOpenModalSkill(false)}
         footer={null}
@@ -152,9 +166,14 @@ const UpdateSkill = () => {
             <Form.Item
               name="skillId"
               style={{ width: "45%" }}
-              rules={[{ required: true, message: "Hãy chọn kỹ năng!" }]}
+              rules={[
+                {
+                  required: true,
+                  message: t("student.updateSkill.selectSkillRequired"),
+                },
+              ]}
             >
-              <Select placeholder="Chọn kỹ năng">
+              <Select placeholder={t("student.updateSkill.selectSkill")}>
                 {listSkill.map((item) => (
                   <Option key={item.skillId} value={item.skillId}>
                     {item.skillName}
@@ -166,14 +185,15 @@ const UpdateSkill = () => {
             {/* Rate: Đánh giá cấp độ */}
             <Form.Item
               name="level"
-              rules={[{ required: true, message: "Hãy đánh giá cấp độ!" }]}
+              rules={[
+                { required: true, message: t("student.updateSkill.rateLevel") },
+              ]}
             >
               <Rate />
             </Form.Item>
             <Form.Item>
               <Button type="primary" htmlType="submit">
-                {" "}
-                Thêm
+                {t("student.updateSkill.add")}
               </Button>
             </Form.Item>
           </Flex>

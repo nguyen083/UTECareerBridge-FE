@@ -1,8 +1,8 @@
-@import '../../styles/variables.scss';
+@import "../../styles/variables.scss";
 
 .admin-header {
   margin-bottom: 16px;
-  
+
   .title1 {
     font-size: 20px;
     font-weight: 600;
@@ -15,25 +15,25 @@
     transition: all 0.3s;
     height: 100%;
     border: 1px solid #eee;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+
     &:hover {
       transform: translateY(-4px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     }
-    
+
     .ant-card-head {
-      background: linear-gradient(135deg, #4478c0, #1e4f94);
+      background: linear-gradient(135deg, #1890ff 0%, #0050b3 100%);
       border-top-left-radius: 8px;
       border-top-right-radius: 8px;
       padding: 8px 16px;
       min-height: 48px;
-      
+
       .ant-card-head-title {
         padding: 8px 0;
       }
     }
-    
+
     .package-card-header {
       .package-name {
         color: white;
@@ -41,11 +41,11 @@
         font-weight: 600;
       }
     }
-    
+
     .ant-card-body {
       padding: 16px;
     }
-    
+
     .package-price {
       display: flex;
       flex-direction: column;
@@ -54,46 +54,46 @@
       background-color: #f9f9f9;
       padding: 12px;
       border-radius: 6px;
-      
+
       .price-label {
-        font-size: 12px;
+        font-size: 14px;
         color: $text-color;
         margin-bottom: 4px;
       }
-      
+
       .price-value {
         font-size: 18px;
         font-weight: 700;
-        color: #52C41A;
+        color: #52c41a;
       }
     }
-    
+
     .package-info {
       .info-item {
         display: flex;
         align-items: flex-start;
         margin-bottom: 8px;
-        
+
         .info-icon {
           color: #4478c0;
           font-size: 16px;
           margin-top: 4px;
           margin-right: 8px;
         }
-        
+
         .info-content {
           flex: 1;
-          
+
           .info-label {
             font-weight: 500;
-            font-size: 13px;
+            font-size: 14px;
             color: $text-color;
             margin-right: 4px;
           }
-          
+
           .info-value {
-            font-size: 13px;
-            
+            font-size: 14px;
+
             &.description-text {
               display: -webkit-box;
               -webkit-line-clamp: 2;
@@ -105,28 +105,28 @@
         }
       }
     }
-    
+
     .ant-card-actions {
       border-bottom-left-radius: 8px;
       border-bottom-right-radius: 8px;
       background-color: #f9f9f9;
-      
+
       li {
         margin: 8px 0;
-        
+
         .ant-btn {
-          font-size: 13px;
-          
+          font-size: 14px;
+
           &.ant-btn-link {
             color: #4478c0;
-            
+
             &:hover {
               color: #1e4f94;
             }
-            
+
             &.ant-btn-dangerous {
               color: #ff4d4f;
-              
+
               &:hover {
                 color: #cf1322;
               }

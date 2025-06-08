@@ -1,7 +1,6 @@
 import {
   Button,
   Col,
-  Card,
   DatePicker,
   Descriptions,
   Form,
@@ -13,7 +12,6 @@ import {
   Typography,
   Steps,
   Divider,
-  Tooltip,
 } from "antd";
 import BoxContainer from "../../Generate/BoxContainer";
 import dayjs from "dayjs";
@@ -174,7 +172,6 @@ const EmployerPostJob = () => {
     };
     setLoading(true);
     dayjs.extend(customParseFormat);
-    console.log("values.jobDeadline", values.jobDeadline);
     values.jobDeadline = dayjs(values.jobDeadline, "YYYY-MM-DD").format(
       "DD/MM/YYYY"
     );
@@ -423,14 +420,6 @@ const EmployerPostJob = () => {
               <Form.Item
                 name="packageId"
                 label={t("employer.dashboard.servicePackage.title")}
-                rules={[
-                  {
-                    required: true,
-                    message:
-                      t("employer.job.packageRequired") ||
-                      "Please select a package",
-                  },
-                ]}
               >
                 <Select
                   placeholder={t("employer.job.packagePlaceholder")}
@@ -449,79 +438,52 @@ const EmployerPostJob = () => {
                     ))
                   ) : (
                     <Select.Option disabled value="no-packages">
-                      {t("employer.job.noPackages") || "No packages available"}
+                      {t("employer.job.noPackages", "No packages available")}
                     </Select.Option>
                   )}
                 </Select>
               </Form.Item>
 
               {packageId && (
-                <Card className="package-details-card">
-                  <Title level={5}>
-                    {t("employer.job.packageDetailTitle")}
-                  </Title>
-                  <Descriptions column={{ xs: 1, sm: 2 }} bordered>
-                    <Descriptions.Item
-                      label={t("admin.servicePackage.form.packageName.label")}
-                      labelStyle={{ fontWeight: 500 }}
-                    >
-                      <Text strong>
-                        {selectedPackage?.packageResponse.packageName}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item
-                      label={t("admin.servicePackage.list.feature")}
-                      labelStyle={{ fontWeight: 500 }}
-                    >
-                      <Text>
-                        {selectedPackage?.packageResponse.featureName}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item
-                      label={t("admin.servicePackage.form.description.label")}
-                      labelStyle={{ fontWeight: 500 }}
-                      span={2}
-                    >
-                      <Text>
-                        {selectedPackage?.packageResponse.description}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item
-                      label={t("employer.job.packageRemainingAmount")}
-                      labelStyle={{ fontWeight: 500 }}
-                    >
-                      <Text
-                        type={
-                          selectedPackage?.amount > 0 ? "success" : "danger"
-                        }
-                        strong
-                      >
-                        {selectedPackage?.amount}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item
-                      label={t("employer.job.packageDuration")}
-                      labelStyle={{ fontWeight: 500 }}
-                    >
-                      <Text>
-                        {selectedPackage?.packageResponse.duration}{" "}
-                        {t("admin.servicePackage.list.months")}
-                      </Text>
-                    </Descriptions.Item>
-                    <Descriptions.Item
-                      label={t(
-                        "employer.dashboard.servicePackage.table.expiredAt"
-                      )}
-                      labelStyle={{ fontWeight: 500 }}
-                      span={2}
-                    >
-                      <Text>{selectedPackage?.expiredAt}</Text>
-                    </Descriptions.Item>
-                  </Descriptions>
-                </Card>
+                <Descriptions
+                  className="px-5 "
+                  title={t("employer.job.packageDetailTitle")}
+                  layout="vertical"
+                  column={2}
+                >
+                  <Descriptions.Item label={t("employer.job.packageName")}>
+                    <span>{selectedPackage?.packageResponse.packageName}</span>
+                  </Descriptions.Item>
+                  <Descriptions.Item label={t("employer.job.packageFeature")}>
+                    <span>{selectedPackage?.packageResponse.featureName}</span>
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label={t("employer.job.packageDescription")}
+                  >
+                    <span>{selectedPackage?.packageResponse.description}</span>
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label={t("employer.job.packageRemainingAmount")}
+                  >
+                    <span>{selectedPackage?.amount}</span>
+                  </Descriptions.Item>
+                  <Descriptions.Item label={t("employer.job.packageDuration")}>
+                    <span>
+                      {selectedPackage?.packageResponse.duration}{" "}
+                      {t("common.month")}
+                    </span>
+                  </Descriptions.Item>
+                  <Descriptions.Item
+                    label={t(
+                      "employer.dashboard.servicePackage.table.expiredAt"
+                    )}
+                  >
+                    <span>{selectedPackage?.expiredAt}</span>
+                  </Descriptions.Item>
+                </Descriptions>
               )}
 
-              {packages.length === 0 && (
+              {/* {packages.length === 0 && (
                 <div className="no-packages-warning">
                   <Text type="warning">
                     {t("employer.job.buyPackageWarning") ||
@@ -531,7 +493,7 @@ const EmployerPostJob = () => {
                     {t("employer.job.buyPackage") || "Buy Package"}
                   </Button>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         );
@@ -559,9 +521,7 @@ const EmployerPostJob = () => {
                     {
                       type: "number",
                       min: 1,
-                      message:
-                        t("employer.job.quantityMin") ||
-                        "Quantity must be at least 1",
+                      message: t("employer.job.quantityMin"),
                     },
                   ]}
                   validateFirst
@@ -571,10 +531,7 @@ const EmployerPostJob = () => {
                     className="w-full"
                     formatter={(value) => format(value)}
                     parser={(value) => value.replace(/\s/g, "")}
-                    placeholder={
-                      t("employer.job.quantityPlaceholder") ||
-                      "Number of positions"
-                    }
+                    placeholder={t("employer.job.quantityPlaceholder")}
                   />
                 </Form.Item>
               </Col>
@@ -604,13 +561,7 @@ const EmployerPostJob = () => {
                     }),
                   ]}
                 >
-                  <Select
-                    defaultValue={0}
-                    placeholder={t("employer.job.levelPlaceholder")}
-                  >
-                    <Select.Option value={0}>
-                      {t("employer.job.levelPlaceholder")}
-                    </Select.Option>
+                  <Select placeholder={t("employer.job.levelPlaceholder")}>
                     {levels.map((level) => (
                       <Select.Option key={level.value} value={level.value}>
                         {level.label}
@@ -660,13 +611,13 @@ const EmployerPostJob = () => {
                   rules={[
                     {
                       required: true,
-                      message:
-                        t("employer.job.requirementsRequired") ||
-                        "Please specify job requirements",
+                      message: t("employer.job.requirementsRequired"),
                     },
                   ]}
                 >
-                  <CustomizeQuill />
+                  <CustomizeQuill
+                    placeholder={t("employer.job.requirementsPlaceholder")}
+                  />
                 </Form.Item>
               </Col>
               <Col span={24}>
@@ -681,13 +632,13 @@ const EmployerPostJob = () => {
                   rules={[
                     {
                       required: true,
-                      message:
-                        t("employer.job.descriptionRequired") ||
-                        "Please provide a job description",
+                      message: t("employer.job.descriptionRequired"),
                     },
                   ]}
                 >
-                  <CustomizeQuill />
+                  <CustomizeQuill
+                    placeholder={t("employer.job.descriptionPlaceholder")}
+                  />
                 </Form.Item>
               </Col>
             </Row>
@@ -701,13 +652,14 @@ const EmployerPostJob = () => {
   return (
     <>
       <BoxContainer className="shadow-md form-header">
-        <Title level={3}>{t("employer.job.postJob")}</Title>
+        <Title level={3} className="!text-text-color">
+          {t("employer.job.postJob")}
+        </Title>
         <Text type="secondary">
           {t("employer.job.postJobDescription") ||
             "Create a new job posting to find the perfect candidates"}
         </Text>
       </BoxContainer>
-
       <BoxContainer className="shadow-md form-container">
         <Steps
           current={currentStep}
@@ -715,9 +667,7 @@ const EmployerPostJob = () => {
             title: step.title,
             icon: step.icon,
           }))}
-          className="job-post-steps"
         />
-
         <Divider className="step-divider" />
 
         <Form
@@ -745,31 +695,21 @@ const EmployerPostJob = () => {
             )}
 
             {currentStep < steps.length - 1 && (
-              <Button
-                type="primary"
-                onClick={next}
-                icon={<ArrowRightOutlined />}
-              >
+              <Button type="primary" onClick={next}>
                 {t("common.next")}
+                <ArrowRightOutlined />
               </Button>
             )}
 
             {currentStep === steps.length - 1 && (
-              <Tooltip
-                title={
-                  t("employer.job.finalReviewTip") ||
-                  "Review all information before submitting"
-                }
+              <Button
+                type="primary"
+                loading={loading}
+                htmlType="submit"
+                icon={<SaveOutlined />}
               >
-                <Button
-                  type="primary"
-                  loading={loading}
-                  htmlType="submit"
-                  icon={<SaveOutlined />}
-                >
-                  {t("employer.job.post")}
-                </Button>
-              </Tooltip>
+                {t("employer.job.post")}
+              </Button>
             )}
           </div>
         </Form>

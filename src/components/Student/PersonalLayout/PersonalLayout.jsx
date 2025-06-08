@@ -26,17 +26,15 @@ import { IoBriefcaseOutline } from "react-icons/io5";
 import { HiLightBulb } from "react-icons/hi";
 import { IoIosBusiness } from "react-icons/io";
 import BoxContainer from "../../Generate/BoxContainer";
-import {
-  updateFindjob,
-  updateResumeActive,
-} from "../../../services/apiService";
+import { updateResumeActive } from "../../../services/apiService";
 
 import { useDispatch, useSelector } from "react-redux";
 import { apiService } from "../../../services/getAddressId";
 import { setFindJob } from "../../../redux/action/studentSlice";
 import { useLocation, useNavigate, Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { useResume } from "../../../composables/resume";
+import { useResume, useUpdateFindJob } from "../../../composables/resume";
+import { TbChecklist } from "react-icons/tb";
 const { Text } = Typography;
 const { Meta } = Card;
 
@@ -52,6 +50,7 @@ const PersonalLayout = () => {
   const [formResume] = Form.useForm();
   const [address, setAddress] = useState("");
   const [resumeIdActive, setResumeIdActive] = useState(0);
+  const updateFindJob = useUpdateFindJob();
 
   const menuItems = [
     {
@@ -96,6 +95,11 @@ const PersonalLayout = () => {
       key: "/my-job",
       label: <div className="text-base">{t("student.menu.myJob")}</div>,
       icon: <IoBriefcaseOutline />,
+    },
+    {
+      key: "/my-evaluations",
+      label: <div className="text-base">{t("student.menu.evaluations")}</div>,
+      icon: <TbChecklist />,
     },
     {
       key: "/student/job-alerts",
@@ -183,13 +187,14 @@ const PersonalLayout = () => {
 
   const switchFindjob = (status = null) => {
     const check = status === null ? !infor.findingJob : status;
-    updateFindjob(check).then((res) => {
-      if (res.status === "OK") {
-        dispatch(setFindJob(check));
-      } else {
+    dispatch(setFindJob(check));
+    updateFindJob.mutate(check, {
+      onSuccess: () => {},
+      onError: () => {
+        dispatch(setFindJob(!check));
         message.error(t("cv.chooseResume"));
         setModalResume(true);
-      }
+      },
     });
   };
   return (
@@ -249,15 +254,15 @@ const PersonalLayout = () => {
       </Row>
 
       <Modal
-        title="Thiết lập hồ sơ"
+        title={t("student.setupResume")}
         open={modalResume}
         onCancel={() => {
           setModalResume(false);
           formResume.resetFields();
         }}
         onOk={handleFindJob}
-        cancelText="Hủy"
-        okText="Hoàn tất"
+        cancelText={t("common.cancel")}
+        okText={t("common.complete")}
       >
         <Form initialValues={{ resumeId: resumeIdActive }} form={formResume}>
           <Form.Item name="resumeId">
@@ -286,7 +291,8 @@ const PersonalLayout = () => {
                           </Typography.Link>
                           <br />
                           <Text type="secondary" italic className="text-xs">
-                            <PaperClipOutlined /> Tệp đính kèm • Cập nhật lúc:{" "}
+                            <PaperClipOutlined /> {t("student.attachmentFile")}{" "}
+                            • {t("student.updatedAt")}:{" "}
                             {item.lastUpdated.split(" ", 1)}
                           </Text>
                         </div>
