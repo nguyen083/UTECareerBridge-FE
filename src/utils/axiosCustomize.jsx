@@ -21,11 +21,11 @@ const processQueue = (error = null) => {
 };
 
 // API base URL từ biến môi trường hoặc mặc định
-const API_BASE_URL = "https://ute-career.pro.vn//api";
+const API_BASE_URL = "https://ute-career.pro.vn/api";
 const REFRESH_ENDPOINT = "/v1/auth/refresh";
 
 const instance = axios.create({
-  baseURL: "https://ute-career.pro.vn//api/v1",
+  baseURL: "https://ute-career.pro.vn/api/v1",
   timeout: 60000,
   headers: {
     "Content-Type": "application/json",
