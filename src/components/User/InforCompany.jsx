@@ -1,242 +1,474 @@
 import BoxContainer from "../Generate/BoxContainer";
-import React, { useEffect, useState } from 'react';
-import { Flex, Card, Button, Typography, Image, Anchor, Descriptions, Spin, message, Avatar } from 'antd';
+import { useEffect, useState } from "react";
+import {
+  Flex,
+  Card,
+  Button,
+  Typography,
+  Anchor,
+  Descriptions,
+  Spin,
+  message,
+  Avatar,
+  Tooltip,
+  Tag,
+  Row,
+  Col,
+} from "antd";
 import HtmlContent from "../Generate/HtmlContent";
 import { useNavigate, useParams } from "react-router-dom";
-import { checkFollowCompany, followCompany, getCompanyById, unfollowCompany } from "../../services/apiService";
+import {
+  checkFollowCompany,
+  followCompany,
+  getCompanyById,
+  unfollowCompany,
+} from "../../services/apiService";
 import YouTubeVideo from "../Generate/YouTubeVideo";
 import BenefitCard from "../Generate/BenefitComponent";
 import JobList from "../Generate/JobList";
-import { CheckCircleOutlined, CheckOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  EnvironmentOutlined,
+  GlobalOutlined,
+  PhoneOutlined,
+  TeamOutlined,
+  UserOutlined,
+  MailOutlined,
+  BankOutlined,
+  BuildOutlined,
+  HomeOutlined,
+  FireOutlined,
+  InfoCircleOutlined,
+  VideoCameraOutlined,
+  GiftOutlined,
+} from "@ant-design/icons";
 import { useSelector } from "react-redux";
-import COLOR from "../../components/styles/_variables.jsx";
+import { UserPlus } from "lucide-react";
+import "./InforCompany.scss";
+import { useTranslation } from "react-i18next";
 
 const { Title, Text, Link } = Typography;
 
 const isEmpty = (array) => {
-    return !array || array.length === 0;
+  return !array || array.length === 0;
 };
 
 const InforCompany = () => {
-    const user = useSelector(state => state.user);
-    const [company, setCompany] = useState({});
-    const [loading, setLoading] = useState(true);
-    const [isFollow, setIsFollow] = useState(false);
-    const { id } = useParams();
-    const navigate = useNavigate();
-    const items = [
-        {
-            key: '1',
-            label: 'Quy mô',
-            children: company.companySize,
-        },
-        {
-            key: '2',
-            label: 'Lĩnh vực',
-            children: company.industry,
-        },
-        {
-            key: '3',
-            label: 'Liên hệ',
-            children: company.gender ? "Chị " : "Anh " + company.firstName + ' ' + company.lastName,
-        },
-        {
-            key: '4',
-            label: 'Số điện thoại',
-            children: company.phoneNumber,
-        },
-        {
-            key: '5',
-            label: 'Email',
-            children: company.companyEmail,
-        },
-        {
-            key: '6',
-            label: 'Địa chỉ',
-            children: company.companyAddress,
-        },
-        {
-            key: '6',
-            label: 'Website',
-            children: <Link href={company.companyWebsite} target="_blank">{company.companyWebsite}</Link>,
-        },
-        {
-            key: '7',
-            children: <Flex vertical gap={"0.5rem"}> {company?.companyDescription && <Title level={4}>Mô tả chi tiết</Title>}<HtmlContent htmlString={company?.companyDescription} /></Flex>,
-        },
+  const { t } = useTranslation();
+  const user = useSelector((state) => state.user);
+  const [company, setCompany] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [isFollow, setIsFollow] = useState(false);
+  const { id } = useParams();
+  const navigate = useNavigate();
 
-    ];
-    const fetchData = () => {
-        try {
-            getCompanyById(id).then(res => {
-                if (res.status = 'OK') {
-                    const company = res.data;
-                    setCompany(
-                        {
-                            companyName: company.companyName,
-                            companyLogo: company.companyLogo,
-                            backgroundImage: company.backgroundImage,
-                            videoIntroduction: company.videoIntroduction,
-                            companySize: company.companySize,
-                            industry: company.industry.industryName,
-                            benefitDetails: company.benefitDetails,
-                            companyWebsite: company.companyWebsite,
-                            companyDescription: company.companyDescription,
-                            companyAddress: company.companyAddress,
-                            phoneNumber: company.phoneNumber,
-                            gender: company.gender,
-                            companyEmail: company.companyEmail,
-                            firstName: company.firstName,
-                            lastName: company.lastName,
-                            countFollower: company.countFollower || 0,
-                        }
-                    )
-                }
-            });
-        } catch (error) {
-            message.error(error.message);
-        } finally {
-            setTimeout(() => {
-                setLoading(false);
-            }, 50);
+  const fetchData = () => {
+    try {
+      getCompanyById(id).then((res) => {
+        if (res.status === "OK") {
+          const company = res.data;
+          setCompany({
+            companyName: company.companyName,
+            companyLogo: company.companyLogo,
+            backgroundImage: company.backgroundImage,
+            videoIntroduction: company.videoIntroduction,
+            companySize: company.companySize,
+            industry: company.industry.industryName,
+            benefitDetails: company.benefitDetails,
+            companyWebsite: company.companyWebsite,
+            companyDescription: company.companyDescription,
+            companyAddress: company.companyAddress,
+            phoneNumber: company.phoneNumber,
+            gender: company.gender,
+            companyEmail: company.companyEmail,
+            firstName: company.firstName,
+            lastName: company.lastName,
+            countFollower: company.countFollower || 0,
+          });
         }
-        if (localStorage.getItem('accessToken')) {
-            if (user.role === 'student') {
-                checkFollowCompany(id).then(res => {
-                    setIsFollow(res.data);
-                });
+      });
+    } catch (error) {
+      message.error(error.message);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 50);
+    }
+    if (localStorage.getItem("accessToken")) {
+      if (user.role === "student") {
+        checkFollowCompany(id).then((res) => {
+          setIsFollow(res.data);
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    fetchData();
+  }, [id]);
+
+  const handleFollow = () => {
+    try {
+      if (localStorage.getItem("accessToken")) {
+        if (user.role === "student") {
+          followCompany(id).then((res) => {
+            if (res.status === "OK") {
+              message.success(res.message);
+              fetchData();
+              setIsFollow(true);
             }
+          });
         }
+      } else {
+        navigate("/login");
+      }
+    } catch (error) {
+      message.error(error.message);
     }
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        fetchData();
-    }, [id]);
-    const handleFollow = () => {
-        try {
-            if (localStorage.getItem('accessToken')) {
-                if (user.role === 'student') {
-                    followCompany(id).then(res => {
-                        if (res.status = 'OK') {
-                            message.success(res.message);
-                            fetchData();
-                            setIsFollow(true);
-                        }
-                    });
+  };
+
+  const handleUnfollow = () => {
+    try {
+      unfollowCompany(id).then((res) => {
+        if (res.status === "OK") {
+          message.success(res.message);
+          fetchData();
+          setIsFollow(false);
+        }
+      });
+    } catch (error) {
+      message.error(error.message);
+    }
+  };
+
+  return (
+    <>
+      <Flex
+        align="center"
+        justify="center"
+        style={{ height: "100vh", width: "100%" }}
+        hidden={!loading}
+      >
+        <Spin spinning={loading} size="large" />
+      </Flex>
+
+      <BoxContainer
+        padding="1rem"
+        hidden={loading}
+        className="shadow-lg company-profile"
+      >
+        <Card
+          className="card-container"
+          cover={
+            <div className="company-header">
+              <img
+                className="header-image"
+                src={
+                  company.backgroundImage
+                    ? company.backgroundImage
+                    : "https://www.vietnamworks.com/_next/image?url=https%3A%2F%2Fimages.vietnamworks.com%2Fcompany-assets%2Fimages%2Fbanner-default-company.png&w=1920&q=75"
                 }
-            } else {
-                navigate('/login');
-            }
-        } catch (error) {
-            message.error(error.message);
-        }
-    }
-    const handleUnfollow = () => {
-        try {
-            unfollowCompany(id).then(res => {
-                if (res.status = 'OK') {
-                    message.success(res.message);
-                    fetchData();
-                    setIsFollow(false);
-                }
-            });
-        } catch (error) {
-            message.error(error.message);
-        }
-    }
-    return (
-        <>
-            <Flex align='center' justify='center' style={{ height: '100vh', width: "100%", }} hidden={!loading}>
-                <Spin spinning={loading} size='large' />
-            </Flex>
-            <BoxContainer padding="1rem" hidden={loading}>
-                <Card
-                    style={{ width: '100%', borderRadius: '10px', overflow: 'hidden' }}
-                    cover={
-                        <div style={{ height: 350, background: 'linear-gradient(90deg, #0046b8, #00aaff)' }}>
-                            <img
-                                src={company.backgroundImage ? company.backgroundImage : "https://www.vietnamworks.com/_next/image?url=https%3A%2F%2Fimages.vietnamworks.com%2Fcompany-assets%2Fimages%2Fbanner-default-company.png&w=1920&q=75"}
-                                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                            />
-                        </div>
-                    }
+                alt={company.companyName}
+              />
+            </div>
+          }
+        >
+          {/* Phần header với logo và thông tin công ty - sử dụng container mới */}
+          <div className="company-info-container">
+            <Row gutter={16} align="bottom" style={{ width: "100%" }}>
+              <Col>
+                <Avatar
+                  className="company-logo"
+                  size={120}
+                  src={
+                    company.companyLogo
+                      ? company.companyLogo
+                      : "https://images.vietnamworks.com/img/company-default-logo.svg"
+                  }
+                />
+              </Col>
+              <Col flex="1">
+                <div className="company-info">
+                  <Title level={4} className="company-name">
+                    {company.companyName}
+                  </Title>
+                  <Flex align="center" gap={8}>
+                    <Text className="company-followers">
+                      <span className="follower-count">
+                        {company.countFollower}
+                      </span>{" "}
+                      {t("employer.company.inforCompany.followers")}
+                    </Text>
+                    <Tag color="blue" className="items-center industry-tag">
+                      <BankOutlined className="tag-icon" /> {company.industry}
+                    </Tag>
+                  </Flex>
+                </div>
+              </Col>
+              <Col className="follow-button-container">
+                <Button
+                  size="large"
+                  onClick={isFollow ? handleUnfollow : handleFollow}
+                  type={isFollow ? "default" : "primary"}
+                  className={`follow-button ${isFollow ? "followed" : ""}`}
                 >
-                    <Flex gap={"1rem"} vertical style={{ padding: "0 1rem 1rem 1rem" }}>
-                        <Flex align="end" style={{ marginTop: -60 }} gap={"1rem"} >
-                            <Avatar
-                                preview={false}
-                                size={136}
-                                src={company.companyLogo ? company.companyLogo : 'https://images.vietnamworks.com/img/company-default-logo.svg'} // URL ảnh logo
-                                style={{
-                                    border: '1px solid gray',
-                                    borderRadius: "10px",
-                                    objectFit: 'cover',
-                                    display: 'block',
-                                    margin: '0 auto' // Để logo nổi lên giữa
-                                }}
-                            />
-                            <Flex justify="space-between" style={{ width: "100%" }}>
-                                <div>
-                                    <Title level={4}>
-                                        {company.companyName}
-                                    </Title>
-                                    <Text>{company.countFollower} lượt theo dõi</Text>
-                                </div>
-                                <Button className="p-4" onClick={handleFollow} size="large" type="primary" hidden={isFollow}>
-                                    Theo dõi
-                                </Button>
-                                <Button className="p-4" onClick={handleUnfollow} size="large" type="default" hidden={!isFollow}> <CheckOutlined /> Đang theo dõi</Button>
-                            </Flex>
-                        </Flex>
-                        <Anchor
-                            targetOffset={60}
-                            style={{ backgroundColor: 'white', paddingTop: '1.25rem' }}
-                            className="custom-anchor"
-                            direction="horizontal"
-                            items={[
-                                {
-                                    key: 'about',
-                                    href: '#about',
-                                    title: <Text className="f-18">Về chúng tôi</Text>,
-                                },
-                                {
-                                    key: 'list-job',
-                                    href: '#list-job',
-                                    title: <Text className="f-18">Vị trí đang tuyển dụng</Text>,
-                                },
-                            ]}
-                        />
-                        <Flex gap={"1rem"} vertical>
-                            <div id="about">
-                                <BoxContainer padding="1rem">
-                                    <Text className="title1">Về chúng tôi</Text>
-                                </BoxContainer>
-                                <Descriptions labelStyle={{ fontWeight: 550 }} size="middle" items={items} column={1} />
-                                <Flex gap={"1rem"} vertical>
-                                    <BoxContainer padding="1rem">
-                                        <Text className="title1">Video</Text>
-                                    </BoxContainer>
-                                    <YouTubeVideo link={company.videoIntroduction} />
-                                    {!isEmpty(company.benefitDetails) && <Flex gap={"1rem"} vertical>
-                                        <BoxContainer padding="1rem">
-                                            <Text className="title1">Phúc lợi</Text>
-                                        </BoxContainer>
-                                        {company.benefitDetails.map((benefit, index) => <BenefitCard key={index} benefitName={benefit.benefitName} description={benefit.description} benefitIcon={benefit.benefitIcon} size="large" />)}
-                                    </Flex>}
-                                </Flex>
-                            </div>
-                            <div
-                                id="list-job">
-                                <BoxContainer padding="1rem">
-                                    <Text className="title1">Vị trí đang tuyển dụng</Text>
-                                </BoxContainer>
-                                <JobList />
-                            </div>
-                        </Flex>
+                  {isFollow ? (
+                    <>
+                      <CheckOutlined className="icon" />
+                      {t("employer.company.inforCompany.following")}
+                    </>
+                  ) : (
+                    <>
+                      <UserPlus className="icon" />
+                      {t("employer.company.inforCompany.follow")}
+                    </>
+                  )}
+                </Button>
+              </Col>
+            </Row>
+          </div>
+
+          <Flex gap={"1rem"} vertical style={{ padding: "0 24px" }}>
+            <Anchor
+              targetOffset={60}
+              style={{ backgroundColor: "white" }}
+              className="custom-anchor"
+              direction="horizontal"
+              items={[
+                {
+                  key: "about",
+                  href: "#about",
+                  title: (
+                    <>
+                      <InfoCircleOutlined className="anchor-icon" />{" "}
+                      <Text className="text-lg">
+                        {t("employer.company.inforCompany.aboutUs")}
+                      </Text>
+                    </>
+                  ),
+                },
+                {
+                  key: "list-job",
+                  href: "#list-job",
+                  title: (
+                    <>
+                      <FireOutlined className="anchor-icon" />{" "}
+                      <Text className="text-lg">
+                        {t("employer.company.inforCompany.jobPositions")}
+                      </Text>
+                    </>
+                  ),
+                },
+              ]}
+            />
+
+            <Flex gap={"1rem"} vertical>
+              <div id="about">
+                <BoxContainer padding="1rem" className="section-title">
+                  <Text className="title1">
+                    {t("employer.company.inforCompany.aboutUs")}
+                  </Text>
+                </BoxContainer>
+
+                <div className="descriptions-container">
+                  <Descriptions
+                    labelStyle={{ fontWeight: 550, color: "black" }}
+                    size="middle"
+                    items={[
+                      {
+                        key: "1",
+                        label: (
+                          <>
+                            <TeamOutlined />{" "}
+                            {t("employer.company.inforCompany.size")}
+                          </>
+                        ),
+                        children: (
+                          <Tag className="text-sm !py-0.5" color="purple">
+                            {company.companySize}
+                          </Tag>
+                        ),
+                      },
+                      {
+                        key: "2",
+                        label: (
+                          <>
+                            <BankOutlined />{" "}
+                            {t("employer.company.inforCompany.industry")}
+                          </>
+                        ),
+                        children: (
+                          <Tag className="text-sm !py-0.5" color="blue">
+                            {company.industry}
+                          </Tag>
+                        ),
+                      },
+                      {
+                        key: "3",
+                        label: (
+                          <>
+                            <UserOutlined />{" "}
+                            {t("employer.company.inforCompany.contact")}
+                          </>
+                        ),
+                        children: company.gender
+                          ? "Chị "
+                          : "Anh " + company.firstName + " " + company.lastName,
+                      },
+                      {
+                        key: "4",
+                        label: (
+                          <>
+                            <PhoneOutlined />{" "}
+                            {t("employer.company.inforCompany.phone")}
+                          </>
+                        ),
+                        children: (
+                          <a href={`tel:${company.phoneNumber}`}>
+                            {company.phoneNumber}
+                          </a>
+                        ),
+                      },
+                      {
+                        key: "5",
+                        label: (
+                          <>
+                            <MailOutlined />{" "}
+                            {t("employer.company.inforCompany.email")}
+                          </>
+                        ),
+                        children: (
+                          <a href={`mailto:${company.companyEmail}`}>
+                            {company.companyEmail}
+                          </a>
+                        ),
+                      },
+                      {
+                        key: "6",
+                        label: (
+                          <>
+                            <EnvironmentOutlined />{" "}
+                            {t("employer.company.inforCompany.address")}
+                          </>
+                        ),
+                        children: (
+                          <Flex align="center" gap={8}>
+                            <span>{company.companyAddress}</span>
+                            <Tooltip
+                              destroyTooltipOnHide={true}
+                              title={t(
+                                "employer.company.inforCompany.viewOnMap"
+                              )}
+                            >
+                              <a
+                                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+                                  company.companyAddress
+                                )}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="map-link"
+                              >
+                                <HomeOutlined />
+                              </a>
+                            </Tooltip>
+                          </Flex>
+                        ),
+                      },
+                      {
+                        key: "7",
+                        label: (
+                          <>
+                            <GlobalOutlined />{" "}
+                            {t("employer.company.inforCompany.website")}
+                          </>
+                        ),
+                        children: (
+                          <Link href={company.companyWebsite} target="_blank">
+                            {company.companyWebsite}
+                          </Link>
+                        ),
+                      },
+                    ]}
+                    column={1}
+                  />
+
+                  {company?.companyDescription && (
+                    <Flex
+                      vertical
+                      gap="16px"
+                      className="mt-4 company-description"
+                    >
+                      <Title
+                        level={5}
+                        style={{ marginBottom: 8, color: "#1E4F94" }}
+                      >
+                        <BuildOutlined />{" "}
+                        {t("employer.company.inforCompany.detailedDescription")}
+                      </Title>
+                      <div className="">
+                        <HtmlContent htmlString={company?.companyDescription} />
+                      </div>
                     </Flex>
-                </Card>
-            </BoxContainer >
-        </>
-    );
-}
+                  )}
+                </div>
+
+                <Flex gap={"1rem"} vertical>
+                  {company.videoIntroduction && (
+                    <>
+                      <BoxContainer padding="1rem" className="section-title">
+                        <Text className="title1">
+                          <VideoCameraOutlined />{" "}
+                          {t("employer.company.inforCompany.videoIntroduction")}
+                        </Text>
+                      </BoxContainer>
+                      <div className="video-container">
+                        <YouTubeVideo link={company.videoIntroduction} />
+                      </div>
+                    </>
+                  )}
+
+                  {!isEmpty(company.benefitDetails) && (
+                    <Flex gap={"1rem"} vertical>
+                      <BoxContainer padding="1rem" className="section-title">
+                        <Text className="title1">
+                          <GiftOutlined />{" "}
+                          {t("employer.company.inforCompany.benefits")}
+                        </Text>
+                      </BoxContainer>
+
+                      <Flex gap="16px" vertical className="benefits-container">
+                        {company.benefitDetails.map((benefit, index) => (
+                          <div key={index} className="benefit-card">
+                            <BenefitCard
+                              benefitName={benefit.benefitName}
+                              description={benefit.description}
+                              benefitIcon={benefit.benefitIcon}
+                              size="large"
+                            />
+                          </div>
+                        ))}
+                      </Flex>
+                    </Flex>
+                  )}
+                </Flex>
+              </div>
+
+              <div id="list-job" className="job-list-section">
+                <BoxContainer padding="1rem" className="section-title">
+                  <Text className="title1">
+                    <FireOutlined />{" "}
+                    {t("employer.company.inforCompany.jobPositions")}
+                  </Text>
+                </BoxContainer>
+                <JobList />
+              </div>
+            </Flex>
+          </Flex>
+        </Card>
+      </BoxContainer>
+    </>
+  );
+};
+
 export default InforCompany;

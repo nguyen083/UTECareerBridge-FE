@@ -8,16 +8,16 @@
 
 
     &::-webkit-scrollbar {
-        width: 5px; // Đặt độ rộng của scrollbar
+        width: 5px;
     }
 
     &::-webkit-scrollbar-thumb {
-        background-color: #cfcfcf; // Màu của thanh cuộn
-        border-radius   : 10px; // Bo tròn các góc
+        background-color: #cfcfcf;
+        border-radius   : 10px;
     }
 
     &::-webkit-scrollbar-thumb:hover {
-        background-color: #b6b6b6; // Màu khi hover
+        background-color: #b6b6b6;
     }
 
     .item-company {
@@ -33,9 +33,9 @@
             background-color: $background-color;
             cursor          : pointer;
             transition      : all 0.3s ease;
-            box-shadow      : 0 12px 24px rgba(0, 0, 0, 0.2);
+            @apply shadow-md;
             /* Bóng đổ mạnh hơn khi hover */
-            transform       : translateY(-1px);
+            transform: translateY(-1px);
             /* Nâng container lên khi hover */
         }
     }

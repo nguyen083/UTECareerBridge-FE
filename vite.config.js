@@ -1,12 +1,30 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import { defineConfig, loadEnv } from "vite";
+import react from "@vitejs/plugin-react-swc";
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  base: '/',
-  plugins: [react()],
-  server: {
-    host: '0.0.0.0',
-    port: 3000, // Đặt cổng là 3000
-  },
-})
+export default defineConfig(({ mode }) => {
+  //eslint-disable-next-line no-undef
+  const env = loadEnv(mode, process.cwd());
+
+  return {
+    base: "/",
+    plugins: [react()],
+    server: {
+      port: env.VITE_UI_PORT,
+      hmr: {
+        host: "localhost",
+        protocol: "ws",
+      },
+      proxy: {
+        "/api": {
+          target: env.VITE_BASE_API_URL + "/api/v1",
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ""),
+        },
+        "/ws": {
+          target: env.VITE_BASE_API_URL,
+          ws: true,
+        },
+      },
+    },
+  };
+});

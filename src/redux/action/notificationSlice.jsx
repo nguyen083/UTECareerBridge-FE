@@ -1,21 +1,22 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  unread: 0
+  unread: 0,
 };
 
 const notificationSlice = createSlice({
-  name: 'notifications',
+  name: "notifications",
   initialState,
   reducers: {
     setNotificationCount: (state, action) => {
       state.unread = action.payload;
     },
-    setInitNotification: (state, action) => {
+    setInitNotification: (state) => {
       state.unread = 0;
-    }
-  }
+    },
+  },
 });
 
-export const { setNotificationCount, setInitNotification } = notificationSlice.actions;
+export const { setNotificationCount, setInitNotification } =
+  notificationSlice.actions;
 export default notificationSlice.reducer;

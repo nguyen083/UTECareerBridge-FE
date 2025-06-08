@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 
-//khởi tạo state ban đầu
 const initialState = {
     userId: null,
     role: null,
@@ -9,7 +8,7 @@ const initialState = {
 };
 
 export const userSlice = createSlice({
-    name: 'user', //tên của reducer
+    name: 'user',
     initialState,
     reducers: {
         setInfor: (state, action) => {
@@ -25,8 +24,6 @@ export const userSlice = createSlice({
     },
 });
 
-// Export các action để sử dụng trong component
 export const { setInfor, setInitUser } = userSlice.actions;
 
-// Export reducer để sử dụng trong store
 export default userSlice.reducer;

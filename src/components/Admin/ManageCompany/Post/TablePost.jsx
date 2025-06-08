@@ -1,336 +1,500 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { SearchOutlined, EyeOutlined, InboxOutlined, CheckOutlined, CloseOutlined } from '@ant-design/icons';
-import { Button, Form, Input, message, Modal, Space, Table, Tooltip } from 'antd';
-import Highlighter from 'react-highlight-words';
-import { approvePost, getAllPostByAdmin, rejectPost } from '../../../../services/apiService';
-import { Link, useNavigate } from 'react-router-dom';
-const TablePost = ({ status }) => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [currentPage, setCurrentPage] = useState(1); // Trang hiện tại
-    const [pageSize, setPageSize] = useState(10); // Số lượng bản ghi mỗi trang (mặc định 20)
-    const [totalRecords, setTotalRecords] = useState(0); // Tổng số bản ghi (lấy từ API)
-    const [searchText, setSearchText] = useState('');
-    const [searchedColumn, setSearchedColumn] = useState('');
-    const searchInput = useRef(null);
-    const navigate = useNavigate();
-    const [selectedPost, setSelectedPost] = useState(null);
-    const [isModalVisible, setIsModalVisible] = useState(false);
-    const [form] = Form.useForm();
+import { useEffect, useRef, useState } from "react";
+import {
+  SearchOutlined,
+  EyeOutlined,
+  InboxOutlined,
+  CheckOutlined,
+  CloseOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
+import {
+  Button,
+  Form,
+  Input,
+  message,
+  Modal,
+  Space,
+  Table,
+  Tooltip,
+  Tag,
+  Row,
+  Divider,
+} from "antd";
+import Highlighter from "react-highlight-words";
+import {
+  approvePost,
+  getAllPostByAdmin,
+  rejectPost,
+} from "../../../../services/apiService";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import dayjs from "dayjs";
 
-    const handleSearch = (selectedKeys, confirm, dataIndex) => {
-        confirm();
-        setSearchText(selectedKeys[0]);
-        setSearchedColumn(dataIndex);
-    };
+const TablePost = ({ status, onUpdateStats }) => {
+  const { t } = useTranslation();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [totalRecords, setTotalRecords] = useState(0);
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = useRef(null);
+  const navigate = useNavigate();
+  const [selectedPost, setSelectedPost] = useState(null);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [form] = Form.useForm();
+  const [sortedInfo, setSortedInfo] = useState({});
 
-    const handleReset = (clearFilters) => {
-        clearFilters();
-        setSearchText('');
-    };
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
 
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
 
-    // Hàm gọi API để lấy dữ liệu theo trang và limit
-    const fetchData = async () => {
-        try {
-            setLoading(true);
-            const params = {
-                status: status, // Truyền status từ props
-                page: currentPage - 1,       // Trang hiện tại
-                limit: pageSize,             // Số bản ghi mỗi trang
-            };
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const params = {
+        status: status,
+        page: currentPage - 1,
+        limit: pageSize,
+      };
 
+      const res = await getAllPostByAdmin(params);
+      if (res.status === "OK" && res.data) {
+        const data = res.data.jobResponses.map((item, index) => {
+          return {
+            key: item.jobId,
+            index: (currentPage - 1) * pageSize + index + 1,
+            title: item.jobTitle,
+            category: item.jobCategory.jobCategoryName,
+            level: item.jobLevel.nameLevel,
+            rejectionReason: item.rejectionReason,
+            quantity: item.amount,
+            deadline: item.jobDeadline,
+            createdTime: item.createdAt,
+          };
+        });
+        setTotalRecords(res.data.totalPages * pageSize);
+        setData(data);
+      } else setData([]);
 
-            // gọi API mới
-            const res = await getAllPostByAdmin(params); // Gọi API
-            if (res.status === 'OK' && res.data) {
-                const data = res.data.jobResponses.map((item, index) => {
-                    return {
-                        key: item.jobId,
-                        index: (currentPage - 1) * pageSize + index + 1,
-                        title: item.jobTitle,
-                        category: item.jobCategory.jobCategoryName,
-                        level: item.jobLevel.nameLevel,
-                        rejectionReason: item.rejectionReason,
-                        quantity: item.amount,
-                        deadline: item.jobDeadline,
-                        createdTime: item.createdAt,
-                    };
-                });
-                setTotalRecords(res.data.totalPages * pageSize);
-                // Cập nhật dữ liệu và pagination từ API
-                setData(data);
-                // setTotalRecords(res.data.totalPages); // Tổng số bản ghi từ API
-            }
-            else
-                setData([]);
-        } catch (error) {
-            console.error("Error fetching data", error);
-        } finally {
-            setLoading(false);
-        }
-    };
+      // Notify parent component to update stats if callback provided
+      if (onUpdateStats) {
+        onUpdateStats();
+      }
+    } catch (error) {
+      console.error("Error fetching data", error);
+      message.error(t("admin.messages.error"));
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    // Gọi API khi component mount và khi pagination thay đổi
-    useEffect(() => {
-        fetchData();
-    }, [currentPage, pageSize, status]); // Mỗi khi status thay đổi, gọi lại API
+  useEffect(() => {
+    fetchData();
+  }, [currentPage, pageSize, status]);
 
-    // Hàm xử lý khi thay đổi trang hoặc số lượng bản ghi mỗi trang
-    const handleTableChange = (newPagination) => {
-        setCurrentPage(newPagination.current);
-        setPageSize(newPagination.pageSize);
-    };
+  const handleTableChange = (pagination, filters, sorter) => {
+    setCurrentPage(pagination.current);
+    setPageSize(pagination.pageSize);
+    setSortedInfo(sorter);
+  };
 
-    // Cấu hình cột cho bảng
-    const getColumnSearchProps = (dataIndex) => ({
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-            <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
-                <Input
-                    ref={searchInput}
-                    placeholder={`Tìm ${dataIndex}`}
-                    value={selectedKeys[0]}
-                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                    style={{ marginBottom: 8, display: 'block' }}
-                />
-                <Space>
-                    <Button
-                        type="primary"
-                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                        icon={<SearchOutlined />}
-                        size="small"
-                        style={{ width: 70 }}
-                    >
-                        Tìm
-                    </Button>
-                    <Button
-                        onClick={() => clearFilters && handleReset(clearFilters)}
-                        size="small"
-                        style={{ width: 70 }}
-                    >
-                        Đặt lại
-                    </Button>
-                    <Button
-                        type="link"
-                        size="small"
-                        onClick={() => {
-                            confirm({ closeDropdown: false });
-                            setSearchText(selectedKeys[0]);
-                            setSearchedColumn(dataIndex);
-                        }}
-                    >
-                        Lọc
-                    </Button>
-                    <Button
-                        type="link"
-                        size="small"
-                        onClick={() => close()}
-                    >
-                        Đóng
-                    </Button>
-                </Space>
-            </div>
-        ),
-        filterIcon: (filtered) => (
-            <SearchOutlined style={{ color: filtered ? '#1677ff' : undefined }} />
-        ),
-        onFilter: (value, record) =>
-            record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-        onFilterDropdownOpenChange: (visible) => {
-            if (visible) {
-                setTimeout(() => searchInput.current?.select(), 100);
-            }
-        },
-        render: (text) =>
-            searchedColumn === dataIndex ? (
-                <Highlighter
-                    highlightStyle={{
-                        backgroundColor: '#ffc069',
-                        padding: 0,
-                    }}
-                    searchWords={[searchText]}
-                    autoEscape
-                    textToHighlight={text ? text.toString() : ''}
-                />
-            ) : (
-                text
-            ),
-    });
-
-    // Định nghĩa các cột cho bảng
-    const columns = [
-        {
-            title: 'No.',
-            dataIndex: 'index',
-            key: 'index',
-            width: '5%',
-        },
-        {
-            title: 'Tiêu đề',
-            dataIndex: 'title',
-            key: 'title',
-            width: '25%',
-            ...getColumnSearchProps('title'),
-        },
-        {
-            title: 'Lĩnh vực',
-            dataIndex: 'category',
-            key: 'category',
-            width: '13%',
-            ...getColumnSearchProps('category'),
-        },
-        {
-            title: 'Cấp bậc',
-            dataIndex: 'level',
-            key: 'level',
-            width: '13%',
-            ...getColumnSearchProps('level'),
-        },
-        {
-            title: 'Số lượng',
-            dataIndex: 'quantity',
-            key: 'quantity',
-            width: '10%',
-            sorter: (a, b) => a.quantity - b.quantity,
-        },
-        status !== 'REJECTED' ?
-            {
-                title: 'Thời hạn',
-                dataIndex: 'deadline',
-                key: 'deadline',
-                width: '10%',
-                ...getColumnSearchProps('deadline'),
-            } :
-            {
-                title: 'Lý do từ chối',
-                dataIndex: 'rejectionReason',
-                key: 'rejectionReason',
-                ellipsis: true,
-                Tooltip: true,
-                width: '11%',
-            },
-        {
-            title: 'Thời gian tạo',
-            dataIndex: 'createdTime',
-            key: 'createdTime',
-            width: '11%',
-        },
-        {
-            align: 'center',
-            title: '',
-            key: 'action',
-            width: '13%',
-            render: (_, record) => (
-                <Space size="small">
-                    <Tooltip color='blue' title="Xem">
-                        <Button className="btn btn-outline-primary" onClick={() => {
-                            navigate(`/view/job/${record.key}`, { state: { status: status } });
-                        }} icon={<EyeOutlined />} />
-                    </Tooltip>
-                    <Tooltip color='cyan' title="Duyệt">
-                        <Button hidden={status !== 'PENDING'}
-                            className="btn btn-outline-success"
-                            icon={<CheckOutlined />}
-                            onClick={async () => {
-                                try {
-                                    approvePost(record.key).then(res => {
-                                        if (res.status === "OK") {
-                                            message.success(res.message);
-                                            fetchData();
-                                        }
-                                        else {
-                                            message.error(res.message);
-                                        }
-                                    })
-                                } catch (error) {
-                                    console.error("Error approving company", error);
-                                }
-                            }}
-                        />
-                    </Tooltip>
-                    <Tooltip color='red' title="Từ chối">
-                        <Button
-                            hidden={status !== 'PENDING'}
-                            danger
-                            onClick={() => {
-                                setSelectedPost(record);
-                                setIsModalVisible(true);
-                            }}
-                            icon={<CloseOutlined />}
-                        />
-                    </Tooltip>
-
-                </Space >
-            ),
-        },
-    ];
-
-    const handleModalCancel = () => {
-        form.resetFields();
-        setSelectedPost(null);
-        setIsModalVisible(false);
-    };
-    const handleModalSubmit = (values) => {
-        rejectPost(selectedPost.key, values).then(res => {
-            if (res.status === "OK") {
-                message.success(res.message);
-                fetchData();
-            }
-            else {
-                message.error(res.message);
-            }
-        }).catch(err => {
-            console.log(err);
-        }).finally(() => {
-            handleModalCancel();
-        })
-    };
-    return (<>
-        <Table
-            bordered
-            columns={columns}
-            dataSource={data}
-            pagination={{
-                current: currentPage,
-                pageSize: pageSize,
-                total: totalRecords, // Tổng số bản ghi
-                showSizeChanger: true, // Hiển thị tùy chọn thay đổi số lượng bản ghi trên mỗi trang
-            }}
-            loading={loading}
-            onChange={handleTableChange} // Xử lý khi thay đổi trang hoặc pageSize
-            locale={{
-                emptyText: (
-                    <div className='p-5'>
-                        <InboxOutlined style={{ fontSize: '50px', marginBottom: '8px' }} />
-                        <div>Không có dữ liệu</div>
-                    </div>
-                ),
-            }}
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+      close,
+    }) => (
+      <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
+        <Input
+          ref={searchInput}
+          placeholder={t("admin.post.table.search.searchFor", {
+            field: t(`admin.post.table.columns.${dataIndex}`),
+          })}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          style={{ marginBottom: 8, display: "block" }}
         />
-        <Modal
-            centered
-            title="Chỉnh sửa thông tin người dùng"
-            open={isModalVisible}
-            onCancel={handleModalCancel}
-            footer={[
-                <Button onClick={handleModalCancel}>
-                    Hủy
-                </Button>,
-                <Button type="primary" onClick={() => form.submit()}>
-                    Xác nhận
-                </Button>,
-            ]}
+        <Space>
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+            style={{ width: 70 }}
+          >
+            {t("admin.post.table.search.search")}
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+            style={{ width: 70 }}
+          >
+            {t("admin.post.table.search.reset")}
+          </Button>
+          <Button
+            type="link"
+            size="small"
+            onClick={() => {
+              confirm({ closeDropdown: false });
+              setSearchText(selectedKeys[0]);
+              setSearchedColumn(dataIndex);
+            }}
+          >
+            {t("admin.post.table.search.filter")}
+          </Button>
+          <Button type="link" size="small" onClick={() => close()}>
+            {t("admin.post.table.search.close")}
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: "#ffc069",
+            padding: 0,
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  // Action to approve a post
+  const handleApprove = async (postId) => {
+    try {
+      const res = await approvePost(postId);
+      if (res.status === "OK") {
+        message.success({
+          content: res.message,
+          icon: <CheckOutlined style={{ color: "#52c41a" }} />,
+        });
+        fetchData();
+      } else {
+        message.error(res.message);
+      }
+    } catch (error) {
+      console.error("Error approving post", error);
+      message.error(t("admin.messages.error"));
+    }
+  };
+
+  // Action to reject a post via modal
+  const showRejectModal = (record) => {
+    setSelectedPost(record);
+    setIsModalVisible(true);
+  };
+
+  const handleModalCancel = () => {
+    form.resetFields();
+    setSelectedPost(null);
+    setIsModalVisible(false);
+  };
+
+  const handleModalSubmit = async (values) => {
+    try {
+      const res = await rejectPost(selectedPost.key, values);
+      if (res.status === "OK") {
+        message.success({
+          content: res.message,
+          icon: <CloseOutlined style={{ color: "#ff4d4f" }} />,
+        });
+        fetchData();
+      } else {
+        message.error(res.message);
+      }
+    } catch (err) {
+      console.error(err);
+      message.error(t("admin.messages.error"));
+    } finally {
+      handleModalCancel();
+    }
+  };
+
+  // Enhanced column definitions
+  const columns = [
+    {
+      title: t("admin.post.table.columns.no"),
+      dataIndex: "index",
+      key: "index",
+      width: 70,
+      align: "center",
+    },
+    {
+      title: t("admin.post.table.columns.title"),
+      dataIndex: "title",
+      key: "title",
+      ...getColumnSearchProps("title"),
+      sorter: (a, b) => a.title.localeCompare(b.title),
+      sortOrder: sortedInfo.columnKey === "title" && sortedInfo.order,
+      render: (text) => <div className="font-medium">{text}</div>,
+      ellipsis: true,
+    },
+    {
+      title: t("admin.post.table.columns.category"),
+      dataIndex: "category",
+      key: "category",
+      ...getColumnSearchProps("category"),
+      render: (category) => (
+        <div className="w-full overflow-clip">
+          <Tag className="lowercase w-fit" color="blue" key={category}>
+            <span className="max-w-full truncate">{category}</span>
+          </Tag>
+        </div>
+      ),
+      sorter: (a, b) => a.category.localeCompare(b.category),
+      sortOrder: sortedInfo.columnKey === "category" && sortedInfo.order,
+    },
+    {
+      title: t("admin.post.table.columns.level"),
+      dataIndex: "level",
+      key: "level",
+      ...getColumnSearchProps("level"),
+      render: (level) => (
+        <Tag className="lowercase w-fit" color="green" key={level}>
+          {level}
+        </Tag>
+      ),
+    },
+    {
+      title: t("admin.post.table.columns.quantity"),
+      dataIndex: "quantity",
+      key: "quantity",
+      width: "8%",
+      align: "center",
+      sorter: (a, b) => a.quantity - b.quantity,
+      sortOrder: sortedInfo.columnKey === "quantity" && sortedInfo.order,
+      render: (quantity) => quantity,
+    },
+    status !== "REJECTED"
+      ? {
+          title: t("admin.post.table.columns.deadline"),
+          dataIndex: "deadline",
+          key: "deadline",
+          width: "12%",
+          sorter: (a, b) => new Date(a.deadline) - new Date(b.deadline),
+          sortOrder: sortedInfo.columnKey === "deadline" && sortedInfo.order,
+          render: (date) => {
+            const deadlineDate = dayjs(date, "DD/MM/YYYY");
+            const now = dayjs();
+            const isExpired = deadlineDate.isBefore(now);
+
+            return (
+              <Tag
+                className="w-fit"
+                color={isExpired ? "red" : "green"}
+                key={date}
+              >
+                {date}
+              </Tag>
+            );
+          },
+        }
+      : {
+          title: t("admin.post.table.columns.rejectedReason"),
+          dataIndex: "rejectionReason",
+          key: "rejectionReason",
+          ellipsis: true,
+          width: "15%",
+          render: (reason) => (
+            <Tooltip destroyTooltipOnHide={true} title={reason}>
+              <div className="truncate">{reason}</div>
+            </Tooltip>
+          ),
+        },
+    {
+      title: t("admin.post.table.columns.createdTime"),
+      dataIndex: "createdTime",
+      key: "createdTime",
+      width: "12%",
+      sorter: (a, b) => new Date(a.createdTime) - new Date(b.createdTime),
+      sortOrder: sortedInfo.columnKey === "createdTime" && sortedInfo.order,
+      render: (date) => date,
+    },
+    {
+      title: "",
+      key: "action",
+      width: "12%",
+      align: "center",
+      render: (_, record) => (
+        <Space size="small">
+          <Tooltip
+            destroyTooltipOnHide={true}
+            color="blue"
+            title={t("admin.post.table.actions.view")}
+          >
+            <Button
+              shape="circle"
+              onClick={() =>
+                navigate(`/view/job/${record.key}`, {
+                  state: { status: status },
+                })
+              }
+              icon={<EyeOutlined className="text-text-color" />}
+            />
+          </Tooltip>
+          {status === "PENDING" && (
+            <>
+              <Tooltip
+                destroyTooltipOnHide={true}
+                color="green"
+                title={t("admin.post.table.actions.approve")}
+              >
+                <Button
+                  type="primary"
+                  shape="circle"
+                  icon={<CheckOutlined />}
+                  onClick={() => handleApprove(record.key)}
+                />
+              </Tooltip>
+              <Tooltip
+                destroyTooltipOnHide={true}
+                color="red"
+                title={t("admin.post.table.actions.reject")}
+              >
+                <Button
+                  danger
+                  shape="circle"
+                  icon={<CloseOutlined />}
+                  onClick={() => showRejectModal(record)}
+                />
+              </Tooltip>
+            </>
+          )}
+        </Space>
+      ),
+    },
+  ];
+
+  // Table toolbar component
+  const TableToolbar = () => (
+    <Row justify="space-between" align="middle" className="mb-4">
+      <div className="flex justify-end w-full">
+        <Button
+          icon={<ReloadOutlined />}
+          onClick={fetchData}
+          disabled={loading}
         >
-            <Form form={form} onFinish={handleModalSubmit} size="large" layout="vertical">
-                <Form.Item label="Lý do từ chối" name="reason" placeholder="Nhập lý do từ chối" rules={[{ required: true, message: 'Vui lòng nhập lý do từ chối' }]}>
-                    <Input.TextArea rows={4} allowClear />
-                </Form.Item>
-            </Form>
-        </Modal>
+          {t("admin.dashboard.refresh")}
+        </Button>
+      </div>
+    </Row>
+  );
+
+  return (
+    <>
+      <TableToolbar />
+      <Divider className="my-2" />
+
+      <Table
+        bordered
+        columns={columns}
+        dataSource={data}
+        pagination={{
+          current: currentPage,
+          pageSize: pageSize,
+          total: totalRecords,
+          showSizeChanger: true,
+          pageSizeOptions: ["10", "20", "50", "100"],
+        }}
+        loading={loading}
+        onChange={handleTableChange}
+        locale={{
+          emptyText: (
+            <div className="flex flex-col items-center p-8">
+              <InboxOutlined
+                style={{
+                  fontSize: "50px",
+                  marginBottom: "8px",
+                  color: "#bfbfbf",
+                }}
+              />
+              <div>{t("admin.post.table.noData")}</div>
+            </div>
+          ),
+        }}
+        scroll={{ x: "max-content" }}
+        rowClassName={(record, index) =>
+          index % 2 === 0 ? "bg-white" : "bg-gray-50"
+        }
+      />
+
+      <Modal
+        centered
+        title={t("admin.post.table.modal.title")}
+        open={isModalVisible}
+        onCancel={handleModalCancel}
+        footer={[
+          <Button key="cancel" onClick={handleModalCancel}>
+            {t("admin.post.table.modal.cancel")}
+          </Button>,
+          <Button
+            key="confirm"
+            type="primary"
+            onClick={() => form.submit()}
+            danger
+          >
+            {t("admin.post.table.modal.confirm")}
+          </Button>,
+        ]}
+        maskClosable={false}
+      >
+        <Form
+          form={form}
+          onFinish={handleModalSubmit}
+          size="large"
+          layout="vertical"
+        >
+          <Form.Item
+            label={t("admin.post.table.modal.rejectReason")}
+            name="reason"
+            rules={[
+              {
+                required: true,
+                message: t("admin.post.table.modal.pleaseEnterReason"),
+              },
+            ]}
+          >
+            <Input.TextArea
+              rows={4}
+              allowClear
+              placeholder={t("admin.post.table.modal.enterRejectReason")}
+              showCount
+              maxLength={500}
+            />
+          </Form.Item>
+        </Form>
+      </Modal>
     </>
-    );
+  );
 };
 
 export default TablePost;
-

@@ -1,0 +1,207 @@
+@import "../styles/variables.scss";
+
+.benefit-card-wrapper {
+  margin-bottom: 16px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  .benefit-card {
+    border-radius: 12px;
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    position: relative;
+    
+    &:hover {
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    }
+    
+    // Gradient background line at top
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, #1890ff, #52c41a);
+    }
+
+    &.small {
+      .benefit-content {
+        padding: 16px;
+      }
+
+      .benefit-icon {
+        font-size: 26px;
+      }
+
+      .benefit-title {
+        font-size: 15px;
+      }
+    }
+
+    &.large {
+      .benefit-content {
+        padding: 20px;
+      }
+
+      .benefit-icon {
+        font-size: 34px;
+      }
+
+      .benefit-title {
+        font-size: 18px;
+      }
+    }
+    
+    .benefit-content {
+      display: flex;
+      align-items: flex-start;
+      position: relative;
+      z-index: 2;
+    }
+    
+    .benefit-icon-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      margin-right: 16px;
+      background: linear-gradient(135deg, #e6f7ff, #bae7ff);
+      box-shadow: 0 4px 8px rgba(24, 144, 255, 0.2);
+    }
+    
+    .benefit-icon {
+      color: #1890ff;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover .benefit-icon {
+      transform: scale(1.2);
+    }
+    
+    .benefit-text {
+      flex: 1;
+    }
+    
+    .benefit-title {
+      margin: 0 0 6px 0;
+      color: #1e4f94;
+      font-weight: 600;
+      line-height: 1.2;
+    }
+    
+    .benefit-description {
+      margin: 0;
+      color: #666;
+      line-height: 1.6;
+      font-size: 14px;
+
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+
+    // Light gradient background
+    .benefit-bg {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 150px;
+      height: 150px;
+      opacity: 0.04;
+      background: radial-gradient(circle, #1890ff 0%, transparent 70%);
+      transition: all 0.5s ease;
+      z-index: 1;
+    }
+
+    &:hover .benefit-bg {
+      opacity: 0.08;
+      transform: scale(1.3);
+    }
+  }
+}
+
+// Theme variants
+.benefit-card-wrapper {
+  // Education theme
+  &.theme-education .benefit-card {
+    &::before {
+      background: linear-gradient(90deg, #722ed1, #eb2f96);
+    }
+    
+    .benefit-icon-wrapper {
+      background: linear-gradient(135deg, #f9f0ff, #efdbff);
+    }
+    
+    .benefit-icon {
+      color: #722ed1;
+    }
+  }
+
+  // Health theme
+  &.theme-health .benefit-card {
+    &::before {
+      background: linear-gradient(90deg, #13c2c2, #52c41a);
+    }
+    
+    .benefit-icon-wrapper {
+      background: linear-gradient(135deg, #e6fffb, #b5f5ec);
+    }
+    
+    .benefit-icon {
+      color: #13c2c2;
+    }
+  }
+
+  // Financial theme
+  &.theme-financial .benefit-card {
+    &::before {
+      background: linear-gradient(90deg, #fa8c16, #faad14);
+    }
+    
+    .benefit-icon-wrapper {
+      background: linear-gradient(135deg, #fff7e6, #ffe7ba);
+    }
+    
+    .benefit-icon {
+      color: #fa8c16;
+    }
+  }
+
+  // Leisure theme
+  &.theme-leisure .benefit-card {
+    &::before {
+      background: linear-gradient(90deg, #1890ff, #69c0ff);
+    }
+    
+    .benefit-icon-wrapper {
+      background: linear-gradient(135deg, #e6f7ff, #bae7ff);
+    }
+    
+    .benefit-icon {
+      color: #1890ff;
+    }
+  }
+
+  // Work theme
+  &.theme-work .benefit-card {
+    &::before {
+      background: linear-gradient(90deg, #52c41a, #95de64);
+    }
+    
+    .benefit-icon-wrapper {
+      background: linear-gradient(135deg, #f6ffed, #d9f7be);
+    }
+    
+    .benefit-icon {
+      color: #52c41a;
+    }
+  }
+}

@@ -1,0 +1,125 @@
+.interview-calendar {
+  .ant-picker-calendar-date-content {
+    min-height: 200px;
+    max-height: 500px;
+    overflow-y: auto;
+
+    /* Custom scrollbar */
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: #888;
+      border-radius: 4px;
+    }
+  }
+
+  .ant-picker-month-panel {
+    .ant-picker-calendar-date-content {
+      height: fit-content;
+    }
+  }
+
+  .interview-card {
+    .ant-card-body {
+      padding: 8px 12px;
+      transition: all 0.3s;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  .calendar-card {
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
+    .ant-picker-calendar {
+      .ant-picker-panel {
+        border-top: none;
+      }
+
+      .ant-picker-cell-in-view.ant-picker-cell-selected .ant-picker-cell-inner {
+        background-color: #1890ff;
+      }
+
+      .ant-picker-cell-today .ant-picker-cell-inner::before {
+        border-color: #1890ff;
+      }
+    }
+  }
+}
+
+.interview-list {
+  .ant-table-wrapper {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .interview-row {
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #fafafa !important;
+    }
+  }
+
+  .ant-table-cell {
+    padding: 12px 16px;
+  }
+}
+
+.interview-container {
+  .ant-btn {
+    border-radius: 6px;
+  }
+
+  .ant-card {
+    border-radius: 8px;
+  }
+}
+
+.interview-modal {
+  .interview-detail-card {
+    border-radius: 8px;
+    transition: all 0.3s;
+  }
+
+  .ant-modal-content {
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .ant-modal-header {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+}
+
+.interview-tabs {
+  .ant-tabs-nav {
+    margin-bottom: 0;
+    padding: 8px 0 0;
+
+    &::before {
+      border-bottom: none;
+    }
+
+    .ant-tabs-tab {
+      padding: 8px 16px;
+      font-weight: 500;
+
+      &.ant-tabs-tab-active .ant-tabs-tab-btn {
+        color: #1890ff;
+        font-weight: 600;
+      }
+    }
+  }
+}

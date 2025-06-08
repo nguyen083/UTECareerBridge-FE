@@ -1,8 +1,8 @@
 @import '../styles/variables.scss';
 
 .image {
-    background-image   : url(https://res.cloudinary.com/utejobhub/image/upload/v1724932543/demo/j5e70j4xexkxqmirgum2.jpg);
-    background-position: 0 0;
+    background-image   : linear-gradient(90deg, rgba(255, 255, 255, 0.5158438375350141) 0%, rgba(255, 255, 255, 0.022846638655462215) 90%, rgba(255, 255, 255, 0.87718837535014) 100%), url(https://i.pinimg.com/736x/81/38/c2/8138c22a5a8ea015b8104bdfa80ca80f.jpg);
+    background-position: left bottom;
     background-repeat  : no-repeat;
     background-size    : cover;
     height             : 100vh;
@@ -12,8 +12,8 @@
 }
 
 .parent-register-form {
-    background: $background-color;
-    padding   : 5rem 0 5rem 0;
+    background   : $background-color;
+   
 
     @media (max-width: 576px) {
         padding: 0;
@@ -53,8 +53,8 @@
                 height         : 2.1625rem;
 
                 svg {
-                    // position: relative;
-                    // top: 3px;
+                   
+                   
                     margin-right: 0.5rem;
                 }
 

@@ -11,7 +11,7 @@ const IconLoading = (props) => {
             const timer = setTimeout(() => {
                 setLoading(false);
             }, time);
-            // Cleanup the timer if the component is unmounted
+           
             return () => clearTimeout(timer);
         }
     }, [time]);

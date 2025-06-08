@@ -1,5 +1,4 @@
 import { Card, Typography, Flex } from "antd";
-import React from "react";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { useMediaQuery } from "react-responsive";
@@ -8,14 +7,13 @@ import Lable from "../../../constant/Lable";
 import { useNavigate } from "react-router-dom";
 const { Text } = Typography;
 const FeaturedJobs = ({ jobs }) => {
-
   const isMobile = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
 
   const responsive = {
     desktop: {
       breakpoint: { max: 3000, min: 1024 },
-      items: 1, // Hiển thị 1 slide (3x3)
+      items: 1,
     },
     tablet: {
       breakpoint: { max: 1024, min: 464 },
@@ -28,7 +26,7 @@ const FeaturedJobs = ({ jobs }) => {
   };
 
   const handleJobClick = (jobId) => {
-    navigate(`/job/${jobId}`);
+    navigate(`/jobs/${jobId}`);
   };
   return (
     <section className="featured-jobs">
@@ -46,34 +44,58 @@ const FeaturedJobs = ({ jobs }) => {
         >
           {Array.from({ length: Math.ceil(jobs.length / 9) }, (_, i) => (
             <div key={i} className="carousel-grid">
-              {jobs.length > 0 && jobs.slice(i * 9, i * 9 + 9).map((job, index) => (
-                <div key={index}>
-                  <Card
-                    bordered={false}
-                    className="featured-jobs__item border-item d-flex align-items-stretch"
-                    hoverable
-                    onClick={() => handleJobClick(job.jobId)}
-                  >
-                    <div className="card-body">
-                      <div className="card-logo">
-                        <img src={job?.employerResponse?.companyLogo} alt={job?.employerResponse?.companyName} />
+              {jobs.length > 0 &&
+                jobs.slice(i * 9, i * 9 + 9).map((job, index) => (
+                  <div key={index}>
+                    <Card
+                      bordered={false}
+                      className="featured-jobs__item border-[#c0c0c069] border flex items-stretch "
+                      hoverable
+                      onClick={() => handleJobClick(job.jobId)}
+                    >
+                      <div className="card-body ">
+                        <div className="card-logo">
+                          <img
+                            src={job?.employerResponse?.companyLogo}
+                            alt={job?.employerResponse?.companyName}
+                          />
+                        </div>
+                        <div className="card-details">
+                          <Flex
+                            justify="space-between"
+                            align="center"
+                            gap={3}
+                            className="mb-1"
+                          >
+                            <Text className="text-base font-bold job-title">
+                              {job.jobTitle}{" "}
+                            </Text>
+                            {Lable(job.packageId)}
+                          </Flex>
+                          <Text className="text-sm company-name">
+                            {job.employerResponse?.companyName}
+                          </Text>
+                          <Flex
+                            align="center"
+                            gap={3}
+                            style={{
+                              color: "#ff4d4f",
+                              fontSize: 14,
+                              margin: "8px 0",
+                            }}
+                          >
+                            {job.jobMinSalary} - {job.jobMaxSalary}
+                          </Flex>
+                        </div>
                       </div>
-                      <div className="card-details">
-                        <Text className="fw-bold f-16 job-title mb-1">{job.jobTitle} {Lable(job.packageId)}</Text>
-                        <Text className="f-14 company-name">{job.employerResponse?.companyName}</Text>
-                        <Flex align='center' gap={3} style={{ color: '#ff4d4f', fontSize: 14, margin: '8px 0' }}>
-                          {job.jobMinSalary.toLocaleString('vi-VN')} - {job.jobMaxSalary.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}  <div style={{ fontSize: 14 }}>/tháng</div>
-                        </Flex>
-                      </div>
-                    </div>
-                  </Card>
-                </div>
-              ))}
+                    </Card>
+                  </div>
+                ))}
             </div>
           ))}
         </Carousel>
-      </div >
-    </section >
+      </div>
+    </section>
   );
 };
 

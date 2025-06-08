@@ -1,151 +1,174 @@
-import React, { useState, useEffect } from 'react';
-import './TableListUser.scss';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import "./TableListUser.scss";
+import { Link } from "react-router-dom";
 import {
   Table,
   Button,
   Input,
   Space,
-  Popconfirm,
   message,
   Tag,
   Tooltip,
   Modal,
   Dropdown,
   Empty,
-} from 'antd';
+} from "antd";
 import {
   EditOutlined,
-  DeleteOutlined,
   ReloadOutlined,
-  InboxOutlined,
   DownOutlined,
-  SearchOutlined,
   PrinterOutlined,
   EyeOutlined,
   FileExcelOutlined,
-  FilePdfOutlined
-} from '@ant-design/icons';
-import { getAllUsers, getCompanyById, exportUserToPdf } from '../../../services/apiService';
+  FilePdfOutlined,
+} from "@ant-design/icons";
+import { getAllUsers, exportUserToPdf } from "../../../services/apiService";
+import { useTranslation } from "react-i18next";
 const { Search } = Input;
 
-const TableListUser = ({
-  fetch,
-  userType,
-  additionalColumns = [],
-  onEdit,
-  onDelete
-}) => {
+const TableListUser = ({ fetch, userType, additionalColumns = [], onEdit }) => {
+  const { t } = useTranslation();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [searchText, setSearchText] = useState('');
-  const [sorting, setSorting] = useState('');
-  const [sortField, setSortField] = useState('');
+  const [searchText, setSearchText] = useState("");
+  const [sorting, setSorting] = useState("");
+  const [sortField, setSortField] = useState("");
   const [isPrintModalVisible, setIsPrintModalVisible] = useState(false);
   const [exportLoading, setExportLoading] = useState(false);
   const [pagination, setPagination] = useState({
     current: 1,
     pageSize: 10,
-    total: 0
+    total: 0,
   });
 
   const statusColors = {
-    ACTIVE: 'success',
-    INACTIVE: 'error',
-    PENDING: 'warning',
-    BLOCKED: 'error'
+    ACTIVE: "success",
+    INACTIVE: "error",
+    PENDING: "warning",
+    BLOCKED: "error",
   };
 
   const baseColumns = [
     {
-      title: 'No.',
-      dataIndex: 'index',
-      key: 'index',
-      width: '5%',
-      align: 'right'
+      title: t("admin.userTable.columns.no"),
+      dataIndex: "index",
+      key: "index",
+      width: "5%",
+      align: "center",
     },
     {
-      title: 'Họ',
-      dataIndex: 'lastName',
-      key: 'lastName',
-      width: '10%',
-      align: 'center'
+      title: t("admin.userTable.columns.lastName"),
+      dataIndex: "lastName",
+      key: "lastName",
+      width: "10%",
+      align: "center",
     },
     {
-      title: 'Tên',
-      dataIndex: 'firstName',
-      key: 'firstName',
-      width: '10%',
+      title: t("admin.userTable.columns.firstName"),
+      dataIndex: "firstName",
+      key: "firstName",
+      width: "10%",
       sorter: true,
-      align: 'center',
-      sortDirections: ['ascend', 'descend']
+      align: "center",
+      sortDirections: ["ascend", "descend"],
     },
     {
-      title: 'Email',
-      dataIndex: 'email',
-      key: 'email',
-      align: 'center',
-      width: '20%'
+      title: t("admin.userTable.columns.email"),
+      dataIndex: "email",
+      key: "email",
+      align: "center",
+      width: "20%",
     },
     {
-      title: 'Số điện thoại',
-      dataIndex: 'phone',
-      key: 'phone',
-      align: 'center'
+      title: t("admin.userTable.columns.phone"),
+      dataIndex: "phone",
+      key: "phone",
+      align: "center",
     },
     {
-      title: 'Ngày sinh',
-      dataIndex: 'dob',
-      key: 'dob',
-      align: 'center'
+      title: t("admin.userTable.columns.dob"),
+      dataIndex: "dob",
+      key: "dob",
+      align: "center",
     },
     {
-      title: 'Trạng thái',
-      dataIndex: 'active',
-      key: 'active',
-      align: 'center',
+      title: t("admin.userTable.columns.status"),
+      dataIndex: "active",
+      key: "active",
+      align: "center",
+      width: "10%",
       render: (active) => {
-        const displayStatus = active ? 'Hoạt động' : 'Bị khóa';
-        const statusKey = active ? 'ACTIVE' : 'BLOCKED';
+        const displayStatus = active
+          ? t("admin.userTable.columns.statusValues.active")
+          : t("admin.userTable.columns.statusValues.blocked");
+        const statusKey = active ? "ACTIVE" : "BLOCKED";
         return (
-          <Tag color={statusColors[statusKey]}>
-            {displayStatus}
-          </Tag>
+          <div className="flex items-center justify-center w-full">
+            <Tag
+              className="text-sm font-normal w-fit"
+              color={statusColors[statusKey]}
+            >
+              {displayStatus}
+            </Tag>
+          </div>
         );
-      }
+      },
     },
     {
-      key: 'actions',
-      fixed: 'right',
-      width: '10%',
+      key: "actions",
+      fixed: "right",
+      align: "center",
+      width: "10%",
       render: (_, record) => (
         <Space size="middle">
-          <Tooltip title="Cập nhật tài khoản" color='cyan'><Button
-            icon={<EditOutlined />}
-            onClick={() => {
-              onEdit(record);
-            }
-            }
-          /></Tooltip>
-          {userType === 'employer' && (
-            <Tooltip title="Xem công ty" color='blue'><Link to={`/company/${record.key}`} target='_blank'>
-              <Button
-                icon={<EyeOutlined />}
-              />
-            </Link></Tooltip>
+          <Tooltip
+            destroyTooltipOnHide={true}
+            title={t("admin.userTable.tooltips.updateAccount")}
+            color="cyan"
+          >
+            <Button icon={<EditOutlined />} onClick={() => onEdit(record)} />
+          </Tooltip>
+          {userType === "employer" && (
+            <Tooltip
+              destroyTooltipOnHide={true}
+              title={t("admin.userTable.tooltips.viewCompany")}
+              color="blue"
+            >
+              <Link to={`/company/${record.key}`} target="_blank">
+                <Button icon={<EyeOutlined />} />
+              </Link>
+            </Tooltip>
           )}
-          {userType !== 'employer' && <Tooltip color='red' title="Xóa tài khoản">< Button
-            type="primary"
-            danger
-            onClick={() => onDelete(record.key)}
-            icon={<DeleteOutlined />}
-          /></Tooltip>}
         </Space>
       ),
     },
   ];
 
-  const columns = [...baseColumns.slice(0, 2), ...additionalColumns, ...baseColumns.slice(2)];
+  const columns = [
+    ...baseColumns.slice(0, 2),
+    ...additionalColumns,
+    ...baseColumns.slice(2),
+  ];
+
+  const items = [
+    {
+      label: t("admin.userTable.sort.newest"),
+      key: "newest",
+    },
+    {
+      label: t("admin.userTable.sort.oldest"),
+      key: "lastest",
+    },
+    {
+      label: t("admin.userTable.sort.nameAZ"),
+      key: "ascName",
+    },
+    {
+      label: t("admin.userTable.sort.nameZA"),
+      key: "descName",
+    },
+  ];
+
   const handleMenuClick = ({ key }) => {
     let newSortField = key;
     setSortField(key);
@@ -154,11 +177,11 @@ const TableListUser = ({
     fetchUsers({
       page: pagination.current - 1,
       pageSize: pagination.pageSize,
-      sorting: `${newSortField}`
+      sorting: `${newSortField}`,
     });
   };
+
   const fetchUsers = async (params = {}) => {
-    console.log('Fetching users with params:', pagination);
     try {
       setLoading(true);
 
@@ -166,18 +189,20 @@ const TableListUser = ({
         role: userType,
         page: params.page || pagination.current - 1,
         size: params.pageSize || pagination.pageSize,
-        sorting: params.sorting || (sortField && sorting ? `${sortField},${sorting}` : ''),
+        sorting:
+          params.sorting ||
+          (sortField && sorting ? `${sortField},${sorting}` : ""),
         keyword: params.keyword || searchText,
         ...params.additionalParams,
       };
 
       const response = await getAllUsers(queryParams);
 
-      if (response.status === 'OK') {
+      if (response.status === "OK") {
         const dataWithIndex = response.data.userResponses.map((user, idx) => ({
           ...user,
           key: user.userId,
-          index: (queryParams.page * queryParams.size) + idx + 1
+          index: queryParams.page * queryParams.size + idx + 1,
         }));
         setUsers(dataWithIndex);
         setPagination({
@@ -186,11 +211,10 @@ const TableListUser = ({
           current: params.page || pagination.current,
         });
       } else {
-        message.error('Không thể tải danh sách người dùng');
+        message.error(t("admin.userTable.loadError"));
       }
-    } catch (error) {
-      message.error('Đã xảy ra lỗi khi tải danh sách người dùng');
-      console.error('Error fetching users:', error);
+    } catch {
+      message.error(t("admin.userTable.loadError"));
     } finally {
       setLoading(false);
     }
@@ -199,15 +223,13 @@ const TableListUser = ({
   useEffect(() => {
     fetchUsers();
   }, [fetch]);
-  // Initial fetch
+
   useEffect(() => {
     fetchUsers();
   }, [pagination.current, pagination.pageSize, userType]);
 
-
-  // Handle table change
   const handleTableChange = (newPagination, filters, sorter) => {
-    const newSorting = sorter.order === 'ascend' ? 'asc' : 'desc';
+    const newSorting = sorter.order === "ascend" ? "asc" : "desc";
     setSorting(newSorting);
 
     fetchUsers({
@@ -215,29 +237,28 @@ const TableListUser = ({
       pageSize: newPagination.pageSize,
       sorting: newSorting,
       additionalParams: {
-        ...filters
-      }
+        ...filters,
+      },
     });
   };
 
-  // Handle search
   const handleSearch = (value) => {
     setSearchText(value);
-    setPagination({ ...pagination, current: 1 }); // Reset to first page
+    setPagination({ ...pagination, current: 1 });
 
     fetchUsers({
       keyword: value,
-      page: 0
+      page: 0,
     });
   };
 
-  // Handle refresh
   const handleRefresh = () => {
     fetchUsers();
   };
+
   const PrintModal = () => (
     <Modal
-      title="Chọn định dạng xuất"
+      title={t("admin.userTable.export.title")}
       open={isPrintModalVisible}
       onCancel={() => setIsPrintModalVisible(false)}
       footer={null}
@@ -246,27 +267,28 @@ const TableListUser = ({
       <div className="flex flex-col gap-4 p-4">
         <Button
           icon={<FileExcelOutlined />}
-          onClick={() => handleExport('excel')}
+          onClick={() => handleExport("excel")}
           loading={exportLoading}
           block
           size="large"
           className="mb-3"
         >
-          Xuất Excel
+          {t("admin.userTable.export.excel")}
         </Button>
         <Button
           icon={<FilePdfOutlined />}
-          onClick={() => handleExport('pdf')}
+          onClick={() => handleExport("pdf")}
           loading={exportLoading}
           block
           size="large"
           type="primary"
         >
-          Xuất PDF
+          {t("admin.userTable.export.pdf")}
         </Button>
       </div>
     </Modal>
   );
+
   const handleExport = async (type) => {
     try {
       setExportLoading(true);
@@ -275,77 +297,58 @@ const TableListUser = ({
         role: userType,
         page: pagination.current - 1,
         size: pagination.pageSize,
-        sorting: sortField && sorting ? `${sortField},${sorting}` : 'createdAt',
-        keyword: searchText || ''
+        sorting: sortField && sorting ? `${sortField},${sorting}` : "createdAt",
+        keyword: searchText || "",
       };
 
-      if (type === 'pdf') {
+      if (type === "pdf") {
         const response = await exportUserToPdf(queryParams);
-        // if (response.data.type !== 'application/pdf') {
-        //   throw new Error('Invalid PDF response');
-        // }
+        const blob =
+          response instanceof Blob
+            ? response
+            : new Blob([response], { type: "application/pdf" });
 
-        // Tạo Blob với type cụ thể
-        const blob = response instanceof Blob ? response : new Blob([response], { type: 'application/pdf' });
-        // Kiểm tra kích thước blob
         if (blob.size === 0) {
-          throw new Error('Empty PDF file');
+          throw new Error("Empty PDF file");
         }
 
-        // Tạo URL và download
         const url = window.URL.createObjectURL(blob);
-        const link = document.createElement('a');
+        const link = document.createElement("a");
         link.href = url;
-        link.setAttribute('download', `users-${new Date().getTime()}.pdf`);
+        link.setAttribute("download", `users-${new Date().getTime()}.pdf`);
 
-        // Mở PDF trong tab mới trước khi download (tùy chọn)
-        window.open(url, '_blank');
+        window.open(url, "_blank");
 
-        // Download file
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
 
-        // Clean up
         setTimeout(() => {
           window.URL.revokeObjectURL(url);
         }, 100);
 
-        message.success('Xuất PDF thành công!');
+        message.success(t("admin.userTable.export.success"));
       }
     } catch (error) {
       console.error(`Error exporting ${type}:`, error);
-      message.error(`Lỗi khi xuất ${type === 'excel' ? 'Excel' : 'PDF'}. Vui lòng thử lại sau.`);
+      message.error(
+        t("admin.userTable.export.error", {
+          type: type === "excel" ? "Excel" : "PDF",
+        })
+      );
     } finally {
       setExportLoading(false);
       setIsPrintModalVisible(false);
     }
   };
-  const items = [
-    {
-      label: 'Người dùng mới nhất',
-      key: 'newest',
-    },
-    {
-      label: 'Người dùng cũ nhất',
-      key: 'lastest',
-    },
-    {
-      label: 'Người dùng theo tên A-Z',
-      key: 'ascName'
-    },
-    {
-      label: 'Người dùng theo tên Z-A',
-      key: 'descName',
-    },
-  ];
+
   return (
     <div>
       <div style={{ marginBottom: 16 }}>
         <Space style={{ marginBottom: 16 }}>
           <Search
             size="large"
-            placeholder="Tìm kiếm người dùng..."
+            placeholder={t("admin.userTable.search.placeholder")}
             allowClear
             onSearch={handleSearch}
             style={{ width: "400px" }}
@@ -353,12 +356,13 @@ const TableListUser = ({
           />
           <Dropdown
             menu={{
-              items, onClick: handleMenuClick,
+              items,
+              onClick: handleMenuClick,
             }}
             trigger={["click"]}
           >
-            <Button size='large'>
-              Sắp xếp <DownOutlined />
+            <Button size="large">
+              {t("admin.userTable.search.sort")} <DownOutlined />
             </Button>
           </Dropdown>
           <Button
@@ -366,12 +370,9 @@ const TableListUser = ({
             size="large"
             onClick={handleRefresh}
           >
-            Làm mới
+            {t("admin.userTable.search.refresh")}
           </Button>
-          <Button
-            size="large"
-            onClick={() => setIsPrintModalVisible(true)}
-          >
+          <Button size="large" onClick={() => setIsPrintModalVisible(true)}>
             <PrinterOutlined />
           </Button>
         </Space>
@@ -385,14 +386,13 @@ const TableListUser = ({
         pagination={{
           ...pagination,
           showSizeChanger: true,
-          showTotal: (total) => `Tổng ${total} người dùng`,
+          showTotal: (total) =>
+            t("admin.userTable.search.totalUsers", { total }),
         }}
         onChange={handleTableChange}
         scroll={{ x: 1000 }}
         locale={{
-          emptyText: (
-            <Empty description="Không có dữ liệu" />
-          ),
+          emptyText: <Empty description={t("admin.userTable.noData")} />,
         }}
       />
       <PrintModal />

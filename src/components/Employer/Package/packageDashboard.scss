@@ -1,49 +1,319 @@
-// ServiceMarketplace.module.scss
+// Package Dashboard Styles
 
-.service-card {
-  border-color : #f0f0f0;
-  border-radius: 8px;
-  box-shadow   : 0px 4px 8px rgba(0, 0, 0, 0.1);
-  transition   : transform 0.1s, box-shadow 0.1s;
+// Header styles
+.package-header {
+  margin-bottom: 16px;
 
-  .description-text {
-    display           : -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow          : hidden;
-    text-overflow     : ellipsis;
-  }
+  .package-header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-  &:hover {
-    transform : translateY(-4px);
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
-  }
-}
+    @media (max-width: 576px) {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 16px;
 
-.price-text {
-  font-size: 18px;
-  color    : #52c41a;
-
-}
-
-.add-to-cart-btn {
-  border-color: #52c41a;
-  color       : #52c41a;
-
-  &:hover {
-    background-color: #52c41a !important;
-    color           : #fff !important;
-    border-color    : #52c41a !important;
+      .view-cart-btn {
+        align-self: stretch;
+        margin-top: 8px;
+      }
+    }
   }
 }
 
-.buy-now-btn {
-  background-color: #52c41a;
-  border-color    : #52c41a;
+// Notice container styles
+.notice-container {
+  margin-bottom: 16px;
 
-  &:hover {
-    background-color: #5fe01f !important;
-    color           : #fff !important;
-    border-color    : #5fe01f !important;
+  .service-alert {
+    border: none;
+    border-radius: 8px;
+
+    .notice-content {
+      margin-top: 8px;
+
+      .benefit-points {
+        margin-top: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .benefit-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .benefit-check {
+          color: #52c41a;
+          font-size: 16px;
+        }
+      }
+
+      .contact-sales-link {
+        margin-top: 16px;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+    }
+  }
+}
+
+// Package container styles
+.package-container {
+  margin-bottom: 16px;
+  padding: 24px;
+
+  .packages-header {
+    margin-bottom: 24px;
+
+    h4 {
+      margin-bottom: 4px;
+    }
+  }
+
+  .packages-grid {
+    margin-bottom: 24px;
+  }
+
+  .skeleton-container {
+    min-height: 400px;
+
+    .skeleton-card {
+      min-height: 350px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  .pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+  }
+}
+
+.ant-ribbon-wrapper {
+  height: 100%;
+  // Service card styles
+  .service-card {
+    height: 100%;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #f0f0f0;
+    transition: transform 0.2s, box-shadow 0.2s;
+
+    &:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    &.popular-card {
+      border-color: #ffccc7;
+      box-shadow: 0 4px 12px rgba(255, 77, 79, 0.1);
+
+      &:hover {
+        box-shadow: 0 10px 20px rgba(255, 77, 79, 0.2);
+      }
+
+      .card-header {
+        background-color: rgba(255, 77, 79, 0.05);
+      }
+    }
+
+    &.best-value-card {
+      border-color: #b7eb8f;
+      box-shadow: 0 4px 12px rgba(82, 196, 26, 0.1);
+
+      &:hover {
+        box-shadow: 0 10px 20px rgba(82, 196, 26, 0.2);
+      }
+
+      .card-header {
+        background-color: rgba(82, 196, 26, 0.05);
+      }
+    }
+
+    .card-header {
+      padding: 16px;
+
+      .package-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #111827;
+        margin-bottom: 4px;
+
+        .popular-icon,
+        .best-value-icon {
+          color: #ff4d4f;
+          font-size: 18px;
+        }
+
+        .best-value-icon {
+          color: #52c41a;
+        }
+      }
+
+      .feature-tag {
+        margin-bottom: 16px;
+        font-weight: 500;
+      }
+
+      .price-container {
+        .price-text {
+          font-size: 24px;
+          font-weight: 700;
+          color: #52c41a;
+          margin-bottom: 4px;
+          display: block;
+        }
+
+        .price-info {
+          font-size: 12px;
+        }
+      }
+    }
+
+    .package-content {
+      padding: 0 16px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      .package-amount {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+        margin-bottom: 8px;
+
+        .amount-circle {
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background-color: #f9f0ff;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 4px;
+
+          .amount-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #722ed1;
+          }
+        }
+
+        .amount-label {
+          font-size: 14px;
+          color: #666;
+        }
+      }
+
+      .package-description {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 16px;
+      }
+
+      .feature-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        margin-bottom: 16px;
+
+        .feature-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          .feature-included {
+            color: #52c41a;
+          }
+
+          .feature-excluded {
+            color: #d9d9d9;
+          }
+
+          .feature-text {
+            font-size: 14px;
+
+            &.disabled {
+              color: #d9d9d9;
+              text-decoration: line-through;
+            }
+          }
+        }
+      }
+    }
+
+    .package-footer {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: auto;
+
+      .add-to-cart-btn {
+        border-color: #52c41a;
+        color: #52c41a;
+
+        &:hover {
+          background-color: #52c41a !important;
+          color: #fff !important;
+          border-color: #52c41a !important;
+        }
+      }
+
+      .buy-now-popular-btn {
+        background-color: #ff4d4f;
+        border-color: #ff4d4f;
+
+        &:hover {
+          background-color: #ff7875 !important;
+          border-color: #ff7875 !important;
+        }
+      }
+    }
+  }
+}
+
+// FAQ section
+.faq-container {
+  padding: 24px;
+}
+
+// Responsive styles
+@media (max-width: 768px) {
+  .package-container {
+    padding: 16px;
+  }
+
+  .service-card {
+    .card-header {
+      .price-text {
+        font-size: 20px;
+      }
+    }
+
+    .package-content {
+      .package-amount {
+        .amount-circle {
+          width: 50px;
+          height: 50px;
+
+          .amount-value {
+            font-size: 20px;
+          }
+        }
+      }
+    }
   }
 }

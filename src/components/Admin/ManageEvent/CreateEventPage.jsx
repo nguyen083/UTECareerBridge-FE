@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Form, Input, DatePicker, TimePicker, InputNumber, Button, Select, Row, Col, Modal, message } from "antd";
 import { UploadImage } from "../../Student/Component/UploadAvatar";
 import { DeleteOutlined } from "@ant-design/icons";
@@ -6,8 +6,10 @@ import { createEvent, getEventDetail, updateEvent } from "../../../services/apiS
 import dayjs from "dayjs";
 import { deleteImageFromCloudinaryByLink } from "../../../services/uploadCloudary";
 import CustomizeQuill from "../../Generate/CustomizeQuill";
+import { useTranslation } from 'react-i18next';
 
 const CreateEventPage = ({ open, setOpen, setIsFetching, item = null }) => {
+    const { t } = useTranslation();
     const [form] = Form.useForm();
     const [eventDetail, setEventDetail] = useState({});
     const fetchEventDetail = async () => {
@@ -59,12 +61,7 @@ const CreateEventPage = ({ open, setOpen, setIsFetching, item = null }) => {
             message.error(err.message);
         }) : updateEvent(eventDetail.eventId, formattedValues).then((res) => {
             if (res.status === 'OK') {
-
-                {
-                    eventDetail.eventImage !== formattedValues.eventImage && deleteImageFromCloudinaryByLink(eventDetail.eventImage, 'image', 'admin/event').then((res) => {
-                        console.log(res);
-                    });
-                }
+                eventDetail.eventImage !== formattedValues.eventImage && deleteImageFromCloudinaryByLink(eventDetail.eventImage, 'image', 'admin/event')
                 form.resetFields();
                 message.success(res.message);
                 setOpen(false);
@@ -84,7 +81,13 @@ const CreateEventPage = ({ open, setOpen, setIsFetching, item = null }) => {
     return (
         <Modal
             width={1500}
-            title={item ? "Chỉnh sửa Sự Kiện" : "Tạo Sự Kiện mới"} open={open} onCancel={handleCancel} okText={item ? "Cập nhật" : "Tạo"} cancelText="Hủy" onOk={() => form.submit()}>
+            title={item ? t('admin.event.title.edit') : t('admin.event.title.create')} 
+            open={open} 
+            onCancel={handleCancel} 
+            okText={item ? t('admin.event.form.buttons.update') : t('admin.event.form.buttons.create')} 
+            cancelText={t('admin.event.form.buttons.cancel')} 
+            onOk={() => form.submit()}
+        >
             <Form
                 initialValues={eventDetail}
                 size="large"
@@ -94,57 +97,71 @@ const CreateEventPage = ({ open, setOpen, setIsFetching, item = null }) => {
             >
                 <Row gutter={24}>
                     <Col span={12}>
-                        <Form.Item label="Tên Sự Kiện" name="eventTitle"
-                            rules={[{ required: true, message: 'Vui lòng nhập tên sự kiện!' }]}
+                        <Form.Item 
+                            label={t('admin.event.form.fields.eventTitle.label')} 
+                            name="eventTitle"
+                            rules={[{ required: true, message: t('admin.event.form.fields.eventTitle.required') }]}
                         >
                             <Input />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="Loại Sự Kiện" name="eventType" placeholder="Chọn loại sự kiện"
-                            rules={[{ required: true, message: 'Vui lòng chọn loại sự kiện!' }]}
+                        <Form.Item 
+                            label={t('admin.event.form.fields.eventType.label')} 
+                            name="eventType" 
+                            placeholder={t('admin.event.form.fields.eventType.placeholder')}
+                            rules={[{ required: true, message: t('admin.event.form.fields.eventType.required') }]}
                         >
                             <Select>
-                                <Select.Option value="SEMINAR">Hội thảo</Select.Option>
-                                <Select.Option value="CONFERENCE">Hội nghị</Select.Option>
-                                <Select.Option value="WORKSHOP">Hội thảo chuyên đề</Select.Option>
-                                <Select.Option value="CAREER_FAIR">Hội chợ việc làm</Select.Option>
-                                <Select.Option value="WEBINAR">Hội thảo trực tuyến</Select.Option>
+                                <Select.Option value="SEMINAR">{t('admin.event.form.fields.eventType.options.seminar')}</Select.Option>
+                                <Select.Option value="CONFERENCE">{t('admin.event.form.fields.eventType.options.conference')}</Select.Option>
+                                <Select.Option value="WORKSHOP">{t('admin.event.form.fields.eventType.options.workshop')}</Select.Option>
+                                <Select.Option value="CAREER_FAIR">{t('admin.event.form.fields.eventType.options.careerFair')}</Select.Option>
+                                <Select.Option value="WEBINAR">{t('admin.event.form.fields.eventType.options.webinar')}</Select.Option>
                             </Select>
                         </Form.Item>
-                    </Col >
+                    </Col>
                 </Row>
 
                 <Row gutter={24}>
                     <Col span={12}>
-                        <Form.Item label="Thời gian tổ chức" name="eventDate" placeholder="Chọn thời gian tổ chức"
-                            rules={[{ required: true, message: 'Vui lòng chọn thời gian tổ chức!' }]}
+                        <Form.Item 
+                            label={t('admin.event.form.fields.eventDate.label')} 
+                            name="eventDate" 
+                            placeholder={t('admin.event.form.fields.eventDate.placeholder')}
+                            rules={[{ required: true, message: t('admin.event.form.fields.eventDate.required') }]}
                         >
-                            <DatePicker className="w-100" showTime />
+                            <DatePicker className="w-full" showTime />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item label="Số lượng người tối đa" name="maxParticipants"
-                            rules={[{ required: true, message: 'Vui lòng nhập số lượng người tối đa!' }]}
+                        <Form.Item 
+                            label={t('admin.event.form.fields.maxParticipants.label')} 
+                            name="maxParticipants"
+                            rules={[{ required: true, message: t('admin.event.form.fields.maxParticipants.required') }]}
                         >
-                            <InputNumber min={0} className="w-100" />
+                            <InputNumber min={0} className="w-full" />
                         </Form.Item>
                     </Col>
                 </Row>
 
                 <Row gutter={24}>
                     <Col span={24}>
-                        <Form.Item label="Địa Điểm tổ chức" name="eventLocation"
-                            rules={[{ required: true, message: 'Vui lòng nhập địa điểm tổ chức!' }]}
+                        <Form.Item 
+                            label={t('admin.event.form.fields.eventLocation.label')} 
+                            name="eventLocation"
+                            rules={[{ required: true, message: t('admin.event.form.fields.eventLocation.required') }]}
                         >
                             <Input />
                         </Form.Item>
                     </Col>
-                </Row >
+                </Row>
                 <Row gutter={24}>
                     <Col span={24}>
-                        <Form.Item label="Mô Tả Sự Kiện" name="eventDescription"
-                            rules={[{ required: true, message: 'Vui lòng nhập mô tả sự kiện!' }]}
+                        <Form.Item 
+                            label={t('admin.event.form.fields.eventDescription.label')} 
+                            name="eventDescription"
+                            rules={[{ required: true, message: t('admin.event.form.fields.eventDescription.required') }]}
                         >
                             <CustomizeQuill />
                         </Form.Item>
@@ -153,53 +170,53 @@ const CreateEventPage = ({ open, setOpen, setIsFetching, item = null }) => {
 
 
                 <Form.Item
-                    label="Hình Ảnh Sự Kiện"
+                    label={t('admin.event.form.fields.eventImage.label')}
                     name="eventImage"
-                    tooltip="Hình ảnh sự kiện sẽ được hiển thị trên trang chủ"
-                    rules={[{ required: true, message: 'Vui lòng chọn hình ảnh sự kiện!' }]}
+                    tooltip={t('admin.event.form.fields.eventImage.tooltip')}
+                    rules={[{ required: true, message: t('admin.event.form.fields.eventImage.required') }]}
                 >
                     <UploadImage />
                 </Form.Item>
-                <Form.Item label="Danh mục sự kiện" required>
+                <Form.Item 
+                    label={t('admin.event.form.fields.timeline.label')} 
+                    required
+                >
                     <Form.List
                         name="timeline"
-                        rules={[{ required: true, message: 'Vui lòng thêm danh mục sự kiện!' }]}
-
+                        rules={[{ required: true, message: t('admin.event.form.fields.timeline.required') }]}
                     >
                         {(fields, { add, remove }) => (
-                            <div className="border border-1 rounded-2 p-2">
-
-                                {fields.map(({ key, fieldKey, name, field }) => (
-                                    <Row gutter={24} key={key} align="top" justify="space-between" >
+                            <div className="p-2 border rounded-2">
+                                {fields.map(({ key, fieldKey, name }) => (
+                                    <Row gutter={24} key={key} align="top" justify="space-between">
                                         <Col span={7}>
-
                                             <Form.Item
-                                                label="Tiêu đề"
+                                                label={t('admin.event.form.fields.timeline.fields.title.label')}
                                                 name={[name, 'timelineTitle']}
                                                 fieldKey={[fieldKey, 'timelineTitle']}
-                                                rules={[{ required: true, message: 'Vui lòng nhập tiêu đề!' }]}
+                                                rules={[{ required: true, message: t('admin.event.form.fields.timeline.fields.title.required') }]}
                                             >
                                                 <Input />
                                             </Form.Item>
                                         </Col>
                                         <Col span={10}>
                                             <Form.Item
-                                                label="Mô tả"
+                                                label={t('admin.event.form.fields.timeline.fields.description.label')}
                                                 name={[name, 'timelineDescription']}
                                                 fieldKey={[fieldKey, 'timelineDescription']}
-                                                rules={[{ required: true, message: 'Vui lòng nhập mô tả!' }]}
+                                                rules={[{ required: true, message: t('admin.event.form.fields.timeline.fields.description.required') }]}
                                             >
                                                 <Input.TextArea />
                                             </Form.Item>
                                         </Col>
                                         <Col span={5}>
                                             <Form.Item
-                                                label="Thời gian"
+                                                label={t('admin.event.form.fields.timeline.fields.time.label')}
                                                 name={[name, 'timelineStart']}
                                                 fieldKey={[fieldKey, 'timelineStart']}
-                                                rules={[{ required: true, message: 'Vui lòng nhập thời gian!' }]}
+                                                rules={[{ required: true, message: t('admin.event.form.fields.timeline.fields.time.required') }]}
                                             >
-                                                <TimePicker format="HH:mm" className="w-100" />
+                                                <TimePicker format="HH:mm" className="w-full" />
                                             </Form.Item>
                                         </Col>
                                         <Col span={1}>
@@ -211,7 +228,7 @@ const CreateEventPage = ({ open, setOpen, setIsFetching, item = null }) => {
                                 ))}
                                 <Form.Item className="my-0">
                                     <Button size="middle" onClick={() => add()}>
-                                        Thêm
+                                        {t('admin.event.form.buttons.add')}
                                     </Button>
                                 </Form.Item>
                             </div>

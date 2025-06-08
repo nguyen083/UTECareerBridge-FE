@@ -1,357 +1,437 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { SearchOutlined, EditOutlined, DeleteOutlined, EyeOutlined, InboxOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
-import { Button, Input, Modal, Space, Table, Tooltip } from 'antd';
-import Highlighter from 'react-highlight-words';
-import { deleteJob, getJobsByStatus, putHideJob } from '../../../services/apiService'; // API mới để phân trang
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from "react";
+import {
+  SearchOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  EyeInvisibleOutlined,
+  EyeOutlined,
+  FileSearchOutlined,
+} from "@ant-design/icons";
+import { Button, Input, Modal, Space, Table, Tooltip, Tag, Empty } from "antd";
+import Highlighter from "react-highlight-words";
+import {
+  deleteJob,
+  getJobsByStatus,
+  putHideJob,
+} from "../../../services/apiService";
+import { useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
+import dayjs from "dayjs";
 
 const TableListJobs = (props) => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [pagination, setPagination] = useState({
-        current: 1, // Trang hiện tại
-        pageSize: 10, // Số lượng bản ghi mỗi trang (mặc định 20)
-        total: 0, // Tổng số bản ghi (lấy từ API)
-    });
-    const [searchText, setSearchText] = useState('');
-    const [searchedColumn, setSearchedColumn] = useState('');
-    const searchInput = useRef(null);
-    const navigate = useNavigate();
+  const { t } = useTranslation();
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  });
+  const [searchText, setSearchText] = useState("");
+  const [searchedColumn, setSearchedColumn] = useState("");
+  const searchInput = useRef(null);
+  const navigate = useNavigate();
 
-    const handleSearch = (selectedKeys, confirm, dataIndex) => {
-        confirm();
-        setSearchText(selectedKeys[0]);
-        setSearchedColumn(dataIndex);
+  const handleSearch = (selectedKeys, confirm, dataIndex) => {
+    confirm();
+    setSearchText(selectedKeys[0]);
+    setSearchedColumn(dataIndex);
+  };
+
+  const handleReset = (clearFilters) => {
+    clearFilters();
+    setSearchText("");
+  };
+
+  const fetchData = async (currentPage, pageSize) => {
+    setLoading(true);
+    const params = {
+      jobStatus: props.status,
+      page: currentPage - 1,
+      limit: pageSize,
     };
 
-    const handleReset = (clearFilters) => {
-        clearFilters();
-        setSearchText('');
-    };
-
-
-    // Hàm gọi API để lấy dữ liệu theo trang và limit
-    const fetchData = async (currentPage, pageSize) => {
-        setLoading(true);
-        const params = {
-            jobStatus: props.status, // Truyền status từ props
-            page: currentPage - 1,       // Trang hiện tại
-            limit: pageSize,         // Số bản ghi mỗi trang
-        };
-
-        const res = await getJobsByStatus(params); // Gọi API
-        if (res.status === 'OK' && res.data) {
-            const data = res.data.jobResponses.map((item, index) => {
-                return {
-                    key: item.jobId,
-                    index: (currentPage - 1) * pageSize + index + 1,
-                    title: item.jobTitle,
-                    category: item.jobCategory.jobCategoryName,
-                    level: item.jobLevel.nameLevel,
-                    rejectionReason: item.rejectionReason,
-                    quantity: item.amount,
-                    deadline: item.jobDeadline,
-                    createdTime: item.createdAt,
-                };
-            });
-
-            // Cập nhật dữ liệu và pagination từ API
-            setData(data);
-            setPagination({
-                current: currentPage,
-                pageSize: pageSize,
-                total: res.data.totalPages, // Tổng số bản ghi từ API
-            });
-        }
-        else
-            setData([]);
-        setLoading(false);
-    };
-
-    // Gọi API khi component mount và khi pagination thay đổi
-    useEffect(() => {
-        fetchData(pagination.current, pagination.pageSize);
-    }, [pagination.current, pagination.pageSize, props.status]); // Mỗi khi status thay đổi, gọi lại API
-
-    // Hàm xử lý khi thay đổi trang hoặc số lượng bản ghi mỗi trang
-    const handleTableChange = (newPagination) => {
-        setPagination({
-            ...pagination,
-            current: newPagination.current,
-            pageSize: newPagination.pageSize,
+    try {
+      const res = await getJobsByStatus(params);
+      if (res.status === "OK" && res.data) {
+        const data = res.data.jobResponses.map((item, index) => {
+          return {
+            key: item.jobId,
+            index: (currentPage - 1) * pageSize + index + 1,
+            title: item.jobTitle,
+            category: item.jobCategory.jobCategoryName,
+            level: item.jobLevel.nameLevel,
+            rejectionReason: item.rejectionReason,
+            quantity: item.amount,
+            deadline: item.jobDeadline,
+            createdTime: item.createdAt,
+            views: item.views || 0,
+          };
         });
-    };
-    const handleView = (id) => {
-        navigate(`/employer/job/view/${id}`);
-    };
-    const handleEdit = (id) => {
-        navigate(`/employer/job/edit/${id}`);
-    }
-    const handleDelete = (id) => {
-        Modal.confirm({
-            title: 'Xác nhận',
-            content: 'Bạn chắc chắn muốn xóa bài đăng này?',
-            centered: true,
-            onOk() {
-                return new Promise((resolve, reject) => {
-                    deleteJob(id).then((res) => {
-                        if (res.status === 'OK') {
-                            resolve();
-                            fetchData(pagination.current, pagination.pageSize);
-                        }
-                        else
-                            reject();
-                    });
-                });
-            },
-            onCancel() { },
-            footer: (_, { OkBtn, CancelBtn }) => (
-                <>
-                    <CancelBtn />
-                    <OkBtn />
-                </>
-            )
-        })
-    }
-    const handleHide = (id) => {
-        props.status !== "INACTIVE" ?
-            Modal.confirm({
-                title: 'Xác nhận',
-                content: 'Bạn chắc chắn muốn ẩn bài đăng này?',
-                centered: true,
-                onOk() {
-                    return new Promise((resolve, reject) => {
-                        putHideJob(id, 'INACTIVE').then((res) => {
-                            if (res.status === 'OK') {
-                                resolve();
-                                fetchData(pagination.current, pagination.pageSize);
-                            }
-                            else
-                                reject();
-                        });
-                    });
-                },
-                onCancel() { },
-                footer: (_, { OkBtn, CancelBtn }) => (
-                    <>
-                        <CancelBtn />
-                        <OkBtn />
-                    </>
-                )
-            }) :
-            Modal.confirm({
-                title: 'Xác nhận',
-                content: 'Bạn chắc chắn muốn hiện bài đăng này?',
-                centered: true,
-                onOk() {
-                    return new Promise((resolve, reject) => {
-                        putHideJob(id, 'ACTIVE').then((res) => {
-                            if (res.status === 'OK') {
-                                resolve();
-                                fetchData(pagination.current, pagination.pageSize);
-                            }
-                            else
-                                reject();
-                        });
-                    });
-                },
-                onCancel() { },
-                footer: (_, { OkBtn, CancelBtn }) => (
-                    <>
-                        <CancelBtn />
-                        <OkBtn />
-                    </>
-                )
-            })
-    }
 
-    // Cấu hình cột cho bảng
-    const getColumnSearchProps = (dataIndex) => ({
-        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters, close }) => (
-            <div style={{ padding: 8 }} onKeyDown={(e) => e.stopPropagation()}>
-                <Input
-                    ref={searchInput}
-                    placeholder={`Tìm ${dataIndex}`}
-                    value={selectedKeys[0]}
-                    onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
-                    onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                    style={{ marginBottom: 8, display: 'block' }}
-                />
-                <Space>
-                    <Button
-                        type="primary"
-                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
-                        icon={<SearchOutlined />}
-                        size="small"
-                        style={{ width: 70 }}
-                    >
-                        Tìm
-                    </Button>
-                    <Button
-                        onClick={() => clearFilters && handleReset(clearFilters)}
-                        size="small"
-                        style={{ width: 70 }}
-                    >
-                        Đặt lại
-                    </Button>
-                    <Button
-                        type="link"
-                        size="small"
-                        onClick={() => {
-                            confirm({ closeDropdown: false });
-                            setSearchText(selectedKeys[0]);
-                            setSearchedColumn(dataIndex);
-                        }}
-                    >
-                        Lọc
-                    </Button>
-                    <Button
-                        type="link"
-                        size="small"
-                        onClick={() => close()}
-                    >
-                        Đóng
-                    </Button>
-                </Space>
-            </div>
-        ),
-        filterIcon: (filtered) => (
-            <SearchOutlined style={{ color: filtered ? '#1677ff' : undefined }} />
-        ),
-        onFilter: (value, record) =>
-            record[dataIndex].toString().toLowerCase().includes(value.toLowerCase()),
-        onFilterDropdownOpenChange: (visible) => {
-            if (visible) {
-                setTimeout(() => searchInput.current?.select(), 100);
-            }
-        },
-        render: (text) =>
-            searchedColumn === dataIndex ? (
-                <Highlighter
-                    highlightStyle={{
-                        backgroundColor: '#ffc069',
-                        padding: 0,
-                    }}
-                    searchWords={[searchText]}
-                    autoEscape
-                    textToHighlight={text ? text.toString() : ''}
-                />
-            ) : (
-                text
-            ),
+        setData(data);
+        setPagination({
+          current: currentPage,
+          pageSize: pageSize,
+          total: res.data.totalElements,
+        });
+      } else {
+        setData([]);
+      }
+    } catch (error) {
+      console.error("Error fetching jobs:", error);
+      setData([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Check if a deadline is near (within 3 days)
+  const isDeadlineNear = (deadline) => {
+    if (!deadline) return false;
+    const deadlineDate = dayjs(deadline, "DD/MM/YYYY");
+    const today = dayjs();
+    const daysLeft = deadlineDate.diff(today, "day");
+    return daysLeft >= 0 && daysLeft <= 3;
+  };
+
+  // Check if a deadline has expired
+  const isDeadlineExpired = (deadline) => {
+    if (!deadline) return false;
+    const deadlineDate = dayjs(deadline, "DD/MM/YYYY");
+    const today = dayjs();
+    return deadlineDate.isBefore(today, "day");
+  };
+
+  // Action handlers
+  useEffect(() => {
+    fetchData(pagination.current, pagination.pageSize);
+  }, [pagination.current, pagination.pageSize, props.status]);
+
+  const handleTableChange = (newPagination) => {
+    setPagination({
+      ...pagination,
+      current: newPagination.current,
+      pageSize: newPagination.pageSize,
     });
+  };
 
-    // Định nghĩa các cột cho bảng
-    const columns = [
-        {
-            title: 'No.',
-            dataIndex: 'index',
-            key: 'index',
-            width: '5%',
-        },
-        {
-            title: 'Tiêu đề',
-            dataIndex: 'title',
-            key: 'title',
-            width: '25%',
-            ...getColumnSearchProps('title'),
-        },
-        {
-            title: 'Lĩnh vực',
-            dataIndex: 'category',
-            key: 'category',
-            width: '13%',
-            ...getColumnSearchProps('category'),
-        },
-        {
-            title: 'Cấp bậc',
-            dataIndex: 'level',
-            key: 'level',
-            width: '13%',
-            ...getColumnSearchProps('level'),
-        },
-        {
-            title: 'Số lượng',
-            dataIndex: 'quantity',
-            key: 'quantity',
-            width: '10%',
-            sorter: (a, b) => a.quantity - b.quantity,
-        },
-        props.status !== 'REJECTED' ?
-            {
-                title: 'Thời hạn',
-                dataIndex: 'deadline',
-                key: 'deadline',
-                width: '10%',
-                ...getColumnSearchProps('deadline'),
-            } :
-            {
-                title: 'Lý do từ chối',
-                dataIndex: 'rejectionReason',
-                key: 'rejectionReason',
-                ellipsis: true,
-                Tooltip: true,
-                width: '11%',
-            },
-        {
-            title: 'Thời gian tạo',
-            dataIndex: 'createdTime',
-            key: 'createdTime',
-            width: '11%',
-        },
-        {
-            align: 'center',
-            title: '',
-            key: 'action',
-            width: '13%',
-            render: (_, record) => (
-                <Space size="small">
-                    {/* <Tooltip color='blue' title="Xem">
-                        <Button onClick={() => handleView(record.key)} icon={<EyeOutlined />} />
-                    </Tooltip> */}
-                    <div hidden={props.status === 'REJECTED'}>
-                        <Tooltip color='cyan' title="Chỉnh sửa">
-                            <Button onClick={() => handleEdit(record.key)} icon={<EditOutlined />} />
-                        </Tooltip>
-                    </div>
-                    <Tooltip color='red' title="Xóa">
-                        <Button danger onClick={() => handleDelete(record.key)} icon={<DeleteOutlined />} />
-                    </Tooltip>
-                    <div hidden={props.status === 'PENDING' || props.status === 'REJECTED'}>
-                        <Tooltip title="Ẩn/Hiện">
-                            <Button onClick={() => handleHide(record.key)}
-                                icon={<EyeInvisibleOutlined />} />
-                        </Tooltip>
-                    </div>
-                </Space>
-            ),
-        },
-    ];
+  const handleView = (id) => {
+    navigate(`/view/job/${id}`, { state: { status: props.status } });
+  };
 
-    return (
-        <Table
-            bordered
-            columns={columns}
-            dataSource={data}
-            pagination={{
-                current: pagination.current,
-                pageSize: pagination.pageSize,
-                total: pagination.total * pagination.pageSize, // Tổng số bản ghi
-                showSizeChanger: true, // Hiển thị tùy chọn thay đổi số lượng bản ghi trên mỗi trang
-            }}
-            loading={loading}
-            onChange={handleTableChange} // Xử lý khi thay đổi trang hoặc pageSize
-            locale={{
-                emptyText: (
-                    <div className='p-5'>
-                        <InboxOutlined style={{ fontSize: '50px', marginBottom: '8px' }} />
-                        <div>Không có dữ liệu</div>
-                    </div>
-                ),
-            }}
+  const handleEdit = (id) => {
+    navigate(`/employer/job/edit/${id}`, { state: { status: props.status } });
+  };
+
+  const handleDelete = (id) => {
+    Modal.confirm({
+      title: t("common.notice"),
+      content: t("employer.manageJobs.deleteConfirm"),
+      centered: true,
+      okText: t("common.delete"),
+      okButtonProps: { danger: true },
+      cancelText: t("common.cancel"),
+      onOk() {
+        return new Promise((resolve, reject) => {
+          deleteJob(id)
+            .then((res) => {
+              if (res.status === "OK") {
+                resolve();
+                fetchData(pagination.current, pagination.pageSize);
+                if (props.onRefreshStats) {
+                  props.onRefreshStats();
+                }
+              } else {
+                reject();
+              }
+            })
+            .catch(reject);
+        });
+      },
+    });
+  };
+
+  const handleHide = (id) => {
+    const isInactive = props.status === "INACTIVE";
+    Modal.confirm({
+      title: t("common.notice"),
+      content: isInactive
+        ? t("employer.manageJobs.showConfirm")
+        : t("employer.manageJobs.hideConfirm"),
+      okText: isInactive ? t("common.show") : t("common.hide"),
+      cancelText: t("common.cancel"),
+      centered: true,
+      onOk() {
+        return new Promise((resolve, reject) => {
+          putHideJob(id, isInactive ? "ACTIVE" : "INACTIVE")
+            .then((res) => {
+              if (res.status === "OK") {
+                resolve();
+                fetchData(pagination.current, pagination.pageSize);
+                if (props.onRefreshStats) {
+                  props.onRefreshStats();
+                }
+              } else {
+                reject();
+              }
+            })
+            .catch(reject);
+        });
+      },
+    });
+  };
+
+  const getColumnSearchProps = (dataIndex) => ({
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => (
+      <div
+        className="flex flex-col !min-w-[250px] gap-2 p-1"
+        onKeyDown={(e) => e.stopPropagation()}
+      >
+        <Input
+          ref={searchInput}
+          placeholder={t("employer.manageJobs.search.placeholder")}
+          value={selectedKeys[0]}
+          onChange={(e) =>
+            setSelectedKeys(e.target.value ? [e.target.value] : [])
+          }
+          onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+          className="search-input"
         />
-    );
+        <Space className="search-buttons">
+          <Button
+            type="primary"
+            onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+            icon={<SearchOutlined />}
+            size="small"
+          >
+            {t("employer.manageJobs.search.search")}
+          </Button>
+          <Button
+            onClick={() => clearFilters && handleReset(clearFilters)}
+            size="small"
+          >
+            {t("employer.manageJobs.search.reset")}
+          </Button>
+        </Space>
+      </div>
+    ),
+    filterIcon: (filtered) => (
+      <SearchOutlined style={{ color: filtered ? "#1677ff" : undefined }} />
+    ),
+    onFilter: (value, record) =>
+      record[dataIndex]?.toString().toLowerCase().includes(value.toLowerCase()),
+    onFilterDropdownOpenChange: (visible) => {
+      if (visible) {
+        setTimeout(() => searchInput.current?.select(), 100);
+      }
+    },
+    render: (text) =>
+      searchedColumn === dataIndex ? (
+        <Highlighter
+          highlightStyle={{
+            backgroundColor: "#ffc069",
+            padding: 0,
+          }}
+          searchWords={[searchText]}
+          autoEscape
+          textToHighlight={text ? text.toString() : ""}
+        />
+      ) : (
+        text
+      ),
+  });
+
+  // Different table columns based on job status
+  const columns = [
+    {
+      title: t("admin.userTable.columns.no"),
+      dataIndex: "index",
+      key: "index",
+      width: "5%",
+      className: "index-column",
+    },
+    {
+      title: t("admin.post.table.columns.title"),
+      dataIndex: "title",
+      key: "title",
+      className: "title-column",
+      ...getColumnSearchProps("title"),
+      render: (text) => <span className="job-title">{text}</span>,
+    },
+    {
+      title: t("admin.post.table.columns.category"),
+      dataIndex: "category",
+      key: "category",
+      width: "13%",
+      align: "center",
+      ...getColumnSearchProps("category"),
+      render: (text) => (
+        <div className="flex justify-center">
+          <Tag className="!w-fit" color="blue">
+            {text}
+          </Tag>
+        </div>
+      ),
+    },
+    {
+      title: t("admin.post.table.columns.level"),
+      dataIndex: "level",
+      key: "level",
+      width: "13%",
+      align: "center",
+      ...getColumnSearchProps("level"),
+      render: (text) => (
+        <div className="flex justify-center">
+          <Tag className="!w-fit" color="purple">
+            {text}
+          </Tag>
+        </div>
+      ),
+    },
+  ];
+
+  // Add different columns based on status
+  if (props.status === "REJECTED") {
+    columns.push({
+      title: t("admin.post.table.columns.rejectedReason"),
+      dataIndex: "rejectionReason",
+      key: "rejectionReason",
+      ellipsis: true,
+      width: "20%",
+      render: (text) => (
+        <Tooltip destroyTooltipOnHide={true} title={text}>
+          <span className="rejection-reason">{text || "-"}</span>
+        </Tooltip>
+      ),
+    });
+  } else {
+    columns.push({
+      title: t("admin.post.table.columns.deadline"),
+      dataIndex: "deadline",
+      key: "deadline",
+      align: "right",
+      width: "13%",
+      ...getColumnSearchProps("deadline"),
+      render: (text) => (
+        <div className="flex justify-end">
+          {isDeadlineExpired(text) ? (
+            <Tag color="red">{text} </Tag>
+          ) : isDeadlineNear(text) ? (
+            <Tag color="orange">{text} </Tag>
+          ) : (
+            <Tag color="green">{text}</Tag>
+          )}
+        </div>
+      ),
+    });
+  }
+
+  columns.push({
+    title: t("admin.post.table.columns.createdTime"),
+    dataIndex: "createdTime",
+    key: "createdTime",
+    width: "10%",
+    align: "center",
+    render: (text) => <span className="created-time">{text}</span>,
+  });
+
+  columns.push({
+    align: "center",
+    title: t("admin.post.table.columns.actions") || "Actions",
+    key: "action",
+    width: "15%",
+    render: (_, record) => (
+      <Space size="small" className="action-buttons">
+        <Tooltip destroyTooltipOnHide={true} title={t("common.view")}>
+          <Button
+            onClick={() => handleView(record.key)}
+            icon={<FileSearchOutlined />}
+            className="view-button"
+          />
+        </Tooltip>
+
+        {props.status !== "REJECTED" && (
+          <Tooltip destroyTooltipOnHide={true} title={t("common.edit")}>
+            <Button
+              onClick={() => handleEdit(record.key)}
+              icon={<EditOutlined />}
+              type="primary"
+              className="edit-button"
+            />
+          </Tooltip>
+        )}
+
+        <Tooltip destroyTooltipOnHide={true} title={t("common.delete")}>
+          <Button
+            onClick={() => handleDelete(record.key)}
+            icon={<DeleteOutlined />}
+            danger
+            className="delete-button"
+          />
+        </Tooltip>
+
+        {["ACTIVE", "INACTIVE"].includes(props.status) && (
+          <Tooltip
+            destroyTooltipOnHide={true}
+            title={
+              props.status === "INACTIVE"
+                ? t("employer.manageJobs.show")
+                : t("employer.manageJobs.hide")
+            }
+          >
+            <Button
+              onClick={() => handleHide(record.key)}
+              icon={
+                props.status === "INACTIVE" ? (
+                  <EyeOutlined />
+                ) : (
+                  <EyeInvisibleOutlined />
+                )
+              }
+              className={
+                props.status === "INACTIVE" ? "show-button" : "hide-button"
+              }
+            />
+          </Tooltip>
+        )}
+      </Space>
+    ),
+  });
+
+  return (
+    <Table
+      className="jobs-table"
+      bordered
+      columns={columns}
+      dataSource={data}
+      pagination={{
+        current: pagination.current,
+        pageSize: pagination.pageSize,
+        showSizeChanger: true,
+        total: pagination.total,
+      }}
+      loading={loading}
+      onChange={handleTableChange}
+      locale={{
+        emptyText: (
+          <Empty
+            image={Empty.PRESENTED_IMAGE_SIMPLE}
+            description={<span>{t("admin.post.table.noData")}</span>}
+          />
+        ),
+      }}
+      scroll={{ x: "max-content" }}
+      rowClassName={(record, index) =>
+        index % 2 === 0 ? "even-row" : "odd-row"
+      }
+    />
+  );
 };
 
 export default TableListJobs;
-

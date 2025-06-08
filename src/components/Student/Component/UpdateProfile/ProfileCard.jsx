@@ -27,7 +27,7 @@ const ProfileCard = ({ infor, address }) => {
                                 <Row gutter={[16, 16]} align="middle">
                                     <Col span={24}>
                                         <Row align="middle">
-                                            <Col span={2}>
+                                            <Col span={1}>
                                                 <BiSolidSchool className={styles["icon"]} />
                                             </Col>
                                             <Col span={22} className={styles["infor"]}>{infor.universityEmail}</Col>
@@ -38,7 +38,7 @@ const ProfileCard = ({ infor, address }) => {
                                 <Row gutter={[16, 16]} align="middle">
                                     <Col span={24}>
                                         <Row align="middle">
-                                            <Col span={2}>
+                                            <Col span={1}>
                                                 <MailOutlined className={styles["icon"]} />
                                             </Col>
                                             <Col span={22} className={styles["infor"]}>{infor.email}</Col>
@@ -48,7 +48,7 @@ const ProfileCard = ({ infor, address }) => {
                                 <Row gutter={[16, 16]} align="middle">
                                     <Col span={24}>
                                         <Row align="middle">
-                                            <Col span={2}>
+                                            <Col span={1}>
                                                 <PhoneOutlined className={styles["icon"]} />
                                             </Col>
                                             <Col span={22} className={styles["infor"]}>{infor.phoneNumber}</Col>
@@ -58,7 +58,7 @@ const ProfileCard = ({ infor, address }) => {
                                 <Row gutter={[16, 16]} align="middle">
                                     <Col span={24}>
                                         <Row align="middle">
-                                            <Col span={2}>
+                                            <Col span={1}>
                                                 <HomeOutlined className={styles["icon"]} />
                                             </Col>
                                             <Col span={22} className={styles["infor"]}>{address}</Col>

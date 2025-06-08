@@ -1,0 +1,13 @@
+.search-input {
+    .ant-input-outlined {
+        @apply border-text-color;
+    }
+
+    .ant-input-group-addon {
+        .ant-btn {
+            .ant-btn-icon {
+                @apply text-text-color;
+            }
+        }
+    }
+}

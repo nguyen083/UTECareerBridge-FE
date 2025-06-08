@@ -1,13 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { Modal, Button, List, Typography, Divider, Pagination, Tag, Flex, Empty } from 'antd';
-import { getAllCoupon } from '../../../services/apiService';
-import './voucherModal.scss';
-import { CalendarOutlined } from '@ant-design/icons';
-import { RiDiscountPercentLine } from 'react-icons/ri';
-const { Text } = Typography;
+import { useState, useEffect } from "react";
+import {
+  Modal,
+  Button,
+  List,
+  Typography,
+  Divider,
+  Pagination,
+  Tag,
+  Empty,
+  Spin,
+  Badge,
+} from "antd";
+import { getAllCoupon } from "../../../services/apiService";
+import "./voucherModal.scss";
+import {
+  CalendarOutlined,
+  CheckOutlined,
+  TagOutlined,
+} from "@ant-design/icons";
+import { RiDiscountPercentLine } from "react-icons/ri";
+import { useTranslation } from "react-i18next";
+
+const { Text, Title } = Typography;
 
 const VoucherModal = ({ visible, onClose, onSelectVoucher }) => {
-  const [coupons, setCoupons] = useState([]);
+  const { t } = useTranslation();
+  const [filteredCoupons, setFilteredCoupons] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -16,9 +34,9 @@ const VoucherModal = ({ visible, onClose, onSelectVoucher }) => {
 
   useEffect(() => {
     if (visible) {
-      fetchCoupons(currentPage, 10); // Fetch with initial page and limit
+      fetchCoupons(currentPage, pageSize);
     }
-  }, [visible, currentPage]);
+  }, [visible, currentPage, pageSize]);
 
   const fetchCoupons = async (page = 0, limit = 10) => {
     setLoading(true);
@@ -36,100 +54,178 @@ const VoucherModal = ({ visible, onClose, onSelectVoucher }) => {
           description: coupon.description,
           expiredAt: coupon.expiredAt,
           maxUsage: coupon.maxUsage,
-          active: coupon.active
+          active: coupon.active,
         }));
-        setCoupons(transformedCoupons);
+        setFilteredCoupons(transformedCoupons);
+        setTotalPages(response.data.totalPages || 1);
       } else {
-        setCoupons([]);
+        setFilteredCoupons([]);
       }
     } catch (error) {
       console.error("Error fetching coupons:", error);
-      setError("Error fetching coupons");
+      setError(t("employer.voucher.fetchError"));
     } finally {
       setLoading(false);
     }
   };
-  const handleUseCoupon = (coupon) => {
-    onSelectVoucher(coupon); // Call the function passed from props
-    onClose();
 
+  const handleUseCoupon = (coupon) => {
+    onSelectVoucher(coupon);
+    onClose();
   };
+
   const handlePageChange = (page, pageSize) => {
-    setCurrentPage(page);
+    setCurrentPage(page - 1);
     setPageSize(pageSize);
   };
+
+  const getExpiryStatus = (expiredAt) => {
+    const now = new Date();
+    const expiryDate = new Date(expiredAt);
+    const daysRemaining = Math.ceil((expiryDate - now) / (1000 * 60 * 60 * 24));
+
+    if (daysRemaining <= 3 && daysRemaining > 0) {
+      return { color: "orange", message: t("employer.voucher.expiringSoon") };
+    } else if (daysRemaining <= 0) {
+      return { color: "red", message: t("employer.voucher.expired") };
+    }
+    return {
+      color: "green",
+      message: `${daysRemaining} ${t("employer.voucher.daysRemaining")}`,
+    };
+  };
+
+  const renderVoucherItem = (coupon) => {
+    const expiryStatus = getExpiryStatus(coupon.expiredAt);
+    const isExpired = expiryStatus.color === "red";
+    const isLimited = coupon.amount < 5;
+
+    return (
+      <div className="voucher-card">
+        <div className="voucher-card-left">
+          <div className="voucher-percentage">
+            <span className="discount-label">
+              {t("admin.coupon.discount", {
+                discount: coupon.discount + "%",
+              })}
+            </span>
+          </div>
+          <div className="voucher-ribbon">
+            <RiDiscountPercentLine className="ribbon-icon" />
+          </div>
+        </div>
+
+        <div className="voucher-card-content">
+          <div className="voucher-header">
+            <Title level={5} className="voucher-title">
+              {coupon.description}
+            </Title>
+            <Tag color="gold" className="voucher-code">
+              {coupon.code}
+            </Tag>
+          </div>
+
+          <div className="voucher-details">
+            <div className="voucher-info-item">
+              <CalendarOutlined className="info-icon" />
+              <Text className="info-text">
+                {t("admin.coupon.expireDate")}:{" "}
+                {new Date(coupon.expiredAt).toLocaleDateString("vi-VN")}
+              </Text>
+              <Tag color={expiryStatus.color} className="expiry-tag">
+                {expiryStatus.message}
+              </Tag>
+            </div>
+
+            <div className="voucher-info-item">
+              <TagOutlined className="info-icon" />
+              <Text className="info-text">
+                {t("admin.coupon.remaining")}:{" "}
+                <Badge
+                  count={coupon.amount}
+                  color={isLimited ? "red" : "blue"}
+                  overflowCount={999}
+                />
+              </Text>
+            </div>
+          </div>
+        </div>
+
+        <div className="voucher-card-action">
+          <Button
+            type="primary"
+            onClick={() => handleUseCoupon(coupon)}
+            disabled={!coupon.active || isExpired || coupon.amount <= 0}
+            className="use-button"
+            icon={<CheckOutlined />}
+          >
+            {t("employer.voucher.useNow")}
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <Modal
-      visible={visible}
+      open={visible}
       onCancel={onClose}
       footer={null}
-      title="Chọn voucher"
+      title={
+        <div className="modal-title">
+          <TagOutlined /> {t("employer.voucher.selectTitle")}
+        </div>
+      }
       width={800}
       className="voucher-modal"
+      centered
     >
-      {loading && <div>Loading...</div>}
-      {error && <div>{error}</div>}
-      {!loading && !error && coupons.length > 0 && (
-        <div>
-          <List
-            dataSource={coupons}
-            renderItem={(coupon) => (
-              <List.Item
-                key={coupon.key}
-                actions={[
-                  <Button
-                    type="primary"
-                    onClick={() => handleUseCoupon(coupon)}
-                    disabled={!coupon.active}
-                    className='use-button'
-                  >
-                    Dùng ngay
-                  </Button>,
-                ]}
-                className="coupon-list-item border rounded border-warning my-3"
-              >
-                <List.Item.Meta
-                  className='d-flex align-items-stretch'
-                  avatar={
-                    <div className="voucher-left rounded-start">
-                      <div className="voucher-label"><Flex align="center" gap={5}><RiDiscountPercentLine size={20} /> Voucher</Flex></div>
-                    </div>}
-                  title={
-                    <>
-                      <Text strong>Giảm {coupon.discount}%</Text>
-                      {/* {coupon.amount > 0 && (
-                        <>
-                          <Divider type="vertical" />
-                          <Text>Giảm {coupon.amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</Text>
-                        </>
-                      )} */}
-                    </>
-                  }
-                  description={
-                    <div className='ps-1'>
-                      <p>Mã: <Tag color="orange">{coupon.code}</Tag></p>
-                      <p>{coupon.description}</p>
-                      <Flex align="center">
-                        <p>Còn lại: {coupon.amount}</p> <Divider type="vertical" />
-                        <p> <CalendarOutlined /> Ngày hết hạn: {new Date(coupon.expiredAt).toLocaleDateString('vi-VN').split(' ')[0]}</p>
-                      </Flex>
-                    </div>
-                  }
+      <Divider className="search-divider" />
+
+      {loading && (
+        <div className="loading-container">
+          <Spin size="large" />
+          <Text className="loading-text">{t("common.loading")}</Text>
+        </div>
+      )}
+
+      {error && (
+        <div className="error-container">
+          <Text type="danger">{error}</Text>
+          <Button onClick={() => fetchCoupons(currentPage, pageSize)}>
+            {t("common.retry")}
+          </Button>
+        </div>
+      )}
+
+      {!loading && !error && (
+        <div className="vouchers-container">
+          {filteredCoupons.length > 0 ? (
+            <>
+              <List
+                dataSource={filteredCoupons}
+                renderItem={renderVoucherItem}
+                className="voucher-list"
+              />
+
+              <div className="pagination-container">
+                <Pagination
+                  current={currentPage + 1}
+                  pageSize={pageSize}
+                  total={totalPages * pageSize}
+                  onChange={handlePageChange}
+                  showSizeChanger
+                  pageSizeOptions={["5", "10", "20"]}
                 />
-              </List.Item>
-            )}
-          />
-          <Divider />
-          <div className="pagination-container">
-            <Pagination
-              current={currentPage}
-              pageSize={pageSize}
-              total={totalPages * pageSize}
-              onChange={handlePageChange}
-              showSizeChanger
-              pageSizeOptions={[10, 20, 30]}
+              </div>
+            </>
+          ) : (
+            <Empty
+              image={Empty.PRESENTED_IMAGE_SIMPLE}
+              description={t("employer.voucher.noCoupons")}
+              className="empty-vouchers"
             />
-          </div>
+          )}
         </div>
       )}
     </Modal>

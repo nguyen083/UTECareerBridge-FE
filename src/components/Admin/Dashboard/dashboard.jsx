@@ -1,454 +1,1073 @@
-import React, { useState, useEffect } from 'react';
-import { Card, Row, Col, Statistic, Progress, Table, Select, Space } from 'antd';
-import { BarChart, Bar, LineChart, Line, PieChart, Pie, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, Cell } from 'recharts';
+import { useState, useEffect } from "react";
+import {
+  Card,
+  Row,
+  Col,
+  Statistic,
+  Space,
+  Typography,
+  DatePicker,
+  Button,
+  Segmented,
+  Skeleton,
+  Badge,
+  Progress,
+  Divider,
+  Tabs,
+  Table,
+  Flex,
+  Tag,
+  Alert,
+  Empty,
+} from "antd";
+import {
+  AreaChart,
+  Area,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
 import {
   UserOutlined,
-  BankOutlined,
-  RiseOutlined,
   DollarOutlined,
+  ReloadOutlined,
+  SafetyCertificateOutlined,
+  LineChartOutlined,
+  BarChartOutlined,
+  FireOutlined,
+  TrophyOutlined,
+} from "@ant-design/icons";
+import { IoIosBusiness } from "react-icons/io";
+import { MdCheckCircleOutline } from "react-icons/md";
+import { BsFilePost } from "react-icons/bs";
+import { HiOutlineUserGroup } from "react-icons/hi";
+import { useTranslation } from "react-i18next";
+import {
+  getRevenueByMonth,
+  getStatisticUser,
+} from "../../../services/apiService";
+import "./Dashboard.scss";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import {
+  useApplicationStats,
+  useForumStats,
+  useJobStatistics,
+  useRecentOrders,
+  useStatisticsByCategory,
+  useStatsTopSkills,
+  useTopEmployer,
+  useUserStats,
+} from "../../../composables/admin-dashboard";
+import dayjs from "dayjs";
 
-} from '@ant-design/icons';
-import { getStatisticsByJobCategory, getRevenueByMonth, getStatisticUser, getStatisticPackage } from '../../../services/apiService';
-const { Option } = Select;
+const { Title, Text } = Typography;
+const { RangePicker } = DatePicker;
+
 const AdminDashboard = () => {
-  const [jobCategoryStats, setJobCategoryStats] = useState([]);
-  const [currentMonthRevenue, setCurrentMonthRevenue] = useState(0);
-  const [packageStats, setPackageStats] = useState([]);
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const [, setSearchParams] = useSearchParams();
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const { data: jobCategoryStats, refetch: refetchJobCategoryStats } =
+    useStatisticsByCategory({
+      startDate,
+      endDate,
+    });
+  const [totalRevenue, setTotalRevenue] = useState(0);
   const [statisticUser, setStatisticUser] = useState({
     totalCandidates: 0,
     totalEmployers: 0,
   });
   const [revenueByMonth, setRevenueByMonth] = useState([]);
-  const COLORS = ['#722ed1', '#2f54eb', '#1890ff', '#13c2c2', '#52c41a', '#faad14', '#fadb14', '#f5222d', '#eb2f96', '#eb2f96'];
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [filters, setFilters] = useState({
-    month: null,
-    year: null
+  const { data: recentOrders, refetch: refetchRecentOrders } = useRecentOrders({
+    startDate,
+    endDate,
   });
+  const { data: topEmployers, refetch: refetchTopEmployers } = useTopEmployer({
+    startDate,
+    endDate,
+  });
+  const [loading, setLoading] = useState({
+    revenue: true,
+  });
+  const [chartView, setChartView] = useState("revenue");
 
-  // Tạo options cho tháng và năm
-  const months = Array.from({ length: 12 }, (_, i) => i + 1);
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: 5 }, (_, i) => currentYear - i);
-
-  const fetchPackageStats = async () => {
-    try {
-      setLoading(true);
-      const response = await getStatisticPackage();
-      const totalPackages = response.data.reduce((sum, item) => sum + item.packageCount, 0);
-      const transformedData = response.data.map(pkg => ({
-        name: pkg.packageName,
-        value: pkg.packageCount,
-        // Tính phần trăm và làm tròn đến 1 chữ số thập phân
-        percentage: ((pkg.packageCount / totalPackages) * 100).toFixed(1)
-      }));
-
-      // Sắp xếp theo số lượng công việc giảm dần (tùy chọn)
-      transformedData.sort((a, b) => b.value - a.value);
-      setPackageStats(transformedData);
-      setError(null);
-    } catch (err) {
-      setError('Lỗi khi tải dữ liệu');
-    } finally {
-      setLoading(false);
+  const { data: jobApprovalStats, refetch: refetchJobApprovalStats } =
+    useJobStatistics({
+      startDate,
+      endDate,
+    });
+  const { data: userGrowthData, refetch: refetchUserGrowthData } = useUserStats(
+    {
+      startDate,
+      endDate,
     }
-  };
+  );
+  const { data: skillDemandData, refetch: refetchSkillDemandData } =
+    useStatsTopSkills({
+      startDate,
+      endDate,
+    });
+  const {
+    data: studentApplicationData,
+    refetch: refetchStudentApplicationData,
+  } = useApplicationStats({
+    startDate,
+    endDate,
+  });
+  const { data: forumActivityData, refetch: refetchForumActivityData } =
+    useForumStats({
+      startDate,
+      endDate,
+    });
+
+  const COLORS = [
+    "#722ed1",
+    "#2f54eb",
+    "#1890ff",
+    "#13c2c2",
+    "#52c41a",
+    "#faad14",
+    "#fadb14",
+    "#fa541c",
+    "#f5222d",
+    "#eb2f96",
+  ];
+
+  const [dateRange, setDateRange] = useState([]);
+
   useEffect(() => {
-    fetchPackageStats();
-  }, []);
+    // Update URL when date changes
+    if (dateRange[0] && dateRange[1]) {
+      const start = dateRange[0].format("YYYY-MM");
+      const end = dateRange[1].format("YYYY-MM");
+      setSearchParams({ startDate: start, endDate: end });
+      setStartDate(dateRange[0].toISOString());
+      setEndDate(dateRange[1].toISOString());
+    }
+  }, [dateRange]);
 
   const fetchRevenueByMonth = async () => {
     try {
-      setLoading(true);
-      const params = {};
-      if (filters.year) params.year = filters.year;
-      const response = await getRevenueByMonth(params);
-      const transformedData = response.data.map(item => ({
-        month: item.month,
+      setLoading((prev) => ({ ...prev, revenue: true }));
+      let year = dateRange[0]?.format("YYYY");
+      const response = await getRevenueByMonth({ year });
+      const transformedData = response.data.map((item) => ({
+        month: item.month + "/" + item.year,
         revenue: item.revenue,
-        subscriptions: item.numberOfPackages
+        subscriptions: item.numberOfPackages,
       }));
-      const currentMonthRevenue = new Date().getMonth() + 1;
-      const currentYear = new Date().getFullYear();
-      if (!filters.year || filters.year === currentYear) {
-        const currentMonthData = transformedData.find(item => item.month === currentMonthRevenue);
-        setCurrentMonthRevenue(currentMonthData?.revenue || 0);
-      }
+
+      const totalRevenueData = transformedData.reduce(
+        (sum, item) => sum + item.revenue,
+        0
+      );
+      setTotalRevenue(totalRevenueData);
+
       setRevenueByMonth(transformedData);
-      setError(null);
     } catch (err) {
-      setError('Lỗi khi tải dữ liệu');
+      console.error(err);
     } finally {
-      setLoading(false);
+      setLoading((prev) => ({ ...prev, revenue: false }));
     }
   };
+
   useEffect(() => {
     fetchRevenueByMonth();
-  }, [filters]);
-
-  const fetchJobCategoryStats = async () => {
-    try {
-      setLoading(true);
-
-      const params = {};
-      if (filters.month) params.month = filters.month;
-      if (filters.year) params.year = filters.year;
-
-      const response = await getStatisticsByJobCategory(params);
-
-      const filteredData = response.data.filter(category => category.jobCount > 0);
-
-      // Tính tổng số jobs
-      const totalJobs = filteredData.reduce((sum, category) => sum + category.jobCount, 0);
-
-      // Transform data và tính percentage
-      const transformedData = filteredData.map(category => ({
-        name: category.categoryName,
-        value: category.jobCount,
-        // Tính phần trăm và làm tròn đến 1 chữ số thập phân
-        percentage: ((category.jobCount / totalJobs) * 100).toFixed(1)
-      }));
-
-      // Sắp xếp theo số lượng công việc giảm dần (tùy chọn)
-      transformedData.sort((a, b) => b.value - a.value);
-
-      setJobCategoryStats(transformedData);
-
-      setError(null);
-    } catch (err) {
-      setError('Lỗi khi tải dữ liệu');
-    } finally {
-      setLoading(false);
-    }
-  };
-  useEffect(() => {
-    fetchJobCategoryStats();
-  }, [filters]);
+  }, [dateRange]);
 
   const fetchStatisticUser = async () => {
     try {
-      setLoading(true);
+      setLoading((prev) => ({ ...prev, users: true }));
       const response = await getStatisticUser();
       setStatisticUser(...response.data);
-      setError(null);
     } catch (err) {
-      setError('Lỗi khi tải dữ liệu');
+      console.error(err);
     } finally {
-      setLoading(false);
+      setLoading((prev) => ({ ...prev, users: false }));
     }
-  }
+  };
+
   useEffect(() => {
     fetchStatisticUser();
   }, []);
 
+  const handleRefresh = () => {
+    fetchRevenueByMonth();
+    fetchStatisticUser();
+    refetchJobCategoryStats();
+    refetchRecentOrders();
+    refetchTopEmployers();
+    refetchJobApprovalStats();
+    refetchUserGrowthData();
+    refetchSkillDemandData();
+    refetchStudentApplicationData();
+    refetchForumActivityData();
+  };
 
-  // Subscription data
-  const subscriptionData = [
-    { name: 'Gói Cơ bản', value: 150, revenue: 15000 },
-    { name: 'Gói Pro', value: 80, revenue: 12000 },
-    { name: 'Gói Doanh nghiệp', value: 40, revenue: 10000 },
-    { name: 'Gói Premium', value: 30, revenue: 15000 }
-  ];
+  // Sample recent activities
 
-  // Top employers data
-  const topEmployersData = [
-    { key: '1', company: 'Công ty A', jobPosts: 25, spending: 5000, activeSubscription: 'Premium' },
-    { key: '2', company: 'Công ty B', jobPosts: 20, spending: 4500, activeSubscription: 'Pro' },
-    { key: '3', company: 'Công ty C', jobPosts: 18, spending: 4000, activeSubscription: 'Premium' },
-    { key: '4', company: 'Công ty D', jobPosts: 15, spending: 3500, activeSubscription: 'Pro' },
-    { key: '5', company: 'Công ty E', jobPosts: 12, spending: 3000, activeSubscription: 'Pro' }
-  ];
+  const renderStatsCard = (
+    title,
+    value,
+    icon,
+    color,
+    secondaryValue = null,
+    secondaryLabel = null
+  ) => (
+    <Card className="admin-stats-card">
+      <div className="flex items-center justify-between mb-2">
+        <div>
+          <Text type="secondary" className="stat-label">
+            {title}
+          </Text>
+          <div className="stat-value" style={{ color }}>
+            {value}
+          </div>
+          {secondaryValue && (
+            <div className="flex items-center mt-1">
+              <Text
+                type="secondary"
+                style={{ fontSize: "12px", marginRight: "4px" }}
+              >
+                {secondaryLabel}:
+              </Text>
+              <Text strong style={{ fontSize: "13px" }}>
+                {secondaryValue}
+              </Text>
+            </div>
+          )}
+        </div>
+        <div
+          className="stat-icon"
+          style={{ backgroundColor: `${color}15`, color }}
+        >
+          {icon}
+        </div>
+      </div>
+    </Card>
+  );
 
-
-  const applicationTrendData = [
-    { month: 'Jan', applications: 450 },
-    { month: 'Feb', applications: 520 },
-    { month: 'Mar', applications: 610 },
-    { month: 'Apr', applications: 580 },
-    { month: 'May', applications: 650 },
-    { month: 'Jun', applications: 720 }
-  ];
-
-  const candidateStatusData = [
-    { name: 'Pending', value: 120 },
-    { name: 'Interviewed', value: 80 },
-    { name: 'Offered', value: 40 },
-    { name: 'Hired', value: 30 },
-    { name: 'Rejected', value: 50 }
-  ];
-
-  const employerActivityData = [
-    { month: 'Jan', newJobs: 45, activeJobs: 120 },
-    { month: 'Feb', newJobs: 52, activeJobs: 135 },
-    { month: 'Mar', newJobs: 61, activeJobs: 150 },
-    { month: 'Apr', newJobs: 58, activeJobs: 142 },
-    { month: 'May', newJobs: 65, activeJobs: 160 },
-    { month: 'Jun', newJobs: 72, activeJobs: 175 }
-  ];
-
-  const columns = [
-    { title: 'Công ty', dataIndex: 'company', key: 'company' },
-    { title: 'Tin đăng', dataIndex: 'jobPosts', key: 'jobPosts' },
-    {
-      title: 'Chi tiêu', dataIndex: 'spending', key: 'spending',
-      render: (value) => `$${value.toLocaleString()}`
-    },
-    { title: 'Gói dịch vụ', dataIndex: 'activeSubscription', key: 'activeSubscription' }
-  ];
   const FilterControls = () => (
-    <Space style={{ marginBottom: 16 }}>
-      <Select
-        size='large'
-        value={filters.month}
-        onChange={(value) => setFilters(prev => ({ ...prev, month: value }))}
-        style={{ width: 120 }}
-      >
-        <Option value={null}>Tất cả tháng</Option>
-        {months.map(month => (
-          <Option key={month} value={month}>Tháng {month}</Option>
-        ))}
-      </Select>
-      <Select
-        size='large'
-        value={filters.year}
-        onChange={(value) => setFilters(prev => ({ ...prev, year: value }))}
-        style={{ width: 120 }}
-      >
-        <Option value={null}>Tất cả năm</Option>
-        {years.map(year => (
-          <Option key={year} value={year}>{year}</Option>
-        ))}
-      </Select>
+    <Space wrap size={12}>
+      <RangePicker
+        value={dateRange}
+        onChange={(dates) => setDateRange(dates)}
+        picker="month"
+        allowClear={false}
+        format="MM/YYYY"
+        disabledDate={(current) => {
+          // Disable future months
+          return current && current > dayjs().endOf("month");
+        }}
+      />
+
+      <Button icon={<ReloadOutlined />} onClick={handleRefresh} type="default">
+        {t("admin.dashboard.refresh")}
+      </Button>
     </Space>
   );
+
+  const orderColumns = [
+    {
+      title: t("admin.dashboard.tables.columns.company") || "Company",
+      dataIndex: "companyName",
+      key: "companyName",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: t("admin.dashboard.tables.columns.package") || "Package",
+      dataIndex: "packageName",
+      key: "packageName",
+    },
+    {
+      title: t("admin.dashboard.tables.columns.amount") || "Amount",
+      dataIndex: "price",
+      key: "price",
+      render: (price) =>
+        new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 0,
+        }).format(price),
+      align: "right",
+    },
+    {
+      title: t("admin.dashboard.tables.columns.date") || "Date",
+      dataIndex: "purchaseDate",
+      key: "purchaseDate",
+      render: (purchaseDate) => {
+        const date = new Date(purchaseDate);
+        return date.toLocaleDateString("vi-VN");
+      },
+    },
+    {
+      title: t("admin.dashboard.tables.columns.status") || "Status",
+      dataIndex: "paymentStatus",
+      key: "paymentStatus",
+      render: (paymentStatus) => {
+        console.log("paymentStatus: ", t(paymentStatus));
+        if (paymentStatus === "PAID") {
+          return <Badge text={t(`${paymentStatus}`)} color="green" />;
+        } else {
+          return <Badge text={t(`${paymentStatus}`)} color="gray" />;
+        }
+      },
+    },
+  ];
+
+  const employerColumns = [
+    {
+      title: t("admin.dashboard.tables.columns.company") || "Company",
+      dataIndex: "name",
+      key: "name",
+      render: (text) => <a>{text}</a>,
+    },
+    {
+      title: t("admin.dashboard.tables.columns.jobsPosted") || "Jobs Posted",
+      dataIndex: "jobPosted",
+      key: "jobPosted",
+      align: "center",
+    },
+    {
+      title: t("admin.dashboard.tables.columns.hires") || "Successful Hires",
+      dataIndex: "hires",
+      key: "hires",
+      align: "center",
+    },
+  ];
+
   return (
-    <div style={{ padding: 24, background: '#f0f2f5', minHeight: '100vh' }}>
-      <Card style={{ marginBottom: 16 }} className='box_shadow'>
-        <FilterControls />
+    <div className="admin-dashboard">
+      <Card className="mb-5 admin-card">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <Title level={4} style={{ margin: 0 }}>
+              {t("admin.dashboard.title")}
+            </Title>
+          </div>
+          <FilterControls />
+        </div>
       </Card>
+
+      {/* Alert Section for Important Notices */}
+      <div className="alert-section">
+        <Alert
+          message={t("admin.dashboard.alerts.systemNotice")}
+          description={t("admin.dashboard.alerts.pendingJobs", {
+            count: jobApprovalStats?.pendingJob || 0,
+          })}
+          type="info"
+          showIcon
+          action={
+            <Button
+              size="small"
+              type="primary"
+              onClick={() => {
+                navigate("/admin/post-approval");
+              }}
+            >
+              {t("admin.dashboard.alerts.reviewNow")}
+            </Button>
+          }
+        />
+      </div>
+
       {/* Overview Statistics */}
-      <Row gutter={[16, 16]}>
-        <Col xs={24} sm={12} lg={6}>
-          <Card>
-            <Statistic
-              title="Doanh thu tháng này"
-              value={currentMonthRevenue}
-              prefix={<DollarOutlined style={{ color: '#52c41a' }} />}
-              suffix="VND"
-            />
-          </Card>
+      <Row gutter={[16, 16]} className="mb-5">
+        <Col xs={24} sm={12} lg={8}>
+          {loading.users ? (
+            <Card className="admin-stats-card">
+              <Skeleton active paragraph={{ rows: 2 }} />
+            </Card>
+          ) : (
+            renderStatsCard(
+              t("admin.dashboard.stats.totalRevenue"),
+              new Intl.NumberFormat("vi-VN", {
+                style: "currency",
+                currency: "VND",
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0,
+              }).format(totalRevenue),
+              <DollarOutlined />,
+              "#1890ff"
+            )
+          )}
         </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card>
-            <Statistic
-              title="Tổng ứng viên"
-              value={statisticUser.totalCandidates}
-              prefix={<UserOutlined style={{ color: '#1890ff' }} />}
-            />
-          </Card>
+        <Col xs={24} sm={12} lg={8}>
+          {loading.users ? (
+            <Card className="admin-stats-card">
+              <Skeleton active paragraph={{ rows: 2 }} />
+            </Card>
+          ) : (
+            renderStatsCard(
+              t("admin.dashboard.stats.totalCandidates") || "Total Candidates",
+              statisticUser.totalCandidates,
+              <UserOutlined />,
+              "#1890ff"
+            )
+          )}
         </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card>
-            <Statistic
-              title="Tổng nhà tuyển dụng"
-              value={statisticUser.totalEmployers}
-              prefix={<BankOutlined style={{ color: '#52c41a' }} />}
-            />
-          </Card>
+        <Col xs={24} sm={12} lg={8}>
+          {loading.users ? (
+            <Card className="admin-stats-card">
+              <Skeleton active paragraph={{ rows: 2 }} />
+            </Card>
+          ) : (
+            renderStatsCard(
+              t("admin.dashboard.stats.totalEmployers") || "Total Employers",
+              statisticUser.totalEmployers,
+              <IoIosBusiness />,
+              "#722ed1"
+            )
+          )}
         </Col>
-        <Col xs={24} sm={12} lg={6}>
-          <Card>
-            <Statistic
-              title="Tỷ lệ chuyển đổi"
-              value={15.8}
-              prefix={<RiseOutlined style={{ color: '#1890ff' }} />}
-              suffix="%"
+      </Row>
+      <Row gutter={[16, 16]} className="mb-5">
+        <Col xs={24} sm={12} lg={8}>
+          {loading.packages ? (
+            <Card className="admin-stats-card">
+              <Skeleton active paragraph={{ rows: 2 }} />
+            </Card>
+          ) : (
+            renderStatsCard(
+              t("admin.dashboard.stats.interview"),
+              jobApprovalStats?.countInterview || 0,
+              <HiOutlineUserGroup />,
+              "#f7dc6f"
+            )
+          )}
+        </Col>
+        <Col xs={24} sm={12} lg={8}>
+          {loading.packages ? (
+            <Card className="admin-stats-card">
+              <Skeleton active paragraph={{ rows: 2 }} />
+            </Card>
+          ) : (
+            renderStatsCard(
+              t("admin.dashboard.stats.successfulInterview"),
+              jobApprovalStats?.successfulInterview || 0,
+              <MdCheckCircleOutline />,
+              "#52c41a"
+            )
+          )}
+        </Col>
+        <Col xs={24} sm={12} lg={8}>
+          {loading.packages ? (
+            <Card className="admin-stats-card">
+              <Skeleton active paragraph={{ rows: 2 }} />
+            </Card>
+          ) : (
+            renderStatsCard(
+              t("admin.dashboard.stats.totalJobs") || "Total Jobs",
+              jobCategoryStats?.reduce((sum, item) => sum + item.jobCount, 0),
+              <BsFilePost />,
+              "#fa8c16"
+            )
+          )}
+        </Col>
+      </Row>
+
+      {/* Job Approval Status */}
+      <Row gutter={[16, 16]} className="mb-5">
+        <Col xs={24}>
+          <Card
+            title={
+              <Flex align="center" gap="small">
+                <SafetyCertificateOutlined />{" "}
+                {t("admin.dashboard.jobApproval.title") ||
+                  "Job Approval Status"}
+              </Flex>
+            }
+            className="admin-card overview-card"
+          >
+            <div className="job-status-summary">
+              <div
+                className="status-item"
+                style={{ borderTop: "3px solid #faad14" }}
+              >
+                <div className="status-count">
+                  {jobApprovalStats?.pendingJob || 0}
+                </div>
+                <div className="status-label">
+                  {t("admin.dashboard.jobApproval.pending") || "Pending"}
+                </div>
+              </div>
+              <div
+                className="status-item"
+                style={{ borderTop: "3px solid #52c41a" }}
+              >
+                <div className="status-count">
+                  {jobApprovalStats?.activeJob || 0}
+                </div>
+                <div className="status-label">
+                  {t("admin.dashboard.jobApproval.approved") || "Approved"}
+                </div>
+              </div>
+              <div
+                className="status-item"
+                style={{ borderTop: "3px solid #f5222d" }}
+              >
+                <div className="status-count">
+                  {jobApprovalStats?.rejectedJob || 0}
+                </div>
+                <div className="status-label">
+                  {t("admin.dashboard.jobApproval.rejected") || "Rejected"}
+                </div>
+              </div>
+              <div
+                className="status-item"
+                style={{ borderTop: "3px solid #1890ff" }}
+              >
+                <div className="status-count">
+                  {jobApprovalStats?.total || 0}
+                </div>
+                <div className="status-label">
+                  {t("admin.dashboard.jobApproval.total") || "Total"}
+                </div>
+              </div>
+            </div>
+
+            <Divider />
+
+            <Progress
+              percent={Math.round(
+                Math.min(
+                  jobApprovalStats?.total === 0
+                    ? 0
+                    : (jobApprovalStats?.activeJob / jobApprovalStats?.total) *
+                        100,
+                  100
+                )
+              )}
+              strokeColor="#52c41a"
+              format={(percent) =>
+                `${percent}% ${
+                  t("admin.dashboard.jobApproval.approved") || "approved"
+                }`
+              }
             />
           </Card>
         </Col>
       </Row>
 
-      {/* Revenue and Subscriptions */}
-      <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+      {/* User Growth and Platform Performance */}
+      <Row gutter={[16, 16]} className="mb-5">
         <Col xs={24} lg={24}>
-          <Card title="Doanh thu theo tháng">
+          <Card
+            title={
+              <Flex align="center" gap="small">
+                <LineChartOutlined /> {t("admin.dashboard.charts.userGrowth")}
+              </Flex>
+            }
+            className="admin-card"
+          >
+            <div style={{ height: 350 }}>
+              <ResponsiveContainer width="100%" height="100%">
+                <AreaChart
+                  data={userGrowthData}
+                  margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                >
+                  <defs>
+                    <linearGradient
+                      id="colorEmployers"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="5%" stopColor="#722ed1" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#722ed1" stopOpacity={0} />
+                    </linearGradient>
+                    <linearGradient
+                      id="colorCandidates"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
+                      <stop offset="5%" stopColor="#1890ff" stopOpacity={0.3} />
+                      <stop offset="95%" stopColor="#1890ff" stopOpacity={0} />
+                    </linearGradient>
+                  </defs>
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <Tooltip />
+                  <Area
+                    type="monotone"
+                    dataKey="employerCount"
+                    name={t("role.employer")}
+                    stroke="#722ed1"
+                    fillOpacity={1}
+                    fill="url(#colorEmployers)"
+                  />
+                  <Area
+                    type="monotone"
+                    dataKey="studentCount"
+                    name={t("role.student")}
+                    stroke="#1890ff"
+                    fillOpacity={1}
+                    fill="url(#colorCandidates)"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+            <Divider />
+            <Flex justify="space-between" align="middle">
+              <Statistic
+                title={t("admin.dashboard.stats.totalEmployers")}
+                value={userGrowthData?.reduce(
+                  (sum, item) => sum + item.employerCount,
+                  0
+                )}
+                valueStyle={{ color: "#722ed1" }}
+              />
+              <Statistic
+                title={t("admin.dashboard.stats.totalCandidates")}
+                value={userGrowthData?.reduce(
+                  (sum, item) => sum + item.studentCount,
+                  0
+                )}
+                valueStyle={{ color: "#1890ff" }}
+              />
+              <Statistic
+                title={t("admin.dashboard.stats.totalUsers")}
+                value={
+                  userGrowthData?.reduce(
+                    (sum, item) => sum + item.employerCount,
+                    0
+                  ) +
+                  userGrowthData?.reduce(
+                    (sum, item) => sum + item.studentCount,
+                    0
+                  )
+                }
+                valueStyle={{ color: "#1890ff" }}
+              />
+            </Flex>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Charts */}
+      <Row gutter={[16, 16]} className="mb-5">
+        <Col xs={24} lg={12}>
+          <Card
+            title={
+              <Flex align="center" gap="small">
+                <BarChartOutlined />{" "}
+                {t("admin.dashboard.charts.revenueAnalytics")}
+              </Flex>
+            }
+            className="admin-card"
+            extra={
+              <Segmented
+                options={[
+                  {
+                    label: t("admin.dashboard.charts.revenueItem"),
+                    value: "revenue",
+                  },
+                  {
+                    label: t("admin.dashboard.charts.packageCountItem"),
+                    value: "packages",
+                  },
+                ]}
+                value={chartView}
+                onChange={setChartView}
+                size="small"
+              />
+            }
+          >
+            {loading.revenue ? (
+              <div style={{ height: 400 }}>
+                <Skeleton active paragraph={{ rows: 20 }} />
+              </div>
+            ) : (
+              <div style={{ height: 400 }}>
+                <ResponsiveContainer width="100%" height="100%">
+                  {chartView === "revenue" ? (
+                    <BarChart
+                      data={revenueByMonth}
+                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis
+                        tickFormatter={(value) =>
+                          new Intl.NumberFormat("vi-VN", {
+                            notation: "compact",
+                            compactDisplay: "short",
+                          }).format(value)
+                        }
+                      />
+                      <Tooltip
+                        formatter={(value) =>
+                          new Intl.NumberFormat("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                            minimumFractionDigits: 0,
+                            maximumFractionDigits: 0,
+                          }).format(value)
+                        }
+                      />
+                      <Legend />
+                      <Bar
+                        dataKey="revenue"
+                        name={t("admin.dashboard.charts.revenueItem")}
+                        fill="#1890ff"
+                        radius={[4, 4, 0, 0]}
+                        barSize={30}
+                      />
+                    </BarChart>
+                  ) : (
+                    <BarChart
+                      data={revenueByMonth}
+                      margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
+                    >
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="month" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Bar
+                        dataKey="subscriptions"
+                        name={t("admin.dashboard.charts.packageCountItem")}
+                        fill="#1890ff"
+                        radius={[4, 4, 0, 0]}
+                        barSize={30}
+                      />
+                    </BarChart>
+                  )}
+                </ResponsiveContainer>
+              </div>
+            )}
+          </Card>
+        </Col>
+        {/* Top In-Demand Skills */}
+        <Col xs={24} lg={12} className="h-full">
+          <Card
+            title={
+              <Flex align="center" gap="small">
+                <FireOutlined />{" "}
+                {t("admin.dashboard.skills.title") || "Top In-Demand Skills"}
+              </Flex>
+            }
+            className="admin-card"
+          >
+            <div className="top-skills-chart">
+              {!skillDemandData?.data?.length ? (
+                <Empty
+                  image={Empty.PRESENTED_IMAGE_SIMPLE}
+                  description="Không có dữ liệu kỹ năng"
+                />
+              ) : (
+                skillDemandData?.data?.slice(0, 10).map((skill, index) => (
+                  <div key={index} className="skill-item">
+                    <span className="skill-name w-[200px] truncate">
+                      {skill.skill}
+                    </span>
+                    <div className="skill-bar">
+                      <Progress
+                        percent={Math.round(
+                          Math.min(
+                            skillDemandData?.total === 0
+                              ? 0
+                              : Math.round(
+                                  (skill.count / skillDemandData?.total) *
+                                    100 *
+                                    100
+                                ) / 100,
+                            100
+                          ) || 0
+                        )}
+                        showInfo={false}
+                        strokeColor={COLORS[index % COLORS.length]}
+                      />
+                    </div>
+                    <div className="skill-value">
+                      <Tag className="text-xs w-fit" color="blue">
+                        {skillDemandData?.total === 0
+                          ? 0
+                          : Math.round(
+                              (skill.count / skillDemandData?.total) * 100 * 100
+                            ) / 100}
+                        %
+                      </Tag>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Student Applications Chart */}
+      <Row gutter={[16, 16]} className="mb-5">
+        <Col xs={24}>
+          <Card
+            title={
+              <Flex align="center" gap="small">
+                <BarChartOutlined />{" "}
+                {t("admin.dashboard.charts.studentApplications")}
+              </Flex>
+            }
+            className="admin-card"
+          >
             <div style={{ height: 400 }}>
               <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={revenueByMonth}>
+                <BarChart
+                  data={studentApplicationData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
+                >
                   <CartesianGrid strokeDasharray="3 3" />
                   <XAxis
-                    dataKey="month"
-                    axisLine={{ stroke: '#d9d9d9' }}
-                    tick={{ fill: '#8c8c8c' }}
+                    dataKey="date"
+                    tick={{ fontSize: 12 }}
+                    axisLine={{ stroke: "#E5E5E5" }}
                   />
                   <YAxis
-                    yAxisId="left"
-                    tickFormatter={(value) =>
-                      new Intl.NumberFormat('vi-VN', {
-                        style: 'currency',
-                        currency: 'VND',
-                        minimumFractionDigits: 0,
-                        maximumFractionDigits: 0
-                      }).format(value)
-                    }
-                    domain={[0, dataMax => Math.ceil(dataMax * 1.1)]}
-                    axisLine={{ stroke: '#d9d9d9' }}
-                    tick={{ fill: '#8c8c8c' }}
-                    width={120}
-                  />
-                  <YAxis
-                    yAxisId="right"
-                    orientation="right"
-                    domain={[0, dataMax => Math.ceil(dataMax * 1.1)]}
-                    axisLine={{ stroke: '#d9d9d9' }}
-                    tick={{ fill: '#8c8c8c' }}
+                    axisLine={{ stroke: "#E5E5E5" }}
+                    tickFormatter={(value) => value.toLocaleString()}
                   />
                   <Tooltip
                     formatter={(value, name) => {
-                      if (name === "Doanh thu (VND)") {
-                        return [new Intl.NumberFormat('vi-VN', {
-                          style: 'currency',
-                          currency: 'VND',
-                          minimumFractionDigits: 0,
-                          maximumFractionDigits: 0
-                        }).format(value), name];
-                      }
-                      return [value, name];
+                      return [value.toLocaleString(), name];
                     }}
                   />
-                  <Legend />
-                  <Line
-                    yAxisId="left"
-                    type="monotone"
-                    dataKey="revenue"
-                    stroke="#52c41a"
-                    name="Doanh thu (VND)"
-                    strokeWidth={2}
-                    dot={{ stroke: '#52c41a', strokeWidth: 2, r: 4 }}
-                    activeDot={{ r: 6 }}
+                  <Legend wrapperStyle={{ paddingTop: 15 }} />
+                  <Bar
+                    dataKey="applications"
+                    name={t("admin.dashboard.charts.studentApplications")}
+                    fill="#1890ff"
+                    barSize={20}
+                    radius={[4, 4, 0, 0]}
                   />
-                  <Line
-                    yAxisId="right"
-                    type="monotone"
-                    dataKey="subscriptions"
-                    stroke="#1890ff"
-                    name="Số lượng gói"
-                    strokeWidth={2}
-                    dot={{ stroke: '#1890ff', strokeWidth: 2, r: 4 }}
-                    activeDot={{ r: 6 }}
+                  <Bar
+                    dataKey="hires"
+                    name={t("admin.dashboard.charts.successInterviews")}
+                    fill="#52c41a"
+                    barSize={20}
+                    radius={[4, 4, 0, 0]}
                   />
-                </LineChart>
+                </BarChart>
               </ResponsiveContainer>
             </div>
+            <Divider />
+            <Flex justify="space-between" align="middle">
+              <Statistic
+                title={t("admin.dashboard.charts.totalApplications")}
+                value={studentApplicationData?.reduce(
+                  (sum, item) => sum + item.applications,
+                  0
+                )}
+                valueStyle={{ color: "#1890ff" }}
+              />
+              <Statistic
+                title={t("admin.dashboard.charts.totalSuccessInterviews")}
+                value={studentApplicationData?.reduce(
+                  (sum, item) => sum + item.hires,
+                  0
+                )}
+                valueStyle={{ color: "#52c41a" }}
+              />
+              <Statistic
+                title={t("admin.dashboard.charts.averageSuccessRate")}
+                value={
+                  studentApplicationData?.reduce(
+                    (sum, item) => sum + item.applications,
+                    0
+                  ) === 0
+                    ? 0
+                    : Math.min(
+                        Math.round(
+                          (studentApplicationData?.reduce(
+                            (sum, item) => sum + item.hires,
+                            0
+                          ) /
+                            studentApplicationData?.reduce(
+                              (sum, item) => sum + item.applications,
+                              0
+                            )) *
+                            100 *
+                            100
+                        ) / 100,
+                        100
+                      ).toFixed(1)
+                }
+                suffix="%"
+                precision={1}
+                valueStyle={{ color: "#faad14" }}
+              />
+            </Flex>
           </Card>
         </Col>
+      </Row>
 
-        <Col xs={24} lg={12}>
-          <Card title="Gói dịch vụ được bán nhiều nhất">
+      {/* Forum Activity Chart */}
+      <Row gutter={[16, 16]} className="mb-5">
+        <Col xs={24}>
+          <Card
+            title={
+              <Flex align="center" gap="small">
+                <BarChartOutlined /> {t("admin.dashboard.charts.forumActivity")}
+              </Flex>
+            }
+            className="admin-card"
+          >
             <div style={{ height: 400 }}>
               <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={packageStats}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={40}    // Thêm innerRadius để tạo doughnut chart (tùy chọn)
-                    outerRadius={110}   // Tăng outerRadius từ 80 lên 120
-                    fill="#722ed1"
-                    paddingAngle={1}    // Thêm khoảng cách giữa các phần (tùy chọn)
-                    label={({ name, value, percentage }) => `${value} gói dịch vụ - ${percentage}%`}
-                    labelLine={{ stroke: '#555', strokeWidth: 0.5 }}  // Tùy chỉnh đường kẻ label
-                  >
-                    {packageStats.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
+                <BarChart
+                  data={forumActivityData}
+                  margin={{ top: 20, right: 30, left: 20, bottom: 25 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis
+                    dataKey="date"
+                    tick={{ fontSize: 12 }}
+                    axisLine={{ stroke: "#E5E5E5" }}
+                  />
+                  <YAxis
+                    axisLine={{ stroke: "#E5E5E5" }}
+                    tickFormatter={(value) => value.toLocaleString()}
+                  />
                   <Tooltip
-                    formatter={(value, name, props) => [
-                      `${value} việc làm (${packageStats.find(item => item.name === name)?.percentage}%)`,
-                      name
-                    ]}
-                    contentStyle={{
-                      backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                      border: '1px solid #ccc',
-                      borderRadius: '4px',
-                      padding: '6px'
+                    formatter={(value, name) => {
+                      return [value.toLocaleString(), name];
                     }}
                   />
-                  <Legend
-                    layout="vertical"
-                    align="right"
-                    verticalAlign="middle"
-                    wrapperStyle={{
-                      paddingLeft: '20px'
-                    }}
+                  <Legend wrapperStyle={{ paddingTop: 15 }} />
+                  <Bar
+                    dataKey="forums"
+                    name={t("admin.dashboard.charts.newForums")}
+                    fill="#722ed1"
+                    barSize={20}
+                    radius={[4, 4, 0, 0]}
                   />
-                </PieChart>
+                  <Bar
+                    dataKey="topics"
+                    name={t("admin.dashboard.charts.newTopics")}
+                    fill="#faad14"
+                    barSize={20}
+                    radius={[4, 4, 0, 0]}
+                  />
+                  <Bar
+                    dataKey="posts"
+                    name={t("admin.dashboard.charts.newPosts")}
+                    fill="#1890ff"
+                    barSize={20}
+                    radius={[4, 4, 0, 0]}
+                  />
+                </BarChart>
               </ResponsiveContainer>
             </div>
+            <Divider />
+            <Flex justify="space-between" align="middle">
+              <Statistic
+                title={t("admin.dashboard.charts.totalNewForums")}
+                value={forumActivityData?.reduce(
+                  (sum, item) => sum + item.forums,
+                  0
+                )}
+                valueStyle={{ color: "#722ed1" }}
+              />
+              <Statistic
+                title={t("admin.dashboard.charts.totalNewTopics")}
+                value={forumActivityData?.reduce(
+                  (sum, item) => sum + item.topics,
+                  0
+                )}
+                valueStyle={{ color: "#faad14" }}
+              />
+              <Statistic
+                title={t("admin.dashboard.charts.totalNewPosts")}
+                value={forumActivityData?.reduce(
+                  (sum, item) => sum + item.posts,
+                  0
+                )}
+                valueStyle={{ color: "#1890ff" }}
+              />
+              <Statistic
+                title={t("admin.dashboard.charts.averagePostsPerTopic")}
+                value={
+                  forumActivityData?.reduce(
+                    (sum, item) => sum + item.topics,
+                    0
+                  ) === 0
+                    ? 0
+                    : (
+                        forumActivityData?.reduce(
+                          (sum, item) => sum + item.posts,
+                          0
+                        ) /
+                        forumActivityData?.reduce(
+                          (sum, item) => sum + item.topics,
+                          0
+                        )
+                      ).toFixed(1)
+                }
+                precision={1}
+                valueStyle={{ color: "#52c41a" }}
+              />
+            </Flex>
           </Card>
         </Col>
+      </Row>
 
-        {/* Recruitment Analytics */}
-        <Col xs={24} lg={12}>
-          <Card title="Việc làm theo ngành">
-            <div style={{ height: 400 }}>
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={jobCategoryStats}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={40}    // Thêm innerRadius để tạo doughnut chart (tùy chọn)
-                    outerRadius={110}   // Tăng outerRadius từ 80 lên 120
-                    fill="#722ed1"
-                    paddingAngle={1}    // Thêm khoảng cách giữa các phần (tùy chọn)
-                    label={({ name, value, percentage }) => `${value} việc làm - ${percentage}%`}
-                    labelLine={{ stroke: '#555', strokeWidth: 0.5 }}  // Tùy chỉnh đường kẻ label
-                  >
-                    {jobCategoryStats.map((entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip
-                    formatter={(value, name, props) => [
-                      `${value} việc làm (${jobCategoryStats.find(item => item.name === name)?.percentage}%)`,
-                      name
-                    ]}
-                    contentStyle={{
-                      backgroundColor: 'rgba(255, 255, 255, 0.9)',
-                      border: '1px solid #ccc',
-                      borderRadius: '4px',
-                      padding: '6px'
-                    }}
-                  />
-                  <Legend
-                    layout="vertical"
-                    align="right"
-                    verticalAlign="middle"
-                    wrapperStyle={{
-                      paddingLeft: '20px'
-                    }}
-                  />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
+      {/* Tables Section */}
+      <Row gutter={[16, 16]}>
+        <Col xs={24}>
+          <Card className="admin-card">
+            <Tabs defaultActiveKey="1">
+              <Tabs.TabPane
+                tab={
+                  <span>
+                    <DollarOutlined />{" "}
+                    {t("admin.dashboard.tables.recentOrders") ||
+                      "Recent Orders"}
+                  </span>
+                }
+                key="1"
+              >
+                <Table
+                  dataSource={recentOrders}
+                  columns={orderColumns}
+                  rowKey="id"
+                  pagination={{ pageSize: 5 }}
+                  className="admin-table"
+                />
+              </Tabs.TabPane>
+              <Tabs.TabPane
+                tab={
+                  <span>
+                    <TrophyOutlined />{" "}
+                    {t("admin.dashboard.tables.topEmployers") ||
+                      "Top Employers"}
+                  </span>
+                }
+                key="2"
+              >
+                <Table
+                  dataSource={topEmployers?.filter(
+                    (employer) => employer.jobPosted !== 0
+                  )}
+                  columns={employerColumns}
+                  rowKey="id"
+                  pagination={{ pageSize: 5 }}
+                  className="admin-table"
+                />
+              </Tabs.TabPane>
+            </Tabs>
           </Card>
         </Col>
-
-        {/* Additional Analytics */}
-        
       </Row>
     </div>
   );
