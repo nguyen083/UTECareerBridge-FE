@@ -14,17 +14,6 @@ export default defineConfig(({ mode }) => {
         host: "localhost",
         protocol: "ws",
       },
-      proxy: {
-        "/api": {
-          target: env.VITE_BASE_API_URL + "/api/v1",
-          changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ""),
-        },
-        "/ws": {
-          target: env.VITE_BASE_API_URL,
-          ws: true,
-        },
-      },
     },
   };
 });

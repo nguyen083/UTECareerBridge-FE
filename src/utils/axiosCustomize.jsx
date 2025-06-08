@@ -21,12 +21,11 @@ const processQueue = (error = null) => {
 };
 
 // API base URL từ biến môi trường hoặc mặc định
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL || "http://localhost:8080/api";
+const API_BASE_URL = "https://whine2202.zapto.org/server/api";
 const REFRESH_ENDPOINT = "/v1/auth/refresh";
 
 const instance = axios.create({
-  baseURL: "/api",
+  baseURL: "https://whine2202.zapto.org/server/api/v1",
   timeout: 60000,
   headers: {
     "Content-Type": "application/json",
