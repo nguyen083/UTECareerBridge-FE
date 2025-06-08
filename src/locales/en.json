@@ -736,7 +736,8 @@
         "error": {
           "loading": "Error loading evaluation list"
         }
-      },      "error": {
+      },
+      "error": {
         "loading": "Error loading evaluation information",
         "invalid_id": "Invalid interview ID",
         "submission": "Error sending evaluation. Please try again."
@@ -2801,8 +2802,9 @@
     }
   },
   "comment": {
+    "view": "View",
+    "replies": "Replies",
     "send": "Send",
-    "reply": "Reply",
     "login": "Login to comment",
     "createError": "Comment failed",
     "delete": "Delete comment",

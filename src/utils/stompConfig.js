@@ -25,7 +25,7 @@ export const connectStomp = (onConnected, onError, requireToken = false) => {
     return null;
   }
   // Tạo instance mới của SockJS với endpoint /ws
-  const socket = new SockJS("https://whine2202.zapto.org/server/ws");
+  const socket = new SockJS("https://ute-career.pro.vn//ws");
 
   // Chuẩn bị headers dựa vào việc có yêu cầu token hay không
   const connectHeaders = {};

@@ -245,29 +245,25 @@ const NotificationIcon = ({ userId = null }) => {
         subscription = client.subscribe(
           "/notifications/broadcast",
           (response) => {
-            try {
-              const messageData = JSON.parse(response.body);
-              sendNotification(messageData.title);
-              queryClient.setQueryData(["notificationCount", userId], (old) => {
-                return { data: old.data + 1 };
-              });
-              queryClient.setQueryData(["notificationList", userId], (old) => {
-                const newData = {
-                  ...old,
-                  data: {
-                    ...old.data,
-                    content: [messageData, ...old.data.content],
-                  },
-                };
-                return newData;
-              });
+            const messageData = JSON.parse(response.body);
+            sendNotification(messageData.title);
+            queryClient.setQueryData(["notificationCount", userId], (old) => {
+              return { data: old.data + 1 };
+            });
+            queryClient.setQueryData(["notificationList", userId], (old) => {
+              const newData = {
+                ...old,
+                data: {
+                  ...old.data,
+                  content: [messageData, ...old.data.content],
+                },
+              };
+              return newData;
+            });
 
-              queryClient.invalidateQueries({
-                queryKey: ["notificationBroadcast"],
-              });
-            } catch (error) {
-              console.error("Lỗi khi xử lý dữ liệu từ WebSocket:", error);
-            }
+            queryClient.invalidateQueries({
+              queryKey: ["notificationBroadcast"],
+            });
           }
         );
         subscription = client.subscribe(
