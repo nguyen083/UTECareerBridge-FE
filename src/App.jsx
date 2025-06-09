@@ -428,7 +428,7 @@ const App = () => {
                     <Route path="/home" element={<HomePage />} />
 
                     <Route
-                      path="/api/v1/orders/vnpay-payment-return"
+                      path="/server/api/v1/orders/vnpay-payment-return"
                       element={<PaymentReturn />}
                     />
                     <Route element={<ViewLayout width="90%" />}>
