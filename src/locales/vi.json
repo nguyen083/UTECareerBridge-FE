@@ -1786,7 +1786,8 @@
     "403": "Xin lỗi, bạn không có quyền truy cập trang này.",
     "500": "Xin lỗi, trang bạn đang truy cập hiện không hoạt động.",
     "backToHome": "Quay lại trang chủ",
-    "loginFailed": "Đăng nhập thất bại"
+    "loginFailed": "Đăng nhập thất bại",
+    "loginFailedGoogle": "Tài khoản đã tồn tại"
   },
   "admin": {
     "search": {

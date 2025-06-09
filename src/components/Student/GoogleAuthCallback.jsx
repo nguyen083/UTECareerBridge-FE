@@ -43,7 +43,7 @@ const GoogleAuthCallback = () => {
         })
         .catch((err) => {
           console.log(err);
-          message.error(t("errors.loginFailed"));
+          message.error(t("errors.loginFailedGoogle"));
           setTimeout(() => {
             window.close();
           }, 1500);
