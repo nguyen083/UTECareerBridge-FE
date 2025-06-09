@@ -42,7 +42,10 @@ dayjs.extend(timezone);
 dayjs.locale("vi");
 
 const InterviewCalendar = ({ viewMode = "calendar" }) => {
-  const { data: interviewsData, isLoading } = useListInterviewEmployer();
+  const { data: interviewsData, isLoading } = useListInterviewEmployer({
+    page: 0,
+    size: 1000,
+  });
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [isModalVisible, setIsModalVisible] = useState(false);
