@@ -85,8 +85,7 @@ const ModalDetailOrder = ({
     createPayment(order?.orderId).then((res) => {
       if (res.status === "OK") {
         setOpenOrderModal(false);
-        console.log(res.data);
-        // window.open(res.data, '_blank');
+        window.open(res.data, "_blank");
       } else {
         message.error(res.message);
       }
