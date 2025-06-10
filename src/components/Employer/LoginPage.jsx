@@ -64,8 +64,8 @@ const LoginPage = () => {
       } else {
         message.error(t("auth.login.loginError"));
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
+      message.error(t("auth.login.loginError"));
     } finally {
       dispatch(stop());
     }

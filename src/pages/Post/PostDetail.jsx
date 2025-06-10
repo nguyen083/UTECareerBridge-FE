@@ -321,12 +321,7 @@ const PostDetail = () => {
 
   const handleShare = () => {
     const hashtag = `/&hashtag=%23UTECAREERBRIDGE%0a%23HCMUTE%0aTham%20gia%20ngay!`;
-    const ngrokUrl = import.meta.env.VITE_NGROK_URL;
-    const updatedUrl = window.location.href.replace(
-      "http://localhost:3000",
-      ngrokUrl
-    );
-    console.log(updatedUrl);
+    const updatedUrl = window.location.href;
     window.open(
       `https://www.facebook.com/sharer/sharer.php?u=${updatedUrl}${hashtag}`,
       "_blank"

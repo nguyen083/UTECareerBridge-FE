@@ -136,8 +136,8 @@ const ChatBot = () => {
         .replace(/\n/g, "<br>")
         .replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>")
         .replace(/\*(.*?)\*/g, "<em>$1</em>")
-        .replace(/http:\/\/utecareer\.edu\.vn/g, "http://localhost:3000")
-        .replace(/https:\/\/utecareer\.edu\.vn/g, "http://localhost:3000");
+        .replace(/http:\/\/utecareer\.edu\.vn/g, "https://ute-career.pro.vn/")
+        .replace(/https:\/\/utecareer\.edu\.vn/g, "https://ute-career.pro.vn/");
     }
 
     // If no HTML tags, process markdown including converting markdown links to HTML

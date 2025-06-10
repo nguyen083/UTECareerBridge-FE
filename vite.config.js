@@ -11,8 +11,9 @@ export default defineConfig(({ mode }) => {
     server: {
       port: env.VITE_UI_PORT,
       hmr: {
-        host: "localhost",
         protocol: "ws",
+        host: "ute-career.pro.vn",
+        port: 443,
       },
     },
   };
