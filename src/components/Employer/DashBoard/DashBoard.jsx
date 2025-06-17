@@ -764,7 +764,7 @@ const DashBoard = () => {
             </Flex>
             <div className="!h-full hiring-time-content my-12">
               <Statistic
-                value={hiringData}
+                value={hiringData || 0}
                 suffix={t("employer.dashboard.days")}
                 precision={1}
                 valueStyle={{

@@ -288,6 +288,7 @@
     "myJobs": {
       "title": "My Jobs",
       "applied": "Applied",
+      "hired": "Hired",
       "saved": "Saved",
       "company": "Company",
       "job": "Job",
@@ -299,7 +300,7 @@
       "pending": "Pending",
       "rejected": "Rejected",
       "unidentified": "Unidentified",
-      "noticeDescription": "If your application status is \"Approved\", please check your email for interview notification."
+      "noticeDescription": "If your application status is \"Approved/Hired\". Please check your email for interview notification."
     },
     "myCompany": {
       "emptyFollowList": "You are not following any companies yet",
@@ -743,7 +744,7 @@
         "submission": "Error sending evaluation. Please try again."
       },
       "update_status": {
-        "button": "Update Status ({count})",
+        "button": "Choose candidate",
         "select_required": "Please select at least one candidate to update status",
         "success": "Application status updated successfully",
         "error": "Error updating application status. Please try again."
@@ -914,6 +915,7 @@
       "viewAll": "View All",
       "welcome": "Welcome to UTE-Career",
       "charts": {
+        "noData": "No data",
         "jobStatus": "Job Status",
         "title": "Charts",
         "views": "Views",
@@ -1312,6 +1314,7 @@
       "noCoupons": "No vouchers available at the moment"
     },
     "company": {
+        "email": "Company Email",
       "list": {
         "title": "Company List",
         "loading": "Loading companies...",
@@ -1829,7 +1832,7 @@
     "500": "Sorry, the page you are trying to access is currently not working.",
     "backToHome": "Back to Home",
     "loginFailed": "Login failed",
-    "loginFailedGoogle": "Account already exists"
+    "loginFailedGoogle": "Email already used by another login method"
   },
   "admin": {
     "search": {

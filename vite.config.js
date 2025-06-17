@@ -2,19 +2,19 @@ import { defineConfig, loadEnv } from "vite";
 import react from "@vitejs/plugin-react-swc";
 
 export default defineConfig(({ mode }) => {
-  //eslint-disable-next-line no-undef
   const env = loadEnv(mode, process.cwd());
-
+  
   return {
     base: "/",
     plugins: [react()],
     server: {
-      port: env.VITE_UI_PORT,
+      port: parseInt(env.VITE_UI_PORT) || 3000, // Thêm fallback port
+      host: '0.0.0.0', // Cho phép truy cập từ bên ngoài
+      allowedHosts: ['ute-career.pro.vn'],
       hmr: {
         protocol: "ws",
-        host: "ute-career.pro.vn",
-        port: 443,
-      },
+        host: "localhost"
+        },
     },
   };
 });

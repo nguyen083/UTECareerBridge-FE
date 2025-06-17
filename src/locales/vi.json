@@ -322,6 +322,7 @@
     "myJobs": {
       "title": "Việc làm của tôi",
       "applied": "Đã ứng tuyển",
+      "hired": "Đã tuyển dụng",
       "saved": "Đã lưu",
       "company": "Công ty",
       "job": "Công việc",
@@ -333,7 +334,7 @@
       "pending": "Đang chờ",
       "rejected": "Đã từ chối",
       "unidentified": "Không xác định",
-      "noticeDescription": "Nếu đơn ứng tuyển có trạng thái \"Đã duyệt\". Vui lòng kiểm tra email để xem thông báo phỏng vấn."
+      "noticeDescription": "Nếu đơn ứng tuyển có trạng thái \"Đã duyệt/Tuyển dụng\". Vui lòng kiểm tra email để xem thông báo phỏng vấn."
     },
     "myCompany": {
       "emptyFollowList": "Bạn chưa theo dõi bất kỳ công ty nào",
@@ -1787,7 +1788,7 @@
     "500": "Xin lỗi, trang bạn đang truy cập hiện không hoạt động.",
     "backToHome": "Quay lại trang chủ",
     "loginFailed": "Đăng nhập thất bại",
-    "loginFailedGoogle": "Tài khoản đã tồn tại"
+    "loginFailedGoogle": "Email đã được sử dụng bởi cách đăng nhập khác"
   },
   "admin": {
     "search": {

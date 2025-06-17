@@ -27,6 +27,12 @@ const Status = ({ status }) => {
           {t("student.myJobs.rejected")}
         </Tag>
       );
+    case "HIRED":
+      return (
+        <Tag className="!mx-auto w-fit" color="success">
+          {t("student.myJobs.hired")}
+        </Tag>
+      );
     default:
       return (
         <Tag className="!mx-auto w-fit" color="default">
