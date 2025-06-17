@@ -890,13 +890,8 @@ const JobEvaluations = () => {
                       icon={<CheckCircleOutlined />}
                       loading={updating}
                       onClick={handleUpdateApplicationStatus}
-                      style={{
-                        backgroundColor: "#52c41a",
-                        borderColor: "#52c41a",
-                      }}
                     >
-                      {t("employer.evaluation.update_status.button") ||
-                        `Cập nhật trạng thái (${selectedEvaluations.length})`}
+                      {t("employer.evaluation.update_status.button")}
                     </Button>
                     <Button onClick={clearAllSelected} type="text" danger>
                       {t("employer.evaluation.compare.clear_all")}

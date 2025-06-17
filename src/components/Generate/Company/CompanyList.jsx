@@ -61,18 +61,17 @@ const CompanyList = () => {
                         className="h-32 bg-center bg-cover"
                         style={{
                           backgroundImage: `url(${
-                            company.backgroundImage ||
-                            "https://via.placeholder.com/400x150?text=No+Background"
+                            company?.backgroundImage ||
+                            "https://www.vietnamworks.com/_next/image?url=https%3A%2F%2Fimages.vietnamworks.com%2Fcompany-assets%2Fimages%2Fbanner-default-company.png&w=1920&q=75"
                           })`,
                         }}
                       />
                       <div className="absolute w-16 h-16 overflow-hidden bg-white border-4 border-white rounded-full -bottom-8 left-4">
                         <img
                           src={
-                            company.companyLogo ||
-                            "https://via.placeholder.com/80?text=Logo"
+                            company?.companyLogo ||
+                            "https://images.vietnamworks.com/img/company-default-logo.svg"
                           }
-                          alt={company.companyName}
                           className="object-contain w-full h-full "
                         />
                       </div>

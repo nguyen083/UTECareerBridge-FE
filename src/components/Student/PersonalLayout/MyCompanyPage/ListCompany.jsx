@@ -15,7 +15,7 @@ import {
   unfollowCompany,
 } from "../../../../services/apiService";
 import { FaIndustry } from "react-icons/fa";
-import { IoIosBusiness, IoIosPeople } from "react-icons/io";
+import { IoIosPeople } from "react-icons/io";
 import { IoBriefcaseSharp } from "react-icons/io5";
 import { useTranslation } from "react-i18next";
 
@@ -98,7 +98,14 @@ const ListCompany = () => {
             <List.Item.Meta
               className="flex items-center justify-between"
               avatar={
-                <Avatar shape="square" size={100} src={item?.companyLogo} icon={<IoIosBusiness />} />
+                <Avatar
+                  shape="square"
+                  size={100}
+                  src={
+                    item?.companyLogo ||
+                    "https://images.vietnamworks.com/img/company-default-logo.svg"
+                  }
+                />
               }
               title={
                 <Link
