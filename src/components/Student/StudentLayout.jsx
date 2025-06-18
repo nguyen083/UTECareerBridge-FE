@@ -25,7 +25,6 @@ import path from "../../constant/path.jsx";
 import { useTranslation } from "react-i18next";
 import ChangeLanguageBtn from "../Generate/ChangeLanguageBtn.jsx";
 import { BsChatLeftText } from "react-icons/bs";
-import { clsx } from "clsx";
 
 const { Header, Content, Footer } = Layout;
 const { Title } = Typography;
@@ -138,7 +137,7 @@ const StudentLayout = () => {
   const navigate = useNavigate();
   const infor = useSelector((state) => state?.user);
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.user.userId);
+  const token = localStorage.getItem("accessToken");
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -214,15 +213,14 @@ const StudentLayout = () => {
                 icon={<BsChatLeftText />}
                 shape="circle"
                 onClick={() => {
-                  userId ? navigate("/chat") : navigate("/login");
+                  token ? navigate("/chat") : navigate("/login");
                 }}
-                className={clsx(
-                  "ease-out transform rounded-full btn-header hover:scale-105",
-                  !userId && "hidden"
-                )}
+                className="ease-out transform rounded-full btn-header hover:scale-105"
                 size="large"
               />
-              <NotificationIcon userId={userId} />
+              <NotificationIcon
+                userId={useSelector((state) => state.user.userId)}
+              />
               <ChangeLanguageBtn />
               {infor.role !== "student" ? (
                 <Button

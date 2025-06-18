@@ -1314,7 +1314,7 @@
       "noCoupons": "No vouchers available at the moment"
     },
     "company": {
-        "email": "Company Email",
+      "email": "Company Email",
       "list": {
         "title": "Company List",
         "loading": "Loading companies...",
@@ -1395,7 +1395,9 @@
       "passwordPlaceholder": "Enter password",
       "googleLogin": "Login with Google",
       "loginSuccess": "Login successful",
-      "loginError": "Login failed"
+      "loginError": "Login failed",
+      "roleError": "Login with this role is not permitted",
+      "accountError": "The account or password is incorrect. Please try again"
     },
     "forgotPassword": {
       "title": "Forgot Password",

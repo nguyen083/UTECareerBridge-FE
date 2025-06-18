@@ -1,13 +1,11 @@
 import { useState, useEffect } from "react";
 import {
-  Tabs,
   Typography,
   Row,
   Col,
   Card,
   List,
   Button,
-  Upload,
   message,
   Spin,
   Radio,
@@ -22,7 +20,6 @@ import {
   Space,
 } from "antd";
 import {
-  UploadOutlined,
   FileTextOutlined,
   CheckCircleOutlined,
   RobotOutlined,
@@ -30,7 +27,6 @@ import {
   DollarOutlined,
   LaptopOutlined,
   TrophyOutlined,
-  RiseOutlined,
   InfoCircleOutlined,
   EyeOutlined,
   ClockCircleOutlined,
@@ -47,7 +43,6 @@ import BoxContainer from "../../Generate/BoxContainer";
 import dayjs from "dayjs";
 
 const { Title, Text, Paragraph } = Typography;
-const { TabPane } = Tabs;
 
 const CVAnalysis = () => {
   const { t } = useTranslation();
@@ -58,8 +53,6 @@ const CVAnalysis = () => {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState(null);
   const [showResult, setShowResult] = useState(false);
-  const [fileList, setFileList] = useState([]);
-  const [activeTab, setActiveTab] = useState("existing");
   const [loadingAnimation, setLoadingAnimation] = useState(false);
 
   // Format date function
@@ -103,48 +96,6 @@ const CVAnalysis = () => {
     return new Intl.NumberFormat("vi-VN").format(value);
   };
 
-  // Upload props
-  const uploadProps = {
-    name: "file",
-    accept: ".pdf,.doc,.docx",
-    fileList,
-    beforeUpload: (file) => {
-      const isPDF = file.type === "application/pdf";
-      const isDocx =
-        file.type ===
-        "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-      const isDoc = file.type === "application/msword";
-
-      if (!isPDF && !isDocx && !isDoc) {
-        message.error({
-          content: t("cv.upload.fileType"),
-          icon: <CloseOutlined style={{ color: "#ff4d4f" }} />,
-        });
-        return Upload.LIST_IGNORE;
-      }
-
-      const isLessThan5M = file.size / 1024 / 1024 < 5;
-      if (!isLessThan5M) {
-        message.error({
-          content: t("cv.upload.fileMax"),
-          icon: <CloseOutlined style={{ color: "#ff4d4f" }} />,
-        });
-        return Upload.LIST_IGNORE;
-      }
-
-      setFileList([file]);
-      return false;
-    },
-    onRemove: () => {
-      setFileList([]);
-    },
-    showUploadList: {
-      showPreviewIcon: true,
-      showDownloadIcon: false,
-      showRemoveIcon: true,
-    },
-  };
-
   // Load resumes
   useEffect(() => {
     if (resumeData) {
@@ -172,27 +123,10 @@ const CVAnalysis = () => {
   const handleResumeSelect = (resumeId) => {
     setSelectedResumeId(resumeId);
   };
-
-  // Handle tab change
-  const handleTabChange = (key) => {
-    setActiveTab(key);
-    if (key === "existing") {
-      setFileList([]);
-    } else {
-      setSelectedResumeId(null);
-    }
-  };
-
   // Handle analyze action
   const handleAnalyze = async () => {
     // Make sure we have a resume to analyze (either selected or uploaded)
-    if (activeTab === "existing" && !selectedResumeId) {
-      message.warning({
-        content: t("cv.analysis.warning.noCV"),
-        icon: <InfoCircleOutlined style={{ color: "#faad14" }} />,
-      });
-      return;
-    } else if (activeTab === "upload" && fileList.length === 0) {
+    if (!selectedResumeId) {
       message.warning({
         content: t("cv.analysis.warning.noCV"),
         icon: <InfoCircleOutlined style={{ color: "#faad14" }} />,
@@ -328,168 +262,123 @@ const CVAnalysis = () => {
         <Row gutter={[32, 32]}>
           <Col xs={24} lg={16}>
             <Card className="cv-selection-card">
-              <Tabs
-                defaultActiveKey="existing"
-                onChange={handleTabChange}
-                tabBarGutter={24}
-                animated={{ tabPane: true }}
-              >
-                <TabPane
-                  tab={
-                    <span className="tab-label">
-                      <FileTextOutlined /> {t("cv.analysis.tabs.existing")}
-                    </span>
-                  }
-                  key="existing"
-                >
-                  {isLoadingResumes ? (
-                    <div className="loading-container">
-                      <Spin size="large" />
-                      <Text className="loading-text">
-                        {t("cv.analysis.loading")}
+              {isLoadingResumes ? (
+                <div className="loading-container">
+                  <Spin size="large" />
+                  <Text className="loading-text">
+                    {t("cv.analysis.loading")}
+                  </Text>
+                </div>
+              ) : listResumes.length === 0 ? (
+                <Empty
+                  description={
+                    <Space direction="vertical" align="center" size={12}>
+                      <Text strong>{t("cv.analysis.noExistingCV")}</Text>
+                      <Text type="secondary">
+                        {t("cv.analysis.createYourCV")}
+                        <Tooltip
+                          destroyTooltipOnHide={true}
+                          title={t("cv.builder.pageDescription")}
+                        >
+                          <InfoCircleOutlined style={{ marginLeft: 8 }} />
+                        </Tooltip>
                       </Text>
-                    </div>
-                  ) : listResumes.length === 0 ? (
-                    <Empty
-                      description={
-                        <Space direction="vertical" align="center" size={12}>
-                          <Text strong>{t("cv.analysis.noExistingCV")}</Text>
-                          <Text type="secondary">
-                            {t("cv.analysis.createYourCV")}
+                    </Space>
+                  }
+                >
+                  <Button
+                    type="primary"
+                    onClick={() => navigate("/cv-builder")}
+                    icon={<FileTextOutlined />}
+                  >
+                    {t("cv.analysis.createCV")}
+                  </Button>
+                </Empty>
+              ) : (
+                <Radio.Group
+                  onChange={(e) => handleResumeSelect(e.target.value)}
+                  value={selectedResumeId}
+                  style={{ width: "100%" }}
+                >
+                  <List
+                    split={false}
+                    dataSource={listResumes}
+                    renderItem={(resume) => (
+                      <List.Item>
+                        <Card
+                          className={`resume-card !w-full ${
+                            selectedResumeId === resume.id ? "selected" : ""
+                          }`}
+                          hoverable
+                          onClick={() => handleResumeSelect(resume.id)}
+                        >
+                          <Radio value={resume.id} />
+                          <div className="resume-info">
+                            <div className="resume-header">
+                              <Title
+                                level={5}
+                                className="resume-title"
+                                ellipsis={{
+                                  rows: 1,
+                                  tooltip: resume.title,
+                                }}
+                              >
+                                {resume.title}
+                              </Title>
+                              {resume.isActive && (
+                                <Badge
+                                  status="success"
+                                  text={
+                                    <Text type="success">
+                                      <CheckCircleOutlined />{" "}
+                                      {t("common.active")}
+                                    </Text>
+                                  }
+                                />
+                              )}
+                            </div>
+
+                            <Paragraph
+                              ellipsis={{
+                                rows: 2,
+                                tooltip: resume.description,
+                              }}
+                              className="resume-description"
+                            >
+                              {resume.description || t("cv.noDescription")}
+                            </Paragraph>
+
+                            <div className="resume-meta">
+                              <Text type="secondary" className="last-updated">
+                                <ClockCircleOutlined />{" "}
+                                {t("cv.analysis.lastUpdated")}:{" "}
+                                {formatRelativeTime(resume.updatedAt)}
+                              </Text>
+                            </div>
+                          </div>
+
+                          <div className="resume-actions">
                             <Tooltip
                               destroyTooltipOnHide={true}
-                              title={t("cv.builder.pageDescription")}
+                              title={t("common.view")}
                             >
-                              <InfoCircleOutlined style={{ marginLeft: 8 }} />
+                              <Button
+                                shape="circle"
+                                href={resume.file}
+                                target="_blank"
+                                icon={
+                                  <EyeOutlined className="!text-text-color" />
+                                }
+                                onClick={(e) => e.stopPropagation()}
+                              />
                             </Tooltip>
-                          </Text>
-                        </Space>
-                      }
-                    >
-                      <Button
-                        type="primary"
-                        onClick={() => navigate("/cv-builder")}
-                        icon={<FileTextOutlined />}
-                      >
-                        {t("cv.analysis.createCV")}
-                      </Button>
-                    </Empty>
-                  ) : (
-                    <Radio.Group
-                      onChange={(e) => handleResumeSelect(e.target.value)}
-                      value={selectedResumeId}
-                      style={{ width: "100%" }}
-                    >
-                      <List
-                        split={false}
-                        dataSource={listResumes}
-                        renderItem={(resume) => (
-                          <List.Item>
-                            <Card
-                              className={`resume-card !w-full ${
-                                selectedResumeId === resume.id ? "selected" : ""
-                              }`}
-                              hoverable
-                              onClick={() => handleResumeSelect(resume.id)}
-                            >
-                              <Radio value={resume.id} />
-                              <div className="resume-info">
-                                <div className="resume-header">
-                                  <Title
-                                    level={5}
-                                    className="resume-title"
-                                    ellipsis={{
-                                      rows: 1,
-                                      tooltip: resume.title,
-                                    }}
-                                  >
-                                    {resume.title}
-                                  </Title>
-                                  {resume.isActive && (
-                                    <Badge
-                                      status="success"
-                                      text={
-                                        <Text type="success">
-                                          <CheckCircleOutlined />{" "}
-                                          {t("common.active")}
-                                        </Text>
-                                      }
-                                    />
-                                  )}
-                                </div>
-
-                                <Paragraph
-                                  ellipsis={{
-                                    rows: 2,
-                                    tooltip: resume.description,
-                                  }}
-                                  className="resume-description"
-                                >
-                                  {resume.description || t("cv.noDescription")}
-                                </Paragraph>
-
-                                <div className="resume-meta">
-                                  <Text
-                                    type="secondary"
-                                    className="last-updated"
-                                  >
-                                    <ClockCircleOutlined />{" "}
-                                    {t("cv.analysis.lastUpdated")}:{" "}
-                                    {formatRelativeTime(resume.updatedAt)}
-                                  </Text>
-                                </div>
-                              </div>
-
-                              <div className="resume-actions">
-                                <Tooltip
-                                  destroyTooltipOnHide={true}
-                                  title={t("common.view")}
-                                >
-                                  <Button
-                                    shape="circle"
-                                    href={resume.file}
-                                    target="_blank"
-                                    icon={
-                                      <EyeOutlined className="!text-text-color" />
-                                    }
-                                    onClick={(e) => e.stopPropagation()}
-                                  />
-                                </Tooltip>
-                              </div>
-                            </Card>
-                          </List.Item>
-                        )}
-                      />
-                    </Radio.Group>
-                  )}
-                </TabPane>
-
-                <TabPane
-                  tab={
-                    <span className="tab-label">
-                      <UploadOutlined /> {t("cv.analysis.tabs.upload")}
-                    </span>
-                  }
-                  key="upload"
-                >
-                  <div className="upload-section">
-                    <Title level={4}>{t("cv.analysis.upload.title")}</Title>
-                    <Paragraph>{t("cv.analysis.upload.hint")}</Paragraph>
-
-                    <Upload.Dragger {...uploadProps}>
-                      <p className="ant-upload-drag-icon">
-                        <UploadOutlined />
-                      </p>
-                      <p className="ant-upload-text">
-                        {t("cv.upload.fileChoose")}
-                      </p>
-                      <p className="ant-upload-hint">
-                        {t("cv.upload.fileSupport")}
-                      </p>
-                    </Upload.Dragger>
-                  </div>
-                </TabPane>
-              </Tabs>
+                          </div>
+                        </Card>
+                      </List.Item>
+                    )}
+                  />
+                </Radio.Group>
+              )}
             </Card>
           </Col>
 
@@ -520,26 +409,6 @@ const CVAnalysis = () => {
                     </Paragraph>
                   </div>
                 </div>
-                <div className="benefit-item">
-                  <TrophyOutlined className="benefit-icon" />
-                  <div>
-                    <Text strong>{t("cv.analysis.benefits.matchTitle")}</Text>
-                    <Paragraph type="secondary">
-                      {t("cv.analysis.benefits.matchDesc")}
-                    </Paragraph>
-                  </div>
-                </div>
-                <div className="benefit-item">
-                  <RiseOutlined className="benefit-icon" />
-                  <div>
-                    <Text strong>
-                      {t("cv.analysis.benefits.insightsTitle")}
-                    </Text>
-                    <Paragraph type="secondary">
-                      {t("cv.analysis.benefits.insightsDesc")}
-                    </Paragraph>
-                  </div>
-                </div>
               </div>
 
               <Divider />
@@ -552,10 +421,7 @@ const CVAnalysis = () => {
                   block
                   onClick={handleAnalyze}
                   loading={isAnalyzing}
-                  disabled={
-                    (activeTab === "existing" && !selectedResumeId) ||
-                    (activeTab === "upload" && fileList.length === 0)
-                  }
+                  disabled={!selectedResumeId}
                 >
                   {isAnalyzing
                     ? t("cv.analysis.analyzing")

@@ -40,13 +40,11 @@ const LoginPage = () => {
   };
 
   const handleLogin = async (values) => {
-    console.log(values);
     const { username, ...rest } = values;
     const updatedValues = {
       ...rest,
       ...checkUserName(username),
     };
-    console.log(updatedValues);
     dispatch(loading());
     try {
       const res = await employerLogin(updatedValues);
@@ -64,8 +62,17 @@ const LoginPage = () => {
       } else {
         message.error(t("auth.login.loginError"));
       }
-    } catch {
-      message.error(t("auth.login.loginError"));
+    } catch (err) {
+      const res = err.response.data;
+      if (
+        res.message === "Tài khoản hoặc mật khẩu không đúng. Vui lòng thử lại"
+      ) {
+        message.error(t("auth.login.accountError"));
+      } else if (res.message === "Không được phép đăng nhập với vai trò này") {
+        message.error(t("auth.login.roleError"));
+      } else {
+        message.error(t("auth.login.loginError"));
+      }
     } finally {
       dispatch(stop());
     }

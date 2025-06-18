@@ -480,14 +480,6 @@ const CVBuilderPage = () => {
             </div>
 
             <div className="feature-item">
-              <div className="feature-icon">📱</div>
-              <Title level={5}>
-                {t("cv.builder.features.responsive.title")}
-              </Title>
-              <Text>{t("cv.builder.features.responsive.description")}</Text>
-            </div>
-
-            <div className="feature-item">
               <div className="feature-icon">💾</div>
               <Title level={5}>{t("cv.builder.features.save.title")}</Title>
               <Text>{t("cv.builder.features.save.description")}</Text>

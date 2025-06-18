@@ -62,9 +62,20 @@ const LoginPage = () => {
         } else if (res.data.roles.roleName === "admin") {
           navigate("/admin");
         }
+      } else {
+        if (
+          res.message === "Tài khoản hoặc mật khẩu không đúng. Vui lòng thử lại"
+        ) {
+          message.error(t("auth.login.accountError"));
+        } else if (
+          res.message === "Không được phép đăng nhập với vai trò này"
+        ) {
+          message.error(t("auth.login.roleError"));
+        } else {
+          message.error(t("auth.login.loginError"));
+        }
       }
-    } catch (err) {
-      console.error(err);
+    } catch {
       message.error(t("auth.login.loginError"));
     } finally {
       dispatch(stop());

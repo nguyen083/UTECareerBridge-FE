@@ -1352,7 +1352,9 @@
       "passwordPlaceholder": "Nhập mật khẩu",
       "googleLogin": "Đăng nhập với Google",
       "loginSuccess": "Đăng nhập thành công",
-      "loginError": "Đăng nhập thất bại"
+      "loginError": "Đăng nhập thất bại",
+      "roleError": "Không được phép đăng nhập với vai trò này",
+      "accountError": "Tài khoản hoặc mật khẩu không đúng. Vui lòng thử lại"
     },
     "forgotPassword": {
       "title": "Quên mật khẩu",
