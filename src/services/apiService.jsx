@@ -192,7 +192,7 @@ const updateFindjob = async (values) => {
   return axios.put(`students/is-finding-job?isFindingJob=${values}`, {});
 };
 const updateResumeActive = async (id) => {
-  return axios.put(`students/resume/${id}`, {});
+  return axios.put(`students/resume/active/${id}`, {});
 };
 const getAllCompany = async (values) => {
   const params = new URLSearchParams(values).toString();
