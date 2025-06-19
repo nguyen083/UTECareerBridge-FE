@@ -36,7 +36,7 @@ export const ModalApply = ({ show, setShow, company, job }) => {
       if (res.status === "OK") {
         message.success(t("job.apply.success"));
         setShow(false);
-      } else message.error(res.message);
+      } else message.error(t("job.apply.error"));
     } catch (err) {
       console.error(err);
     } finally {

@@ -1774,6 +1774,7 @@
     },
     "apply": {
       "success": "Ứng tuyển thành công",
+      "error": "Hồ sơ đã được ứng tuyển",
       "alreadyApplied": "Hồ sơ đã được ứng tuyển",
       "selectApplication": "Chọn đơn ứng tuyển",
       "title": "Ứng tuyển công việc",

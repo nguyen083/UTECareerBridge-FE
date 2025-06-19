@@ -25,7 +25,6 @@ export const webSlice = createSlice({
       state.loading = false;
       state.current = "1";
       state.keyword = "";
-      state.lang = "en";
     },
     setKeyword: (state, action) => {
       state.keyword = action.payload;

@@ -79,7 +79,7 @@ const CustomizePopover = ({ setOpen }) => {
       removeAllToken();
       dispatch(stop());
       clearRedux();
-      message.success(res.message);
+      message.success(t("logoutSuccess"));
       navigate("/home");
       return true;
     } else {
